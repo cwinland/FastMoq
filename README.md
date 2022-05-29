@@ -1,6 +1,6 @@
 # FastMoq
 
-Easy and fast extension of [Moq](https://github.com/Moq) Mocking framework for super easy mocking of classes.
+Easy and fast extension of [Moq](https://github.com/Moq) Mocking framework for mocking and auto injection of classes.
 
 ## Features
 
