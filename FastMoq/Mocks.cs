@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Castle.DynamicProxy.Internal;
+using Moq;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Reflection;
@@ -21,7 +22,7 @@ namespace FastMoq
         /// <summary>
         /// The mock collection
         /// </summary>
-        protected readonly List<Mock> mockCollection;
+        protected readonly List<MockModel> mockCollection;
 
         #endregion
 
@@ -113,10 +114,7 @@ namespace FastMoq
         public bool Contains(Type type) =>
             type == null ? throw new ArgumentNullException(nameof(type)) :
             !type.IsClass && !type.IsInterface ? throw new ArgumentException("type must be a class.", nameof(type)) :
-            mockCollection.Any(x => x != null &&
-                (x.GetType().GenericTypeArguments.First().FullName ?? string.Empty)
-                .Equals(type.FullName, StringComparison.OrdinalIgnoreCase)
-            );
+            mockCollection.Any(x => x.Type == type);
 
         /// <summary>
         /// Creates the instance.
@@ -152,7 +150,7 @@ namespace FastMoq
         /// <returns><see cref="List{Mock}" />.</returns>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
-        public List<Mock> CreateMock(Type type)
+        public List<MockModel> CreateMock(Type type)
         {
             if (type == null || !type.IsClass && !type.IsInterface)
             {
@@ -180,7 +178,7 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns><see cref="List{T}" />.</returns>
-        public List<Mock> CreateMock<T>() where T : class => CreateMock(typeof(T));
+        public List<MockModel> CreateMock<T>() where T : class => CreateMock(typeof(T));
 
         /// <summary>
         /// Gets the list.
@@ -292,10 +290,7 @@ namespace FastMoq
                 throw new ArgumentException("type must be a class.", nameof(type));
             }
 
-            return mockCollection.First(x => x != null &&
-                (x.GetType().GenericTypeArguments.First().FullName?.Equals(type.FullName, StringComparison.OrdinalIgnoreCase) ??
-                false)
-            );
+            return mockCollection.First(x => x.Type == type).Mock;
         }
 
         /// <summary>
@@ -327,7 +322,16 @@ namespace FastMoq
         /// <typeparam name="T">Mock Type.</typeparam>
         /// <param name="mock">Mock to Remove.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public bool RemoveMock<T>(Mock<T> mock) where T : class => mockCollection.Remove(mock);
+        public bool RemoveMock<T>(Mock<T> mock) where T : class
+        {
+            var mockModel = mockCollection.FirstOrDefault(x => x.Type == typeof(T) && x.Mock == mock);
+
+            return mockModel != null && mockCollection.Remove(mockModel);
+        }
+
+        internal int GetMockModelIndexOf(Type type) => mockCollection.IndexOf(GetMockModel(type));
+        internal MockModel GetMockModel(Type type, Mock? mock = null) => mockCollection.FirstOrDefault(x => x.Type == type && (x.Mock == mock || mock == null));
+        internal MockModel GetMockModel<T>(Mock<T>? mock = null) where T : class => GetMockModel(typeof(T), mock);
 
         /// <summary>
         /// Add specified Mock. Internal API only.
@@ -356,17 +360,18 @@ namespace FastMoq
                     ThrowAlreadyExists(mock.GetType());
                 }
 
-                mockCollection[mockCollection.IndexOf(mock)] = mock;
+                var mockModel = GetMockModel(type);
+                mockModel.Mock = mock;
                 return GetMock(type);
             }
 
-            mockCollection.Add(mock);
+            mockCollection.Add(new MockModel(type, mock));
 
             return GetMock(type);
         }
 
         /// <summary>
-        ///     Finds the constructor.
+        ///     Finds the constructor matching args EXACTLY.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments.</param>
@@ -415,14 +420,14 @@ namespace FastMoq
         ///     Gets the constructors.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="args">Optional arguments.</param>
+        /// <param name="instanceParameterValues">Optional arguments.</param>
         /// <returns><see cref="Dictionary{ConstructorInfo, List}" />.</returns>
-        internal Dictionary<ConstructorInfo, List<object?>> GetConstructors(Type type, params object?[] args) =>
+        internal Dictionary<ConstructorInfo, List<object?>> GetConstructors(Type type, params object?[] instanceParameterValues) =>
             type.GetConstructors()
-                .Where(x => IsValidConstructor(x, args))
+                .Where(x => IsValidConstructor(x, instanceParameterValues))
                 .OrderByDescending(x => x.GetParameters().Length)
                 .ToDictionary(x => x,
-                    y => (args.Length > 0 ? args : y.GetParameters().Select(GetObject)).ToList()
+                    y => (instanceParameterValues.Length > 0 ? instanceParameterValues : y.GetParameters().Select(GetObject)).ToList()
                 );
 
         internal static object? GetDefaultValue(Type type) => type.IsClass ? null : Activator.CreateInstance(type);
@@ -463,15 +468,36 @@ namespace FastMoq
         ///     Returns true if the argument list == 0 or the types match the constructor exactly.
         /// </summary>
         /// <param name="info">Parameter information.</param>
-        /// <param name="args">Optional arguments.</param>
+        /// <param name="instanceParameterValues">Optional arguments.</param>
         /// <returns></returns>
-        internal bool IsValidConstructor(ConstructorInfo info, params object?[] args) =>
-            args.Length == 0 ||
-            info.GetParameters()
-                .Select(x => x.ParameterType)
-                .SequenceEqual(args.Select(x => x?.GetType()));
+        internal static bool IsValidConstructor(ConstructorInfo info, params object?[] instanceParameterValues)
+        {
+            if (instanceParameterValues.Length == 0)
+            {
+                return true;
+            }
 
-        internal bool IsMockFileSystem<T>(bool usePredefinedFileSystem) => usePredefinedFileSystem && (typeof(T) == typeof(IFileSystem) || typeof(T) == typeof(FileSystem));
-        private static void ThrowAlreadyExists(Type type) => throw new ArgumentException($"{type} already exists.");
+            var paramList = info.GetParameters().ToList();
+
+            if (instanceParameterValues.Length != paramList.Count)
+            {
+                return false;
+            }
+
+            var isValid = true;
+
+            for (var i = 0; i < paramList.Count; i++)
+            {
+                var paramType = paramList[i].ParameterType;
+                var instanceType = instanceParameterValues[i]?.GetType();
+                isValid &= (instanceType == null && paramType.IsNullableType()) || (instanceType != null && instanceType.IsAssignableTo(paramType));
+            }
+
+            return isValid;
+
+        }
+
+        internal static bool IsMockFileSystem<T>(bool usePredefinedFileSystem) => usePredefinedFileSystem && (typeof(T) == typeof(IFileSystem) || typeof(T) == typeof(FileSystem));
+        internal static void ThrowAlreadyExists(Type type) => throw new ArgumentException($"{type} already exists.");
     }
 }

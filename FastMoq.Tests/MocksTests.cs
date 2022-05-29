@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using System.Reflection;
 using System.Runtime;
 using System.Security.Cryptography;
 using Xunit;
+
 #pragma warning disable CS8602
 #pragma warning disable CS8625
 
@@ -233,13 +235,41 @@ namespace FastMoq.Tests
                 Name = "First"
             };
 
+            var mockResult = Mocks.AddMock(mock, false);
+            mockResult.Should().Be(mock);
+            mockResult.Name.Should().Be("First");
+        }
+
+        [Fact]
+        public void AddMockDuplicateWithoutOverwrite_ShouldThrowArgumentException()
+        {
+            var mock = new Mock<IFileSystemInfo>
+            {
+                Name = "First"
+            };
+
             Mocks.AddMock(mock, false).Should().Be(mock);
 
             Action a = () => Mocks.AddMock(mock, false);
             a.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void AddMockDuplicateWithOverwrite_ShouldSucceed()
+        {
+            var mock = new Mock<IFileSystemInfo>
+            {
+                Name = "First"
+            };
+
+            var mock1 = Mocks.AddMock(mock, false);
+            mock1.Should().Be(mock);
+            mock1.Name.Should().Be("First");
 
             mock.Name = "test";
-            Mocks.AddMock(mock, true).Should().Be(mock);
+            var mock2 = Mocks.AddMock(mock, true);
+            mock2.Should().Be(mock);
+            mock2.Name.Should().Be("test");
 
         }
 
@@ -251,6 +281,20 @@ namespace FastMoq.Tests
 
             Action b = () => Mocks.AddMock(new Mock<IFileSystem>(), null, false);
             b.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void AddTypeBothSameClass()
+        {
+            Action a = () => Mocks.AddType<TestClassDouble1, TestClassDouble1>();
+            a.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void AddTypeNotInterface()
+        {
+            Action a = () => Mocks.AddType<TestClassDouble2, TestClassDouble1>();
+            a.Should().Throw<ArgumentException>();
         }
 
         [Fact]
@@ -286,7 +330,8 @@ namespace FastMoq.Tests
             var number = (double)RandomNumberGenerator.GetInt32(1, 100);
 
             // Add Mock Mapping, demonstrating that the number doesn't get used until CreateInstance is called.
-            Mocks.AddType<ITestClassDouble, TestClassDouble2>(_ => new TestClassDouble2() { Value = number });
+            Mocks.AddType<ITestClassDouble, TestClassDouble2>(_ => new TestClassDouble2
+                { Value = number });
 
             // Saving original number
             var number2 = number;
@@ -313,6 +358,52 @@ namespace FastMoq.Tests
             b.Should().Throw<ArgumentException>();
         }
 
+        [Fact]
+        public void FindConstructorByArgs()
+        {
+            CheckConstructorByArgs(Mocks.GetObject<IFileSystem>());
+            CheckConstructorByArgs(new FileSystem());
+            CheckConstructorByArgs(new MockFileSystem());
+            CheckConstructorByArgs(new Mock<IFileSystem>().Object);
+        }
+
+        [Fact]
+        public void FindConstructorByBest()
+        {
+            CheckBestConstructor(Mocks.GetObject<IFileSystem>());
+            CheckBestConstructor(new FileSystem());
+            CheckBestConstructor(new MockFileSystem());
+            CheckBestConstructor(new Mock<IFileSystem>().Object);
+            CheckBestConstructor(new Mock<IFile>().Object, false);
+        }
+
+        private void CheckConstructorByArgs(object data, bool expected = true)
+        {
+            var constructor = Mocks.FindConstructor(typeof(TestClassNormal), data);
+            var isValid = Mocks.IsValidConstructor(constructor.Key, data);
+            isValid.Should().Be(expected);
+        }
+
+        private void CheckBestConstructor(object data, bool expected = true)
+        {
+            var constructor = Mocks.FindConstructor(true, typeof(TestClassNormal));
+            var isValid = Mocks.IsValidConstructor(constructor.Key, data);
+            isValid.Should().Be(expected);
+        }
+
+        [Fact]
+        public void IsValidConstructor()
+        {
+            var constructor = Mocks.FindConstructor(typeof(TestClassNormal), Mocks.GetObject<IFileSystem>());
+            var isValid = Mocks.IsValidConstructor(constructor.Key, Mocks.GetObject<IFileSystem>());
+            isValid.Should().BeTrue();
+
+            isValid = Mocks.IsValidConstructor(constructor.Key, Mocks.GetObject<IFileSystem>(), 12);
+            isValid.Should().BeFalse();
+
+            isValid = Mocks.IsValidConstructor(constructor.Key, 12);
+            isValid.Should().BeFalse();
+        }
 
         private static Mocks CreateAction(Mocks mocks) => new();
 
