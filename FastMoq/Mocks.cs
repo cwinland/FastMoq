@@ -28,7 +28,7 @@ namespace FastMoq
         #region Properties
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Mocks"/> is strict.
+        /// Gets or sets a value indicating whether this <see cref="Mocks" /> is strict. If strict, the mock IFileSystem does not use FileSystemMock and uses Mock of IFileSystem.
         /// </summary>
         /// <value><c>true</c> if strict; otherwise, <c>false</c>.</value>
         public bool Strict { get; set; }
@@ -37,12 +37,12 @@ namespace FastMoq
         /// Gets the type map.
         /// </summary>
         /// <value>The type map.</value>
-        public Dictionary<Type, Type> TypeMap { get; }
+        private readonly Dictionary<Type, InstanceModel> TypeMap;
 
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Mocks"/> class.
+        /// Initializes a new instance of the <see cref="Mocks" /> class.
         /// </summary>
         public Mocks()
         {
@@ -56,7 +56,7 @@ namespace FastMoq
         /// Initializes a new instance of the <see cref="T:FastMoq.Mocks" /> class.
         /// </summary>
         /// <param name="typeMap">The type map.</param>
-        public Mocks(Dictionary<Type, Type> typeMap) : this() => TypeMap = typeMap;
+        public Mocks(Dictionary<Type, InstanceModel> typeMap) : this() => TypeMap = typeMap;
 
         /// <summary>
         /// Add specified Mock.
@@ -65,23 +65,35 @@ namespace FastMoq
         /// <param name="mock">Mock to Add.</param>
         /// <param name="overwrite">Overwrite if the mock exists or throw <see cref="ArgumentException" /> if this parameter is
         /// false.</param>
-        /// <returns>Mock&lt;T&gt;.</returns>
-        public Mock<T> AddMock<T>(Mock<T> mock, bool overwrite) where T : class
-        {
-            if (Contains<T>())
-            {
-                if (!overwrite)
-                {
-                    ThrowAlreadyExists(typeof(T));
-                }
+        /// <returns><see cref="Mock{T}" />.</returns>
+        public Mock<T> AddMock<T>(Mock<T> mock, bool overwrite) where T : class => (Mock<T>) AddMock(mock, typeof(T), overwrite);
 
-                mockCollection[mockCollection.IndexOf(mock)] = mock;
-                return GetMock<T>();
+        /// <summary>
+        /// Adds the type.
+        /// </summary>
+        /// <typeparam name="TInterface">The type of the t interface.</typeparam>
+        /// <typeparam name="TClass">The type of the t class.</typeparam>
+        /// <param name="createFunc">The create function.</param>
+        /// <exception cref="System.ArgumentException">Must be different types.</exception>
+        /// <exception cref="System.ArgumentException"></exception>
+        public void AddType<TInterface, TClass>(Func<Mocks, TClass>? createFunc = null) where TInterface : class where TClass : class, new()
+        {
+            if (typeof(TInterface) == typeof(TClass))
+            {
+                throw new ArgumentException("Must be different types.");
             }
 
-            mockCollection.Add(mock);
+            if (!typeof(TInterface).IsInterface)
+            {
+                throw new ArgumentException($"{typeof(TInterface).Name} must be an interface.");
+            }
 
-            return GetMock<T>();
+            if (typeof(TClass).IsInterface)
+            {
+                throw new ArgumentException($"{typeof(TClass).Name} cannot be an interface.");
+            }
+
+            TypeMap.Add(typeof(TInterface), new InstanceModel<TClass>(createFunc));
         }
 
         /// <summary>
@@ -101,7 +113,7 @@ namespace FastMoq
         public bool Contains(Type type) =>
             type == null ? throw new ArgumentNullException(nameof(type)) :
             !type.IsClass && !type.IsInterface ? throw new ArgumentException("type must be a class.", nameof(type)) :
-            mockCollection.Any(x =>
+            mockCollection.Any(x => x != null &&
                 (x.GetType().GenericTypeArguments.First().FullName ?? string.Empty)
                 .Equals(type.FullName, StringComparison.OrdinalIgnoreCase)
             );
@@ -112,42 +124,25 @@ namespace FastMoq
         /// <typeparam name="T"></typeparam>
         /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
         /// <param name="args">The arguments.</param>
-        /// <returns>System.Nullable&lt;T&gt;.</returns>
+        /// <returns><see cref="Nullable{T}" />.</returns>
         public T? CreateInstance<T>(bool usePredefinedFileSystem = true, params object[] args) where T : class
         {
-            if (usePredefinedFileSystem && (typeof(T) == typeof(IFileSystem) || typeof(T) == typeof(FileSystem)))
+            if (IsMockFileSystem<T>(usePredefinedFileSystem))
             {
                 return fileSystem as T;
             }
 
-            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : typeof(T);
+            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
 
-            KeyValuePair<ConstructorInfo, List<object?>> constructor = FindConstructor(type, args);
-
-            return constructor.Key.Invoke(constructor.Value.ToArray()) as T;
-        }
-
-        /// <summary>
-        /// Creates the instance.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
-        /// <param name="bestGuess">if set to <c>true</c> the constructor with the most parameters is chosen.</param>
-        /// <returns>T.</returns>
-        /// <exception cref="System.Runtime.AmbiguousImplementationException">Multiple parameterized constructors exist. Cannot
-        /// decide which to use.</exception>
-        public T? CreateInstance<T>(bool usePredefinedFileSystem = true, bool bestGuess = false) where T : class
-        {
-            if (usePredefinedFileSystem && (typeof(T) == typeof(IFileSystem) || typeof(T) == typeof(FileSystem)))
+            if (type.CreateFunc != null)
             {
-                return fileSystem as T;
+                return (T)type.CreateFunc.Invoke(this);
             }
 
-            var t = typeof(T).IsInterface ? GetTypeFromInterface<T>() : typeof(T);
+            KeyValuePair<ConstructorInfo, List<object?>> constructor =
+                args.Length > 0 ? FindConstructor(type.InstanceType, args) : FindConstructor(false, type.InstanceType);
 
-            KeyValuePair<ConstructorInfo, List<object?>> constructor = FindConstructor(bestGuess, t);
-
-            return constructor.Key.Invoke(constructor.Value.ToArray()) as T;
+            return (T) constructor.Key.Invoke(constructor.Value.ToArray());
         }
 
         /// <summary>
@@ -176,7 +171,7 @@ namespace FastMoq
                 throw new ApplicationException("Cannot create instance.");
             }
 
-            mockCollection.Add(oMock);
+            AddMock(oMock, type, false);
             return mockCollection;
         }
 
@@ -297,9 +292,9 @@ namespace FastMoq
                 throw new ArgumentException("type must be a class.", nameof(type));
             }
 
-            return mockCollection.First(x =>
-                x.GetType().GenericTypeArguments.First().FullName?.Equals(type.FullName, StringComparison.OrdinalIgnoreCase) ??
-                false
+            return mockCollection.First(x => x != null &&
+                (x.GetType().GenericTypeArguments.First().FullName?.Equals(type.FullName, StringComparison.OrdinalIgnoreCase) ??
+                false)
             );
         }
 
@@ -333,6 +328,42 @@ namespace FastMoq
         /// <param name="mock">Mock to Remove.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public bool RemoveMock<T>(Mock<T> mock) where T : class => mockCollection.Remove(mock);
+
+        /// <summary>
+        /// Add specified Mock. Internal API only.
+        /// </summary>
+        /// <param name="mock">Mock to Add.</param>
+        /// <param name="type">Type of Mock.</param>
+        /// <param name="overwrite">Overwrite if the mock exists or throw <see cref="ArgumentException" /> if this parameter is
+        /// false.</param>
+        /// <returns><see cref="Mock{T}" />.</returns>
+        internal Mock AddMock(Mock mock, Type type, bool overwrite)
+        {
+            if (mock == null)
+            {
+                throw new ArgumentNullException(nameof(mock));
+            }
+
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            if (Contains(type))
+            {
+                if (!overwrite)
+                {
+                    ThrowAlreadyExists(mock.GetType());
+                }
+
+                mockCollection[mockCollection.IndexOf(mock)] = mock;
+                return GetMock(type);
+            }
+
+            mockCollection.Add(mock);
+
+            return GetMock(type);
+        }
 
         /// <summary>
         ///     Finds the constructor.
@@ -396,13 +427,13 @@ namespace FastMoq
 
         internal static object? GetDefaultValue(Type type) => type.IsClass ? null : Activator.CreateInstance(type);
 
-        internal Type GetTypeFromInterface<T>() where T : class
+        internal InstanceModel GetTypeFromInterface<T>() where T : class
         {
             var tType = typeof(T);
 
             if (!tType.IsInterface)
             {
-                return tType;
+                return new InstanceModel<T>();
             }
 
             var mappedType = TypeMap.Where(x => x.Key == typeof(T)).Select(x=>x.Value).FirstOrDefault();
@@ -424,8 +455,8 @@ namespace FastMoq
                 !interfaces.Any(type.IsAssignableTo)
             ).ToList();
 
-            return possibleTypes.Count > 1 ? throw new AmbiguousImplementationException() :
-                !possibleTypes.Any() ? throw new NotImplementedException() : possibleTypes.First();
+            return new InstanceModel(possibleTypes.Count > 1 ? throw new AmbiguousImplementationException() :
+                !possibleTypes.Any() ? throw new NotImplementedException() : possibleTypes.First());
         }
 
         /// <summary>
@@ -440,6 +471,7 @@ namespace FastMoq
                 .Select(x => x.ParameterType)
                 .SequenceEqual(args.Select(x => x?.GetType()));
 
+        internal bool IsMockFileSystem<T>(bool usePredefinedFileSystem) => usePredefinedFileSystem && (typeof(T) == typeof(IFileSystem) || typeof(T) == typeof(FileSystem));
         private static void ThrowAlreadyExists(Type type) => throw new ArgumentException($"{type} already exists.");
     }
 }

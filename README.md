@@ -1,6 +1,6 @@
 # FastMoq
 
-Easy and fast extension of [Moq](https://github.com/Moq) Mocking framework for super easy mocking of classes.
+Easy and fast extension of [Moq](https://github.com/Moq) Mocking framework for easy mocking and auto injection of classes.
 
 ## Features
 
@@ -20,7 +20,7 @@ The following constructor parameters allow customization on the testing classes.
 
 ```cs
 Action<Mocks>? setupMocksAction
-Func<TComponent?> createComponentAction
+Func<TComponent> createComponentAction
 Action<TComponent?>? createdComponentAction
 ```
 
@@ -31,123 +31,93 @@ Action<TComponent?>? createdComponentAction
 Testing this class will auto inject IFileSystem.
 
 ```cs
-public class TestClassNormal 
+public class TestClassNormal : ITestClassNormal
 {
-        public TestClassNormal()
-        {
-
-        }
-
-        public TestClassNormal(IFileSystem fileSystem)
-        {
-            FileSystem = fileSystem;
-        }
+    public event EventHandler TestEvent;
+    public IFileSystem FileSystem { get; set; }
+    public TestClassNormal() { }
+    public TestClassNormal(IFileSystem fileSystem) => FileSystem = fileSystem;
+    public void CallTestEvent() => TestEvent?.Invoke(this, EventArgs.Empty);
 }
 ```
 
 ### Fast Start
 
 ```cs
-    public class TestClassNormalTestsDefaultBase : TestBase<TestClassNormal>
-        {
-            [Fact]
-            public void Test1()
-            {
-                Component.FileSystem.Should().NotBeNull();
-                Component.FileSystem.Should().BeOfType<MockFileSystem>();
-                Component.FileSystem.File.Should().NotBeNull();
-                Component.FileSystem.Directory.Should().NotBeNull();
-            }
-        }
+public class TestClassNormalTestsDefaultBase : TestBase<TestClassNormal>
+{
+    [Fact]
+    public void Test1()
+    {
+        Component.FileSystem.Should().NotBeNull();
+        Component.FileSystem.Should().BeOfType<MockFileSystem>();
+        Component.FileSystem.File.Should().NotBeNull();
+        Component.FileSystem.Directory.Should().NotBeNull();
+    }
+}
 ```
 
 ### Pre-Test Setup
 
 ```cs
-    public class TestClassNormalTestsSetupBase : TestBase<TestClassNormal>
+public class TestClassNormalTestsSetupBase : TestBase<TestClassNormal>
+{
+    public TestClassNormalTestsSetupBase() : base(SetupMocksAction) { }
+
+    private static void SetupMocksAction(Mocks mocks)
     {
-        public TestClassNormalTestsSetupBase() : base(SetupMocksAction)
-        {
+        var iFile = new FileSystem().File;
+        mocks.Strict = true;
 
-        }
-
-        private static void SetupMocksAction(Mocks mocks)
-        {
-            var iFile = new FileSystem().File;
-            mocks.Strict = true;
-
-            mocks.Initialize<IFileSystem>(mock =>
-                {
-                    mock.SetupAllProperties();
-                    mock.Setup(x => x.File).Returns(iFile);
-                }
-            );
-        }
-
-        [Fact]
-        public void Test1()
-        {
-            Component.FileSystem.Should().NotBeNull();
-            Component.FileSystem.Should().NotBeOfType<MockFileSystem>();
-            Component.FileSystem.File.Should().NotBeNull();
-            Component.FileSystem.Directory.Should().BeNull();
-        }
+        mocks.Initialize<IFileSystem>(mock => mock.Setup(x => x.File).Returns(iFile));
     }
 
+    [Fact]
+    public void Test1()
+    {
+        Component.FileSystem.Should().NotBeNull();
+        Component.FileSystem.Should().NotBeOfType<MockFileSystem>();
+        Component.FileSystem.File.Should().NotBeNull();
+        Component.FileSystem.Directory.Should().BeNull();
+    }
+}
 ```
 
 ### Custom Setup, Creation, and Post Create routines
 
 ```cs
-    public class TestClassNormalTestsFull : TestBase<TestClassNormal>
+public class TestClassNormalTestsFull : TestBase<TestClassNormal>
+{
+    private static bool testEventCalled;
+    public TestClassNormalTestsFull() : base(SetupMocksAction, CreateComponentAction, CreatedComponentAction) => testEventCalled = false;
+    private static void CreatedComponentAction(TestClassNormal? obj) => obj.TestEvent += (_, _) => testEventCalled = true;
+    private static TestClassNormal CreateComponentAction(Mocks mocks) => new(mocks.GetObject<IFileSystem>());
+
+    private static void SetupMocksAction(Mocks mocks)
     {
-        private static Mock<IFileSystem> mock = new Mock<IFileSystem>();
-        private static bool testEventCalled;
-
-        public TestClassNormalTestsFull() : base(SetupMocksAction, CreateComponentAction, CreatedComponentAction)
-        {
-            testEventCalled = false;
-        }
-
-        private static void CreatedComponentAction(TestClassNormal? obj)
-        {
-            obj.TestEvent += (sender, args) => testEventCalled = true;
-        }
-
-        private static TestClassNormal? CreateComponentAction()
-        {
-            return new TestClassNormal(mock.Object);
-        }
-
-        private static void SetupMocksAction(Mocks mocks)
-        {
-            var iFile = new FileSystem().File;
-            mocks.Strict = true;
-            mocks.AddMock(mock, true);
-
-            mocks.Initialize<IFileSystem>(mock =>
-                {
-                    mock.SetupAllProperties();
-                    mock.Setup(x => x.File).Returns(iFile);
-                }
-            );
-        }
-
-        [Fact]
-        public void Test1()
-        {
-            Component.FileSystem.Should().Be(mock.Object);
-            Component.FileSystem.Should().NotBeNull();
-            Component.FileSystem.File.Should().NotBeNull();
-            Component.FileSystem.Directory.Should().BeNull();
-            testEventCalled.Should().BeFalse();
-            Component.CallTestEvent();
-            testEventCalled.Should().BeTrue();
-
-            Mocks.Initialize<IFileSystem>(mock1 => mock.Setup(x => x.Directory).Returns(new FileSystem().Directory));
-            Component.FileSystem.Directory.Should().NotBeNull();
-        }
+        var mock = new Mock<IFileSystem>();
+        var iFile = new FileSystem().File;
+        mocks.Strict = true;
+        mocks.AddMock(mock, true);
+        mocks.Initialize<IFileSystem>(xMock => xMock.Setup(x => x.File).Returns(iFile));
     }
+
+    [Fact]
+    public void Test1()
+    {
+        Component.FileSystem.Should().Be(Mocks.GetMock<IFileSystem>().Object);
+        Component.FileSystem.Should().NotBeNull();
+        Component.FileSystem.File.Should().NotBeNull();
+        Component.FileSystem.Directory.Should().BeNull();
+        testEventCalled.Should().BeFalse();
+        Component.CallTestEvent();
+        testEventCalled.Should().BeTrue();
+
+        Mocks.Initialize<IFileSystem>(mock => mock.Setup(x => x.Directory).Returns(new FileSystem().Directory));
+        Component.FileSystem.Directory.Should().NotBeNull();
+
+    }
+}
 ```
 
 ### Interface Type Map
@@ -157,8 +127,8 @@ A map is available to decide which class is injected for the given interface.
 #### Two classes
 
 ```cs
-public class TestClassDouble1 : ITestClassDouble
-public class TestClassDouble2 : ITestClassDouble
+public class TestClassDouble1 : ITestClassDouble {}
+public class TestClassDouble2 : ITestClassDouble {}
 ```
 
 #### Mapping
@@ -166,7 +136,7 @@ public class TestClassDouble2 : ITestClassDouble
 This code maps ITestClassDouble to TestClassDouble1 when testing a component with ITestClassDouble.
 
 ```cs
-    Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble1));
+Mocks.AddType<ITestClassDouble, TestClassDouble1>();
 ```
 
 ### Auto injection
@@ -174,10 +144,7 @@ This code maps ITestClassDouble to TestClassDouble1 when testing a component wit
 Auto injection allows creation of components by selecting the constructor with the matching parameter types and data.
 
 ```cs
-    private static TestClassNormal? CreateComponentAction()
-    {
-        return Mocks.CreateInstance(new MockFileSystem()); // CreateInstance matches the parameters and types with the Component constructor.
-    }
+private static TestClassNormal CreateComponentAction() => Mocks.CreateInstance(new MockFileSystem()); // CreateInstance matches the parameters and types with the Component constructor.
 ```
 
 ## [License - MIT](./License)

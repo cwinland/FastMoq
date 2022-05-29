@@ -8,7 +8,7 @@ namespace FastMoq
     {
         #region Properties
 
-        private Func<TComponent?> DefaultCreateAction => () => Component = Mocks.CreateInstance<TComponent>();
+        private Func<Mocks, TComponent> DefaultCreateAction => _ => Component = Mocks.CreateInstance<TComponent>();
 
         /// <summary>
         ///     Gets the mocks.
@@ -48,7 +48,7 @@ namespace FastMoq
         /// </summary>
         /// <param name="createComponentAction">The create component action.</param>
         /// <param name="createdComponentAction">The created component action.</param>
-        protected TestBase(Func<TComponent?> createComponentAction, Action<TComponent?>? createdComponentAction = null) : this(
+        protected TestBase(Func<Mocks, TComponent> createComponentAction, Action<TComponent?>? createdComponentAction = null) : this(
             null,
             createComponentAction,
             createdComponentAction
@@ -62,12 +62,12 @@ namespace FastMoq
         /// <param name="setupMocksAction">The setup mocks action.</param>
         /// <param name="createComponentAction">The create component action.</param>
         /// <param name="createdComponentAction">The created component action.</param>
-        protected TestBase(Action<Mocks>? setupMocksAction, Func<TComponent?>? createComponentAction,
+        protected TestBase(Action<Mocks>? setupMocksAction, Func<Mocks, TComponent>? createComponentAction,
             Action<TComponent?>? createdComponentAction = null)
         {
             createComponentAction ??= DefaultCreateAction;
             setupMocksAction?.Invoke(Mocks);
-            Component = createComponentAction.Invoke();
+            Component = createComponentAction.Invoke(Mocks);
             createdComponentAction?.Invoke(Component);
         }
     }

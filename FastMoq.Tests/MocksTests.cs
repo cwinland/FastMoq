@@ -2,13 +2,20 @@ using FluentAssertions;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Runtime;
+using System.Security.Cryptography;
 using Xunit;
+#pragma warning disable CS8602
+#pragma warning disable CS8625
 
 namespace FastMoq.Tests
 {
+    [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+    [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+    [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
     public class MocksTests : TestBase<Mocks>
     {
         public MocksTests() : base(SetupAction, CreateAction, CreatedAction)
@@ -51,13 +58,13 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateMockDuplicate_ShouldThrowArgumentException()
         {
-            var mock = Mocks.CreateMock<IDirectoryInfo>();
+            Mocks.CreateMock<IDirectoryInfo>();
+
             Action a = () => Mocks.CreateMock(typeof(IDirectoryInfo));
             a.Should().Throw<ArgumentException>();
 
             Action b = () => Mocks.CreateMock<IDirectoryInfo>();
             b.Should().Throw<ArgumentException>();
-
         }
 
         [Fact]
@@ -71,10 +78,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateBest()
-        {
-            Mocks.CreateInstance<TestClassNormal>().Should().NotBeNull();
-        }
+        public void CreateBest() => Mocks.CreateInstance<TestClassNormal>().Should().NotBeNull();
 
         [Fact]
         public void CreateBest_Should_ThrowAmbiguous()
@@ -91,10 +95,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateFromInterface_BestGuess()
-        {
-            Mocks.CreateInstance<ITestClassNormal>().Should().NotBeNull();
-        }
+        public void CreateFromInterface_BestGuess() => Mocks.CreateInstance<ITestClassNormal>().Should().NotBeNull();
 
         [Fact]
         public void FileSystem_ShouldBeValid()
@@ -137,7 +138,7 @@ namespace FastMoq.Tests
         public void GetTypeFromInterfaceWithNonInterface()
         {
             var type = Mocks.GetTypeFromInterface<TestClassNormal>();
-            type.Should().Be<TestClassNormal>();
+            type.InstanceType.Should().Be<TestClassNormal>();
         }
 
         [Fact]
@@ -198,15 +199,15 @@ namespace FastMoq.Tests
         public void GetList()
         {
             var count = 0;
-            var numbers = Mocks.GetList<int>(3, () => count++);
+            var numbers = Mocks.GetList(3, () => count++);
             numbers.Should().BeEquivalentTo(new List<int> {0, 1, 2});
 
             count = 0;
-            var strings = Mocks.GetList<string>(3, () => (count++).ToString());
+            var strings = Mocks.GetList(3, () => (count++).ToString());
             strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2"});
 
             count = 0;
-            var test = Mocks.GetList<TestClassMany>(3, () => new TestClassMany(count++));
+            var test = Mocks.GetList(3, () => new TestClassMany(count++));
             test[0].value.Should().Be(0);
             test[1].value.Should().Be(1);
             test[2].value.Should().Be(2);
@@ -227,8 +228,11 @@ namespace FastMoq.Tests
         [Fact]
         public void AddMock()
         {
-            var mock = new Mock<IFileSystemInfo>();
-            mock.Name = "First";
+            var mock = new Mock<IFileSystemInfo>
+            {
+                Name = "First"
+            };
+
             Mocks.AddMock(mock, false).Should().Be(mock);
 
             Action a = () => Mocks.AddMock(mock, false);
@@ -240,12 +244,22 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void AddMockWithNull_ShouldThrow()
+        {
+            Action a = () => Mocks.AddMock(null, typeof(IFileSystem), false);
+            a.Should().Throw<ArgumentNullException>();
+
+            Action b = () => Mocks.AddMock(new Mock<IFileSystem>(), null, false);
+            b.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
         public void Create_WithMapTest1()
         {
             Action a = () => Mocks.CreateInstance<ITestClassDouble>();
             a.Should().Throw<AmbiguousImplementationException>();
 
-            Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble1));
+            Mocks.AddType<ITestClassDouble, TestClassDouble1>();
             var o = Mocks.CreateInstance<ITestClassDouble>();
             o.Should().BeOfType<TestClassDouble1>();
         }
@@ -256,12 +270,36 @@ namespace FastMoq.Tests
             Action a = () => Mocks.CreateInstance<ITestClassDouble>();
             a.Should().Throw<AmbiguousImplementationException>();
 
-            Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble2));
+            Mocks.AddType<ITestClassDouble, TestClassDouble2>();
             var o2 = Mocks.CreateInstance<ITestClassDouble>();
             o2.Should().BeOfType<TestClassDouble2>();
+            o2.Value.Should().Be(0);
 
-            Action b = () => Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble1));
+            Action b = () => Mocks.AddType<ITestClassDouble, TestClassDouble1>();
             b.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void Create_WithMapInstance()
+        {
+            // Create Random number.
+            var number = (double)RandomNumberGenerator.GetInt32(1, 100);
+
+            // Add Mock Mapping, demonstrating that the number doesn't get used until CreateInstance is called.
+            Mocks.AddType<ITestClassDouble, TestClassDouble2>(_ => new TestClassDouble2() { Value = number });
+
+            // Saving original number
+            var number2 = number;
+
+            // Changing number used by CreateInstance
+            number = 0.5;
+
+            // Get number from CreateInstance
+            var value = Mocks.CreateInstance<ITestClassDouble>().Value;
+
+            // Demonstrate that the latest number is used and not the original number.
+            value.Should().Be(number);
+            value.Should().NotBe(number2);
         }
 
         [Fact]
@@ -270,15 +308,15 @@ namespace FastMoq.Tests
             Action a = () => Mocks.CreateInstance<ITestClassDouble>();
             a.Should().Throw<AmbiguousImplementationException>();
 
-            Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble1));
-            Action b = () => Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble2));
+            Mocks.AddType<ITestClassDouble, TestClassDouble1>();
+            Action b = () => Mocks.AddType<ITestClassDouble, TestClassDouble2>();
             b.Should().Throw<ArgumentException>();
         }
 
 
-        private static Mocks CreateAction() => new Mocks();
+        private static Mocks CreateAction(Mocks mocks) => new();
 
-        private static void CreatedAction(Mocks? component) => new Mocks();
+        private static void CreatedAction(Mocks? component) => component.Should().NotBeNull();
 
         private static void SetupAction(Mocks mocks)
         {
