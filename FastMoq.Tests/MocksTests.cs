@@ -1,0 +1,289 @@
+using FluentAssertions;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
+using System.Runtime;
+using Xunit;
+
+namespace FastMoq.Tests
+{
+    public class MocksTests : TestBase<Mocks>
+    {
+        public MocksTests() : base(SetupAction, CreateAction, CreatedAction)
+        {
+        }
+
+        [Fact]
+        public void Contains_ShouldWork()
+        {
+            Mocks.Contains<IDirectory>().Should().BeTrue();
+            Mocks.Contains<IFileInfo>().Should().BeTrue();
+            Mocks.Contains<IFile>().Should().BeFalse();
+
+            Mocks.Contains(typeof(IDirectory)).Should().BeTrue();
+            Mocks.Contains(typeof(IFileInfo)).Should().BeTrue();
+            Mocks.Contains(typeof(IFile)).Should().BeFalse();
+        }
+
+        [Fact]
+        public void CreateMock_ShouldWork()
+        {
+            Mocks.CreateMock<IDirectoryInfo>().Should().NotBeNull();
+            Mocks.Contains<IDirectoryInfo>().Should().BeTrue();
+        }
+
+        [Fact]
+        public void CreateMock_ValueType_ShouldFail()
+        {
+            Action a = () => Mocks.CreateMock(typeof(int));
+            a.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void CreateMock_ShouldWorkAsParam()
+        {
+            Mocks.CreateMock(typeof(IDirectoryInfo)).Should().NotBeNull();
+            Mocks.Contains(typeof(IDirectoryInfo)).Should().BeTrue();
+        }
+
+        [Fact]
+        public void CreateMockDuplicate_ShouldThrowArgumentException()
+        {
+            var mock = Mocks.CreateMock<IDirectoryInfo>();
+            Action a = () => Mocks.CreateMock(typeof(IDirectoryInfo));
+            a.Should().Throw<ArgumentException>();
+
+            Action b = () => Mocks.CreateMock<IDirectoryInfo>();
+            b.Should().Throw<ArgumentException>();
+
+        }
+
+        [Fact]
+        public void CreateExact_WithMultiClass()
+        {
+            Mocks.CreateInstance<TestClassMany>(args: new object[] { 4 }).Should().NotBeNull();
+            Mocks.CreateInstance<TestClassMany>(args: new object[] { "str" }).Should().NotBeNull();
+            Mocks.CreateInstance<TestClassMany>(args: new object[] {4, "str"}).Should().NotBeNull();
+            Action a = () => Mocks.CreateInstance<TestClassMany>(args: new object[] {"4", "str"}).Should().NotBeNull();
+            a.Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
+        public void CreateBest()
+        {
+            Mocks.CreateInstance<TestClassNormal>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateBest_Should_ThrowAmbiguous()
+        {
+            Action a = () => Mocks.CreateInstance<TestClassMany>();
+            a.Should().Throw<AmbiguousImplementationException>();
+        }
+
+        [Fact]
+        public void CreateFromInterface_ManyMatches_ShouldThrow()
+        {
+            Action a = () => Mocks.CreateInstance<IFile>().Should().NotBeNull();
+            a.Should().Throw<AmbiguousImplementationException>();
+        }
+
+        [Fact]
+        public void CreateFromInterface_BestGuess()
+        {
+            Mocks.CreateInstance<ITestClassNormal>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void FileSystem_ShouldBeValid()
+        {
+            Mocks.fileSystem.Should().NotBeNull();
+            Mocks.fileSystem.Should().BeOfType(typeof(MockFileSystem));
+            Mocks.fileSystem.File.Should().NotBeNull();
+            Mocks.fileSystem.Directory.Should().NotBeNull();
+            Mocks.fileSystem.FileInfo.Should().NotBeNull();
+            Mocks.fileSystem.DirectoryInfo.Should().NotBeNull();
+            Mocks.fileSystem.Path.Should().NotBeNull();
+            Mocks.fileSystem.DriveInfo.Should().NotBeNull();
+            Mocks.fileSystem.FileStream.Should().NotBeNull();
+            Mocks.fileSystem.FileSystem.Should().NotBeNull();
+            Mocks.fileSystem.FileSystem.GetType().IsAssignableTo(typeof(IFileSystem)).Should().BeTrue();
+            Mocks.GetObject<IFileSystem>().Should().Be(Mocks.fileSystem.FileSystem);
+            Mocks.Strict = true;
+            Mocks.GetObject<IFileSystem>().Should().NotBe(Mocks.fileSystem.FileSystem);
+        }
+
+        [Fact]
+        public void GetRequiredMock()
+        {
+            Mocks.GetRequiredMock<IDirectory>().Should().NotBeNull();
+            Mocks.GetRequiredMock<IFileInfo>().Should().NotBeNull();
+            Action a = () => Mocks.GetRequiredMock<IFile>();
+            a.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void GetRequiredMockByTypeVariable()
+        {
+            Mocks.GetRequiredMock(typeof(IDirectory)).Should().NotBeNull();
+            Mocks.GetRequiredMock(typeof(IFileInfo)).Should().NotBeNull();
+            Action a = () => Mocks.GetRequiredMock(typeof(IFile));
+            a.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void GetTypeFromInterfaceWithNonInterface()
+        {
+            var type = Mocks.GetTypeFromInterface<TestClassNormal>();
+            type.Should().Be<TestClassNormal>();
+        }
+
+        [Fact]
+        public void GetRequiredMock_Null()
+        {
+            Action a = () => Mocks.GetRequiredMock(null);
+            a.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void GetRequiredMock_ValueType()
+        {
+            Action a = () => Mocks.GetRequiredMock(typeof(int));
+            a.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void GetMock()
+        {
+            Mocks.Contains<IFileInfo>().Should().BeTrue();
+            Mocks.Contains<IDirectoryInfo>().Should().BeFalse();
+            Mocks.GetMock(typeof(IFileInfo)).Should().BeOfType<Mock<IFileInfo>>();
+            Mocks.GetMock<IFileInfo>().Should().BeOfType<Mock<IFileInfo>>();
+            Mocks.GetMock(typeof(IDirectoryInfo)).Should().BeOfType<Mock<IDirectoryInfo>>();
+            Mocks.GetMock<IDirectoryInfo>().Should().BeOfType<Mock<IDirectoryInfo>>();
+        }
+
+        [Fact]
+        public void GetObject()
+        {
+            var a = Mocks.GetMock<IFileInfo>().Object;
+            a.Should().Be(Mocks.GetObject<IFileInfo>());
+            Mocks.GetMock<IFileInfo>().CallBase.Should().BeFalse();
+
+            var b = Mocks.GetObject<IDirectoryInfo>();
+            b.Should().Be(Mocks.GetMock<IDirectoryInfo>().Object);
+            Mocks.GetMock<IDirectoryInfo>().CallBase.Should().BeFalse();
+
+            var c = Mocks.GetObject<ITestClassNormal>();
+            c.Should().Be(Mocks.GetMock<ITestClassNormal>().Object);
+            Mocks.GetMock<ITestClassNormal>().CallBase.Should().BeFalse();
+
+            var d = Mocks.GetObject<TestClassNormal>();
+            d.Should().Be(Mocks.GetMock<TestClassNormal>().Object);
+            Mocks.GetMock<TestClassNormal>().CallBase.Should().BeTrue();
+
+            var e = Mocks.GetObject<ITestClassMany>();
+            e.Should().Be(Mocks.GetMock<ITestClassMany>().Object);
+            Mocks.GetMock<ITestClassMany>().CallBase.Should().BeFalse();
+
+            var f = Mocks.GetObject<TestClassMany>();
+            f.Should().Be(Mocks.GetMock<TestClassMany>().Object);
+            Mocks.GetMock<TestClassMany>().CallBase.Should().BeTrue();
+
+        }
+
+        [Fact]
+        public void GetList()
+        {
+            var count = 0;
+            var numbers = Mocks.GetList<int>(3, () => count++);
+            numbers.Should().BeEquivalentTo(new List<int> {0, 1, 2});
+
+            count = 0;
+            var strings = Mocks.GetList<string>(3, () => (count++).ToString());
+            strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2"});
+
+            count = 0;
+            var test = Mocks.GetList<TestClassMany>(3, () => new TestClassMany(count++));
+            test[0].value.Should().Be(0);
+            test[1].value.Should().Be(1);
+            test[2].value.Should().Be(2);
+        }
+
+        [Fact]
+        public void RemoveMock()
+        {
+            var mock = new Mock<IFileSystemInfo>();
+            Mocks.AddMock(mock, false);
+            Mocks.Contains<IFileSystemInfo>().Should().BeTrue();
+            Mocks.RemoveMock(mock).Should().BeTrue();
+            Mocks.Contains<IFileSystemInfo>().Should().BeFalse();
+            Mocks.RemoveMock(mock).Should().BeFalse();
+
+        }
+
+        [Fact]
+        public void AddMock()
+        {
+            var mock = new Mock<IFileSystemInfo>();
+            mock.Name = "First";
+            Mocks.AddMock(mock, false).Should().Be(mock);
+
+            Action a = () => Mocks.AddMock(mock, false);
+            a.Should().Throw<ArgumentException>();
+
+            mock.Name = "test";
+            Mocks.AddMock(mock, true).Should().Be(mock);
+
+        }
+
+        [Fact]
+        public void Create_WithMapTest1()
+        {
+            Action a = () => Mocks.CreateInstance<ITestClassDouble>();
+            a.Should().Throw<AmbiguousImplementationException>();
+
+            Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble1));
+            var o = Mocks.CreateInstance<ITestClassDouble>();
+            o.Should().BeOfType<TestClassDouble1>();
+        }
+
+        [Fact]
+        public void Create_WithMapTest2()
+        {
+            Action a = () => Mocks.CreateInstance<ITestClassDouble>();
+            a.Should().Throw<AmbiguousImplementationException>();
+
+            Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble2));
+            var o2 = Mocks.CreateInstance<ITestClassDouble>();
+            o2.Should().BeOfType<TestClassDouble2>();
+
+            Action b = () => Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble1));
+            b.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void Create_WithMapTest_CannotAddDuplicateMap()
+        {
+            Action a = () => Mocks.CreateInstance<ITestClassDouble>();
+            a.Should().Throw<AmbiguousImplementationException>();
+
+            Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble1));
+            Action b = () => Mocks.TypeMap.Add(typeof(ITestClassDouble), typeof(TestClassDouble2));
+            b.Should().Throw<ArgumentException>();
+        }
+
+
+        private static Mocks CreateAction() => new Mocks();
+
+        private static void CreatedAction(Mocks? component) => new Mocks();
+
+        private static void SetupAction(Mocks mocks)
+        {
+            mocks.Initialize<IDirectory>(mock => mock.SetupAllProperties());
+            mocks.Initialize<IFileInfo>(mock => mock.SetupAllProperties());
+        }
+    }
+}

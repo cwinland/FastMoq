@@ -1,0 +1,30 @@
+﻿namespace FastMoq.Tests
+{
+    public class TestClassMany : ITestClassMany
+    {
+        public object? value;
+        public TestClassMany()
+        {
+            value = null;
+        }
+
+        public TestClassMany(int x)
+        {
+            value = x;
+        }
+
+        public TestClassMany(string y)
+        {
+            value = y;
+        }
+
+        public TestClassMany(int x, string y)
+        {
+            value = $"{x} {y}";
+        }
+    }
+
+    public interface ITestClassMany
+    {
+    }
+}
