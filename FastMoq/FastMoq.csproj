@@ -11,7 +11,7 @@
     <Company>$(Authors)</Company>
     <Copyright>Copyright(c) 2022 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
-    <Description>Easy and fast extension of (from moqthis), mocking framework, for mocking and auto injection of classes.</Description>
+    <Description>Easy and fast extension of moq (from moqthis), mocking framework, for mocking and auto injection of classes.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
