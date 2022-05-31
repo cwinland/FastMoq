@@ -1,6 +1,6 @@
 # FastMoq
 
-Easy and fast extension of [Moq](https://github.com/Moq) Mocking framework for mocking and auto injection of classes.
+Easy and fast extension of [Moq](https://github.com/Moq), mocking framework, for mocking and auto injection of classes.
 
 ## Features
 
@@ -11,6 +11,7 @@ Easy and fast extension of [Moq](https://github.com/Moq) Mocking framework for m
 
 ## Targets
 
+- .NET Core 3.1
 - .NET 5
 - .NET 6
 
@@ -19,14 +20,14 @@ Easy and fast extension of [Moq](https://github.com/Moq) Mocking framework for m
 The following constructor parameters allow customization on the testing classes.
 
 ```cs
-Action<Mocks>? setupMocksAction
+Action<Mocks> setupMocksAction
 Func<TComponent> createComponentAction
 Action<TComponent?>? createdComponentAction
 ```
 
 ## Examples
 
-### Class being tested
+### Example Test Class
 
 Testing this class will auto inject IFileSystem.
 
@@ -41,7 +42,9 @@ public class TestClassNormal : ITestClassNormal
 }
 ```
 
-### Fast Start
+### Fast Start Testing
+
+TestClassNormal is created and injects IFileSystem.
 
 ```cs
 public class TestClassNormalTestsDefaultBase : TestBase<TestClassNormal>
@@ -58,6 +61,8 @@ public class TestClassNormalTestsDefaultBase : TestBase<TestClassNormal>
 ```
 
 ### Pre-Test Setup
+
+TestClassNormal is created and injects IFileSystem. SetupMocksAction creates and configures the Mock IFileSystem before the component is created.
 
 ```cs
 public class TestClassNormalTestsSetupBase : TestBase<TestClassNormal>
@@ -84,6 +89,8 @@ public class TestClassNormalTestsSetupBase : TestBase<TestClassNormal>
 ```
 
 ### Custom Setup, Creation, and Post Create routines
+
+TestClassNormal is created and injects IFileSystem. SetupMocksAction creates and configures the Mock IFileSystem before the component is created. Once created, the CreatedComponentAction subscribes to an event on the component.
 
 ```cs
 public class TestClassNormalTestsFull : TestBase<TestClassNormal>
@@ -120,18 +127,30 @@ public class TestClassNormalTestsFull : TestBase<TestClassNormal>
 }
 ```
 
-### Interface Type Map
+### Auto Injection
 
-A map is available to decide which class is injected for the given interface.
+Auto injection allows creation of components with parameterized interfaces. If an override for creating the component is not specified, the component will be created will the default Mock Objects.
 
-#### Two classes
+#### Auto Injection with instance parameters
+
+Additionally, the creation can be overwritten and provided with instances of the parameters. CreateInstance will automatically match the correct constructor to the parameters given to CreateInstance.
+
+```cs
+private static TestClassNormal CreateComponentAction() => Mocks.CreateInstance(new MockFileSystem()); // CreateInstance matches the parameters and types with the Component constructor.
+```
+
+#### Interface Type Map
+
+When multiple classes derive from the same interface, the Interface Type Map can map with class to use for the given injected interface.
+
+##### Example of two classes inheriting the same interface
 
 ```cs
 public class TestClassDouble1 : ITestClassDouble {}
 public class TestClassDouble2 : ITestClassDouble {}
 ```
 
-#### Mapping
+##### Mapping
 
 This code maps ITestClassDouble to TestClassDouble1 when testing a component with ITestClassDouble.
 
@@ -139,12 +158,10 @@ This code maps ITestClassDouble to TestClassDouble1 when testing a component wit
 Mocks.AddType<ITestClassDouble, TestClassDouble1>();
 ```
 
-### Auto injection
-
-Auto injection allows creation of components by selecting the constructor with the matching parameter types and data.
+The map also accepts parameters to tell it how to create the instance.
 
 ```cs
-private static TestClassNormal CreateComponentAction() => Mocks.CreateInstance(new MockFileSystem()); // CreateInstance matches the parameters and types with the Component constructor.
+Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
 ```
 
 ## [License - MIT](./License)

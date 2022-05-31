@@ -324,14 +324,11 @@ namespace FastMoq
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public bool RemoveMock<T>(Mock<T> mock) where T : class
         {
-            var mockModel = mockCollection.FirstOrDefault(x => x.Type == typeof(T) && x.Mock == mock);
-
+            var mockModel = GetMockModel(typeof(T), mock);
             return mockModel != null && mockCollection.Remove(mockModel);
         }
 
-        internal int GetMockModelIndexOf(Type type) => mockCollection.IndexOf(GetMockModel(type));
-        internal MockModel GetMockModel(Type type, Mock? mock = null) => mockCollection.FirstOrDefault(x => x.Type == type && (x.Mock == mock || mock == null));
-        internal MockModel GetMockModel<T>(Mock<T>? mock = null) where T : class => GetMockModel(typeof(T), mock);
+        internal MockModel? GetMockModel(Type type, Mock? mock = null) => mockCollection.FirstOrDefault(x => x.Type == type && (x.Mock == mock || mock == null));
 
         /// <summary>
         /// Add specified Mock. Internal API only.
@@ -360,7 +357,7 @@ namespace FastMoq
                     ThrowAlreadyExists(mock.GetType());
                 }
 
-                var mockModel = GetMockModel(type);
+                var mockModel = GetMockModel(type) ?? new MockModel(type, mock);
                 mockModel.Mock = mock;
                 return GetMock(type);
             }
@@ -371,7 +368,7 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Finds the constructor matching args EXACTLY.
+        ///     Finds the constructor matching args EXACTLY with the same sequence and type.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments.</param>
@@ -382,7 +379,10 @@ namespace FastMoq
             Dictionary<ConstructorInfo, List<object?>> allConstructors = GetConstructors(type, args);
 
             List<KeyValuePair<ConstructorInfo, List<object?>>> constructors = allConstructors
-                .Where(x => x.Value.Select(z => z?.GetType()).SequenceEqual(args.Select(y => y?.GetType()))).ToList();
+                .Where(x => x.Value
+                    .Select(z => z?.GetType())
+                    .SequenceEqual(args.Select(y => y?.GetType())))
+                .ToList();
 
             return !constructors.Any()
                 ? throw new NotImplementedException("Unable to find the constructor.")
@@ -390,7 +390,7 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Finds the constructor.
+        ///     Finds the constructor and chooses the one with the parameters, if it exists.
         /// </summary>
         /// <param name="bestGuess">if set to <c>true</c> [best guess].</param>
         /// <param name="type">The type.</param>
@@ -457,7 +457,7 @@ namespace FastMoq
             List<Type> possibleTypes = types.Where(type =>
                 type.GetInterfaces().Contains(tType) &&
                 interfaces.All(iType => type != iType) &&
-                !interfaces.Any(type.IsAssignableTo)
+                !interfaces.Any(iType => iType.IsAssignableFrom(type))
             ).ToList();
 
             return new InstanceModel(possibleTypes.Count > 1 ? throw new AmbiguousImplementationException() :
@@ -490,7 +490,7 @@ namespace FastMoq
             {
                 var paramType = paramList[i].ParameterType;
                 var instanceType = instanceParameterValues[i]?.GetType();
-                isValid &= (instanceType == null && paramType.IsNullableType()) || (instanceType != null && instanceType.IsAssignableTo(paramType));
+                isValid &= (instanceType == null && paramType.IsNullableType()) || (instanceType != null && paramType.IsAssignableFrom(instanceType));
             }
 
             return isValid;

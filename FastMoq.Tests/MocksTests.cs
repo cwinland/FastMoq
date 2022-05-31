@@ -112,7 +112,8 @@ namespace FastMoq.Tests
             Mocks.fileSystem.DriveInfo.Should().NotBeNull();
             Mocks.fileSystem.FileStream.Should().NotBeNull();
             Mocks.fileSystem.FileSystem.Should().NotBeNull();
-            Mocks.fileSystem.FileSystem.GetType().IsAssignableTo(typeof(IFileSystem)).Should().BeTrue();
+            typeof(IFileSystem).IsAssignableFrom(Mocks.fileSystem.FileSystem.GetType()).Should().BeTrue();
+//            Mocks.fileSystem.FileSystem.GetType().IsAssignableTo(typeof(IFileSystem)).Should().BeTrue();
             Mocks.GetObject<IFileSystem>().Should().Be(Mocks.fileSystem.FileSystem);
             Mocks.Strict = true;
             Mocks.GetObject<IFileSystem>().Should().NotBe(Mocks.fileSystem.FileSystem);
@@ -389,6 +390,20 @@ namespace FastMoq.Tests
             var constructor = Mocks.FindConstructor(true, typeof(TestClassNormal));
             var isValid = Mocks.IsValidConstructor(constructor.Key, data);
             isValid.Should().Be(expected);
+        }
+
+        [Fact]
+        public void FindConstructor_Missing_ShouldThrow()
+        {
+            Action a = () => Mocks.FindConstructor(typeof(TestClassMany), Mocks.GetObject<IFileSystem>());
+            a.Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
+        public void FindConstructor_Exact()
+        {
+            var m = Mocks.FindConstructor(typeof(TestClassMany), 4, "");
+            m.Should().NotBeNull();
         }
 
         [Fact]
