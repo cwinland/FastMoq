@@ -490,13 +490,14 @@ namespace FastMoq
             {
                 var paramType = paramList[i].ParameterType;
                 var instanceType = instanceParameterValues[i]?.GetType();
-                isValid &= (instanceType == null && paramType.IsNullableType()) || (instanceType != null && paramType.IsAssignableFrom(instanceType));
+                isValid &= (instanceType == null && IsNullableType(paramType)) || (instanceType != null && paramType.IsAssignableFrom(instanceType));
             }
 
             return isValid;
 
         }
 
+        internal static bool IsNullableType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof (Nullable<>);
         internal static bool IsMockFileSystem<T>(bool usePredefinedFileSystem) => usePredefinedFileSystem && (typeof(T) == typeof(IFileSystem) || typeof(T) == typeof(FileSystem));
         internal static void ThrowAlreadyExists(Type type) => throw new ArgumentException($"{type} already exists.");
     }
