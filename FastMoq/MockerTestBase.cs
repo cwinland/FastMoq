@@ -4,17 +4,17 @@ namespace FastMoq
     ///     Class TestBase.
     /// </summary>
     /// <typeparam name="TComponent">The type of the t component.</typeparam>
-    public abstract class TestBase<TComponent> where TComponent : class
+    public abstract class MockerTestBase<TComponent> where TComponent : class
     {
         #region Properties
 
-        private Func<Mocks, TComponent> DefaultCreateAction => _ => Component = Mocks.CreateInstance<TComponent>();
+        private Func<Mocker, TComponent?> DefaultCreateAction => _ => Component = Mocks.CreateInstance<TComponent>();
 
         /// <summary>
         ///     Gets the mocks.
         /// </summary>
         /// <value>The mocks.</value>
-        protected Mocks Mocks { get; } = new();
+        protected Mocker Mocks { get; } = new();
 
         /// <summary>
         ///     Gets or sets the service.
@@ -28,7 +28,7 @@ namespace FastMoq
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:FastMoq.TestBase`1" /> class with the default createAction.
         /// </summary>
-        protected TestBase() : this(null, null, null)
+        protected MockerTestBase() : this(null, null, null)
         {
         }
 
@@ -37,7 +37,7 @@ namespace FastMoq
         ///     Initializes a new instance of the <see cref="T:FastMoq.TestBase`1" /> class with a setup action.
         /// </summary>
         /// <param name="setupMocksAction">The setup mocks action.</param>
-        protected TestBase(Action<Mocks> setupMocksAction) : this(setupMocksAction, null)
+        protected MockerTestBase(Action<Mocker> setupMocksAction) : this(setupMocksAction, null)
         {
         }
 
@@ -48,7 +48,7 @@ namespace FastMoq
         /// </summary>
         /// <param name="createComponentAction">The create component action.</param>
         /// <param name="createdComponentAction">The created component action.</param>
-        protected TestBase(Func<Mocks, TComponent> createComponentAction, Action<TComponent?>? createdComponentAction = null) : this(
+        protected MockerTestBase(Func<Mocker, TComponent> createComponentAction, Action<TComponent?>? createdComponentAction = null) : this(
             null,
             createComponentAction,
             createdComponentAction
@@ -57,12 +57,12 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="TestBase{TComponent}" /> class.
+        ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class.
         /// </summary>
         /// <param name="setupMocksAction">The setup mocks action.</param>
         /// <param name="createComponentAction">The create component action.</param>
         /// <param name="createdComponentAction">The created component action.</param>
-        protected TestBase(Action<Mocks>? setupMocksAction, Func<Mocks, TComponent>? createComponentAction,
+        protected MockerTestBase(Action<Mocker>? setupMocksAction, Func<Mocker, TComponent?>? createComponentAction,
             Action<TComponent?>? createdComponentAction = null)
         {
             createComponentAction ??= DefaultCreateAction;

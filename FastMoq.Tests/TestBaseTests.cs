@@ -1,10 +1,12 @@
 ﻿using FluentAssertions;
 using System;
 using Xunit;
+#pragma warning disable CS8604
+#pragma warning disable CS8602
 
 namespace FastMoq.Tests
 {
-    public class TestBaseTests : TestBase<TestClass>
+    public class TestBaseTests : MockerTestBase<TestClass>
     {
         [Fact]
         public void GetMember()

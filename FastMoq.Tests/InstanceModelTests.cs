@@ -1,12 +1,13 @@
 ﻿using FluentAssertions;
-using Moq;
 using System;
 using System.IO.Abstractions;
 using Xunit;
+#pragma warning disable CS8602
+#pragma warning disable CS8625
 
 namespace FastMoq.Tests
 {
-    public class InstanceModelTests : TestBase<InstanceModel<IFileSystem>>
+    public class InstanceModelTests : MockerTestBase<InstanceModel<IFileSystem>>
     {
         public InstanceModelTests() : base(mocks => new InstanceModel<IFileSystem>(mocks1 => new FileSystem()))
         {

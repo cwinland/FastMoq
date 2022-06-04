@@ -5,11 +5,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
-using System.Reflection;
 using System.Runtime;
 using System.Security.Cryptography;
 using Xunit;
-
+#pragma warning disable CS8604
 #pragma warning disable CS8602
 #pragma warning disable CS8625
 
@@ -18,7 +17,7 @@ namespace FastMoq.Tests
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
     [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
     [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
-    public class MocksTests : TestBase<Mocks>
+    public class MocksTests : MockerTestBase<Mocker>
     {
         public MocksTests() : base(SetupAction, CreateAction, CreatedAction)
         {
@@ -202,15 +201,15 @@ namespace FastMoq.Tests
         public void GetList()
         {
             var count = 0;
-            var numbers = Mocks.GetList(3, () => count++);
+            var numbers = Mocker.GetList(3, () => count++);
             numbers.Should().BeEquivalentTo(new List<int> {0, 1, 2});
 
             count = 0;
-            var strings = Mocks.GetList(3, () => (count++).ToString());
+            var strings = Mocker.GetList(3, () => (count++).ToString());
             strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2"});
 
             count = 0;
-            var test = Mocks.GetList(3, () => new TestClassMany(count++));
+            var test = Mocker.GetList(3, () => new TestClassMany(count++));
             test[0].value.Should().Be(0);
             test[1].value.Should().Be(1);
             test[2].value.Should().Be(2);
@@ -225,7 +224,6 @@ namespace FastMoq.Tests
             Mocks.RemoveMock(mock).Should().BeTrue();
             Mocks.Contains<IFileSystemInfo>().Should().BeFalse();
             Mocks.RemoveMock(mock).Should().BeFalse();
-
         }
 
         [Fact]
@@ -237,8 +235,9 @@ namespace FastMoq.Tests
             };
 
             var mockResult = Mocks.AddMock(mock, false);
-            mockResult.Should().Be(mock);
-            mockResult.Name.Should().Be("First");
+            var mockModel = Mocks.GetMockModel<IFileSystemInfo>();
+            mockResult.Mock.Should().Be(mockModel.Mock);
+            mockModel.Mock.Name.Should().Be("First");
         }
 
         [Fact]
@@ -249,7 +248,7 @@ namespace FastMoq.Tests
                 Name = "First"
             };
 
-            Mocks.AddMock(mock, false).Should().Be(mock);
+            Mocks.AddMock(mock, false).Mock.Should().Be(mock);
 
             Action a = () => Mocks.AddMock(mock, false);
             a.Should().Throw<ArgumentException>();
@@ -263,12 +262,12 @@ namespace FastMoq.Tests
                 Name = "First"
             };
 
-            var mock1 = Mocks.AddMock(mock, false);
+            var mock1 = Mocks.AddMock(mock, false).Mock as Mock<IFileSystemInfo>;
             mock1.Should().Be(mock);
             mock1.Name.Should().Be("First");
 
             mock.Name = "test";
-            var mock2 = Mocks.AddMock(mock, true);
+            var mock2 = Mocks.AddMock(mock, true).Mock as Mock<IFileSystemInfo>;
             mock2.Should().Be(mock);
             mock2.Name.Should().Be("test");
 
@@ -381,14 +380,14 @@ namespace FastMoq.Tests
         private void CheckConstructorByArgs(object data, bool expected = true)
         {
             var constructor = Mocks.FindConstructor(typeof(TestClassNormal), data);
-            var isValid = Mocks.IsValidConstructor(constructor.Key, data);
+            var isValid = Mocker.IsValidConstructor(constructor.Key, data);
             isValid.Should().Be(expected);
         }
 
         private void CheckBestConstructor(object data, bool expected = true)
         {
             var constructor = Mocks.FindConstructor(true, typeof(TestClassNormal));
-            var isValid = Mocks.IsValidConstructor(constructor.Key, data);
+            var isValid = Mocker.IsValidConstructor(constructor.Key, data);
             isValid.Should().Be(expected);
         }
 
@@ -410,21 +409,21 @@ namespace FastMoq.Tests
         public void IsValidConstructor()
         {
             var constructor = Mocks.FindConstructor(typeof(TestClassNormal), Mocks.GetObject<IFileSystem>());
-            var isValid = Mocks.IsValidConstructor(constructor.Key, Mocks.GetObject<IFileSystem>());
+            var isValid = Mocker.IsValidConstructor(constructor.Key, Mocks.GetObject<IFileSystem>());
             isValid.Should().BeTrue();
 
-            isValid = Mocks.IsValidConstructor(constructor.Key, Mocks.GetObject<IFileSystem>(), 12);
+            isValid = Mocker.IsValidConstructor(constructor.Key, Mocks.GetObject<IFileSystem>(), 12);
             isValid.Should().BeFalse();
 
-            isValid = Mocks.IsValidConstructor(constructor.Key, 12);
+            isValid = Mocker.IsValidConstructor(constructor.Key, 12);
             isValid.Should().BeFalse();
         }
 
-        private static Mocks CreateAction(Mocks mocks) => new();
+        private static Mocker CreateAction(Mocker mocks) => new();
 
-        private static void CreatedAction(Mocks? component) => component.Should().NotBeNull();
+        private static void CreatedAction(Mocker? component) => component.Should().NotBeNull();
 
-        private static void SetupAction(Mocks mocks)
+        private static void SetupAction(Mocker mocks)
         {
             mocks.Initialize<IDirectory>(mock => mock.SetupAllProperties());
             mocks.Initialize<IFileInfo>(mock => mock.SetupAllProperties());

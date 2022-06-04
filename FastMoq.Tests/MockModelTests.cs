@@ -3,10 +3,12 @@ using Moq;
 using System;
 using System.IO.Abstractions;
 using Xunit;
+#pragma warning disable CS8602
+#pragma warning disable CS8625
 
 namespace FastMoq.Tests
 {
-    public class MockModelTests : TestBase<MockModel>
+    public class MockModelTests : MockerTestBase<MockModel>
     {
         public MockModelTests() : base(mocks => new MockModel(typeof(IFileSystem), new Mock<IFileSystem>()))
         {

@@ -1,18 +1,15 @@
 ﻿using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace FastMoq.Tests
 {
     public class NestedClassTests
     {
-        private Mocks mocks;
+        private Mocker mocks;
 
         public NestedClassTests()
         {
-            mocks = new Mocks();
+            mocks = new Mocker();
         }
 
         [Fact]

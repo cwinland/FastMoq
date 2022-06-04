@@ -1,6 +1,6 @@
 # FastMoq
 
-Easy and fast extension of [Moq](https://github.com/Moq), mocking framework, for mocking and auto injection of classes.
+Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework for mocking and auto injection of classes.
 
 ## Features
 
@@ -15,15 +15,15 @@ Easy and fast extension of [Moq](https://github.com/Moq), mocking framework, for
 - .NET 5
 - .NET 6
 
-## Test Base Constructor Parameters
-
-The following constructor parameters allow customization on the testing classes.
+## Available Objects in the FastMoq namespace
 
 ```cs
-Action<Mocks> setupMocksAction
-Func<TComponent> createComponentAction
-Action<TComponent?>? createdComponentAction
+public class Mocker {}
+public abstract class MockerTestBase<TComponent> where TComponent : class {}
 ```
+
+- Mocker is the primary class for auto mock and injection. This can be used standalone from MockerTestBase.
+- MockerTestBase assists in the creation of objects and provides direct access to Mocker.
 
 ## Examples
 
@@ -47,7 +47,7 @@ public class TestClassNormal : ITestClassNormal
 TestClassNormal is created and injects IFileSystem.
 
 ```cs
-public class TestClassNormalTestsDefaultBase : TestBase<TestClassNormal>
+public class TestClassNormalTestsDefaultBase : MockerTestBase<TestClassNormal>
 {
     [Fact]
     public void Test1()
@@ -65,11 +65,11 @@ public class TestClassNormalTestsDefaultBase : TestBase<TestClassNormal>
 TestClassNormal is created and injects IFileSystem. SetupMocksAction creates and configures the Mock IFileSystem before the component is created.
 
 ```cs
-public class TestClassNormalTestsSetupBase : TestBase<TestClassNormal>
+public class TestClassNormalTestsSetupBase : MockerTestBase<TestClassNormal>
 {
     public TestClassNormalTestsSetupBase() : base(SetupMocksAction) { }
 
-    private static void SetupMocksAction(Mocks mocks)
+    private static void SetupMocksAction(Mocker mocks)
     {
         var iFile = new FileSystem().File;
         mocks.Strict = true;
@@ -93,14 +93,14 @@ public class TestClassNormalTestsSetupBase : TestBase<TestClassNormal>
 TestClassNormal is created and injects IFileSystem. SetupMocksAction creates and configures the Mock IFileSystem before the component is created. Once created, the CreatedComponentAction subscribes to an event on the component.
 
 ```cs
-public class TestClassNormalTestsFull : TestBase<TestClassNormal>
+public class TestClassNormalTestsFull : MockerTestBase<TestClassNormal>
 {
     private static bool testEventCalled;
     public TestClassNormalTestsFull() : base(SetupMocksAction, CreateComponentAction, CreatedComponentAction) => testEventCalled = false;
     private static void CreatedComponentAction(TestClassNormal? obj) => obj.TestEvent += (_, _) => testEventCalled = true;
-    private static TestClassNormal CreateComponentAction(Mocks mocks) => new(mocks.GetObject<IFileSystem>());
+    private static TestClassNormal CreateComponentAction(Mocker mocks) => new(mocks.GetObject<IFileSystem>());
 
-    private static void SetupMocksAction(Mocks mocks)
+    private static void SetupMocksAction(Mocker mocks)
     {
         var mock = new Mock<IFileSystem>();
         var iFile = new FileSystem().File;
@@ -112,7 +112,7 @@ public class TestClassNormalTestsFull : TestBase<TestClassNormal>
     [Fact]
     public void Test1()
     {
-        Component.FileSystem.Should().Be(Mocks.GetMock<IFileSystem>().Object);
+        Component.FileSystem.Should().Be(Mocker.GetMock<IFileSystem>().Object);
         Component.FileSystem.Should().NotBeNull();
         Component.FileSystem.File.Should().NotBeNull();
         Component.FileSystem.Directory.Should().BeNull();
@@ -120,7 +120,7 @@ public class TestClassNormalTestsFull : TestBase<TestClassNormal>
         Component.CallTestEvent();
         testEventCalled.Should().BeTrue();
 
-        Mocks.Initialize<IFileSystem>(mock => mock.Setup(x => x.Directory).Returns(new FileSystem().Directory));
+        Mocker.Initialize<IFileSystem>(mock => mock.Setup(x => x.Directory).Returns(new FileSystem().Directory));
         Component.FileSystem.Directory.Should().NotBeNull();
 
     }
@@ -155,13 +155,19 @@ public class TestClassDouble2 : ITestClassDouble {}
 This code maps ITestClassDouble to TestClassDouble1 when testing a component with ITestClassDouble.
 
 ```cs
-Mocks.AddType<ITestClassDouble, TestClassDouble1>();
+Mocker.AddType<ITestClassDouble, TestClassDouble1>();
 ```
+
+
 
 The map also accepts parameters to tell it how to create the instance.
 
 ```cs
 Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
 ```
+
+## Breaking Change
+
+1.22.604 => Renamed Mocks to Mocker, Renamed TestBase to MockerTestBase. 
 
 ## [License - MIT](./License)

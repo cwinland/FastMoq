@@ -15,9 +15,9 @@
         /// Gets or sets the create function.
         /// </summary>
         /// <value>The create function.</value>
-        public new Func<Mocks, TClass>? CreateFunc
+        public new Func<Mocker, TClass>? CreateFunc
         {
-            get => (Func<Mocks, TClass>?) base.CreateFunc;
+            get => (Func<Mocker, TClass>?) base.CreateFunc;
             set => base.CreateFunc = value;
         }
 
@@ -35,7 +35,7 @@
         ///     Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
         /// </summary>
         /// <param name="createFunc">The create function.</param>
-        public InstanceModel(Func<Mocks, TClass>? createFunc) : this() => CreateFunc = createFunc;
+        public InstanceModel(Func<Mocker, TClass>? createFunc) : this() => CreateFunc = createFunc;
     }
 
     /// <summary>
@@ -57,7 +57,7 @@
         /// Gets or sets the create function.
         /// </summary>
         /// <value>The create function.</value>
-        public Func<Mocks, object>? CreateFunc { get; internal set; }
+        public Func<Mocker, object>? CreateFunc { get; internal set; }
 
         #endregion
 

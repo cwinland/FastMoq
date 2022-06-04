@@ -2,6 +2,23 @@
 
 namespace FastMoq
 {
+    public class MockModel<T> : MockModel where T : class
+    {
+        public new Mock<T> Mock
+        {
+            get => (Mock<T>)base.Mock;
+            set => base.Mock = value;
+        }
+
+        internal MockModel(Mock mock) : base(typeof(T), mock)
+        {
+        }
+
+        internal MockModel(MockModel mockModel) : base(mockModel.Type, mockModel.Mock)
+        {
+        }
+    }
+
     /// <summary>
     /// Class MockModel.
     /// </summary>

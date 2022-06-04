@@ -1,6 +1,5 @@
 using FluentAssertions;
 using Moq;
-using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using Xunit;
@@ -9,10 +8,7 @@ using Xunit;
 
 namespace FastMoq.TestingExample
 {
-    [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-    [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
-    [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
-    public class TestClassNormalTestsDefaultBase : TestBase<TestClassNormal>
+    public class TestClassNormalTestsDefaultBase : MockerTestBase<TestClassNormal>
     {
         [Fact]
         public void Test1()
@@ -24,23 +20,19 @@ namespace FastMoq.TestingExample
         }
     }
 
-    [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-    [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
-    [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
-    public class TestClassNormalTestsSetupBase : TestBase<TestClassNormal>
+    public class TestClassNormalTestsSetupBase : MockerTestBase<TestClassNormal>
     {
         public TestClassNormalTestsSetupBase() : base(SetupMocksAction) { }
 
-        private static void SetupMocksAction(Mocks mocks)
+        private static void SetupMocksAction(Mocker mocks)
         {
             var iFile = new FileSystem().File;
-            mocks.Strict = true;
-
+            mocks.Strict = true; // Indicates to use an empty mock instead of predefined IFileSystem (FileSystemMock).
             mocks.Initialize<IFileSystem>(mock => mock.Setup(x => x.File).Returns(iFile));
         }
 
         [Fact]
-        public void Test1()
+        public void TestStrict()
         {
             Component.FileSystem.Should().NotBeNull();
             Component.FileSystem.Should().NotBeOfType<MockFileSystem>();
@@ -49,21 +41,18 @@ namespace FastMoq.TestingExample
         }
     }
 
-    [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-    [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
-    [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
-    public class TestClassNormalTestsFull : TestBase<TestClassNormal>
+    public class TestClassNormalTestsFull : MockerTestBase<TestClassNormal>
     {
         private static bool testEventCalled;
         public TestClassNormalTestsFull() : base(SetupMocksAction, CreateComponentAction, CreatedComponentAction) => testEventCalled = false;
         private static void CreatedComponentAction(TestClassNormal? obj) => obj.TestEvent += (_, _) => testEventCalled = true;
-        private static TestClassNormal CreateComponentAction(Mocks mocks) => new(mocks.GetObject<IFileSystem>());
+        private static TestClassNormal CreateComponentAction(Mocker mocks) => new(mocks.GetObject<IFileSystem>());
 
-        private static void SetupMocksAction(Mocks mocks)
+        private static void SetupMocksAction(Mocker mocks)
         {
             var mock = new Mock<IFileSystem>();
             var iFile = new FileSystem().File;
-            mocks.Strict = true;
+            mocks.Strict = true; // Indicates to use an empty mock instead of predefined IFileSystem (FileSystemMock).
             mocks.AddMock(mock, true);
             mocks.Initialize<IFileSystem>(xMock => xMock.Setup(x => x.File).Returns(iFile));
         }
