@@ -2,6 +2,7 @@
 using System;
 using System.IO.Abstractions;
 using Xunit;
+
 #pragma warning disable CS8602
 #pragma warning disable CS8625
 
@@ -9,9 +10,7 @@ namespace FastMoq.Tests
 {
     public class InstanceModelTests : MockerTestBase<InstanceModel<IFileSystem>>
     {
-        public InstanceModelTests() : base(mocks => new InstanceModel<IFileSystem>(mocks1 => new FileSystem()))
-        {
-        }
+        public InstanceModelTests() : base(mocks => new InstanceModel<IFileSystem>(mocks1 => new FileSystem())) { }
 
         [Fact]
         public void Create()
@@ -24,7 +23,7 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateNullType()
         {
-            Action a = () => new InstanceModel(null) { CreateFunc = mocks1 => new FileSystem()};
+            Action a = () => _ = new InstanceModel(null) { CreateFunc = mocks1 => new FileSystem() };
             a.Should().Throw<ArgumentNullException>();
 
             var im = new InstanceModel<IFileSystem>(null);

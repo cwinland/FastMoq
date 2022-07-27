@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM.
 
 [assembly: Guid("277bd072-dce5-4e83-a729-52a7ec910642")]
-[assembly:InternalsVisibleTo("FastMoq.Tests")]
+[assembly: InternalsVisibleTo("FastMoq.Tests")]

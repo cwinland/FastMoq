@@ -3,6 +3,7 @@ using Moq;
 using System;
 using System.IO.Abstractions;
 using Xunit;
+
 #pragma warning disable CS8602
 #pragma warning disable CS8625
 
@@ -10,9 +11,7 @@ namespace FastMoq.Tests
 {
     public class MockModelTests : MockerTestBase<MockModel>
     {
-        public MockModelTests() : base(mocks => new MockModel(typeof(IFileSystem), new Mock<IFileSystem>()))
-        {
-        }
+        public MockModelTests() : base(mocks => new MockModel(typeof(IFileSystem), new Mock<IFileSystem>())) { }
 
         [Fact]
         public void Create()
@@ -25,10 +24,10 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateNullType()
         {
-            Action a = () => new MockModel(null, new Mock<IFileSystem>());
+            Action a = () => _ = new MockModel(null, new Mock<IFileSystem>());
             a.Should().Throw<ArgumentNullException>();
 
-            Action b = () => new MockModel(typeof(IFileSystem), null);
+            Action b = () => _ = new MockModel(typeof(IFileSystem), null);
             b.Should().Throw<ArgumentNullException>();
         }
     }

@@ -8,6 +8,7 @@ using System.IO.Abstractions.TestingHelpers;
 using System.Runtime;
 using System.Security.Cryptography;
 using Xunit;
+
 #pragma warning disable CS8604
 #pragma warning disable CS8602
 #pragma warning disable CS8625
@@ -19,8 +20,76 @@ namespace FastMoq.Tests
     [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
     public class MocksTests : MockerTestBase<Mocker>
     {
-        public MocksTests() : base(SetupAction, CreateAction, CreatedAction)
+        public MocksTests() : base(SetupAction, CreateAction, CreatedAction) { }
+
+        [Fact]
+        public void AddMock()
         {
+            var mock = new Mock<IFileSystemInfo>
+            {
+                Name = "First"
+            };
+
+            var mockResult = Mocks.AddMock(mock, false);
+            var mockModel = Mocks.GetMockModel<IFileSystemInfo>();
+            mockResult.Mock.Should().Be(mockModel.Mock);
+            mockModel.Mock.Name.Should().Be("First");
+        }
+
+        [Fact]
+        public void AddMockDuplicateWithoutOverwrite_ShouldThrowArgumentException()
+        {
+            var mock = new Mock<IFileSystemInfo>
+            {
+                Name = "First"
+            };
+
+            Mocks.AddMock(mock, false).Mock.Should().Be(mock);
+
+            Action a = () => Mocks.AddMock(mock, false);
+            a.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void AddMockDuplicateWithOverwrite_ShouldSucceed()
+        {
+            var mock = new Mock<IFileSystemInfo>
+            {
+                Name = "First"
+            };
+
+            var mock1 = Mocks.AddMock(mock, false).Mock;
+            mock1.Should().Be(mock);
+            mock1.Name.Should().Be("First");
+
+            mock.Name = "test";
+            var mock2 = Mocks.AddMock(mock, true).Mock;
+            mock2.Should().Be(mock);
+            mock2.Name.Should().Be("test");
+        }
+
+        [Fact]
+        public void AddMockWithNull_ShouldThrow()
+        {
+            Action a = () => Mocks.AddMock(null, typeof(IFileSystem));
+            a.Should().Throw<ArgumentNullException>();
+
+            Action b = () => Mocks.AddMock(new Mock<IFileSystem>(), null);
+            b.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void AddTypeBothSameClass()
+        {
+            var a = () => Mocks.AddType<TestClassDouble1, TestClassDouble1>();
+            a.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void AddTypeNotInterface()
+        {
+            var a = () => Mocks.AddType<TestClassDouble2, TestClassDouble1>();
+            a.Should().Throw<ArgumentException>();
         }
 
         [Fact]
@@ -36,6 +105,106 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void Create_WithMapInstance()
+        {
+            // Create Random number.
+            var number = (double) RandomNumberGenerator.GetInt32(1, 100);
+
+            // Add Mock Mapping, demonstrating that the number doesn't get used until CreateInstance is called.
+            Mocks.AddType<ITestClassDouble, TestClassDouble2>(_ => new TestClassDouble2
+                { Value = number });
+
+            // Saving original number
+            var number2 = number;
+
+            // Changing number used by CreateInstance
+            number = 0.5;
+
+            // Get number from CreateInstance
+            var value = Mocks.CreateInstance<ITestClassDouble>().Value;
+
+            // Demonstrate that the latest number is used and not the original number.
+            value.Should().Be(number);
+            value.Should().NotBe(number2);
+        }
+
+        [Fact]
+        public void Create_WithMapTest_CannotAddDuplicateMap()
+        {
+            Action a = () => Mocks.CreateInstance<ITestClassDouble>();
+            a.Should().Throw<AmbiguousImplementationException>();
+
+            Mocks.AddType<ITestClassDouble, TestClassDouble1>();
+            var b = () => Mocks.AddType<ITestClassDouble, TestClassDouble2>();
+            b.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void Create_WithMapTest1()
+        {
+            Action a = () => Mocks.CreateInstance<ITestClassDouble>();
+            a.Should().Throw<AmbiguousImplementationException>();
+
+            Mocks.AddType<ITestClassDouble, TestClassDouble1>();
+            var o = Mocks.CreateInstance<ITestClassDouble>();
+            o.Should().BeOfType<TestClassDouble1>();
+        }
+
+        [Fact]
+        public void Create_WithMapTest2()
+        {
+            Action a = () => Mocks.CreateInstance<ITestClassDouble>();
+            a.Should().Throw<AmbiguousImplementationException>();
+
+            Mocks.AddType<ITestClassDouble, TestClassDouble2>();
+            var o2 = Mocks.CreateInstance<ITestClassDouble>();
+            o2.Should().BeOfType<TestClassDouble2>();
+            o2.Value.Should().Be(0);
+
+            var b = () => Mocks.AddType<ITestClassDouble, TestClassDouble1>();
+            b.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void Create_WithNulls()
+        {
+            Mocks.CreateInstance<TestClassMany>(true, 4, null);
+            Mocks.CreateInstance<TestClassNormal>(true, null);
+            Action a = () => Mocks.CreateInstance<TestClassMany>(true, null, "str");
+            a.Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
+        public void CreateBest() => Mocks.CreateInstance<TestClassNormal>().Should().NotBeNull();
+
+        [Fact]
+        public void CreateBest_Should_ThrowAmbiguous()
+        {
+            Action a = () => Mocks.CreateInstance<TestClassMany>();
+            a.Should().Throw<AmbiguousImplementationException>();
+        }
+
+        [Fact]
+        public void CreateExact_WithMultiClass()
+        {
+            Mocks.CreateInstance<TestClassMany>(4).Should().NotBeNull();
+            Mocks.CreateInstance<TestClassMany>("str").Should().NotBeNull();
+            Mocks.CreateInstance<TestClassMany>(true, 4, "str").Should().NotBeNull();
+            Action a = () => Mocks.CreateInstance<TestClassMany>("4", "str").Should().NotBeNull();
+            a.Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
+        public void CreateFromInterface_BestGuess() => Mocks.CreateInstance<ITestClassNormal>().Should().NotBeNull();
+
+        [Fact]
+        public void CreateFromInterface_ManyMatches_ShouldThrow()
+        {
+            Action a = () => Mocks.CreateInstance<IFile>().Should().NotBeNull();
+            a.Should().Throw<AmbiguousImplementationException>();
+        }
+
+        [Fact]
         public void CreateMock_ShouldWork()
         {
             Mocks.CreateMock<IDirectoryInfo>().Should().NotBeNull();
@@ -43,17 +212,17 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateMock_ValueType_ShouldFail()
-        {
-            Action a = () => Mocks.CreateMock(typeof(int));
-            a.Should().Throw<ArgumentException>();
-        }
-
-        [Fact]
         public void CreateMock_ShouldWorkAsParam()
         {
             Mocks.CreateMock(typeof(IDirectoryInfo)).Should().NotBeNull();
             Mocks.Contains(typeof(IDirectoryInfo)).Should().BeTrue();
+        }
+
+        [Fact]
+        public void CreateMock_ValueType_ShouldFail()
+        {
+            Action a = () => Mocks.CreateMock(typeof(int));
+            a.Should().Throw<ArgumentException>();
         }
 
         [Fact]
@@ -69,36 +238,6 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateExact_WithMultiClass()
-        {
-            Mocks.CreateInstance<TestClassMany>(args: new object[] { 4 }).Should().NotBeNull();
-            Mocks.CreateInstance<TestClassMany>(args: new object[] { "str" }).Should().NotBeNull();
-            Mocks.CreateInstance<TestClassMany>(args: new object[] {4, "str"}).Should().NotBeNull();
-            Action a = () => Mocks.CreateInstance<TestClassMany>(args: new object[] {"4", "str"}).Should().NotBeNull();
-            a.Should().Throw<NotImplementedException>();
-        }
-
-        [Fact]
-        public void CreateBest() => Mocks.CreateInstance<TestClassNormal>().Should().NotBeNull();
-
-        [Fact]
-        public void CreateBest_Should_ThrowAmbiguous()
-        {
-            Action a = () => Mocks.CreateInstance<TestClassMany>();
-            a.Should().Throw<AmbiguousImplementationException>();
-        }
-
-        [Fact]
-        public void CreateFromInterface_ManyMatches_ShouldThrow()
-        {
-            Action a = () => Mocks.CreateInstance<IFile>().Should().NotBeNull();
-            a.Should().Throw<AmbiguousImplementationException>();
-        }
-
-        [Fact]
-        public void CreateFromInterface_BestGuess() => Mocks.CreateInstance<ITestClassNormal>().Should().NotBeNull();
-
-        [Fact]
         public void FileSystem_ShouldBeValid()
         {
             Mocks.fileSystem.Should().NotBeNull();
@@ -112,49 +251,60 @@ namespace FastMoq.Tests
             Mocks.fileSystem.FileStream.Should().NotBeNull();
             Mocks.fileSystem.FileSystem.Should().NotBeNull();
             typeof(IFileSystem).IsAssignableFrom(Mocks.fileSystem.FileSystem.GetType()).Should().BeTrue();
-//            Mocks.fileSystem.FileSystem.GetType().IsAssignableTo(typeof(IFileSystem)).Should().BeTrue();
             Mocks.GetObject<IFileSystem>().Should().Be(Mocks.fileSystem.FileSystem);
             Mocks.Strict = true;
             Mocks.GetObject<IFileSystem>().Should().NotBe(Mocks.fileSystem.FileSystem);
         }
 
         [Fact]
-        public void GetRequiredMock()
+        public void FindConstructor_Exact()
         {
-            Mocks.GetRequiredMock<IDirectory>().Should().NotBeNull();
-            Mocks.GetRequiredMock<IFileInfo>().Should().NotBeNull();
-            Action a = () => Mocks.GetRequiredMock<IFile>();
-            a.Should().Throw<InvalidOperationException>();
+            var m = Mocks.FindConstructor(typeof(TestClassMany), false, 4, "");
+            m.Should().NotBeNull();
         }
 
         [Fact]
-        public void GetRequiredMockByTypeVariable()
+        public void FindConstructor_Missing_ShouldThrow()
         {
-            Mocks.GetRequiredMock(typeof(IDirectory)).Should().NotBeNull();
-            Mocks.GetRequiredMock(typeof(IFileInfo)).Should().NotBeNull();
-            Action a = () => Mocks.GetRequiredMock(typeof(IFile));
-            a.Should().Throw<InvalidOperationException>();
+            Action a = () => Mocks.FindConstructor(typeof(TestClassMany), false, Mocks.GetObject<IFileSystem>());
+            a.Should().Throw<NotImplementedException>();
         }
 
         [Fact]
-        public void GetTypeFromInterfaceWithNonInterface()
+        public void FindConstructorByArgs()
         {
-            var type = Mocks.GetTypeFromInterface<TestClassNormal>();
-            type.InstanceType.Should().Be<TestClassNormal>();
+            CheckConstructorByArgs(Mocks.GetObject<IFileSystem>());
+            CheckConstructorByArgs(new FileSystem());
+            CheckConstructorByArgs(new MockFileSystem());
+            CheckConstructorByArgs(new Mock<IFileSystem>().Object);
         }
 
         [Fact]
-        public void GetRequiredMock_Null()
+        public void FindConstructorByBest()
         {
-            Action a = () => Mocks.GetRequiredMock(null);
-            a.Should().Throw<ArgumentException>();
+            CheckBestConstructor(Mocks.GetObject<IFileSystem>());
+            CheckBestConstructor(new FileSystem());
+            CheckBestConstructor(new MockFileSystem());
+            CheckBestConstructor(new Mock<IFileSystem>().Object);
+            CheckBestConstructor(new Mock<IFile>().Object, false);
         }
 
         [Fact]
-        public void GetRequiredMock_ValueType()
+        public void GetList()
         {
-            Action a = () => Mocks.GetRequiredMock(typeof(int));
-            a.Should().Throw<ArgumentException>();
+            var count = 0;
+            var numbers = Mocker.GetList(3, () => count++);
+            numbers.Should().BeEquivalentTo(new List<int> { 0, 1, 2 });
+
+            count = 0;
+            var strings = Mocker.GetList(3, () => (count++).ToString());
+            strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2" });
+
+            count = 0;
+            var test = Mocker.GetList(3, () => new TestClassMany(count++));
+            test[0].value.Should().Be(0);
+            test[1].value.Should().Be(1);
+            test[2].value.Should().Be(2);
         }
 
         [Fact]
@@ -194,215 +344,45 @@ namespace FastMoq.Tests
             var f = Mocks.GetObject<TestClassMany>();
             f.Should().Be(Mocks.GetMock<TestClassMany>().Object);
             Mocks.GetMock<TestClassMany>().CallBase.Should().BeTrue();
-
         }
 
         [Fact]
-        public void GetList()
+        public void GetRequiredMock()
         {
-            var count = 0;
-            var numbers = Mocker.GetList(3, () => count++);
-            numbers.Should().BeEquivalentTo(new List<int> {0, 1, 2});
-
-            count = 0;
-            var strings = Mocker.GetList(3, () => (count++).ToString());
-            strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2"});
-
-            count = 0;
-            var test = Mocker.GetList(3, () => new TestClassMany(count++));
-            test[0].value.Should().Be(0);
-            test[1].value.Should().Be(1);
-            test[2].value.Should().Be(2);
+            Mocks.GetRequiredMock<IDirectory>().Should().NotBeNull();
+            Mocks.GetRequiredMock<IFileInfo>().Should().NotBeNull();
+            Action a = () => Mocks.GetRequiredMock<IFile>();
+            a.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
-        public void RemoveMock()
+        public void GetRequiredMock_Null()
         {
-            var mock = new Mock<IFileSystemInfo>();
-            Mocks.AddMock(mock, false);
-            Mocks.Contains<IFileSystemInfo>().Should().BeTrue();
-            Mocks.RemoveMock(mock).Should().BeTrue();
-            Mocks.Contains<IFileSystemInfo>().Should().BeFalse();
-            Mocks.RemoveMock(mock).Should().BeFalse();
-        }
-
-        [Fact]
-        public void AddMock()
-        {
-            var mock = new Mock<IFileSystemInfo>
-            {
-                Name = "First"
-            };
-
-            var mockResult = Mocks.AddMock(mock, false);
-            var mockModel = Mocks.GetMockModel<IFileSystemInfo>();
-            mockResult.Mock.Should().Be(mockModel.Mock);
-            mockModel.Mock.Name.Should().Be("First");
-        }
-
-        [Fact]
-        public void AddMockDuplicateWithoutOverwrite_ShouldThrowArgumentException()
-        {
-            var mock = new Mock<IFileSystemInfo>
-            {
-                Name = "First"
-            };
-
-            Mocks.AddMock(mock, false).Mock.Should().Be(mock);
-
-            Action a = () => Mocks.AddMock(mock, false);
+            Action a = () => Mocks.GetRequiredMock(null);
             a.Should().Throw<ArgumentException>();
         }
 
         [Fact]
-        public void AddMockDuplicateWithOverwrite_ShouldSucceed()
+        public void GetRequiredMock_ValueType()
         {
-            var mock = new Mock<IFileSystemInfo>
-            {
-                Name = "First"
-            };
-
-            var mock1 = Mocks.AddMock(mock, false).Mock as Mock<IFileSystemInfo>;
-            mock1.Should().Be(mock);
-            mock1.Name.Should().Be("First");
-
-            mock.Name = "test";
-            var mock2 = Mocks.AddMock(mock, true).Mock as Mock<IFileSystemInfo>;
-            mock2.Should().Be(mock);
-            mock2.Name.Should().Be("test");
-
-        }
-
-        [Fact]
-        public void AddMockWithNull_ShouldThrow()
-        {
-            Action a = () => Mocks.AddMock(null, typeof(IFileSystem), false);
-            a.Should().Throw<ArgumentNullException>();
-
-            Action b = () => Mocks.AddMock(new Mock<IFileSystem>(), null, false);
-            b.Should().Throw<ArgumentNullException>();
-        }
-
-        [Fact]
-        public void AddTypeBothSameClass()
-        {
-            Action a = () => Mocks.AddType<TestClassDouble1, TestClassDouble1>();
+            Action a = () => Mocks.GetRequiredMock(typeof(int));
             a.Should().Throw<ArgumentException>();
         }
 
         [Fact]
-        public void AddTypeNotInterface()
+        public void GetRequiredMockByTypeVariable()
         {
-            Action a = () => Mocks.AddType<TestClassDouble2, TestClassDouble1>();
-            a.Should().Throw<ArgumentException>();
+            Mocks.GetRequiredMock(typeof(IDirectory)).Should().NotBeNull();
+            Mocks.GetRequiredMock(typeof(IFileInfo)).Should().NotBeNull();
+            Action a = () => Mocks.GetRequiredMock(typeof(IFile));
+            a.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
-        public void Create_WithMapTest1()
+        public void GetTypeFromInterfaceWithNonInterface()
         {
-            Action a = () => Mocks.CreateInstance<ITestClassDouble>();
-            a.Should().Throw<AmbiguousImplementationException>();
-
-            Mocks.AddType<ITestClassDouble, TestClassDouble1>();
-            var o = Mocks.CreateInstance<ITestClassDouble>();
-            o.Should().BeOfType<TestClassDouble1>();
-        }
-
-        [Fact]
-        public void Create_WithMapTest2()
-        {
-            Action a = () => Mocks.CreateInstance<ITestClassDouble>();
-            a.Should().Throw<AmbiguousImplementationException>();
-
-            Mocks.AddType<ITestClassDouble, TestClassDouble2>();
-            var o2 = Mocks.CreateInstance<ITestClassDouble>();
-            o2.Should().BeOfType<TestClassDouble2>();
-            o2.Value.Should().Be(0);
-
-            Action b = () => Mocks.AddType<ITestClassDouble, TestClassDouble1>();
-            b.Should().Throw<ArgumentException>();
-        }
-
-        [Fact]
-        public void Create_WithMapInstance()
-        {
-            // Create Random number.
-            var number = (double)RandomNumberGenerator.GetInt32(1, 100);
-
-            // Add Mock Mapping, demonstrating that the number doesn't get used until CreateInstance is called.
-            Mocks.AddType<ITestClassDouble, TestClassDouble2>(_ => new TestClassDouble2
-                { Value = number });
-
-            // Saving original number
-            var number2 = number;
-
-            // Changing number used by CreateInstance
-            number = 0.5;
-
-            // Get number from CreateInstance
-            var value = Mocks.CreateInstance<ITestClassDouble>().Value;
-
-            // Demonstrate that the latest number is used and not the original number.
-            value.Should().Be(number);
-            value.Should().NotBe(number2);
-        }
-
-        [Fact]
-        public void Create_WithMapTest_CannotAddDuplicateMap()
-        {
-            Action a = () => Mocks.CreateInstance<ITestClassDouble>();
-            a.Should().Throw<AmbiguousImplementationException>();
-
-            Mocks.AddType<ITestClassDouble, TestClassDouble1>();
-            Action b = () => Mocks.AddType<ITestClassDouble, TestClassDouble2>();
-            b.Should().Throw<ArgumentException>();
-        }
-
-        [Fact]
-        public void FindConstructorByArgs()
-        {
-            CheckConstructorByArgs(Mocks.GetObject<IFileSystem>());
-            CheckConstructorByArgs(new FileSystem());
-            CheckConstructorByArgs(new MockFileSystem());
-            CheckConstructorByArgs(new Mock<IFileSystem>().Object);
-        }
-
-        [Fact]
-        public void FindConstructorByBest()
-        {
-            CheckBestConstructor(Mocks.GetObject<IFileSystem>());
-            CheckBestConstructor(new FileSystem());
-            CheckBestConstructor(new MockFileSystem());
-            CheckBestConstructor(new Mock<IFileSystem>().Object);
-            CheckBestConstructor(new Mock<IFile>().Object, false);
-        }
-
-        private void CheckConstructorByArgs(object data, bool expected = true)
-        {
-            var constructor = Mocks.FindConstructor(typeof(TestClassNormal), false, data);
-            var isValid = Mocker.IsValidConstructor(constructor.Key, data);
-            isValid.Should().Be(expected);
-        }
-
-        private void CheckBestConstructor(object data, bool expected = true)
-        {
-            var constructor = Mocks.FindConstructor(true, typeof(TestClassNormal), false);
-            var isValid = Mocker.IsValidConstructor(constructor.Key, data);
-            isValid.Should().Be(expected);
-        }
-
-        [Fact]
-        public void FindConstructor_Missing_ShouldThrow()
-        {
-            Action a = () => Mocks.FindConstructor(typeof(TestClassMany), false, Mocks.GetObject<IFileSystem>());
-            a.Should().Throw<NotImplementedException>();
-        }
-
-        [Fact]
-        public void FindConstructor_Exact()
-        {
-            var m = Mocks.FindConstructor(typeof(TestClassMany), false, 4, "");
-            m.Should().NotBeNull();
+            var type = Mocks.GetTypeFromInterface<TestClassNormal>();
+            type.InstanceType.Should().Be<TestClassNormal>();
         }
 
         [Fact]
@@ -417,6 +397,31 @@ namespace FastMoq.Tests
 
             isValid = Mocker.IsValidConstructor(constructor.Key, 12);
             isValid.Should().BeFalse();
+        }
+
+        [Fact]
+        public void RemoveMock()
+        {
+            var mock = new Mock<IFileSystemInfo>();
+            Mocks.AddMock(mock, false);
+            Mocks.Contains<IFileSystemInfo>().Should().BeTrue();
+            Mocks.RemoveMock(mock).Should().BeTrue();
+            Mocks.Contains<IFileSystemInfo>().Should().BeFalse();
+            Mocks.RemoveMock(mock).Should().BeFalse();
+        }
+
+        private void CheckBestConstructor(object data, bool expected = true)
+        {
+            var constructor = Mocks.FindConstructor(true, typeof(TestClassNormal), false);
+            var isValid = Mocker.IsValidConstructor(constructor.Key, data);
+            isValid.Should().Be(expected);
+        }
+
+        private void CheckConstructorByArgs(object data, bool expected = true)
+        {
+            var constructor = Mocks.FindConstructor(typeof(TestClassNormal), false, data);
+            var isValid = Mocker.IsValidConstructor(constructor.Key, data);
+            isValid.Should().Be(expected);
         }
 
         private static Mocker CreateAction(Mocker mocks) => new();

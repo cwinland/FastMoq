@@ -12,7 +12,7 @@
         #region Properties
 
         /// <summary>
-        /// Gets or sets the create function.
+        ///     Gets or sets the create function.
         /// </summary>
         /// <value>The create function.</value>
         public new Func<Mocker, TClass>? CreateFunc
@@ -24,11 +24,9 @@
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InstanceModel{TClass}" /> class.
+        ///     Initializes a new instance of the <see cref="InstanceModel{TClass}" /> class.
         /// </summary>
-        public InstanceModel() : base(typeof(TClass))
-        {
-        }
+        public InstanceModel() : base(typeof(TClass)) { }
 
         /// <inheritdoc />
         /// <summary>
@@ -39,8 +37,8 @@
     }
 
     /// <summary>
-    /// Class InstanceModel.
-    /// Implements the <see cref="FastMoq.InstanceModel" />
+    ///     Class InstanceModel.
+    ///     Implements the <see cref="FastMoq.InstanceModel" />
     /// </summary>
     /// <seealso cref="FastMoq.InstanceModel" />
     public class InstanceModel
@@ -48,13 +46,13 @@
         #region Properties
 
         /// <summary>
-        /// Gets or sets the type of the instance.
+        ///     Gets or sets the type of the instance.
         /// </summary>
         /// <value>The type of the instance.</value>
         public Type InstanceType { get; }
 
         /// <summary>
-        /// Gets or sets the create function.
+        ///     Gets or sets the create function.
         /// </summary>
         /// <value>The create function.</value>
         public Func<Mocker, object>? CreateFunc { get; internal set; }

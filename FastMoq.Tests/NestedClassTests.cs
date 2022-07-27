@@ -5,12 +5,13 @@ namespace FastMoq.Tests
 {
     public class NestedClassTests
     {
-        private Mocker mocks;
+        #region Fields
 
-        public NestedClassTests()
-        {
-            mocks = new Mocker();
-        }
+        private readonly Mocker mocks;
+
+        #endregion
+
+        public NestedClassTests() => mocks = new Mocker();
 
         [Fact]
         public void GetTypeFromInterface()

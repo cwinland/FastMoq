@@ -2,7 +2,7 @@
 {
     public class TestClassDouble1 : ITestClassDouble
     {
-        #region Implementation of ITestClassDouble
+        #region ITestClassDouble
 
         /// <inheritdoc />
         public double Value { get; set; }
@@ -12,12 +12,16 @@
 
     public interface ITestClassDouble
     {
+        #region Properties
+
         double Value { get; set; }
+
+        #endregion
     }
 
     public class TestClassDouble2 : ITestClassDouble
     {
-        #region Implementation of ITestClassDouble
+        #region ITestClassDouble
 
         /// <inheritdoc />
         public double Value { get; set; }

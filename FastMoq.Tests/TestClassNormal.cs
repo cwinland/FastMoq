@@ -4,18 +4,10 @@ namespace FastMoq.Tests
 {
     public class TestClassNormal : ITestClassNormal
     {
-        public TestClassNormal()
-        {
+        public TestClassNormal() { }
 
-        }
-
-        public TestClassNormal(IFileSystem fileSystem)
-        {
-
-        }
+        public TestClassNormal(IFileSystem fileSystem) { }
     }
 
-    public interface ITestClassNormal
-    {
-    }
+    public interface ITestClassNormal { }
 }

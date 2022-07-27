@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using System;
 using Xunit;
+
 #pragma warning disable CS8604
 #pragma warning disable CS8602
 
@@ -31,15 +32,15 @@ namespace FastMoq.Tests
         }
 
         [Theory]
-        [InlineData("field", 333)]
-        [InlineData("field2", 333)]
-        [InlineData("field3", 333)]
-        public void SetFieldValue(string name, object value)
+        [InlineData("method", "test")]
+        [InlineData("method2", "test2")]
+        public void GetPrivateMethodValue(string name, object expectedValue)
         {
-            var value1 = Component.GetFieldValue(name);
-            Component.SetFieldValue(name, value);
-            Component.GetFieldValue(name).Should().Be(value);
-
+            var member = Component.GetMethod(name);
+            member.Should().NotBeNull();
+            var value = Component.GetMethodValue(name);
+            value.Should().NotBeNull();
+            value.Should().Be(expectedValue);
         }
 
         [Theory]
@@ -58,6 +59,17 @@ namespace FastMoq.Tests
         }
 
         [Theory]
+        [InlineData("field", 333)]
+        [InlineData("field2", 333)]
+        [InlineData("field3", 333)]
+        public void SetFieldValue(string name, object value)
+        {
+            var value1 = Component.GetFieldValue(name);
+            Component.SetFieldValue(name, value);
+            Component.GetFieldValue(name).Should().Be(value);
+        }
+
+        [Theory]
         [InlineData("property", 333, false)]
         [InlineData("property2", 333, true)]
         [InlineData("property3", 333, true)]
@@ -65,7 +77,7 @@ namespace FastMoq.Tests
         public void SetPropertyValue(string name, object value, bool getOnly)
         {
             var value1 = Component.GetPropertyValue(name);
-            Action a = () => Component.SetPropertyValue(name, value);
+            var a = () => Component.SetPropertyValue(name, value);
 
             if (getOnly)
             {
@@ -77,32 +89,30 @@ namespace FastMoq.Tests
                 Component.GetPropertyValue(name).Should().Be(value);
             }
         }
-
-        [Theory]
-        [InlineData("method", "test")]
-        [InlineData("method2", "test2")]
-        public void GetPrivateMethodValue(string name, object expectedValue)
-        {
-            var member = Component.GetMethod(name);
-            member.Should().NotBeNull();
-            var value = Component.GetMethodValue(name);
-            value.Should().NotBeNull();
-            value.Should().Be(expectedValue);
-        }
     }
 
     public class TestClass
     {
-        private static int sField = 123;
-        private static int sProperty { get; set; } = 456;
+        #region Fields
 
-        private int field = sField;
+        private static readonly int sField = 123;
         public object field2 = 111;
         public int field3 = 222;
+
+        private int field = sField;
+
+        #endregion
+
+        #region Properties
+
+        private static int sProperty { get; } = 456;
         private object property { get; set; } = sProperty;
         private object property2 { get; } = 789;
         private int property3 => int.Parse(property2.ToString());
         public object property4 => property3;
+
+        #endregion
+
         private object method() => "test";
         private string method2() => "test2";
     }

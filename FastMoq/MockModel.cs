@@ -4,36 +4,36 @@ namespace FastMoq
 {
     public class MockModel<T> : MockModel where T : class
     {
+        #region Properties
+
         public new Mock<T> Mock
         {
-            get => (Mock<T>)base.Mock;
+            get => (Mock<T>) base.Mock;
             set => base.Mock = value;
         }
 
-        internal MockModel(Mock mock) : base(typeof(T), mock)
-        {
-        }
+        #endregion
 
-        internal MockModel(MockModel mockModel) : base(mockModel.Type, mockModel.Mock)
-        {
-        }
+        internal MockModel(Mock mock) : base(typeof(T), mock) { }
+
+        internal MockModel(MockModel mockModel) : base(mockModel.Type, mockModel.Mock) { }
     }
 
     /// <summary>
-    /// Class MockModel.
+    ///     Class MockModel.
     /// </summary>
     public class MockModel
     {
         #region Properties
 
         /// <summary>
-        /// Gets or sets the mock.
+        ///     Gets or sets the mock.
         /// </summary>
         /// <value>The mock.</value>
         public Mock Mock { get; set; }
 
         /// <summary>
-        /// Gets or sets the type.
+        ///     Gets or sets the type.
         /// </summary>
         /// <value>The type.</value>
         public Type Type { get; set; }

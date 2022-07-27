@@ -2,29 +2,20 @@
 {
     public class TestClassMany : ITestClassMany
     {
+        #region Fields
+
         public object? value;
-        public TestClassMany()
-        {
-            value = null;
-        }
 
-        public TestClassMany(int x)
-        {
-            value = x;
-        }
+        #endregion
 
-        public TestClassMany(string y)
-        {
-            value = y;
-        }
+        public TestClassMany() => value = null;
 
-        public TestClassMany(int x, string y)
-        {
-            value = $"{x} {y}";
-        }
+        public TestClassMany(int x) => value = x;
+
+        public TestClassMany(string y) => value = y;
+
+        public TestClassMany(int x, string y) => value = $"{x} {y}";
     }
 
-    public interface ITestClassMany
-    {
-    }
+    public interface ITestClassMany { }
 }

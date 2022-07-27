@@ -76,6 +76,10 @@ namespace FastMoq
             obj?.GetType().GetRuntimeMethods()
                 .FirstOrDefault(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
+        public static object? GetMethodValue<TObject>(this TObject obj, string name, object? defaultValue = null,
+            params object[] args) where TObject : class? =>
+            obj.GetMethod(name)?.Invoke(obj, args);
+
         /// <summary>
         ///     Gets the property.
         /// </summary>
@@ -98,10 +102,6 @@ namespace FastMoq
         public static object? GetPropertyValue<TObject>(this TObject obj, string name, object? defaultValue = null)
             where TObject : class? =>
             obj.GetProperty(name)?.GetValue(obj) ?? defaultValue ?? default;
-
-        public static object? GetMethodValue<TObject>(this TObject obj, string name, object? defaultValue = null,
-            params object[] args) where TObject : class? =>
-            obj.GetMethod(name)?.Invoke(obj, args);
 
         /// <summary>
         ///     Sets the field value.
