@@ -141,9 +141,25 @@ namespace FastMoq
             }
 
             KeyValuePair<ConstructorInfo, List<object?>> constructor =
-                args.Length > 0 ? FindConstructor(type.InstanceType, args) : FindConstructor(false, type.InstanceType);
+                args.Length > 0 ? FindConstructor(type.InstanceType, false, args) : FindConstructor(false, type.InstanceType, false);
 
             return (T) constructor.Key.Invoke(constructor.Value.ToArray());
+        }
+
+        public T? CreateInstanceNonPublic<T>(params object[] args) where T : class
+        {
+            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
+
+            if (type.CreateFunc != null)
+            {
+                return (T) type.CreateFunc.Invoke(this);
+            }
+
+            KeyValuePair<ConstructorInfo, List<object?>> constructor =
+                args.Length > 0 ? FindConstructor(type.InstanceType, true, args) : FindConstructor(false, type.InstanceType, true);
+
+            return (T) constructor.Key.Invoke(constructor.Value.ToArray());
+
         }
 
         /// <summary>
@@ -380,9 +396,9 @@ namespace FastMoq
         /// <param name="args">The arguments.</param>
         /// <returns>ConstructorInfo.</returns>
         /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
-        internal KeyValuePair<ConstructorInfo, List<object?>> FindConstructor(Type type, params object?[] args)
+        internal KeyValuePair<ConstructorInfo, List<object?>> FindConstructor(Type type, bool nonPublic, params object?[] args)
         {
-            Dictionary<ConstructorInfo, List<object?>> allConstructors = GetConstructors(type, args);
+            Dictionary<ConstructorInfo, List<object?>> allConstructors = nonPublic ? GetConstructorsNonPublic(type, args) : GetConstructors(type, args);
 
             List<KeyValuePair<ConstructorInfo, List<object?>>> constructors = allConstructors
                 .Where(x => x.Value.Select(z => z?.GetType()).SequenceEqual(args.Select(y => y?.GetType()))).ToList();
@@ -403,9 +419,9 @@ namespace FastMoq
         ///     decide which to use.
         /// </exception>
         /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
-        internal KeyValuePair<ConstructorInfo, List<object?>> FindConstructor(bool bestGuess, Type type)
+        internal KeyValuePair<ConstructorInfo, List<object?>> FindConstructor(bool bestGuess, Type type, bool nonPublic)
         {
-            Dictionary<ConstructorInfo, List<object?>> constructors = GetConstructors(type);
+            Dictionary<ConstructorInfo, List<object?>> constructors = nonPublic ? GetConstructorsNonPublic(type) : GetConstructors(type);
 
             if (!bestGuess && constructors.Values.Count(x => x.Count > 0) > 1)
             {
@@ -425,8 +441,7 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <param name="instanceParameterValues">Optional arguments.</param>
         /// <returns><see cref="Dictionary{ConstructorInfo, List}" />.</returns>
-        internal Dictionary<ConstructorInfo, List<object?>>
-            GetConstructors(Type type, params object?[] instanceParameterValues) =>
+        internal Dictionary<ConstructorInfo, List<object?>> GetConstructors(Type type, params object?[] instanceParameterValues) =>
             type.GetConstructors()
                 .Where(x => IsValidConstructor(x, instanceParameterValues))
                 .OrderByDescending(x => x.GetParameters().Length)
@@ -434,6 +449,17 @@ namespace FastMoq
                     y => (instanceParameterValues.Length > 0 ? instanceParameterValues : y.GetParameters().Select(GetObject))
                         .ToList()
                 );
+
+        internal Dictionary<ConstructorInfo, List<object?>> GetConstructorsNonPublic(Type type, params object?[] instanceParameterValues) =>
+            type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public)
+                .Where(x => IsValidConstructor(x, instanceParameterValues))
+                .OrderByDescending(x => x.GetParameters().Length)
+                .ToDictionary(x => x,
+                    y => (instanceParameterValues.Length > 0 ? instanceParameterValues : y.GetParameters().Select(GetObject))
+                        .ToList()
+                );
+
+
 
         internal static object? GetDefaultValue(Type type) => type.IsClass ? null : Activator.CreateInstance(type);
 
