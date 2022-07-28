@@ -23,7 +23,29 @@ namespace FastMoq.TestingExample
 
     public class TestClassNormalTestsSetupBase : MockerTestBase<TestClassNormal>
     {
+        // Show different constructor base types
+
+        internal TestClassNormalTestsSetupBase(int i) : base()
+        {
+
+        }
+
         public TestClassNormalTestsSetupBase() : base(SetupMocks) { }
+
+        internal TestClassNormalTestsSetupBase(IFileSystem fs) : base(SetupMocks, mocker => { })
+        {
+
+        }
+
+        internal TestClassNormalTestsSetupBase(IFileSystem fs, IFile f) : base(SetupMocks, mocker =>  new TestClassNormal(new MockFileSystem()))
+        {
+
+        }
+
+        internal TestClassNormalTestsSetupBase(IFile f) : base(SetupMocks, mocker => new TestClassNormal(new MockFileSystem()), normal => {})
+        {
+
+        }
 
         [Fact]
         public void TestStrict()

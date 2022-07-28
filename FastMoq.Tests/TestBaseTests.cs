@@ -1,5 +1,8 @@
 ﻿using FluentAssertions;
+using Moq;
 using System;
+using System.Collections.Generic;
+using System.IO.Abstractions;
 using Xunit;
 
 #pragma warning disable CS8604
@@ -9,6 +12,19 @@ namespace FastMoq.Tests
 {
     public class TestBaseTests : MockerTestBase<TestClass>
     {
+        [Fact]
+        public void CustomMocksTest()
+        {
+            var mock = new Mock<IFileSystem>();
+            var mock2 = new Mock<IFile>();
+            var mockModel = new MockModel<IFileSystem>(mock);
+            var mockModel2 = new MockModel<IFile>(mock2);
+            CustomMocks = new List<MockModel>() { mockModel, mockModel2 };
+            CreateComponent();
+            Mocks.GetMockModelIndexOf(typeof(IFile), false).Should().Be(1);
+            Mocks.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(0);
+        }
+
         [Fact]
         public void GetMember()
         {

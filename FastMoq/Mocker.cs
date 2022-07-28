@@ -27,7 +27,7 @@ namespace FastMoq
         ///     Gets the type map.
         /// </summary>
         /// <value>The type map.</value>
-        private readonly Dictionary<Type, InstanceModel> typeMap;
+        internal readonly Dictionary<Type, InstanceModel> typeMap;
 
         #endregion
 
@@ -131,7 +131,7 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
-        /// <returns>System.Nullable&lt;IFileSystem&gt;.</returns>
+        /// <returns><see cref="Nullable{IFileSystem}"/>.</returns>
         public IFileSystem? CreateInstance<T>(bool usePredefinedFileSystem) where T : class, IFileSystem =>
             CreateInstance<T>(usePredefinedFileSystem, Array.Empty<object>());
 
@@ -510,25 +510,29 @@ namespace FastMoq
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="mock">The mock.</param>
-        /// <returns>MockModel.</returns>
-        internal MockModel GetMockModel(Type type, Mock? mock = null) =>
+        /// <param name="autoCreate">Create Mock if it doesn't exist.</param>
+        /// <returns><see cref="MockModel"/>.</returns>
+        internal MockModel GetMockModel(Type type, Mock? mock = null, bool autoCreate = true) =>
             mockCollection.FirstOrDefault(x => x.Type == type && (x.Mock == mock || mock == null)) ??
-            (mock == null ? GetMockModel(type, GetMock(type)) : AddMock(mock, type));
+            (mock == null ? autoCreate ? GetMockModel(type, GetMock(type), autoCreate) : throw new NotImplementedException() :
+                autoCreate ? AddMock(mock, type) : throw new NotImplementedException());
 
         /// <summary>
         ///     Gets the mock model.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="mock">The mock.</param>
-        /// <returns>MockModel&lt;T&gt;.</returns>
-        internal MockModel<T> GetMockModel<T>(Mock<T>? mock = null) where T : class => new(GetMockModel(typeof(T), mock));
+        /// <param name="autoCreate">Create Mock if it doesn't exist.</param>
+        /// <returns><see cref="MockModel{T}"/>.</returns>
+        internal MockModel<T> GetMockModel<T>(Mock<T>? mock = null, bool autoCreate = true) where T : class => new(GetMockModel(typeof(T), mock, autoCreate));
 
         /// <summary>
         ///     Gets the mock model index of.
         /// </summary>
         /// <param name="type">The type.</param>
+        /// <param name="autoCreate">Create Mock if it doesn't exist.</param>
         /// <returns>System.Int32.</returns>
-        internal int GetMockModelIndexOf(Type type) => mockCollection.IndexOf(GetMockModel(type));
+        internal int GetMockModelIndexOf(Type type, bool autoCreate = true) => mockCollection.IndexOf(GetMockModel(type, null, autoCreate));
 
         /// <summary>
         ///     Gets the type from interface.

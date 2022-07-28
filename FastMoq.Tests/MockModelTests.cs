@@ -30,5 +30,29 @@ namespace FastMoq.Tests
             Action b = () => _ = new MockModel(typeof(IFileSystem), null);
             b.Should().Throw<ArgumentNullException>();
         }
+
+        [Fact]
+        public void Create2()
+        {
+            Component = new MockModel<IFileSystem>(new Mock<IFileSystem>());
+            Component.Should().NotBeNull();
+            Component.Type.Should().Be(typeof(IFileSystem));
+            Component.Mock.Should().BeOfType(typeof(Mock<IFileSystem>));
+        }
+
+        [Fact]
+        public void Create3()
+        {
+            var mockModel = new MockModel<IFileSystem>(new Mock<IFileSystem>());
+            Component = new MockModel<IFileSystem>(mockModel);
+            Component.Should().NotBeNull();
+            Component.Type.Should().Be(typeof(IFileSystem));
+            Component.Mock.Should().BeOfType(typeof(Mock<IFileSystem>));
+            mockModel.Mock.Should().BeOfType(typeof(Mock<IFileSystem>));
+            var mockModel2 = new MockModel<IFileSystem>(new Mock<IFileSystem>());
+            mockModel2.Mock = mockModel.Mock;
+            mockModel2.Mock.Should().BeEquivalentTo(mockModel.Mock);
+            mockModel2.Should().BeEquivalentTo(mockModel);
+        }
     }
 }

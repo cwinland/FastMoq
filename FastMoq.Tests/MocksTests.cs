@@ -23,6 +23,44 @@ namespace FastMoq.Tests
         public MocksTests() : base(SetupAction, CreateAction, CreatedAction) { }
 
         [Fact]
+        public void Mocker_CreateWithEmptyMap()
+        {
+            var test = new Mocker(new Dictionary<Type, InstanceModel>());
+            test.typeMap.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Mocker_CreateWithMap()
+        {
+            var map = new Dictionary<Type, InstanceModel>()
+            {
+                { typeof(IFileSystem), new InstanceModel<IFileSystem>() },
+                { typeof(IFile), new InstanceModel<IFile>(_ => new MockFileSystem().File) }
+            };
+
+            var test = new Mocker(map);
+            test.typeMap.Should().BeEquivalentTo(map);
+        }
+
+        [Fact]
+        public void GetMockModelIndexOf_ShouldFindIfAuto()
+        {
+            _ = Component.GetMock<IFile>();
+
+            // Should not find it, because it doesn't exist.
+            Action a = () => Component.GetMockModelIndexOf(typeof(IFileSystem), false);
+            a.Should().Throw<NotImplementedException>();
+
+            // Should find it because it is auto created.
+            Component.GetMockModelIndexOf(typeof(IFileSystem)).Should().Be(1);
+
+            // Should find it because it was created in previous step.
+            Component.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(1);
+
+            Component.GetMockModelIndexOf(typeof(IFile), false).Should().Be(0);
+        }
+
+        [Fact]
         public void AddMock()
         {
             var mock = new Mock<IFileSystemInfo>
@@ -175,13 +213,25 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateBest() => Mocks.CreateInstance<TestClassNormal>().Should().NotBeNull();
+        public void CreateBest()
+        {
+            Mocks.CreateInstance<TestClassOne>().Should().NotBeNull();
+
+            Mocks.CreateInstance<TestClassNormal>().Should().NotBeNull();
+            Mocks.CreateInstance<IFileSystem>(true).Should().NotBeNull();
+        }
 
         [Fact]
         public void CreateBest_Should_ThrowAmbiguous()
         {
             Action a = () => Mocks.CreateInstance<TestClassMany>();
             a.Should().Throw<AmbiguousImplementationException>();
+
+            Action m = () => Mocks.CreateInstanceNonPublic<TestClassOne>().Should().NotBeNull();
+            m.Should().Throw<AmbiguousImplementationException>();
+
+            Action b = () => Mocks.CreateInstance<IFileSystem>(false).Should().NotBeNull();
+            b.Should().Throw<AmbiguousImplementationException>();
         }
 
         [Fact]
@@ -192,6 +242,12 @@ namespace FastMoq.Tests
             Mocks.CreateInstance<TestClassMany>(true, 4, "str").Should().NotBeNull();
             Action a = () => Mocks.CreateInstance<TestClassMany>("4", "str").Should().NotBeNull();
             a.Should().Throw<NotImplementedException>();
+            IFile file = new FileWrapper(new FileSystem());
+            Mocks.CreateInstanceNonPublic<TestClassOne>(file).Should().NotBeNull();
+            Mocks.CreateInstanceNonPublic<TestClassOne>(new FileSystem()).Should().NotBeNull();
+            Action b = () => Mocks.CreateInstanceNonPublic<TestClassOne>("4", "str").Should().NotBeNull();
+            b.Should().Throw<NotImplementedException>();
+
         }
 
         [Fact]
@@ -270,23 +326,27 @@ namespace FastMoq.Tests
             a.Should().Throw<NotImplementedException>();
         }
 
-        [Fact]
-        public void FindConstructorByArgs()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void FindConstructorByArgs(bool nonPublic)
         {
-            CheckConstructorByArgs(Mocks.GetObject<IFileSystem>());
-            CheckConstructorByArgs(new FileSystem());
-            CheckConstructorByArgs(new MockFileSystem());
-            CheckConstructorByArgs(new Mock<IFileSystem>().Object);
+            CheckConstructorByArgs(Mocks.GetObject<IFileSystem>(), true, nonPublic);
+            CheckConstructorByArgs(new FileSystem(), true, nonPublic);
+            CheckConstructorByArgs(new MockFileSystem(), true, nonPublic);
+            CheckConstructorByArgs(new Mock<IFileSystem>().Object, true, nonPublic);
         }
 
-        [Fact]
-        public void FindConstructorByBest()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void FindConstructorByBest(bool nonPublic)
         {
-            CheckBestConstructor(Mocks.GetObject<IFileSystem>());
-            CheckBestConstructor(new FileSystem());
-            CheckBestConstructor(new MockFileSystem());
-            CheckBestConstructor(new Mock<IFileSystem>().Object);
-            CheckBestConstructor(new Mock<IFile>().Object, false);
+            CheckBestConstructor(Mocks.GetObject<IFileSystem>(), true, nonPublic);
+            CheckBestConstructor(new FileSystem(), true, nonPublic);
+            CheckBestConstructor(new MockFileSystem(), true, nonPublic);
+            CheckBestConstructor(new Mock<IFileSystem>().Object, true, nonPublic);
+            CheckBestConstructor(new Mock<IFile>().Object, false, nonPublic);
         }
 
         [Fact]
@@ -410,16 +470,16 @@ namespace FastMoq.Tests
             Mocks.RemoveMock(mock).Should().BeFalse();
         }
 
-        private void CheckBestConstructor(object data, bool expected = true)
+        private void CheckBestConstructor(object data, bool expected, bool nonPublic)
         {
-            var constructor = Mocks.FindConstructor(true, typeof(TestClassNormal), false);
+            var constructor = Mocks.FindConstructor(true, typeof(TestClassNormal), nonPublic);
             var isValid = Mocker.IsValidConstructor(constructor.Key, data);
             isValid.Should().Be(expected);
         }
 
-        private void CheckConstructorByArgs(object data, bool expected = true)
+        private void CheckConstructorByArgs(object data, bool expected, bool nonPublic)
         {
-            var constructor = Mocks.FindConstructor(typeof(TestClassNormal), false, data);
+            var constructor = Mocks.FindConstructor(typeof(TestClassNormal), nonPublic, data);
             var isValid = Mocker.IsValidConstructor(constructor.Key, data);
             isValid.Should().Be(expected);
         }
