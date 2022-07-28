@@ -22,6 +22,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);SetPackageVersion</GenerateNuspecDependsOn>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
   <Target Name="SetPackageVersion">
     <PropertyGroup>

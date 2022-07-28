@@ -4,10 +4,12 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 
 ## Features
 
-- Auto Injection into tested component constructors
+- Test without declaring Mocks (unless needed).
+- Injection: Automatically determines what interfaces need to be injected into the constructor and creates mocks if they do not exist.
   - Best guess picks the multiple parameter constructor over the default constructor.
   - Specific mapping allows the tester to create an instance using a specific constructor and specific data.
-- Auto Mocking creation whenever a mock is first used.
+- Use Mocks without managing fields and properties. Mocks are managed by the Mocker framework. No need to keep track of Mocks. Just use them!
+- Create instances of Mocks with non public constructors.
 
 ## Targets
 
@@ -15,115 +17,47 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 - .NET 5
 - .NET 6
 
-## Available Objects in the FastMoq namespace
+## Most used classes in the FastMoq namespace
 
 ```cs
-public class Mocker {}
-public abstract class MockerTestBase<TComponent> where TComponent : class {}
+public class Mocker {} // Primary class for auto mock and injection. This can be used standalone from MockerTestBase using Mocks property on the base class.
+public abstract class MockerTestBase<TComponent> where TComponent : class {} // Assists in the creation of objects and provides direct access to Mocker.
 ```
-
-- Mocker is the primary class for auto mock and injection. This can be used standalone from MockerTestBase.
-- MockerTestBase assists in the creation of objects and provides direct access to Mocker.
 
 ## Examples
 
-### Example Test Class
-
-Testing this class will auto inject IFileSystem.
+### Basic example of the base class creating the Car class and auto mocking ICarService
 
 ```cs
-public class TestClassNormal : ITestClassNormal
+public class CarTest : MockerTestBase<Car> {
+     [Fact]
+     public void TestCar() {
+         Component.Color.Should().Be(Color.Green);
+         Component.CarService.Should().NotBeNull();
+     }
+}
+
+public class Car {
+     public Color Color { get; set; } = Color.Green;
+     public ICarService CarService { get; }
+     public Car(ICarService carService) => CarService = carService;
+}
+
+public interface ICarService
 {
-    public event EventHandler TestEvent;
-    public IFileSystem FileSystem { get; set; }
-    public TestClassNormal() { }
-    public TestClassNormal(IFileSystem fileSystem) => FileSystem = fileSystem;
-    public void CallTestEvent() => TestEvent?.Invoke(this, EventArgs.Empty);
+     Color Color { get; set; }
+     ICarService CarService { get; }
+     bool StartCar();
 }
 ```
 
-### Fast Start Testing
-
-TestClassNormal is created and injects IFileSystem.
+### Example of how to set up for mocks that require specific functionality
 
 ```cs
-public class TestClassNormalTestsDefaultBase : MockerTestBase<TestClassNormal>
-{
-    [Fact]
-    public void Test1()
-    {
-        Component.FileSystem.Should().NotBeNull();
-        Component.FileSystem.Should().BeOfType<MockFileSystem>();
-        Component.FileSystem.File.Should().NotBeNull();
-        Component.FileSystem.Directory.Should().NotBeNull();
-    }
-}
-```
-
-### Pre-Test Setup
-
-TestClassNormal is created and injects IFileSystem. SetupMocksAction creates and configures the Mock IFileSystem before the component is created.
-
-```cs
-public class TestClassNormalTestsSetupBase : MockerTestBase<TestClassNormal>
-{
-    public TestClassNormalTestsSetupBase() : base(SetupMocksAction) { }
-
-    private static void SetupMocksAction(Mocker mocks)
-    {
-        var iFile = new FileSystem().File;
-        mocks.Strict = true;
-
-        mocks.Initialize<IFileSystem>(mock => mock.Setup(x => x.File).Returns(iFile));
-    }
-
-    [Fact]
-    public void Test1()
-    {
-        Component.FileSystem.Should().NotBeNull();
-        Component.FileSystem.Should().NotBeOfType<MockFileSystem>();
-        Component.FileSystem.File.Should().NotBeNull();
-        Component.FileSystem.Directory.Should().BeNull();
-    }
-}
-```
-
-### Custom Setup, Creation, and Post Create routines
-
-TestClassNormal is created and injects IFileSystem. SetupMocksAction creates and configures the Mock IFileSystem before the component is created. Once created, the CreatedComponentAction subscribes to an event on the component.
-
-```cs
-public class TestClassNormalTestsFull : MockerTestBase<TestClassNormal>
-{
-    private static bool testEventCalled;
-    public TestClassNormalTestsFull() : base(SetupMocksAction, CreateComponentAction, CreatedComponentAction) => testEventCalled = false;
-    private static void CreatedComponentAction(TestClassNormal? obj) => obj.TestEvent += (_, _) => testEventCalled = true;
-    private static TestClassNormal CreateComponentAction(Mocker mocks) => new(mocks.GetObject<IFileSystem>());
-
-    private static void SetupMocksAction(Mocker mocks)
-    {
-        var mock = new Mock<IFileSystem>();
-        var iFile = new FileSystem().File;
-        mocks.Strict = true;
-        mocks.AddMock(mock, true);
-        mocks.Initialize<IFileSystem>(xMock => xMock.Setup(x => x.File).Returns(iFile));
-    }
-
-    [Fact]
-    public void Test1()
-    {
-        Component.FileSystem.Should().Be(Mocker.GetMock<IFileSystem>().Object);
-        Component.FileSystem.Should().NotBeNull();
-        Component.FileSystem.File.Should().NotBeNull();
-        Component.FileSystem.Directory.Should().BeNull();
-        testEventCalled.Should().BeFalse();
-        Component.CallTestEvent();
-        testEventCalled.Should().BeTrue();
-
-        Mocker.Initialize<IFileSystem>(mock => mock.Setup(x => x.Directory).Returns(new FileSystem().Directory));
-        Component.FileSystem.Directory.Should().NotBeNull();
-
-    }
+public class CarTest : MockerTestBase<Car> {
+     public CarTest() : base(mocks => {
+             mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
+     }
 }
 ```
 
@@ -136,7 +70,7 @@ Auto injection allows creation of components with parameterized interfaces. If a
 Additionally, the creation can be overwritten and provided with instances of the parameters. CreateInstance will automatically match the correct constructor to the parameters given to CreateInstance.
 
 ```cs
-private static TestClassNormal CreateComponentAction() => Mocks.CreateInstance(new MockFileSystem()); // CreateInstance matches the parameters and types with the Component constructor.
+Mocks.CreateInstance(new MockFileSystem()); // CreateInstance matches the parameters and types with the Component constructor.
 ```
 
 #### Interface Type Map
@@ -158,16 +92,19 @@ This code maps ITestClassDouble to TestClassDouble1 when testing a component wit
 Mocker.AddType<ITestClassDouble, TestClassDouble1>();
 ```
 
-
-
 The map also accepts parameters to tell it how to create the instance.
 
 ```cs
 Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
 ```
 
+## Additional Documentation
+
+[FastMoq Documentation](./Help/html/N-FastMoq.htm)
+
 ## Breaking Change
 
-1.22.604 => Renamed Mocks to Mocker, Renamed TestBase to MockerTestBase. 
+- 1.22.728 => Initialize method will reset the mock, if it already exists. This is overridable by settings the reset parameter to false.
+- 1.22.604 => Renamed Mocks to Mocker, Renamed TestBase to MockerTestBase.
 
 ## [License - MIT](./License)
