@@ -1,4 +1,6 @@
-﻿namespace FastMoq.Tests
+﻿using System.IO.Abstractions;
+
+namespace FastMoq.Tests
 {
     public class TestClassMany : ITestClassMany
     {
@@ -18,4 +20,21 @@
     }
 
     public interface ITestClassMany { }
+
+    public class TestClassMultiple : ITestClassMultiple
+    {
+        public IFileSystem Fs { get; }
+        public IFile F { get; }
+        public TestClassMultiple(IFileSystem fs, IFile f)
+        {
+            Fs = fs;
+            F = f;
+        }
+    }
+
+    public interface ITestClassMultiple
+    {
+        IFileSystem Fs { get; }
+        IFile F { get; }
+    }
 }

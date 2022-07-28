@@ -122,19 +122,185 @@ namespace FastMoq
             !type.IsClass && !type.IsInterface ? throw new ArgumentException("type must be a class.", nameof(type)) :
             mockCollection.Any(x => x.Type == type);
 
+        #region Create Instance
         /// <summary>
         ///     Creates an instance of <c>T</c>. Parameters allow matching of constructors and using those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="args">The optional arguments used to create the instance.</param>
-        /// <example>
-        /// <code><![CDATA[
-        /// IFileSystem fileSystem = CreateInstance<IFileSystem>();
-        /// ]]>
-        /// </code>
-        /// </example>
         /// <returns><see cref="Nullable{T}" />.</returns>
+        /// <example>
+        ///   <code><![CDATA[
+        /// IFileSystem fileSystem = CreateInstance<IFileSystem>();
+        /// ]]></code>
+        /// </example>
         public T? CreateInstance<T>(params object[] args) where T : class => CreateInstance<T>(true, args);
+
+        /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TParam1">The type of the t param1.</typeparam>
+        /// <param name="data">The data.</param>
+        /// <returns>T.</returns>
+        public T CreateInstance<T, TParam1>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
+            (model) => FindConstructorByType(model.InstanceType, true, typeof(TParam1)), data);
+
+        /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TParam1">The type of the t param1.</typeparam>
+        /// <typeparam name="TParam2">The type of the t param2.</typeparam>
+        /// <param name="data">The data.</param>
+        /// <returns>T.</returns>
+        public T CreateInstance<T, TParam1, TParam2>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
+            (model) => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2)), data);
+
+        /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TParam1">The type of the t param1.</typeparam>
+        /// <typeparam name="TParam2">The type of the t param2.</typeparam>
+        /// <typeparam name="TParam3">The type of the t param3.</typeparam>
+        /// <param name="data">The data.</param>
+        /// <returns>T.</returns>
+        public T CreateInstance<T, TParam1, TParam2, TParam3>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
+            (model) => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3)), data);
+
+        /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TParam1">The type of the t param1.</typeparam>
+        /// <typeparam name="TParam2">The type of the t param2.</typeparam>
+        /// <typeparam name="TParam3">The type of the t param3.</typeparam>
+        /// <typeparam name="TParam4">The type of the t param4.</typeparam>
+        /// <param name="data">The data.</param>
+        /// <returns>T.</returns>
+        public T CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
+            (model) => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3), typeof(TParam4)), data);
+
+        /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TParam1">The type of the t param1.</typeparam>
+        /// <typeparam name="TParam2">The type of the t param2.</typeparam>
+        /// <typeparam name="TParam3">The type of the t param3.</typeparam>
+        /// <typeparam name="TParam4">The type of the t param4.</typeparam>
+        /// <typeparam name="TParam5">The type of the t param5.</typeparam>
+        /// <param name="data">The data.</param>
+        /// <returns>T.</returns>
+        public T CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
+            (model) => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3), typeof(TParam4), typeof(TParam5)), data);
+
+        /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TParam1">The type of the t param1.</typeparam>
+        /// <typeparam name="TParam2">The type of the t param2.</typeparam>
+        /// <typeparam name="TParam3">The type of the t param3.</typeparam>
+        /// <typeparam name="TParam4">The type of the t param4.</typeparam>
+        /// <typeparam name="TParam5">The type of the t param5.</typeparam>
+        /// <typeparam name="TParam6">The type of the t param6.</typeparam>
+        /// <param name="data">The data.</param>
+        /// <returns>T.</returns>
+        public T CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
+            (model) => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3), typeof(TParam4), typeof(TParam5), typeof(TParam6)), data);
+
+        /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TParam1">The type of the t param1.</typeparam>
+        /// <typeparam name="TParam2">The type of the t param2.</typeparam>
+        /// <typeparam name="TParam3">The type of the t param3.</typeparam>
+        /// <typeparam name="TParam4">The type of the t param4.</typeparam>
+        /// <typeparam name="TParam5">The type of the t param5.</typeparam>
+        /// <typeparam name="TParam6">The type of the t param6.</typeparam>
+        /// <typeparam name="TParam7">The type of the t param7.</typeparam>
+        /// <param name="data">The arguments.</param>
+        /// <returns>T.</returns>
+        public T CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
+            (model) => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3), typeof(TParam4), typeof(TParam5), typeof(TParam6), typeof(TParam7)), data);
+
+        /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TParam1">The type of the t param1.</typeparam>
+        /// <typeparam name="TParam2">The type of the t param2.</typeparam>
+        /// <typeparam name="TParam3">The type of the t param3.</typeparam>
+        /// <typeparam name="TParam4">The type of the t param4.</typeparam>
+        /// <typeparam name="TParam5">The type of the t param5.</typeparam>
+        /// <typeparam name="TParam6">The type of the t param6.</typeparam>
+        /// <typeparam name="TParam7">The type of the t param7.</typeparam>
+        /// <typeparam name="TParam8">The type of the t param8.</typeparam>
+        /// <param name="data">The arguments.</param>
+        /// <returns>T.</returns>
+        public T CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
+            (model) => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3), typeof(TParam4), typeof(TParam5), typeof(TParam6), typeof(TParam7), typeof(TParam8)), data);
+
+        /// <summary>
+        ///     Create an instance using the constructor by the function.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="constructorFunc">The constructor function.</param>
+        /// <param name="data">The arguments.</param>
+        /// <returns>T.</returns>
+        internal T CreateInstanceInternal<T>(Func<InstanceModel, ConstructorInfo> constructorFunc, Dictionary<Type, object?>? data) where T : class
+        {
+            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
+
+            if (type.CreateFunc != null)
+            {
+                return (T) type.CreateFunc.Invoke(this);
+            }
+
+            data ??= new Dictionary<Type, object?>();
+            var constructor = constructorFunc(type);
+
+            var args = GetArgData(constructor, data);
+
+            return CreateInstanceInternal<T>(constructor, args);
+        }
+
+        /// <summary>
+        ///     Gets the argument data.
+        /// </summary>
+        /// <param name="constructor">The constructor.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>Array of nullable objects.</returns>
+        internal object?[] GetArgData(ConstructorInfo constructor, Dictionary<Type, object?>? data)
+        {
+            var args = new List<object?>();
+            constructor.GetParameters().ToList().ForEach(p =>
+            {
+                args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
+                    ? data?.First(x => x.Key == p.ParameterType).Value
+                    : GetObject(p.ParameterType));
+            });
+
+            return args.ToArray();
+        }
+
+        /// <summary>
+        ///     Gets the argument data.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data">The data.</param>
+        /// <returns>System.Nullable&lt;System.Object&gt;[].</returns>
+        public object?[] GetArgData<T>(Dictionary<Type, object?>? data = null) where T : class
+        {
+            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
+
+            data ??= new Dictionary<Type, object?>();
+            var constructor = FindConstructor(false, type.InstanceType, true);
+            return GetArgData(constructor.ConstructorInfo, data);
+        }
 
         /// <summary>
         ///     Creates an instance of <see cref="IFileSystem" />.
@@ -152,13 +318,12 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="args">The arguments.</param>
-        /// <example>
-        /// <code><![CDATA[
-        /// IModel model = CreateInstanceNonPublic<IModel>();
-        /// ]]>
-        /// </code>
-        /// </example>
         /// <returns><see cref="Nullable{T}" /></returns>
+        /// <example>
+        ///   <code><![CDATA[
+        /// IModel model = CreateInstanceNonPublic<IModel>();
+        /// ]]></code>
+        /// </example>
         public T? CreateInstanceNonPublic<T>(params object[] args) where T : class
         {
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
@@ -177,13 +342,68 @@ namespace FastMoq
         }
 
         /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
+        /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns><see cref="Nullable{T}" />.</returns>
+        internal T? CreateInstance<T>(bool usePredefinedFileSystem, params object[] args) where T : class
+        {
+            if (IsMockFileSystem<T>(usePredefinedFileSystem))
+            {
+                return fileSystem as T;
+            }
+
+            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
+
+            if (type.CreateFunc != null)
+            {
+                return (T) type.CreateFunc.Invoke(this);
+            }
+
+            args ??= Array.Empty<object>();
+
+            var constructor =
+                args.Length > 0
+                    ? FindConstructor(type.InstanceType, false, args)
+                    : FindConstructor(false, type.InstanceType, false);
+
+            return CreateInstanceInternal<T>(constructor);
+        }
+
+        /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="constructorModel">The constructor model.</param>
+        /// <returns>T.</returns>
+        internal T CreateInstanceInternal<T>(ConstructorModel constructorModel) where T : class
+        {
+            return CreateInstanceInternal<T>(constructorModel.ConstructorInfo, constructorModel.ParameterList);
+        }
+
+        /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="info">The information.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>T.</returns>
+        internal T CreateInstanceInternal<T>(ConstructorInfo info, params object?[] args) where T : class
+        {
+            return (T) info.Invoke(args);
+        }
+
+        #endregion
+
+        /// <summary>
         ///     Creates the <see cref="MockModel" /> from the <c>Type</c>. This throws an exception if the mock already exists.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="nonPublic"><c>true</c> if non public and public constructors are used.</param>
         /// <returns><see cref="List{Mock}" />.</returns>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
-        /// <exception cref="System.ArgumentException">type already exists. - type</exception>
         /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
         public List<MockModel> CreateMock(Type type, bool nonPublic = false)
         {
@@ -225,19 +445,16 @@ namespace FastMoq
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="count">The number of list items.</param>
         /// <param name="func">The function for creating the list items.</param>
+        /// <returns><see cref="List{T}" />.</returns>
         /// <example>
         /// Example of how to create a list.
         /// <code><![CDATA[
         /// GetList<Model>(3, () => new Model(name: Guid.NewGuid().ToString()));
-        /// ]]>
-        /// </code>
+        /// ]]></code>
         /// or
         /// <code><![CDATA[
         /// GetList<IModel>(3, () => Mocks.GetObject<IModel>());
-        /// ]]>
-        /// </code>
-        /// </example>
-        /// <returns><see cref="List{T}" />.</returns>
+        /// ]]></code></example>
         public static List<T> GetList<T>(int count, Func<T>? func)
         {
             var results = new List<T>();
@@ -264,7 +481,7 @@ namespace FastMoq
         ///     Gets of creates the mock of <c>type</c>.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns><see cref="Mock"/>.</returns>
+        /// <returns><see cref="Mock" />.</returns>
         public Mock GetMock(Type type)
         {
             if (!Contains(type))
@@ -278,7 +495,7 @@ namespace FastMoq
         /// <summary>
         ///     Gets the instance for the given <see cref="ParameterInfo" />.
         /// </summary>
-        /// <param name="info">The <see cref="ParameterInfo"/>.</param>
+        /// <param name="info">The <see cref="ParameterInfo" />.</param>
         /// <returns><see cref="Nullable{Object}" /></returns>
         /// <exception cref="System.ArgumentNullException">type</exception>
         /// <exception cref="System.InvalidProgramException">Unable to get the Mock.</exception>
@@ -331,12 +548,25 @@ namespace FastMoq
         public T? GetObject<T>() where T : class => GetObject(typeof(T)) as T;
 
         /// <summary>
+        ///     Gets the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="args">The arguments.</param>
+        /// <returns>T.</returns>
+        public T GetObject<T>(params object?[] args) where T : class
+        {
+            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
+            var constructor = FindConstructor(false, type.InstanceType, true);
+            return CreateInstanceInternal<T>(constructor.ConstructorInfo, args);
+        }
+
+        /// <summary>
         ///     Gets the required mock.
         /// </summary>
         /// <param name="type">The mock type, usually an interface.</param>
         /// <returns>Mock.</returns>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
-        /// <exception cref="System.InvalidOperationException">Mock must exist. - type</exception>
+        /// <exception cref="System.InvalidOperationException">type must be a class. - type</exception>
         public Mock GetRequiredMock(Type type) => type == null || (!type.IsClass && !type.IsInterface)
             ? throw new ArgumentException("type must be a class.", nameof(type))
             : mockCollection.First(x => x.Type == type).Mock;
@@ -357,17 +587,15 @@ namespace FastMoq
         /// <param name="action">The action.</param>
         /// <param name="reset"><c>False to keep the existing setup.</c></param>
         /// <returns><see cref="Mock{T}" /></returns>
+        /// <exception cref="System.InvalidOperationException">Invalid Mock.</exception>
         /// <example>
         /// Example of how to set up for mocks that require specific functionality.
         /// <code><![CDATA[
         /// mocks.Initialize<ICarService>(mock => {
-        ///     mock.Setup(x => x.StartCar).Returns(true));
-        ///     mock.Setup(x => x.StopCar).Returns(false));
+        /// mock.Setup(x => x.StartCar).Returns(true));
+        /// mock.Setup(x => x.StopCar).Returns(false));
         /// }
-        /// ]]>
-        /// </code>
-        /// </example>
-        /// <exception cref="System.InvalidOperationException">Invalid Mock.</exception>
+        /// ]]></code></example>
         public Mock<T> Initialize<T>(Action<Mock<T>> action, bool reset = true) where T : class
         {
             var mock = GetMock<T>() ?? throw new InvalidOperationException("Invalid Mock.");
@@ -436,34 +664,20 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Creates the instance.
+        ///     Finds the type of the constructor by.
         /// </summary>
-        /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
-        /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
+        /// <param name="type">The type.</param>
+        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
         /// <param name="args">The arguments.</param>
-        /// <returns><see cref="Nullable{T}" />.</returns>
-        internal T? CreateInstance<T>(bool usePredefinedFileSystem, params object[] args) where T : class
+        /// <returns>ConstructorInfo.</returns>
+        /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
+        internal ConstructorInfo FindConstructorByType(Type type, bool nonPublic, params Type?[] args)
         {
-            if (IsMockFileSystem<T>(usePredefinedFileSystem))
-            {
-                return fileSystem as T;
-            }
+            var constructors = GetConstructorsByType(nonPublic, type, args);
 
-            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
-
-            if (type.CreateFunc != null)
-            {
-                return (T) type.CreateFunc.Invoke(this);
-            }
-
-            args ??= Array.Empty<object>();
-
-            var constructor =
-                args.Length > 0
-                    ? FindConstructor(type.InstanceType, false, args)
-                    : FindConstructor(false, type.InstanceType, false);
-
-            return (T) constructor.ConstructorInfo.Invoke(constructor.ParameterList);
+            return !constructors.Any()
+                ? throw new NotImplementedException("Unable to find the constructor.")
+                : constructors.First();
         }
 
         /// <summary>
@@ -545,6 +759,19 @@ namespace FastMoq
                     .ToList()
             );
 
+        /// <summary>
+        ///     Gets the constructors non public.
+        /// </summary>
+        /// <param name="nonPublic">Include non public constructors.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="parameterTypes">The parameter types.</param>
+        /// <returns><see cref="List{ConstructorInfo}" />.</returns>
+        internal List<ConstructorInfo> GetConstructorsByType(bool nonPublic, Type type, params Type?[] parameterTypes) => 
+            type
+            .GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public)
+            .Where(x => IsValidConstructorByType(x, parameterTypes) && (nonPublic || x.IsPublic))
+            .OrderByDescending(x => x.GetParameters().Length)
+            .ToList();
 
         /// <summary>
         ///     Gets the default value.
@@ -640,6 +867,39 @@ namespace FastMoq
         /// <returns><c>true</c> if [is nullable type] [the specified type]; otherwise, <c>false</c>.</returns>
         internal static bool IsNullableType(Type type) => type.IsClass || (
             type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+
+        /// <summary>
+        ///     Returns true if the argument list == 0 or the types match the constructor exactly.
+        /// </summary>
+        /// <param name="info">Parameter information.</param>
+        /// <param name="instanceParameterValues">Optional arguments.</param>
+        /// <returns><c>true</c> if [is valid constructor] [the specified information]; otherwise, <c>false</c>.</returns>
+        internal static bool IsValidConstructorByType(ConstructorInfo info, params Type?[] instanceParameterValues)
+        {
+            if (instanceParameterValues.Length == 0)
+            {
+                return true;
+            }
+
+            var paramList = info.GetParameters().ToList();
+
+            if (instanceParameterValues.Length != paramList.Count)
+            {
+                return false;
+            }
+
+            var isValid = true;
+
+            for (var i = 0; i < paramList.Count; i++)
+            {
+                var paramType = paramList[i].ParameterType;
+                var instanceType = instanceParameterValues[i];
+
+                isValid &= paramType.IsAssignableFrom(instanceType);
+            }
+
+            return isValid;
+        }
 
         /// <summary>
         ///     Returns true if the argument list == 0 or the types match the constructor exactly.

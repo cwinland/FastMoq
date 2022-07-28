@@ -446,6 +446,40 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateInstanceShouldCreateByType()
+        {
+            var test = Component.CreateInstance<ITestClassMultiple, IFileSystem, IFile>(new Dictionary<Type, object?>()
+            {
+                { typeof(IFileSystem), null }
+            });
+
+            test.Fs.Should().BeNull();
+            test.F.Should().NotBeNull();
+
+            var test2 = Component.CreateInstance<ITestClassMultiple, IFileSystem, IFile>(new Dictionary<Type, object?>()
+            {
+                { typeof(IFile), null }
+            });
+
+            test2.F.Should().BeNull();
+            test2.Fs.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetObjectWithArgs()
+        {
+            var args = Component.GetArgData<ITestClassMultiple>();
+            var test = Component.GetObject<ITestClassMultiple>(args);
+            test.Fs.Should().NotBeNull();
+            test.F.Should().NotBeNull();
+
+            args[0] = null;
+            var test2 = Component.GetObject<ITestClassMultiple>(args);
+            test2.Fs.Should().BeNull();
+            test2.F.Should().NotBeNull();
+        }
+
+        [Fact]
         public void IsValidConstructor()
         {
             var constructor = Mocks.FindConstructor(typeof(TestClassNormal), false, Mocks.GetObject<IFileSystem>());
