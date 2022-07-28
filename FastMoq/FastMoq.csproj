@@ -28,6 +28,7 @@
     <PropertyGroup>
       <!-- You can customize the format and the rule about how version increases here. -->
       <PackageVersion>1.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</PackageVersion>
+      <Version>1.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</Version>
     </PropertyGroup>
   </Target>
 
