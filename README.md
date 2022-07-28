@@ -100,7 +100,7 @@ Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
 
 ## Additional Documentation
 
-[FastMoq Documentation](./Help/html/N-FastMoq.htm)
+[FastMoq Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)
 
 ## Breaking Change
 
