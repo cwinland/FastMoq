@@ -82,7 +82,7 @@ namespace FastMoq
         /// <exception cref="System.ArgumentException">Must be different types.</exception>
         /// <exception cref="System.ArgumentException"></exception>
         public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null)
-            where TInterface : class where TClass : class, new()
+            where TInterface : class where TClass : class
         {
             if (typeof(TInterface) == typeof(TClass))
             {
