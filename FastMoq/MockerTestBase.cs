@@ -54,19 +54,19 @@ namespace FastMoq
         ///     Gets or sets the create component action. This action is run whenever the component is created.
         /// </summary>
         /// <value>The create component action.</value>
-        protected Func<Mocker, TComponent?> CreateComponentAction { get; set; }
+        protected virtual Func<Mocker, TComponent?> CreateComponentAction { get; set; }
 
         /// <summary>
         ///     Gets or sets the setup mocks action. This action is run before the component is created.
         /// </summary>
         /// <value>The setup mocks action.</value>
-        protected Action<Mocker>? SetupMocksAction { get; set; }
+        protected virtual Action<Mocker>? SetupMocksAction { get; set; }
 
         /// <summary>
         ///     Gets or sets the created component action. This action is run after the component is created.
         /// </summary>
         /// <value>The created component action.</value>
-        protected Action<TComponent?>? CreatedComponentAction { get; set; }
+        protected virtual Action<TComponent?>? CreatedComponentAction { get; set; }
 
         private Func<Mocker, TComponent?> DefaultCreateAction => _ => Component = Mocks.CreateInstance<TComponent>();
 
@@ -164,6 +164,58 @@ namespace FastMoq
             SetupMocksAction?.Invoke(Mocks);
             Component = CreateComponentAction?.Invoke(Mocks);
             CreatedComponentAction?.Invoke(Component);
+        }
+
+        /// <summary>
+        ///     Waits for an action.
+        /// </summary>
+        /// <typeparam name="T">Logic of T.</typeparam>
+        /// <param name="logic">The action.</param>
+        /// <param name="timespan">The maximum time to wait.</param>
+        /// <param name="waitBetweenChecks">Time between each check.</param>
+        /// <returns>T.</returns>
+        /// <exception cref="System.ArgumentNullException">logic</exception>
+        public static T WaitFor<T>(Func<T> logic, TimeSpan timespan, TimeSpan waitBetweenChecks)
+        {
+            if (logic == null)
+            {
+                throw new ArgumentNullException(nameof(logic));
+            }
+
+            var result = logic();
+            var timeout = DateTimeOffset.Now.Add(timespan);
+
+            while (EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now <= timeout)
+            {
+                result = logic();
+                Thread.Sleep(waitBetweenChecks);
+            }
+
+            return result;
+        }
+        /// <summary>
+        ///     Waits for an action.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logic">The action.</param>
+        /// <returns>T.</returns>
+        /// <exception cref="System.ArgumentNullException">logic</exception>
+        public static T WaitFor<T>(Func<T> logic)
+        {
+            return WaitFor(logic, TimeSpan.FromSeconds(4));
+        }
+
+        /// <summary>
+        ///     Waits for an action.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logic">The action.</param>
+        /// <param name="timespan">The timespan, defaults to 4 seconds.</param>
+        /// <returns>T.</returns>
+        /// <exception cref="System.ArgumentNullException">logic</exception>
+        public static T WaitFor<T>(Func<T> logic, TimeSpan timespan)
+        {
+            return WaitFor(logic, timespan, TimeSpan.FromMilliseconds(100));
         }
     }
 }
