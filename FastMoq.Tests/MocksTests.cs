@@ -1,4 +1,5 @@
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,32 @@ namespace FastMoq.Tests
             Component.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(1);
 
             Component.GetMockModelIndexOf(typeof(IFile), false).Should().Be(0);
+        }
+
+        [Fact]
+        public void TestMethodInvoke()
+        {
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid", true).Should().BeNull();
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid").Should().BeNull();
+            Mocks.InvokeMethod<ITestClassOne>(null, "TestStaticObject").Should().BeOfType<MockFileSystem>();
+            Mocks.InvokeMethod<ITestClassOne>("TestStaticObject").Should().BeOfType<MockFileSystem>();
+            Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true).Should().Be(0);
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestInt", true).Should().Be(0);
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestInt", true, 2).Should().Be(2);
+            Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true, 2).Should().Be(2);
+
+            Mocks.Strict = true;
+            Action a = () => Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
+            a.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Specified argument was out of the range of valid values.");
+        }
+
+        [Fact]
+        public void MockParameters()
+        {
+            var o = Mocks.GetObject<TestClassDouble1>();
+            o.Value = 33;
+            o.Value.Should().Be(33);
+            Mocks.GetObject<TestClassDouble1>().Value.Should().Be(33);
         }
 
         [Fact]
@@ -443,6 +470,40 @@ namespace FastMoq.Tests
         {
             var type = Mocks.GetTypeFromInterface<TestClassNormal>();
             type.InstanceType.Should().Be<TestClassNormal>();
+        }
+
+        [Fact]
+        public void CreateInstanceShouldCreateByType()
+        {
+            var test = Component.CreateInstance<ITestClassMultiple, IFileSystem, IFile>(new Dictionary<Type, object?>()
+            {
+                { typeof(IFileSystem), null }
+            });
+
+            test.Fs.Should().BeNull();
+            test.F.Should().NotBeNull();
+
+            var test2 = Component.CreateInstance<ITestClassMultiple, IFileSystem, IFile>(new Dictionary<Type, object?>()
+            {
+                { typeof(IFile), null }
+            });
+
+            test2.F.Should().BeNull();
+            test2.Fs.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetObjectWithArgs()
+        {
+            var args = Component.GetArgData<ITestClassMultiple>();
+            var test = Component.GetObject<ITestClassMultiple>(args);
+            test.Fs.Should().NotBeNull();
+            test.F.Should().NotBeNull();
+
+            args[0] = null;
+            var test2 = Component.GetObject<ITestClassMultiple>(args);
+            test2.Fs.Should().BeNull();
+            test2.F.Should().NotBeNull();
         }
 
         [Fact]

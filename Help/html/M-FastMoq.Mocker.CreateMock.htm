@@ -127,7 +127,7 @@
 </div>
 </div>
 <div class="TreeItem">
-<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.CreateInstanceNonPublic--1.htm" target="_self">CreateInstanceNonPublic(T) Method </a>
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.CreateInstanceNonPublic--1.htm" target="_self">CreateInstanceNonPublic(T) Method (Object[])</a>
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="#">Overload:FastMoq.Mocker.CreateMock</a>
@@ -135,7 +135,13 @@
 </div>
 </div>
 <div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.GetArgData--1.htm" target="_self">GetArgData(T) Method (Nullable(Dictionary(Type, Nullable(Object))))</a>
+</div>
+<div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.GetList--1.htm" target="_self">GetList(T) Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.GetMethodArgData.htm" target="_self">GetMethodArgData Method </a>
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="#">Overload:FastMoq.Mocker.GetMock</a>
@@ -154,6 +160,11 @@
 </div>
 <div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.Initialize--1.htm" target="_self">Initialize(T) Method </a>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Overload-FastMoq.Mocker.InvokeMethod-.htm" target="_self">InvokeMethod Method </a>
+<div class="Hidden">
+</div>
 </div>
 <div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.RemoveMock--1.htm" target="_self">RemoveMock(T) Method </a>
@@ -224,7 +235,7 @@
 <span class="nolink">List</span>&lt;<a href="T-FastMoq.MockModel.htm">MockModel</a>^&gt;^ <span class="identifier">CreateMock</span>(
 	<span class="nolink">Type</span>^ <span class="parameter">type</span>, 
 	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">bool</a>^ <span class="parameter">nonPublic</span>
-)</pre></div></div></div><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="type"><dt><span class="parameterItalic">type</span></dt><dd>Type: <span class="nolink">Type</span><br />The type.</dd></dl><dl paramName="nonPublic"><dt><span class="parameterItalic">nonPublic</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">Boolean</a><br /><span class="code">true</span> if non public and public constructors are used.</dd></dl></div><h4 class="subHeading">Return Value</h4><span class="nolink">[List{Mock}]</span>.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Exceptions</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exceptionsSection"><!----></a><div class="tableSection"><table width="100%" cellspacing="0" cellpadding="5" frame="lhs"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><span class="nolink">[System.ArgumentException]</span></td><td>type must be a class. - type</td></tr><tr><td><span class="nolink">[System.ArgumentException]</span></td><td>type already exists. - type</td></tr><tr><td><span class="nolink">[System.ApplicationException]</span></td><td>Cannot create instance.</td></tr></table></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Mocker.htm">Mocker Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.Mocker.CreateMock.htm">CreateMock Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.htm">FastMoq Namespace</a></div></div></div>
+)</pre></div></div></div><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="type"><dt><span class="parameterItalic">type</span></dt><dd>Type: <span class="nolink">Type</span><br />The type.</dd></dl><dl paramName="nonPublic"><dt><span class="parameterItalic">nonPublic</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">Boolean</a><br /><span class="code">true</span> if non public and public constructors are used.</dd></dl></div><h4 class="subHeading">Return Value</h4><span class="nolink">[List{Mock}]</span>.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Exceptions</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exceptionsSection"><!----></a><div class="tableSection"><table width="100%" cellspacing="0" cellpadding="5" frame="lhs"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><span class="nolink">[System.ArgumentException]</span></td><td>type must be a class. - type</td></tr><tr><td><span class="nolink">[System.ApplicationException]</span></td><td>Cannot create instance.</td></tr></table></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Mocker.htm">Mocker Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.Mocker.CreateMock.htm">CreateMock Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.htm">FastMoq Namespace</a></div></div></div>
             </div>
           </div>
         </div>

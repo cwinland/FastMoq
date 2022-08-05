@@ -20,6 +20,15 @@ namespace FastMoq.Tests
         /// </summary>
         /// <param name="file">The file.</param>
         internal TestClassOne(IFile file) { }
+
+        internal void TestVoid(IFileSystem fileSystem)
+        {
+
+        }
+
+        public static object TestStaticObject(IFileSystem fileSystem) => fileSystem;
+
+        public int TestInt(int i) => i;
     }
 
     /// <summary>

@@ -4,44 +4,50 @@ namespace FastMoq
     ///     Auto Mocking Test Base with Fast Automatic Mocking <see cref="Mocker" />.
     /// </summary>
     /// <example>
-    /// Basic example of the base class creating the Car class and auto mocking ICarService.
-    /// <code><![CDATA[
-    ///public class CarTest : MockerTestBase<Car> {
-    ///     [Fact]
-    ///     public void TestCar() {
-    ///         Component.Color.Should().Be(Color.Green);
-    ///         Component.CarService.Should().NotBeNull();
-    ///     }
-    ///}
-    ///
-    ///public class Car {
-    ///     public Color Color { get; set; } = Color.Green;
-    ///     public ICarService CarService { get; }
-    ///     public Car(ICarService carService) => CarService = carService;
-    ///}
-    ///
-    ///public interface ICarService
-    ///{
-    ///     Color Color { get; set; }
-    ///     ICarService CarService { get; }
-    ///     bool StartCar();
-    ///}
-    /// ]]>
-    /// </code>
-    ///
-    /// Example of how to set up for mocks that require specific functionality.
-    /// <code><![CDATA[
-    ///public class CarTest : MockerTestBase<Car> {
-    ///     public CarTest() : base(mocks => {
-    ///             mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
-    ///     }
-    ///}
-    /// ]]>
-    /// </code>
+    ///     Basic example of the base class creating the Car class and auto mocking ICarService.
+    ///     <code><![CDATA[
+    /// public class CarTest : MockerTestBase<Car> {
+    ///      [Fact]
+    ///      public void TestCar() {
+    ///          Component.Color.Should().Be(Color.Green);
+    ///          Component.CarService.Should().NotBeNull();
+    ///      }
+    /// }
+    /// 
+    /// public class Car {
+    ///      public Color Color { get; set; } = Color.Green;
+    ///      public ICarService CarService { get; }
+    ///      public Car(ICarService carService) => CarService = carService;
+    /// }
+    /// 
+    /// public interface ICarService
+    /// {
+    ///      Color Color { get; set; }
+    ///      ICarService CarService { get; }
+    ///      bool StartCar();
+    /// }
+    ///  ]]>
+    ///  </code>
+    ///     Example of how to set up for mocks that require specific functionality.
+    ///     <code><![CDATA[
+    /// public class CarTest : MockerTestBase<Car> {
+    ///      public CarTest() : base(mocks => {
+    ///              mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
+    ///      }
+    /// }
+    ///  ]]>
+    ///  </code>
     /// </example>
     /// <typeparam name="TComponent">The type of the t component.</typeparam>
-    public abstract class MockerTestBase<TComponent> where TComponent : class
+    /// <inheritdoc />
+    public abstract class MockerTestBase<TComponent> : IDisposable where TComponent : class
     {
+        #region Fields
+
+        private bool disposedValue;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -54,24 +60,24 @@ namespace FastMoq
         ///     Gets or sets the create component action. This action is run whenever the component is created.
         /// </summary>
         /// <value>The create component action.</value>
-        protected Func<Mocker, TComponent?> CreateComponentAction { get; set; }
+        protected virtual Func<Mocker, TComponent?> CreateComponentAction { get; set; }
 
         /// <summary>
         ///     Gets or sets the setup mocks action. This action is run before the component is created.
         /// </summary>
         /// <value>The setup mocks action.</value>
-        protected Action<Mocker>? SetupMocksAction { get; set; }
+        protected virtual Action<Mocker>? SetupMocksAction { get; set; }
 
         /// <summary>
         ///     Gets or sets the created component action. This action is run after the component is created.
         /// </summary>
         /// <value>The created component action.</value>
-        protected Action<TComponent?>? CreatedComponentAction { get; set; }
+        protected virtual Action<TComponent?>? CreatedComponentAction { get; set; }
 
         private Func<Mocker, TComponent?> DefaultCreateAction => _ => Component = Mocks.CreateInstance<TComponent>();
 
         /// <summary>
-        ///     Gets the <see cref="Mocker"/>.
+        ///     Gets the <see cref="Mocker" />.
         /// </summary>
         /// <value>The mocks.</value>
         protected Mocker Mocks { get; } = new();
@@ -141,11 +147,59 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Sets the <see cref="Component" /> property with a new instance while maintaining the constructor setup and any other changes.
+        ///     Waits for an action.
+        /// </summary>
+        /// <typeparam name="T">Logic of T.</typeparam>
+        /// <param name="logic">The action.</param>
+        /// <param name="timespan">The maximum time to wait.</param>
+        /// <param name="waitBetweenChecks">Time between each check.</param>
+        /// <returns>T.</returns>
+        /// <exception cref="System.ArgumentNullException">logic</exception>
+        public static T WaitFor<T>(Func<T> logic, TimeSpan timespan, TimeSpan waitBetweenChecks)
+        {
+            if (logic == null)
+            {
+                throw new ArgumentNullException(nameof(logic));
+            }
+
+            var result = logic();
+            var timeout = DateTimeOffset.Now.Add(timespan);
+
+            while (EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now <= timeout)
+            {
+                result = logic();
+                Thread.Sleep(waitBetweenChecks);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Waits for an action.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logic">The action.</param>
+        /// <returns>T.</returns>
+        /// <exception cref="System.ArgumentNullException">logic</exception>
+        public static T WaitFor<T>(Func<T> logic) => WaitFor(logic, TimeSpan.FromSeconds(4));
+
+        /// <summary>
+        ///     Waits for an action.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logic">The action.</param>
+        /// <param name="timespan">The timespan, defaults to 4 seconds.</param>
+        /// <returns>T.</returns>
+        /// <exception cref="System.ArgumentNullException">logic</exception>
+        public static T WaitFor<T>(Func<T> logic, TimeSpan timespan) => WaitFor(logic, timespan, TimeSpan.FromMilliseconds(100));
+
+        /// <summary>
+        ///     Sets the <see cref="Component" /> property with a new instance while maintaining the constructor setup and any
+        ///     other changes.
         /// </summary>
         /// <example>
-        /// CreateComponent allows creating the component when desired, instead of in the base class constructor.
-        /// <code><![CDATA[
+        ///     CreateComponent allows creating the component when desired, instead of in the base class constructor.
+        ///     <code><![CDATA[
         /// public void Test() {
         ///     Mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
         ///     CreateComponent();
@@ -165,5 +219,31 @@ namespace FastMoq
             Component = CreateComponentAction?.Invoke(Mocks);
             CreatedComponentAction?.Invoke(Component);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
     }
 }
