@@ -61,6 +61,27 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void TestMethodInvoke()
+        {
+            var o = Mocks.CreateInstance<ITestClassOne>();
+            var x = Mocks.InvokeMethod(o, "TestVoid", true);
+            var y = Mocks.InvokeMethod<ITestClassOne>(null, "TestStaticObject");
+            var z = Mocks.InvokeMethod(o, "TestInt", true);
+            x.Should().BeNull();
+            y.Should().NotBeNull();
+            y.Should().BeOfType<MockFileSystem>();
+        }
+
+        [Fact]
+        public void MockParameters()
+        {
+            var o = Mocks.GetObject<TestClassDouble1>();
+            o.Value = 33;
+            o.Value.Should().Be(33);
+            Mocks.GetObject<TestClassDouble1>().Value.Should().Be(33);
+        }
+
+        [Fact]
         public void AddMock()
         {
             var mock = new Mock<IFileSystemInfo>
