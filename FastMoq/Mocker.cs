@@ -1,7 +1,6 @@
 ﻿using Moq;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
 
@@ -328,19 +327,9 @@ namespace FastMoq
             {
                 InvokeMethod<Mock>(null, "SetupAllProperties", true, oMock);
             }
+
             AddMock(oMock, type);
             return mockCollection;
-        }
-
-       internal object? InvokeMethod<TClass>(TClass obj, string methodName, bool nonPublic = false, params object?[] args) where TClass : class
-        {
-            var type = typeof(TClass).IsInterface ? GetTypeFromInterface<TClass>() : new InstanceModel<TClass>();
-            var flags = BindingFlags.IgnoreCase | BindingFlags.Public | (obj != null ? BindingFlags.Instance : BindingFlags.Static) | (nonPublic ? BindingFlags.NonPublic : BindingFlags.Public);
-            var method = type.InstanceType.GetMethod(methodName, flags);
-
-            return method == null
-                ? throw new ArgumentOutOfRangeException()
-                : method.Invoke(obj, flags, null, (args?.Any() ?? false) ? args.ToArray() : GetMethodArgData(method), null);
         }
 
         /// <summary>
@@ -353,19 +342,6 @@ namespace FastMoq
         /// <exception cref="System.ArgumentException">type already exists. - type</exception>
         /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
         public List<MockModel> CreateMock<T>(bool nonPublic = false) where T : class => CreateMock(typeof(T), nonPublic);
-
-        public object?[] GetMethodArgData(MethodInfo method, Dictionary<Type, object?>? data = null)
-        {
-            var args = new List<object?>();
-            method.GetParameters().ToList().ForEach(p =>
-            {
-                args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
-                    ? data.First(x => x.Key == p.ParameterType).Value
-                    : GetObject(p.ParameterType));
-            });
-
-            return args.ToArray();
-        }
 
         /// <summary>
         ///     Gets the argument data.
@@ -412,6 +388,27 @@ namespace FastMoq
             }
 
             return results;
+        }
+
+        /// <summary>
+        ///     Gets the method argument data.
+        /// </summary>
+        /// <param name="method">The method.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>System.Nullable&lt;System.Object&gt;[].</returns>
+        public object?[] GetMethodArgData(MethodInfo method, Dictionary<Type, object?>? data = null)
+        {
+            var args = new List<object?>();
+            method.GetParameters().ToList().ForEach(p =>
+            {
+                args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
+                    ? data.First(x => x.Key == p.ParameterType).Value
+                    : p.ParameterType.IsClass || p.ParameterType.IsInterface
+                        ? GetObject(p.ParameterType)
+                        : GetDefaultValue(p.ParameterType));
+            });
+
+            return args.ToArray();
         }
 
         /// <summary>
@@ -562,6 +559,43 @@ namespace FastMoq
         }
 
         /// <summary>
+        ///     Invokes the static method.
+        /// </summary>
+        /// <typeparam name="TClass">The type of the t class.</typeparam>
+        /// <param name="methodName">Name of the method.</param>
+        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns><see cref="Nullable"/>.</returns>
+        public object? InvokeMethod<TClass>(string methodName, bool nonPublic = false, params object?[] args)
+            where TClass : class => InvokeMethod<TClass>(null, methodName, nonPublic, args);
+
+        /// <summary>
+        ///     Invokes the method.
+        /// </summary>
+        /// <typeparam name="TClass">The type of the t class.</typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="methodName">Name of the method.</param>
+        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns><see cref="Nullable"/>.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+        public object? InvokeMethod<TClass>(TClass? obj, string methodName, bool nonPublic = false, params object?[] args)
+            where TClass : class
+        {
+            var type = typeof(TClass).IsInterface ? GetTypeFromInterface<TClass>() : new InstanceModel<TClass>();
+            var flags = BindingFlags.IgnoreCase | BindingFlags.Public |
+                        (obj != null ? BindingFlags.Instance : BindingFlags.Static) |
+                        (nonPublic ? BindingFlags.NonPublic : BindingFlags.Public);
+            var method = type.InstanceType.GetMethod(methodName, flags);
+
+            return method == null && !nonPublic && !Strict
+                ? InvokeMethod(obj, methodName, true, args)
+                : method == null
+                    ? throw new ArgumentOutOfRangeException()
+                    : method.Invoke(obj, flags, null, args?.Any() ?? false ? args.ToArray() : GetMethodArgData(method), null);
+        }
+
+        /// <summary>
         ///     Remove specified Mock of <c>T</c>.
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
@@ -691,6 +725,12 @@ namespace FastMoq
         internal T CreateInstanceInternal<T>(ConstructorInfo info, params object?[] args) where T : class =>
             (T) info.Invoke(args);
 
+        /// <summary>
+        ///     Creates the instance non public.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
         internal object? CreateInstanceNonPublic(Type type, params object[] args)
         {
             var constructor =
@@ -771,8 +811,8 @@ namespace FastMoq
             return !constructors.Any() && !nonPublic && !Strict
                 ? FindConstructorByType(type, true, args)
                 : !constructors.Any()
-                ? throw new NotImplementedException("Unable to find the constructor.")
-                : constructors.First();
+                    ? throw new NotImplementedException("Unable to find the constructor.")
+                    : constructors.First();
         }
 
         /// <summary>

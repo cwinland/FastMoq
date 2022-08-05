@@ -1,4 +1,5 @@
 using FluentAssertions;
+using FluentAssertions.Equivalency;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -63,13 +64,18 @@ namespace FastMoq.Tests
         [Fact]
         public void TestMethodInvoke()
         {
-            var o = Mocks.CreateInstance<ITestClassOne>();
-            var x = Mocks.InvokeMethod(o, "TestVoid", true);
-            var y = Mocks.InvokeMethod<ITestClassOne>(null, "TestStaticObject");
-            var z = Mocks.InvokeMethod(o, "TestInt", true);
-            x.Should().BeNull();
-            y.Should().NotBeNull();
-            y.Should().BeOfType<MockFileSystem>();
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid", true).Should().BeNull();
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid").Should().BeNull();
+            Mocks.InvokeMethod<ITestClassOne>(null, "TestStaticObject").Should().BeOfType<MockFileSystem>();
+            Mocks.InvokeMethod<ITestClassOne>("TestStaticObject").Should().BeOfType<MockFileSystem>();
+            Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true).Should().Be(0);
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestInt", true).Should().Be(0);
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestInt", true, 2).Should().Be(2);
+            Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true, 2).Should().Be(2);
+
+            Mocks.Strict = true;
+            Action a = () => Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
+            a.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Specified argument was out of the range of valid values.");
         }
 
         [Fact]
