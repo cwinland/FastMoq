@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Moq;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Reflection;
@@ -372,7 +373,7 @@ namespace FastMoq
         /// ]]></code>
         ///     or
         ///     <code><![CDATA[
-        /// GetList<IModel>(3, (i) => Mocks.GetObject<IModel>(i));
+        /// GetList<IModel>(3, (i) => Mocks.CreateInstance<IModel>(i));
         /// ]]></code>
         /// </example>
         public static List<T> GetList<T>(int count, Func<int, T>? func)
@@ -404,12 +405,12 @@ namespace FastMoq
         /// ]]></code>
         ///     or
         ///     <code><![CDATA[
-        /// GetList<IModel>(3, () => Mocks.GetObject<IModel>());
+        /// GetList<IModel>(3, () => Mocks.CreateInstance<IModel>());
         /// ]]></code>
         /// </example>
         public static List<T> GetList<T>(int count, Func<T>? func)
         {
-            return func == null ? new List<T>() : GetList<T>(count, _ => func.Invoke());
+            return func == null ? new List<T>() : GetList(count, _ => func.Invoke());
         }
 
         /// <summary>
@@ -425,7 +426,7 @@ namespace FastMoq
             {
                 args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
                     ? data.First(x => x.Key == p.ParameterType).Value
-                    : p.ParameterType.IsClass || p.ParameterType.IsInterface
+                    : (p.ParameterType.IsClass || p.ParameterType.IsInterface) && !p.ParameterType.IsSealed
                         ? GetObject(p.ParameterType)
                         : GetDefaultValue(p.ParameterType));
             });
@@ -890,7 +891,7 @@ namespace FastMoq
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="instanceParameterValues">The instance parameter values.</param>
-        /// <returns>Dictionary&lt;ConstructorInfo, List&lt;System.Nullable&lt;System.Object&gt;&gt;&gt;.</returns>
+        /// <returns><see cref="Dictionary{ConstructorInfo, List}" />.</returns>
         internal Dictionary<ConstructorInfo, List<object?>> GetConstructorsNonPublic(Type type,
             params object?[] instanceParameterValues) => type
             .GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public)
@@ -905,8 +906,8 @@ namespace FastMoq
         ///     Gets the default value.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
-        internal static object? GetDefaultValue(Type type) => type.IsClass ? null : Activator.CreateInstance(type);
+        /// <returns><see cref="Nullable{T}"/>.</returns>
+        internal static object? GetDefaultValue(Type type) => "System.String".Equals(type.FullName) ? string.Empty : type.IsClass ? null : Activator.CreateInstance(type);
 
         /// <summary>
         ///     Gets the mock model.

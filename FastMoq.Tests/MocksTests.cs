@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using System.Linq;
 using System.Runtime;
 using System.Security.Cryptography;
+using System.Threading;
 using Xunit;
 
 #pragma warning disable CS8604
@@ -395,6 +397,22 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetListParameter()
+        {
+            var numbers = Mocker.GetList(3, i=> i);
+            numbers.Should().BeEquivalentTo(new List<int> { 0, 1, 2 });
+
+            var strings = Mocker.GetList(3, i => i.ToString());
+            strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2" });
+
+            var test = Mocker.GetList(3, (i) => new TestClassMany(i));
+            test[0].value.Should().Be(0);
+            test[1].value.Should().Be(1);
+            test[2].value.Should().Be(2);
+
+        }
+
+        [Fact]
         public void GetMock()
         {
             Mocks.Contains<IFileInfo>().Should().BeTrue();
@@ -529,6 +547,25 @@ namespace FastMoq.Tests
             Mocks.RemoveMock(mock).Should().BeTrue();
             Mocks.Contains<IFileSystemInfo>().Should().BeFalse();
             Mocks.RemoveMock(mock).Should().BeFalse();
+        }
+
+        [Fact]
+        public void GetMethodArgData()
+        {
+            var type = typeof(Thread);
+            var instance = Thread.CurrentThread;
+
+            var methodInfo = type.GetMethod("Sleep", new Type[1] { typeof(int) });
+            var argData = Mocks.GetMethodArgData(methodInfo);
+            argData.Should().Contain(0);
+
+            methodInfo = type.GetMethod("Sleep", new Type[] { typeof(TimeSpan) });
+            argData = Mocks.GetMethodArgData(methodInfo);
+            argData.First().Should().BeOfType<TimeSpan>();
+
+            methodInfo = type.GetType().GetMethod("GetMethod", new Type[] { typeof(string), typeof(Type[]) });
+            argData = Mocks.GetMethodArgData(methodInfo);
+            argData.First().Should().BeOfType<string>();
         }
 
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)
