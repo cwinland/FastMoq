@@ -368,6 +368,38 @@ namespace FastMoq
         /// <example>
         ///     Example of how to create a list.
         ///     <code><![CDATA[
+        /// GetList<Model>(3, (i) => new Model(name: i.ToString()));
+        /// ]]></code>
+        ///     or
+        ///     <code><![CDATA[
+        /// GetList<IModel>(3, (i) => Mocks.GetObject<IModel>(i));
+        /// ]]></code>
+        /// </example>
+        public static List<T> GetList<T>(int count, Func<int, T>? func)
+        {
+            var results = new List<T>();
+
+            if (func != null)
+            {
+                for (var i = 0; i < count; i++)
+                {
+                    results.Add(func.Invoke(i));
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        ///     Gets a list with the specified number of list items, using a custom function.
+        /// </summary>
+        /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
+        /// <param name="count">The number of list items.</param>
+        /// <param name="func">The function for creating the list items.</param>
+        /// <returns><see cref="List{T}" />.</returns>
+        /// <example>
+        ///     Example of how to create a list.
+        ///     <code><![CDATA[
         /// GetList<Model>(3, () => new Model(name: Guid.NewGuid().ToString()));
         /// ]]></code>
         ///     or
@@ -377,17 +409,7 @@ namespace FastMoq
         /// </example>
         public static List<T> GetList<T>(int count, Func<T>? func)
         {
-            var results = new List<T>();
-
-            if (func != null)
-            {
-                for (var i = 0; i < count; i++)
-                {
-                    results.Add(func.Invoke());
-                }
-            }
-
-            return results;
+            return func == null ? new List<T>() : GetList<T>(count, _ => func.Invoke());
         }
 
         /// <summary>
