@@ -298,23 +298,18 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Creates the <see cref="MockModel" /> from the <c>Type</c>. This throws an exception if the mock already exists.
+        ///     Creates the mock instance that is not automatically injected.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="nonPublic"><c>true</c> if non public and public constructors are used.</param>
-        /// <returns><see cref="List{Mock}" />.</returns>
+        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <returns>Mock.</returns>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
-        public List<MockModel> CreateMock(Type type, bool nonPublic = false)
+        internal Mock CreateMockInstance(Type type, bool nonPublic = false)
         {
             if (type == null || (!type.IsClass && !type.IsInterface))
             {
                 throw new ArgumentException("type must be a class.", nameof(type));
-            }
-
-            if (Contains(type))
-            {
-                ThrowAlreadyExists(type);
             }
 
             var newType = typeof(Mock<>).MakeGenericType(type);
@@ -328,6 +323,36 @@ namespace FastMoq
             {
                 InvokeMethod<Mock>(null, "SetupAllProperties", true, oMock);
             }
+
+            return oMock;
+        }
+
+        /// <summary>
+        ///     Creates the mock instance that is not automatically injected.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <returns>Mock.</returns>
+        /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
+        /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
+        public Mock<T> CreateMockInstance<T>(bool nonPublic = false) where T : class => (Mock<T>)CreateMockInstance(typeof(T), nonPublic);
+
+        /// <summary>
+        ///     Creates the <see cref="MockModel" /> from the <c>Type</c>. This throws an exception if the mock already exists.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="nonPublic"><c>true</c> if non public and public constructors are used.</param>
+        /// <returns><see cref="List{Mock}" />.</returns>
+        /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
+        /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
+        public List<MockModel> CreateMock(Type type, bool nonPublic = false)
+        {
+            if (Contains(type))
+            {
+                ThrowAlreadyExists(type);
+            }
+
+            var oMock = CreateMockInstance(type, nonPublic);
 
             AddMock(oMock, type);
             return mockCollection;
