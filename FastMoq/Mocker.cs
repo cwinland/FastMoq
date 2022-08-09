@@ -1,5 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Moq;
+﻿using Moq;
+using System.Collections;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Reflection;
@@ -142,7 +142,7 @@ namespace FastMoq
         /// IFileSystem fileSystem = CreateInstance<IFileSystem>();
         /// ]]></code>
         /// </example>
-        public T? CreateInstance<T>(params object[] args) where T : class => CreateInstance<T>(true, args);
+        public T? CreateInstance<T>(params object?[] args) where T : class => CreateInstance<T>(true, args);
 
         /// <summary>
         ///     Creates the instance.
@@ -288,7 +288,7 @@ namespace FastMoq
         /// IModel model = CreateInstanceNonPublic<IModel>();
         /// ]]></code>
         /// </example>
-        public T? CreateInstanceNonPublic<T>(params object[] args) where T : class
+        public T? CreateInstanceNonPublic<T>(params object?[] args) where T : class
         {
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
 
@@ -408,10 +408,8 @@ namespace FastMoq
         /// GetList<IModel>(3, () => Mocks.CreateInstance<IModel>());
         /// ]]></code>
         /// </example>
-        public static List<T> GetList<T>(int count, Func<T>? func)
-        {
-            return func == null ? new List<T>() : GetList(count, _ => func.Invoke());
-        }
+        public static List<T> GetList<T>(int count, Func<T>? func) =>
+            func == null ? new List<T>() : GetList(count, _ => func.Invoke());
 
         /// <summary>
         ///     Gets the method argument data.
@@ -421,14 +419,17 @@ namespace FastMoq
         /// <returns>System.Nullable&lt;System.Object&gt;[].</returns>
         public object?[] GetMethodArgData(MethodInfo method, Dictionary<Type, object?>? data = null)
         {
+            if (method == null)
+            {
+                throw new ArgumentNullException(nameof(method));
+            }
+
             var args = new List<object?>();
             method.GetParameters().ToList().ForEach(p =>
             {
                 args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
                     ? data.First(x => x.Key == p.ParameterType).Value
-                    : (p.ParameterType.IsClass || p.ParameterType.IsInterface) && !p.ParameterType.IsSealed
-                        ? GetObject(p.ParameterType)
-                        : GetDefaultValue(p.ParameterType));
+                    : GetParameter(p.ParameterType));
             });
 
             return args.ToArray();
@@ -562,8 +563,8 @@ namespace FastMoq
         ///     Example of how to set up for mocks that require specific functionality.
         ///     <code><![CDATA[
         /// mocks.Initialize<ICarService>(mock => {
-        /// mock.Setup(x => x.StartCar).Returns(true));
-        /// mock.Setup(x => x.StopCar).Returns(false));
+        ///     mock.Setup(x => x.StartCar).Returns(true));
+        ///     mock.Setup(x => x.StopCar).Returns(false));
         /// }
         /// ]]></code>
         /// </example>
@@ -588,7 +589,7 @@ namespace FastMoq
         /// <param name="methodName">Name of the method.</param>
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
         /// <param name="args">The arguments.</param>
-        /// <returns><see cref="Nullable"/>.</returns>
+        /// <returns><see cref="Nullable" />.</returns>
         public object? InvokeMethod<TClass>(string methodName, bool nonPublic = false, params object?[] args)
             where TClass : class => InvokeMethod<TClass>(null, methodName, nonPublic, args);
 
@@ -600,7 +601,7 @@ namespace FastMoq
         /// <param name="methodName">Name of the method.</param>
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
         /// <param name="args">The arguments.</param>
-        /// <returns><see cref="Nullable"/>.</returns>
+        /// <returns><see cref="Nullable" />.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public object? InvokeMethod<TClass>(TClass? obj, string methodName, bool nonPublic = false, params object?[] args)
             where TClass : class
@@ -680,7 +681,7 @@ namespace FastMoq
         /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
         /// <param name="args">The arguments.</param>
         /// <returns><see cref="Nullable{T}" />.</returns>
-        internal T? CreateInstance<T>(bool usePredefinedFileSystem, params object[] args) where T : class
+        internal T? CreateInstance<T>(bool usePredefinedFileSystem, params object?[] args) where T : class
         {
             if (IsMockFileSystem<T>(usePredefinedFileSystem))
             {
@@ -754,7 +755,7 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
-        internal object? CreateInstanceNonPublic(Type type, params object[] args)
+        internal object CreateInstanceNonPublic(Type type, params object?[] args)
         {
             var constructor =
                 args.Length > 0
@@ -850,8 +851,8 @@ namespace FastMoq
             constructor.GetParameters().ToList().ForEach(p =>
             {
                 args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
-                    ? data?.First(x => x.Key == p.ParameterType).Value
-                    : GetObject(p.ParameterType));
+                    ? data.First(x => x.Key == p.ParameterType).Value
+                    : GetParameter(p.ParameterType));
             });
 
             return args.ToArray();
@@ -906,8 +907,14 @@ namespace FastMoq
         ///     Gets the default value.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns><see cref="Nullable{T}"/>.</returns>
-        internal static object? GetDefaultValue(Type type) => "System.String".Equals(type.FullName) ? string.Empty : type.IsClass ? null : Activator.CreateInstance(type);
+        /// <returns><see cref="Nullable{T}" />.</returns>
+        internal static object? GetDefaultValue(Type type) => type switch
+        {
+            { FullName: "System.String" } => string.Empty,
+            _ when typeof(IEnumerable).IsAssignableFrom(type) => Array.CreateInstance(type.GetElementType(), 0),
+            { IsClass: true } => null,
+            _ => Activator.CreateInstance(type)
+        };
 
         /// <summary>
         ///     Gets the mock model.
@@ -940,6 +947,11 @@ namespace FastMoq
         /// <returns>System.Int32.</returns>
         internal int GetMockModelIndexOf(Type type, bool autoCreate = true) =>
             mockCollection.IndexOf(GetMockModel(type, null, autoCreate));
+
+        internal object? GetParameter(Type parameterType) =>
+            (parameterType.IsClass || parameterType.IsInterface) && !parameterType.IsSealed
+                ? GetObject(parameterType)
+                : GetDefaultValue(parameterType);
 
         /// <summary>
         ///     Gets the type from interface.

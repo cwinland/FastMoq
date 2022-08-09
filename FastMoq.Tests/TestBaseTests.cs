@@ -3,6 +3,8 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 #pragma warning disable CS8604
@@ -104,6 +106,32 @@ namespace FastMoq.Tests
                 Component.SetPropertyValue(name, value);
                 Component.GetPropertyValue(name).Should().Be(value);
             }
+        }
+
+        [Fact]
+        public void WaitForTest()
+        {
+            var result1 = false;
+            var result2 = false;
+
+            var task1 = new Task(() =>
+            {
+                Thread.Sleep(1000);
+                result1 = true;
+            });
+            var task2 = new Task(() =>
+            {
+                Thread.Sleep(500);
+                result2 = true;
+            });
+
+            task1.Start();
+            task2.Start();
+            WaitFor(() => result1 && result2, TimeSpan.FromSeconds(2));
+            result1.Should().BeTrue();
+            result2.Should().BeTrue();
+            task1.Dispose();
+            task2.Dispose();
         }
     }
 

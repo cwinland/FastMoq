@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
+using System.Reflection;
 using System.Runtime;
 using System.Security.Cryptography;
 using System.Threading;
@@ -61,6 +62,15 @@ namespace FastMoq.Tests
             Component.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(1);
 
             Component.GetMockModelIndexOf(typeof(IFile), false).Should().Be(0);
+        }
+
+        [Fact]
+        public void CreateInstance()
+        {
+            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
+            Mocks.CreateInstance<TestClassDouble1>().Should().NotBeNull();
+            Mocks.CreateInstance<TestClassDouble2>().Should().NotBeNull();
+            Mocks.CreateInstance<TestClassParameters>().Should().NotBeNull();
         }
 
         [Fact]
@@ -522,6 +532,11 @@ namespace FastMoq.Tests
             var test2 = Component.GetObject<ITestClassMultiple>(args);
             test2.Fs.Should().BeNull();
             test2.F.Should().NotBeNull();
+
+            args = Component.GetArgData<TestClassParameters>();
+            Component.GetObject<TestClassParameters>(args);
+            Component.CreateInstance<TestClassParameters>();
+            Component.CreateInstance<TestClassParameters>(args);
         }
 
         [Fact]
@@ -555,17 +570,38 @@ namespace FastMoq.Tests
             var type = typeof(Thread);
             var instance = Thread.CurrentThread;
 
-            var methodInfo = type.GetMethod("Sleep", new Type[1] { typeof(int) });
+            var types = new List<Type>() { typeof(int) };
+            var methodInfo = type.GetMethod("Sleep", types.ToArray());
             var argData = Mocks.GetMethodArgData(methodInfo);
             argData.Should().Contain(0);
 
-            methodInfo = type.GetMethod("Sleep", new Type[] { typeof(TimeSpan) });
+            types = new List<Type>() { typeof(TimeSpan) };
+            methodInfo = type.GetMethod("Sleep", types.ToArray());
             argData = Mocks.GetMethodArgData(methodInfo);
             argData.First().Should().BeOfType<TimeSpan>();
 
-            methodInfo = type.GetType().GetMethod("GetMethod", new Type[] { typeof(string), typeof(Type[]) });
+            types = new List<Type>() { typeof(string), typeof(Type[]) };
+            methodInfo = type.GetType().GetMethod("GetMethod", types.ToArray());
             argData = Mocks.GetMethodArgData(methodInfo);
-            argData.First().Should().BeOfType<string>();
+            CheckTypes(argData, types);
+
+            types = new List<Type>()
+            {
+                typeof(string), typeof(BindingFlags), typeof(Binder), typeof(CallingConventions), typeof(Type[]),
+                typeof(ParameterModifier[])
+            };
+
+            methodInfo = type.GetType().GetMethod("GetMethod", types.ToArray());
+            argData = Mocks.GetMethodArgData(methodInfo);
+            CheckTypes(argData, types);
+        }
+
+        private void CheckTypes(IReadOnlyList<object?> argData, List<Type> types)
+        {
+            for (var i = 0; i < argData.Count; i++)
+            {
+                types[i].IsInstanceOfType(argData[i]).Should().BeTrue();
+            }
         }
 
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)

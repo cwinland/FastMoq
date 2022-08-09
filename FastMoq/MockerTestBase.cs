@@ -1,3 +1,5 @@
+using Moq;
+
 namespace FastMoq
 {
     /// <summary>
@@ -171,6 +173,10 @@ namespace FastMoq
                 Thread.Sleep(waitBetweenChecks);
             }
 
+            if (!EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now > timeout)
+            {
+                throw new ApplicationException("Waitfor Timeout");
+            }
             return result;
         }
 
