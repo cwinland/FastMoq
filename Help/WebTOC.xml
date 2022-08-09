@@ -1,89 +1,92 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <HelpTOC>
 
-  <HelpTOCNode Id="945c614e-a897-4792-a0ae-d0fdd31980d9" Title="FastMoq Namespace" Url="html/N-FastMoq.htm">
-    <HelpTOCNode Id="76cfaeea-dd0f-427f-93be-0e161f736ed6" Title="InstanceModel Class" Url="html/T-FastMoq.InstanceModel.htm">
+  <HelpTOCNode Id="8feef2b4-236a-4a58-adb1-57b1a54b5f2d" Title="FastMoq Namespace" Url="html/N-FastMoq.htm">
+    <HelpTOCNode Id="c8466702-b84c-479c-a2f4-acaab4e9f0d5" Title="InstanceModel Class" Url="html/T-FastMoq.InstanceModel.htm">
       <HelpTOCNode Title="InstanceModel Members" Url="html/AllMembers.T-FastMoq.InstanceModel.htm" />
-      <HelpTOCNode Id="0deee171-9ca6-41e1-a78e-e82aa538419b" Title="InstanceModel Properties" Url="html/Properties.T-FastMoq.InstanceModel.htm">
+      <HelpTOCNode Id="71b42d28-329b-4df9-a0ec-80c4ad831cf2" Title="InstanceModel Properties" Url="html/Properties.T-FastMoq.InstanceModel.htm">
         <HelpTOCNode Title="CreateFunc Property " Url="html/P-FastMoq.InstanceModel.CreateFunc.htm" />
         <HelpTOCNode Title="InstanceType Property " Url="html/P-FastMoq.InstanceModel.InstanceType.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="ba7d4f09-d6ce-43da-96b1-59efc456e24b" Title="InstanceModel(TClass) Class" Url="html/T-FastMoq.InstanceModel-1.htm">
+    <HelpTOCNode Id="3aa6885d-3f6e-4971-8c75-546e7d95e6ce" Title="InstanceModel(TClass) Class" Url="html/T-FastMoq.InstanceModel-1.htm">
       <HelpTOCNode Title="InstanceModel(TClass) Members" Url="html/AllMembers.T-FastMoq.InstanceModel-1.htm" />
-      <HelpTOCNode Id="9b0d8f03-3718-4647-979c-e06c1a3c2e7e" Title="InstanceModel(TClass) Constructor " Url="html/Overload-FastMoq.InstanceModel-1.-ctor.htm">
+      <HelpTOCNode Id="5c020eaa-4407-4be1-b10e-1ea92eafadae" Title="InstanceModel(TClass) Constructor " Url="html/Overload-FastMoq.InstanceModel-1.-ctor.htm">
         <HelpTOCNode Title="InstanceModel(TClass) Constructor " Url="html/M-FastMoq.InstanceModel-1.-ctor.htm" />
         <HelpTOCNode Title="InstanceModel(TClass) Constructor (Nullable(Func(Mocker, TClass)))" Url="html/M-FastMoq.InstanceModel-1.-ctor_1.htm" />
       </HelpTOCNode>
-      <HelpTOCNode Id="bbaad43c-3926-410e-85fc-fd9289eeee77" Title="InstanceModel(TClass) Properties" Url="html/Properties.T-FastMoq.InstanceModel-1.htm">
+      <HelpTOCNode Id="a1dd53df-69c4-4f7e-81e4-9c0c685bf9ca" Title="InstanceModel(TClass) Properties" Url="html/Properties.T-FastMoq.InstanceModel-1.htm">
         <HelpTOCNode Title="CreateFunc Property " Url="html/P-FastMoq.InstanceModel-1.CreateFunc.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="5633c86d-5849-4ebc-8f8e-165e2cc2a703" Title="Mocker Class" Url="html/T-FastMoq.Mocker.htm">
+    <HelpTOCNode Id="6724da7f-4660-40c7-837d-a477fe2ba6fe" Title="Mocker Class" Url="html/T-FastMoq.Mocker.htm">
       <HelpTOCNode Title="Mocker Members" Url="html/AllMembers.T-FastMoq.Mocker.htm" />
-      <HelpTOCNode Id="16c9b30f-20a1-4041-8992-c9e5614b35b5" Title="Mocker Constructor " Url="html/Overload-FastMoq.Mocker.-ctor.htm">
+      <HelpTOCNode Id="ff0b994c-7afe-45a1-9b0b-d59824625148" Title="Mocker Constructor " Url="html/Overload-FastMoq.Mocker.-ctor.htm">
         <HelpTOCNode Title="Mocker Constructor " Url="html/M-FastMoq.Mocker.-ctor.htm" />
         <HelpTOCNode Title="Mocker Constructor (Dictionary(Type, InstanceModel))" Url="html/M-FastMoq.Mocker.-ctor_1.htm" />
       </HelpTOCNode>
-      <HelpTOCNode Id="ea65fa68-ccb7-4174-b015-1ac1ccc03f60" Title="Mocker Fields" Url="html/Fields.T-FastMoq.Mocker.htm">
+      <HelpTOCNode Id="a21a1c64-5f00-42f8-9803-6717b71730c8" Title="Mocker Fields" Url="html/Fields.T-FastMoq.Mocker.htm">
         <HelpTOCNode Title="fileSystem Field" Url="html/F-FastMoq.Mocker.fileSystem.htm" />
         <HelpTOCNode Title="mockCollection Field" Url="html/F-FastMoq.Mocker.mockCollection.htm" />
       </HelpTOCNode>
-      <HelpTOCNode Id="f68ed753-8e65-45dd-9550-e8f5d1a887d6" Title="Mocker Methods" Url="html/Methods.T-FastMoq.Mocker.htm">
+      <HelpTOCNode Id="b2ce7550-791f-4b7b-ae18-d2833ecdf779" Title="Mocker Methods" Url="html/Methods.T-FastMoq.Mocker.htm">
         <HelpTOCNode Title="AddMock(T) Method (Mock(T), Boolean, Boolean)" Url="html/M-FastMoq.Mocker.AddMock--1.htm" />
         <HelpTOCNode Title="AddType(TInterface, TClass) Method " Url="html/M-FastMoq.Mocker.AddType--2.htm" />
-        <HelpTOCNode Id="64fd87a1-2ac8-4c0f-bda9-0c02a8481aac" Title="Overload:FastMoq.Mocker.Contains">
+        <HelpTOCNode Id="4a398183-e7ec-4fed-b4ee-f9ba32eb9b06" Title="Contains Method " Url="html/Overload-FastMoq.Mocker.Contains-.htm">
           <HelpTOCNode Title="Contains(T) Method " Url="html/M-FastMoq.Mocker.Contains--1.htm" />
           <HelpTOCNode Title="Contains Method (Type)" Url="html/M-FastMoq.Mocker.Contains.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="dcdbff38-d015-4f41-b1b6-3db1faa53bb9" Title="CreateInstance Method " Url="html/Overload-FastMoq.Mocker.CreateInstance-.htm">
+        <HelpTOCNode Id="7112dd93-ea6e-4057-ba4d-ee309e7c4d5e" Title="CreateInstance Method " Url="html/Overload-FastMoq.Mocker.CreateInstance-.htm">
           <HelpTOCNode Title="CreateInstance(T) Method (Object[])" Url="html/M-FastMoq.Mocker.CreateInstance--1.htm" />
-          <HelpTOCNode Title="CreateInstance(T, TParam1) Method (Dictionary(Type, Nullable(Object)))" Url="html/M-FastMoq.Mocker.CreateInstance--2.htm" />
-          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2) Method (Dictionary(Type, Nullable(Object)))" Url="html/M-FastMoq.Mocker.CreateInstance--3.htm" />
-          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3) Method (Dictionary(Type, Nullable(Object)))" Url="html/M-FastMoq.Mocker.CreateInstance--4.htm" />
-          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3, TParam4) Method (Dictionary(Type, Nullable(Object)))" Url="html/M-FastMoq.Mocker.CreateInstance--5.htm" />
-          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3, TParam4, TParam5) Method (Dictionary(Type, Nullable(Object)))" Url="html/M-FastMoq.Mocker.CreateInstance--6.htm" />
-          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6) Method (Dictionary(Type, Nullable(Object)))" Url="html/M-FastMoq.Mocker.CreateInstance--7.htm" />
-          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7) Method (Dictionary(Type, Nullable(Object)))" Url="html/M-FastMoq.Mocker.CreateInstance--8.htm" />
-          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8) Method (Dictionary(Type, Nullable(Object)))" Url="html/M-FastMoq.Mocker.CreateInstance--9.htm" />
+          <HelpTOCNode Title="CreateInstance(T, TParam1) Method (Dictionary(Type, Object))" Url="html/M-FastMoq.Mocker.CreateInstance--2.htm" />
+          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2) Method (Dictionary(Type, Object))" Url="html/M-FastMoq.Mocker.CreateInstance--3.htm" />
+          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3) Method (Dictionary(Type, Object))" Url="html/M-FastMoq.Mocker.CreateInstance--4.htm" />
+          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3, TParam4) Method (Dictionary(Type, Object))" Url="html/M-FastMoq.Mocker.CreateInstance--5.htm" />
+          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3, TParam4, TParam5) Method (Dictionary(Type, Object))" Url="html/M-FastMoq.Mocker.CreateInstance--6.htm" />
+          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6) Method (Dictionary(Type, Object))" Url="html/M-FastMoq.Mocker.CreateInstance--7.htm" />
+          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7) Method (Dictionary(Type, Object))" Url="html/M-FastMoq.Mocker.CreateInstance--8.htm" />
+          <HelpTOCNode Title="CreateInstance(T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8) Method (Dictionary(Type, Object))" Url="html/M-FastMoq.Mocker.CreateInstance--9.htm" />
           <HelpTOCNode Title="CreateInstance(T) Method (Boolean)" Url="html/M-FastMoq.Mocker.CreateInstance--1_1.htm" />
         </HelpTOCNode>
         <HelpTOCNode Title="CreateInstanceNonPublic(T) Method (Object[])" Url="html/M-FastMoq.Mocker.CreateInstanceNonPublic--1.htm" />
-        <HelpTOCNode Id="cae10b6d-33e9-4e8f-be38-e4a557330d9f" Title="Overload:FastMoq.Mocker.CreateMock">
+        <HelpTOCNode Id="0e514644-dcb9-44b2-9a50-1b48834aedb7" Title="CreateMock Method " Url="html/Overload-FastMoq.Mocker.CreateMock.htm">
           <HelpTOCNode Title="CreateMock Method (Type, Boolean)" Url="html/M-FastMoq.Mocker.CreateMock.htm" />
           <HelpTOCNode Title="CreateMock(T) Method (Boolean)" Url="html/M-FastMoq.Mocker.CreateMock--1.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Title="GetArgData(T) Method (Nullable(Dictionary(Type, Nullable(Object))))" Url="html/M-FastMoq.Mocker.GetArgData--1.htm" />
-        <HelpTOCNode Title="GetList(T) Method " Url="html/M-FastMoq.Mocker.GetList--1.htm" />
+        <HelpTOCNode Title="GetArgData(T) Method (Dictionary(Type, Object))" Url="html/M-FastMoq.Mocker.GetArgData--1.htm" />
+        <HelpTOCNode Id="1aecb2a8-ed38-453d-90d1-2616a9df7da5" Title="GetList Method " Url="html/Overload-FastMoq.Mocker.GetList-.htm">
+          <HelpTOCNode Title="GetList(T) Method (Int32, Func(Int32, T))" Url="html/M-FastMoq.Mocker.GetList--1.htm" />
+          <HelpTOCNode Title="GetList(T) Method (Int32, Func(T))" Url="html/M-FastMoq.Mocker.GetList--1_1.htm" />
+        </HelpTOCNode>
         <HelpTOCNode Title="GetMethodArgData Method " Url="html/M-FastMoq.Mocker.GetMethodArgData.htm" />
-        <HelpTOCNode Id="51801c32-3f35-462f-beac-76177a828b67" Title="Overload:FastMoq.Mocker.GetMock">
+        <HelpTOCNode Id="866511a2-255f-45ab-a67c-063f298ec94e" Title="GetMock Method " Url="html/Overload-FastMoq.Mocker.GetMock-.htm">
           <HelpTOCNode Title="GetMock(T) Method " Url="html/M-FastMoq.Mocker.GetMock--1.htm" />
           <HelpTOCNode Title="GetMock Method (Type)" Url="html/M-FastMoq.Mocker.GetMock.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="bc191173-7d5c-4d5a-b2fa-9dbcc39a514d" Title="GetObject Method " Url="html/Overload-FastMoq.Mocker.GetObject.htm">
+        <HelpTOCNode Id="0bbdb719-e22f-42fd-9d10-f2e5d59f4d66" Title="GetObject Method " Url="html/Overload-FastMoq.Mocker.GetObject.htm">
           <HelpTOCNode Title="GetObject Method (ParameterInfo)" Url="html/M-FastMoq.Mocker.GetObject.htm" />
           <HelpTOCNode Title="GetObject Method (Type)" Url="html/M-FastMoq.Mocker.GetObject_1.htm" />
           <HelpTOCNode Title="GetObject(T) Method " Url="html/M-FastMoq.Mocker.GetObject--1.htm" />
-          <HelpTOCNode Title="GetObject(T) Method (Nullable(Object)[])" Url="html/M-FastMoq.Mocker.GetObject--1_1.htm" />
+          <HelpTOCNode Title="GetObject(T) Method (Object[])" Url="html/M-FastMoq.Mocker.GetObject--1_1.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="7dd6893a-4a48-4849-84a5-17b015c247db" Title="Overload:FastMoq.Mocker.GetRequiredMock">
+        <HelpTOCNode Id="0833dc61-0374-4d86-8efc-e6941b57a7ea" Title="GetRequiredMock Method " Url="html/Overload-FastMoq.Mocker.GetRequiredMock.htm">
           <HelpTOCNode Title="GetRequiredMock Method (Type)" Url="html/M-FastMoq.Mocker.GetRequiredMock.htm" />
           <HelpTOCNode Title="GetRequiredMock(T) Method " Url="html/M-FastMoq.Mocker.GetRequiredMock--1.htm" />
         </HelpTOCNode>
         <HelpTOCNode Title="Initialize(T) Method " Url="html/M-FastMoq.Mocker.Initialize--1.htm" />
-        <HelpTOCNode Id="5e763a53-39db-4463-807a-f546a26c7def" Title="InvokeMethod Method " Url="html/Overload-FastMoq.Mocker.InvokeMethod-.htm">
-          <HelpTOCNode Title="InvokeMethod(TClass) Method (String, Boolean, Nullable(Object)[])" Url="html/M-FastMoq.Mocker.InvokeMethod--1.htm" />
-          <HelpTOCNode Title="InvokeMethod(TClass) Method (Nullable(TClass), String, Boolean, Nullable(Object)[])" Url="html/M-FastMoq.Mocker.InvokeMethod--1_1.htm" />
+        <HelpTOCNode Id="1141c550-476b-470f-a9a7-7546c3313b75" Title="InvokeMethod Method " Url="html/Overload-FastMoq.Mocker.InvokeMethod-.htm">
+          <HelpTOCNode Title="InvokeMethod(TClass) Method (String, Boolean, Object[])" Url="html/M-FastMoq.Mocker.InvokeMethod--1.htm" />
+          <HelpTOCNode Title="InvokeMethod(TClass) Method (TClass, String, Boolean, Object[])" Url="html/M-FastMoq.Mocker.InvokeMethod--1_1.htm" />
         </HelpTOCNode>
         <HelpTOCNode Title="RemoveMock(T) Method " Url="html/M-FastMoq.Mocker.RemoveMock--1.htm" />
       </HelpTOCNode>
-      <HelpTOCNode Id="8e483019-e171-4fc7-af91-2d711069a01b" Title="Mocker Properties" Url="html/Properties.T-FastMoq.Mocker.htm">
+      <HelpTOCNode Id="2d9ffe01-92d4-4fb8-ad54-a19839f07821" Title="Mocker Properties" Url="html/Properties.T-FastMoq.Mocker.htm">
         <HelpTOCNode Title="Strict Property " Url="html/P-FastMoq.Mocker.Strict.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="659db918-4156-494f-8e5b-e3a46f1eee17" Title="MockerTestBase(TComponent) Class" Url="html/T-FastMoq.MockerTestBase-1.htm">
+    <HelpTOCNode Id="c8bac8b0-3900-4ff5-8155-bd1164c13ea6" Title="MockerTestBase(TComponent) Class" Url="html/T-FastMoq.MockerTestBase-1.htm">
       <HelpTOCNode Title="MockerTestBase(TComponent) Members" Url="html/AllMembers.T-FastMoq.MockerTestBase-1.htm" />
-      <HelpTOCNode Id="533df681-fb99-4b2a-8186-73eb52413f9e" Title="MockerTestBase(TComponent) Constructor " Url="html/Overload-FastMoq.MockerTestBase-1.-ctor.htm">
+      <HelpTOCNode Id="511232d7-595f-4cb3-a7ca-78fcd1781c77" Title="MockerTestBase(TComponent) Constructor " Url="html/Overload-FastMoq.MockerTestBase-1.-ctor.htm">
         <HelpTOCNode Title="MockerTestBase(TComponent) Constructor " Url="html/M-FastMoq.MockerTestBase-1.-ctor.htm" />
         <HelpTOCNode Title="MockerTestBase(TComponent) Constructor (Action(Mocker))" Url="html/M-FastMoq.MockerTestBase-1.-ctor_1.htm" />
         <HelpTOCNode Title="MockerTestBase(TComponent) Constructor (Action(Mocker), Func(Mocker, TComponent))" Url="html/M-FastMoq.MockerTestBase-1.-ctor_2.htm" />
@@ -91,19 +94,19 @@
         <HelpTOCNode Title="MockerTestBase(TComponent) Constructor (Func(Mocker, TComponent), Nullable(Action(Nullable(TComponent))))" Url="html/M-FastMoq.MockerTestBase-1.-ctor_4.htm" />
         <HelpTOCNode Title="MockerTestBase(TComponent) Constructor (Nullable(Action(Mocker)), Nullable(Func(Mocker, Nullable(TComponent))), Nullable(Action(Nullable(TComponent))))" Url="html/M-FastMoq.MockerTestBase-1.-ctor_5.htm" />
       </HelpTOCNode>
-      <HelpTOCNode Id="8c9e640d-24f0-407c-8ef6-45089c59ffbb" Title="MockerTestBase(TComponent) Methods" Url="html/Methods.T-FastMoq.MockerTestBase-1.htm">
+      <HelpTOCNode Id="473e2bc7-2764-43f1-8563-c9a444a24df3" Title="MockerTestBase(TComponent) Methods" Url="html/Methods.T-FastMoq.MockerTestBase-1.htm">
         <HelpTOCNode Title="CreateComponent Method " Url="html/M-FastMoq.MockerTestBase-1.CreateComponent.htm" />
-        <HelpTOCNode Id="fa6e3a5c-2bd4-4667-893e-a3f2e9ec5c20" Title="Dispose Method " Url="html/Overload-FastMoq.MockerTestBase-1.Dispose.htm">
+        <HelpTOCNode Id="3e362831-747d-44b3-9bd6-e262c1c20ca1" Title="Dispose Method " Url="html/Overload-FastMoq.MockerTestBase-1.Dispose.htm">
           <HelpTOCNode Title="Dispose Method (Boolean)" Url="html/M-FastMoq.MockerTestBase-1.Dispose.htm" />
           <HelpTOCNode Title="Dispose Method " Url="html/M-FastMoq.MockerTestBase-1.Dispose_1.htm" />
         </HelpTOCNode>
-        <HelpTOCNode Id="fc345902-52a4-4d3a-8e69-5b67cefdfe8f" Title="WaitFor Method " Url="html/Overload-FastMoq.MockerTestBase-1.WaitFor-.htm">
+        <HelpTOCNode Id="5b39bf51-6640-4603-8a10-037bcc5d38a8" Title="WaitFor Method " Url="html/Overload-FastMoq.MockerTestBase-1.WaitFor-.htm">
           <HelpTOCNode Title="WaitFor(T) Method (Func(T), TimeSpan, TimeSpan)" Url="html/M-FastMoq.MockerTestBase-1.WaitFor--1.htm" />
           <HelpTOCNode Title="WaitFor(T) Method (Func(T))" Url="html/M-FastMoq.MockerTestBase-1.WaitFor--1_1.htm" />
           <HelpTOCNode Title="WaitFor(T) Method (Func(T), TimeSpan)" Url="html/M-FastMoq.MockerTestBase-1.WaitFor--1_2.htm" />
         </HelpTOCNode>
       </HelpTOCNode>
-      <HelpTOCNode Id="9e233722-2ea6-4726-863d-9b4f442ffcb3" Title="MockerTestBase(TComponent) Properties" Url="html/Properties.T-FastMoq.MockerTestBase-1.htm">
+      <HelpTOCNode Id="9a2d1896-33f8-42d8-8a8a-c6c7b52135c9" Title="MockerTestBase(TComponent) Properties" Url="html/Properties.T-FastMoq.MockerTestBase-1.htm">
         <HelpTOCNode Title="Component Property " Url="html/P-FastMoq.MockerTestBase-1.Component.htm" />
         <HelpTOCNode Title="CreateComponentAction Property " Url="html/P-FastMoq.MockerTestBase-1.CreateComponentAction.htm" />
         <HelpTOCNode Title="CreatedComponentAction Property " Url="html/P-FastMoq.MockerTestBase-1.CreatedComponentAction.htm" />
@@ -112,23 +115,23 @@
         <HelpTOCNode Title="SetupMocksAction Property " Url="html/P-FastMoq.MockerTestBase-1.SetupMocksAction.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="941c0a1e-1b10-489b-a022-e582b9f355f7" Title="MockModel Class" Url="html/T-FastMoq.MockModel.htm">
+    <HelpTOCNode Id="931e91b2-a2f4-4e79-9dd9-05368def4708" Title="MockModel Class" Url="html/T-FastMoq.MockModel.htm">
       <HelpTOCNode Title="MockModel Members" Url="html/AllMembers.T-FastMoq.MockModel.htm" />
-      <HelpTOCNode Id="6ca70fbe-d060-49b5-aa97-0bcd06523a52" Title="MockModel Properties" Url="html/Properties.T-FastMoq.MockModel.htm">
+      <HelpTOCNode Id="b4eaae27-e45a-4efb-a173-df1b56f8b96a" Title="MockModel Properties" Url="html/Properties.T-FastMoq.MockModel.htm">
         <HelpTOCNode Title="Mock Property " Url="html/P-FastMoq.MockModel.Mock.htm" />
         <HelpTOCNode Title="NonPublic Property " Url="html/P-FastMoq.MockModel.NonPublic.htm" />
         <HelpTOCNode Title="Type Property " Url="html/P-FastMoq.MockModel.Type.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="be1b82a4-62ce-42fe-9f83-595a08f2767e" Title="MockModel(T) Class" Url="html/T-FastMoq.MockModel-1.htm">
+    <HelpTOCNode Id="424966e6-869e-443c-8101-1e57160f3fc5" Title="MockModel(T) Class" Url="html/T-FastMoq.MockModel-1.htm">
       <HelpTOCNode Title="MockModel(T) Members" Url="html/AllMembers.T-FastMoq.MockModel-1.htm" />
-      <HelpTOCNode Id="e9a44585-dee5-44bd-9c23-42262f27a530" Title="MockModel(T) Properties" Url="html/Properties.T-FastMoq.MockModel-1.htm">
+      <HelpTOCNode Id="5ba4aa31-fe32-4ffc-a309-fee22f7b4d2d" Title="MockModel(T) Properties" Url="html/Properties.T-FastMoq.MockModel-1.htm">
         <HelpTOCNode Title="Mock Property " Url="html/P-FastMoq.MockModel-1.Mock.htm" />
       </HelpTOCNode>
     </HelpTOCNode>
-    <HelpTOCNode Id="806eb203-a4be-4df7-bce3-767afb156167" Title="TestClassExtensions Class" Url="html/T-FastMoq.TestClassExtensions.htm">
+    <HelpTOCNode Id="3a0ebec7-669b-4c9d-95e9-147bd22eea60" Title="TestClassExtensions Class" Url="html/T-FastMoq.TestClassExtensions.htm">
       <HelpTOCNode Title="TestClassExtensions Members" Url="html/AllMembers.T-FastMoq.TestClassExtensions.htm" />
-      <HelpTOCNode Id="58030549-b408-4d01-9aca-cb905abeec21" Title="TestClassExtensions Methods" Url="html/Methods.T-FastMoq.TestClassExtensions.htm">
+      <HelpTOCNode Id="50911c4b-cb94-40d9-b2c1-f29e0690a0b8" Title="TestClassExtensions Methods" Url="html/Methods.T-FastMoq.TestClassExtensions.htm">
         <HelpTOCNode Title="GetField(TObject) Method " Url="html/M-FastMoq.TestClassExtensions.GetField--1.htm" />
         <HelpTOCNode Title="GetFieldValue(TObject) Method " Url="html/M-FastMoq.TestClassExtensions.GetFieldValue--1.htm" />
         <HelpTOCNode Title="GetMember(T, TValue) Method " Url="html/M-FastMoq.TestClassExtensions.GetMember--2.htm" />
