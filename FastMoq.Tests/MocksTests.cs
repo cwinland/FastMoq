@@ -6,8 +6,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using System.Linq;
+using System.Reflection;
 using System.Runtime;
 using System.Security.Cryptography;
+using System.Threading;
 using Xunit;
 
 #pragma warning disable CS8604
@@ -59,6 +62,15 @@ namespace FastMoq.Tests
             Component.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(1);
 
             Component.GetMockModelIndexOf(typeof(IFile), false).Should().Be(0);
+        }
+
+        [Fact]
+        public void CreateInstance()
+        {
+            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
+            Mocks.CreateInstance<TestClassDouble1>().Should().NotBeNull();
+            Mocks.CreateInstance<TestClassDouble2>().Should().NotBeNull();
+            Mocks.CreateInstance<TestClassParameters>().Should().NotBeNull();
         }
 
         [Fact]
@@ -395,6 +407,22 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetListParameter()
+        {
+            var numbers = Mocker.GetList(3, i=> i);
+            numbers.Should().BeEquivalentTo(new List<int> { 0, 1, 2 });
+
+            var strings = Mocker.GetList(3, i => i.ToString());
+            strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2" });
+
+            var test = Mocker.GetList(3, (i) => new TestClassMany(i));
+            test[0].value.Should().Be(0);
+            test[1].value.Should().Be(1);
+            test[2].value.Should().Be(2);
+
+        }
+
+        [Fact]
         public void GetMock()
         {
             Mocks.Contains<IFileInfo>().Should().BeTrue();
@@ -504,6 +532,11 @@ namespace FastMoq.Tests
             var test2 = Component.GetObject<ITestClassMultiple>(args);
             test2.Fs.Should().BeNull();
             test2.F.Should().NotBeNull();
+
+            args = Component.GetArgData<TestClassParameters>();
+            Component.GetObject<TestClassParameters>(args);
+            Component.CreateInstance<TestClassParameters>();
+            Component.CreateInstance<TestClassParameters>(args);
         }
 
         [Fact]
@@ -529,6 +562,46 @@ namespace FastMoq.Tests
             Mocks.RemoveMock(mock).Should().BeTrue();
             Mocks.Contains<IFileSystemInfo>().Should().BeFalse();
             Mocks.RemoveMock(mock).Should().BeFalse();
+        }
+
+        [Fact]
+        public void GetMethodArgData()
+        {
+            var type = typeof(Thread);
+            var instance = Thread.CurrentThread;
+
+            var types = new List<Type>() { typeof(int) };
+            var methodInfo = type.GetMethod("Sleep", types.ToArray());
+            var argData = Mocks.GetMethodArgData(methodInfo);
+            argData.Should().Contain(0);
+
+            types = new List<Type>() { typeof(TimeSpan) };
+            methodInfo = type.GetMethod("Sleep", types.ToArray());
+            argData = Mocks.GetMethodArgData(methodInfo);
+            argData.First().Should().BeOfType<TimeSpan>();
+
+            types = new List<Type>() { typeof(string), typeof(Type[]) };
+            methodInfo = type.GetType().GetMethod("GetMethod", types.ToArray());
+            argData = Mocks.GetMethodArgData(methodInfo);
+            CheckTypes(argData, types);
+
+            types = new List<Type>()
+            {
+                typeof(string), typeof(BindingFlags), typeof(Binder), typeof(CallingConventions), typeof(Type[]),
+                typeof(ParameterModifier[])
+            };
+
+            methodInfo = type.GetType().GetMethod("GetMethod", types.ToArray());
+            argData = Mocks.GetMethodArgData(methodInfo);
+            CheckTypes(argData, types);
+        }
+
+        private void CheckTypes(IReadOnlyList<object?> argData, List<Type> types)
+        {
+            for (var i = 0; i < argData.Count; i++)
+            {
+                types[i].IsInstanceOfType(argData[i]).Should().BeTrue();
+            }
         }
 
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)
