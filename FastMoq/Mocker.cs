@@ -390,6 +390,40 @@ namespace FastMoq
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="count">The number of list items.</param>
         /// <param name="func">The function for creating the list items.</param>
+        /// <param name="initAction">The initialize action.</param>
+        /// <returns><see cref="List{T}" />.</returns>
+        /// <example>
+        /// Example of how to create a list.
+        /// <code><![CDATA[
+        /// GetList<Model>(3, (i) => new Model(name: i.ToString()));
+        /// ]]></code>
+        /// or
+        /// <code><![CDATA[
+        /// GetList<IModel>(3, (i) => Mocks.CreateInstance<IModel>(i));
+        /// ]]></code></example>
+        public static List<T> GetList<T>(int count, Func<int, T>? func, Action<int, T>? initAction)
+        {
+            var results = new List<T>();
+
+            if (func != null)
+            {
+                for (var i = 0; i < count; i++)
+                {
+                    var f = func.Invoke(i);
+                    initAction?.Invoke(i, f);
+                    results.Add(f);
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        ///     Gets a list with the specified number of list items, using a custom function.
+        /// </summary>
+        /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
+        /// <param name="count">The number of list items.</param>
+        /// <param name="func">The function for creating the list items.</param>
         /// <returns><see cref="List{T}" />.</returns>
         /// <example>
         ///     Example of how to create a list.
@@ -401,20 +435,7 @@ namespace FastMoq
         /// GetList<IModel>(3, (i) => Mocks.CreateInstance<IModel>(i));
         /// ]]></code>
         /// </example>
-        public static List<T> GetList<T>(int count, Func<int, T>? func)
-        {
-            var results = new List<T>();
-
-            if (func != null)
-            {
-                for (var i = 0; i < count; i++)
-                {
-                    results.Add(func.Invoke(i));
-                }
-            }
-
-            return results;
-        }
+        public static List<T> GetList<T>(int count, Func<int, T>? func) => GetList<T>(count, func, null);
 
         /// <summary>
         ///     Gets a list with the specified number of list items, using a custom function.

@@ -422,6 +422,15 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetList_ShouldInitAfterCreate()
+        {
+            var testInit = Mocker.GetList(3, i => new TestClassMany(i), (i, many) => many.value = i * 2);
+            testInit[0].value.Should().Be(0);
+            testInit[1].value.Should().Be(2);
+            testInit[2].value.Should().Be(4);
+        }
+
+        [Fact]
         public void GetMockInstance()
         {
             var mock = Component.CreateMockInstance<ITestClassMany>();
