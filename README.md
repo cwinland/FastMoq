@@ -104,6 +104,8 @@ Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
 
 ## Breaking Change
 
+- 1.22.810 => Removed setters on the MockerTestBase virtual methods: SetupMocksAction, CreateComponentAction, CreatedComponentAction
+- 1.22.810 => Update Package Dependencies
 - 1.22.728 => Initialize method will reset the mock, if it already exists. This is overridable by settings the reset parameter to false.
 - 1.22.604 => Renamed Mocks to Mocker, Renamed TestBase to MockerTestBase.
 
