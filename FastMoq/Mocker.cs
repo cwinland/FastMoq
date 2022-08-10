@@ -89,8 +89,6 @@ namespace FastMoq
         /// <typeparam name="TInterface">The interface Type which can be mapped to a specific Class.</typeparam>
         /// <typeparam name="TClass">The Class Type (cannot be an interface) that can be created from <see cref="TInterface" />.</typeparam>
         /// <param name="createFunc">An optional create function used to create the class.</param>
-        /// <exception cref="System.ArgumentException">Must be different types.</exception>
-        /// <exception cref="System.ArgumentException"></exception>
         public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null)
             where TInterface : class where TClass : class
         {
