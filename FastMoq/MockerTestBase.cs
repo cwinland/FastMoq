@@ -132,6 +132,11 @@ namespace FastMoq
             Action<TComponent?>? createdComponentAction = null)
             : this(null, createComponentAction, createdComponentAction) { }
 
+        protected MockerTestBase(bool innerMockResolution) : this()
+        {
+            Mocks.InnerMockResolution = innerMockResolution;
+        }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class.
         /// </summary>
