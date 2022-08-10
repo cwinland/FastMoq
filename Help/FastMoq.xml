@@ -15,7 +15,7 @@
     <member name="T:FastMoq.InstanceModel">
       <summary>
        Class InstanceModel.
-       Implements the <see cref="T:FastMoq.InstanceModel" /></summary>
+   Implements the <see cref="T:FastMoq.InstanceModel" /></summary>
       <seealso cref="T:FastMoq.InstanceModel" />
     </member>
     <member name="P:FastMoq.InstanceModel`1.CreateFunc">
@@ -25,6 +25,7 @@
       <value>The create function.</value>
     </member>
     <member name="M:FastMoq.InstanceModel`1.#ctor">
+      <inheritdoc />
       <summary>
        Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
    </summary>
@@ -35,6 +36,14 @@
        Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
    </summary>
       <param name="createFunc">The create function.</param>
+    </member>
+    <member name="M:FastMoq.InstanceModel`1.#ctor(System.Nullable{Func{Mocker, `0}},List{System.Object})">
+      <inheritdoc />
+      <summary>
+       Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
+   </summary>
+      <param name="createFunc">The create function.</param>
+      <param name="arguments">The arguments.</param>
     </member>
     <member name="P:FastMoq.InstanceModel.InstanceType">
       <summary>
@@ -47,6 +56,12 @@
        Gets or sets the create function.
    </summary>
       <value>The create function.</value>
+    </member>
+    <member name="P:FastMoq.InstanceModel.Arguments">
+      <summary>
+       Gets the arguments.
+   </summary>
+      <value>The arguments.</value>
     </member>
     <member name="T:FastMoq.Mocker">
       <summary>
@@ -108,9 +123,6 @@ Adds an interface to Class mapping to the <see cref="T:FastMoq.Mocker.typeMap" /
       <typeparam name="TInterface">The interface Type which can be mapped to a specific Class.</typeparam>
       <typeparam name="TClass">The Class Type (cannot be an interface) that can be created from <see cref="TInterface" />.</typeparam>
       <param name="createFunc">An optional create function used to create the class.</param>
-      <exception cref="T:System.ArgumentException">Must be different types.</exception>
-      <exception cref="T:System.ArgumentException">
-      </exception>
     </member>
     <member name="M:FastMoq.Mocker.Contains``1">
       <summary>
@@ -282,6 +294,17 @@ IModel model = CreateInstanceNonPublic<IModel>();
 ]]></code>
       </example>
     </member>
+    <member name="M:FastMoq.Mocker.CreateMockInstance``1(System.Boolean)">
+      <summary>
+Creates the mock instance that is not automatically injected.
+</summary>
+      <typeparam name="T">
+      </typeparam>
+      <param name="nonPublic">if set to <c>true</c> [non public].</param>
+      <returns>Mock.</returns>
+      <exception cref="T:System.ArgumentException">type must be a class. - type</exception>
+      <exception cref="T:System.ApplicationException">Cannot create instance.</exception>
+    </member>
     <member name="M:FastMoq.Mocker.CreateMock(System.Type,System.Boolean)">
       <summary>
 Creates the <see cref="T:FastMoq.MockModel`1" /> from the <c>Type</c>. This throws an exception if the mock already exists.
@@ -314,6 +337,26 @@ Gets the argument data.
       </typeparam>
       <param name="data">The data.</param>
       <returns>System.Nullable&lt;System.Object&gt;[].</returns>
+    </member>
+    <member name="M:FastMoq.Mocker.GetList``1(System.Int32,System.Func{System.Int32,``0},System.Action{System.Int32,``0})">
+      <summary>
+Gets a list with the specified number of list items, using a custom function.
+</summary>
+      <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
+      <param name="count">The number of list items.</param>
+      <param name="func">The function for creating the list items.</param>
+      <param name="initAction">The initialize action.</param>
+      <returns>
+        <see cref="T:System.Collections.Generic.List&lt;T&gt;" />.</returns>
+      <example>
+Example of how to create a list.
+<code><![CDATA[
+GetList<Model>(3, (i) => new Model(name: i.ToString()));
+]]></code>
+or
+<code><![CDATA[
+GetList<IModel>(3, (i) => Mocks.CreateInstance<IModel>(i));
+]]></code></example>
     </member>
     <member name="M:FastMoq.Mocker.GetList``1(System.Int32,System.Func{System.Int32,``0})">
       <summary>
@@ -388,23 +431,33 @@ Gets the instance for the given <see cref="T:System.Reflection.ParameterInfo" />
       <exception cref="T:System.ArgumentNullException">type</exception>
       <exception cref="T:System.InvalidProgramException">Unable to get the Mock.</exception>
     </member>
-    <member name="M:FastMoq.Mocker.GetObject(System.Type)">
+    <member name="M:FastMoq.Mocker.GetObject(System.Type,System.Action{System.Object})">
       <summary>
 Gets the instance for the given <c>type</c>.
 </summary>
       <param name="type">The type.</param>
+      <param name="initAction">The initialize action.</param>
       <returns>
         <see cref="T:System.Nullable" />.</returns>
       <exception cref="T:System.ArgumentNullException">type</exception>
       <exception cref="T:System.InvalidProgramException">Unable to get the Mock.</exception>
     </member>
-    <member name="M:FastMoq.Mocker.GetObject``1">
+    <member name="M:FastMoq.Mocker.GetObject``1(System.Action{``0})">
       <summary>
 Gets the instance for the given <c>T</c>.
 </summary>
       <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
+      <param name="initAction">The initialize action.</param>
       <returns>
         <c>T</c>.</returns>
+    </member>
+    <member name="M:FastMoq.Mocker.GetObject``1">
+      <summary>
+Gets the object.
+</summary>
+      <typeparam name="T">
+      </typeparam>
+      <returns>System.Nullable&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Mocker.GetObject``1(object?[])">
       <summary>
