@@ -10,6 +10,8 @@ namespace FastMoq.Tests
 
         #endregion
 
+        public object? Value => value;
+
         public TestClassMany() => value = null;
 
         public TestClassMany(int x) => value = x;
@@ -19,7 +21,10 @@ namespace FastMoq.Tests
         public TestClassMany(int x, string y) => value = $"{x} {y}";
     }
 
-    public interface ITestClassMany { }
+    public interface ITestClassMany
+    {
+        object? Value { get; }
+    }
 
     public class TestClassMultiple : ITestClassMultiple
     {

@@ -23,22 +23,32 @@
 
         #endregion
 
+        /// <inheritdoc />
         /// <summary>
-        ///     Initializes a new instance of the <see cref="InstanceModel{TClass}" /> class.
+        ///     Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
         /// </summary>
-        public InstanceModel() : base(typeof(TClass)) { }
+        public InstanceModel() : this(null) {}
 
         /// <inheritdoc />
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
         /// </summary>
         /// <param name="createFunc">The create function.</param>
-        public InstanceModel(Func<Mocker, TClass>? createFunc) : this() => CreateFunc = createFunc;
+        public InstanceModel(Func<Mocker, TClass>? createFunc) : base(typeof(TClass), createFunc) {}
+
+        /// <inheritdoc />
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="InstanceModel{TClass}"/> class.
+        /// </summary>
+        /// <param name="createFunc">The create function.</param>
+        /// <param name="arguments">The arguments.</param>
+        public InstanceModel(Func<Mocker, TClass>? createFunc, List<object> arguments) : this(createFunc) =>
+            Arguments = arguments;
     }
 
     /// <summary>
     ///     Class InstanceModel.
-    ///     Implements the <see cref="FastMoq.InstanceModel" />
+    /// Implements the <see cref="FastMoq.InstanceModel" />
     /// </summary>
     /// <seealso cref="FastMoq.InstanceModel" />
     public class InstanceModel
@@ -57,9 +67,46 @@
         /// <value>The create function.</value>
         public Func<Mocker, object>? CreateFunc { get; internal set; }
 
+        /// <summary>
+        ///     Gets the arguments.
+        /// </summary>
+        /// <value>The arguments.</value>
+        public List<object> Arguments { get; internal set; } = new();
+
         #endregion
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="InstanceModel" /> class.
+        /// </summary>
+        /// <param name="instanceType">Type of the instance.</param>
+        /// <exception cref="System.ArgumentNullException">instanceType</exception>
         internal InstanceModel(Type instanceType) =>
             InstanceType = instanceType ?? throw new ArgumentNullException(nameof(instanceType));
+
+        /// <inheritdoc />
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="T:FastMoq.InstanceModel" /> class.
+        /// </summary>
+        /// <param name="instanceType">Type of the instance.</param>
+        /// <param name="createFunc"></param>
+        /// <param name="arguments">The arguments.</param>
+        /// <exception cref="T:System.ArgumentNullException">arguments</exception>
+        internal InstanceModel(Type instanceType, Func<Mocker, object>? createFunc) : this(instanceType)
+        {
+            CreateFunc = createFunc;
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="T:FastMoq.InstanceModel" /> class.
+        /// </summary>
+        /// <param name="instanceType">Type of the instance.</param>
+        /// <param name="createFunc"></param>
+        /// <param name="arguments">The arguments.</param>
+        /// <exception cref="T:System.ArgumentNullException">arguments</exception>
+        internal InstanceModel(Type instanceType, Func<Mocker, object>? createFunc, List<object> arguments) : this(instanceType, createFunc)
+        {
+            Arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
+        }
     }
 }

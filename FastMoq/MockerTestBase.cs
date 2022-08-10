@@ -62,19 +62,19 @@ namespace FastMoq
         ///     Gets or sets the create component action. This action is run whenever the component is created.
         /// </summary>
         /// <value>The create component action.</value>
-        protected virtual Func<Mocker, TComponent?> CreateComponentAction { get; set; }
+        protected virtual Func<Mocker, TComponent?> CreateComponentAction { get; }
 
         /// <summary>
         ///     Gets or sets the setup mocks action. This action is run before the component is created.
         /// </summary>
         /// <value>The setup mocks action.</value>
-        protected virtual Action<Mocker>? SetupMocksAction { get; set; }
+        protected virtual Action<Mocker>? SetupMocksAction { get; }
 
         /// <summary>
         ///     Gets or sets the created component action. This action is run after the component is created.
         /// </summary>
         /// <value>The created component action.</value>
-        protected virtual Action<TComponent?>? CreatedComponentAction { get; set; }
+        protected virtual Action<TComponent?>? CreatedComponentAction { get; }
 
         private Func<Mocker, TComponent?> DefaultCreateAction => _ => Component = Mocks.CreateInstance<TComponent>();
 
@@ -131,6 +131,11 @@ namespace FastMoq
         protected MockerTestBase(Func<Mocker, TComponent> createComponentAction,
             Action<TComponent?>? createdComponentAction = null)
             : this(null, createComponentAction, createdComponentAction) { }
+
+        protected MockerTestBase(bool innerMockResolution) : this()
+        {
+            Mocks.InnerMockResolution = innerMockResolution;
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class.

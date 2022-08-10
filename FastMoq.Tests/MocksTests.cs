@@ -155,14 +155,14 @@ namespace FastMoq.Tests
             b.Should().Throw<ArgumentNullException>();
         }
 
-        [Fact]
+        [Fact(Skip="Removed restriction")]
         public void AddTypeBothSameClass()
         {
             var a = () => Mocks.AddType<TestClassDouble1, TestClassDouble1>();
             a.Should().Throw<ArgumentException>();
         }
 
-        [Fact]
+        [Fact(Skip="Removed restriction")]
         public void AddTypeNotInterface()
         {
             var a = () => Mocks.AddType<TestClassDouble2, TestClassDouble1>();
@@ -419,7 +419,43 @@ namespace FastMoq.Tests
             test[0].value.Should().Be(0);
             test[1].value.Should().Be(1);
             test[2].value.Should().Be(2);
+        }
 
+        [Fact]
+        public void GetList_ShouldInitAfterCreate()
+        {
+            var testInit = Mocker.GetList(3, i => new TestClassMany(i), (i, many) => many.value = i * 2);
+            testInit[0].value.Should().Be(0);
+            testInit[1].value.Should().Be(2);
+            testInit[2].value.Should().Be(4);
+        }
+
+        [Fact]
+        public void GetMockInstance()
+        {
+            var mock = Component.CreateMockInstance<ITestClassMany>();
+            mock.Setup(x=>x.Value).Returns(1);
+            var mock1Object = mock.Object;
+
+            var mock2 = Component.CreateMockInstance<ITestClassMany>();
+            mock2.Setup(x=>x.Value).Returns(2);
+            var mock2Object = mock2.Object;
+
+            mock1Object.Value.Should().NotBe(mock2Object.Value);
+        }
+
+        [Fact]
+        public void GetMockValueTest()
+        {
+            var mock = Component.GetMock<ITestClassMany>();
+            mock.Setup(x=>x.Value).Returns(1);
+            var mock1Object = mock.Object;
+
+            var mock2 = Component.GetMock<ITestClassMany>();
+            mock2.Setup(x=>x.Value).Returns(2);
+            var mock2Object = mock2.Object;
+
+            mock1Object.Value.Should().Be(mock2Object.Value);
         }
 
         [Fact]
