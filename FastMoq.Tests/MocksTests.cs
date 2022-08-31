@@ -97,6 +97,9 @@ namespace FastMoq.Tests
             o.Value = 33;
             o.Value.Should().Be(33);
             Mocks.GetObject<TestClassDouble1>().Value.Should().Be(33);
+            Mocks.GetObject<TestClassDouble1>().Value = 44;
+            Mocks.GetObject<TestClassDouble1>().Value.Should().Be(44);
+            Mocks.GetMock<TestClassDouble1>().Object.Value.Should().Be(44);
         }
 
         [Fact]
