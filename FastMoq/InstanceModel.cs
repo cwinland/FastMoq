@@ -89,7 +89,6 @@
         /// </summary>
         /// <param name="instanceType">Type of the instance.</param>
         /// <param name="createFunc"></param>
-        /// <param name="arguments">The arguments.</param>
         /// <exception cref="T:System.ArgumentNullException">arguments</exception>
         internal InstanceModel(Type instanceType, Func<Mocker, object>? createFunc) : this(instanceType)
         {
