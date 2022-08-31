@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master # Default release branch
+    paths:
+      - FastMoq/**
 jobs:
   publish:
     name: build, pack & publish
