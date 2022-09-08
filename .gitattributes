@@ -2,6 +2,9 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 * text=auto
+
+# Vendored dependencies
+*.htm linguist-vendored
 help/* linguist-documentation
 help/* linguist-vendored
 ###############################################################################
