@@ -5,8 +5,7 @@
 
 # Vendored dependencies
 *.htm linguist-vendored
-help/* linguist-documentation
-help/* linguist-vendored
+*.css linguist-vendored
 * linguist-language=c#
 
 ###############################################################################
