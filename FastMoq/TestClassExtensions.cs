@@ -16,8 +16,6 @@ namespace FastMoq
             obj?.GetType().GetRuntimeFields()
                 .FirstOrDefault(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
-        //public static FieldInfo? GetField<TObject>(this TObject obj, Expression<Func<object>> field) where TObject : class => obj.GetField
-
         /// <summary>
         ///     Gets the field value.
         /// </summary>

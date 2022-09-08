@@ -81,6 +81,9 @@
               <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.htm" target="_self">FastMoq Namespace</a>
 <div class="Hidden">
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="T-FastMoq.BlazorMockerTestBase-1.htm" target="_self">BlazorMockerTestBase(TComponent) Class</a>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.InstanceModel.htm" target="_self">InstanceModel Class</a>
 <div class="Hidden">
@@ -103,20 +106,10 @@
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="AllMembers.T-FastMoq.MockerTestBase-1.htm" target="_self">MockerTestBase(TComponent) Members</a>
 </div>
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Overload-FastMoq.MockerTestBase-1.-ctor.htm" target="_self">MockerTestBase(TComponent) Constructor </a>
-<div class="Hidden">
-</div>
-</div>
-<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Methods.T-FastMoq.MockerTestBase-1.htm" target="_self">MockerTestBase(TComponent) Methods</a>
 <div class="Hidden">
 <div class="TreeItem">
-<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.MockerTestBase-1.CreateComponent.htm" target="_self">CreateComponent Method </a>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Overload-FastMoq.MockerTestBase-1.Dispose.htm" target="_self">Dispose Method </a>
-<div class="Hidden">
-</div>
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.MockerTestBase-1.Dispose.htm" target="_self">Dispose Method </a>
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Overload-FastMoq.MockerTestBase-1.WaitFor-.htm" target="_self">WaitFor Method </a>
@@ -132,11 +125,6 @@
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Properties.T-FastMoq.MockerTestBase-1.htm" target="_self">MockerTestBase(TComponent) Properties</a>
-<div class="Hidden">
 </div>
 </div>
 </div>
@@ -183,22 +171,12 @@
     <b>Namespace:</b> 
    <a href="N-FastMoq.htm">FastMoq</a><br />
     <b>Assembly:</b>
-   <span sdata="assembly">FastMoq</span> (in FastMoq.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:white;border-bottom-color:white"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTab VisualBasicTab" id="VisualBasicTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','VisualBasicCode','VisualBasicTabId');" title="Visual Basic">VB</a></div><div class="CodeSnippetContainerTab ManagedCPlusPlusTab" id="ManagedCPlusPlusTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','ManagedCPlusPlusCode','ManagedCPlusPlusTabId');" title="Visual C++">C++</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">static</span> T <span class="identifier">WaitFor</span>&lt;T&gt;(
+   <span sdata="assembly">FastMoq</span> (in FastMoq.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:white;border-bottom-color:white"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">static</span> T <span class="identifier">WaitFor</span>&lt;T&gt;(
 	<span class="nolink">Func</span>&lt;T&gt; <span class="parameter">logic</span>,
 	<span class="nolink">TimeSpan</span> <span class="parameter">timespan</span>,
 	<span class="nolink">TimeSpan</span> <span class="parameter">waitBetweenChecks</span>
 )
-</pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Public</span> <span class="keyword">Shared</span> <span class="keyword">Function</span> <span class="identifier">WaitFor</span>(<span class="keyword">Of</span> T) ( _
-	<span class="parameter">logic</span> <span class="keyword">As</span> <span class="nolink">Func</span>(<span class="keyword">Of</span> T), _
-	<span class="parameter">timespan</span> <span class="keyword">As</span> <span class="nolink">TimeSpan</span>, _
-	<span class="parameter">waitBetweenChecks</span> <span class="keyword">As</span> <span class="nolink">TimeSpan</span> _
-) <span class="keyword">As</span> T</pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span>:
-<span class="keyword">generic</span>&lt;<span class="keyword">typename</span> T&gt;
-<span class="keyword">static</span> T <span class="identifier">WaitFor</span>(
-	<span class="nolink">Func</span>&lt;T&gt;^ <span class="parameter">logic</span>, 
-	<span class="nolink">TimeSpan</span>^ <span class="parameter">timespan</span>, 
-	<span class="nolink">TimeSpan</span>^ <span class="parameter">waitBetweenChecks</span>
-)</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">T</span></dt><dd>Logic of T.</dd></dl><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="logic"><dt><span class="parameterItalic">logic</span></dt><dd>Type: <span class="nolink">Func</span><span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><span class="selflink"><span class="typeparam">T</span></span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><br />The action.</dd></dl><dl paramName="timespan"><dt><span class="parameterItalic">timespan</span></dt><dd>Type: <span class="nolink">TimeSpan</span><br />The maximum time to wait.</dd></dl><dl paramName="waitBetweenChecks"><dt><span class="parameterItalic">waitBetweenChecks</span></dt><dd>Type: <span class="nolink">TimeSpan</span><br />Time between each check.</dd></dl></div><h4 class="subHeading">Return Value</h4>T.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Exceptions</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exceptionsSection"><!----></a><div class="tableSection"><table width="100%" cellspacing="0" cellpadding="5" frame="lhs"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><span class="nolink">[System.ArgumentNullException]</span></td><td>logic</td></tr></table></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.MockerTestBase-1.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.MockerTestBase-1.WaitFor-.htm">WaitFor Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.htm">FastMoq Namespace</a></div></div></div>
+</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">T</span></dt><dd>Logic of T.</dd></dl><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="logic"><dt><span class="parameterItalic">logic</span></dt><dd>Type: <span class="nolink">Func</span><span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><span class="selflink"><span class="typeparam">T</span></span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><br />The action.</dd></dl><dl paramName="timespan"><dt><span class="parameterItalic">timespan</span></dt><dd>Type: <span class="nolink">TimeSpan</span><br />The maximum time to wait.</dd></dl><dl paramName="waitBetweenChecks"><dt><span class="parameterItalic">waitBetweenChecks</span></dt><dd>Type: <span class="nolink">TimeSpan</span><br />Time between each check.</dd></dl></div><h4 class="subHeading">Return Value</h4>T.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Exceptions</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exceptionsSection"><!----></a><div class="tableSection"><table width="100%" cellspacing="0" cellpadding="5" frame="lhs"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><span class="nolink">[System.ArgumentNullException]</span></td><td>logic</td></tr></table></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.MockerTestBase-1.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.MockerTestBase-1.WaitFor-.htm">WaitFor Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.htm">FastMoq Namespace</a></div></div></div>
             </div>
           </div>
         </div>

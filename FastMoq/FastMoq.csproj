@@ -42,6 +42,7 @@
     <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="bunit" Version="1.9.8" />
     <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>

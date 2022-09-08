@@ -73,11 +73,6 @@ Initializes the mocking helper object. This class creates and manages the automa
 The virtual mock file system that is used by mocker unless overridden with the <see cref="T:FastMoq.Mocker.Strict" /> property.
 </summary>
     </member>
-    <member name="F:FastMoq.Mocker.mockCollection">
-      <summary>
-List of <see cref="T:FastMoq.MockModel`1" />.
-</summary>
-    </member>
     <member name="P:FastMoq.Mocker.Strict">
       <summary>
 Gets or sets a value indicating whether this <see cref="T:FastMoq.Mocker" /> is strict. If strict, the mock
@@ -582,86 +577,6 @@ Remove specified Mock of <c>T</c>.
       <typeparam name="TComponent">The type of the t component.</typeparam>
       <inheritdoc />
     </member>
-    <member name="P:FastMoq.MockerTestBase`1.CustomMocks">
-      <summary>
-       Gets or sets the custom mocks. These are added whenever the component is created.
-   </summary>
-      <value>The custom mocks.</value>
-    </member>
-    <member name="P:FastMoq.MockerTestBase`1.CreateComponentAction">
-      <summary>
-       Gets or sets the create component action. This action is run whenever the component is created.
-   </summary>
-      <value>The create component action.</value>
-    </member>
-    <member name="P:FastMoq.MockerTestBase`1.SetupMocksAction">
-      <summary>
-       Gets or sets the setup mocks action. This action is run before the component is created.
-   </summary>
-      <value>The setup mocks action.</value>
-    </member>
-    <member name="P:FastMoq.MockerTestBase`1.CreatedComponentAction">
-      <summary>
-       Gets or sets the created component action. This action is run after the component is created.
-   </summary>
-      <value>The created component action.</value>
-    </member>
-    <member name="P:FastMoq.MockerTestBase`1.Mocks">
-      <summary>
-       Gets the <see cref="T:FastMoq.Mocker" />.
-   </summary>
-      <value>The mocks.</value>
-    </member>
-    <member name="P:FastMoq.MockerTestBase`1.Component">
-      <summary>
-       Gets or sets the component under test.
-   </summary>
-      <value>The service.</value>
-    </member>
-    <member name="M:FastMoq.MockerTestBase`1.#ctor">
-      <inheritdoc />
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.MockerTestBase`1" /> class with the default createAction.
-   </summary>
-    </member>
-    <member name="M:FastMoq.MockerTestBase`1.#ctor(Action{Mocker})">
-      <inheritdoc />
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.MockerTestBase`1" /> class with a setup action.
-   </summary>
-      <param name="setupMocksAction">The setup mocks action.</param>
-    </member>
-    <member name="M:FastMoq.MockerTestBase`1.#ctor(Action{Mocker},Func{Mocker, `0})">
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.MockerTestBase`1" /> class.
-   </summary>
-      <param name="setupMocksAction">The setup mocks action.</param>
-      <param name="createComponentAction">The create component action.</param>
-    </member>
-    <member name="M:FastMoq.MockerTestBase`1.#ctor(System.Nullable{Action{Mocker}},System.Nullable{Action{System.Nullable{`0}}})">
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.MockerTestBase`1" /> class.
-   </summary>
-      <param name="setupMocksAction">The setup mocks action.</param>
-      <param name="createdComponentAction">The created component action.</param>
-    </member>
-    <member name="M:FastMoq.MockerTestBase`1.#ctor(Func{Mocker, `0},System.Nullable{Action{System.Nullable{`0}}})">
-      <inheritdoc />
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.MockerTestBase`1" /> class with a create action and optional
-       createdAction.
-   </summary>
-      <param name="createComponentAction">The create component action.</param>
-      <param name="createdComponentAction">The created component action.</param>
-    </member>
-    <member name="M:FastMoq.MockerTestBase`1.#ctor(System.Nullable{Action{Mocker}},System.Nullable{Func{Mocker, System.Nullable{`0}}},System.Nullable{Action{System.Nullable{`0}}})">
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.MockerTestBase`1" /> class.
-   </summary>
-      <param name="setupMocksAction">The setup mocks action.</param>
-      <param name="createComponentAction">The create component action.</param>
-      <param name="createdComponentAction">The created component action.</param>
-    </member>
     <member name="M:FastMoq.MockerTestBase`1.WaitFor``1(Func{``0},TimeSpan,TimeSpan)">
       <summary>
        Waits for an action.
@@ -693,20 +608,6 @@ Remove specified Mock of <c>T</c>.
       <param name="timespan">The timespan, defaults to 4 seconds.</param>
       <returns>T.</returns>
       <exception cref="System.ArgumentNullException">logic</exception>
-    </member>
-    <member name="M:FastMoq.MockerTestBase`1.CreateComponent">
-      <summary>
-       Sets the <see cref="P:FastMoq.MockerTestBase`1.Component" /> property with a new instance while maintaining the constructor setup and any
-       other changes.
-   </summary>
-      <example>
-       CreateComponent allows creating the component when desired, instead of in the base class constructor.
-      <code><![CDATA[
-   public void Test() {
-       Mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
-       CreateComponent();
-   }
-   ]]></code></example>
     </member>
     <member name="T:FastMoq.MockModel`1">
       <summary>
@@ -841,6 +742,13 @@ Remove specified Mock of <c>T</c>.
       <param name="obj">The object.</param>
       <param name="name">The name.</param>
       <param name="value">The value.</param>
+    </member>
+    <member name="T:FastMoq.BlazorMockerTestBase`1">
+      <summary>
+       Common methods for all BUnit/XUnit Tests.
+   </summary>
+      <typeparam name="TComponent">Type of the component being tested.</typeparam>
+      <inheritdoc cref="TestContext" />
     </member>
   </members>
 </doc>
