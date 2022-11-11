@@ -5,6 +5,8 @@ on:
       - master # Default release branch
     paths:
       - FastMoq/**
+      - .github/workflows/publish.yml
+      
 jobs:
   publish:
     name: build, pack & publish
