@@ -1,4 +1,6 @@
 using Moq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FastMoq
 {
@@ -231,6 +233,10 @@ namespace FastMoq
             CreatedComponentAction?.Invoke(Component);
         }
 
+        /// <summary>
+        ///     Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -243,6 +249,33 @@ namespace FastMoq
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;
+            }
+        }
+
+        /// <summary>
+        ///     Tests the asynchronous function.
+        /// </summary>
+        /// <param name="func">The function.</param>
+        /// <param name="resultAction">The result action.</param>
+        /// <param name="args">The arguments.</param>
+        protected void TestMethodAsync(Expression<Func<TComponent, object>> func, Action<Func<Task>, string, List<object?>> resultAction, params object?[]? args)
+        {
+            var method = ((func.Body as UnaryExpression).Operand as MethodCallExpression);
+            var obj = method.Object.GetPropertyValue("Value") as MethodInfo;
+            TestMethodAsync(obj, resultAction, args);
+        }
+
+        protected void TestMethodAsync(MethodInfo obj, Action<Func<Task>, string, List<object?>> resultAction, params object?[]? args)
+        {
+            var names = obj.GetParameters().ToList();
+            var subs = Mocks.GetMethodDefaultData(obj).ToList();
+
+            for (var i = 0; i < args.Length; i++)
+            {
+                var list = new List<object?>();
+                list.AddRange(args);
+                list[i] = subs[i];
+                resultAction(async () => await (Task)obj.Invoke(Component, list.ToArray()), names.Select(x=>x.Name).Skip(i).First(), list);
             }
         }
 
