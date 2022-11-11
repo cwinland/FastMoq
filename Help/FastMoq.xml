@@ -115,7 +115,7 @@ false.
       <summary>
 Adds an interface to Class mapping to the <see cref="T:FastMoq.Mocker.typeMap" /> for easier resolution.
 </summary>
-      <typeparam name="TInterface">The interface Type which can be mapped to a specific Class.</typeparam>
+      <typeparam name="TInterface">The interface or class Type which can be mapped to a specific Class.</typeparam>
       <typeparam name="TClass">The Class Type (cannot be an interface) that can be created from <see cref="TInterface" />.</typeparam>
       <param name="createFunc">An optional create function used to create the class.</param>
     </member>
@@ -288,6 +288,16 @@ Parameters allow matching of constructors and using those values in the creation
 IModel model = CreateInstanceNonPublic<IModel>();
 ]]></code>
       </example>
+    </member>
+    <member name="M:FastMoq.Mocker.CreateMockInstance(System.Type,System.Boolean)">
+      <summary>
+Creates the mock instance that is not automatically injected.
+</summary>
+      <param name="type">The type.</param>
+      <param name="nonPublic">if set to <c>true</c> [non public].</param>
+      <returns>Mock.</returns>
+      <exception cref="T:System.ArgumentException">type must be a class. - type</exception>
+      <exception cref="T:System.ApplicationException">Cannot create instance.</exception>
     </member>
     <member name="M:FastMoq.Mocker.CreateMockInstance``1(System.Boolean)">
       <summary>
@@ -538,6 +548,32 @@ Remove specified Mock of <c>T</c>.
       <returns>
         <c>true</c> if the mock is successfully removed, <c>false</c> otherwise.</returns>
     </member>
+    <member name="M:FastMoq.Mocker.CreateInstance``1(System.Boolean,object?[])">
+      <summary>
+Creates the instance.
+</summary>
+      <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
+      <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
+      <param name="args">The arguments.</param>
+      <returns>
+        <see cref="T:System.Nullable" />.</returns>
+    </member>
+    <member name="M:FastMoq.Mocker.CreateInstanceNonPublic(System.Type,object?[])">
+      <summary>
+Creates the instance non public.
+</summary>
+      <param name="type">The type.</param>
+      <param name="args">The arguments.</param>
+      <returns>System.Nullable&lt;System.Object&gt;.</returns>
+    </member>
+    <member name="M:FastMoq.Mocker.GetDefaultValue(System.Type)">
+      <summary>
+Gets the default value.
+</summary>
+      <param name="type">The type.</param>
+      <returns>
+        <see cref="T:System.Nullable" />.</returns>
+    </member>
     <member name="T:FastMoq.MockerTestBase`1">
       <summary>
        Auto Mocking Test Base with Fast Automatic Mocking <see cref="T:FastMoq.Mocker" />.
@@ -586,7 +622,7 @@ Remove specified Mock of <c>T</c>.
       <param name="timespan">The maximum time to wait.</param>
       <param name="waitBetweenChecks">Time between each check.</param>
       <returns>T.</returns>
-      <exception cref="System.ArgumentNullException">logic</exception>
+      <exception cref="T:System.ArgumentNullException">logic</exception>
     </member>
     <member name="M:FastMoq.MockerTestBase`1.WaitFor``1(Func{``0})">
       <summary>
@@ -596,7 +632,7 @@ Remove specified Mock of <c>T</c>.
       </typeparam>
       <param name="logic">The action.</param>
       <returns>T.</returns>
-      <exception cref="System.ArgumentNullException">logic</exception>
+      <exception cref="T:System.ArgumentNullException">logic</exception>
     </member>
     <member name="M:FastMoq.MockerTestBase`1.WaitFor``1(Func{``0},TimeSpan)">
       <summary>
@@ -607,7 +643,7 @@ Remove specified Mock of <c>T</c>.
       <param name="logic">The action.</param>
       <param name="timespan">The timespan, defaults to 4 seconds.</param>
       <returns>T.</returns>
-      <exception cref="System.ArgumentNullException">logic</exception>
+      <exception cref="T:System.ArgumentNullException">logic</exception>
     </member>
     <member name="T:FastMoq.MockModel`1">
       <summary>
@@ -690,7 +726,7 @@ Remove specified Mock of <c>T</c>.
       <typeparam name="TValue">The type of the t value.</typeparam>
       <param name="method">The method.</param>
       <returns>MemberExpression.</returns>
-      <exception cref="System.ArgumentNullException">method</exception>
+      <exception cref="T:System.ArgumentNullException">method</exception>
     </member>
     <member name="M:FastMoq.TestClassExtensions.GetMethod``1(``0,System.String)">
       <summary>

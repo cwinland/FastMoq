@@ -1,7 +1,9 @@
 ﻿using Moq;
 using System.Collections;
+using System.ComponentModel;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
 
@@ -86,22 +88,12 @@ namespace FastMoq
         /// <summary>
         ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
         /// </summary>
-        /// <typeparam name="TInterface">The interface Type which can be mapped to a specific Class.</typeparam>
+        /// <typeparam name="TInterface">The interface or class Type which can be mapped to a specific Class.</typeparam>
         /// <typeparam name="TClass">The Class Type (cannot be an interface) that can be created from <see cref="TInterface" />.</typeparam>
         /// <param name="createFunc">An optional create function used to create the class.</param>
         public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null)
             where TInterface : class where TClass : class
         {
-            //if (typeof(TInterface) == typeof(TClass))
-            //{
-            //    throw new ArgumentException("Must be different types.");
-            //}
-
-            //if (!typeof(TInterface).IsInterface)
-            //{
-            //    throw new ArgumentException($"{typeof(TInterface).Name} must be an interface.");
-            //}
-
             if (typeof(TClass).IsInterface)
             {
                 throw new ArgumentException($"{typeof(TClass).Name} cannot be an interface.");
@@ -305,7 +297,7 @@ namespace FastMoq
         /// <returns>Mock.</returns>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
-        internal Mock CreateMockInstance(Type type, bool nonPublic = false)
+        public Mock CreateMockInstance(Type type, bool nonPublic = false)
         {
             if (type == null || (!type.IsClass && !type.IsInterface))
             {
@@ -475,6 +467,22 @@ namespace FastMoq
         /// </example>
         public static List<T> GetList<T>(int count, Func<T>? func) =>
             func == null ? new List<T>() : GetList(count, _ => func.Invoke());
+
+        public object?[] GetMethodDefaultData(MethodInfo method)
+        {
+            if (method == null)
+            {
+                throw new ArgumentNullException(nameof(method));
+            }
+
+            var args = new List<object?>();
+            method.GetParameters().ToList().ForEach(p =>
+            {
+                args.Add(GetDefaultValue(p.ParameterType));
+            });
+
+            return args.ToArray();
+        }
 
         /// <summary>
         ///     Gets the method argument data.
@@ -776,7 +784,7 @@ namespace FastMoq
         /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
         /// <param name="args">The arguments.</param>
         /// <returns><see cref="Nullable{T}" />.</returns>
-        internal T? CreateInstance<T>(bool usePredefinedFileSystem, params object?[] args) where T : class
+        public T? CreateInstance<T>(bool usePredefinedFileSystem, params object?[] args) where T : class
         {
             if (IsMockFileSystem<T>(usePredefinedFileSystem))
             {
@@ -851,7 +859,7 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
-        internal object CreateInstanceNonPublic(Type type, params object?[] args)
+        public object CreateInstanceNonPublic(Type type, params object?[] args)
         {
             var constructor =
                 args.Length > 0
@@ -1004,7 +1012,7 @@ namespace FastMoq
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns><see cref="Nullable{T}" />.</returns>
-        internal static object? GetDefaultValue(Type type) => type switch
+        public static object? GetDefaultValue(Type type) => type switch
         {
             { FullName: "System.String" } => string.Empty,
             _ when typeof(IEnumerable).IsAssignableFrom(type) => Array.CreateInstance(type.GetElementType(), 0),
