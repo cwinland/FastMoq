@@ -1,4 +1,5 @@
-using Moq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FastMoq
 {
@@ -53,6 +54,12 @@ namespace FastMoq
         #region Properties
 
         /// <summary>
+        ///     Gets or sets the component under test.
+        /// </summary>
+        /// <value>The service.</value>
+        protected internal TComponent? Component { get; set; }
+
+        /// <summary>
         ///     Gets or sets the custom mocks. These are added whenever the component is created.
         /// </summary>
         /// <value>The custom mocks.</value>
@@ -76,19 +83,13 @@ namespace FastMoq
         /// <value>The created component action.</value>
         protected virtual Action<TComponent?>? CreatedComponentAction { get; }
 
-        private Func<Mocker, TComponent?> DefaultCreateAction => _ => Component = Mocks.CreateInstance<TComponent>();
-
         /// <summary>
         ///     Gets the <see cref="Mocker" />.
         /// </summary>
         /// <value>The mocks.</value>
         protected Mocker Mocks { get; } = new();
 
-        /// <summary>
-        ///     Gets or sets the component under test.
-        /// </summary>
-        /// <value>The service.</value>
-        protected internal TComponent? Component { get; set; }
+        private Func<Mocker, TComponent?> DefaultCreateAction => _ => Component = Mocks.CreateInstance<TComponent>();
 
         #endregion
 
@@ -106,10 +107,11 @@ namespace FastMoq
         protected MockerTestBase(Action<Mocker> setupMocksAction) : this(setupMocksAction, null, null) { }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class.
+        ///     Initializes a new instance of the <see cref="T:FastMoq.MockerTestBase`1" /> class.
         /// </summary>
         /// <param name="setupMocksAction">The setup mocks action.</param>
         /// <param name="createComponentAction">The create component action.</param>
+        /// <inheritdoc />
         protected MockerTestBase(Action<Mocker> setupMocksAction, Func<Mocker, TComponent> createComponentAction)
             : this(setupMocksAction, createComponentAction, null) { }
 
@@ -118,6 +120,7 @@ namespace FastMoq
         /// </summary>
         /// <param name="setupMocksAction">The setup mocks action.</param>
         /// <param name="createdComponentAction">The created component action.</param>
+        /// <inheritdoc />
         protected MockerTestBase(Action<Mocker>? setupMocksAction, Action<TComponent?>? createdComponentAction = null)
             : this(setupMocksAction, null, createdComponentAction) { }
 
@@ -132,10 +135,7 @@ namespace FastMoq
             Action<TComponent?>? createdComponentAction = null)
             : this(null, createComponentAction, createdComponentAction) { }
 
-        protected MockerTestBase(bool innerMockResolution) : this()
-        {
-            Mocks.InnerMockResolution = innerMockResolution;
-        }
+        protected MockerTestBase(bool innerMockResolution) : this() => Mocks.InnerMockResolution = innerMockResolution;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class.
@@ -182,6 +182,7 @@ namespace FastMoq
             {
                 throw new ApplicationException("Waitfor Timeout");
             }
+
             return result;
         }
 
@@ -231,6 +232,13 @@ namespace FastMoq
             CreatedComponentAction?.Invoke(Component);
         }
 
+        /// <summary>
+        ///     Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -243,6 +251,64 @@ namespace FastMoq
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;
+            }
+        }
+
+        /// <summary>
+        ///     Tests the asynchronous function.
+        /// </summary>
+        /// <param name="funcMethod">The function.</param>
+        /// <param name="resultAction">The result action.</param>
+        /// <param name="args">The arguments.</param>
+        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task>, string, List<object?>> resultAction,
+            params object?[]? args)
+        {
+            if (funcMethod == null)
+            {
+                throw new ArgumentNullException(nameof(funcMethod));
+            }
+
+            if (funcMethod.Body is UnaryExpression unary &&
+                unary.Operand is MethodCallExpression methodCallExpression &&
+                methodCallExpression.Object.GetPropertyValue("Value") is MethodInfo methodInfo)
+            {
+                TestMethodParametersAsync(methodInfo, resultAction, args);
+            }
+            else
+            {
+                throw new InvalidOperationException($"{nameof(funcMethod)} is not a valid method.");
+            }
+        }
+
+        /// <summary>
+        ///     Tests the method parameters asynchronous.
+        /// </summary>
+        /// <param name="methodInfo">The method information.</param>
+        /// <param name="resultAction">The result action.</param>
+        /// <param name="args">The arguments.</param>
+        /// <exception cref="System.ArgumentNullException">methodInfo</exception>
+        /// <exception cref="System.ArgumentNullException">resultAction</exception>
+        protected void TestMethodParametersAsync(MethodInfo methodInfo, Action<Func<Task>, string, List<object?>> resultAction, params object?[]? args)
+        {
+            if (methodInfo == null)
+            {
+                throw new ArgumentNullException(nameof(methodInfo));
+            }
+
+            if (resultAction == null)
+            {
+                throw new ArgumentNullException(nameof(resultAction));
+            }
+
+            var names = methodInfo.GetParameters().ToList();
+            var subs = Mocks.GetMethodDefaultData(methodInfo).ToList();
+
+            for (var i = 0; i < args.Length; i++)
+            {
+                var list = new List<object?>();
+                list.AddRange(args);
+                list[i] = subs[i];
+                resultAction(async () => await (Task) methodInfo.Invoke(Component, list.ToArray()), names.Select(x => x.Name).Skip(i).First(), list);
             }
         }
 

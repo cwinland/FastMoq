@@ -1,10 +1,14 @@
-# FastMoq
+# [FastMoq](http://help.fastmoq.com/)
 
-Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework for mocking and auto injection of classes.
+[http://help.fastmoq.com](http://help.fastmoq.com/)
+
+Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework for mocking and auto injection of classes when testing.
 
 ## Features
 
 - Test without declaring Mocks (unless needed).
+- Creates objects with chain of automatic injections in objects and their dependencies.
+- Automatically injects and creates components or services.
 - Injection: Automatically determines what interfaces need to be injected into the constructor and creates mocks if they do not exist.
   - Best guess picks the multiple parameter constructor over the default constructor.
   - Specific mapping allows the tester to create an instance using a specific constructor and specific data.
@@ -13,9 +17,10 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 
 ## Targets
 
-- .NET Core 3.1
-- .NET 5
+- .NET 7
 - .NET 6
+- .NET 5
+- .NET Core 3.1
 
 ## Most used classes in the FastMoq namespace
 
@@ -76,6 +81,7 @@ Mocks.CreateInstance(new MockFileSystem()); // CreateInstance matches the parame
 #### Interface Type Map
 
 When multiple classes derive from the same interface, the Interface Type Map can map with class to use for the given injected interface.
+The map can also enable mock substitution.
 
 ##### Example of two classes inheriting the same interface
 
@@ -100,7 +106,7 @@ Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
 
 ## Additional Documentation
 
-[FastMoq Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)
+[FastMoq API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)
 
 ## Breaking Change
 

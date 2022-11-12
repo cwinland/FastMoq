@@ -5,6 +5,8 @@ on:
       - master # Default release branch
     paths:
       - FastMoq/**
+      - .github/workflows/publish.yml
+      
 jobs:
   publish:
     name: build, pack & publish
@@ -12,15 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # - name: Setup dotnet
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #     dotnet-version: 3.1.200
-
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+          
       # Publish
       - name: publish on version change
         id: publish_nuget
-        uses: alirezanet/publish-nuget@v3.0.4
+        uses: brandedoutcast/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
           PROJECT_FILE_PATH: FastMoq/FastMoq.csproj

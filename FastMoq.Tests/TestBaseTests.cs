@@ -3,6 +3,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -133,6 +134,87 @@ namespace FastMoq.Tests
             task1.Dispose();
             task2.Dispose();
         }
+
+        [Fact]
+        public void TestMethodAsync_MethodInfo_ShouldPass()
+        {
+            List<object?> dataResult = null;
+            var methodInfo = Component.GetType().GetMethod("TestMethodAsync", BindingFlags.NonPublic | BindingFlags.Instance);
+            TestMethodParametersAsync(methodInfo, (func, paramName, data) =>
+            {
+                func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                dataResult = data;
+            }, 1, "2", new TestClass());
+
+            dataResult.Should().HaveCount(3);
+        }
+
+        [Fact]
+        public void TestMethodAsync_ShouldThrow()
+        {
+            List<object?> dataResult = null;
+            TestMethodParametersAsync(x => x.TestMethodAsync, (func, paramName, data) =>
+            {
+                func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                dataResult = data;
+            }, 1, "2", new TestClass());
+
+            dataResult.Should().HaveCount(3);
+        }
+
+        [Fact]
+        public void TestMethodAsync_MismatchArgs()
+        {
+            List<object?> dataResult = null;
+            Action a = () => TestMethodParametersAsync(x => x.TestMethodAsync, (func, paramName, data) =>
+            {
+                func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                dataResult = data;
+            }, 1, "2", new TestClass(), "3");
+
+            a.Should().Throw<ArgumentOutOfRangeException>(
+                "Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')");
+            dataResult.Should().HaveCount(4);
+        }
+
+        [Fact]
+        public void TestMethod2Async_ShouldThrow()
+        {
+            List<object?> dataResult = null;
+            TestMethodParametersAsync(x => x.TestMethod2Async, (func, paramName, data) =>
+            {
+                func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                dataResult = data;
+            }, 1, "2", new TestClass());
+
+            dataResult.Should().HaveCount(3);
+        }
+
+        [Fact]
+        public void TestMethod_ShouldThrow()
+        {
+            List<object?> dataResult = null;
+            TestMethodParametersAsync(x => x.TestMethod, (func, paramName, data) =>
+            {
+                func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                dataResult = data;
+            }, 1, "2", new TestClass());
+
+            dataResult.Should().HaveCount(3);
+        }
+
+        [Fact]
+        public void TestMethod2_ShouldThrow()
+        {
+            List<object?> dataResult = null;
+            TestMethodParametersAsync(x => x.TestMethod2, (func, paramName, data) =>
+            {
+                func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                dataResult = data;
+            }, TestClass.TestEnum.test2, "2");
+
+            dataResult.Should().HaveCount(2);
+        }
     }
 
     public class TestClass
@@ -157,6 +239,58 @@ namespace FastMoq.Tests
 
         #endregion
 
+        internal async Task TestMethod2Async(int i, string s, TestClass c) => await TestMethodAsync(i, s, c);
+        internal async Task TestMethodAsync(int? i, string s, TestClass c)
+        {
+            if (i == null)
+            {
+                throw new ArgumentNullException(nameof(i));
+            }
+
+            if (string.IsNullOrEmpty(s))
+            {
+                throw new ArgumentNullException(nameof(s));
+            }
+
+            if (c == null)
+            {
+                throw new ArgumentNullException(nameof(c));
+            }
+
+            await Task.Delay(TimeSpan.FromMilliseconds(100));
+        }
+
+        internal void TestMethod(int i, string s, TestClass c)
+        {
+            if (i == null)
+            {
+                throw new ArgumentNullException(nameof(i));
+            }
+
+            if (string.IsNullOrEmpty(s))
+            {
+                throw new ArgumentNullException(nameof(s));
+            }
+
+            if (c == null)
+            {
+                throw new ArgumentNullException(nameof(c));
+            }
+        }
+
+        internal enum TestEnum
+        {
+            test1,
+            test2, test3, test4, test5, test6,
+        }
+
+        internal void TestMethod2(TestEnum testEnum, string s)
+        {
+            if (s == null)
+            {
+                throw new InvalidOperationException(nameof(s));
+            }
+        }
         private object method() => "test";
         private string method2() => "test2";
     }

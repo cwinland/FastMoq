@@ -3,6 +3,12 @@
 ###############################################################################
 * text=auto
 
+# Vendored dependencies
+*.htm linguist-vendored
+*.css linguist-vendored
+* linguist-language=c#
+Help/* linguist-documentation
+
 ###############################################################################
 # Set default behavior for command prompt diff.
 #

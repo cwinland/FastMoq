@@ -6,6 +6,14 @@ namespace FastMoq
     public static class TestClassExtensions
     {
         /// <summary>
+        ///     ForEach for <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">Type of item.</typeparam>
+        /// <param name="iEnumerable">The <see cref="IEnumerable{T}"/>.</param>
+        /// <param name="action">The action.</param>
+        public static void ForEach<T>(this IEnumerable<T> iEnumerable, Action<T> action) => iEnumerable.ToList().ForEach(action);
+
+        /// <summary>
         ///     Gets the field.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>

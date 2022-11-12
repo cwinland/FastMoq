@@ -158,20 +158,6 @@ namespace FastMoq.Tests
             b.Should().Throw<ArgumentNullException>();
         }
 
-        [Fact(Skip="Removed restriction")]
-        public void AddTypeBothSameClass()
-        {
-            var a = () => Mocks.AddType<TestClassDouble1, TestClassDouble1>();
-            a.Should().Throw<ArgumentException>();
-        }
-
-        [Fact(Skip="Removed restriction")]
-        public void AddTypeNotInterface()
-        {
-            var a = () => Mocks.AddType<TestClassDouble2, TestClassDouble1>();
-            a.Should().Throw<ArgumentException>();
-        }
-
         [Fact]
         public void Contains_ShouldWork()
         {
