@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using FastMoq.Tests.TestClasses;
+using FluentAssertions;
 using Xunit;
 
 namespace FastMoq.Tests

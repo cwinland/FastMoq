@@ -1,4 +1,4 @@
-﻿namespace FastMoq.Tests
+﻿namespace FastMoq.Tests.TestClasses
 {
     public class TestClassDouble1 : ITestClassDouble
     {

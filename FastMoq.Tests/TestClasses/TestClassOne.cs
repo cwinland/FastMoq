@@ -1,14 +1,17 @@
 ﻿using System.IO.Abstractions;
 
-namespace FastMoq.Tests
+namespace FastMoq.Tests.TestClasses
 {
     /// <summary>
     ///     Class TestClassOne.
-    /// Implements the <see cref="FastMoq.Tests.ITestClassOne" />
+    /// Implements the <see cref="ITestClassOne" />
     /// </summary>
-    /// <seealso cref="FastMoq.Tests.ITestClassOne" />
+    /// <seealso cref="ITestClassOne" />
     public class TestClassOne : ITestClassOne
     {
+        [Inject]
+        public IFileSystem FileSystem { get; set; }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="TestClassOne"/> class.
         /// </summary>
@@ -34,5 +37,8 @@ namespace FastMoq.Tests
     /// <summary>
     ///     Interface ITestClassOne
     /// </summary>
-    public interface ITestClassOne { }
+    public interface ITestClassOne
+    {
+        IFileSystem FileSystem { get; set; }
+    }
 }

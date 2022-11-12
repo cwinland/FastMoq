@@ -1,6 +1,6 @@
 ﻿using System.IO.Abstractions;
 
-namespace FastMoq.Tests
+namespace FastMoq.Tests.TestClasses
 {
     public class TestClassNormal : ITestClassNormal
     {

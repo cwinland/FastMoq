@@ -6,6 +6,14 @@ namespace FastMoq
     public static class TestClassExtensions
     {
         /// <summary>
+        ///     ForEach for <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">Type of item.</typeparam>
+        /// <param name="iEnumerable">The <see cref="IEnumerable{T}"/>.</param>
+        /// <param name="action">The action.</param>
+        public static void ForEach<T>(this IEnumerable<T> iEnumerable, Action<T> action) => iEnumerable.ToList().ForEach(action);
+
+        /// <summary>
         ///     Gets the field.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
@@ -108,7 +116,7 @@ namespace FastMoq
         /// <param name="obj">The object.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        public static void SetFieldValue<TObject>(this TObject obj, string name, object value) where TObject : class? =>
+        public static void SetFieldValue<TObject>(this TObject obj, string name, object? value) where TObject : class? =>
             obj.GetField(name)?.SetValue(obj, value);
 
         /// <summary>
@@ -118,7 +126,7 @@ namespace FastMoq
         /// <param name="obj">The object.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        public static void SetPropertyValue<TObject>(this TObject obj, string name, object value) where TObject : class? =>
+        public static void SetPropertyValue<TObject>(this TObject obj, string name, object? value) where TObject : class? =>
             obj.GetProperty(name)?.SetValue(obj, value);
     }
 }
