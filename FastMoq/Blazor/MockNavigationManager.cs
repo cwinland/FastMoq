@@ -5,142 +5,86 @@ using Microsoft.AspNetCore.Components.Routing;
 namespace FastMoq.Blazor
 {
     /// <inheritdoc />
-    public sealed class MockNavigationManager : INavigationManager
+    public class MockNavigationManager : INavigationManager
     {
-        public event EventHandler<LocationChangedEventArgs> LocationChanged;
+        #region Events
+
+        public virtual event EventHandler<LocationChangedEventArgs>? LocationChanged;
+
+        #endregion
+
+        #region Properties
 
         /// <inheritdoc />
-        public void NavigateTo(string uri) { }
+        public virtual string BaseUri { get; set; } = "https://localhost";
 
         /// <inheritdoc />
-        public void NavigateTo(string uri, bool forceLoad) { }
+        public virtual string Uri { get; set; } = "/";
+
+        #endregion
+
+        #region INavigationManager
+
+        public virtual string GetUriWithQueryParameter(string name, bool value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, bool? value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, DateTime value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, DateTime? value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, decimal value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, decimal? value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, double value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, double? value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, float value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, float? value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, Guid value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, Guid? value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, int value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, int? value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, long value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, long? value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameter(string name, string? value) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameters(IReadOnlyDictionary<string, object?> parameters) => throw new NotImplementedException();
+
+        public virtual string GetUriWithQueryParameters(string uri, IReadOnlyDictionary<string, object?> parameters) => throw new NotImplementedException();
 
         /// <inheritdoc />
-        public string BaseUri { get; }
+        public virtual void NavigateTo(string uri) { }
 
         /// <inheritdoc />
-        public string Uri { get; }
+        public virtual void NavigateTo(string uri, bool forceLoad) { }
+
+        public virtual Uri ToAbsoluteUri(string relativeUri) => new(new Uri(BaseUri, UriKind.Absolute), relativeUri);
 
         /// <inheritdoc />
-        public bool UrlContains(string path) => Uri.ToUpperInvariant().Contains(path);
+        public virtual bool UrlContains(string path) => Uri.ToUpperInvariant().Contains(path);
 
-        public Uri ToAbsoluteUri(string relativeUri)
-        {
-            return new Uri(new Uri(BaseUri, UriKind.Absolute), relativeUri);
-        }
+        #endregion
 
-        public string GetUriWithQueryParameter(string name, bool value)
-        {
-            throw new NotImplementedException();
-        }
+#if NET6_0_OR_GREATER
+        public virtual string GetUriWithQueryParameter(string name, DateOnly value) => throw new NotImplementedException();
 
-        public string GetUriWithQueryParameter(string name, bool? value)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual string GetUriWithQueryParameter(string name, DateOnly? value) => throw new NotImplementedException();
 
-        public string GetUriWithQueryParameter(string name, DateTime value)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual string GetUriWithQueryParameter(string name, TimeOnly value) => throw new NotImplementedException();
 
-        public string GetUriWithQueryParameter(string name, DateTime? value)
-        {
-            throw new NotImplementedException();
-        }
-
-#if  NET6_0_OR_GREATER
-        public string GetUriWithQueryParameter(string name, DateOnly value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, DateOnly? value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, TimeOnly value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, TimeOnly? value)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual string GetUriWithQueryParameter(string name, TimeOnly? value) => throw new NotImplementedException();
 #endif
-        public string GetUriWithQueryParameter(string name, decimal value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, decimal? value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, double value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, double? value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, float value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, float? value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, Guid value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, Guid? value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, int value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, int? value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, long value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, long? value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameter(string name, string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameters(IReadOnlyDictionary<string, object> parameters)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetUriWithQueryParameters(string uri, IReadOnlyDictionary<string, object?> parameters) => throw new NotImplementedException();
     }
 }
 #endif

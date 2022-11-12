@@ -11,11 +11,11 @@
     <Company>$(Authors)</Company>
     <Copyright>Copyright(c) 2022 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
-    <Description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing.</Description>
+    <Description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing. Now with Blazor support.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>Easy;fast;injection;inject;mock;extension;Moq;moqthis;framework;mocking;class</PackageTags>
+    <PackageTags>Easy;fast;injection;inject;mock;extension;Moq;moqthis;framework;mocking;class;blazor</PackageTags>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IsPackable>true</IsPackable>

@@ -138,7 +138,8 @@ namespace FastMoq.Blazor
         /// <param name="startingPoint">The starting point.</param>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
         /// <exception cref="ElementNotFoundException"></exception>
-        void SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null)
+        void SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+            IRenderedFragment? startingPoint = null)
             where TComponent : IComponent;
 
         /// <summary>

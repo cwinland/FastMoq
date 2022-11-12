@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using System.Reflection;
+
 namespace FastMoq.Blazor
 {
     /// <summary>
@@ -141,7 +142,7 @@ namespace FastMoq.Blazor
             ConfigureServices?.Invoke(Services, configuration, Mocks);
         }
 
-        #region IBlazorTestHelpers<T>
+        #region IMockerBlazorTestHelpers<T>
 
         /// <inheritdoc />
         /// <exception cref="T:System.ArgumentNullException">button</exception>
@@ -241,7 +242,8 @@ namespace FastMoq.Blazor
         }
 
         /// <inheritdoc />
-        public IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(string propName, Func<bool> waitFunc, string cssDropdownSelector = "a.dropdown-item") where TComponent : IComponent
+        public IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(string propName, Func<bool> waitFunc, string cssDropdownSelector = "a.dropdown-item")
+            where TComponent : IComponent
         {
             var dropDown = Component.FindComponent<TComponent>();
             ButtonClick(dropDown
@@ -267,15 +269,12 @@ namespace FastMoq.Blazor
                 .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(InjectAttribute)));
 
         /// <inheritdoc />
-        public void InjectComponent<TComponent>()
-        {
-            GetInjections<TComponent>()
-                .ForEach(y =>
-                {
-                    Services
+        public void InjectComponent<TComponent>() => GetInjections<TComponent>()
+            .ForEach(y =>
+            {
+                Services
                     .TryAddSingleton(y.PropertyType, _ => Mocks.GetObject(y.PropertyType));
-                });
-        }
+            });
 
         /// <inheritdoc />
         public bool IsExists(string cssSelector) => Component.FindAll(cssSelector).Any();
@@ -315,7 +314,8 @@ namespace FastMoq.Blazor
         /// <inheritdoc />
         /// <exception cref="ArgumentNullException">cssSelector</exception>
         /// <exception cref="ElementNotFoundException"></exception>
-        public void SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null) where TComponent : IComponent
+        public void SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+            IRenderedFragment? startingPoint = null) where TComponent : IComponent
         {
             IElement? nameFilter = null;
 
@@ -360,14 +360,15 @@ namespace FastMoq.Blazor
                 throw new ElementNotFoundException(cssSelector);
             }
 
-            var checkbox = ((Wrapper<IElement>)nameFilter).WrappedElement;
+            var checkbox = ((Wrapper<IElement>) nameFilter).WrappedElement;
             checkbox.Change(isChecked);
             WaitForState(waitFunc, waitTimeout);
         }
 
         /// <inheritdoc />
         /// <exception cref="ArgumentNullException">cssSelector</exception>
-        public void SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null) where TComponent : IComponent
+        public void SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+            IRenderedFragment? startingPoint = null) where TComponent : IComponent
         {
             IElement? nameFilter = null;
 
@@ -407,7 +408,7 @@ namespace FastMoq.Blazor
                     });
             }
 
-            var theSwitch = ((Wrapper<IElement>)nameFilter).WrappedElement;
+            var theSwitch = ((Wrapper<IElement>) nameFilter).WrappedElement;
             theSwitch.Change(isChecked);
             WaitForState(waitFunc, waitTimeout);
         }
