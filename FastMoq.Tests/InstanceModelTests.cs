@@ -10,7 +10,7 @@ namespace FastMoq.Tests
 {
     public class InstanceModelTests : MockerTestBase<InstanceModel<IFileSystem>>
     {
-        public InstanceModelTests() : base(mocks => new InstanceModel<IFileSystem>(mocks1 => new FileSystem())) { }
+        public InstanceModelTests() : base(_ => new InstanceModel<IFileSystem>(_ => new FileSystem())) { }
 
         [Fact]
         public void Create()
@@ -23,7 +23,7 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateNullType()
         {
-            Action a = () => _ = new InstanceModel(null) { CreateFunc = mocks1 => new FileSystem() };
+            Action a = () => _ = new InstanceModel(null) { CreateFunc = _ => new FileSystem() };
             a.Should().Throw<ArgumentNullException>();
 
             var im = new InstanceModel<IFileSystem>(null);
