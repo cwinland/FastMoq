@@ -657,8 +657,6 @@ namespace FastMoq
                     // If a create function is provided, use it instead of a mock object.
                     return AddInjections(typeValue.CreateFunc?.Invoke(this), typeValue.InstanceType);
                 }
-
-                type = typeValue.InstanceType;
             }
 
             if (!Strict && type.IsEquivalentTo(typeof(IFileSystem)))
