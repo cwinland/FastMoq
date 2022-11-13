@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <HelpKI>
 
+  <HelpKINode Title="AddInjections(Of T) method" Url="html/M-FastMoq.Mocker.AddInjections--1.htm" />
+  <HelpKINode Title="AddInjections&lt;T&gt; method" Url="html/M-FastMoq.Mocker.AddInjections--1.htm" />
   <HelpKINode Title="AddType(Of TInterface, TClass) method" Url="html/M-FastMoq.Mocker.AddType--2.htm" />
   <HelpKINode Title="AddType&lt;TInterface, TClass&gt; method" Url="html/M-FastMoq.Mocker.AddType--2.htm" />
   <HelpKINode Title="Arguments property" Url="html/P-FastMoq.InstanceModel.Arguments.htm" />
@@ -103,6 +105,8 @@
     <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Mocker.htm" />
     <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Mocker.htm" />
   </HelpKINode>
+  <HelpKINode Title="Mocker.AddInjections(Of T) method" Url="html/M-FastMoq.Mocker.AddInjections--1.htm" />
+  <HelpKINode Title="Mocker.AddInjections&lt;T&gt; method" Url="html/M-FastMoq.Mocker.AddInjections--1.htm" />
   <HelpKINode Title="Mocker.AddType(Of TInterface, TClass) method" Url="html/M-FastMoq.Mocker.AddType--2.htm" />
   <HelpKINode Title="Mocker.AddType&lt;TInterface, TClass&gt; method" Url="html/M-FastMoq.Mocker.AddType--2.htm" />
   <HelpKINode Title="Mocker.Contains method" Url="html/Overload-FastMoq.Mocker.Contains-.htm" />
