@@ -1,3 +1,4 @@
+using FastMoq.Tests.TestClasses;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
 using Moq;
@@ -12,6 +13,7 @@ using System.Runtime;
 using System.Security.Cryptography;
 using System.Threading;
 using Xunit;
+using TestClassOne = FastMoq.Tests.TestClasses.TestClassOne;
 
 #pragma warning disable CS8604
 #pragma warning disable CS8602
@@ -71,6 +73,61 @@ namespace FastMoq.Tests
             Mocks.CreateInstance<TestClassDouble1>().Should().NotBeNull();
             Mocks.CreateInstance<TestClassDouble2>().Should().NotBeNull();
             Mocks.CreateInstance<TestClassParameters>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateClassWithInjectParameters()
+        {
+            var m = Mocks.CreateInstance<TestClassParameters>();
+            m.Should().NotBeNull();
+            m.anotherFileSystem.Should().NotBeNull();
+            m.anotherFileSystem2.Should().NotBeNull();
+            m.anotherFileSystem3.Should().NotBeNull();
+            m.invalidInjection.Should().Be(0);
+            m.invalidInjection2.Should().BeNull();
+            m.invalidInjection3.Should().BeEmpty();
+            m.invalidInjection4.Should().BeEmpty();
+
+            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
+            (Mocks.CreateInstance<ITestClassOne>() as TestClassOne).FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInterfaceWithInjectParameters()
+        {
+            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
+            (Mocks.CreateInstance<ITestClassOne>() as TestClassOne).FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateMockWithInjectParameters()
+        {
+            Mocks.AddType<ITestClassOne, TestClassOne>();
+            Mocks.GetMock<ITestClassOne>().Object.FileSystem.Should().NotBeNull();
+            Mocks.GetMock<TestClassOne>().Object.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateMockObjectWithInjectParameters()
+        {
+            Mocks.GetObject<ITestClassOne>().Should().NotBeNull();
+            Mocks.GetObject<ITestClassOne>().FileSystem.Should().BeNull();
+        }
+
+        [Fact]
+        public void CreateMockMappedObjectWithInjectParameters()
+        {
+            Mocks.AddType<ITestClassOne, TestClassOne>();
+            Mocks.GetObject<ITestClassOne>().Should().NotBeNull();
+            Mocks.GetObject<ITestClassOne>().FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateMockMappedCreateFuncObjectWithInjectParameters()
+        {
+            Mocks.AddType<ITestClassOne, TestClassOne>( x=> x.CreateInstance<TestClassOne>());
+            Mocks.GetObject<ITestClassOne>().Should().NotBeNull();
+            Mocks.GetObject<ITestClassOne>().FileSystem.Should().NotBeNull();
         }
 
         [Fact]

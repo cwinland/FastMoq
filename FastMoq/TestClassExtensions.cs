@@ -116,7 +116,7 @@ namespace FastMoq
         /// <param name="obj">The object.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        public static void SetFieldValue<TObject>(this TObject obj, string name, object value) where TObject : class? =>
+        public static void SetFieldValue<TObject>(this TObject obj, string name, object? value) where TObject : class? =>
             obj.GetField(name)?.SetValue(obj, value);
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace FastMoq
         /// <param name="obj">The object.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        public static void SetPropertyValue<TObject>(this TObject obj, string name, object value) where TObject : class? =>
+        public static void SetPropertyValue<TObject>(this TObject obj, string name, object? value) where TObject : class? =>
             obj.GetProperty(name)?.SetValue(obj, value);
     }
 }

@@ -51,7 +51,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.*" Condition="'$(TargetFramework)' == 'net5.0'" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.*" Condition="'$(TargetFramework)' == 'netcoreapp3.1'" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.*" Condition="'$(TargetFramework)' == 'netcoreapp3.1'" />
-    <PackageReference Include="bunit" Version="1.9.8" />
+    <PackageReference Include="bunit" Version="1.12.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">
@@ -68,7 +68,5 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
     <PackageReference Include="System.IO.Abstractions" Version="17.*" />
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.*" />
-
   </ItemGroup>
-
 </Project>
