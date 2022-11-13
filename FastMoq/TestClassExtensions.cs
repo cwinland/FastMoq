@@ -11,7 +11,7 @@ namespace FastMoq
         /// <typeparam name="T">Type of item.</typeparam>
         /// <param name="iEnumerable">The <see cref="IEnumerable{T}"/>.</param>
         /// <param name="action">The action.</param>
-        public static void ForEach<T>(this IEnumerable<T> iEnumerable, Action<T> action) => iEnumerable.ToList().ForEach(action);
+        internal static void ForEach<T>(this IEnumerable<T> iEnumerable, Action<T> action) => iEnumerable.ToList().ForEach(action);
 
         /// <summary>
         ///     Gets the field.
