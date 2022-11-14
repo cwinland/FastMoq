@@ -180,18 +180,12 @@ namespace FastMoq
             {
                 SetupHttpFactory = true;
 
-                GetMock<IHttpClientFactory>().Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(() => new HttpClient(GetObject<HttpMessageHandler>())
-                {
-                    BaseAddress = baseUri
-                });
+                GetMock<IHttpClientFactory>().Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(() => CreateHttpClientInternal(baseUri));
             }
 
             return SetupHttpFactory
                 ? GetObject<IHttpClientFactory>()?.CreateClient(clientName) ?? throw new ApplicationException("Unable to create IHttpClientFactory.")
-                : new HttpClient(GetObject<HttpMessageHandler>() ?? throw new ApplicationException("Unable to create HttpMessageHandler."))
-                {
-                    BaseAddress = baseUri
-                };
+                : CreateHttpClientInternal(baseUri);
         }
 
         /// <summary>
@@ -935,6 +929,12 @@ namespace FastMoq
 
             return GetMockModel(type);
         }
+
+        internal HttpClient CreateHttpClientInternal(Uri baseUri) =>
+            new(GetObject<HttpMessageHandler>() ?? throw new ApplicationException("Unable to create HttpMessageHandler."))
+            {
+                BaseAddress = baseUri
+            };
 
         /// <summary>
         ///     Create an instance using the constructor by the function.
