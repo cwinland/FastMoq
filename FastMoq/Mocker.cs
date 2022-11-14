@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Moq;
+using Moq.Protected;
 using System.Collections;
-using System.ComponentModel;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using System.Net;
 using System.Reflection;
 using System.Runtime;
 
@@ -21,10 +22,12 @@ namespace FastMoq
         /// </summary>
         public readonly MockFileSystem fileSystem;
 
+        public readonly HttpClient httpClient;
+
         /// <summary>
         ///     List of <see cref="MockModel" />.
         /// </summary>
-        protected readonly List<MockModel> mockCollection;
+        protected internal readonly List<MockModel> mockCollection;
 
         /// <summary>
         ///     <see cref="Dictionary{TKey,TValue}" /> of <see cref="Type" /> mapped to <see cref="InstanceModel" />.
@@ -32,6 +35,8 @@ namespace FastMoq
         /// </summary>
         /// <value>The type map.</value>
         internal readonly Dictionary<Type, InstanceModel> typeMap;
+
+        private bool SetupHttpFactory;
 
         #endregion
 
@@ -60,6 +65,7 @@ namespace FastMoq
             fileSystem = new();
             mockCollection = new();
             typeMap = new();
+            httpClient = CreateHttpClient();
         }
 
         /// <inheritdoc />
@@ -142,9 +148,51 @@ namespace FastMoq
         /// <returns><c>true</c> if <see cref="Mock{T}" /> exists; otherwise, <c>false</c>.</returns>
         /// <exception cref="System.ArgumentNullException">type</exception>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
-        public bool Contains(Type type) => type == null ? throw new ArgumentNullException(nameof(type)) :
-            !type.IsClass && !type.IsInterface ? throw new ArgumentException("type must be a class.", nameof(type)) :
-            mockCollection.Any(x => x.Type == type);
+        public bool Contains(Type type) =>
+            type == null
+                ? throw new ArgumentNullException(nameof(type))
+                : !type.IsClass && !type.IsInterface
+                    ? throw new ArgumentException("type must be a class.", nameof(type))
+                    : mockCollection.Any(x => x.Type == type);
+
+        /// <summary>
+        ///     Creates the HTTP client.
+        /// </summary>
+        /// <returns><see cref="httpClient" />.</returns>
+        public HttpClient CreateHttpClient(string clientName = "FastMoqHttpClient", string baseAddress = "http://localhost",
+            HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1, 'value':'1'}]")
+        {
+            var baseUri = new Uri(baseAddress);
+
+            if (!Contains<HttpMessageHandler>())
+            {
+                GetMock<HttpMessageHandler>().Protected()
+                    ?.Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                    .ReturnsAsync(() =>
+                        new HttpResponseMessage
+                        {
+                            StatusCode = statusCode,
+                            Content = new StringContent(stringContent)
+                        }).Verifiable();
+            }
+
+            if (!Contains<IHttpClientFactory>())
+            {
+                SetupHttpFactory = true;
+
+                GetMock<IHttpClientFactory>().Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(() => new HttpClient(GetObject<HttpMessageHandler>())
+                {
+                    BaseAddress = baseUri
+                });
+            }
+
+            return SetupHttpFactory
+                ? GetObject<IHttpClientFactory>()?.CreateClient(clientName) ?? throw new ApplicationException("Unable to create IHttpClientFactory.")
+                : new HttpClient(GetObject<HttpMessageHandler>() ?? throw new ApplicationException("Unable to create HttpMessageHandler."))
+                {
+                    BaseAddress = baseUri
+                };
+        }
 
         /// <summary>
         ///     Creates an instance of <c>T</c>. Parameters allow matching of constructors and using those values in the creation
@@ -167,7 +215,7 @@ namespace FastMoq
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
-        public T CreateInstance<T, TParam1>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
+        public T? CreateInstance<T, TParam1>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
             model => FindConstructorByType(model.InstanceType, true, typeof(TParam1)), data);
 
         /// <summary>
@@ -178,7 +226,7 @@ namespace FastMoq
         /// <typeparam name="TParam2">The type of the t param2.</typeparam>
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
-        public T CreateInstance<T, TParam1, TParam2>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
+        public T? CreateInstance<T, TParam1, TParam2>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
             model => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2)), data);
 
         /// <summary>
@@ -190,7 +238,7 @@ namespace FastMoq
         /// <typeparam name="TParam3">The type of the t param3.</typeparam>
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
-        public T CreateInstance<T, TParam1, TParam2, TParam3>(Dictionary<Type, object?> data) where T : class =>
+        public T? CreateInstance<T, TParam1, TParam2, TParam3>(Dictionary<Type, object?> data) where T : class =>
             CreateInstanceInternal<T>(
                 model => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3)),
                 data);
@@ -205,7 +253,7 @@ namespace FastMoq
         /// <typeparam name="TParam4">The type of the t param4.</typeparam>
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
-        public T CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(Dictionary<Type, object?> data) where T : class =>
+        public T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(Dictionary<Type, object?> data) where T : class =>
             CreateInstanceInternal<T>(
                 model => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3),
                     typeof(TParam4)), data);
@@ -221,7 +269,7 @@ namespace FastMoq
         /// <typeparam name="TParam5">The type of the t param5.</typeparam>
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
-        public T CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(Dictionary<Type, object?> data) where T : class =>
+        public T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(Dictionary<Type, object?> data) where T : class =>
             CreateInstanceInternal<T>(
                 model => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3),
                     typeof(TParam4), typeof(TParam5)), data);
@@ -238,7 +286,7 @@ namespace FastMoq
         /// <typeparam name="TParam6">The type of the t param6.</typeparam>
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
-        public T CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6>(Dictionary<Type, object?> data)
+        public T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6>(Dictionary<Type, object?> data)
             where T : class => CreateInstanceInternal<T>(
             model => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3),
                 typeof(TParam4), typeof(TParam5), typeof(TParam6)), data);
@@ -256,7 +304,7 @@ namespace FastMoq
         /// <typeparam name="TParam7">The type of the t param7.</typeparam>
         /// <param name="data">The arguments.</param>
         /// <returns>T.</returns>
-        public T CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7>(Dictionary<Type, object?> data)
+        public T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7>(Dictionary<Type, object?> data)
             where T : class => CreateInstanceInternal<T>(
             model => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3),
                 typeof(TParam4), typeof(TParam5), typeof(TParam6), typeof(TParam7)), data);
@@ -275,7 +323,7 @@ namespace FastMoq
         /// <typeparam name="TParam8">The type of the t param8.</typeparam>
         /// <param name="data">The arguments.</param>
         /// <returns>T.</returns>
-        public T CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8>(
+        public T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8>(
             Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
             model => FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3),
                 typeof(TParam4), typeof(TParam5), typeof(TParam6), typeof(TParam7), typeof(TParam8)), data);
@@ -303,19 +351,20 @@ namespace FastMoq
                 return fileSystem as T;
             }
 
-            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
+            var tType = typeof(T);
+            var typeInstanceModel = GetMapModel<T>() ?? (tType.IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>());
 
-            if (type.CreateFunc != null)
+            if (typeInstanceModel.CreateFunc != null)
             {
-                return (T) type.CreateFunc.Invoke(this);
+                return (T) typeInstanceModel.CreateFunc.Invoke(this);
             }
 
             args ??= Array.Empty<object>();
 
             var constructor =
                 args.Length > 0
-                    ? FindConstructor(type.InstanceType, false, args)
-                    : FindConstructor(false, type.InstanceType, false);
+                    ? FindConstructor(typeInstanceModel.InstanceType, false, args)
+                    : FindConstructor(false, typeInstanceModel.InstanceType, false);
 
             return CreateInstanceInternal<T>(constructor);
         }
@@ -350,14 +399,14 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
-        public object CreateInstanceNonPublic(Type type, params object?[] args)
+        public object? CreateInstanceNonPublic(Type type, params object?[] args)
         {
             var constructor =
                 args.Length > 0
                     ? FindConstructor(type, true, args)
                     : FindConstructor(false, type, true);
 
-            return constructor.ConstructorInfo.Invoke(constructor.ParameterList);
+            return constructor.ConstructorInfo?.Invoke(constructor.ParameterList);
         }
 
         /// <summary>
@@ -410,7 +459,7 @@ namespace FastMoq
             var constructor = new ConstructorModel(null, new List<object?>());
             try
             {
-                if (InnerMockResolution)
+                if (!type.IsInterface && InnerMockResolution)
                 {
                     // Find the best constructor and build the parameters.
                     constructor = FindConstructor(true, type, nonPublic);
@@ -437,7 +486,7 @@ namespace FastMoq
                 InvokeMethod<Mock>(null, "SetupAllProperties", true, oMock);
             }
 
-            AddInjections(oMock.Object, typeMap.ContainsKey(type) ? typeMap[type].InstanceType : type);
+            AddInjections(oMock.Object, GetMapModel(type)?.InstanceType ?? type);
 
             return oMock;
         }
@@ -468,6 +517,20 @@ namespace FastMoq
         }
 
         /// <summary>
+        ///     Gets the content bytes.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        /// <returns>byte[].</returns>
+        public async Task<byte[]> GetContentBytes(HttpContent content) => content is ByteArrayContent data ? await data.ReadAsByteArrayAsync() : Array.Empty<byte>();
+
+        /// <summary>
+        ///     Gets the content stream.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        /// <returns>System.IO.Stream.</returns>
+        public async Task<Stream> GetContentStream(HttpContent content) => content is ByteArrayContent data ? await data.ReadAsStreamAsync() : Stream.Null;
+
+        /// <summary>
         ///     Gets the default value.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -475,7 +538,7 @@ namespace FastMoq
         public static object? GetDefaultValue(Type type) => type switch
         {
             { FullName: "System.String" } => string.Empty,
-            _ when typeof(IEnumerable).IsAssignableFrom(type) => Array.CreateInstance(type.GetElementType(), 0),
+            _ when typeof(IEnumerable).IsAssignableFrom(type) => Array.CreateInstance(type.GetElementType() ?? typeof(object), 0),
             { IsClass: true } => null,
             _ => Activator.CreateInstance(type)
         };
@@ -649,19 +712,25 @@ namespace FastMoq
                 throw new ArgumentNullException(nameof(type));
             }
 
-            if (typeMap.ContainsKey(type))
+            var typeValueModel = GetMapModel(type);
+            if (typeValueModel?.CreateFunc != null)
             {
-                var typeValue = typeMap[type];
-                if (typeValue.CreateFunc != null)
-                {
-                    // If a create function is provided, use it instead of a mock object.
-                    return AddInjections(typeValue.CreateFunc?.Invoke(this), typeValue.InstanceType);
-                }
+                // If a create function is provided, use it instead of a mock object.
+                return AddInjections(typeValueModel.CreateFunc?.Invoke(this), typeValueModel.InstanceType);
             }
 
-            if (!Strict && type.IsEquivalentTo(typeof(IFileSystem)))
+            if (!Strict)
             {
-                return fileSystem;
+                // Only substitute the pre-made objects if the mock was not created.
+                if (!Contains<IFileSystem>() && type.IsEquivalentTo(typeof(IFileSystem)))
+                {
+                    return fileSystem;
+                }
+
+                if (!Contains<HttpClient>() && type.IsEquivalentTo(typeof(HttpClient)))
+                {
+                    return httpClient;
+                }
             }
 
             if ((type.IsClass || type.IsInterface) && !type.IsSealed)
@@ -706,7 +775,7 @@ namespace FastMoq
         /// <typeparam name="T"></typeparam>
         /// <param name="args">The arguments.</param>
         /// <returns>T.</returns>
-        public T GetObject<T>(params object?[] args) where T : class
+        public T? GetObject<T>(params object?[] args) where T : class
         {
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
             var constructor = FindConstructor(false, type.InstanceType, true);
@@ -732,6 +801,13 @@ namespace FastMoq
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.InvalidOperationException">Mock must exist. - type</exception>
         public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>) GetRequiredMock(typeof(T));
+
+        /// <summary>
+        ///     Gets the content of the string.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        /// <returns>string.</returns>
+        public async Task<string> GetStringContent(HttpContent content) => content is ByteArrayContent data ? await data.ReadAsStringAsync() : string.Empty;
 
         /// <summary>
         ///     Gets or Creates then Initializes the specified Mock of <c>T</c>.
@@ -867,8 +943,7 @@ namespace FastMoq
         /// <param name="constructorFunc">The constructor function.</param>
         /// <param name="data">The arguments.</param>
         /// <returns>T.</returns>
-        internal T CreateInstanceInternal<T>(Func<InstanceModel, ConstructorInfo> constructorFunc,
-            Dictionary<Type, object?>? data) where T : class
+        internal T? CreateInstanceInternal<T>(Func<InstanceModel, ConstructorInfo> constructorFunc, Dictionary<Type, object?>? data) where T : class
         {
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
 
@@ -891,7 +966,7 @@ namespace FastMoq
         /// <typeparam name="T"></typeparam>
         /// <param name="constructorModel">The constructor model.</param>
         /// <returns>T.</returns>
-        internal T CreateInstanceInternal<T>(ConstructorModel constructorModel) where T : class =>
+        internal T? CreateInstanceInternal<T>(ConstructorModel constructorModel) where T : class =>
             CreateInstanceInternal<T>(constructorModel.ConstructorInfo, constructorModel.ParameterList);
 
         /// <summary>
@@ -901,10 +976,10 @@ namespace FastMoq
         /// <param name="info">The information.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>T.</returns>
-        internal T CreateInstanceInternal<T>(ConstructorInfo info, params object?[] args) where T : class =>
-            (T) CreateInstanceInternal(typeof(T), info, args);
+        internal T? CreateInstanceInternal<T>(ConstructorInfo? info, params object?[] args) where T : class =>
+            CreateInstanceInternal(typeof(T), info, args) as T;
 
-        internal object CreateInstanceInternal(Type type, ConstructorInfo info, params object?[] args) => AddInjections(info.Invoke(args));
+        internal object? CreateInstanceInternal(Type type, ConstructorInfo? info, params object?[] args) => AddInjections(info?.Invoke(args));
 
         /// <summary>
         ///     Finds the constructor matching args EXACTLY by type.
@@ -986,10 +1061,10 @@ namespace FastMoq
         /// <param name="constructor">The constructor.</param>
         /// <param name="data">The data.</param>
         /// <returns>Array of nullable objects.</returns>
-        internal object?[] GetArgData(ConstructorInfo constructor, Dictionary<Type, object?>? data)
+        internal object?[] GetArgData(ConstructorInfo? constructor, Dictionary<Type, object?>? data)
         {
             var args = new List<object?>();
-            constructor.GetParameters().ToList().ForEach(p =>
+            constructor?.GetParameters().ToList().ForEach(p =>
             {
                 args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
                     ? data.First(x => x.Key == p.ParameterType).Value
@@ -1070,6 +1145,10 @@ namespace FastMoq
                     y.AttributeType == (attributeType ?? typeof(InjectAttribute)) ||
                     y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)));
 
+        internal InstanceModel<TModel>? GetMapModel<TModel>() where TModel : class => GetMapModel(typeof(TModel)) as InstanceModel<TModel>;
+
+        internal InstanceModel? GetMapModel(Type type) => typeMap.ContainsKey(type) ? typeMap[type] : null;
+
         /// <summary>
         ///     Gets the mock model.
         /// </summary>
@@ -1099,8 +1178,7 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <param name="autoCreate">Create Mock if it doesn't exist.</param>
         /// <returns>System.Int32.</returns>
-        internal int GetMockModelIndexOf(Type type, bool autoCreate = true) =>
-            mockCollection.IndexOf(GetMockModel(type, null, autoCreate));
+        internal int GetMockModelIndexOf(Type type, bool autoCreate = true) => mockCollection.IndexOf(GetMockModel(type, null, autoCreate));
 
         internal object? GetParameter(Type parameterType) =>
             (parameterType.IsClass || parameterType.IsInterface) && !parameterType.IsSealed

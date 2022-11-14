@@ -52,18 +52,18 @@ namespace FastMoq.Tests
         public void GetMockModelIndexOf_ShouldFindIfAuto()
         {
             _ = Component.GetMock<IFile>();
-
+            var mockCount = Component.mockCollection.Count;
             // Should not find it, because it doesn't exist.
             Action a = () => Component.GetMockModelIndexOf(typeof(IFileSystem), false);
             a.Should().Throw<NotImplementedException>();
 
             // Should find it because it is auto created.
-            Component.GetMockModelIndexOf(typeof(IFileSystem)).Should().Be(1);
+            Component.GetMockModelIndexOf(typeof(IFileSystem)).Should().Be(mockCount);
 
             // Should find it because it was created in previous step.
-            Component.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(1);
+            Component.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(mockCount);
 
-            Component.GetMockModelIndexOf(typeof(IFile), false).Should().Be(0);
+            Component.GetMockModelIndexOf(typeof(IFile), false).Should().Be(mockCount - 1);
         }
 
         [Fact]

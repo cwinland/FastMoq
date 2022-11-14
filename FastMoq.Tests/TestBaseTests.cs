@@ -23,9 +23,10 @@ namespace FastMoq.Tests
             var mockModel = new MockModel<IFileSystem>(mock);
             var mockModel2 = new MockModel<IFile>(mock2);
             CustomMocks = new List<MockModel>() { mockModel, mockModel2 };
+            var count = Mocks.mockCollection.Count;
             CreateComponent();
-            Mocks.GetMockModelIndexOf(typeof(IFile), false).Should().Be(1);
-            Mocks.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(0);
+            Mocks.GetMockModelIndexOf(typeof(IFile), false).Should().Be(count + 1);
+            Mocks.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(count);
         }
 
         [Fact]
