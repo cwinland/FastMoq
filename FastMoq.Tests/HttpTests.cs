@@ -69,5 +69,31 @@ namespace FastMoq.Tests
                 ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri == new Uri("http://help.fastmoq.com/api/test2")),
                 ItExpr.IsAny<CancellationToken>());
         }
+
+        [Fact]
+        public async Task CreateWithCustomHttpClient()
+        {
+            Mocks.SetupHttpMessage(() => new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.Accepted,
+                    Content = new StringContent("[{'id':55, 'value':'33'}]")
+                }
+            );
+
+            // Execute Http request.
+            var result = await Component.http.GetAsync(new Uri("api/test", UriKind.Relative));
+
+            // Test Results
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(HttpStatusCode.Accepted);
+
+            var content = await Mocks.GetStringContent(result.Content);
+            content.Should().Be("[{'id':55, 'value':'33'}]");
+
+            var handler = Mocks.GetMock<HttpMessageHandler>();
+            handler.Protected().Verify("SendAsync", Times.Exactly(1),
+                ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri == new Uri("http://localhost/api/test")),
+                ItExpr.IsAny<CancellationToken>());
+        }
     }
 }

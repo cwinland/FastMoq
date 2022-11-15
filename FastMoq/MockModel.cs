@@ -134,9 +134,9 @@ namespace FastMoq
             NonPublic = nonPublic;
         }
 
-        public static bool operator ==(MockModel a, MockModel b) => object.Equals(a, b);
+        public static bool operator ==(MockModel? a, MockModel? b) => object.Equals(a, b);
 
-        public static bool operator !=(MockModel a, MockModel b) => !(a == b);
+        public static bool operator !=(MockModel? a, MockModel? b) => !(a == b);
 
         /// <inheritdoc />
         public override bool Equals(object? obj) => Equals(obj as MockModel);
