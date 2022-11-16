@@ -967,8 +967,8 @@ namespace FastMoq
         /// <summary>
         ///     Setups the message.
         /// </summary>
-        /// <typeparam name="TMock">The type of the t mock.</typeparam>
-        /// <typeparam name="TReturn">The type of the t return.</typeparam>
+        /// <typeparam name="TMock">The type of the mock.</typeparam>
+        /// <typeparam name="TReturn">The type of the return value.</typeparam>
         /// <param name="expression">The expression.</param>
         /// <param name="messageFunc">The message function.</param>
         public void SetupMessage<TMock, TReturn>(Expression<Func<TMock, TReturn>> expression, Func<TReturn> messageFunc) where TMock : class =>
@@ -979,25 +979,41 @@ namespace FastMoq
         /// <summary>
         ///     Setups the message asynchronous.
         /// </summary>
-        /// <typeparam name="TMock">The type of the t mock.</typeparam>
-        /// <typeparam name="TReturn">The type of the t return.</typeparam>
+        /// <typeparam name="TMock">The type of the mock.</typeparam>
+        /// <typeparam name="TReturn">The type of the return value.</typeparam>
         /// <param name="expression">The expression.</param>
         /// <param name="messageFunc">The message function.</param>
         public void SetupMessageAsync<TMock, TReturn>(Expression<Func<TMock, Task<TReturn>>> expression, Func<TReturn> messageFunc)
-            where TMock : class => GetMock<TMock>()
-            ?.Setup(expression)
-            .ReturnsAsync(messageFunc).Verifiable();
+            where TMock : class =>
+            GetMock<TMock>()
+                ?.Setup(expression)
+                .ReturnsAsync(messageFunc).Verifiable();
+
+        /// <summary>
+        ///     Setups the message protected.
+        /// </summary>
+        /// <typeparam name="TMock">The type of the mock.</typeparam>
+        /// <typeparam name="TReturn">The type of the return value.</typeparam>
+        /// <param name="methodOrPropertyName">Name of the method or property.</param>
+        /// <param name="messageFunc">The message function.</param>
+        /// <param name="args">The arguments.</param>
+        public void SetupMessageProtected<TMock, TReturn>(string methodOrPropertyName, Func<TReturn> messageFunc, params Expression[] args)
+            where TMock : class =>
+            GetMock<TMock>().Protected()
+                ?.Setup<TReturn>(methodOrPropertyName, args)
+                .Returns(messageFunc).Verifiable();
 
         /// <summary>
         ///     Setups the message protected asynchronous.
         /// </summary>
-        /// <typeparam name="TMock">The type of the t mock.</typeparam>
-        /// <typeparam name="TReturn">The type of the t return.</typeparam>
+        /// <typeparam name="TMock">The type of the mock.</typeparam>
+        /// <typeparam name="TReturn">The type of the return value.</typeparam>
         /// <param name="methodOrPropertyName">Name of the method or property.</param>
         /// <param name="messageFunc">The message function.</param>
         /// <param name="args">The arguments.</param>
         public void SetupMessageProtectedAsync<TMock, TReturn>(string methodOrPropertyName, Func<TReturn> messageFunc, params Expression[] args)
-            where TMock : class => GetMock<TMock>().Protected()
+            where TMock : class =>
+            GetMock<TMock>().Protected()
             ?.Setup<Task<TReturn>>(methodOrPropertyName, args)
             .ReturnsAsync(messageFunc).Verifiable();
 
