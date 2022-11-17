@@ -12,8 +12,12 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 - Injection: Automatically determines what interfaces need to be injected into the constructor and creates mocks if they do not exist.
   - Best guess picks the multiple parameter constructor over the default constructor.
   - Specific mapping allows the tester to create an instance using a specific constructor and specific data.
+  - Supports Inject Attributes and multiple constructors.
 - Use Mocks without managing fields and properties. Mocks are managed by the Mocker framework. No need to keep track of Mocks. Just use them!
 - Create instances of Mocks with non public constructors.
+- HttpClient and IFileSystem test helpers
+- Supports Null method parameter testing.
+- 
 
 ## Targets
 

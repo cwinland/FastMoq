@@ -178,12 +178,7 @@ namespace FastMoq
                 Thread.Sleep(waitBetweenChecks);
             }
 
-            if (!EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now > timeout)
-            {
-                throw new ApplicationException("Waitfor Timeout");
-            }
-
-            return result;
+            return !EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now > timeout ? throw new ApplicationException("Waitfor Timeout") : result;
         }
 
         /// <summary>
@@ -260,7 +255,7 @@ namespace FastMoq
         /// <param name="funcMethod">The function.</param>
         /// <param name="resultAction">The result action.</param>
         /// <param name="args">The arguments.</param>
-        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task>, string, List<object?>> resultAction,
+        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task>, string?, List<object?>> resultAction,
             params object?[]? args)
         {
             if (funcMethod == null)
@@ -288,7 +283,7 @@ namespace FastMoq
         /// <param name="args">The arguments.</param>
         /// <exception cref="System.ArgumentNullException">methodInfo</exception>
         /// <exception cref="System.ArgumentNullException">resultAction</exception>
-        protected void TestMethodParametersAsync(MethodInfo methodInfo, Action<Func<Task>, string, List<object?>> resultAction, params object?[]? args)
+        protected void TestMethodParametersAsync(MethodInfo methodInfo, Action<Func<Task>, string?, List<object?>> resultAction, params object?[]? args)
         {
             if (methodInfo == null)
             {
@@ -303,12 +298,17 @@ namespace FastMoq
             var names = methodInfo.GetParameters().ToList();
             var subs = Mocks.GetMethodDefaultData(methodInfo).ToList();
 
+            if (args == null)
+            {
+                return;
+            }
+
             for (var i = 0; i < args.Length; i++)
             {
                 var list = new List<object?>();
                 list.AddRange(args);
                 list[i] = subs[i];
-                resultAction(async () => await (Task) methodInfo.Invoke(Component, list.ToArray()), names.Select(x => x.Name).Skip(i).First(), list);
+                resultAction(async () => await (methodInfo.Invoke(Component, list.ToArray()) as Task), names.Select(x => x.Name).Skip(i).First(), list);
             }
         }
 
