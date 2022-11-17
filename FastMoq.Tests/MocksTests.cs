@@ -1,6 +1,5 @@
 using FastMoq.Tests.TestClasses;
 using FluentAssertions;
-using FluentAssertions.Equivalency;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,6 @@ using System.Runtime;
 using System.Security.Cryptography;
 using System.Threading;
 using Xunit;
-using TestClassOne = FastMoq.Tests.TestClasses.TestClassOne;
 
 #pragma warning disable CS8604
 #pragma warning disable CS8602
@@ -29,134 +27,20 @@ namespace FastMoq.Tests
         public MocksTests() : base(SetupAction, CreateAction, CreatedAction) { }
 
         [Fact]
-        public void Mocker_CreateWithEmptyMap()
+        public void AddInjections()
         {
-            var test = new Mocker(new Dictionary<Type, InstanceModel>());
-            test.typeMap.Should().BeEmpty();
-        }
+            // Null Path
+            object obj = null;
+            Component.AddInjections(obj).Should().Be(null);
 
-        [Fact]
-        public void Mocker_CreateWithMap()
-        {
-            var map = new Dictionary<Type, InstanceModel>()
-            {
-                { typeof(IFileSystem), new InstanceModel<IFileSystem>() },
-                { typeof(IFile), new InstanceModel<IFile>(_ => new MockFileSystem().File) }
-            };
+            // Create class without injected property.
+            var c = new TestClassOne(Mocks.GetObject<IFile>());
 
-            var test = new Mocker(map);
-            test.typeMap.Should().BeEquivalentTo(map);
-        }
+            // Check property is null
+            c.FileSystem.Should().BeNull();
 
-        [Fact]
-        public void GetMockModelIndexOf_ShouldFindIfAuto()
-        {
-            _ = Component.GetMock<IFile>();
-
-            // Should not find it, because it doesn't exist.
-            Action a = () => Component.GetMockModelIndexOf(typeof(IFileSystem), false);
-            a.Should().Throw<NotImplementedException>();
-
-            // Should find it because it is auto created.
-            Component.GetMockModelIndexOf(typeof(IFileSystem)).Should().Be(1);
-
-            // Should find it because it was created in previous step.
-            Component.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(1);
-
-            Component.GetMockModelIndexOf(typeof(IFile), false).Should().Be(0);
-        }
-
-        [Fact]
-        public void CreateInstance()
-        {
-            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
-            Mocks.CreateInstance<TestClassDouble1>().Should().NotBeNull();
-            Mocks.CreateInstance<TestClassDouble2>().Should().NotBeNull();
-            Mocks.CreateInstance<TestClassParameters>().Should().NotBeNull();
-        }
-
-        [Fact]
-        public void CreateClassWithInjectParameters()
-        {
-            var m = Mocks.CreateInstance<TestClassParameters>();
-            m.Should().NotBeNull();
-            m.anotherFileSystem.Should().NotBeNull();
-            m.anotherFileSystem2.Should().NotBeNull();
-            m.anotherFileSystem3.Should().NotBeNull();
-            m.invalidInjection.Should().Be(0);
-            m.invalidInjection2.Should().BeNull();
-            m.invalidInjection3.Should().BeEmpty();
-            m.invalidInjection4.Should().BeEmpty();
-
-            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
-            (Mocks.CreateInstance<ITestClassOne>() as TestClassOne).FileSystem.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void CreateInterfaceWithInjectParameters()
-        {
-            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
-            (Mocks.CreateInstance<ITestClassOne>() as TestClassOne).FileSystem.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void CreateMockWithInjectParameters()
-        {
-            Mocks.AddType<ITestClassOne, TestClassOne>();
-            Mocks.GetMock<ITestClassOne>().Object.FileSystem.Should().NotBeNull();
-            Mocks.GetMock<TestClassOne>().Object.FileSystem.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void CreateMockObjectWithInjectParameters()
-        {
-            Mocks.GetObject<ITestClassOne>().Should().NotBeNull();
-            Mocks.GetObject<ITestClassOne>().FileSystem.Should().BeNull();
-        }
-
-        [Fact]
-        public void CreateMockMappedObjectWithInjectParameters()
-        {
-            Mocks.AddType<ITestClassOne, TestClassOne>();
-            Mocks.GetObject<ITestClassOne>().Should().NotBeNull();
-            Mocks.GetObject<ITestClassOne>().FileSystem.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void CreateMockMappedCreateFuncObjectWithInjectParameters()
-        {
-            Mocks.AddType<ITestClassOne, TestClassOne>( x=> x.CreateInstance<TestClassOne>());
-            Mocks.GetObject<ITestClassOne>().Should().NotBeNull();
-            Mocks.GetObject<ITestClassOne>().FileSystem.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void TestMethodInvoke()
-        {
-            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid", true).Should().BeNull();
-            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid").Should().BeNull();
-            Mocks.InvokeMethod<ITestClassOne>(null, "TestStaticObject").Should().BeOfType<MockFileSystem>();
-            Mocks.InvokeMethod<ITestClassOne>("TestStaticObject").Should().BeOfType<MockFileSystem>();
-            Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true).Should().Be(0);
-            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestInt", true).Should().Be(0);
-            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestInt", true, 2).Should().Be(2);
-            Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true, 2).Should().Be(2);
-
-            Mocks.Strict = true;
-            Action a = () => Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
-            a.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Specified argument was out of the range of valid values.");
-        }
-
-        [Fact]
-        public void MockParameters()
-        {
-            var o = Mocks.GetObject<TestClassDouble1>();
-            o.Value = 33;
-            o.Value.Should().Be(33);
-            Mocks.GetObject<TestClassDouble1>().Value.Should().Be(33);
-            Mocks.GetObject<TestClassDouble1>().Value = 44;
-            Mocks.GetObject<TestClassDouble1>().Value.Should().Be(44);
-            Mocks.GetMock<TestClassDouble1>().Object.Value.Should().Be(44);
+            // AddInjections sets property with InjectAttribute.
+            Component.AddInjections(c).FileSystem.Should().NotBeNull();
         }
 
         [Fact]
@@ -167,8 +51,8 @@ namespace FastMoq.Tests
                 Name = "First"
             };
 
-            var mockResult = Mocks.AddMock(mock, false);
-            var mockModel = Mocks.GetMockModel<IFileSystemInfo>();
+            MockModel<IFileSystemInfo> mockResult = Mocks.AddMock(mock, false);
+            MockModel<IFileSystemInfo> mockModel = Mocks.GetMockModel<IFileSystemInfo>();
             mockResult.Mock.Should().Be(mockModel.Mock);
             mockModel.Mock.Name.Should().Be("First");
         }
@@ -195,12 +79,12 @@ namespace FastMoq.Tests
                 Name = "First"
             };
 
-            var mock1 = Mocks.AddMock(mock, false).Mock;
+            Mock<IFileSystemInfo> mock1 = Mocks.AddMock(mock, false).Mock;
             mock1.Should().Be(mock);
             mock1.Name.Should().Be("First");
 
             mock.Name = "test";
-            var mock2 = Mocks.AddMock(mock, true).Mock;
+            Mock<IFileSystemInfo> mock2 = Mocks.AddMock(mock, true).Mock;
             mock2.Should().Be(mock);
             mock2.Name.Should().Be("test");
         }
@@ -235,7 +119,8 @@ namespace FastMoq.Tests
 
             // Add Mock Mapping, demonstrating that the number doesn't get used until CreateInstance is called.
             Mocks.AddType<ITestClassDouble, TestClassDouble2>(_ => new TestClassDouble2
-                { Value = number });
+                {Value = number}
+            );
 
             // Saving original number
             var number2 = number;
@@ -320,6 +205,23 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateClassWithInjectParameters()
+        {
+            var m = Mocks.CreateInstance<TestClassParameters>();
+            m.Should().NotBeNull();
+            m.anotherFileSystem.Should().NotBeNull();
+            m.anotherFileSystem2.Should().NotBeNull();
+            m.anotherFileSystem3.Should().NotBeNull();
+            m.invalidInjection.Should().Be(0);
+            m.invalidInjection2.Should().BeNull();
+            m.invalidInjection3.Should().BeEmpty();
+            m.invalidInjection4.Should().BeEmpty();
+
+            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
+            (Mocks.CreateInstance<ITestClassOne>() as TestClassOne).FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
         public void CreateExact_WithMultiClass()
         {
             Mocks.CreateInstance<TestClassMany>(4).Should().NotBeNull();
@@ -332,7 +234,6 @@ namespace FastMoq.Tests
             Mocks.CreateInstanceNonPublic<TestClassOne>(new FileSystem()).Should().NotBeNull();
             Action b = () => Mocks.CreateInstanceNonPublic<TestClassOne>("4", "str").Should().NotBeNull();
             b.Should().Throw<NotImplementedException>();
-
         }
 
         [Fact]
@@ -343,6 +244,44 @@ namespace FastMoq.Tests
         {
             Action a = () => Mocks.CreateInstance<IFile>().Should().NotBeNull();
             a.Should().Throw<AmbiguousImplementationException>();
+        }
+
+        [Fact]
+        public void CreateInstance()
+        {
+            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
+            Mocks.CreateInstance<TestClassDouble1>().Should().NotBeNull();
+            Mocks.CreateInstance<TestClassDouble2>().Should().NotBeNull();
+            Mocks.CreateInstance<TestClassParameters>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInstanceShouldCreateByType()
+        {
+            var test = Component.CreateInstance<ITestClassMultiple, IFileSystem, IFile>(new Dictionary<Type, object?>
+                {
+                    {typeof(IFileSystem), null}
+                }
+            );
+
+            test.Fs.Should().BeNull();
+            test.F.Should().NotBeNull();
+
+            var test2 = Component.CreateInstance<ITestClassMultiple, IFileSystem, IFile>(new Dictionary<Type, object?>
+                {
+                    {typeof(IFile), null}
+                }
+            );
+
+            test2.F.Should().BeNull();
+            test2.Fs.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInterfaceWithInjectParameters()
+        {
+            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
+            (Mocks.CreateInstance<ITestClassOne>() as TestClassOne).FileSystem.Should().NotBeNull();
         }
 
         [Fact]
@@ -376,6 +315,37 @@ namespace FastMoq.Tests
 
             Action b = () => Mocks.CreateMock<IDirectoryInfo>();
             b.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void CreateMockMappedCreateFuncObjectWithInjectParameters()
+        {
+            Mocks.AddType<ITestClassOne, TestClassOne>(x => x.CreateInstance<TestClassOne>());
+            Mocks.GetObject<ITestClassOne>().Should().NotBeNull();
+            Mocks.GetObject<ITestClassOne>().FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateMockMappedObjectWithInjectParameters()
+        {
+            Mocks.AddType<ITestClassOne, TestClassOne>();
+            Mocks.GetObject<ITestClassOne>().Should().NotBeNull();
+            Mocks.GetObject<ITestClassOne>().FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateMockObjectWithInjectParameters()
+        {
+            Mocks.GetObject<ITestClassOne>().Should().NotBeNull();
+            Mocks.GetObject<ITestClassOne>().FileSystem.Should().BeNull();
+        }
+
+        [Fact]
+        public void CreateMockWithInjectParameters()
+        {
+            Mocks.AddType<ITestClassOne, TestClassOne>();
+            Mocks.GetMock<ITestClassOne>().Object.FileSystem.Should().NotBeNull();
+            Mocks.GetMock<TestClassOne>().Object.FileSystem.Should().NotBeNull();
         }
 
         [Fact]
@@ -438,30 +408,15 @@ namespace FastMoq.Tests
         public void GetList()
         {
             var count = 0;
-            var numbers = Mocker.GetList(3, () => count++);
-            numbers.Should().BeEquivalentTo(new List<int> { 0, 1, 2 });
+            List<int> numbers = Mocker.GetList(3, () => count++);
+            numbers.Should().BeEquivalentTo(new List<int> {0, 1, 2});
 
             count = 0;
-            var strings = Mocker.GetList(3, () => (count++).ToString());
-            strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2" });
+            List<string> strings = Mocker.GetList(3, () => (count++).ToString());
+            strings.Should().BeEquivalentTo(new List<string> {"0", "1", "2"});
 
             count = 0;
-            var test = Mocker.GetList(3, () => new TestClassMany(count++));
-            test[0].value.Should().Be(0);
-            test[1].value.Should().Be(1);
-            test[2].value.Should().Be(2);
-        }
-
-        [Fact]
-        public void GetListParameter()
-        {
-            var numbers = Mocker.GetList(3, i=> i);
-            numbers.Should().BeEquivalentTo(new List<int> { 0, 1, 2 });
-
-            var strings = Mocker.GetList(3, i => i.ToString());
-            strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2" });
-
-            var test = Mocker.GetList(3, (i) => new TestClassMany(i));
+            List<TestClassMany> test = Mocker.GetList(3, () => new TestClassMany(count++));
             test[0].value.Should().Be(0);
             test[1].value.Should().Be(1);
             test[2].value.Should().Be(2);
@@ -470,39 +425,71 @@ namespace FastMoq.Tests
         [Fact]
         public void GetList_ShouldInitAfterCreate()
         {
-            var testInit = Mocker.GetList(3, i => new TestClassMany(i), (i, many) => many.value = i * 2);
+            List<TestClassMany> testInit = Mocker.GetList(3, i => new TestClassMany(i), (i, many) => many.value = i * 2);
             testInit[0].value.Should().Be(0);
             testInit[1].value.Should().Be(2);
             testInit[2].value.Should().Be(4);
         }
 
         [Fact]
-        public void GetMockInstance()
+        public void GetListParameter()
         {
-            var mock = Component.CreateMockInstance<ITestClassMany>();
-            mock.Setup(x=>x.Value).Returns(1);
-            var mock1Object = mock.Object;
+            List<int> numbers = Mocker.GetList(3, i => i);
+            numbers.Should().BeEquivalentTo(new List<int> {0, 1, 2});
 
-            var mock2 = Component.CreateMockInstance<ITestClassMany>();
-            mock2.Setup(x=>x.Value).Returns(2);
-            var mock2Object = mock2.Object;
+            List<string> strings = Mocker.GetList(3, i => i.ToString());
+            strings.Should().BeEquivalentTo(new List<string> {"0", "1", "2"});
 
-            mock1Object.Value.Should().NotBe(mock2Object.Value);
+            List<TestClassMany> test = Mocker.GetList(3, i => new TestClassMany(i));
+            test[0].value.Should().Be(0);
+            test[1].value.Should().Be(1);
+            test[2].value.Should().Be(2);
         }
 
         [Fact]
-        public void GetMockValueTest()
+        public void GetMethodArgData()
         {
-            var mock = Component.GetMock<ITestClassMany>();
-            mock.Setup(x=>x.Value).Returns(1);
-            var mock1Object = mock.Object;
+            var type = typeof(Thread);
+            var instance = Thread.CurrentThread;
 
-            var mock2 = Component.GetMock<ITestClassMany>();
-            mock2.Setup(x=>x.Value).Returns(2);
-            var mock2Object = mock2.Object;
+            var types = new List<Type>
+                {typeof(int)};
 
-            mock1Object.Value.Should().Be(mock2Object.Value);
+            var methodInfo = type.GetMethod("Sleep", types.ToArray());
+            var argData = Mocks.GetMethodArgData(methodInfo);
+            argData.Should().Contain(0);
+
+            types = new List<Type>
+                {typeof(TimeSpan)};
+
+            methodInfo = type.GetMethod("Sleep", types.ToArray());
+            argData = Mocks.GetMethodArgData(methodInfo);
+            argData.First().Should().BeOfType<TimeSpan>();
+
+            types = new List<Type>
+                {typeof(string), typeof(Type[])};
+
+            methodInfo = type.GetType().GetMethod("GetMethod", types.ToArray());
+            argData = Mocks.GetMethodArgData(methodInfo);
+            CheckTypes(argData, types);
+
+            types = new List<Type>
+            {
+                typeof(string), typeof(BindingFlags), typeof(Binder), typeof(CallingConventions), typeof(Type[]),
+                typeof(ParameterModifier[])
+            };
+
+            methodInfo = type.GetType().GetMethod("GetMethod", types.ToArray());
+            argData = Mocks.GetMethodArgData(methodInfo);
+            CheckTypes(argData, types);
         }
+
+        [Fact]
+        public void GetMethodArgData_Null_ShouldThrow() => new Action(() => Mocks.GetMethodArgData(null)).Should().Throw<ArgumentNullException>();
+
+        [Fact]
+        public void GetMethodDefaultData_Null_ShouldThrow() =>
+            new Action(() => Component.GetMethodDefaultData(null)).Should().Throw<ArgumentNullException>();
 
         [Fact]
         public void GetMock()
@@ -513,6 +500,53 @@ namespace FastMoq.Tests
             Mocks.GetMock<IFileInfo>().Should().BeOfType<Mock<IFileInfo>>();
             Mocks.GetMock(typeof(IDirectoryInfo)).Should().BeOfType<Mock<IDirectoryInfo>>();
             Mocks.GetMock<IDirectoryInfo>().Should().BeOfType<Mock<IDirectoryInfo>>();
+        }
+
+        [Fact]
+        public void GetMockInstance()
+        {
+            Mock<ITestClassMany> mock = Component.CreateMockInstance<ITestClassMany>();
+            mock.Setup(x => x.Value).Returns(1);
+            var mock1Object = mock.Object;
+
+            Mock<ITestClassMany> mock2 = Component.CreateMockInstance<ITestClassMany>();
+            mock2.Setup(x => x.Value).Returns(2);
+            var mock2Object = mock2.Object;
+
+            mock1Object.Value.Should().NotBe(mock2Object.Value);
+        }
+
+        [Fact]
+        public void GetMockModelIndexOf_ShouldFindIfAuto()
+        {
+            _ = Component.GetMock<IFile>();
+            var mockCount = Component.mockCollection.Count;
+
+            // Should not find it, because it doesn't exist.
+            Action a = () => Component.GetMockModelIndexOf(typeof(IFileSystem), false);
+            a.Should().Throw<NotImplementedException>();
+
+            // Should find it because it is auto created.
+            Component.GetMockModelIndexOf(typeof(IFileSystem)).Should().Be(mockCount);
+
+            // Should find it because it was created in previous step.
+            Component.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(mockCount);
+
+            Component.GetMockModelIndexOf(typeof(IFile), false).Should().Be(mockCount - 1);
+        }
+
+        [Fact]
+        public void GetMockValueTest()
+        {
+            Mock<ITestClassMany> mock = Component.GetMock<ITestClassMany>();
+            mock.Setup(x => x.Value).Returns(1);
+            var mock1Object = mock.Object;
+
+            Mock<ITestClassMany> mock2 = Component.GetMock<ITestClassMany>();
+            mock2.Setup(x => x.Value).Returns(2);
+            var mock2Object = mock2.Object;
+
+            mock1Object.Value.Should().Be(mock2Object.Value);
         }
 
         [Fact]
@@ -541,6 +575,44 @@ namespace FastMoq.Tests
             var f = Mocks.GetObject<TestClassMany>();
             f.Should().Be(Mocks.GetMock<TestClassMany>().Object);
             Mocks.GetMock<TestClassMany>().CallBase.Should().BeTrue();
+        }
+
+        [Fact]
+        public void GetObject_InitAction()
+        {
+            var obj = Component.GetObject<TestClass>(t => t.field2 = 3);
+            obj.field2.Should().Be(3);
+
+            var obj2 = Component.GetObject<ITestClassDouble>(t => t.Value = 333.333);
+            obj2.Value.Should().Be(333.333);
+        }
+
+        [Fact]
+        public void GetObject_ShouldThrow()
+        {
+            new Action(() => Component.GetObject(null)).Should().Throw<ArgumentNullException>();
+
+            var info = Mocks.GetObject<ParameterInfo>();
+            new Action(() => Component.GetObject(info)).Should().Throw<Exception>();
+        }
+
+        [Fact]
+        public void GetObjectWithArgs()
+        {
+            var args = Component.GetArgData<ITestClassMultiple>();
+            var test = Component.GetObject<ITestClassMultiple>(args);
+            test.Fs.Should().NotBeNull();
+            test.F.Should().NotBeNull();
+
+            args[0] = null;
+            var test2 = Component.GetObject<ITestClassMultiple>(args);
+            test2.Fs.Should().BeNull();
+            test2.F.Should().NotBeNull();
+
+            args = Component.GetArgData<TestClassParameters>();
+            Component.GetObject<TestClassParameters>(args);
+            Component.CreateInstance<TestClassParameters>();
+            Component.CreateInstance<TestClassParameters>(args);
         }
 
         [Fact]
@@ -583,45 +655,6 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateInstanceShouldCreateByType()
-        {
-            var test = Component.CreateInstance<ITestClassMultiple, IFileSystem, IFile>(new Dictionary<Type, object?>()
-            {
-                { typeof(IFileSystem), null }
-            });
-
-            test.Fs.Should().BeNull();
-            test.F.Should().NotBeNull();
-
-            var test2 = Component.CreateInstance<ITestClassMultiple, IFileSystem, IFile>(new Dictionary<Type, object?>()
-            {
-                { typeof(IFile), null }
-            });
-
-            test2.F.Should().BeNull();
-            test2.Fs.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void GetObjectWithArgs()
-        {
-            var args = Component.GetArgData<ITestClassMultiple>();
-            var test = Component.GetObject<ITestClassMultiple>(args);
-            test.Fs.Should().NotBeNull();
-            test.F.Should().NotBeNull();
-
-            args[0] = null;
-            var test2 = Component.GetObject<ITestClassMultiple>(args);
-            test2.Fs.Should().BeNull();
-            test2.F.Should().NotBeNull();
-
-            args = Component.GetArgData<TestClassParameters>();
-            Component.GetObject<TestClassParameters>(args);
-            Component.CreateInstance<TestClassParameters>();
-            Component.CreateInstance<TestClassParameters>(args);
-        }
-
-        [Fact]
         public void IsValidConstructor()
         {
             var constructor = Mocks.FindConstructor(typeof(TestClassNormal), false, Mocks.GetObject<IFileSystem>());
@@ -636,6 +669,68 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void Mocker_AddMapClass() => new Action(() => Component.AddType<IFileSystem, FileSystem>())
+            .Should().NotThrow();
+
+        [Fact]
+        public void Mocker_AddMapClassIncompatibleInterface_ShouldThrow() => new Action(() => Component.AddType<IFileInfo, FileSystem>())
+            .Should().ThrowExactly<ArgumentException>($"{typeof(FileSystem).Name} is not assignable to {typeof(IFileInfo).Name}.");
+
+        [Fact]
+        public void Mocker_AddMapInterfaceAsClass_ShouldThrow() => new Action(() => Component.AddType<IFileInfo, IFile>())
+            .Should().ThrowExactly<ArgumentException>($"{typeof(IFile).Name} cannot be an interface.");
+
+        [Fact]
+        public void Mocker_CreateMockInstance_InnerMockResolution_False_ShouldThrow()
+        {
+            Component.InnerMockResolution = false;
+            new Action(() => Component.CreateMockInstance<TestClassMultiple>()).Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
+        public void Mocker_CreateMockInstance_InnerMockResolution_True_ShouldNotThrow()
+        {
+            Component.InnerMockResolution = true;
+            new Action(() => Component.CreateMockInstance<TestClassMultiple>()).Should().NotThrow<ArgumentException>();
+        }
+
+        [Fact]
+        public void Mocker_CreateMockInstanceNull_ShouldThrow() =>
+            new Action(() => Component.CreateMockInstance(null)).Should().Throw<ArgumentException>();
+
+        [Fact]
+        public void Mocker_CreateWithEmptyMap()
+        {
+            var test = new Mocker(new Dictionary<Type, InstanceModel>());
+            test.typeMap.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Mocker_CreateWithMap()
+        {
+            var map = new Dictionary<Type, InstanceModel>
+            {
+                {typeof(IFileSystem), new InstanceModel<IFileSystem>()},
+                {typeof(IFile), new InstanceModel<IFile>(_ => new MockFileSystem().File)}
+            };
+
+            var test = new Mocker(map);
+            test.typeMap.Should().BeEquivalentTo(map);
+        }
+
+        [Fact]
+        public void MockParameters()
+        {
+            var o = Mocks.GetObject<TestClassDouble1>();
+            o.Value = 33;
+            o.Value.Should().Be(33);
+            Mocks.GetObject<TestClassDouble1>().Value.Should().Be(33);
+            Mocks.GetObject<TestClassDouble1>().Value = 44;
+            Mocks.GetObject<TestClassDouble1>().Value.Should().Be(44);
+            Mocks.GetMock<TestClassDouble1>().Object.Value.Should().Be(44);
+        }
+
+        [Fact]
         public void RemoveMock()
         {
             var mock = new Mock<IFileSystemInfo>();
@@ -647,43 +742,20 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetMethodArgData()
+        public void TestMethodInvoke()
         {
-            var type = typeof(Thread);
-            var instance = Thread.CurrentThread;
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid", true).Should().BeNull();
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid").Should().BeNull();
+            Mocks.InvokeMethod<ITestClassOne>(null, "TestStaticObject").Should().BeOfType<MockFileSystem>();
+            Mocks.InvokeMethod<ITestClassOne>("TestStaticObject").Should().BeOfType<MockFileSystem>();
+            Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true).Should().Be(0);
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestInt", true).Should().Be(0);
+            Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestInt", true, 2).Should().Be(2);
+            Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true, 2).Should().Be(2);
 
-            var types = new List<Type>() { typeof(int) };
-            var methodInfo = type.GetMethod("Sleep", types.ToArray());
-            var argData = Mocks.GetMethodArgData(methodInfo);
-            argData.Should().Contain(0);
-
-            types = new List<Type>() { typeof(TimeSpan) };
-            methodInfo = type.GetMethod("Sleep", types.ToArray());
-            argData = Mocks.GetMethodArgData(methodInfo);
-            argData.First().Should().BeOfType<TimeSpan>();
-
-            types = new List<Type>() { typeof(string), typeof(Type[]) };
-            methodInfo = type.GetType().GetMethod("GetMethod", types.ToArray());
-            argData = Mocks.GetMethodArgData(methodInfo);
-            CheckTypes(argData, types);
-
-            types = new List<Type>()
-            {
-                typeof(string), typeof(BindingFlags), typeof(Binder), typeof(CallingConventions), typeof(Type[]),
-                typeof(ParameterModifier[])
-            };
-
-            methodInfo = type.GetType().GetMethod("GetMethod", types.ToArray());
-            argData = Mocks.GetMethodArgData(methodInfo);
-            CheckTypes(argData, types);
-        }
-
-        private void CheckTypes(IReadOnlyList<object?> argData, List<Type> types)
-        {
-            for (var i = 0; i < argData.Count; i++)
-            {
-                types[i].IsInstanceOfType(argData[i]).Should().BeTrue();
-            }
+            Mocks.Strict = true;
+            Action a = () => Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
+            a.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Specified argument was out of the range of valid values.");
         }
 
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)
@@ -698,6 +770,14 @@ namespace FastMoq.Tests
             var constructor = Mocks.FindConstructor(typeof(TestClassNormal), nonPublic, data);
             var isValid = Mocker.IsValidConstructor(constructor.ConstructorInfo, data);
             isValid.Should().Be(expected);
+        }
+
+        private void CheckTypes(IReadOnlyList<object?> argData, List<Type> types)
+        {
+            for (var i = 0; i < argData.Count; i++)
+            {
+                types[i].IsInstanceOfType(argData[i]).Should().BeTrue();
+            }
         }
 
         private static Mocker CreateAction(Mocker mocks) => new();

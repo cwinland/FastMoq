@@ -125,6 +125,9 @@
 <div class="Hidden">
 </div>
 </div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.CreateHttpClient.htm" target="_self">CreateHttpClient Method </a>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Overload-FastMoq.Mocker.CreateInstance-.htm" target="_self">CreateInstance Method </a>
 <div class="Hidden">
@@ -147,6 +150,12 @@
 </div>
 <div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.GetArgData--1.htm" target="_self">GetArgData(T) Method (Dictionary(Type, Object))</a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.GetContentBytes.htm" target="_self">GetContentBytes Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.GetContentStream.htm" target="_self">GetContentStream Method </a>
 </div>
 <div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.GetDefaultValue.htm" target="_self">GetDefaultValue Method </a>
@@ -187,6 +196,9 @@
 </div>
 </div>
 <div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.GetStringContent.htm" target="_self">GetStringContent Method </a>
+</div>
+<div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.Initialize--1.htm" target="_self">Initialize(T) Method </a>
 </div>
 <div class="TreeNode">
@@ -196,6 +208,21 @@
 </div>
 <div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.RemoveMock--1.htm" target="_self">RemoveMock(T) Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.SetupHttpMessage.htm" target="_self">SetupHttpMessage Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.SetupMessage--2.htm" target="_self">SetupMessage(TMock, TReturn) Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.SetupMessageAsync--2.htm" target="_self">SetupMessageAsync(TMock, TReturn) Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.SetupMessageProtected--2.htm" target="_self">SetupMessageProtected(TMock, TReturn) Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Mocker.SetupMessageProtectedAsync--2.htm" target="_self">SetupMessageProtectedAsync(TMock, TReturn) Method </a>
 </div>
 </div>
 </div>
@@ -264,11 +291,19 @@ Gets a list with the specified number of list items, using a custom function.
     <b>Namespace:</b> 
    <a href="N-FastMoq.htm">FastMoq</a><br />
     <b>Assembly:</b>
-   <span sdata="assembly">FastMoq</span> (in FastMoq.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:white;border-bottom-color:white"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">static</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1" target="_blank">List</a>&lt;T&gt; <span class="identifier">GetList</span>&lt;T&gt;(
+   <span sdata="assembly">FastMoq</span> (in FastMoq.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:white;border-bottom-color:white"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTab VisualBasicTab" id="VisualBasicTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','VisualBasicCode','VisualBasicTabId');" title="Visual Basic">VB</a></div><div class="CodeSnippetContainerTab ManagedCPlusPlusTab" id="ManagedCPlusPlusTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','ManagedCPlusPlusCode','ManagedCPlusPlusTabId');" title="Visual C++">C++</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">static</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1" target="_blank">List</a>&lt;T&gt; <span class="identifier">GetList</span>&lt;T&gt;(
 	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" target="_blank">int</a> <span class="parameter">count</span>,
 	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.func-2" target="_blank">Func</a>&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" target="_blank">int</a>, T&gt; <span class="parameter">func</span>
 )
-</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">T</span></dt><dd>The Mock <span class="nolink">Type</span>, usually an interface.</dd></dl><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="count"><dt><span class="parameterItalic">count</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" target="_blank">Int32</a><br />The number of list items.</dd></dl><dl paramName="func"><dt><span class="parameterItalic">func</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.func-2" target="_blank">Func</a><span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" target="_blank">Int32</a>, <span class="selflink"><span class="typeparam">T</span></span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><br />The function for creating the list items.</dd></dl></div><h4 class="subHeading">Return Value</h4><a href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list&lt;t&gt;" target="_blank">List&lt;T&gt;</a>.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
+</pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Public</span> <span class="keyword">Shared</span> <span class="keyword">Function</span> <span class="identifier">GetList</span>(<span class="keyword">Of</span> T) ( _
+	<span class="parameter">count</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" target="_blank">Integer</a>, _
+	<span class="parameter">func</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.func-2" target="_blank">Func</a>(<span class="keyword">Of</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" target="_blank">Integer</a>, T) _
+) <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1" target="_blank">List</a>(<span class="keyword">Of</span> T)</pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span>:
+<span class="keyword">generic</span>&lt;<span class="keyword">typename</span> T&gt;
+<span class="keyword">static</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1" target="_blank">List</a>&lt;T&gt;^ <span class="identifier">GetList</span>(
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" target="_blank">int</a>^ <span class="parameter">count</span>, 
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.func-2" target="_blank">Func</a>&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" target="_blank">int</a>^, T&gt;^ <span class="parameter">func</span>
+)</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">T</span></dt><dd>The Mock <span class="nolink">Type</span>, usually an interface.</dd></dl><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="count"><dt><span class="parameterItalic">count</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" target="_blank">Int32</a><br />The number of list items.</dd></dl><dl paramName="func"><dt><span class="parameterItalic">func</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.func-2" target="_blank">Func</a><span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><a href="https://docs.microsoft.com/en-us/dotnet/api/system.int32" target="_blank">Int32</a>, <span class="selflink"><span class="typeparam">T</span></span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><br />The function for creating the list items.</dd></dl></div><h4 class="subHeading">Return Value</h4><a href="https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list&lt;t&gt;" target="_blank">List&lt;T&gt;</a>.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
 Example of how to create a list.
 <span id="cbc_1" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve">GetList&lt;Model&gt;(<span class="highlight-number">3</span>, (i) =&gt; <span class="highlight-keyword">new</span> Model(name: i.ToString()));</pre></div></span>
 or
