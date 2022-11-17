@@ -22,7 +22,10 @@ namespace FastMoq.Tests
             var mock2 = new Mock<IFile>();
             var mockModel = new MockModel<IFileSystem>(mock);
             var mockModel2 = new MockModel<IFile>(mock2);
-            CustomMocks = new List<MockModel>() { mockModel, mockModel2 };
+
+            CustomMocks = new List<MockModel>
+                {mockModel, mockModel2};
+
             var count = Mocks.mockCollection.Count;
             CreateComponent();
             Mocks.GetMockModelIndexOf(typeof(IFile), false).Should().Be(count + 1);
@@ -111,21 +114,151 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void TestMethod_ShouldThrow()
+        {
+            List<object?> dataResult = null;
+
+            TestMethodParametersAsync(x => x.TestMethod,
+                (func, paramName, data) =>
+                {
+                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                    dataResult = data;
+                },
+                1,
+                "2",
+                new TestClass()
+            );
+
+            dataResult.Should().HaveCount(3);
+        }
+
+        [Fact]
+        public void TestMethod2_ShouldThrow()
+        {
+            List<object?> dataResult = null;
+
+            TestMethodParametersAsync(x => x.TestMethod2,
+                (func, paramName, data) =>
+                {
+                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                    dataResult = data;
+                },
+                TestClass.TestEnum.test2,
+                "2"
+            );
+
+            dataResult.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void TestMethod2Async_ShouldThrow()
+        {
+            List<object?> dataResult = null;
+
+            TestMethodParametersAsync(x => x.TestMethod2Async,
+                (func, paramName, data) =>
+                {
+                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                    dataResult = data;
+                },
+                1,
+                "2",
+                new TestClass()
+            );
+
+            dataResult.Should().HaveCount(3);
+        }
+
+        [Fact]
+        public void TestMethodAsync_MethodInfo_Null_ShouldThrow()
+        {
+            var obj = new TestBaseTestClass();
+            new Action(() => obj.TestMethodParameters(null, (func, s, arg3) => { })).Should().Throw<ArgumentNullException>();
+            new Action(() => obj.TestMethodParameters(obj.GetMethod("TestMethodParameters"), null)).Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void TestMethodAsync_MethodInfo_ShouldPass()
+        {
+            List<object?> dataResult = null;
+            var methodInfo = Component.GetType().GetMethod("TestMethodAsync", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            TestMethodParametersAsync(methodInfo,
+                (func, paramName, data) =>
+                {
+                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                    dataResult = data;
+                },
+                1,
+                "2",
+                new TestClass()
+            );
+
+            dataResult.Should().HaveCount(3);
+        }
+
+        [Fact]
+        public void TestMethodAsync_MismatchArgs()
+        {
+            List<object?> dataResult = null;
+
+            var a = () => TestMethodParametersAsync(x => x.TestMethodAsync,
+                (func, paramName, data) =>
+                {
+                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                    dataResult = data;
+                },
+                1,
+                "2",
+                new TestClass(),
+                "3"
+            );
+
+            a.Should().Throw<ArgumentOutOfRangeException>(
+                "Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')"
+            );
+
+            dataResult.Should().HaveCount(4);
+        }
+
+        [Fact]
+        public void TestMethodAsync_ShouldThrow()
+        {
+            List<object?> dataResult = null;
+
+            TestMethodParametersAsync(x => x.TestMethodAsync,
+                (func, paramName, data) =>
+                {
+                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                    dataResult = data;
+                },
+                1,
+                "2",
+                new TestClass()
+            );
+
+            dataResult.Should().HaveCount(3);
+        }
+
+        [Fact]
         public void WaitForTest()
         {
             var result1 = false;
             var result2 = false;
 
             var task1 = new Task(() =>
-            {
-                Thread.Sleep(1000);
-                result1 = true;
-            });
+                {
+                    Thread.Sleep(1000);
+                    result1 = true;
+                }
+            );
+
             var task2 = new Task(() =>
-            {
-                Thread.Sleep(500);
-                result2 = true;
-            });
+                {
+                    Thread.Sleep(500);
+                    result2 = true;
+                }
+            );
 
             task1.Start();
             task2.Start();
@@ -135,87 +268,12 @@ namespace FastMoq.Tests
             task1.Dispose();
             task2.Dispose();
         }
+    }
 
-        [Fact]
-        public void TestMethodAsync_MethodInfo_ShouldPass()
-        {
-            List<object?> dataResult = null;
-            var methodInfo = Component.GetType().GetMethod("TestMethodAsync", BindingFlags.NonPublic | BindingFlags.Instance);
-            TestMethodParametersAsync(methodInfo, (func, paramName, data) =>
-            {
-                func.Should().ThrowAsync<ArgumentNullException>(paramName);
-                dataResult = data;
-            }, 1, "2", new TestClass());
-
-            dataResult.Should().HaveCount(3);
-        }
-
-        [Fact]
-        public void TestMethodAsync_ShouldThrow()
-        {
-            List<object?> dataResult = null;
-            TestMethodParametersAsync(x => x.TestMethodAsync, (func, paramName, data) =>
-            {
-                func.Should().ThrowAsync<ArgumentNullException>(paramName);
-                dataResult = data;
-            }, 1, "2", new TestClass());
-
-            dataResult.Should().HaveCount(3);
-        }
-
-        [Fact]
-        public void TestMethodAsync_MismatchArgs()
-        {
-            List<object?> dataResult = null;
-            Action a = () => TestMethodParametersAsync(x => x.TestMethodAsync, (func, paramName, data) =>
-            {
-                func.Should().ThrowAsync<ArgumentNullException>(paramName);
-                dataResult = data;
-            }, 1, "2", new TestClass(), "3");
-
-            a.Should().Throw<ArgumentOutOfRangeException>(
-                "Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')");
-            dataResult.Should().HaveCount(4);
-        }
-
-        [Fact]
-        public void TestMethod2Async_ShouldThrow()
-        {
-            List<object?> dataResult = null;
-            TestMethodParametersAsync(x => x.TestMethod2Async, (func, paramName, data) =>
-            {
-                func.Should().ThrowAsync<ArgumentNullException>(paramName);
-                dataResult = data;
-            }, 1, "2", new TestClass());
-
-            dataResult.Should().HaveCount(3);
-        }
-
-        [Fact]
-        public void TestMethod_ShouldThrow()
-        {
-            List<object?> dataResult = null;
-            TestMethodParametersAsync(x => x.TestMethod, (func, paramName, data) =>
-            {
-                func.Should().ThrowAsync<ArgumentNullException>(paramName);
-                dataResult = data;
-            }, 1, "2", new TestClass());
-
-            dataResult.Should().HaveCount(3);
-        }
-
-        [Fact]
-        public void TestMethod2_ShouldThrow()
-        {
-            List<object?> dataResult = null;
-            TestMethodParametersAsync(x => x.TestMethod2, (func, paramName, data) =>
-            {
-                func.Should().ThrowAsync<ArgumentNullException>(paramName);
-                dataResult = data;
-            }, TestClass.TestEnum.test2, "2");
-
-            dataResult.Should().HaveCount(2);
-        }
+    public class TestBaseTestClass : MockerTestBase<TestClass>
+    {
+        public void TestMethodParameters(MethodInfo methodInfo, Action<Func<Task>, string?, List<object?>> resultAction, params object?[]? args) =>
+            TestMethodParametersAsync(methodInfo, resultAction, args);
     }
 
     public class TestClass
@@ -232,15 +290,43 @@ namespace FastMoq.Tests
 
         #region Properties
 
-        private static int sProperty { get; } = 456;
+        public object property4 => property3;
         private object property { get; set; } = sProperty;
         private object property2 { get; } = 789;
         private int property3 => int.Parse(property2.ToString());
-        public object property4 => property3;
+
+        private static int sProperty { get; } = 456;
 
         #endregion
 
+        internal void TestMethod(int i, string s, TestClass c)
+        {
+            if (i == null)
+            {
+                throw new ArgumentNullException(nameof(i));
+            }
+
+            if (string.IsNullOrEmpty(s))
+            {
+                throw new ArgumentNullException(nameof(s));
+            }
+
+            if (c == null)
+            {
+                throw new ArgumentNullException(nameof(c));
+            }
+        }
+
+        internal void TestMethod2(TestEnum testEnum, string s)
+        {
+            if (s == null)
+            {
+                throw new InvalidOperationException(nameof(s));
+            }
+        }
+
         internal async Task TestMethod2Async(int i, string s, TestClass c) => await TestMethodAsync(i, s, c);
+
         internal async Task TestMethodAsync(int? i, string s, TestClass c)
         {
             if (i == null)
@@ -261,38 +347,17 @@ namespace FastMoq.Tests
             await Task.Delay(TimeSpan.FromMilliseconds(100));
         }
 
-        internal void TestMethod(int i, string s, TestClass c)
-        {
-            if (i == null)
-            {
-                throw new ArgumentNullException(nameof(i));
-            }
-
-            if (string.IsNullOrEmpty(s))
-            {
-                throw new ArgumentNullException(nameof(s));
-            }
-
-            if (c == null)
-            {
-                throw new ArgumentNullException(nameof(c));
-            }
-        }
+        private object method() => "test";
+        private string method2() => "test2";
 
         internal enum TestEnum
         {
             test1,
-            test2, test3, test4, test5, test6,
+            test2,
+            test3,
+            test4,
+            test5,
+            test6
         }
-
-        internal void TestMethod2(TestEnum testEnum, string s)
-        {
-            if (s == null)
-            {
-                throw new InvalidOperationException(nameof(s));
-            }
-        }
-        private object method() => "test";
-        private string method2() => "test2";
     }
 }

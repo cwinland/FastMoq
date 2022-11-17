@@ -46,16 +46,29 @@ namespace FastMoq
         /// </summary>
         public HttpClient HttpClient { get; }
 
+        /// <summary>
+        ///     When creating a mocks of a class, this indicates to recursively inject the mocks inside of that class.
+        /// </summary>
         public bool InnerMockResolution { get; set; } = true;
 
         /// <summary>
-        ///     Gets or sets a value indicating whether this <see cref="Mocker" /> is strict. If strict, the mock
+        ///     Gets or sets a value indicating whether this <see cref="Mocker" /> is strict.
+        /// </summary>
+        /// <remarks>
+        /// If strict, the mock
         ///     <see cref="IFileSystem" /> does
         ///     not use <see cref="MockFileSystem" /> and uses <see cref="Mock" /> of <see cref="IFileSystem" />.
-        /// </summary>
+        ///     Gets or sets a value indicating whether this <see cref="Mocker" /> is strict. If strict, the mock
+        ///     <see cref="HttpClient" /> does
+        ///     not use the pre-built HttpClient and uses <see cref="Mock" /> of <see cref="HttpClient" />.
+        /// </remarks>
         /// <value>
         ///     <c>true</c> if strict <see cref="IFileSystem" /> resolution; otherwise, <c>false</c> uses the built-in virtual
         ///     <see cref="MockFileSystem" />.
+        /// </value>
+        /// <value>
+        ///     <c>true</c> if strict <see cref="HttpClient" /> resolution; otherwise, <c>false</c> uses the built-in virtual
+        ///     <see cref="HttpClient" />.
         /// </value>
         public bool Strict { get; set; }
 
@@ -123,14 +136,21 @@ namespace FastMoq
         ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
         /// </summary>
         /// <typeparam name="TInterface">The interface or class Type which can be mapped to a specific Class.</typeparam>
-        /// <typeparam name="TClass">The Class Type (cannot be an interface) that can be created from <see cref="TInterface" />.</typeparam>
+        /// <typeparam name="TClass">The Class Type (cannot be an interface) that can be created and assigned to <see cref="TInterface" />.</typeparam>
         /// <param name="createFunc">An optional create function used to create the class.</param>
+        /// <exception cref="ArgumentException">$"{typeof(TClass).Name} cannot be an interface."</exception>
+        /// <exception cref="ArgumentException">$"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}."</exception>
         public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null)
             where TInterface : class where TClass : class
         {
             if (typeof(TClass).IsInterface)
             {
                 throw new ArgumentException($"{typeof(TClass).Name} cannot be an interface.");
+            }
+
+            if (!typeof(TInterface).IsAssignableFrom(typeof(TClass)))
+            {
+                throw new ArgumentException($"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}.");
             }
 
             typeMap.Add(typeof(TInterface), new InstanceModel<TClass>(createFunc));
@@ -160,9 +180,9 @@ namespace FastMoq
         /// <summary>
         ///     Creates the HTTP client.
         /// </summary>
-        /// <returns><see cref="httpClient" />.</returns>
+        /// <returns><see cref="HttpClient" />.</returns>
         public HttpClient CreateHttpClient(string clientName = "FastMoqHttpClient", string baseAddress = "http://localhost",
-            HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1, 'value':'1'}]")
+            HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1}]")
         {
             var baseUri = new Uri(baseAddress);
 
@@ -500,7 +520,7 @@ namespace FastMoq
         {
             if (type == null || (!type.IsClass && !type.IsInterface))
             {
-                throw new ArgumentException("type must be a class.", nameof(type));
+                throw new ArgumentException("type must be a class or interface.", nameof(type));
             }
 
             var constructor = new ConstructorModel(null, new List<object?>());
@@ -740,6 +760,11 @@ namespace FastMoq
         /// <exception cref="System.InvalidProgramException">Unable to get the Mock.</exception>
         public object? GetObject(ParameterInfo info)
         {
+            if (info == null)
+            {
+                throw new ArgumentNullException(nameof(info));
+            }
+
             try
             {
                 return GetParameter(info.ParameterType);
@@ -809,7 +834,7 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Gets the instance for the given <c>T</c>.
+        ///     Gets the instance for the given <c>T</c> and runs the given function against the object.
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="initAction">The initialize action.</param>
@@ -971,9 +996,10 @@ namespace FastMoq
         /// <typeparam name="TReturn">The type of the return value.</typeparam>
         /// <param name="expression">The expression.</param>
         /// <param name="messageFunc">The message function.</param>
-        public void SetupMessage<TMock, TReturn>(Expression<Func<TMock, TReturn>> expression, Func<TReturn> messageFunc) where TMock : class =>
+        public void SetupMessage<TMock, TReturn>(Expression<Func<TMock, TReturn>> expression, Func<TReturn> messageFunc)
+            where TMock : class =>
             GetMock<TMock>()
-                ?.Setup(expression)
+                .Setup(expression)
                 .Returns(messageFunc).Verifiable();
 
         /// <summary>
@@ -986,7 +1012,7 @@ namespace FastMoq
         public void SetupMessageAsync<TMock, TReturn>(Expression<Func<TMock, Task<TReturn>>> expression, Func<TReturn> messageFunc)
             where TMock : class =>
             GetMock<TMock>()
-                ?.Setup(expression)
+                .Setup(expression)
                 .ReturnsAsync(messageFunc).Verifiable();
 
         /// <summary>
@@ -997,7 +1023,7 @@ namespace FastMoq
         /// <param name="methodOrPropertyName">Name of the method or property.</param>
         /// <param name="messageFunc">The message function.</param>
         /// <param name="args">The arguments.</param>
-        public void SetupMessageProtected<TMock, TReturn>(string methodOrPropertyName, Func<TReturn> messageFunc, params Expression[] args)
+        public void SetupMessageProtected<TMock, TReturn>(string methodOrPropertyName, Func<TReturn> messageFunc, params object[]? args)
             where TMock : class =>
             GetMock<TMock>().Protected()
                 ?.Setup<TReturn>(methodOrPropertyName, args)
@@ -1011,7 +1037,7 @@ namespace FastMoq
         /// <param name="methodOrPropertyName">Name of the method or property.</param>
         /// <param name="messageFunc">The message function.</param>
         /// <param name="args">The arguments.</param>
-        public void SetupMessageProtectedAsync<TMock, TReturn>(string methodOrPropertyName, Func<TReturn> messageFunc, params Expression[] args)
+        public void SetupMessageProtectedAsync<TMock, TReturn>(string methodOrPropertyName, Func<TReturn> messageFunc, params object[]? args)
             where TMock : class =>
             GetMock<TMock>().Protected()
             ?.Setup<Task<TReturn>>(methodOrPropertyName, args)
