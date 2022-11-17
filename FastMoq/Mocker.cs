@@ -188,15 +188,12 @@ namespace FastMoq
 
             if (!Contains<HttpMessageHandler>())
             {
-                GetMock<HttpMessageHandler>().Protected()
-                    ?.Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                    .ReturnsAsync(() =>
-                        new HttpResponseMessage
-                        {
-                            StatusCode = statusCode,
-                            Content = new StringContent(stringContent)
-                        }
-                    ).Verifiable();
+                SetupHttpMessage(() => new HttpResponseMessage
+                    {
+                        StatusCode = statusCode,
+                        Content = new StringContent(stringContent)
+                    }
+                );
             }
 
             if (!Contains<IHttpClientFactory>())
