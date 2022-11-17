@@ -27,6 +27,23 @@ namespace FastMoq.Tests
         public MocksTests() : base(SetupAction, CreateAction, CreatedAction) { }
 
         [Fact]
+        public void AddInjections()
+        {
+            // Null Path
+            object obj = null;
+            Component.AddInjections(obj).Should().Be(null);
+
+            // Create class without injected property.
+            var c = new TestClassOne(Mocks.GetObject<IFile>());
+
+            // Check property is null
+            c.FileSystem.Should().BeNull();
+
+            // AddInjections sets property with InjectAttribute.
+            Component.AddInjections(c).FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
         public void AddMock()
         {
             var mock = new Mock<IFileSystemInfo>

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 using Xunit;
 
@@ -29,6 +30,17 @@ namespace FastMoq.Tests
             var im = new InstanceModel<IFileSystem>(null);
             im.InstanceType.Should().Be(typeof(IFileSystem));
             im.CreateFunc.Should().BeNull();
+        }
+
+        [Fact]
+        public void CreateInstance()
+        {
+            var obj = new InstanceModel(typeof(IFileSystem), mocker => new FileSystem(), new List<object>());
+            obj.Should().NotBeNull();
+            obj.CreateFunc.Should().NotBeNull();
+            obj.Arguments.Should().HaveCount(0);
+
+            new Action(() => new InstanceModel(typeof(IFileSystem), mocker => new FileSystem(), null)).Should().Throw<ArgumentNullException>();
         }
     }
 }
