@@ -199,7 +199,6 @@ namespace FastMoq
             if (!Contains<IHttpClientFactory>())
             {
                 SetupHttpFactory = true;
-
                 GetMock<IHttpClientFactory>().Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(() => CreateHttpClientInternal(baseUri));
             }
 
