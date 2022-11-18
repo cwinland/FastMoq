@@ -4,10 +4,10 @@ namespace FastMoq
 {
     internal class ConstructorModel
     {
-        internal ConstructorInfo ConstructorInfo { get; }
+        internal ConstructorInfo? ConstructorInfo { get; }
         internal object?[] ParameterList { get; }
 
-        internal ConstructorModel(ConstructorInfo constructorInfo, List<object?> parameterList)
+        internal ConstructorModel(ConstructorInfo? constructorInfo, List<object?> parameterList)
         {
             ConstructorInfo = constructorInfo;
             ParameterList = parameterList.ToArray();

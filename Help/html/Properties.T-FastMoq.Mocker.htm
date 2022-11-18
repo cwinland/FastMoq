@@ -117,6 +117,9 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Properties.T-FastMoq.Mocker.htm" target="_self">Mocker Properties</a>
 <div class="Hidden">
 <div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="P-FastMoq.Mocker.HttpClient.htm" target="_self">HttpClient Property </a>
+</div>
+<div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="P-FastMoq.Mocker.InnerMockResolution.htm" target="_self">InnerMockResolution Property </a>
 </div>
 <div class="TreeItem">
@@ -201,9 +204,26 @@
                         <img src="../icons/pubproperty.gif" alt="Public property" title="Public property" />
                       </td>
                       <td>
+                        <a href="P-FastMoq.Mocker.HttpClient.htm">HttpClient</a>
+                      </td>
+                      <td>
+                        <div class="summary">
+The virtual mock http client that is used by mocker unless overridden with the <span class="nolink">Strict</span> property.
+</div>
+                      </td>
+                    </tr>
+                    <tr data="public;declared;notNetfw;">
+                      <td>
+                        <img src="../icons/pubproperty.gif" alt="Public property" title="Public property" />
+                      </td>
+                      <td>
                         <a href="P-FastMoq.Mocker.InnerMockResolution.htm">InnerMockResolution</a>
                       </td>
-                      <td />
+                      <td>
+                        <div class="summary">
+When creating a mocks of a class, this indicates to recursively inject the mocks inside of that class.
+</div>
+                      </td>
                     </tr>
                     <tr data="public;declared;notNetfw;">
                       <td>
@@ -214,9 +234,7 @@
                       </td>
                       <td>
                         <div class="summary">
-Gets or sets a value indicating whether this <a href="T-FastMoq.Mocker.htm">Mocker</a> is strict. If strict, the mock
-<a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.abstractions.ifilesystem" target="_blank">IFileSystem</a> does
-not use <a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.abstractions.testinghelpers.mockfilesystem" target="_blank">MockFileSystem</a> and uses <span class="nolink">Mock</span> of <a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.abstractions.ifilesystem" target="_blank">IFileSystem</a>.
+Gets or sets a value indicating whether this <a href="T-FastMoq.Mocker.htm">Mocker</a> is strict.
 </div>
                       </td>
                     </tr>
