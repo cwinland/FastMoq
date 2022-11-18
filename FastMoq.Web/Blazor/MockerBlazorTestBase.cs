@@ -1,18 +1,17 @@
-﻿#if NETCOREAPP3_1_OR_GREATER
-
-using AngleSharp.Dom;
+﻿using AngleSharp.Dom;
 using AngleSharpWrappers;
 using Bunit;
 using Bunit.TestDoubles;
+using FastMoq.Web.Blazor.Interfaces;
+using FastMoq.Web.Interfaces;
+using FastMoq.Web.Mocks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using System.Reflection;
-using FastMoq;
-using static FastMoq.TestClassExtensions;
 
-namespace FastMoq.Blazor
+namespace FastMoq.Web.Blazor
 {
     /// <summary>
     ///     Common methods for all BUnit/XUnit Tests.
@@ -20,7 +19,7 @@ namespace FastMoq.Blazor
     /// <typeparam name="T">Type of the component being tested.</typeparam>
     /// <inheritdoc cref="TestContext" />
     /// <inheritdoc cref="IMockerBlazorTestHelpers{T}" />
-    public class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHelpers<T> where T : ComponentBase
+    public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHelpers<T> where T : ComponentBase
     {
         #region Properties
 
@@ -473,4 +472,3 @@ namespace FastMoq.Blazor
         #endregion
     }
 }
-#endif

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
 
-namespace FastMoq.Blazor
+namespace FastMoq.Web.Interfaces
 {
     /// <summary>
     ///     Blazor Navigation Manager - Wraps Navigation Manager or any navigation implementation used for Blazor and testing.
@@ -369,7 +369,6 @@ namespace FastMoq.Blazor
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         bool UrlContains(string path);
 
-#if NET6_0_OR_GREATER
         /// Summary:
         /// Returns a URI that is constructed by updating Microsoft.AspNetCore.Components.NavigationManager.Uri
         /// with a single parameter added or updated.
@@ -437,6 +436,5 @@ namespace FastMoq.Blazor
         /// If value is null, the parameter will be removed if it exists in the URI. Otherwise,
         /// it will be added or updated.
         string GetUriWithQueryParameter(string name, TimeOnly? value);
-#endif
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 
-namespace FastMoq.Blazor
+namespace FastMoq.Web.Mocks
 {
     public class MockIConfiguration : IConfiguration
     {

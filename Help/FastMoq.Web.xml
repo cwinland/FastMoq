@@ -1,0 +1,506 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>FastMoq.Web</name>
+  </assembly>
+  <members>
+    <member name="T:FastMoq.Web.Blazor.MockerBlazorTestBase`1">
+      <summary>
+       Common methods for all BUnit/XUnit Tests.
+   </summary>
+      <typeparam name="T">Type of the component being tested.</typeparam>
+      <inheritdoc cref="T:Bunit.TestContext" />
+      <inheritdoc cref="T:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1" />
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ButtonClick(IElement,Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Buttons the click.
+    </summary>
+      <inheritdoc />
+      <exception cref="T:System.ArgumentNullException">button</exception>
+      <param name="button">The button.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ButtonClick(System.String,Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Buttons the click.
+    </summary>
+      <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ButtonClick``1(System.String,Func{System.Boolean},IRenderedComponent{``0},System.Nullable{TimeSpan})">
+      <summary>
+        Buttons the click.
+    </summary>
+      <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="startingComponent">The starting component.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ButtonClick``1(Func{IRenderedComponent{``0}, IElement},Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Buttons the click.
+    </summary>
+      <inheritdoc />
+      <exception cref="ArgumentNullException">cssSelector</exception>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ButtonClick``1(Func{IRenderedComponent{``0}, System.Boolean},Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Buttons the click.
+    </summary>
+      <inheritdoc />
+      <exception cref="ArgumentNullException">cssSelector</exception>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ButtonClick``1(System.String,Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Buttons the click.
+    </summary>
+      <inheritdoc />
+      <exception cref="ArgumentNullException">cssSelector</exception>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ClickDropdownItem``1(System.String,Func{System.Boolean},System.String)">
+      <summary>
+        Clicks the dropdown item.
+    </summary>
+      <inheritdoc />
+      <param name="propName">Name of the property.</param>
+      <param name="waitFunc">The wait function.</param>
+      <typeparam name="TKey">The type of the t key.</typeparam>
+      <typeparam name="TValue">The type of the t value.</typeparam>
+      <returns>IRenderedComponent&lt;DropdownList&lt;TKey, TValue&gt;&gt;.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetComponent``1(Func{IRenderedComponent{``0}, System.Boolean})">
+      <summary>
+        Gets the component.
+    </summary>
+      <inheritdoc />
+      <exception cref="ArgumentNullException">predicate</exception>
+      <param name="predicate">The predicate.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetInjections``1">
+      <summary>
+        Gets the injections.
+    </summary>
+      <inheritdoc />
+      <returns>IEnumerable&lt;PropertyInfo&gt;.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.InjectComponent``1">
+      <summary>
+        Injects the component.
+    </summary>
+      <inheritdoc />
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.IsExists(System.String)">
+      <summary>
+        Determines whether the specified CSS selector is exists.
+    </summary>
+      <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <returns>
+        <c>true</c> if the specified CSS selector is exists; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderComponent(System.Boolean)">
+      <summary>
+        Renders the component. If the component is already rendered, it will act like a stateChanged.
+    </summary>
+      <inheritdoc />
+      <param name="forceNew">if set to <c>true</c> [force new].</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderComponent(Action{ComponentParameterCollectionBuilder{`0}},System.Boolean)">
+      <summary>
+        Renders the component. If the component is already rendered, it will act like a stateChanged.
+    </summary>
+      <inheritdoc />
+      <param name="parameterBuilder">The parameter builder.</param>
+      <param name="forceNew">if set to <c>true</c> [force new].</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,Func{System.Boolean},System.Nullable{TimeSpan},System.Nullable{IRenderedFragment})">
+      <summary>
+        Sets the element check.
+    </summary>
+      <inheritdoc />
+      <exception cref="ArgumentNullException">cssSelector</exception>
+      <exception cref="T:Bunit.ElementNotFoundException">
+      </exception>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="isChecked">if set to <c>true</c> [is checked].</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <param name="startingPoint">The starting point.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,Func{System.Boolean},System.Nullable{TimeSpan},System.Nullable{IRenderedFragment})">
+      <summary>
+        Sets the element switch.
+    </summary>
+      <inheritdoc />
+      <exception cref="ArgumentNullException">cssSelector</exception>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="isChecked">if set to <c>true</c> [is checked].</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <param name="startingPoint">The starting point.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,Func{System.Boolean},System.Nullable{TimeSpan},System.Nullable{IRenderedFragment})">
+      <summary>
+        Sets the element text.
+    </summary>
+      <inheritdoc />
+      <exception cref="ArgumentNullException">cssSelector</exception>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="text">The text.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <param name="startingPoint">The starting point.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitDelay(System.Nullable{TimeSpan})">
+      <summary>
+        Waits the delay time. Use only when absolutely needed. Prefer use of WaitForState, WaitForExists, or
+        WaitForNotExists.
+    </summary>
+      <inheritdoc />
+      <param name="waitTimeout">The wait timeout.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitForExists(System.String,System.Nullable{TimeSpan})">
+      <summary>
+        Waits for exists.
+    </summary>
+      <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitForNotExists(System.String,System.Nullable{TimeSpan})">
+      <summary>
+        Waits for not exists.
+    </summary>
+      <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitForState(Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Waits for state.
+    </summary>
+      <inheritdoc />
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+    </member>
+    <member name="T:FastMoq.Web.Interfaces.INavigationManager">
+      <summary>
+       Blazor Navigation Manager - Wraps Navigation Manager or any navigation implementation used for Blazor and testing.
+   </summary>
+    </member>
+    <member name="P:FastMoq.Web.Interfaces.INavigationManager.BaseUri">
+      <summary>
+       Gets or sets the current base URI. The <see cref="P:FastMoq.Web.Interfaces.INavigationManager.BaseUri" /> is always represented as an absolute URI in string
+       form with trailing slash.
+       Typically this corresponds to the 'href' attribute on the document's &lt;base&gt; element.
+   </summary>
+      <value>The base URI.</value>
+      <remarks>Setting <see cref="P:FastMoq.Web.Interfaces.INavigationManager.BaseUri" /> will not trigger the <see cref="E:FastMoq.Web.Interfaces.INavigationManager.LocationChanged" /> event.</remarks>
+    </member>
+    <member name="P:FastMoq.Web.Interfaces.INavigationManager.Uri">
+      <summary>
+       Gets or sets the current URI. The <see cref="P:FastMoq.Web.Interfaces.INavigationManager.Uri" /> is always represented as an absolute URI in string form.
+   </summary>
+      <value>The URI.</value>
+      <remarks>Setting <see cref="P:FastMoq.Web.Interfaces.INavigationManager.Uri" /> will not trigger the <see cref="E:FastMoq.Web.Interfaces.INavigationManager.LocationChanged" /> event.</remarks>
+    </member>
+    <member name="M:FastMoq.Web.Interfaces.INavigationManager.GetUriWithQueryParameters(System.String,IReadOnlyDictionary{System.String, System.Nullable{System.Object}})">
+      <summary>
+       Returns a URI constructed from <paramref name="uri" /> except with multiple parameters
+       added, updated, or removed.
+   </summary>
+      <param name="uri">The URI with the query to modify.</param>
+      <param name="parameters">The values to add, update, or remove.</param>
+    </member>
+    <member name="M:FastMoq.Web.Interfaces.INavigationManager.NavigateTo(System.String)">
+      <summary>
+       Navigate to a path.
+   </summary>
+      <param name="uri">path to navigate</param>
+    </member>
+    <member name="M:FastMoq.Web.Interfaces.INavigationManager.NavigateTo(System.String,System.Boolean)">
+      <summary>
+       Navigate to a path.
+   </summary>
+      <param name="uri">path to navigate</param>
+      <param name="forceLoad">
+       If true, bypasses client-side routing and forces the browser to load the new page from the
+       server, whether or not the URI would normally be handled by the client-side router.
+   </param>
+    </member>
+    <member name="M:FastMoq.Web.Interfaces.INavigationManager.UrlContains(System.String)">
+      <summary>
+       Returns if the Url contains a specified path.
+   </summary>
+      <param name="path">The path.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="T:FastMoq.Web.Mocks.MockNavigationManager">
+      <summary>Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy.</summary>
+      <inheritdoc />
+    </member>
+    <member name="P:FastMoq.Web.Mocks.MockNavigationManager.BaseUri">
+      <summary>
+    Gets or sets the current base URI. The <see cref="BaseUri" /> is always represented as an absolute URI in string
+    form with trailing slash.
+    Typically this corresponds to the 'href' attribute on the document's &lt;base&gt; element.
+</summary>
+      <inheritdoc />
+      <value>The base URI.</value>
+      <remarks>Setting <see cref="BaseUri" /> will not trigger the <see cref="LocationChanged" /> event.</remarks>
+    </member>
+    <member name="P:FastMoq.Web.Mocks.MockNavigationManager.Uri">
+      <summary>
+    Gets or sets the current URI. The <see cref="Uri" /> is always represented as an absolute URI in string form.
+</summary>
+      <inheritdoc />
+      <value>The URI.</value>
+      <remarks>Setting <see cref="Uri" /> will not trigger the <see cref="LocationChanged" /> event.</remarks>
+    </member>
+    <member name="M:FastMoq.Web.Mocks.MockNavigationManager.NavigateTo(System.String)">
+      <summary>
+    Navigate to a path.
+</summary>
+      <inheritdoc />
+      <param name="uri">path to navigate</param>
+    </member>
+    <member name="M:FastMoq.Web.Mocks.MockNavigationManager.NavigateTo(System.String,System.Boolean)">
+      <summary>
+    Navigate to a path.
+</summary>
+      <inheritdoc />
+      <param name="uri">path to navigate</param>
+      <param name="forceLoad">
+    If true, bypasses client-side routing and forces the browser to load the new page from the
+    server, whether or not the URI would normally be handled by the client-side router.
+</param>
+    </member>
+    <member name="M:FastMoq.Web.Mocks.MockNavigationManager.UrlContains(System.String)">
+      <summary>
+    Returns if the Url contains a specified path.
+</summary>
+      <inheritdoc />
+      <param name="path">The path.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.ButtonClick(IElement,Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+       Buttons the click.
+   </summary>
+      <param name="button">The button.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+      <exception cref="ArgumentNullException">button</exception>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.ButtonClick(System.String,Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+       Buttons the click.
+   </summary>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.ButtonClick``1(System.String,Func{System.Boolean},IRenderedComponent{``0},System.Nullable{TimeSpan})">
+      <summary>
+       Buttons the click.
+   </summary>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="startingComponent">The starting component.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.ButtonClick``1(Func{IRenderedComponent{``0}, IElement},Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+       Buttons the click.
+   </summary>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+      <exception cref="ArgumentNullException">cssSelector</exception>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.ButtonClick``1(Func{IRenderedComponent{``0}, System.Boolean},Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+       Buttons the click.
+   </summary>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+      <exception cref="ArgumentNullException">cssSelector</exception>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.ButtonClick``1(System.String,Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+       Buttons the click.
+   </summary>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+      <exception cref="ArgumentNullException">cssSelector</exception>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.ClickDropdownItem``1(System.String,Func{System.Boolean},System.String)">
+      <summary>
+       Clicks the dropdown item.
+   </summary>
+      <typeparam name="TKey">The type of the t key.</typeparam>
+      <typeparam name="TValue">The type of the t value.</typeparam>
+      <param name="propName">Name of the property.</param>
+      <param name="waitFunc">The wait function.</param>
+      <returns>IRenderedComponent&lt;DropdownList&lt;TKey, TValue&gt;&gt;.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.GetComponent``1(Func{IRenderedComponent{``0}, System.Boolean})">
+      <summary>
+       Gets the component.
+   </summary>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <param name="predicate">The predicate.</param>
+      <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+      <exception cref="ArgumentNullException">predicate</exception>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.GetInjections``1">
+      <summary>
+       Gets the injections.
+   </summary>
+      <returns>IEnumerable&lt;PropertyInfo&gt;.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.InjectComponent``1">
+      <summary>
+       Injects the component.
+   </summary>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.IsExists(System.String)">
+      <summary>
+       Determines whether the specified CSS selector is exists.
+   </summary>
+      <param name="cssSelector">The CSS selector.</param>
+      <returns>
+        <c>true</c> if the specified CSS selector is exists; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.RenderComponent(System.Boolean)">
+      <summary>
+       Renders the component. If the component is already rendered, it will act like a stateChanged.
+   </summary>
+      <param name="forceNew">if set to <c>true</c> [force new].</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.RenderComponent(Action{ComponentParameterCollectionBuilder{`0}},System.Boolean)">
+      <summary>
+       Renders the component. If the component is already rendered, it will act like a stateChanged.
+   </summary>
+      <param name="parameterBuilder">The parameter builder.</param>
+      <param name="forceNew">if set to <c>true</c> [force new].</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,Func{System.Boolean},System.Nullable{TimeSpan},System.Nullable{IRenderedFragment})">
+      <summary>
+       Sets the element check.
+   </summary>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="isChecked">if set to <c>true</c> [is checked].</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <param name="startingPoint">The starting point.</param>
+      <exception cref="ArgumentNullException">cssSelector</exception>
+      <exception cref="T:Bunit.ElementNotFoundException">
+      </exception>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,Func{System.Boolean},System.Nullable{TimeSpan},System.Nullable{IRenderedFragment})">
+      <summary>
+       Sets the element switch.
+   </summary>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="isChecked">if set to <c>true</c> [is checked].</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <param name="startingPoint">The starting point.</param>
+      <exception cref="ArgumentNullException">cssSelector</exception>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,Func{System.Boolean},System.Nullable{TimeSpan},System.Nullable{IRenderedFragment})">
+      <summary>
+       Sets the element text.
+   </summary>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="text">The text.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <param name="startingPoint">The starting point.</param>
+      <exception cref="ArgumentNullException">cssSelector</exception>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.WaitDelay(System.Nullable{TimeSpan})">
+      <summary>
+       Waits the delay time. Use only when absolutely needed. Prefer use of WaitForState, WaitForExists, or
+       WaitForNotExists.
+   </summary>
+      <param name="waitTimeout">The wait timeout.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.WaitForExists(System.String,System.Nullable{TimeSpan})">
+      <summary>
+       Waits for exists.
+   </summary>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.WaitForNotExists(System.String,System.Nullable{TimeSpan})">
+      <summary>
+       Waits for not exists.
+   </summary>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.WaitForState(Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+       Waits for state.
+   </summary>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+    </member>
+  </members>
+</doc>

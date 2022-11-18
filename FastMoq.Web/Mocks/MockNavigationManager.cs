@@ -1,8 +1,7 @@
-﻿#if NETCOREAPP3_1_OR_GREATER
-
+﻿using FastMoq.Web.Interfaces;
 using Microsoft.AspNetCore.Components.Routing;
 
-namespace FastMoq.Blazor
+namespace FastMoq.Web.Mocks
 {
     /// <inheritdoc />
     public class MockNavigationManager : INavigationManager
@@ -76,7 +75,6 @@ namespace FastMoq.Blazor
 
         #endregion
 
-#if NET6_0_OR_GREATER
         public virtual string GetUriWithQueryParameter(string name, DateOnly value) => throw new NotImplementedException();
 
         public virtual string GetUriWithQueryParameter(string name, DateOnly? value) => throw new NotImplementedException();
@@ -84,7 +82,5 @@ namespace FastMoq.Blazor
         public virtual string GetUriWithQueryParameter(string name, TimeOnly value) => throw new NotImplementedException();
 
         public virtual string GetUriWithQueryParameter(string name, TimeOnly? value) => throw new NotImplementedException();
-#endif
     }
 }
-#endif

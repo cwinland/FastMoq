@@ -1,11 +1,9 @@
-﻿#if NETCOREAPP3_1_OR_GREATER
-
-using AngleSharp.Dom;
+﻿using AngleSharp.Dom;
 using Bunit;
 using Microsoft.AspNetCore.Components;
 using System.Reflection;
 
-namespace FastMoq.Blazor
+namespace FastMoq.Web.Blazor.Interfaces
 {
     public interface IMockerBlazorTestHelpers<T> where T : ComponentBase
     {
@@ -195,4 +193,3 @@ namespace FastMoq.Blazor
         void WaitForState(Func<bool> waitFunc, TimeSpan? waitTimeout = null);
     }
 }
-#endif
