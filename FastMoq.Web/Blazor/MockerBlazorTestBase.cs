@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using System.Reflection;
+using FastMoq;
+using static FastMoq.TestClassExtensions;
 
 namespace FastMoq.Blazor
 {
@@ -44,7 +46,7 @@ namespace FastMoq.Blazor
         ///     Gets the mocks.
         /// </summary>
         /// <value>The mocks.</value>
-        protected Mocker Mocks { get; } = new();
+        protected FastMoq.Mocker Mocks { get; } = new();
 
         /// <summary>
         ///     Gets the render parameters.

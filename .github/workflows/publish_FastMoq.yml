@@ -5,7 +5,9 @@ on:
       - master # Default release branch
     paths:
       - FastMoq/**
-      - .github/workflows/publish.yml
+      - FastMoq.Core/**
+      - FastMoq.Web/**
+      - .github/workflows/publish_FastMoq.yml
       
 jobs:
   publish:

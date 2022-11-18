@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using Moq;
+﻿using Moq;
 using System.Collections;
-using System.ComponentModel;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Reflection;
@@ -1050,11 +1048,11 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <param name="attributeType">Override attribute type.</param>
         /// <returns><see cref="IEnumerable{T}" />.</returns>
-        internal IEnumerable<FieldInfo> GetInjectionFields(Type type, Type? attributeType = null) =>
+        internal static IEnumerable<FieldInfo> GetInjectionFields(Type type, Type? attributeType = null) =>
             type
                 .GetRuntimeFields()
                 .Where(x => x.CustomAttributes.Any(y =>
-                    y.AttributeType == (attributeType ?? typeof(InjectAttribute)) ||
+                    y.AttributeType == attributeType ||
                     y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)));
 
         /// <summary>
@@ -1063,11 +1061,11 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <param name="attributeType">Override attribute type.</param>
         /// <returns><see cref="IEnumerable{T}" />.</returns>
-        internal IEnumerable<PropertyInfo> GetInjectionProperties(Type type, Type? attributeType = null) =>
+        internal static IEnumerable<PropertyInfo> GetInjectionProperties(Type type, Type? attributeType = null) =>
             type
                 .GetRuntimeProperties()
                 .Where(x => x.CustomAttributes.Any(y =>
-                    y.AttributeType == (attributeType ?? typeof(InjectAttribute)) ||
+                    y.AttributeType == attributeType ||
                     y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)));
 
         /// <summary>
