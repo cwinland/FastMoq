@@ -46,6 +46,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
-    <ProjectReference Include="..\FastMoq.Core\FastMoq.Web.csproj" />
+    <ProjectReference Include="..\FastMoq.Web\FastMoq.Web.csproj" />
   </ItemGroup>
 </Project>

@@ -216,7 +216,6 @@ namespace FastMoq
         /// </example>
         protected void CreateComponent()
         {
-            CustomMocks ??= new List<MockModel>();
             foreach (var customMock in CustomMocks)
             {
                 Mocks.AddMock(customMock.Mock, customMock.Type, true);
@@ -255,7 +254,7 @@ namespace FastMoq
         /// <param name="funcMethod">The function.</param>
         /// <param name="resultAction">The result action.</param>
         /// <param name="args">The arguments.</param>
-        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task>, string?, List<object?>> resultAction,
+        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task>, string?, List<object?>?, ParameterInfo> resultAction,
             params object?[]? args)
         {
             if (funcMethod == null)
@@ -283,7 +282,7 @@ namespace FastMoq
         /// <param name="args">The arguments.</param>
         /// <exception cref="System.ArgumentNullException">methodInfo</exception>
         /// <exception cref="System.ArgumentNullException">resultAction</exception>
-        protected void TestMethodParametersAsync(MethodInfo methodInfo, Action<Func<Task>, string?, List<object?>> resultAction, params object?[]? args)
+        protected void TestMethodParametersAsync(MethodInfo methodInfo, Action<Func<Task?>, string?, List<object?>?, ParameterInfo> resultAction, params object?[]? args)
         {
             if (methodInfo == null)
             {
@@ -298,17 +297,24 @@ namespace FastMoq
             var names = methodInfo.GetParameters().ToList();
             var subs = Mocks.GetMethodDefaultData(methodInfo).ToList();
 
-            if (args == null)
-            {
-                return;
-            }
-
-            for (var i = 0; i < args.Length; i++)
+            for (var i = 0; i < subs.Count; i++)
             {
                 var list = new List<object?>();
-                list.AddRange(args);
-                list[i] = subs[i];
-                resultAction(async () => await (methodInfo.Invoke(Component, list.ToArray()) as Task), names.Select(x => x.Name).Skip(i).First(), list);
+                list.AddRange(subs);
+
+                for (var j = 0; j < subs.Count; j++)
+                {
+                    if (j != i && args.Length >= j)
+                    {
+                        list[j] = args[j];
+                    }
+                }
+
+                resultAction(() => methodInfo.Invoke(Component, list.ToArray()) as Task,
+                    names.Select(x => x.Name).Skip(i).First(),
+                    list,
+                    names[i]
+                );
             }
         }
 

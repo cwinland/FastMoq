@@ -59,7 +59,6 @@
       <IncludeAssets>runtime; build; native; buildtransitive</IncludeAssets>
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="System.IO.Abstractions" Version="17.*" />
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.*" />
   </ItemGroup>
 </Project>

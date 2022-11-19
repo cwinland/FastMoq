@@ -45,7 +45,7 @@ namespace FastMoq.Web.Blazor
         ///     Gets the mocks.
         /// </summary>
         /// <value>The mocks.</value>
-        protected FastMoq.Mocker Mocks { get; } = new();
+        protected Mocker Mocks { get; } = new();
 
         /// <summary>
         ///     Gets the render parameters.
@@ -127,15 +127,15 @@ namespace FastMoq.Web.Blazor
             Mocks.Initialize<INavigationManager>(mock =>
             {
                 mock.Setup(x => x.BaseUri).Returns("https://localhost");
-                mock.Setup(x => x.Uri).Returns(() => mock.Object.BaseUri);
+                mock.Setup(x => x.Uri).Returns(() => mock.Object?.BaseUri ?? string.Empty);
                 mock.Setup(x => x.ToAbsoluteUri(It.IsAny<string>()))
-                    .Returns(() => new Uri(new Uri(mock.Object.BaseUri), mock.Object.Uri));
+                    .Returns(() => new Uri(new Uri(mock.Object?.BaseUri ?? string.Empty), mock.Object?.Uri));
             });
         }
 
         private void SetupServices()
         {
-            IConfiguration configuration = Mocks.GetObject<IConfigurationRoot>();
+            IConfiguration configuration = Mocks.GetObject<IConfigurationRoot>() ?? throw new InvalidDataException($"Unable to get {nameof(IConfigurationRoot)} object.");
 
             // Insert component injections
             InjectComponent<T>();
