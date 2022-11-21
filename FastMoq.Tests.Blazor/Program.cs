@@ -1,4 +1,5 @@
 using FastMoq.Tests.Blazor.Data;
+using System.IO.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
-
+builder.Services.AddSingleton<IFileSystem, FileSystem>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
