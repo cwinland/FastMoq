@@ -131,6 +131,31 @@ namespace FastMoq
         public MockModel<T> AddMock<T>(Mock<T> mock, bool overwrite, bool nonPublic = false) where T : class =>
             new(AddMock(mock, typeof(T), overwrite, nonPublic));
 
+
+        /// <summary>
+        ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
+        /// </summary>
+        /// <param name="tInterface">The interface or class Type which can be mapped to a specific Class.</param>
+        /// <param name="tClass">The Class Type (cannot be an interface) that can be created and assigned to <see cref="tInterface" />.</param>
+        /// <param name="createFunc">An optional create function used to create the class.</param>
+        /// <exception cref="ArgumentException">$"{tClass.Name} cannot be an interface."</exception>
+        /// <exception cref="ArgumentException">$"{tClass.Name} is not assignable to {tInterface.Name}."</exception>
+        public void AddType(Type tInterface, Type tClass, Func<Mocker, object>? createFunc = null)
+        {
+            if (tClass.IsInterface)
+            {
+                throw new ArgumentException($"{tClass.Name} cannot be an interface.");
+            }
+
+            if (!tInterface.IsAssignableFrom(tClass))
+            {
+                throw new ArgumentException($"{tClass.Name} is not assignable to {tInterface.Name}.");
+            }
+
+            typeMap.Add(tInterface, new InstanceModel(tClass, createFunc));
+
+        }
+
         /// <summary>
         ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
         /// </summary>
@@ -140,20 +165,7 @@ namespace FastMoq
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} cannot be an interface."</exception>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}."</exception>
         public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null)
-            where TInterface : class where TClass : class
-        {
-            if (typeof(TClass).IsInterface)
-            {
-                throw new ArgumentException($"{typeof(TClass).Name} cannot be an interface.");
-            }
-
-            if (!typeof(TInterface).IsAssignableFrom(typeof(TClass)))
-            {
-                throw new ArgumentException($"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}.");
-            }
-
-            typeMap.Add(typeof(TInterface), new InstanceModel<TClass>(createFunc));
-        }
+            where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), createFunc);
 
         /// <summary>
         ///     Determines whether this instance contains a Mock of <c>T</c>.
