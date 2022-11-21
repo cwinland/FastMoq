@@ -1,5 +1,5 @@
-﻿using AngleSharp.Dom;
-using Bunit;
+﻿using Bunit;
+using FastMoq.Tests.Blazor.Data;
 using FastMoq.Tests.Blazor.Pages;
 using FastMoq.Web.Blazor;
 using FluentAssertions;
@@ -16,35 +16,40 @@ using Xunit;
 
 namespace FastMoq.Tests.Web
 {
-    public class BlazorTests : MockerBlazorTestBase<Counter> {
-        public BlazorTests() { }
+    public class BlazorWeatherTests : MockerBlazorTestBase<FetchData> {
+
+        public BlazorWeatherTests() : base(false) { }
 
         [Fact]
         public void ComponentCreated()
         {
+            Setup();
             Component.Should().NotBeNull();
             Instance.Should().NotBeNull();
             Component.Instance.Should().Be(Instance);
-            Component.Markup.Contains("Current count:").Should().BeTrue();
+            Component.Markup.Contains("Temp.").Should().BeTrue();
 
-            IsExists("p[role=\"status\"]").Should().BeTrue();
-            var status = Component.Find("p[role=\"status\"]");
-            status.InnerHtml.Should().Be("Current count: 0");
+            // IWeatherForecastService is automatically injected and should not be null.
+            Instance.WeatherService.Should().NotBeNull();
         }
 
         [Fact]
-        public void ClickCounterButton()
+        public void InjectedService_ShouldNotHaveInjectedParameter()
         {
-            Instance.currentCount.Should().Be(0);
+            Setup();
+            Component = RenderComponent(true);
+            // Will be null because interface does not have inject attribute
+            Instance.WeatherService.FileSystem.Should().BeNull();
+        }
 
-            Func<IElement> GetStatus = () => Component.Find("p[role=\"status\"]");
-            ButtonClick(".btn.btn-primary", () => GetStatus().InnerHtml.Equals("Current count: 1"));
-            GetStatus().InnerHtml.Should().Be("Current count: 1");
-
-            ButtonClick(".btn.btn-primary", () => GetStatus().InnerHtml.Equals("Current count: 2"));
-            GetStatus().InnerHtml.Should().Be("Current count: 2");
-
-            Instance.currentCount.Should().Be(2);
+        [Fact]
+        public void InjectedService_ShouldHaveInjectedParameter()
+        {
+            Mocks.AddType<IWeatherForecastService, WeatherForecastService>();
+            Setup();
+            Component = RenderComponent(true);
+            // Will be null because interface does not have inject attribute
+            Instance.WeatherService.FileSystem.Should().NotBeNull();
         }
     }
 }

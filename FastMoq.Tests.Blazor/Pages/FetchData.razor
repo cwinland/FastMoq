@@ -1,6 +1,6 @@
 ﻿@page "/fetchdata"
 @using FastMoq.Tests.Blazor.Data
-@inject WeatherForecastService ForecastService
+@inject IWeatherForecastService ForecastService
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -39,9 +39,11 @@ else
 
 @code {
     private WeatherForecast[]? forecasts;
+    internal IWeatherForecastService? WeatherService;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+        WeatherService = ForecastService ?? throw new ArgumentNullException(nameof(ForecastService));
+        forecasts = await WeatherService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
     }
 }

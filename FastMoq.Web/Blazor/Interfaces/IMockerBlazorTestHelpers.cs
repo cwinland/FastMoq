@@ -5,10 +5,14 @@ using System.Reflection;
 
 namespace FastMoq.Web.Blazor.Interfaces
 {
+    /// <summary>
+    /// Interface IMockerBlazorTestHelpers
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IMockerBlazorTestHelpers<T> where T : ComponentBase
     {
         /// <summary>
-        ///     Buttons the click.
+        /// Buttons the click.
         /// </summary>
         /// <param name="button">The button.</param>
         /// <param name="waitFunc">The wait function.</param>
@@ -18,7 +22,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         bool ButtonClick(IElement button, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
 
         /// <summary>
-        ///     Buttons the click.
+        /// Buttons the click.
         /// </summary>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="waitFunc">The wait function.</param>
@@ -27,7 +31,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         bool ButtonClick(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
 
         /// <summary>
-        ///     Buttons the click.
+        /// Buttons the click.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="cssSelector">The CSS selector.</param>
@@ -39,7 +43,7 @@ namespace FastMoq.Web.Blazor.Interfaces
             TimeSpan? waitTimeout = null) where TComponent : IComponent;
 
         /// <summary>
-        ///     Buttons the click.
+        /// Buttons the click.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="cssSelector">The CSS selector.</param>
@@ -51,7 +55,7 @@ namespace FastMoq.Web.Blazor.Interfaces
             TimeSpan? waitTimeout = null) where TComponent : IComponent;
 
         /// <summary>
-        ///     Buttons the click.
+        /// Buttons the click.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="cssSelector">The CSS selector.</param>
@@ -63,7 +67,7 @@ namespace FastMoq.Web.Blazor.Interfaces
             TimeSpan? waitTimeout = null) where TComponent : IComponent;
 
         /// <summary>
-        ///     Buttons the click.
+        /// Buttons the click.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="cssSelector">The CSS selector.</param>
@@ -74,18 +78,19 @@ namespace FastMoq.Web.Blazor.Interfaces
         bool ButtonClick<TComponent>(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null) where TComponent : IComponent;
 
         /// <summary>
-        ///     Clicks the dropdown item.
+        /// Clicks the dropdown item.
         /// </summary>
-        /// <typeparam name="TKey">The type of the t key.</typeparam>
-        /// <typeparam name="TValue">The type of the t value.</typeparam>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="propName">Name of the property.</param>
         /// <param name="waitFunc">The wait function.</param>
+        /// <param name="cssDropdownSelector">The CSS dropdown selector.</param>
         /// <returns>IRenderedComponent&lt;DropdownList&lt;TKey, TValue&gt;&gt;.</returns>
-        IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(string propName, Func<bool> waitFunc, string cssDropdownSelector = "a.dropdown-item")
+        IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(string propName, Func<bool> waitFunc,
+            string cssDropdownSelector = "a.dropdown-item")
             where TComponent : IComponent;
 
         /// <summary>
-        ///     Gets the component.
+        /// Gets the component.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="predicate">The predicate.</param>
@@ -95,40 +100,77 @@ namespace FastMoq.Web.Blazor.Interfaces
             where TComponent : IComponent;
 
         /// <summary>
-        ///     Gets the injections.
+        /// Gets the injections.
         /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>IEnumerable&lt;PropertyInfo&gt;.</returns>
+        IEnumerable<PropertyInfo> GetInjections(Type type);
+
+        /// <summary>
+        /// Gets the injections.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <returns>IEnumerable&lt;PropertyInfo&gt;.</returns>
         IEnumerable<PropertyInfo> GetInjections<TComponent>();
 
         /// <summary>
-        ///     Injects the component.
+        /// Gets the injections.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="injectAttribute">The inject attribute.</param>
+        /// <returns>IEnumerable&lt;PropertyInfo&gt;.</returns>
+        IEnumerable<PropertyInfo> GetInjections(Type type, Type injectAttribute);
+        /// <summary>
+        /// Injects the component.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="injectAttribute">The inject attribute.</param>
+        void InjectComponent(Type type, Type injectAttribute);
+        /// <summary>
+        /// Injects the component.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        void InjectComponent(Type type);
+
+        /// <summary>
+        /// Injects the component.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         void InjectComponent<TComponent>();
 
         /// <summary>
-        ///     Determines whether the specified CSS selector is exists.
+        /// Injects the component.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
+        /// <typeparam name="TInjectAttribute">The type of the t inject attribute.</typeparam>
+        void InjectComponent<TComponent, TInjectAttribute>() where TInjectAttribute : Attribute;
+
+        /// <summary>
+        /// Determines whether the specified CSS selector is exists.
         /// </summary>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <returns><c>true</c> if the specified CSS selector is exists; otherwise, <c>false</c>.</returns>
         bool IsExists(string cssSelector);
 
         /// <summary>
-        ///     Renders the component. If the component is already rendered, it will act like a stateChanged.
+        /// Renders the component. If the component is already rendered, it will act like a stateChanged.
         /// </summary>
         /// <param name="forceNew">if set to <c>true</c> [force new].</param>
+        /// <returns>IRenderedComponent&lt;T&gt;.</returns>
         IRenderedComponent<T> RenderComponent(bool forceNew = false);
 
         /// <summary>
-        ///     Renders the component. If the component is already rendered, it will act like a stateChanged.
+        /// Renders the component. If the component is already rendered, it will act like a stateChanged.
         /// </summary>
         /// <param name="parameterBuilder">The parameter builder.</param>
         /// <param name="forceNew">if set to <c>true</c> [force new].</param>
+        /// <returns>IRenderedComponent&lt;T&gt;.</returns>
         IRenderedComponent<T> RenderComponent(Action<ComponentParameterCollectionBuilder<T>> parameterBuilder, bool forceNew = false);
 
         /// <summary>
-        ///     Sets the element check.
+        /// Sets the element check.
         /// </summary>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="isChecked">if set to <c>true</c> [is checked].</param>
         /// <param name="waitFunc">The wait function.</param>
@@ -141,8 +183,9 @@ namespace FastMoq.Web.Blazor.Interfaces
             where TComponent : IComponent;
 
         /// <summary>
-        ///     Sets the element switch.
+        /// Sets the element switch.
         /// </summary>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="isChecked">if set to <c>true</c> [is checked].</param>
         /// <param name="waitFunc">The wait function.</param>
@@ -153,7 +196,7 @@ namespace FastMoq.Web.Blazor.Interfaces
             IRenderedFragment? startingPoint = null) where TComponent : IComponent;
 
         /// <summary>
-        ///     Sets the element text.
+        /// Sets the element text.
         /// </summary>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="text">The text.</param>
@@ -165,28 +208,28 @@ namespace FastMoq.Web.Blazor.Interfaces
             TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null);
 
         /// <summary>
-        ///     Waits the delay time. Use only when absolutely needed. Prefer use of WaitForState, WaitForExists, or
-        ///     WaitForNotExists.
+        /// Waits the delay time. Use only when absolutely needed. Prefer use of WaitForState, WaitForExists, or
+        /// WaitForNotExists.
         /// </summary>
         /// <param name="waitTimeout">The wait timeout.</param>
         void WaitDelay(TimeSpan? waitTimeout = null);
 
         /// <summary>
-        ///     Waits for exists.
+        /// Waits for exists.
         /// </summary>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
         void WaitForExists(string cssSelector, TimeSpan? waitTimeout = null);
 
         /// <summary>
-        ///     Waits for not exists.
+        /// Waits for not exists.
         /// </summary>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
         void WaitForNotExists(string cssSelector, TimeSpan? waitTimeout = null);
 
         /// <summary>
-        ///     Waits for state.
+        /// Waits for state.
         /// </summary>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
