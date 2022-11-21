@@ -3,7 +3,6 @@ using AngleSharpWrappers;
 using Bunit;
 using Bunit.TestDoubles;
 using FastMoq.Web.Blazor.Interfaces;
-using FastMoq.Web.Interfaces;
 using FastMoq.Web.Mocks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
@@ -51,7 +50,7 @@ namespace FastMoq.Web.Blazor
         ///     Rendered Component being tested.
         /// </summary>
         /// <value>The component.</value>
-        protected IRenderedComponent<T> Component { get; set; }
+        protected IRenderedComponent<T>? Component { get; set; }
 
         /// <summary>
         ///     Gets the configure services.
@@ -95,33 +94,33 @@ namespace FastMoq.Web.Blazor
         ///     Initializes a new instance of the <see cref="MockerBlazorTestBase{T}" /> class.
         /// </summary>
         /// <inheritdoc />
-        protected MockerBlazorTestBase() : this(true) { }
+        protected MockerBlazorTestBase() : this(false, false) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.MockerBlazorTestBase`1" /> class.
         /// </summary>
         /// <inheritdoc />
-        protected MockerBlazorTestBase(bool setup)
+        protected MockerBlazorTestBase(bool skipSetup, bool skipDefaultNavigationSetup = true)
         {
             JSInterop.Mode = JSRuntimeMode.Loose;
             AuthContext = this.AddTestAuthorization();
 
-            if (!setup)
+            if (skipSetup)
             {
                 return;
             }
 
-            Setup();
+            Setup(skipDefaultNavigationSetup);
         }
 
-        protected internal void Setup()
+        protected internal void Setup(bool skipDefaultNavigationSetup = true)
         {
-            SetupMocks();
+            SetupMocks(skipDefaultNavigationSetup);
+            SetupComponent(Mocks);
             SetupServices();
 
             SetupAuthorization();
 
-            SetupComponent(Mocks);
             Component = RenderComponent(true);
         }
 
@@ -135,8 +134,14 @@ namespace FastMoq.Web.Blazor
             AuthContext.SetRoles(AuthorizedRoles.ToArray());
         }
 
-        private void SetupMocks()
+        private void SetupMocks(bool skipDefaultNavigationSetup)
         {
+            if (skipDefaultNavigationSetup)
+            {
+                // Skip default initialization.
+                return;
+            }
+
             // Tell Mocker which class to use for the interface
             Mocks.AddType<INavigationManager, MockNavigationManager>();
 

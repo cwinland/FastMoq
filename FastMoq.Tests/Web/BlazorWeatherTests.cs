@@ -18,7 +18,7 @@ namespace FastMoq.Tests.Web
 {
     public class BlazorWeatherTests : MockerBlazorTestBase<FetchData> {
 
-        public BlazorWeatherTests() : base(false) { }
+        public BlazorWeatherTests() : base(true) { }
 
         [Fact]
         public void ComponentCreated()

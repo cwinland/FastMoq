@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
 
-namespace FastMoq.Web.Interfaces
+namespace FastMoq.Web.Mocks
 {
     /// <summary>
     ///     Blazor Navigation Manager - Wraps Navigation Manager or any navigation implementation used for Blazor and testing.
