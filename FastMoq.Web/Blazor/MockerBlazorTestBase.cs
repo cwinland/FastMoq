@@ -3,11 +3,9 @@ using AngleSharpWrappers;
 using Bunit;
 using Bunit.TestDoubles;
 using FastMoq.Web.Blazor.Interfaces;
-using FastMoq.Web.Mocks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Moq;
 using System.Reflection;
 
 namespace FastMoq.Web.Blazor
@@ -94,13 +92,13 @@ namespace FastMoq.Web.Blazor
         ///     Initializes a new instance of the <see cref="MockerBlazorTestBase{T}" /> class.
         /// </summary>
         /// <inheritdoc />
-        protected MockerBlazorTestBase() : this(false, false) { }
+        protected MockerBlazorTestBase() : this(false) { }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.MockerBlazorTestBase`1" /> class.
         /// </summary>
         /// <inheritdoc />
-        protected MockerBlazorTestBase(bool skipSetup, bool skipDefaultNavigationSetup = true)
+        protected MockerBlazorTestBase(bool skipSetup)
         {
             JSInterop.Mode = JSRuntimeMode.Loose;
             AuthContext = this.AddTestAuthorization();
@@ -110,12 +108,12 @@ namespace FastMoq.Web.Blazor
                 return;
             }
 
-            Setup(skipDefaultNavigationSetup);
+            Setup();
         }
 
-        protected internal void Setup(bool skipDefaultNavigationSetup = true)
+        protected internal void Setup()
         {
-            SetupMocks(skipDefaultNavigationSetup);
+            SetupMocks();
             SetupComponent(Mocks);
             SetupServices();
 
@@ -134,27 +132,8 @@ namespace FastMoq.Web.Blazor
             AuthContext.SetRoles(AuthorizedRoles.ToArray());
         }
 
-        private void SetupMocks(bool skipDefaultNavigationSetup)
+        private void SetupMocks()
         {
-            if (skipDefaultNavigationSetup)
-            {
-                // Skip default initialization.
-                return;
-            }
-
-            // Tell Mocker which class to use for the interface
-            Mocks.AddType<INavigationManager, MockNavigationManager>();
-
-            // Setup default mocks. These can be changed in the individual tests
-            Mocks.Initialize<INavigationManager>(mock =>
-                {
-                    mock.Setup(x => x.BaseUri).Returns("https://localhost");
-                    mock.Setup(x => x.Uri).Returns(() => mock.Object?.BaseUri ?? string.Empty);
-
-                    mock.Setup(x => x.ToAbsoluteUri(It.IsAny<string>()))
-                        .Returns(() => new Uri(new Uri(mock.Object?.BaseUri ?? string.Empty), mock.Object?.Uri));
-                }
-            );
         }
 
         private void SetupServices()
@@ -169,7 +148,7 @@ namespace FastMoq.Web.Blazor
         }
 
         #region IMockerBlazorTestHelpers<T>
-
+        
         /// <inheritdoc />
         /// <exception cref="T:System.ArgumentNullException">button</exception>
         public bool ButtonClick(IElement button, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
@@ -179,17 +158,10 @@ namespace FastMoq.Web.Blazor
                 throw new ArgumentNullException(nameof(button));
             }
 
-            try
-            {
-                button.Click();
-                WaitForState(waitFunc, waitTimeout);
+            button.Click();
+            WaitForState(waitFunc, waitTimeout);
 
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return true;
         }
 
         /// <inheritdoc />
@@ -202,6 +174,14 @@ namespace FastMoq.Web.Blazor
             where TComponent : IComponent =>
             ButtonClick(startingComponent.Find(cssSelector), waitFunc, waitTimeout);
 
+        public IRenderedComponent<TComponent> FindComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> selector) where TComponent : IComponent
+        {
+            var componentList = Component.FindComponents<TComponent>().ToList();
+            var component = componentList.FirstOrDefault(selector);
+
+            return component ?? throw new NotImplementedException($"Unable to find {typeof(TComponent)}");
+        }
+
         /// <inheritdoc />
         /// <exception cref="ArgumentNullException">cssSelector</exception>
         public bool ButtonClick<TComponent>(Func<IRenderedComponent<TComponent>, IElement> cssSelector, Func<bool> waitFunc,
@@ -212,17 +192,10 @@ namespace FastMoq.Web.Blazor
                 throw new ArgumentNullException(nameof(cssSelector));
             }
 
-            try
-            {
-                return Component.FindComponents<TComponent>()
-                    .Select(cssSelector)
-                    .Select(b => ButtonClick(b, waitFunc, waitTimeout))
-                    .FirstOrDefault();
-            }
-            catch
-            {
-                return false;
-            }
+            return Component.FindComponents<TComponent>()
+                .Select(cssSelector)
+                .Select(b => ButtonClick(b, waitFunc, waitTimeout))
+                .FirstOrDefault();
         }
 
         /// <inheritdoc />
@@ -235,18 +208,11 @@ namespace FastMoq.Web.Blazor
                 throw new ArgumentNullException(nameof(cssSelector));
             }
 
-            try
-            {
-                return Component.FindComponents<TComponent>()
-                    .Where(cssSelector)
-                    .Select(x => x.Find("*"))
-                    .Select(b => ButtonClick(b, waitFunc, waitTimeout))
-                    .FirstOrDefault();
-            }
-            catch
-            {
-                return false;
-            }
+            var component = FindComponent(cssSelector);
+
+            return component == null
+                ? throw new NotImplementedException($"Unable to find {typeof(TComponent)}")
+                : ButtonClick(component.Find("*"), waitFunc, waitTimeout);
         }
 
         /// <inheritdoc />
@@ -258,14 +224,7 @@ namespace FastMoq.Web.Blazor
                 throw new ArgumentNullException(nameof(cssSelector));
             }
 
-            try
-            {
-                return ButtonClick<TComponent>(c => c.Find(cssSelector), waitFunc, waitTimeout);
-            }
-            catch
-            {
-                return false;
-            }
+            return ButtonClick<TComponent>(c => c.Find(cssSelector), waitFunc, waitTimeout);
         }
 
         /// <inheritdoc />

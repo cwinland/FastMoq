@@ -1,8 +1,15 @@
-﻿using FastMoq.Web.Blazor;
+﻿using AngleSharp.Html.Dom;
+using Bunit;
+using Bunit.TestDoubles;
+using FastMoq.Tests.Blazor.Pages;
+using FastMoq.Tests.Blazor.Shared;
+using FastMoq.Web.Blazor;
 using FluentAssertions;
-using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using Xunit;
-using Index = FastMoq.Tests.Blazor.Pages.Index;
 
 namespace FastMoq.Tests.Web
 {
@@ -17,10 +24,10 @@ namespace FastMoq.Tests.Web
         [Fact]
         public void NavigateTest()
         {
-            IsExists("button.btn-primary").Should().BeFalse();
-            ButtonClick<NavLink>(component => component.Instance.AdditionalAttributes["href"].ToString() == "counter",
-                () => this.IsExists("button.btn-primary")
-            );
+            var manager = Services.GetRequiredService<FakeNavigationManager>();
+
+            IsExists("button").Should().BeTrue();
+            ButtonClick("button", () => manager.History.Count > 0);
         }
     }
 }
