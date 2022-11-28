@@ -152,12 +152,12 @@ namespace FastMoq
                 throw new ArgumentException($"{tClass.Name} is not assignable to {tInterface.Name}.");
             }
 
-            if (typeMap.ContainsKey(typeof(TInterface)) && replace)
+            if (typeMap.ContainsKey(tInterface) && replace)
             {
-                typeMap.Remove(typeof(TInterface));
+                typeMap.Remove(tInterface);
             }
 
-            typeMap.Add(typeof(TInterface), new InstanceModel<TClass>(createFunc));
+            typeMap.Add(tInterface, new InstanceModel(tClass, createFunc));
         }
 
         /// <summary>
@@ -166,10 +166,11 @@ namespace FastMoq
         /// <typeparam name="TInterface">The interface or class Type which can be mapped to a specific Class.</typeparam>
         /// <typeparam name="TClass">The Class Type (cannot be an interface) that can be created and assigned to <see cref="TInterface" />.</typeparam>
         /// <param name="createFunc">An optional create function used to create the class.</param>
+        /// <param name="replace">Replace type if already exists. Default: false.</param>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} cannot be an interface."</exception>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}."</exception>
-        public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null)
-            where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), createFunc);
+        public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null, bool replace = false)
+            where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), createFunc, replace);
 
         /// <summary>
         ///     Determines whether this instance contains a Mock of <c>T</c>.
