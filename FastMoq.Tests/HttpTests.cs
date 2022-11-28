@@ -22,6 +22,13 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateUri()
+        {
+            Mocks.AddType<Uri, Uri>((_) => new Uri("http://localhost"));
+            var m = Mocks.GetObject<Uri>();
+        }
+
+        [Fact]
         public async Task CreateWithBuiltInHttpClient()
         {
             // Execute Http request.

@@ -658,13 +658,13 @@ namespace FastMoq.Tests
         public void IsValidConstructor()
         {
             var constructor = Mocks.FindConstructor(typeof(TestClassNormal), false, Mocks.GetObject<IFileSystem>());
-            var isValid = Mocker.IsValidConstructor(constructor.ConstructorInfo, Mocks.GetObject<IFileSystem>());
+            var isValid = Mocker.IsValidConstructor(typeof(IFileSystem), constructor.ConstructorInfo, Mocks.GetObject<IFileSystem>());
             isValid.Should().BeTrue();
 
-            isValid = Mocker.IsValidConstructor(constructor.ConstructorInfo, Mocks.GetObject<IFileSystem>(), 12);
+            isValid = Mocker.IsValidConstructor(typeof(IFileSystem), constructor.ConstructorInfo, Mocks.GetObject<IFileSystem>(), 12);
             isValid.Should().BeFalse();
 
-            isValid = Mocker.IsValidConstructor(constructor.ConstructorInfo, 12);
+            isValid = Mocker.IsValidConstructor(typeof(IFileSystem), constructor.ConstructorInfo, 12);
             isValid.Should().BeFalse();
         }
 
@@ -761,14 +761,14 @@ namespace FastMoq.Tests
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)
         {
             var constructor = Mocks.FindConstructor(true, typeof(TestClassNormal), nonPublic);
-            var isValid = Mocker.IsValidConstructor(constructor.ConstructorInfo, data);
+            var isValid = Mocker.IsValidConstructor(typeof(IFileSystem), constructor.ConstructorInfo, data);
             isValid.Should().Be(expected);
         }
 
         private void CheckConstructorByArgs(object data, bool expected, bool nonPublic)
         {
             var constructor = Mocks.FindConstructor(typeof(TestClassNormal), nonPublic, data);
-            var isValid = Mocker.IsValidConstructor(constructor.ConstructorInfo, data);
+            var isValid = Mocker.IsValidConstructor(typeof(IFileSystem), constructor.ConstructorInfo, data);
             isValid.Should().Be(expected);
         }
 

@@ -603,6 +603,7 @@ namespace FastMoq
         /// <returns><see cref="Nullable{T}" />.</returns>
         public static object? GetDefaultValue(Type type) => type switch
         {
+            {FullName: "System.Uri"} => new Uri("http://localhost"),
             {FullName: "System.String"} => string.Empty,
             _ when typeof(IEnumerable).IsAssignableFrom(type) => Array.CreateInstance(type.GetElementType() ?? typeof(object), 0),
             {IsClass: true} => null,
@@ -1231,7 +1232,8 @@ namespace FastMoq
         /// <returns><see cref="Dictionary{ConstructorInfo, List}" />.</returns>
         internal Dictionary<ConstructorInfo, List<object?>>
             GetConstructors(Type type, params object?[] instanceParameterValues) => type.GetConstructors()
-            .Where(x => IsValidConstructor(x, instanceParameterValues))
+            .Where(x=> x.GetParameters().All(y => y.ParameterType != type))
+            .Where(x => IsValidConstructor(type, x, instanceParameterValues))
             .OrderByDescending(x => x.GetParameters().Length)
             .ToDictionary(x => x,
                 y => (instanceParameterValues.Length > 0 ? instanceParameterValues : y.GetParameters().Select(GetObject))
@@ -1261,7 +1263,7 @@ namespace FastMoq
         internal Dictionary<ConstructorInfo, List<object?>> GetConstructorsNonPublic(Type type,
             params object?[] instanceParameterValues) => type
             .GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public)
-            .Where(x => IsValidConstructor(x, instanceParameterValues))
+            .Where(x => IsValidConstructor(type, x, instanceParameterValues))
             .OrderByDescending(x => x.GetParameters().Length)
             .ToDictionary(x => x,
                 y => (instanceParameterValues.Length > 0 ? instanceParameterValues : y.GetParameters().Select(GetObject))
@@ -1403,14 +1405,20 @@ namespace FastMoq
         /// <param name="info">Parameter information.</param>
         /// <param name="instanceParameterValues">Optional arguments.</param>
         /// <returns><c>true</c> if [is valid constructor] [the specified information]; otherwise, <c>false</c>.</returns>
-        internal static bool IsValidConstructor(ConstructorInfo info, params object?[] instanceParameterValues)
+        internal static bool IsValidConstructor(Type type, ConstructorInfo info, params object?[] instanceParameterValues)
         {
+            List<ParameterInfo> paramList = info.GetParameters().ToList();
+
+            if (paramList.Any(x => x.ParameterType == type))
+            {
+                return false;
+            }
+
             if (instanceParameterValues.Length == 0)
             {
                 return true;
             }
 
-            List<ParameterInfo> paramList = info.GetParameters().ToList();
 
             if (instanceParameterValues.Length != paramList.Count)
             {
