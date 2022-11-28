@@ -3,7 +3,7 @@ using FluentAssertions;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
@@ -13,15 +13,17 @@ using System.Security.Cryptography;
 using System.Threading;
 using Xunit;
 
-#pragma warning disable CS8604
-#pragma warning disable CS8602
-#pragma warning disable CS8625
+#pragma warning disable CS8604 // Possible null reference argument for parameter.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+#pragma warning disable CS0649 // Field 'field' is never assigned to, and will always have its default value 'value'.
+#pragma warning disable CS8618 // Non-nullable variable must contain a non-null value when exiting constructor. Consider declaring it as nullable.
+#pragma warning disable CS8974 // Converting method group to non-delegate type
+#pragma warning disable CS0472 // The result of the expression is always 'value1' since a value of type 'value2' is never equal to 'null' of type 'value3'.
 
 namespace FastMoq.Tests
 {
-    [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-    [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
-    [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
     public class MocksTests : MockerTestBase<Mocker>
     {
         public MocksTests() : base(SetupAction, CreateAction, CreatedAction) { }
@@ -30,7 +32,7 @@ namespace FastMoq.Tests
         public void AddInjections()
         {
             // Null Path
-            object obj = null;
+            object? obj = null;
             Component.AddInjections(obj).Should().Be(null);
 
             // Create class without injected property.
@@ -194,14 +196,15 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateBest_Should_ThrowAmbiguous()
         {
-            Action a = () => Mocks.CreateInstance<TestClassMany>();
-            a.Should().Throw<AmbiguousImplementationException>();
+            // Ambiguous constructors.
+            new Action(() => Mocks.CreateInstance<TestClassMany>()).Should().Throw<AmbiguousImplementationException>();
+            new Action(() => Mocks.CreateInstanceNonPublic<TestClassOne>().Should().NotBeNull()).Should().Throw<AmbiguousImplementationException>();
 
-            Action m = () => Mocks.CreateInstanceNonPublic<TestClassOne>().Should().NotBeNull();
-            m.Should().Throw<AmbiguousImplementationException>();
+            // No Constructor.
+            new Action(() => Mocks.CreateInstance<IFileSystem>(false).Should().NotBeNull()).Should().Throw<NotImplementedException>();
 
-            Action b = () => Mocks.CreateInstance<IFileSystem>(false).Should().NotBeNull();
-            b.Should().Throw<NotImplementedException>();
+            // Valid Constructor.
+            new Action(() => Mocks.CreateInstance<IFileSystem>(true).Should().NotBeNull()).Should().NotThrow();
         }
 
         [Fact]
@@ -238,6 +241,14 @@ namespace FastMoq.Tests
 
         [Fact]
         public void CreateFromInterface_BestGuess() => Mocks.CreateInstance<ITestClassNormal>().Should().NotBeNull();
+
+        [Fact]
+        public void CreateFromInterface_ManyMatches_ShouldThrow_Ambigous()
+        {
+            new Action (() => Mocks.CreateInstance<ITestClassDouble>().Should().NotBeNull()).Should().Throw<AmbiguousImplementationException>();
+            Mocks.AddType<ITestClassDouble, TestClassDouble1>();
+            new Action (() => Mocks.CreateInstance<ITestClassDouble>().Should().NotBeNull()).Should().NotThrow<AmbiguousImplementationException>();
+        }
 
         [Fact]
         public void CreateInstance()

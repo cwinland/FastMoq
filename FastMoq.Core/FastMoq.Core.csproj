@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <DebugType>embedded</DebugType>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Winland, $(AssemblyName)</Authors>
+    <Company>$(Authors)</Company>
+    <Copyright>Copyright(c) 2022 Christopher Winland</Copyright>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing.</Description>
+    <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Easy;fast;injection;inject;mock;extension;Moq;moqthis;framework;mocking;class</PackageTags>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);SetPackageVersion</GenerateNuspecDependsOn>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <RootNamespace>FastMoq</RootNamespace>
+  </PropertyGroup>
+
+  <Target Name="SetPackageVersion">
+    <PropertyGroup>
+      <!-- You can customize the format and the rule about how version increases here. -->
+      <PackageVersion>1.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</PackageVersion>
+      <Version>1.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</Version>
+    </PropertyGroup>
+  </Target>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.*" />
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>    
+    <PackageReference Include="Moq" Version="4.18.2" />
+    <PackageReference Include="coverlet.collector" Version="3.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; buildtransitive</IncludeAssets>
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.*" />
+  </ItemGroup>
+</Project>
