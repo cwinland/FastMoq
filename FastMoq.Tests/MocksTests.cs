@@ -201,7 +201,7 @@ namespace FastMoq.Tests
             m.Should().Throw<AmbiguousImplementationException>();
 
             Action b = () => Mocks.CreateInstance<IFileSystem>(false).Should().NotBeNull();
-            b.Should().Throw<AmbiguousImplementationException>();
+            b.Should().Throw<NotImplementedException>();
         }
 
         [Fact]
@@ -238,13 +238,6 @@ namespace FastMoq.Tests
 
         [Fact]
         public void CreateFromInterface_BestGuess() => Mocks.CreateInstance<ITestClassNormal>().Should().NotBeNull();
-
-        [Fact]
-        public void CreateFromInterface_ManyMatches_ShouldThrow()
-        {
-            Action a = () => Mocks.CreateInstance<IFile>().Should().NotBeNull();
-            a.Should().Throw<AmbiguousImplementationException>();
-        }
 
         [Fact]
         public void CreateInstance()

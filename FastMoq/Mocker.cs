@@ -138,9 +138,11 @@ namespace FastMoq
         /// <typeparam name="TInterface">The interface or class Type which can be mapped to a specific Class.</typeparam>
         /// <typeparam name="TClass">The Class Type (cannot be an interface) that can be created and assigned to <see cref="TInterface" />.</typeparam>
         /// <param name="createFunc">An optional create function used to create the class.</param>
+        /// <param name="replace">Replace type if already exists. Default: false.</param>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} cannot be an interface."</exception>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}."</exception>
-        public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null)
+        /// <exception cref="ArgumentException">An item with the same key has already been added.</exception>
+        public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null, bool replace = false)
             where TInterface : class where TClass : class
         {
             if (typeof(TClass).IsInterface)
@@ -151,6 +153,11 @@ namespace FastMoq
             if (!typeof(TInterface).IsAssignableFrom(typeof(TClass)))
             {
                 throw new ArgumentException($"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}.");
+            }
+
+            if (typeMap.ContainsKey(typeof(TInterface)) && replace)
+            {
+                typeMap.Remove(typeof(TInterface));
             }
 
             typeMap.Add(typeof(TInterface), new InstanceModel<TClass>(createFunc));
@@ -1402,6 +1409,7 @@ namespace FastMoq
         /// <summary>
         ///     Returns true if the argument list == 0 or the types match the constructor exactly.
         /// </summary>
+        /// <param name="type">Type which the constructor is from.</param>
         /// <param name="info">Parameter information.</param>
         /// <param name="instanceParameterValues">Optional arguments.</param>
         /// <returns><c>true</c> if [is valid constructor] [the specified information]; otherwise, <c>false</c>.</returns>
@@ -1409,16 +1417,10 @@ namespace FastMoq
         {
             List<ParameterInfo> paramList = info.GetParameters().ToList();
 
-            if (paramList.Any(x => x.ParameterType == type))
-            {
-                return false;
-            }
-
             if (instanceParameterValues.Length == 0)
             {
-                return true;
+                return paramList.All(x => x.ParameterType != type);
             }
-
 
             if (instanceParameterValues.Length != paramList.Count)
             {
