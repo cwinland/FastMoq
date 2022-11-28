@@ -22,6 +22,21 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateUri()
+        {
+            Mocks.AddType<Uri, Uri>((_) => new Uri("http://localhost"));
+            var m = Mocks.GetObject<Uri>().ToString().Should().Be("http://localhost/");
+
+            // Adding same type will throw an error.
+            new Action(() => Mocks.AddType<Uri, Uri>((_) => new Uri("http://localhost2/test"))).Should().Throw<ArgumentException>();
+
+            // Adding same type with replace = true, will replace.
+            Mocks.AddType<Uri, Uri>((_) => new Uri("http://localhost2/test/"), true);
+            Mocks.GetObject<Uri>().ToString().Should().Be("http://localhost2/test/");
+
+        }
+
+        [Fact]
         public async Task CreateWithBuiltInHttpClient()
         {
             // Execute Http request.

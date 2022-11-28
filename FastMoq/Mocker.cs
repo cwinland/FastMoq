@@ -138,9 +138,11 @@ namespace FastMoq
         /// <typeparam name="TInterface">The interface or class Type which can be mapped to a specific Class.</typeparam>
         /// <typeparam name="TClass">The Class Type (cannot be an interface) that can be created and assigned to <see cref="TInterface" />.</typeparam>
         /// <param name="createFunc">An optional create function used to create the class.</param>
+        /// <param name="replace">Replace type if already exists. Default: false.</param>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} cannot be an interface."</exception>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}."</exception>
-        public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null)
+        /// <exception cref="ArgumentException">An item with the same key has already been added.</exception>
+        public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null, bool replace = false)
             where TInterface : class where TClass : class
         {
             if (typeof(TClass).IsInterface)
@@ -151,6 +153,11 @@ namespace FastMoq
             if (!typeof(TInterface).IsAssignableFrom(typeof(TClass)))
             {
                 throw new ArgumentException($"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}.");
+            }
+
+            if (typeMap.ContainsKey(typeof(TInterface)) && replace)
+            {
+                typeMap.Remove(typeof(TInterface));
             }
 
             typeMap.Add(typeof(TInterface), new InstanceModel<TClass>(createFunc));
@@ -603,6 +610,7 @@ namespace FastMoq
         /// <returns><see cref="Nullable{T}" />.</returns>
         public static object? GetDefaultValue(Type type) => type switch
         {
+            {FullName: "System.Uri"} => new Uri("http://localhost"),
             {FullName: "System.String"} => string.Empty,
             _ when typeof(IEnumerable).IsAssignableFrom(type) => Array.CreateInstance(type.GetElementType() ?? typeof(object), 0),
             {IsClass: true} => null,
@@ -1231,7 +1239,8 @@ namespace FastMoq
         /// <returns><see cref="Dictionary{ConstructorInfo, List}" />.</returns>
         internal Dictionary<ConstructorInfo, List<object?>>
             GetConstructors(Type type, params object?[] instanceParameterValues) => type.GetConstructors()
-            .Where(x => IsValidConstructor(x, instanceParameterValues))
+            .Where(x=> x.GetParameters().All(y => y.ParameterType != type))
+            .Where(x => IsValidConstructor(type, x, instanceParameterValues))
             .OrderByDescending(x => x.GetParameters().Length)
             .ToDictionary(x => x,
                 y => (instanceParameterValues.Length > 0 ? instanceParameterValues : y.GetParameters().Select(GetObject))
@@ -1261,7 +1270,7 @@ namespace FastMoq
         internal Dictionary<ConstructorInfo, List<object?>> GetConstructorsNonPublic(Type type,
             params object?[] instanceParameterValues) => type
             .GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public)
-            .Where(x => IsValidConstructor(x, instanceParameterValues))
+            .Where(x => IsValidConstructor(type, x, instanceParameterValues))
             .OrderByDescending(x => x.GetParameters().Length)
             .ToDictionary(x => x,
                 y => (instanceParameterValues.Length > 0 ? instanceParameterValues : y.GetParameters().Select(GetObject))
@@ -1400,17 +1409,18 @@ namespace FastMoq
         /// <summary>
         ///     Returns true if the argument list == 0 or the types match the constructor exactly.
         /// </summary>
+        /// <param name="type">Type which the constructor is from.</param>
         /// <param name="info">Parameter information.</param>
         /// <param name="instanceParameterValues">Optional arguments.</param>
         /// <returns><c>true</c> if [is valid constructor] [the specified information]; otherwise, <c>false</c>.</returns>
-        internal static bool IsValidConstructor(ConstructorInfo info, params object?[] instanceParameterValues)
+        internal static bool IsValidConstructor(Type type, ConstructorInfo info, params object?[] instanceParameterValues)
         {
+            List<ParameterInfo> paramList = info.GetParameters().ToList();
+
             if (instanceParameterValues.Length == 0)
             {
-                return true;
+                return paramList.All(x => x.ParameterType != type);
             }
-
-            List<ParameterInfo> paramList = info.GetParameters().ToList();
 
             if (instanceParameterValues.Length != paramList.Count)
             {
