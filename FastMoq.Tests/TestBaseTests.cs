@@ -1,12 +1,9 @@
-﻿using FluentAssertions;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -38,11 +35,15 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetMember()
+        public void GetMember_MustBeMemberName()
         {
-            Component.GetMember(p => p.field2).Name.Should().Be("field2");
-            Component.GetMember(p => p.field3).Name.Should().Be("field3");
-            Component.GetMember(p => p.property4).Name.Should().Be("property4");
+            Component.GetMemberName(p => p.field2).Should().Be(Component.GetMember(p => p.field2).Name);
+            Component.GetMemberName(p => p.field3).Should().Be(Component.GetMember(p => p.field3).Name);
+            Component.GetMemberName(p => p.property4).Should().Be(Component.GetMember(p => p.property4).Name);
+
+            Component.GetMember(p => p.field2).Name.Should().Be(nameof(TestClass.field2));
+            Component.GetMember(p => p.field3).Name.Should().Be(nameof(TestClass.field3));
+            Component.GetMember(p => p.property4).Name.Should().Be(nameof(TestClass.property4));
         }
 
         [Theory]

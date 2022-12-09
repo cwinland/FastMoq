@@ -1,9 +1,6 @@
 ﻿using Bunit.TestDoubles;
 using FastMoq.Tests.Blazor.Pages;
-using FastMoq.Web.Blazor;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
 
 namespace FastMoq.Tests.Web
 {

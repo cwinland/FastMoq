@@ -1,12 +1,19 @@
 ﻿using AngleSharp.Dom;
 using AngleSharpWrappers;
 using Bunit;
+using Bunit.Rendering;
 using Bunit.TestDoubles;
 using FastMoq.Web.Blazor.Interfaces;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Collections;
 using System.Reflection;
+using System.Runtime;
 
 namespace FastMoq.Web.Blazor
 {
@@ -111,6 +118,42 @@ namespace FastMoq.Web.Blazor
             Setup();
         }
 
+        /// <summary>
+        ///     Gets all components.
+        /// </summary>
+        /// <returns>Dictionary&lt;ComponentBase, ComponentState&gt;.</returns>
+        /// <exception cref="System.ArgumentNullException">Component</exception>
+        protected internal Dictionary<ComponentBase, ComponentState> GetAllComponents()
+        {
+            var list = new Dictionary<ComponentBase, ComponentState>();
+
+            var renderer = Component?.Services.GetRequiredService<ITestRenderer>() as Renderer ?? throw new ArgumentNullException(nameof(Component));
+            var componentList = renderer.GetFieldValue<IDictionary, Renderer>("_componentStateByComponent");
+
+            if (componentList == null)
+            {
+                return list;
+            }
+
+            foreach (DictionaryEntry obj in componentList)
+            {
+                if (obj.Key is ComponentBase component)
+                {
+                    list.Add(component,
+                        new ComponentState
+                        {
+                            ComponentId = (int) obj.Value.GetPropertyValue(nameof(ComponentState.ComponentId)),
+                            Component = obj.Value.GetPropertyValue(nameof(ComponentState.Component)) as CascadingAuthenticationState,
+                            CurrentRenderTree = obj.Value.GetPropertyValue(nameof(ComponentState.CurrentRenderTree)) as RenderTreeBuilder,
+                            ParentComponentState = obj.Value.GetPropertyValue(nameof(ComponentState.ParentComponentState)) as ComponentState
+                        }
+                    );
+                }
+            }
+
+            return list;
+        }
+
         protected internal void Setup()
         {
             SetupMocks();
@@ -132,9 +175,7 @@ namespace FastMoq.Web.Blazor
             AuthContext.SetRoles(AuthorizedRoles.ToArray());
         }
 
-        private void SetupMocks()
-        {
-        }
+        private void SetupMocks() { }
 
         private void SetupServices()
         {
@@ -144,11 +185,11 @@ namespace FastMoq.Web.Blazor
             // Insert component injections
             InjectComponent<T>();
 
-            ConfigureServices?.Invoke(Services, configuration, Mocks);
+            ConfigureServices.Invoke(Services, configuration, Mocks);
         }
 
         #region IMockerBlazorTestHelpers<T>
-        
+
         /// <inheritdoc />
         /// <exception cref="T:System.ArgumentNullException">button</exception>
         public bool ButtonClick(IElement button, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
@@ -165,22 +206,21 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public bool ButtonClick(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null) =>
-            ButtonClick(Component.Find(cssSelector), waitFunc, waitTimeout);
+        public bool ButtonClick(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+        {
+            if (Component == null)
+            {
+                throw new ArgumentNullException(nameof(Component));
+            }
+
+            return ButtonClick(Component.Find(cssSelector), waitFunc, waitTimeout);
+        }
 
         /// <inheritdoc />
         public bool ButtonClick<TComponent>(string cssSelector, Func<bool> waitFunc, IRenderedComponent<TComponent> startingComponent,
             TimeSpan? waitTimeout = null)
             where TComponent : IComponent =>
             ButtonClick(startingComponent.Find(cssSelector), waitFunc, waitTimeout);
-
-        public IRenderedComponent<TComponent> FindComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> selector) where TComponent : IComponent
-        {
-            var componentList = Component.FindComponents<TComponent>().ToList();
-            var component = componentList.FirstOrDefault(selector);
-
-            return component ?? throw new NotImplementedException($"Unable to find {typeof(TComponent)}");
-        }
 
         /// <inheritdoc />
         /// <exception cref="ArgumentNullException">cssSelector</exception>
@@ -190,6 +230,11 @@ namespace FastMoq.Web.Blazor
             if (cssSelector == null)
             {
                 throw new ArgumentNullException(nameof(cssSelector));
+            }
+
+            if (Component == null)
+            {
+                throw new ArgumentNullException(nameof(Component));
             }
 
             return Component.FindComponents<TComponent>()
@@ -208,7 +253,7 @@ namespace FastMoq.Web.Blazor
                 throw new ArgumentNullException(nameof(cssSelector));
             }
 
-            var component = FindComponent(cssSelector);
+            IRenderedComponent<TComponent>? component = FindComponent(cssSelector);
 
             return component == null
                 ? throw new NotImplementedException($"Unable to find {typeof(TComponent)}")
@@ -228,30 +273,99 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(string propName, Func<bool> waitFunc,
-            string cssDropdownSelector = "a.dropdown-item")
-            where TComponent : IComponent
+        public IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(IRenderedComponent<TComponent> component, string cssSelector,
+            string propName,
+            Func<bool> waitFunc) where TComponent : IComponent
         {
-            IRenderedComponent<TComponent> dropDown = Component.FindComponent<TComponent>();
-
-            ButtonClick(dropDown
-                    .FindAll(cssDropdownSelector)
+            ButtonClick(component
+                    .FindAll(cssSelector)
                     .First(e => e.InnerHtml == propName),
                 waitFunc
             );
 
-            WaitForState(waitFunc);
-
-            return dropDown;
+            return component;
         }
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException">predicate</exception>
+        public IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(string propName, Func<bool> waitFunc,
+            string itemCssSelector = "a.dropdown-item") where TComponent : IComponent
+        {
+            if (Component == null)
+            {
+                throw new ArgumentNullException(nameof(Component));
+            }
+
+            IRenderedComponent<TComponent> dropDown = Component.FindComponent<TComponent>();
+            return ClickDropdownItem(dropDown, itemCssSelector, propName, waitFunc);
+        }
+
+        /// <inheritdoc />
+        /// <exception cref="System.NotImplementedException">Unable to find {typeof(TComponent)}</exception>
+        public IRenderedComponent<TComponent> FindComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> selector)
+            where TComponent : IComponent
+        {
+            if (Component == null)
+            {
+                throw new ArgumentNullException(nameof(Component));
+            }
+
+            List<IRenderedComponent<TComponent>> componentList = Component.FindComponents<TComponent>().ToList();
+            IRenderedComponent<TComponent>? component = componentList.FirstOrDefault(selector);
+
+            return component ?? throw new NotImplementedException($"Unable to find {typeof(TComponent)}");
+        }
+
+        /// <inheritdoc />
+        /// <exception cref="System.ArgumentNullException">predicate</exception>
+        /// <exception cref="System.ArgumentNullException">Component</exception>
+        /// <exception cref="System.Runtime.AmbiguousImplementationException">
+        ///     Multiple components of type '{typeof(TComponent)}'
+        ///     was found.
+        /// </exception>
+        public IRenderedComponent<TComponent> GetComponent<TComponent>() where TComponent : class, IComponent => GetComponent<TComponent>(_ => true);
+
+        /// <summary>
+        ///     Gets the component.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+        /// <exception cref="System.ArgumentNullException">predicate</exception>
+        /// <exception cref="System.ArgumentNullException">Component</exception>
+        /// <exception cref="System.Runtime.AmbiguousImplementationException">
+        ///     Multiple components of type '{typeof(TComponent)}'
+        ///     was found.
+        /// </exception>
         public IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> predicate)
-            where TComponent : IComponent =>
-            predicate == null
+            where TComponent : class, IComponent
+        {
+            IReadOnlyList<IRenderedComponent<TComponent>> components = predicate == null
                 ? throw new ArgumentNullException(nameof(predicate))
-                : Component.FindComponents<TComponent>().First(predicate);
+                : Component?.FindComponents<TComponent>() ?? throw new ArgumentNullException(nameof(Component));
+
+            return components.Count <= 1
+                ? components.First(predicate)
+                : throw new AmbiguousImplementationException($"Multiple components of type '{typeof(TComponent)}' was found.");
+        }
+
+        /// <inheritdoc />
+        /// <exception cref="System.ArgumentNullException">whereFunc</exception>
+        /// <exception cref="System.Runtime.AmbiguousImplementationException">
+        ///     Multiple components of type '{typeof(TComponent)}'
+        ///     was found.
+        /// </exception>
+        public List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IRenderedComponent<TOfType>, bool>? predicate = null)
+            where TOfType : class, IComponent
+        {
+            IEnumerable<IRenderedComponent<TOfType>> components = GetAllComponents()
+                .Where(x => x.Key is TOfType)
+
+                //.Select(x => x.Key)
+                //.Select(x => GetComponent<TOfType>(y => y.Instance.GetPropertyValue(propertyName) == x.GetPropertyValue(propertyName)));
+                .Select(x => GetComponent<TOfType>(y => y.ComponentId == (int) x.Value.GetPropertyValue("ComponentId")));
+
+            return (predicate == null ? components : components.Where(predicate)).ToList();
+        }
 
         /// <inheritdoc />
         public IEnumerable<PropertyInfo> GetInjections(Type type, Type injectAttribute) =>
@@ -266,28 +380,46 @@ namespace FastMoq.Web.Blazor
         public IEnumerable<PropertyInfo> GetInjections(Type type) => GetInjections(type, typeof(InjectAttribute));
 
         /// <inheritdoc />
+        /// <exception cref="NullReferenceException">When Mock object is null.</exception>
         public void InjectComponent(Type type) => InjectComponent(type, typeof(InjectAttribute));
 
         /// <inheritdoc />
+        /// <exception cref="NullReferenceException">When Mock object is null.</exception>
         public void InjectComponent(Type type, Type injectAttribute) => GetInjections(type, injectAttribute)
             .ForEach(y =>
                 {
                     InjectComponent(y.PropertyType);
 
                     Services
-                        .TryAddSingleton(y.PropertyType, _ => Mocks.GetObject(y.PropertyType));
+                        .TryAddSingleton(y.PropertyType,
+                            _ => Mocks.GetObject(y.PropertyType) ??
+                                 throw new NullReferenceException($"Mock object of {y.PropertyType} cannot be null.")
+                        );
                 }
             );
 
         /// <inheritdoc />
+        /// <exception cref="NullReferenceException">When Mock object is null.</exception>
         public void InjectComponent<TComponent>() => InjectComponent(typeof(TComponent));
 
         /// <inheritdoc />
+        /// <exception cref="NullReferenceException">When Mock object is null.</exception>
         public void InjectComponent<TComponent, TInjectAttribute>() where TInjectAttribute : Attribute =>
             InjectComponent(typeof(TComponent), typeof(TInjectAttribute));
 
         /// <inheritdoc />
-        public bool IsExists(string cssSelector) => Component.FindAll(cssSelector).Any();
+        /// <exception cref="ApplicationException">When throwOnNotExists: Component or Component with cssSelector is not found.</exception>
+        public bool IsExists(string cssSelector, bool throwOnNotExist = false)
+        {
+            var exists = Component?.FindAll(cssSelector).Any() ?? false;
+
+            if (throwOnNotExist)
+            {
+                throw new ApplicationException($"Component with {cssSelector} selector not found.");
+            }
+
+            return exists;
+        }
 
         /// <inheritdoc />
         public IRenderedComponent<T> RenderComponent(bool forceNew = false)
@@ -319,6 +451,33 @@ namespace FastMoq.Web.Blazor
 
             WaitDelay();
             return Component;
+        }
+
+        /// <inheritdoc />
+        public async Task SetAutoComplete(string cssSelector, string filterText, Func<bool> waitFunc,
+            string itemCssSelector = ".b-is-autocomplete-suggestion")
+        {
+            if (Component == null)
+            {
+                throw new ArgumentNullException(nameof(Component));
+            }
+
+            await Component.InvokeAsync(() =>
+                {
+                    var filterElement = Component.Find(cssSelector);
+                    filterElement.Focus();
+                    filterElement.Input(filterText);
+
+                    var suggestion = Component.WaitForElement(itemCssSelector, TimeSpan.FromSeconds(2));
+
+                    if (suggestion.TextContent.Contains(filterText, StringComparison.OrdinalIgnoreCase))
+                    {
+                        suggestion.MouseUp();
+                    }
+
+                    WaitForState(waitFunc);
+                }
+            );
         }
 
         /// <inheritdoc />
@@ -428,6 +587,19 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
+        /// <exception cref="System.ArgumentNullException">element</exception>
+        public void SetElementText(IElement element, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+        {
+            if (element == null)
+            {
+                throw new ArgumentNullException(nameof(element));
+            }
+
+            element.Input(text);
+            WaitForState(waitFunc, waitTimeout);
+        }
+
+        /// <inheritdoc />
         /// <exception cref="ArgumentNullException">cssSelector</exception>
         public void SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null)
@@ -435,6 +607,11 @@ namespace FastMoq.Web.Blazor
             if (string.IsNullOrWhiteSpace(cssSelector))
             {
                 throw new ArgumentNullException(nameof(cssSelector));
+            }
+
+            if (Component == null)
+            {
+                throw new ArgumentNullException(nameof(Component));
             }
 
             if (startingPoint == null)
@@ -456,8 +633,7 @@ namespace FastMoq.Web.Blazor
                 ? Component.Find(cssSelector)
                 : startingPoint.Find(cssSelector);
 
-            nameFilter.Input(text);
-            WaitForState(waitFunc, waitTimeout);
+            SetElementText(nameFilter, text, waitFunc, waitTimeout);
         }
 
         /// <inheritdoc />
@@ -480,8 +656,16 @@ namespace FastMoq.Web.Blazor
         public void WaitForNotExists(string cssSelector, TimeSpan? waitTimeout = null) => WaitForState(() => !IsExists(cssSelector), waitTimeout);
 
         /// <inheritdoc />
-        public void WaitForState(Func<bool> waitFunc, TimeSpan? waitTimeout = null) =>
+        public bool WaitForState(Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+        {
+            if (Component == null)
+            {
+                throw new ArgumentNullException(nameof(Component));
+            }
+
             Component.WaitForState(waitFunc, waitTimeout ?? TimeSpan.FromSeconds(3));
+            return true;
+        }
 
         #endregion
     }

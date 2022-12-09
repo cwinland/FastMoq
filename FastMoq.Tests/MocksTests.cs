@@ -1,9 +1,6 @@
 using FastMoq.Tests.TestClasses;
-using FluentAssertions;
-using Moq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
@@ -11,7 +8,6 @@ using System.Reflection;
 using System.Runtime;
 using System.Security.Cryptography;
 using System.Threading;
-using Xunit;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.

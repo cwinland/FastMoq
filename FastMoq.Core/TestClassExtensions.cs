@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace FastMoq
 {
+    /// <summary>
+    /// Class TestClassExtensions.
+    /// </summary>
     public static class TestClassExtensions
     {
         /// <summary>
@@ -14,10 +17,10 @@ namespace FastMoq
         internal static void ForEach<T>(this IEnumerable<T> iEnumerable, Action<T> action) => iEnumerable.ToList().ForEach(action);
 
         /// <summary>
-        ///     Gets the field.
+        /// Gets the field.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
-        /// <param name="obj"></param>
+        /// <param name="obj">The object.</param>
         /// <param name="name">The name.</param>
         /// <returns><see cref="Nullable{FieldInfo}" />.</returns>
         public static FieldInfo? GetField<TObject>(this TObject obj, string name) where TObject : class? =>
@@ -25,36 +28,73 @@ namespace FastMoq
                 .FirstOrDefault(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
         /// <summary>
-        ///     Gets the field value.
+        /// Gets the field information.
+        /// </summary>
+        /// <typeparam name="TType">The type of the t type.</typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>System.Nullable&lt;FieldInfo&gt;.</returns>
+        public static FieldInfo? GetFieldInfo<TType>(this object obj, string name)
+        {
+            var fields = typeof(TType).GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static);
+            return fields.First(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Gets the field value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TType">The type of the t type.</typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>System.Nullable&lt;T&gt;.</returns>
+        public static T? GetFieldValue<T, TType>(this object? obj, string name)
+        {
+            return obj.GetFieldValue<T>(obj.GetFieldInfo<TType>(name));
+        }
+
+        /// <summary>
+        /// Gets the field value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="field">The field.</param>
+        /// <returns>System.Nullable&lt;T&gt;.</returns>
+        public static T? GetFieldValue<T>(this object? obj, FieldInfo field)
+        {
+            return (T)field.GetValue(obj);
+        }
+
+        /// <summary>
+        /// Gets the field value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>
         /// <param name="name">The name.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns><see cref="Nullable{Object}" />.</returns>
-        public static object? GetFieldValue<TObject>(this TObject obj, string name, TObject? defaultValue = null)
-            where TObject : class? => obj.GetField(name)?.GetValue(obj) ?? defaultValue ?? default;
+        public static object? GetFieldValue<TObject>(this TObject obj, string name, TObject? defaultValue = null) where TObject : class?
+            => obj.GetField(name)?.GetValue(obj) ?? defaultValue ?? default;
 
         /// <summary>
-        ///     Gets the property value based on lambda.
+        /// Gets the property value based on lambda.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TValue">The type of the t value.</typeparam>
-        /// <param name="obj"></param>
+        /// <param name="_">The object.</param>
         /// <param name="memberLambda">The member lambda.</param>
         /// <returns>System.Nullable&lt;TValue&gt;.</returns>
-        public static MemberInfo GetMember<T, TValue>(this T obj, Expression<Func<T, TValue>> memberLambda) =>
-            GetMemberInfo(memberLambda).Member;
+        public static MemberInfo GetMember<T, TValue>(this T _, Expression<Func<T, TValue>> memberLambda) => GetMemberExpression(memberLambda).Member;
 
-        /// <summary>
-        ///     Get Member Info from expression.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TValue">The type of the t value.</typeparam>
-        /// <param name="method">The method.</param>
-        /// <returns>MemberExpression.</returns>
-        /// <exception cref="System.ArgumentNullException">method</exception>
-        public static MemberExpression GetMemberInfo<T, TValue>(this Expression<Func<T, TValue>> method)
+        public static string GetMemberName<T, TValue>(this T _, Expression<Func<T, TValue>> memberLambda) => GetMemberExpression(memberLambda).Member.Name;
+
+        public static string GetMemberName(this Expression memberLambda) => memberLambda.GetMemberExpressionInternal().Member.Name;
+
+        public static MemberExpression GetMemberExpression<T>(this Expression<T> method) => method.GetMemberExpressionInternal();
+
+        public static MemberExpression GetMemberExpression(this Expression method) => method.GetMemberExpressionInternal();
+
+        private static MemberExpression GetMemberExpressionInternal(this Expression method)
         {
             if (method is not LambdaExpression lambda)
             {
@@ -72,25 +112,33 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Gets the method.
+        /// Gets the method.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
-        /// <param name="obj"></param>
+        /// <param name="obj">The object.</param>
         /// <param name="name">The name.</param>
         /// <returns><see cref="Nullable{MethodInfo}" />.</returns>
         public static MethodInfo? GetMethod<TObject>(this TObject obj, string name) where TObject : class? =>
             obj?.GetType().GetRuntimeMethods()
                 .FirstOrDefault(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
-        public static object? GetMethodValue<TObject>(this TObject obj, string name, object? defaultValue = null,
-            params object[] args) where TObject : class? =>
-            obj.GetMethod(name)?.Invoke(obj, args);
-
         /// <summary>
-        ///     Gets the property.
+        /// Gets the method value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
-        /// <param name="obj"></param>
+        /// <param name="obj">The object.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
+        public static object? GetMethodValue<TObject>(this TObject obj, string name, object? defaultValue = null, params object[] args) where TObject : class?
+            => obj.GetMethod(name)?.Invoke(obj, args) ?? defaultValue;
+
+        /// <summary>
+        /// Gets the property.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the t object.</typeparam>
+        /// <param name="obj">The object.</param>
         /// <param name="name">The name.</param>
         /// <returns><see cref="Nullable{PropertyInfo}" />.</returns>
         public static PropertyInfo? GetProperty<TObject>(this TObject obj, string name) =>
@@ -98,7 +146,7 @@ namespace FastMoq
                 .FirstOrDefault(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
         /// <summary>
-        ///     Gets the property value.
+        /// Gets the property value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>
@@ -110,7 +158,7 @@ namespace FastMoq
             obj.GetProperty(name)?.GetValue(obj) ?? defaultValue ?? default;
 
         /// <summary>
-        ///     Sets the field value.
+        /// Sets the field value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>
@@ -120,7 +168,7 @@ namespace FastMoq
             obj.GetField(name)?.SetValue(obj, value);
 
         /// <summary>
-        ///     Sets the property value.
+        /// Sets the property value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>

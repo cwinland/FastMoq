@@ -29,7 +29,6 @@
       <MSHelp:Attr Name="Locale" Value="en-us" />
       <MSHelp:Attr Name="TopicType" Value="kbSyntax" />
       <MSHelp:Attr Name="TopicType" Value="apiref" />
-      <MSHelp:Attr Name="Abstract" Value="Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy." />
       <MSHelp:Attr Name="AssemblyVersion" Value="" />
     </xml>
   <link rel="stylesheet" href="../TOC.css"><script type="text/javascript" src="../TOC.js"></script></head>
@@ -128,6 +127,11 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Blazor.htm" target="_self">FastMoq.Web.Blazor Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.ComponentState.htm" target="_self">ComponentState Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm" target="_self">MockerBlazorTestBase(T) Class</a>
 <div class="Hidden">
 </div>
@@ -139,16 +143,6 @@
 <div class="Hidden">
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm" target="_self">IMockerBlazorTestHelpers(T) Interface</a>
-<div class="Hidden">
-</div>
-</div>
-</div>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Interfaces.htm" target="_self">FastMoq.Web.Interfaces Namespace</a>
-<div class="Hidden">
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Interfaces.INavigationManager.htm" target="_self">INavigationManager Interface</a>
 <div class="Hidden">
 </div>
 </div>
@@ -168,18 +162,11 @@
 <div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="AllMembers.T-FastMoq.Web.Mocks.MockNavigationManager.htm" target="_self">MockNavigationManager Members</a>
 </div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Mocks.MockNavigationManager.-ctor.htm" target="_self">MockNavigationManager Constructor </a>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Methods.T-FastMoq.Web.Mocks.MockNavigationManager.htm" target="_self">MockNavigationManager Methods</a>
-<div class="Hidden">
-</div>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Properties.T-FastMoq.Web.Mocks.MockNavigationManager.htm" target="_self">MockNavigationManager Properties</a>
-<div class="Hidden">
-</div>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Events.T-FastMoq.Web.Mocks.MockNavigationManager.htm" target="_self">MockNavigationManager Events</a>
 <div class="Hidden">
 </div>
 </div>
@@ -216,13 +203,12 @@
             <h1 class="title">MockNavigationManager Class</h1>
             <div id="mainSection">
               <div id="mainBody">
-                <div class="summary">Supports all classes in the .NET class hierarchy and provides low-level services to derived classes. This is the ultimate base class of all .NET classes; it is the root of the type hierarchy.</div>
                 <p />
     <b>Namespace:</b> 
    <a href="N-FastMoq.Web.Mocks.htm">FastMoq.Web.Mocks</a><br />
     <b>Assembly:</b>
-   <span sdata="assembly">FastMoq.Web</span> (in FastMoq.Web.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:white;border-bottom-color:white"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTab VisualBasicTab" id="VisualBasicTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','VisualBasicCode','VisualBasicTabId');" title="Visual Basic">VB</a></div><div class="CodeSnippetContainerTab ManagedCPlusPlusTab" id="ManagedCPlusPlusTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','ManagedCPlusPlusCode','ManagedCPlusPlusTabId');" title="Visual C++">C++</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">class</span> <span class="identifier">MockNavigationManager</span> : <a href="T-FastMoq.Web.Interfaces.INavigationManager.htm">INavigationManager</a></pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Public</span> <span class="keyword">Class</span> <span class="identifier">MockNavigationManager</span> _
-	<span class="keyword">Implements</span> <a href="T-FastMoq.Web.Interfaces.INavigationManager.htm">INavigationManager</a></pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">ref class</span> <span class="identifier">MockNavigationManager</span> : <a href="T-FastMoq.Web.Interfaces.INavigationManager.htm">INavigationManager</a></pre></div></div></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Inheritance Hierarchy</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="familySection"><!----></a><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><br />  <span class="selflink">FastMoq.Web.Mocks<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>MockNavigationManager</span><br /></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.Web.Mocks.MockNavigationManager.htm">MockNavigationManager Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Mocks.htm">FastMoq.Web.Mocks Namespace</a></div></div></div>
+   <span sdata="assembly">FastMoq.Web</span> (in FastMoq.Web.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:white;border-bottom-color:white"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTab VisualBasicTab" id="VisualBasicTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','VisualBasicCode','VisualBasicTabId');" title="Visual Basic">VB</a></div><div class="CodeSnippetContainerTab ManagedCPlusPlusTab" id="ManagedCPlusPlusTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','ManagedCPlusPlusCode','ManagedCPlusPlusTabId');" title="Visual C++">C++</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">class</span> <span class="identifier">MockNavigationManager</span> : <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.navigationmanager" target="_blank">NavigationManager</a></pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Public</span> <span class="keyword">Class</span> <span class="identifier">MockNavigationManager</span> _
+	<span class="keyword">Inherits</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.navigationmanager" target="_blank">NavigationManager</a></pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">ref class</span> <span class="identifier">MockNavigationManager</span> : <span class="keyword">public</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.navigationmanager" target="_blank">NavigationManager</a></pre></div></div></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Inheritance Hierarchy</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="familySection"><!----></a><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><br />  <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.navigationmanager" target="_blank">NavigationManager</a><br />    <span class="selflink">FastMoq.Web.Mocks<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>MockNavigationManager</span><br /></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.Web.Mocks.MockNavigationManager.htm">MockNavigationManager Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Mocks.htm">FastMoq.Web.Mocks Namespace</a></div></div></div>
             </div>
           </div>
         </div>

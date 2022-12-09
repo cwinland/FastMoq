@@ -1,13 +1,10 @@
 ﻿using FastMoq.Tests.TestClasses;
-using FluentAssertions;
-using Moq;
 using Moq.Protected;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
