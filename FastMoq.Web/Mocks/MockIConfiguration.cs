@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FastMoq.Web.Mocks
 {
+    [ExcludeFromCodeCoverage]
     public class MockIConfiguration : IConfiguration
     {
         #region Properties

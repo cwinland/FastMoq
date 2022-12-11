@@ -40,7 +40,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="waitTimeout">The wait timeout.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         bool ButtonClick<TComponent>(string cssSelector, Func<bool> waitFunc, IRenderedComponent<TComponent> startingComponent,
-            TimeSpan? waitTimeout = null) where TComponent : IComponent;
+            TimeSpan? waitTimeout = null) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Buttons the click.
@@ -52,7 +52,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
         bool ButtonClick<TComponent>(Func<IRenderedComponent<TComponent>, IElement> cssSelector, Func<bool> waitFunc,
-            TimeSpan? waitTimeout = null) where TComponent : IComponent;
+            TimeSpan? waitTimeout = null) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Buttons the click.
@@ -64,7 +64,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
         bool ButtonClick<TComponent>(Func<IRenderedComponent<TComponent>, bool> cssSelector, Func<bool> waitFunc,
-            TimeSpan? waitTimeout = null) where TComponent : IComponent;
+            TimeSpan? waitTimeout = null) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Buttons the click.
@@ -75,7 +75,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="waitTimeout">The wait timeout.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
-        bool ButtonClick<TComponent>(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null) where TComponent : IComponent;
+        bool ButtonClick<TComponent>(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Clicks the dropdown item.
@@ -87,7 +87,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="waitFunc">The wait function.</param>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
         IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(IRenderedComponent<TComponent> component, string cssSelector, string propName,
-            Func<bool> waitFunc) where TComponent : IComponent;
+            Func<bool> waitFunc) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Clicks the dropdown item.
@@ -99,22 +99,28 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <returns>IRenderedComponent&lt;DropdownList&lt;TKey, TValue&gt;&gt;.</returns>
         IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(string propName, Func<bool> waitFunc,
             string cssDropdownSelector = "a.dropdown-item")
-            where TComponent : IComponent;
+            where TComponent : class, IComponent;
 
         /// <summary>
-        ///     Finds the component.
+        ///     Finds all by tag.
         /// </summary>
-        /// <typeparam name="TComponent">The type of the t component.</typeparam>
-        /// <param name="selector">The selector.</param>
-        /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
-        IRenderedComponent<TComponent> FindComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> selector) where TComponent : IComponent;
+        /// <param name="tagName">Name of the tag.</param>
+        /// <returns>IEnumerable&lt;IElement&gt;.</returns>
+        public IEnumerable<IElement> FindAllByTag(string tagName);
+
+        /// <summary>
+        ///     Finds the by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>IElement.</returns>
+        public IElement? FindById(string id);
 
         /// <summary>
         ///     Gets the component.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
-        IRenderedComponent<TComponent> GetComponent<TComponent>() where TComponent : class, IComponent => GetComponent<TComponent>(_ => true);
+        IRenderedComponent<TComponent> GetComponent<TComponent>() where TComponent : class, IComponent;
 
         /// <summary>
         ///     Gets the component.
@@ -122,9 +128,15 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="predicate">The predicate.</param>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
-        /// <exception cref="ArgumentNullException">predicate</exception>
-        IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> predicate)
-            where TComponent : class, IComponent;
+        IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> predicate) where TComponent : class, IComponent;
+
+        /// <summary>
+        ///     Gets the component.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+        IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IElement, bool> predicate) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Gets the components.
@@ -134,6 +146,14 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <returns>List&lt;IRenderedComponent&lt;TOfType&gt;&gt;.</returns>
         List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IRenderedComponent<TOfType>, bool>? predicate = null)
             where TOfType : class, IComponent;
+
+        /// <summary>
+        ///     Gets the components.
+        /// </summary>
+        /// <typeparam name="TOfType">The type of the t of type.</typeparam>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>List&lt;IRenderedComponent&lt;TOfType&gt;&gt;.</returns>
+        List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IElement, bool>? predicate = null) where TOfType : class, IComponent;
 
         /// <summary>
         ///     Gets the injections.
@@ -229,7 +249,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <exception cref="ElementNotFoundException"></exception>
         void SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null)
-            where TComponent : IComponent;
+            where TComponent : class, IComponent;
 
         /// <summary>
         ///     Sets the element switch.
@@ -242,7 +262,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="startingPoint">The starting point.</param>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
         void SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
-            IRenderedFragment? startingPoint = null) where TComponent : IComponent;
+            IRenderedFragment? startingPoint = null) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Sets the element text.

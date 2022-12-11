@@ -1,9 +1,11 @@
 ﻿using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FastMoq.Web.Mocks
 {
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public class MockNavigationManager : NavigationManager
     {
         #region Fields
