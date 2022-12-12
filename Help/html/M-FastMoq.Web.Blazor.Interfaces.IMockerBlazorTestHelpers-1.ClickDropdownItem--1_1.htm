@@ -142,6 +142,11 @@
 </div>
 </div>
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.ComponentState-1.htm" target="_self">ComponentState(T) Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm" target="_self">MockerBlazorTestBase(T) Class</a>
 <div class="Hidden">
 </div>
@@ -298,13 +303,13 @@
 	<span class="nolink">Func</span>&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">bool</a>&gt; <span class="parameter">waitFunc</span>,
 	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">string</a> <span class="parameter">cssDropdownSelector</span>
 )
-<span class="keyword">where</span> TComponent : <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>
-</pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Function</span> <span class="identifier">ClickDropdownItem</span>(<span class="keyword">Of</span> TComponent <span class="keyword">As</span> {<span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>}) ( _
+<span class="keyword">where</span> TComponent : <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>
+</pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Function</span> <span class="identifier">ClickDropdownItem</span>(<span class="keyword">Of</span> TComponent <span class="keyword">As</span> {<span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>}) ( _
 	<span class="parameter">propName</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a>, _
 	<span class="parameter">waitFunc</span> <span class="keyword">As</span> <span class="nolink">Func</span>(<span class="keyword">Of</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">Boolean</a>), _
 	<span class="parameter">cssDropdownSelector</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a> _
 ) <span class="keyword">As</span> <span class="nolink">IRenderedComponent</span>(<span class="keyword">Of</span> TComponent)</pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">generic</span>&lt;<span class="keyword">typename</span> TComponent&gt;
-<span class="keyword">where</span> TComponent : <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>
+<span class="keyword">where</span> TComponent : <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>
 <span class="nolink">IRenderedComponent</span>&lt;TComponent&gt;^ <span class="identifier">ClickDropdownItem</span>(
 	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a>^ <span class="parameter">propName</span>, 
 	<span class="nolink">Func</span>&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">bool</a>^&gt;^ <span class="parameter">waitFunc</span>, 

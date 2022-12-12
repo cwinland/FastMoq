@@ -20,8 +20,8 @@ namespace FastMoq.Web.Blazor
 {
     /// <summary>
     ///     Class MockerBlazorTestBase.
-    /// Implements the <see cref="TestContext" />
-    /// Implements the <see cref="IMockerBlazorTestHelpers{T}" />
+    ///     Implements the <see cref="TestContext" />
+    ///     Implements the <see cref="IMockerBlazorTestHelpers{T}" />
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="TestContext" />
@@ -30,48 +30,54 @@ namespace FastMoq.Web.Blazor
     /// <inheritdoc cref="TestContext" />
     /// <inheritdoc cref="IMockerBlazorTestHelpers{T}" />
     /// <example>
-    /// Basic Example
-    /// <code language="cs"><![CDATA[
+    ///     Basic Example
+    ///     <code language="cs"><![CDATA[
     /// public class IndexTests : MockerBlazorTestBase<Index>
     /// {
     ///     [Fact]
     ///     public void Create() => Component.Should().NotBeNull();
     /// }
-    /// ]]></code></example>
+    /// ]]></code>
+    /// </example>
     /// <example>
-    /// Setup Services
-    /// <code language="cs"><![CDATA[
+    ///     Setup Services
+    ///     <code language="cs"><![CDATA[
     /// protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices => (services, c, m) => services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
-    /// ]]></code></example>
+    /// ]]></code>
+    /// </example>
     /// <example>
-    /// Setup Roles.
-    /// <code language="cs"><![CDATA[
+    ///     Setup Roles.
+    ///     <code language="cs"><![CDATA[
     /// protected override MockerObservableCollection<string> AuthorizedRoles => new MockerObservableCollection<string>() { "Role1", "Role2"}
-    /// ]]></code></example>
+    /// ]]></code>
+    /// </example>
     /// <example>
-    /// Setup Http Response Message
-    /// <code language="cs"><![CDATA[
+    ///     Setup Http Response Message
+    ///     <code language="cs"><![CDATA[
     /// protected override Action<Mocker> SetupComponent => mocker => mocker.SetupHttpMessage(() => new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent("ContextGoesHere")});
-    /// ]]></code></example>
+    /// ]]></code>
+    /// </example>
     /// <example>
-    /// Setup Mocks
-    /// <code language="cs"><![CDATA[
+    ///     Setup Mocks
+    ///     <code language="cs"><![CDATA[
     /// protected override Action<Mocker> SetupComponent => mocker =>
     /// {
     ///     mocker.GetMock<IFile>().Setup(f => f.Exists(It.IsAny<string>())).Returns(true); // Add setup
     ///     mocker.Initialize<IDirectory>(mock => mock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true)); // Clears existing mocks
     ///     mocker.GetMock<IDirectory>().Setup(d=>d.Exists("C:\\testfile.txt")).Returns(false); // add setup
     /// };
-    /// ]]></code></example>
+    /// ]]></code>
+    /// </example>
     /// <example>
-    /// Click Button by class, tag, or id.
-    /// <code language="cs"><![CDATA[
+    ///     Click Button by class, tag, or id.
+    ///     <code language="cs"><![CDATA[
     /// ButtonClick("button", () => true).Should().BeTrue();
     /// ButtonClick("button[id='testbutton']", () => count > 0).Should().BeTrue();
     /// ButtonClick(Component.FindAll("button").First(x => x.Id == "testbutton"), () => IsPressed == true).Should().BeTrue();
     /// ButtonClick(FindAllByTag("button").First(x => x.Id == "testbutton"), () => true).Should().BeTrue();
     /// ButtonClick(FindById("testbutton"), () => true).Should().BeTrue();
-    /// ]]></code></example>
+    /// ]]></code>
+    /// </example>
     public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHelpers<T> where T : ComponentBase
     {
         #region Fields
@@ -96,15 +102,17 @@ namespace FastMoq.Web.Blazor
         /// <seealso cref="AuthorizedRoles" />
         /// <seealso cref="AuthUsername" />
         /// <example>
-        /// Set not authorized.
-        /// <code language="cs"><![CDATA[
+        ///     Set not authorized.
+        ///     <code language="cs"><![CDATA[
         /// AuthContext.SetNotAuthorized()
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         /// <example>
-        /// Set authorized user.
-        /// <code language="cs"><![CDATA[
+        ///     Set authorized user.
+        ///     <code language="cs"><![CDATA[
         /// AuthContext.SetAuthorized("username")
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         protected TestAuthorizationContext AuthContext { get; }
 
         /// <summary>
@@ -122,10 +130,11 @@ namespace FastMoq.Web.Blazor
         /// </summary>
         /// <value>The authorized policies.</value>
         /// <example>
-        /// Setup Policies.
-        /// <code language="cs"><![CDATA[
+        ///     Setup Policies.
+        ///     <code language="cs"><![CDATA[
         /// protected override MockerObservableCollection<string> AuthorizedPolicies => new MockerObservableCollection<string>() { "Policy1", "Policy2"}
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         /// <seealso cref="AuthorizedClaims" />
         /// <seealso cref="AuthorizedRoles" />
         /// <seealso cref="AuthContext" />
@@ -137,10 +146,11 @@ namespace FastMoq.Web.Blazor
         /// </summary>
         /// <value>The authorized roles.</value>
         /// <example>
-        /// Setup Roles.
-        /// <code language="cs"><![CDATA[
+        ///     Setup Roles.
+        ///     <code language="cs"><![CDATA[
         /// protected override MockerObservableCollection<string> AuthorizedRoles => new MockerObservableCollection<string>() { "Role1", "Role2"}
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         /// <seealso cref="AuthorizedPolicies" />
         /// <seealso cref="AuthorizedClaims" />
         /// <seealso cref="AuthContext" />
@@ -157,11 +167,12 @@ namespace FastMoq.Web.Blazor
         /// <seealso cref="AuthContext" />
         /// <seealso cref="AuthUsername" />
         /// <example>
-        /// Set authorized user.
-        /// <code language="cs"><![CDATA[
+        ///     Set authorized user.
+        ///     <code language="cs"><![CDATA[
         /// AuthContext.SetAuthorized("username")
         /// AuthUsername = "TestUser";
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         [ExcludeFromCodeCoverage]
         protected virtual string AuthUsername
         {
@@ -184,10 +195,11 @@ namespace FastMoq.Web.Blazor
         /// </summary>
         /// <value>The configure services.</value>
         /// <example>
-        /// Setup Services
-        /// <code language="cs"><![CDATA[
+        ///     Setup Services
+        ///     <code language="cs"><![CDATA[
         /// protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices => (services, c, m) => services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         [ExcludeFromCodeCoverage]
         protected virtual Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices { get; set; } = (_, _, _) => { };
 
@@ -301,6 +313,19 @@ namespace FastMoq.Web.Blazor
             AuthorizedClaims.Changed += (_, _) => AuthContext.SetClaims(AuthorizedClaims.ToArray());
 
             Component = RenderComponent(true);
+        }
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (disposing)
+            {
+                AuthorizedPolicies.Changed -= (_, _) => AuthContext.SetPolicies(AuthorizedPolicies.ToArray());
+                AuthorizedRoles.Changed -= (_, _) => AuthContext.SetRoles(AuthorizedRoles.ToArray());
+                AuthorizedClaims.Changed -= (_, _) => AuthContext.SetClaims(AuthorizedClaims.ToArray());
+            }
         }
 
         /// <summary>
@@ -727,7 +752,8 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public void SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null)
+        public void SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+            IRenderedFragment? startingPoint = null)
         {
             if (string.IsNullOrWhiteSpace(cssSelector))
             {

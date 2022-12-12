@@ -871,7 +871,7 @@ Setups the message protected asynchronous.
        unmanaged resources.
    </param>
     </member>
-    <member name="M:FastMoq.MockerTestBase`1.TestMethodParametersAsync(Expression{Func{`0, System.Object}},Action{Func{Task}, System.Nullable{System.String}, System.Nullable{List{System.Nullable{System.Object}}}, ParameterInfo},System.Nullable{System.Object}[])">
+    <member name="M:FastMoq.MockerTestBase`1.TestMethodParametersAsync(Expression{Func{`0, System.Object}},Action{Func{System.Nullable{Task}}, System.Nullable{System.String}, System.Nullable{List{System.Nullable{System.Object}}}, ParameterInfo},System.Nullable{System.Object}[])">
       <summary>
        Tests the asynchronous function.
    </summary>
@@ -975,11 +975,11 @@ Setups the message protected asynchronous.
    Gets the field information.
    </summary>
       <typeparam name="TType">The type of the t type.</typeparam>
-      <param name="obj">The object.</param>
+      <param name="_">The object.</param>
       <param name="name">The name.</param>
       <returns>System.Nullable&lt;FieldInfo&gt;.</returns>
     </member>
-    <member name="M:FastMoq.TestClassExtensions.GetFieldValue``2(System.Nullable{System.Object},System.String)">
+    <member name="M:FastMoq.TestClassExtensions.GetFieldValue``2(System.Object,System.String)">
       <summary>
    Gets the field value.
    </summary>
