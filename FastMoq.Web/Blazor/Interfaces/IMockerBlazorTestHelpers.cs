@@ -45,26 +45,12 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <summary>
         ///     Buttons the click.
         /// </summary>
-        /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
-        bool ButtonClick<TComponent>(Func<IRenderedComponent<TComponent>, IElement> cssSelector, Func<bool> waitFunc,
-            TimeSpan? waitTimeout = null) where TComponent : class, IComponent;
-
-        /// <summary>
-        ///     Buttons the click.
-        /// </summary>
-        /// <typeparam name="TComponent">The type of the t component.</typeparam>
-        /// <param name="cssSelector">The CSS selector.</param>
-        /// <param name="waitFunc">The wait function.</param>
-        /// <param name="waitTimeout">The wait timeout.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        /// <exception cref="ArgumentNullException">cssSelector</exception>
-        bool ButtonClick<TComponent>(Func<IRenderedComponent<TComponent>, bool> cssSelector, Func<bool> waitFunc,
-            TimeSpan? waitTimeout = null) where TComponent : class, IComponent;
+        bool ButtonClick(Func<IElement, bool> cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
 
         /// <summary>
         ///     Buttons the click.
@@ -121,9 +107,9 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
         /// <example>
-        ///     Get FetchData component. />
+        ///     Get FetchData component. /&gt;
         ///     <code language="cs"><![CDATA[
-        ///         var comp = GetComponent<FetchData>();
+        /// var comp = GetComponent<FetchData>();
         /// ]]></code>
         /// </example>
         IRenderedComponent<TComponent> GetComponent<TComponent>() where TComponent : class, IComponent;
@@ -135,18 +121,19 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="predicate">The predicate.</param>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
         /// <example>
-        ///     Get FetchData component with Id 1234. />
+        ///     Get FetchData component with Id 1234. /&gt;
         ///     <code language="cs"><![CDATA[
-        ///         var comp = GetComponent<FetchData>(x => x.ComponentId == 1234));
+        /// var comp = GetComponent<FetchData>(x => x.ComponentId == 1234));
         /// ]]></code>
         /// </example>
         /// <example>
-        ///     Get FetchData instance property. />
+        ///     Get FetchData instance property. /&gt;
         ///     <code language="cs"><![CDATA[
-        ///         var comp = GetComponent<FetchData>(x => x.Instance.IsRunning));
+        /// var comp = GetComponent<FetchData>(x => x.Instance.IsRunning));
         /// ]]></code>
         /// </example>
-        IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> predicate) where TComponent : class, IComponent;
+        IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> predicate)
+            where TComponent : class, IComponent;
 
         /// <summary>
         ///     Gets the component.
@@ -155,9 +142,9 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="predicate">The predicate.</param>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
         /// <example>
-        ///     Get FetchData component with inner html containing text. />
+        ///     Get FetchData component with inner html containing text. /&gt;
         ///     <code language="cs"><![CDATA[
-        ///         var comp = GetComponent<FetchData>(element => element.InnerHtml.Contains("hello"));
+        /// var comp = GetComponent<FetchData>(element => element.InnerHtml.Contains("hello"));
         /// ]]></code>
         /// </example>
         IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IElement, bool> predicate) where TComponent : class, IComponent;
@@ -169,18 +156,19 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="predicate">The where function.</param>
         /// <returns>List&lt;IRenderedComponent&lt;TComponent&gt;&gt;.</returns>
         /// <example>
-        ///     Get FetchData component with Id 1234. />
+        ///     Get FetchData component with Id 1234. /&gt;
         ///     <code language="cs"><![CDATA[
-        ///         var list = GetComponent<FetchData>(x => x.ComponentId == 1234));
+        /// var list = GetComponent<FetchData>(x => x.ComponentId == 1234));
         /// ]]></code>
         /// </example>
         /// <example>
-        ///     Get FetchData instance property. />
+        ///     Get FetchData instance property. /&gt;
         ///     <code language="cs"><![CDATA[
-        ///         var list = GetComponent<FetchData>(x => x.Instance.IsRunning));
+        /// var list = GetComponent<FetchData>(x => x.Instance.IsRunning));
         /// ]]></code>
         /// </example>
-        List<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IRenderedComponent<TComponent>, bool>? predicate = null) where TComponent : class, IComponent;
+        List<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IRenderedComponent<TComponent>, bool>? predicate = null)
+            where TComponent : class, IComponent;
 
         /// <summary>
         ///     Gets the components.
@@ -189,9 +177,9 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="predicate">The predicate.</param>
         /// <returns>List&lt;IRenderedComponent&lt;TComponent&gt;&gt;.</returns>
         /// <example>
-        ///     Get FetchData component with inner html containing text. />
+        ///     Get FetchData component with inner html containing text. /&gt;
         ///     <code language="cs"><![CDATA[
-        ///         var list = GetComponent<FetchData>(element => element.InnerHtml.Contains("hello"));
+        /// var list = GetComponent<FetchData>(element => element.InnerHtml.Contains("hello"));
         /// ]]></code>
         /// </example>
         List<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IElement, bool>? predicate = null) where TComponent : class, IComponent;
@@ -258,15 +246,15 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="forceNew">if set to <c>true</c> [force new].</param>
         /// <returns>IRenderedComponent&lt;T&gt;.</returns>
         /// <example>
-        ///     Render again without losing context. This honors any parameters in the RenderParameters action. />
+        ///     Render again without losing context. This honors any parameters in the RenderParameters action. /&gt;
         ///     <code language="cs"><![CDATA[
-        ///         RenderComponent()
+        /// RenderComponent()
         /// ]]></code>
         /// </example>
         /// <example>
         ///     Force initial render.
         ///     <code language="cs"><![CDATA[
-        ///         RenderComponent(true);
+        /// RenderComponent(true);
         /// ]]></code>
         /// </example>
         IRenderedComponent<T> RenderComponent(bool forceNew = false);
@@ -280,13 +268,13 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <example>
         ///     Render again with parameters without losing context
         ///     <code language="cs"><![CDATA[
-        ///         RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()));
+        /// RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()));
         /// ]]></code>
         /// </example>
         /// <example>
         ///     Force initial render with parameters
         ///     <code language="cs"><![CDATA[
-        ///         RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()), true);
+        /// RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()), true);
         /// ]]></code>
         /// </example>
         IRenderedComponent<T> RenderComponent(Action<ComponentParameterCollectionBuilder<T>> parameterBuilder, bool forceNew = false);

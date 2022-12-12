@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using FastMoq.Tests.Blazor.Data;
 using FastMoq.Tests.Blazor.Pages;
 using Microsoft.Extensions.Configuration;
@@ -57,9 +58,10 @@ namespace FastMoq.Tests.Web
         [Fact]
         public void GetComponents_ShouldReturnGetComponentEquivalent()
         {
-            var componentState = GetAllComponents<FetchData>().First().Value;
-            var comp = componentState.RenderedComponent as IRenderedComponent<FetchData>;
-            comp.Should().BeEquivalentTo(GetComponent<FetchData>((IElement _) => true));
+            var componentState = GetAllComponents<FetchData>().First().Value as ComponentState<FetchData>;
+            var renderedComponent = componentState.GetOrCreateRenderedComponent<FetchData>();
+            (componentState.Component is FetchData).Should().BeTrue();
+            renderedComponent.Should().BeEquivalentTo(GetComponent<FetchData>((IElement _) => true));
         }
 
         [Fact]
@@ -76,6 +78,8 @@ namespace FastMoq.Tests.Web
             ButtonClick("button[id='testbutton']", () => true).Should().BeTrue();
             ButtonClick(FindAllByTag("button").First(x => x.Id == "testbutton"), () => true).Should().BeTrue();
             ButtonClick(FindById("testbutton"), () => true).Should().BeTrue();
+            ButtonClick("button", () => true, Component, TimeSpan.FromSeconds(5)).Should().BeTrue();
+            ButtonClick(e => e.Id == "testbutton", () => true).Should().BeTrue();
         }
 
         [Fact]

@@ -2,13 +2,41 @@
 using Bunit.Rendering;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Reflection;
+using IComponent = Microsoft.AspNetCore.Components.IComponent;
 
 namespace FastMoq.Web.Blazor
 {
+    /// <summary>
+    ///     Class ComponentState.
+    ///     Implements the <see cref="FastMoq.Web.Blazor.ComponentState" />
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="FastMoq.Web.Blazor.ComponentState" />
+    /// <inheritdoc />
+    public class ComponentState<T> : ComponentState where T : ComponentBase
+    {
+        #region Properties
+
+        /// <summary>
+        ///     Gets the component.
+        /// </summary>
+        /// <value>The component.</value>
+        public new T? Component => base.Component as T;
+
+        #endregion
+
+        /// <inheritdoc />
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.ComponentState`1" /> class.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="services">The services.</param>
+        public ComponentState(object? obj, IServiceProvider services) : base(obj, services) => ComponentType = typeof(T);
+    }
+
     /// <summary>
     ///     Class ComponentState.
     /// </summary>
@@ -45,16 +73,27 @@ namespace FastMoq.Web.Blazor
         /// </summary>
         /// <value>The state of the parent component.</value>
         public ComponentState? ParentComponentState { get; internal set; }
-        public IRenderedFragment? RenderedComponent { get; internal set; }
+
+        /// <summary>
+        ///     Gets or sets the type of the component.
+        /// </summary>
+        /// <value>The type of the component.</value>
+        protected Type ComponentType { get; set; } = typeof(IComponent);
+
+        private IServiceProvider Services { get; }
+
         #endregion
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ComponentState" /> class.
         /// </summary>
         /// <param name="obj">The object.</param>
+        /// <param name="services">The services.</param>
+        /// <exception cref="System.ArgumentNullException">services</exception>
         public ComponentState(object? obj, IServiceProvider services)
         {
-            if (obj == null)
+            if (obj == null ||
+                !(obj.GetType().FullName ?? string.Empty).Equals("Microsoft.AspNetCore.Components.Rendering.ComponentState", StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
@@ -65,34 +104,31 @@ namespace FastMoq.Web.Blazor
             CurrentRenderTree = obj.GetPropertyValue(nameof(CurrentRenderTree)) as RenderTreeBuilder;
             ParentComponentState = parentState != null ? new ComponentState(parentState, services) : null;
             IsComponentBase = Component?.GetType().IsAssignableTo(typeof(ComponentBase)) ?? false;
-
-            if (IsComponentBase)
-            {
-                RenderedComponent = CreateRenderedComponent(services) as IRenderedFragment;
-            }
+            Services = services ?? throw new ArgumentNullException(nameof(services));
+            ComponentType = typeof(Component);
         }
-        /*
-         * // GetOrCreateRenderedComponent<TComponent>(RenderTreeFrameDictionary framesCollection, int componentId, TComponent component)
-            var renderer = Component?.Services.GetRequiredService<ITestRenderer>() as TestRenderer ??
-                           throw new ArgumentNullException(nameof(Component));
-            Mocks.InvokeMethod(typeof(TestRenderer), "GetOrCreateRenderedComponent")
-         */
-        private object? CreateRenderedComponent(IServiceProvider services)
+
+        /// <summary>
+        ///     Gets the or create rendered component.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>IRenderedComponentBase&lt;ComponentBase&gt;.</returns>
+        public IRenderedComponentBase<ComponentBase> GetOrCreateRenderedComponent(Type type)
         {
-            var renderer = services.GetRequiredService<ITestRenderer>() as TestRenderer;
+            var renderer = Services.GetRequiredService<ITestRenderer>() as TestRenderer;
             var d1 = typeof(TestRenderer).GetRuntimeMethods().First(x => x.Name.StartsWith("GetOrCreateRenderedComponent"));
-            var makeMe = d1.MakeGenericMethod(Component.GetType());
+            var makeMe = d1.MakeGenericMethod(type);
             var d = new Mocker().CreateInstanceNonPublic<RenderTreeFrameDictionary>();
-            var o = makeMe.Invoke(renderer, new object?[] {d, ComponentId, Component });
-
-            return o;
-
-            //var d1 = typeof(IRenderedComponent<>).Assembly.GetTypes().First(t=>t.Name.Equals("RenderedComponent`1"));
-            //Type[] typeArgs = {type};
-            //var makeMe = d1.MakeGenericType(typeArgs);
-            //var o = new Mocker().CreateInstanceNonPublic(makeMe, componentId, services);
-
-            //return o;
+            var args = new object?[] {d, ComponentId, Component};
+            return (IRenderedComponentBase<ComponentBase>?) makeMe.Invoke(renderer, args);
         }
+
+        /// <summary>
+        ///     Creates the rendered component.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
+        public virtual IRenderedComponentBase<T>? GetOrCreateRenderedComponent<T>() where T : ComponentBase =>
+            (IRenderedComponentBase<T>?) GetOrCreateRenderedComponent(typeof(T));
     }
 }

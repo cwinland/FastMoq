@@ -10,6 +10,7 @@ namespace FastMoq
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="FastMoq.MockModel" />
     /// <inheritdoc cref="MockModel" />
+    [ExcludeFromCodeCoverage]
     public class MockModel<T> : MockModel, IComparable<MockModel<T>>, IEquatable<MockModel<T>>, IEqualityComparer<MockModel<T>> where T : class
     {
         #region Properties
@@ -95,6 +96,7 @@ namespace FastMoq
     /// <summary>
     ///     Contains Mock and Type information.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class MockModel : IComparable<MockModel>, IComparable, IEquatable<MockModel>, IEqualityComparer<MockModel>
     {
         #region Properties

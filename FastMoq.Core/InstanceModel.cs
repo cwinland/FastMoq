@@ -1,4 +1,6 @@
-﻿namespace FastMoq
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace FastMoq
 {
     /// <inheritdoc />
     /// <summary>
@@ -7,6 +9,7 @@
     /// </summary>
     /// <typeparam name="TClass">The type of the t class.</typeparam>
     /// <seealso cref="T:FastMoq.InstanceModel" />
+    [ExcludeFromCodeCoverage]
     public class InstanceModel<TClass> : InstanceModel where TClass : class
     {
         #region Properties
@@ -51,6 +54,7 @@
     /// Implements the <see cref="FastMoq.InstanceModel" />
     /// </summary>
     /// <seealso cref="FastMoq.InstanceModel" />
+    [ExcludeFromCodeCoverage]
     public class InstanceModel
     {
         #region Properties
