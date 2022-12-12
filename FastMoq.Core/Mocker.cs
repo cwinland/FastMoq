@@ -1311,7 +1311,7 @@ namespace FastMoq
                 .Where(x => x.CustomAttributes.Any(y =>
                     y.AttributeType == attributeType ||
                     y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)));
-        
+
         internal InstanceModel<TModel>? GetMapModel<TModel>() where TModel : class => GetMapModel(typeof(TModel)) as InstanceModel<TModel>;
 
         internal InstanceModel? GetMapModel(Type type) => typeMap.ContainsKey(type) ? typeMap[type] : null;

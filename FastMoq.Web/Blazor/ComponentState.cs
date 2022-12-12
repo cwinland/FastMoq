@@ -90,7 +90,9 @@ namespace FastMoq.Web.Blazor
         /// <param name="obj">The object.</param>
         /// <param name="services">The services.</param>
         /// <exception cref="System.ArgumentNullException">services</exception>
+#pragma warning disable CS8618
         public ComponentState(object? obj, IServiceProvider services)
+#pragma warning restore CS8618
         {
             if (obj == null ||
                 !(obj.GetType().FullName ?? string.Empty).Equals("Microsoft.AspNetCore.Components.Rendering.ComponentState", StringComparison.OrdinalIgnoreCase))

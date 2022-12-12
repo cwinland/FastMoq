@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using Index = FastMoq.Tests.Blazor.Pages.Index;
@@ -31,7 +32,7 @@ namespace FastMoq.Tests.Web
         public void GetChildComponent_ShouldNotBeNull()
         {
             GetComponent<FetchData>().Should().NotBeNull();
-            
+
             new Action(() => GetComponent<FetchData>(x => x.ComponentId == 12345)).Should().Throw<InvalidOperationException>()
                 .WithMessage("Sequence contains no matching element");
         }
@@ -83,16 +84,10 @@ namespace FastMoq.Tests.Web
         }
 
         [Fact]
-        public void FindById_ShouldFind()
-        {
-            Component.FindAll("button").First(x => x.Id == "testbutton").Should().Be(FindById("testbutton"));
-        }
+        public void FindById_ShouldFind() => Component.FindAll("button").First(x => x.Id == "testbutton").Should().Be(FindById("testbutton"));
 
         [Fact]
-        public void FindByName_ShouldFind()
-        {
-            FindAllByTag("button").Should().HaveCount(1);
-        }
+        public void FindByName_ShouldFind() => FindAllByTag("button").Should().HaveCount(1);
 
         [Fact]
         public void AuthUser_Set_ShouldChangeUser()
@@ -116,22 +111,12 @@ namespace FastMoq.Tests.Web
         }
 
         [Fact]
-        public void AuthRoles_Set_ShouldChangeRoles()
-        {
-            TestAuth<string>(() => AuthContext.Roles, AuthorizedRoles, "testRole");
-        }
+        public void AuthRoles_Set_ShouldChangeRoles() => TestAuth<string>(() => AuthContext.Roles, AuthorizedRoles, "testRole");
 
         [Fact]
-        public void AuthClaims_Set_ShouldChangeClaims()
-        {
-            TestAuth<Claim>(() => AuthContext.Claims, AuthorizedClaims, new Claim("group", "testClaim"));
-        }
+        public void AuthClaims_Set_ShouldChangeClaims() => TestAuth<Claim>(() => AuthContext.Claims, AuthorizedClaims, new Claim("group", "testClaim"));
 
         [Fact]
-        public void AuthPolicies_Set_ShouldChange()
-        {
-            TestAuth<string>(() => AuthContext.Policies, AuthorizedPolicies, "testPolicy");
-        }
-
+        public void AuthPolicies_Set_ShouldChange() => TestAuth<string>(() => AuthContext.Policies, AuthorizedPolicies, "testPolicy");
     }
 }

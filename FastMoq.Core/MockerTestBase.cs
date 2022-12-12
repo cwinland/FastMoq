@@ -254,7 +254,7 @@ namespace FastMoq
         /// <param name="funcMethod">The function.</param>
         /// <param name="resultAction">The result action.</param>
         /// <param name="args">The arguments.</param>
-        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task>, string?, List<object?>?, ParameterInfo> resultAction,
+        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task?>, string?, List<object?>?, ParameterInfo> resultAction,
             params object?[]? args)
         {
             if (funcMethod == null)

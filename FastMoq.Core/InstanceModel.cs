@@ -94,10 +94,7 @@ namespace FastMoq
         /// <param name="instanceType">Type of the instance.</param>
         /// <param name="createFunc"></param>
         /// <exception cref="T:System.ArgumentNullException">arguments</exception>
-        internal InstanceModel(Type instanceType, Func<Mocker, object>? createFunc) : this(instanceType)
-        {
-            CreateFunc = createFunc;
-        }
+        internal InstanceModel(Type instanceType, Func<Mocker, object>? createFunc) : this(instanceType) => CreateFunc = createFunc;
 
         /// <inheritdoc />
         /// <summary>
@@ -107,9 +104,6 @@ namespace FastMoq
         /// <param name="createFunc"></param>
         /// <param name="arguments">The arguments.</param>
         /// <exception cref="T:System.ArgumentNullException">arguments</exception>
-        internal InstanceModel(Type instanceType, Func<Mocker, object>? createFunc, List<object> arguments) : this(instanceType, createFunc)
-        {
-            Arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
-        }
+        internal InstanceModel(Type instanceType, Func<Mocker, object>? createFunc, List<object> arguments) : this(instanceType, createFunc) => Arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
     }
 }

@@ -82,7 +82,7 @@ namespace FastMoq
             return x.Type.Name.Equals(y.Type.Name, StringComparison.OrdinalIgnoreCase);
         }
 
-        public int GetHashCode([DisallowNull] MockModel<T> obj) => obj.Type.GetHashCode();
+        public int GetHashCode(MockModel<T> obj) => obj.Type.GetHashCode();
 
         #endregion
 
@@ -183,7 +183,7 @@ namespace FastMoq
             return x.Type.Name.Equals(y.Type.Name, StringComparison.OrdinalIgnoreCase);
         }
 
-        public int GetHashCode([DisallowNull] MockModel obj) => obj.Type.GetHashCode();
+        public int GetHashCode(MockModel obj) => obj.Type.GetHashCode();
 
         #endregion
 

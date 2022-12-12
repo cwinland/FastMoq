@@ -31,10 +31,10 @@ namespace FastMoq
         /// Gets the field information.
         /// </summary>
         /// <typeparam name="TType">The type of the t type.</typeparam>
-        /// <param name="obj">The object.</param>
+        /// <param name="_">The object.</param>
         /// <param name="name">The name.</param>
         /// <returns>System.Nullable&lt;FieldInfo&gt;.</returns>
-        public static FieldInfo? GetFieldInfo<TType>(this object obj, string name)
+        public static FieldInfo GetFieldInfo<TType>(this object _, string name)
         {
             var fields = typeof(TType).GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static);
             return fields.First(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
@@ -48,10 +48,7 @@ namespace FastMoq
         /// <param name="obj">The object.</param>
         /// <param name="name">The name.</param>
         /// <returns>System.Nullable&lt;T&gt;.</returns>
-        public static T? GetFieldValue<T, TType>(this object? obj, string name)
-        {
-            return obj.GetFieldValue<T>(obj.GetFieldInfo<TType>(name));
-        }
+        public static T? GetFieldValue<T, TType>(this object obj, string name) => obj.GetFieldValue<T>(obj.GetFieldInfo<TType>(name));
 
         /// <summary>
         /// Gets the field value.
@@ -60,10 +57,7 @@ namespace FastMoq
         /// <param name="obj">The object.</param>
         /// <param name="field">The field.</param>
         /// <returns>System.Nullable&lt;T&gt;.</returns>
-        public static T? GetFieldValue<T>(this object? obj, FieldInfo field)
-        {
-            return (T)field.GetValue(obj);
-        }
+        public static T? GetFieldValue<T>(this object? obj, FieldInfo field) => (T?)field.GetValue(obj);
 
         /// <summary>
         /// Gets the field value.

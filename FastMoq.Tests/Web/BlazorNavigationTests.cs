@@ -18,10 +18,7 @@ namespace FastMoq.Tests.Web
         #endregion
 
         [Fact]
-        public void Created()
-        {
-            Component.Should().NotBeNull();
-        }
+        public void Created() => Component.Should().NotBeNull();
 
         [Fact]
         public void NavigateTest()
@@ -30,7 +27,7 @@ namespace FastMoq.Tests.Web
 
             IsExists("button").Should().BeTrue();
             ButtonClick("button", () => manager.History.Count > 0);
-            
+
         }
     }
 }
