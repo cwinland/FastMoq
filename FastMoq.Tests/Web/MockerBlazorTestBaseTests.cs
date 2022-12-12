@@ -1,15 +1,14 @@
 ﻿using AngleSharp.Dom;
-using Bunit;
-using Bunit.Extensions;
-using Bunit.Rendering;
 using FastMoq.Tests.Blazor.Data;
 using FastMoq.Tests.Blazor.Pages;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Claims;
 using Index = FastMoq.Tests.Blazor.Pages.Index;
 
 namespace FastMoq.Tests.Web
@@ -31,7 +30,7 @@ namespace FastMoq.Tests.Web
         public void GetChildComponent_ShouldNotBeNull()
         {
             GetComponent<FetchData>().Should().NotBeNull();
-
+            
             new Action(() => GetComponent<FetchData>(x => x.ComponentId == 12345)).Should().Throw<InvalidOperationException>()
                 .WithMessage("Sequence contains no matching element");
         }
@@ -75,7 +74,8 @@ namespace FastMoq.Tests.Web
         {
             ButtonClick("button", () => true).Should().BeTrue();
             ButtonClick("button[id='testbutton']", () => true).Should().BeTrue();
-            ButtonClick(Component.FindAll("button").First(x => x.Id == "testbutton"), () => true).Should().BeTrue();
+            ButtonClick(FindAllByTag("button").First(x => x.Id == "testbutton"), () => true).Should().BeTrue();
+            ButtonClick(FindById("testbutton"), () => true).Should().BeTrue();
         }
 
         [Fact]
@@ -89,5 +89,45 @@ namespace FastMoq.Tests.Web
         {
             FindAllByTag("button").Should().HaveCount(1);
         }
+
+        [Fact]
+        public void AuthUser_Set_ShouldChangeUser()
+        {
+            AuthContext.UserName.Should().Be("TestUser");
+            AuthContext.IsAuthenticated.Should().BeTrue();
+            AuthUsername.Should().Be("TestUser");
+            AuthUsername = "test1";
+            AuthContext.UserName.Should().Be("test1");
+            AuthContext.IsAuthenticated.Should().BeTrue();
+        }
+
+        private void TestAuth<T>(Func<IEnumerable<T>> authCollection, ICollection<T> baseCollection, T newItem)
+        {
+            authCollection.Invoke().Should().BeEquivalentTo(baseCollection.ToArray());
+            authCollection.Invoke().Should().HaveCount(0);
+            baseCollection.Add(newItem);
+            authCollection.Invoke().Should().HaveCount(1);
+            authCollection.Invoke().Should().BeEquivalentTo(baseCollection.ToArray());
+            authCollection.Invoke().Should().Contain(newItem);
+        }
+
+        [Fact]
+        public void AuthRoles_Set_ShouldChangeRoles()
+        {
+            TestAuth<string>(() => AuthContext.Roles, AuthorizedRoles, "testRole");
+        }
+
+        [Fact]
+        public void AuthClaims_Set_ShouldChangeClaims()
+        {
+            TestAuth<Claim>(() => AuthContext.Claims, AuthorizedClaims, new Claim("group", "testClaim"));
+        }
+
+        [Fact]
+        public void AuthPolicies_Set_ShouldChange()
+        {
+            TestAuth<string>(() => AuthContext.Policies, AuthorizedPolicies, "testPolicy");
+        }
+
     }
 }

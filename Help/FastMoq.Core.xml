@@ -145,23 +145,24 @@ false.
       <returns>
         <see cref="T:FastMoq.MockModel&lt;T&gt;" />.</returns>
     </member>
-    <member name="M:FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object})">
+    <member name="M:FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object},System.Boolean)">
       <summary>
 Adds an interface to Class mapping to the <see cref="T:FastMoq.Mocker.typeMap" /> for easier resolution.
 </summary>
       <param name="tInterface">The interface or class Type which can be mapped to a specific Class.</param>
       <param name="tClass">The Class Type (cannot be an interface) that can be created and assigned to <see cref="tInterface" />.</param>
       <param name="createFunc">An optional create function used to create the class.</param>
-      <exception cref="T:System.ArgumentException">$"{tClass.Name} cannot be an interface."</exception>
-      <exception cref="T:System.ArgumentException">$"{tClass.Name} is not assignable to {tInterface.Name}."</exception>
+      <param name="replace">Replace type if already exists. Default: false.</param>
+      <exception cref="T:System.ArgumentException">An item with the same key has already been added.</exception>
     </member>
-    <member name="M:FastMoq.Mocker.AddType``2(System.Func{FastMoq.Mocker,``1})">
+    <member name="M:FastMoq.Mocker.AddType``2(System.Func{FastMoq.Mocker,``1},System.Boolean)">
       <summary>
 Adds an interface to Class mapping to the <see cref="T:FastMoq.Mocker.typeMap" /> for easier resolution.
 </summary>
       <typeparam name="TInterface">The interface or class Type which can be mapped to a specific Class.</typeparam>
       <typeparam name="TClass">The Class Type (cannot be an interface) that can be created and assigned to <see cref="TInterface" />.</typeparam>
       <param name="createFunc">An optional create function used to create the class.</param>
+      <param name="replace">Replace type if already exists. Default: false.</param>
       <exception cref="T:System.ArgumentException">$"{typeof(TClass).Name} cannot be an interface."</exception>
       <exception cref="T:System.ArgumentException">$"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}."</exception>
     </member>
@@ -1080,6 +1081,62 @@ Setups the message protected asynchronous.
       <param name="obj">The object.</param>
       <param name="name">The name.</param>
       <param name="value">The value.</param>
+    </member>
+    <member name="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs">
+      <inheritdoc />
+    </member>
+    <member name="P:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.NotifyCollectionChangedEventArgs">
+      <summary>
+       Gets the notify collection changed event arguments.
+   </summary>
+      <value>The notify collection changed event arguments.</value>
+    </member>
+    <member name="P:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.PropertyChangedEventArgs">
+      <summary>
+       Gets the property changed event arguments.
+   </summary>
+      <value>The property changed event arguments.</value>
+    </member>
+    <member name="M:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.#ctor(System.Nullable{NotifyCollectionChangedEventArgs})">
+      <summary>
+       Initializes a new instance of the <see cref="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs" /> class.
+   </summary>
+      <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
+    </member>
+    <member name="M:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.#ctor(System.Nullable{PropertyChangedEventArgs})">
+      <summary>
+       Initializes a new instance of the <see cref="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs" /> class.
+   </summary>
+      <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs" /> instance containing the event data.</param>
+    </member>
+    <member name="T:FastMoq.Collections.MockerObservableCollection`1">
+      <inheritdoc />
+    </member>
+    <member name="F:FastMoq.Collections.MockerObservableCollection`1.Changed">
+      <summary>
+       Occurs when the collection changes, either by adding or removing an item.
+   </summary>
+    </member>
+    <member name="M:FastMoq.Collections.MockerObservableCollection`1.#ctor">
+      <inheritdoc />
+    </member>
+    <member name="M:FastMoq.Collections.MockerObservableCollection`1.#ctor(IEnumerable{`0})">
+      <exception cref="ArgumentNullException"> collection is a null reference </exception>
+      <inheritdoc />
+    </member>
+    <member name="M:FastMoq.Collections.MockerObservableCollection`1.OnChanged(System.Nullable{System.Object},System.Nullable{NotifyCollectionChangedEventArgs})">
+      <summary>
+       Handles the <see cref="E:Changed" /> event.
+   </summary>
+      <param name="sender">The sender.</param>
+      <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
+    </member>
+    <member name="M:FastMoq.Collections.MockerObservableCollection`1.OnChanged(System.Nullable{System.Object},System.Nullable{PropertyChangedEventArgs})">
+      <summary>
+       Handles the <see cref="E:Changed" /> event.
+   </summary>
+      <param name="sender">The sender.</param>
+      <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs" /> instance containing the event data.</param>
     </member>
   </members>
 </doc>

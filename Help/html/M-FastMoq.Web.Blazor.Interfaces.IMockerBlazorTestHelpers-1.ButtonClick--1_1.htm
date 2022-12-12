@@ -119,6 +119,21 @@
 </div>
 </div>
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Collections.htm" target="_self">FastMoq.Collections Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Collections.MockerObservableCollection-1.htm" target="_self">MockerObservableCollection(T) Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Collections.MockerObservableCollectionChangedEventArgs.htm" target="_self">MockerObservableCollectionChangedEventArgs Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Blazor.htm" target="_self">FastMoq.Web.Blazor Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
@@ -174,15 +189,20 @@
 </div>
 </div>
 <div class="TreeItem">
-<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.FindComponent--1.htm" target="_self">FindComponent(TComponent) Method </a>
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.FindAllByTag.htm" target="_self">FindAllByTag Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.FindById.htm" target="_self">FindById Method </a>
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Overload-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.GetComponent-.htm" target="_self">GetComponent Method </a>
 <div class="Hidden">
 </div>
 </div>
-<div class="TreeItem">
-<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.GetComponents--1.htm" target="_self">GetComponents(TOfType) Method </a>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Overload-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.GetComponents-.htm" target="_self">GetComponents Method </a>
+<div class="Hidden">
+</div>
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Overload-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.GetInjections.htm" target="_self">GetInjections Method </a>
@@ -290,13 +310,13 @@
 	<span class="nolink">Func</span>&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">bool</a>&gt; <span class="parameter">waitFunc</span>,
 	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>&lt;<span class="nolink">TimeSpan</span>&gt; <span class="parameter">waitTimeout</span>
 )
-<span class="keyword">where</span> TComponent : <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>
-</pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Function</span> <span class="identifier">ButtonClick</span>(<span class="keyword">Of</span> TComponent <span class="keyword">As</span> {<span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>}) ( _
+<span class="keyword">where</span> TComponent : <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>
+</pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Function</span> <span class="identifier">ButtonClick</span>(<span class="keyword">Of</span> TComponent <span class="keyword">As</span> {<span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>}) ( _
 	<span class="parameter">cssSelector</span> <span class="keyword">As</span> <span class="nolink">Func</span>(<span class="keyword">Of</span> <span class="nolink">IRenderedComponent</span>(<span class="keyword">Of</span> TComponent), <span class="nolink">IElement</span>), _
 	<span class="parameter">waitFunc</span> <span class="keyword">As</span> <span class="nolink">Func</span>(<span class="keyword">Of</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">Boolean</a>), _
 	<span class="parameter">waitTimeout</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>(<span class="keyword">Of</span> <span class="nolink">TimeSpan</span>) _
 ) <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">Boolean</a></pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">generic</span>&lt;<span class="keyword">typename</span> TComponent&gt;
-<span class="keyword">where</span> TComponent : <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>
+<span class="keyword">where</span> TComponent : <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>, <span class="nolink">IComponent</span>
 <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">bool</a>^ <span class="identifier">ButtonClick</span>(
 	<span class="nolink">Func</span>&lt;<span class="nolink">IRenderedComponent</span>&lt;TComponent&gt;^, <span class="nolink">IElement</span>^&gt;^ <span class="parameter">cssSelector</span>, 
 	<span class="nolink">Func</span>&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">bool</a>^&gt;^ <span class="parameter">waitFunc</span>, 

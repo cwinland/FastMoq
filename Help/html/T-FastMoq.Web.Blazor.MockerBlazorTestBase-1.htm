@@ -32,9 +32,11 @@
       <MSHelp:Attr Name="Locale" Value="en-us" />
       <MSHelp:Attr Name="TopicType" Value="kbSyntax" />
       <MSHelp:Attr Name="TopicType" Value="apiref" />
-      <MSHelp:Attr Name="Abstract" Value="Common methods for all BUnit/XUnit Tests." />
+      <MSHelp:Attr Name="Abstract" Value="Class MockerBlazorTestBase. Implements the Implements the" />
       <MSHelp:Attr Name="AssemblyVersion" Value="" />
+      <MSHelp:Attr Name="codelang" Value="CSharp" />
     </xml>
+    <link type="text/css" rel="stylesheet" href="../styles/highlight.css" />
   <link rel="stylesheet" href="../TOC.css"><script type="text/javascript" src="../TOC.js"></script></head>
   <body onload="javascript: Initialize();" onresize="javascript: ResizeTree();">
             <div id="TOCDiv" class="TOCDiv" style="width: 310px; float: left; position: relative; ">
@@ -128,6 +130,21 @@
 </div>
 </div>
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Collections.htm" target="_self">FastMoq.Collections Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Collections.MockerObservableCollection-1.htm" target="_self">MockerObservableCollection(T) Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Collections.MockerObservableCollectionChangedEventArgs.htm" target="_self">MockerObservableCollectionChangedEventArgs Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Blazor.htm" target="_self">FastMoq.Web.Blazor Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
@@ -215,8 +232,9 @@
             <div id="mainSection">
               <div id="mainBody">
                 <div class="summary">
-       Common methods for all BUnit/XUnit Tests.
-   </div>
+       Class MockerBlazorTestBase.
+       Implements the <span class="nolink">TestContext</span>
+       Implements the <a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">IMockerBlazorTestHelpers<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></a></div>
                 <p />
     <b>Namespace:</b> 
    <a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor</a><br />
@@ -229,7 +247,40 @@
 	<span class="keyword">Implements</span> <a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">IMockerBlazorTestHelpers</a>(<span class="keyword">Of</span> T)</pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">generic</span>&lt;<span class="keyword">typename</span> T&gt;
 <span class="keyword">where</span> T : <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.componentbase" target="_blank">ComponentBase</a>
 <span class="keyword">public</span> <span class="keyword">ref class</span> <span class="identifier">MockerBlazorTestBase</span> <span class="keyword">abstract</span> : <span class="keyword">public</span> <span class="nolink">TestContext</span>, 
-	<a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">IMockerBlazorTestHelpers</a>&lt;T&gt;</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">T</span></dt><dd>Type of the component being tested.</dd></dl></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Inheritance Hierarchy</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="familySection"><!----></a><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><br />  <span class="nolink">TestContextBase</span><br />    <span class="nolink">TestContext</span><br />      <span class="selflink">FastMoq.Web.Blazor<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></span><br /></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor Namespace</a></div></div></div>
+	<a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">IMockerBlazorTestHelpers</a>&lt;T&gt;</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">T</span></dt><dd /></dl></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
+       Basic Example
+      <span id="cbc_1" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> IndexTests : MockerBlazorTestBase&lt;Index&gt;
+{
+    [Fact]
+    <span class="highlight-keyword">public</span> <span class="highlight-keyword">void</span> Create() =&gt; Component.Should().NotBeNull();
+}</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
+       Setup Services
+      <span id="cbc_2" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">protected</span> <span class="highlight-keyword">override</span> Action&lt;TestServiceProvider, IConfiguration, Mocker&gt; ConfigureServices =&gt;
+(services, c, m) =&gt; services.AddSingleton&lt;IWeatherForecastService, WeatherForecastService&gt;();</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
+       Setup Roles.
+      <span id="cbc_3" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">protected</span> <span class="highlight-keyword">override</span> MockerObservableCollection&lt;<span class="highlight-keyword">string</span>&gt; AuthorizedRoles =&gt; <span class="highlight-keyword">new</span> MockerObservableCollection&lt;<span class="highlight-keyword">string</span>&gt;() { <span class="highlight-literal">"Role1"</span>, <span class="highlight-literal">"Role2"</span>}</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
+       Setup Http Response Message
+      <span id="cbc_4" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">protected</span> <span class="highlight-keyword">override</span> Action&lt;Mocker&gt; SetupComponent =&gt; (mocker =&gt;
+{
+    mocker.SetupHttpMessage(() =&gt; <span class="highlight-keyword">new</span> HttpResponseMessage
+    {
+        StatusCode = <span class="highlight-literal">"200"</span>,
+        Content = <span class="highlight-keyword">new</span> StringContent(<span class="highlight-literal">"ContextGoesHere"</span>)
+    });
+});</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
+       Setup Mocks
+      <span id="cbc_5" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">protected</span> <span class="highlight-keyword">override</span> Action&lt;Mocker&gt; SetupComponent =&gt; mocker =&gt;
+{
+    mocker.GetMock&lt;IFile&gt;().Setup(f =&gt; f.Exists(It.IsAny&lt;<span class="highlight-keyword">string</span>&gt;())).Returns(<span class="highlight-keyword">true</span>); <span class="highlight-comment">// Add setup</span>
+    mocker.Initialize&lt;IDirectory&gt;(mock =&gt; mock.Setup(d =&gt; d.Exists(It.IsAny&lt;<span class="highlight-keyword">string</span>&gt;())).Returns(<span class="highlight-keyword">true</span>)); <span class="highlight-comment">// Clears existing mocks</span>
+    mocker.GetMock&lt;IDirectory&gt;().Setup(d=&gt;d.Exists(<span class="highlight-literal">"C:\\testfile.txt"</span>)).Returns(<span class="highlight-keyword">false</span>); <span class="highlight-comment">// add setup</span>
+};</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
+       Click Button by class, tag, or id.
+      <span id="cbc_6" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve">ButtonClick(<span class="highlight-literal">"button"</span>, () =&gt; <span class="highlight-keyword">true</span>).Should().BeTrue();
+ButtonClick(<span class="highlight-literal">"button[id='testbutton']"</span>, () =&gt; count &gt; <span class="highlight-number">0</span>).Should().BeTrue();
+ButtonClick(Component.FindAll(<span class="highlight-literal">"button"</span>).First(x =&gt; x.Id == <span class="highlight-literal">"testbutton"</span>), () =&gt; IsPressed == <span class="highlight-keyword">true</span>).Should().BeTrue();
+ButtonClick(FindAllByTag(<span class="highlight-literal">"button"</span>).First(x =&gt; x.Id == <span class="highlight-literal">"testbutton"</span>), () =&gt; <span class="highlight-keyword">true</span>).Should().BeTrue();
+ButtonClick(FindById(<span class="highlight-literal">"testbutton"</span>), () =&gt; <span class="highlight-keyword">true</span>).Should().BeTrue();</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Inheritance Hierarchy</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="familySection"><!----></a><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><br />  <span class="nolink">TestContextBase</span><br />    <span class="nolink">TestContext</span><br />      <span class="selflink">FastMoq.Web.Blazor<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></span><br /></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor Namespace</a></div><div class="seeAlsoStyle"><span class="nolink">TestContext</span></div><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">FastMoq.Web.Blazor.Interfaces<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>IMockerBlazorTestHelpers<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></a></div><div class="seeAlsoStyle"><a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.componentbase" target="_blank">ComponentBase</a></div></div></div>
             </div>
           </div>
         </div>

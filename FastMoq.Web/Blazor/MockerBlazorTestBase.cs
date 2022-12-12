@@ -3,6 +3,7 @@ using AngleSharpWrappers;
 using Bunit;
 using Bunit.Rendering;
 using Bunit.TestDoubles;
+using FastMoq.Collections;
 using FastMoq.Web.Blazor.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
@@ -12,45 +13,184 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Collections;
 using System.Reflection;
 using System.Runtime;
+using System.Security.Claims;
 
 namespace FastMoq.Web.Blazor
 {
     /// <summary>
-    ///     Common methods for all BUnit/XUnit Tests.
+    ///     Class MockerBlazorTestBase.
+    ///     Implements the <see cref="TestContext" />
+    ///     Implements the <see cref="IMockerBlazorTestHelpers{T}" />
     /// </summary>
-    /// <typeparam name="T">Type of the component being tested.</typeparam>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="TestContext" />
+    /// <seealso cref="IMockerBlazorTestHelpers{T}" />
+    /// <seealso cref="ComponentBase" />
     /// <inheritdoc cref="TestContext" />
     /// <inheritdoc cref="IMockerBlazorTestHelpers{T}" />
+    /// <example>
+    ///     Basic Example
+    ///     <code language="cs"><![CDATA[
+    ///     public class IndexTests : MockerBlazorTestBase<Index>
+    ///     {
+    ///         [Fact]
+    ///         public void Create() => Component.Should().NotBeNull();
+    ///     }
+    /// ]]></code>
+    /// </example>
+    /// <example>
+    ///     Setup Services
+    ///     <code language="cs"><![CDATA[
+    ///         protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices =>
+    ///         (services, c, m) => services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
+    /// ]]></code>
+    /// </example>
+    /// <example>
+    ///     Setup Roles.
+    ///     <code language="cs"><![CDATA[
+    ///         protected override MockerObservableCollection<string> AuthorizedRoles => new MockerObservableCollection<string>() { "Role1", "Role2"}
+    /// ]]></code>
+    /// </example>
+    /// <example>
+    ///     Setup Http Response Message
+    ///     <code language="cs"><![CDATA[
+    ///         protected override Action<Mocker> SetupComponent => (mocker =>
+    ///         {
+    ///             mocker.SetupHttpMessage(() => new HttpResponseMessage
+    ///             {
+    ///                 StatusCode = "200",
+    ///                 Content = new StringContent("ContextGoesHere")
+    ///             });
+    ///         });
+    /// ]]></code>
+    /// </example>
+    /// <example>
+    ///     Setup Mocks
+    ///     <code language="cs"><![CDATA[
+    ///         protected override Action<Mocker> SetupComponent => mocker =>
+    ///         {
+    ///             mocker.GetMock<IFile>().Setup(f => f.Exists(It.IsAny<string>())).Returns(true); // Add setup
+    ///             mocker.Initialize<IDirectory>(mock => mock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true)); // Clears existing mocks
+    ///             mocker.GetMock<IDirectory>().Setup(d=>d.Exists("C:\\testfile.txt")).Returns(false); // add setup
+    ///         };
+    /// ]]></code>
+    /// </example>
+    /// <example>
+    ///     Click Button by class, tag, or id.
+    ///     <code language="cs"><![CDATA[
+    ///         ButtonClick("button", () => true).Should().BeTrue();
+    ///         ButtonClick("button[id='testbutton']", () => count > 0).Should().BeTrue();
+    ///         ButtonClick(Component.FindAll("button").First(x => x.Id == "testbutton"), () => IsPressed == true).Should().BeTrue();
+    ///         ButtonClick(FindAllByTag("button").First(x => x.Id == "testbutton"), () => true).Should().BeTrue();
+    ///         ButtonClick(FindById("testbutton"), () => true).Should().BeTrue();
+    /// ]]></code>
+    /// </example>
+
     public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHelpers<T> where T : ComponentBase
     {
+        #region Fields
+
+        /// <summary>
+        ///     The authentication username
+        /// </summary>
+        private string authUsername = "TestUser";
+
+        #endregion
+
         #region Properties
 
         /// <summary>
         ///     Gets the authentication context.
         /// </summary>
         /// <value>The authentication context.</value>
+        /// <seealso cref="AuthorizedClaims"/>
+        /// <seealso cref="AuthorizedPolicies"/>
+        /// <seealso cref="AuthorizedRoles"/>
+        /// <seealso cref="AuthUsername"/>
+        /// <example>
+        ///     Set not authorized.
+        ///     <code language="cs"><![CDATA[
+        ///         AuthContext.SetNotAuthorized()
+        /// ]]></code>
+        /// </example>
+        /// <example>
+        ///     Set authorized user.
+        ///     <code language="cs"><![CDATA[
+        ///         AuthContext.SetAuthorized("username")
+        /// ]]></code>
+        /// </example>
         protected TestAuthorizationContext AuthContext { get; }
+
+        /// <summary>
+        ///     Gets the authorized claims.
+        /// </summary>
+        /// <value>The authorized claims.</value>
+        /// <seealso cref="AuthorizedPolicies"/>
+        /// <seealso cref="AuthorizedRoles"/>
+        /// <seealso cref="AuthContext"/>
+        /// <seealso cref="AuthUsername"/>
+        protected virtual MockerObservableCollection<Claim> AuthorizedClaims { get; } = new();
 
         /// <summary>
         ///     Gets the authorized policies.
         /// </summary>
         /// <value>The authorized policies.</value>
-        protected virtual List<string> AuthorizedPolicies { get; } = new();
+        /// <example>
+        ///     Setup Policies.
+        ///     <code language="cs"><![CDATA[
+        ///         protected override MockerObservableCollection<string> AuthorizedPolicies => new MockerObservableCollection<string>() { "Policy1", "Policy2"}
+        /// ]]></code>
+        /// </example>
+        /// <seealso cref="AuthorizedClaims"/>
+        /// <seealso cref="AuthorizedRoles"/>
+        /// <seealso cref="AuthContext"/>
+        /// <seealso cref="AuthUsername"/>
+        protected virtual MockerObservableCollection<string> AuthorizedPolicies { get; } = new();
 
         /// <summary>
         ///     Gets the authorized roles.
         /// </summary>
         /// <value>The authorized roles.</value>
-        protected virtual List<string> AuthorizedRoles { get; } = new();
+        /// <example>
+        ///     Setup Roles.
+        ///     <code language="cs"><![CDATA[
+        ///         protected override MockerObservableCollection<string> AuthorizedRoles => new MockerObservableCollection<string>() { "Role1", "Role2"}
+        /// ]]></code>
+        /// </example>
+        /// <seealso cref="AuthorizedPolicies"/>
+        /// <seealso cref="AuthorizedClaims"/>
+        /// <seealso cref="AuthContext"/>
+        /// <seealso cref="AuthUsername"/>
+        protected virtual MockerObservableCollection<string> AuthorizedRoles { get; } = new();
 
         /// <summary>
         ///     Gets or sets the authentication username.
         /// </summary>
         /// <value>The authentication username.</value>
-        protected string AuthUsername { get; set; } = "TestUser";
+        /// <seealso cref="AuthorizedClaims"/>
+        /// <seealso cref="AuthorizedPolicies"/>
+        /// <seealso cref="AuthorizedRoles"/>
+        /// <seealso cref="AuthContext"/>
+        /// <seealso cref="AuthUsername"/>
+        /// <example>
+        ///     Set authorized user.
+        ///     <code language="cs"><![CDATA[
+        ///         AuthContext.SetAuthorized("username")
+        ///         AuthUsername = "TestUser";
+        /// ]]></code>
+        /// </example>
+        protected virtual string AuthUsername
+        {
+            get => authUsername;
+            set
+            {
+                authUsername = value;
+                AuthContext.SetAuthorized(value);
+            }
+        }
 
         /// <summary>
-        ///     Rendered Component being tested.
+        ///     Gets or sets the component.
         /// </summary>
         /// <value>The component.</value>
         protected IRenderedComponent<T>? Component { get; set; }
@@ -59,10 +199,17 @@ namespace FastMoq.Web.Blazor
         ///     Gets the configure services.
         /// </summary>
         /// <value>The configure services.</value>
+        /// <example>
+        ///     Setup Services
+        ///     <code language="cs"><![CDATA[
+        ///         protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices =>
+        ///         (services, c, m) => services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
+        /// ]]></code>
+        /// </example>
         protected virtual Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices { get; } = (_, _, _) => { };
 
         /// <summary>
-        ///     Gets the instance of the rendered component T.
+        ///     Gets the instance.
         /// </summary>
         /// <value>The instance.</value>
         protected T? Instance => Component?.Instance;
@@ -80,7 +227,7 @@ namespace FastMoq.Web.Blazor
         protected virtual List<ComponentParameter> RenderParameters { get; } = new();
 
         /// <summary>
-        ///     Gets the setup component.
+        ///     Gets or sets the setup component.
         /// </summary>
         /// <value>The setup component.</value>
         protected virtual Action<Mocker> SetupComponent { get; set; } = _ => { };
@@ -102,6 +249,7 @@ namespace FastMoq.Web.Blazor
         /// <summary>
         ///     Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.MockerBlazorTestBase`1" /> class.
         /// </summary>
+        /// <param name="skipSetup">if set to <c>true</c> [skip setup].</param>
         /// <inheritdoc />
         protected MockerBlazorTestBase(bool skipSetup)
         {
@@ -116,10 +264,19 @@ namespace FastMoq.Web.Blazor
             Setup();
         }
 
+        /// <summary>
+        ///     Gets all components.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
+        /// <returns>Dictionary&lt;TComponent, ComponentState&gt;.</returns>
+        /// <exception cref="System.ArgumentNullException">Component</exception>
         protected internal Dictionary<TComponent, ComponentState> GetAllComponents<TComponent>() where TComponent : IComponent
         {
             var list = new Dictionary<TComponent, ComponentState>();
-            var renderer = Component?.Services.GetRequiredService<ITestRenderer>() as TestRenderer ?? throw new ArgumentNullException(nameof(Component));
+
+            var renderer = Component?.Services.GetRequiredService<ITestRenderer>() as TestRenderer ??
+                           throw new ArgumentNullException(nameof(Component));
+
             var componentList = renderer.GetFieldValue<IDictionary, Renderer>("_componentStateByComponent");
 
             if (componentList == null)
@@ -142,10 +299,12 @@ namespace FastMoq.Web.Blazor
         /// <summary>
         ///     Gets all components.
         /// </summary>
-        /// <returns>Dictionary&lt;ComponentBase, ComponentState&gt;.</returns>
-        /// <exception cref="System.ArgumentNullException">Component</exception>
+        /// <returns>Dictionary&lt;IComponent, ComponentState&gt;.</returns>
         protected internal Dictionary<IComponent, ComponentState> GetAllComponents() => GetAllComponents<IComponent>();
 
+        /// <summary>
+        ///     Setups this instance.
+        /// </summary>
         protected internal void Setup()
         {
             SetupComponent(Mocks);
@@ -158,13 +317,27 @@ namespace FastMoq.Web.Blazor
         /// <summary>
         ///     Setups the authorization.
         /// </summary>
-        protected void SetupAuthorization()
+        /// <seealso cref="AuthorizedClaims"/>
+        /// <seealso cref="AuthorizedPolicies"/>
+        /// <seealso cref="AuthorizedRoles"/>
+        /// <seealso cref="AuthContext"/>
+        /// <seealso cref="AuthUsername"/>
+        protected virtual void SetupAuthorization()
         {
             AuthContext.SetAuthorized(AuthUsername);
             AuthContext.SetPolicies(AuthorizedPolicies.ToArray());
             AuthContext.SetRoles(AuthorizedRoles.ToArray());
+            AuthContext.SetClaims(AuthorizedClaims.ToArray());
+
+            AuthorizedPolicies.Changed += (_, _) => AuthContext.SetPolicies(AuthorizedPolicies.ToArray());
+            AuthorizedRoles.Changed += (_, _) => AuthContext.SetRoles(AuthorizedRoles.ToArray());
+            AuthorizedClaims.Changed += (_, _) => AuthContext.SetClaims(AuthorizedClaims.ToArray());
         }
 
+        /// <summary>
+        ///     Setups the services.
+        /// </summary>
+        /// <exception cref="System.IO.InvalidDataException">Unable to get {nameof(IConfigurationRoot)} object.</exception>
         private void SetupServices()
         {
             IConfiguration configuration = Mocks.GetObject<IConfigurationRoot>() ??
@@ -179,7 +352,6 @@ namespace FastMoq.Web.Blazor
         #region IMockerBlazorTestHelpers<T>
 
         /// <inheritdoc />
-        /// <exception cref="T:System.ArgumentNullException">button</exception>
         public bool ButtonClick(IElement button, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
             if (button == null)
@@ -211,7 +383,6 @@ namespace FastMoq.Web.Blazor
             ButtonClick(startingComponent.Find(cssSelector), waitFunc, waitTimeout);
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException">cssSelector</exception>
         public bool ButtonClick<TComponent>(Func<IRenderedComponent<TComponent>, IElement> cssSelector, Func<bool> waitFunc,
             TimeSpan? waitTimeout = null) where TComponent : class, IComponent
         {
@@ -232,7 +403,6 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException">cssSelector</exception>
         public bool ButtonClick<TComponent>(Func<IRenderedComponent<TComponent>, bool> cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
             where TComponent : class, IComponent
         {
@@ -249,7 +419,6 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException">cssSelector</exception>
         public bool ButtonClick<TComponent>(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
             where TComponent : class, IComponent
         {
@@ -275,7 +444,15 @@ namespace FastMoq.Web.Blazor
             return component;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        ///     Clicks the dropdown item.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
+        /// <param name="propName">Name of the property.</param>
+        /// <param name="waitFunc">The wait function.</param>
+        /// <param name="itemCssSelector">The item CSS selector.</param>
+        /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+        /// <exception cref="System.ArgumentNullException">Component</exception>
         public IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(string propName, Func<bool> waitFunc,
             string itemCssSelector = "a.dropdown-item") where TComponent : class, IComponent
         {
@@ -299,22 +476,10 @@ namespace FastMoq.Web.Blazor
             .First(x => x.Id?.Equals(id, StringComparison.OrdinalIgnoreCase) ?? false);
 
         /// <inheritdoc />
-        /// <exception cref="System.ArgumentNullException">predicate</exception>
-        /// <exception cref="System.ArgumentNullException">Component</exception>
-        /// <exception cref="System.Runtime.AmbiguousImplementationException">
-        ///     Multiple components of type '{typeof(TComponent)}'
-        ///     was found.
-        /// </exception>
         public IRenderedComponent<TComponent> GetComponent<TComponent>() where TComponent : class, IComponent =>
             GetComponent((IRenderedComponent<TComponent> _) => true);
 
         /// <inheritdoc />
-        /// <exception cref="System.ArgumentNullException">predicate</exception>
-        /// <exception cref="System.ArgumentNullException">Component</exception>
-        /// <exception cref="System.Runtime.AmbiguousImplementationException">
-        ///     Multiple components of type '{typeof(TComponent)}'
-        ///     was found.
-        /// </exception>
         public IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> predicate)
             where TComponent : class, IComponent
         {
@@ -328,12 +493,6 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        /// <exception cref="System.ArgumentNullException">predicate</exception>
-        /// <exception cref="System.ArgumentNullException">Component</exception>
-        /// <exception cref="System.Runtime.AmbiguousImplementationException">
-        ///     Multiple components of type '{typeof(TComponent)}'
-        ///     was found.
-        /// </exception>
         public IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IElement, bool> predicate) where TComponent : class, IComponent
         {
             List<IRenderedComponent<TComponent>> components = GetComponents<TComponent>(predicate);
@@ -344,7 +503,6 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        /// <exception cref="System.ArgumentNullException">whereFunc</exception>
         public List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IRenderedComponent<TOfType>, bool>? predicate)
             where TOfType : class, IComponent
         {
@@ -356,7 +514,6 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        /// <exception cref="System.ArgumentNullException">whereFunc</exception>
         public List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IElement, bool>? predicate) where TOfType : class, IComponent
         {
             IEnumerable<IRenderedComponent<TOfType>> components = GetAllComponents()
@@ -379,11 +536,9 @@ namespace FastMoq.Web.Blazor
         public IEnumerable<PropertyInfo> GetInjections(Type type) => GetInjections(type, typeof(InjectAttribute));
 
         /// <inheritdoc />
-        /// <exception cref="NullReferenceException">When Mock object is null.</exception>
         public void InjectComponent(Type type) => InjectComponent(type, typeof(InjectAttribute));
 
         /// <inheritdoc />
-        /// <exception cref="NullReferenceException">When Mock object is null.</exception>
         public void InjectComponent(Type type, Type injectAttribute) => GetInjections(type, injectAttribute)
             .ForEach(y =>
                 {
@@ -398,16 +553,13 @@ namespace FastMoq.Web.Blazor
             );
 
         /// <inheritdoc />
-        /// <exception cref="NullReferenceException">When Mock object is null.</exception>
         public void InjectComponent<TComponent>() => InjectComponent(typeof(TComponent));
 
         /// <inheritdoc />
-        /// <exception cref="NullReferenceException">When Mock object is null.</exception>
         public void InjectComponent<TComponent, TInjectAttribute>() where TInjectAttribute : Attribute =>
             InjectComponent(typeof(TComponent), typeof(TInjectAttribute));
 
         /// <inheritdoc />
-        /// <exception cref="ApplicationException">When throwOnNotExists: Component or Component with cssSelector is not found.</exception>
         public bool IsExists(string cssSelector, bool throwOnNotExist = false)
         {
             var exists = Component?.FindAll(cssSelector).Any() ?? false;
@@ -480,12 +632,15 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException">cssSelector</exception>
-        /// <exception cref="ElementNotFoundException"></exception>
         public void SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null) where TComponent : class, IComponent
         {
             IElement? nameFilter = null;
+
+            if (Component == null)
+            {
+                throw new ArgumentNullException(nameof(Component));
+            }
 
             if (string.IsNullOrWhiteSpace(cssSelector))
             {
@@ -536,11 +691,15 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException">cssSelector</exception>
         public void SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null) where TComponent : class, IComponent
         {
             IElement? nameFilter = null;
+
+            if (Component == null)
+            {
+                throw new ArgumentNullException(nameof(Component));
+            }
 
             if (string.IsNullOrWhiteSpace(cssSelector))
             {
@@ -586,7 +745,6 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        /// <exception cref="System.ArgumentNullException">element</exception>
         public void SetElementText(IElement element, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
             if (element == null)
@@ -599,7 +757,6 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException">cssSelector</exception>
         public void SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null)
         {

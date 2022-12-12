@@ -120,6 +120,12 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+        /// <example>
+        ///     Get FetchData component. />
+        ///     <code language="cs"><![CDATA[
+        ///         var comp = GetComponent<FetchData>();
+        /// ]]></code>
+        /// </example>
         IRenderedComponent<TComponent> GetComponent<TComponent>() where TComponent : class, IComponent;
 
         /// <summary>
@@ -128,6 +134,18 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="predicate">The predicate.</param>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+        /// <example>
+        ///     Get FetchData component with Id 1234. />
+        ///     <code language="cs"><![CDATA[
+        ///         var comp = GetComponent<FetchData>(x => x.ComponentId == 1234));
+        /// ]]></code>
+        /// </example>
+        /// <example>
+        ///     Get FetchData instance property. />
+        ///     <code language="cs"><![CDATA[
+        ///         var comp = GetComponent<FetchData>(x => x.Instance.IsRunning));
+        /// ]]></code>
+        /// </example>
         IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> predicate) where TComponent : class, IComponent;
 
         /// <summary>
@@ -136,24 +154,47 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="predicate">The predicate.</param>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+        /// <example>
+        ///     Get FetchData component with inner html containing text. />
+        ///     <code language="cs"><![CDATA[
+        ///         var comp = GetComponent<FetchData>(element => element.InnerHtml.Contains("hello"));
+        /// ]]></code>
+        /// </example>
         IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IElement, bool> predicate) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Gets the components.
         /// </summary>
-        /// <typeparam name="TOfType">The type of the t of type.</typeparam>
+        /// <typeparam name="TComponent">The type of the t of type.</typeparam>
         /// <param name="predicate">The where function.</param>
-        /// <returns>List&lt;IRenderedComponent&lt;TOfType&gt;&gt;.</returns>
-        List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IRenderedComponent<TOfType>, bool>? predicate = null)
-            where TOfType : class, IComponent;
+        /// <returns>List&lt;IRenderedComponent&lt;TComponent&gt;&gt;.</returns>
+        /// <example>
+        ///     Get FetchData component with Id 1234. />
+        ///     <code language="cs"><![CDATA[
+        ///         var list = GetComponent<FetchData>(x => x.ComponentId == 1234));
+        /// ]]></code>
+        /// </example>
+        /// <example>
+        ///     Get FetchData instance property. />
+        ///     <code language="cs"><![CDATA[
+        ///         var list = GetComponent<FetchData>(x => x.Instance.IsRunning));
+        /// ]]></code>
+        /// </example>
+        List<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IRenderedComponent<TComponent>, bool>? predicate = null) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Gets the components.
         /// </summary>
-        /// <typeparam name="TOfType">The type of the t of type.</typeparam>
+        /// <typeparam name="TComponent">The type of the t of type.</typeparam>
         /// <param name="predicate">The predicate.</param>
-        /// <returns>List&lt;IRenderedComponent&lt;TOfType&gt;&gt;.</returns>
-        List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IElement, bool>? predicate = null) where TOfType : class, IComponent;
+        /// <returns>List&lt;IRenderedComponent&lt;TComponent&gt;&gt;.</returns>
+        /// <example>
+        ///     Get FetchData component with inner html containing text. />
+        ///     <code language="cs"><![CDATA[
+        ///         var list = GetComponent<FetchData>(element => element.InnerHtml.Contains("hello"));
+        /// ]]></code>
+        /// </example>
+        List<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IElement, bool>? predicate = null) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Gets the injections.
@@ -216,6 +257,18 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// </summary>
         /// <param name="forceNew">if set to <c>true</c> [force new].</param>
         /// <returns>IRenderedComponent&lt;T&gt;.</returns>
+        /// <example>
+        ///     Render again without losing context. This honors any parameters in the RenderParameters action. />
+        ///     <code language="cs"><![CDATA[
+        ///         RenderComponent()
+        /// ]]></code>
+        /// </example>
+        /// <example>
+        ///     Force initial render.
+        ///     <code language="cs"><![CDATA[
+        ///         RenderComponent(true);
+        /// ]]></code>
+        /// </example>
         IRenderedComponent<T> RenderComponent(bool forceNew = false);
 
         /// <summary>
@@ -224,6 +277,18 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="parameterBuilder">The parameter builder.</param>
         /// <param name="forceNew">if set to <c>true</c> [force new].</param>
         /// <returns>IRenderedComponent&lt;T&gt;.</returns>
+        /// <example>
+        ///     Render again with parameters without losing context
+        ///     <code language="cs"><![CDATA[
+        ///         RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()));
+        /// ]]></code>
+        /// </example>
+        /// <example>
+        ///     Force initial render with parameters
+        ///     <code language="cs"><![CDATA[
+        ///         RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()), true);
+        /// ]]></code>
+        /// </example>
         IRenderedComponent<T> RenderComponent(Action<ComponentParameterCollectionBuilder<T>> parameterBuilder, bool forceNew = false);
 
         /// <summary>
