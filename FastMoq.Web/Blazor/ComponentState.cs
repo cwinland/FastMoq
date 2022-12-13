@@ -115,7 +115,7 @@ namespace FastMoq.Web.Blazor
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>IRenderedComponentBase&lt;ComponentBase&gt;.</returns>
-        public IRenderedComponentBase<ComponentBase> GetOrCreateRenderedComponent(Type type)
+        public IRenderedComponentBase<ComponentBase>? GetOrCreateRenderedComponent(Type type)
         {
             var renderer = Services.GetRequiredService<ITestRenderer>() as TestRenderer;
             var d1 = typeof(TestRenderer).GetRuntimeMethods().First(x => x.Name.StartsWith("GetOrCreateRenderedComponent"));

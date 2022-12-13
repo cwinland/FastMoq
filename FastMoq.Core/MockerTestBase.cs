@@ -254,7 +254,7 @@ namespace FastMoq
         /// <param name="funcMethod">The function.</param>
         /// <param name="resultAction">The result action.</param>
         /// <param name="args">The arguments.</param>
-        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task?>, string?, List<object?>?, ParameterInfo> resultAction,
+        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction,
             params object?[]? args)
         {
             if (funcMethod == null)
@@ -282,7 +282,7 @@ namespace FastMoq
         /// <param name="args">The arguments.</param>
         /// <exception cref="System.ArgumentNullException">methodInfo</exception>
         /// <exception cref="System.ArgumentNullException">resultAction</exception>
-        protected void TestMethodParametersAsync(MethodInfo methodInfo, Action<Func<Task?>, string?, List<object?>?, ParameterInfo> resultAction, params object?[]? args)
+        protected void TestMethodParametersAsync(MethodInfo methodInfo, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction, params object?[]? args)
         {
             if (methodInfo == null)
             {
@@ -304,7 +304,7 @@ namespace FastMoq
 
                 for (var j = 0; j < subs.Count; j++)
                 {
-                    if (j != i && args.Length >= j)
+                    if (j != i && args?.Length >= j)
                     {
                         list[j] = args[j];
                     }

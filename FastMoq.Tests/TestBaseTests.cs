@@ -254,7 +254,7 @@ namespace FastMoq.Tests
 
     public class TestBaseTestClass : MockerTestBase<TestClass>
     {
-        public void TestMethodParameters(MethodInfo methodInfo, Action<Func<Task>, string?, List<object?>?, ParameterInfo> resultAction, params object?[]? args) =>
+        public void TestMethodParameters(MethodInfo methodInfo, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction, params object?[]? args) =>
             TestMethodParametersAsync(methodInfo, resultAction, args);
     }
 
