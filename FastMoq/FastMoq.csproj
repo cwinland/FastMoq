@@ -23,14 +23,30 @@
 
   <PropertyGroup>
     <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);SetPackageVersion</GenerateNuspecDependsOn>
-    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+ 
   <Target Name="SetPackageVersion">
     <PropertyGroup>
       <!-- You can customize the format and the rule about how version increases here. -->
-      <PackageVersion>1.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</PackageVersion>
-      <Version>1.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</Version>
+      <PackageVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</PackageVersion>
+      <Version>2.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</Version>
     </PropertyGroup>
   </Target>
 

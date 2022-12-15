@@ -6,6 +6,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 
 ## Features
 
+- NOW BLAZOR SUPPORT in FastMoq and FastMoq.Web.
 - Test without declaring Mocks (unless needed).
 - Creates objects with chain of automatic injections in objects and their dependencies.
 - Automatically injects and creates components or services.
@@ -17,14 +18,19 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 - Create instances of Mocks with non public constructors.
 - HttpClient and IFileSystem test helpers
 - Supports Null method parameter testing.
-- 
+
+## Packages
+
+- FastMoq - Combines FastMoq.Core and FastMoq.Web. -.NET Core 6.0 and 7.0.
+- FastMoq.Core - Original FastMoq testing Mocker. -.NET Core 5.0, 6.0, and 7.0.
+- FastMoq.Web - New Blazor and Web support. -.NET Core 6.0 and 7.0.
 
 ## Targets
 
 - .NET 7
 - .NET 6
-- .NET 5
-- .NET Core 3.1
+- .NET 5 (Deprecated. Remains in FastMoq.Core Only - Will be removed in future)
+- ~~.NET Core 3.1~~ (Deprecated and removed)
 
 ## Most used classes in the FastMoq namespace
 
@@ -33,7 +39,16 @@ public class Mocker {} // Primary class for auto mock and injection. This can be
 public abstract class MockerTestBase<TComponent> where TComponent : class {} // Assists in the creation of objects and provides direct access to Mocker.
 ```
 
+## Most used classes in the FastMoq.Web.Blazor namespace
+
+```cs
+public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHelpers<T> where T : ComponentBase // Assists in the creation of Blazor components and provides direct access to Mocker.
+```
+
 ## Examples
+
+- [Examples and documentation of MockerTestBase](http://help.fastmoq.com/Help/html/T-FastMoq.MockerTestBase-1.htm)
+- [Examples and documentation of MockerBlazorTestBase](http://help.fastmoq.com/Help/html/T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm)
 
 ### Basic example of the base class creating the Car class and auto mocking ICarService
 
@@ -114,6 +129,7 @@ Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
 
 ## Breaking Change
 
+- 2.22.1213 => Removed support for .NET Core 3.1 in FastMoq.Core. Deprecated .NET Core 5 and moved package supporting .NET Core 5.0 from FastMoq to FastMoq.Core.
 - 1.22.810 => Removed setters on the MockerTestBase virtual methods: SetupMocksAction, CreateComponentAction, CreatedComponentAction
 - 1.22.810 => Update Package Dependencies
 - 1.22.728 => Initialize method will reset the mock, if it already exists. This is overridable by settings the reset parameter to false.

@@ -23,14 +23,30 @@
 
   <PropertyGroup>
     <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);SetPackageVersion</GenerateNuspecDependsOn>
-    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <Target Name="SetPackageVersion">
     <PropertyGroup>
       <!-- You can customize the format and the rule about how version increases here. -->
-      <PackageVersion>1.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</PackageVersion>
-      <Version>1.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</Version>
+      <PackageVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</PackageVersion>
+      <Version>2.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</Version>
     </PropertyGroup>
   </Target>
 
@@ -45,20 +61,27 @@
     <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.*" Condition="'$(TargetFramework)' == 'net7.0'" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.*" Condition="'$(TargetFramework)' == 'net7.0'" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="bunit" Version="1.12.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.*" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.*" />
     <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>    
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.*" />
   </ItemGroup>
 
   <ItemGroup>
