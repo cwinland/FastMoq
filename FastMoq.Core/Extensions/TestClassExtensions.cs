@@ -4,7 +4,7 @@ using System.Reflection;
 namespace FastMoq.Extensions
 {
     /// <summary>
-    /// Class TestClassExtensions.
+    ///     Class TestClassExtensions.
     /// </summary>
     public static class TestClassExtensions
     {
@@ -17,7 +17,7 @@ namespace FastMoq.Extensions
         internal static void ForEach<T>(this IEnumerable<T> iEnumerable, Action<T> action) => iEnumerable.ToList().ForEach(action);
 
         /// <summary>
-        /// Gets the field.
+        ///     Gets the field.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>
@@ -28,7 +28,7 @@ namespace FastMoq.Extensions
                 .FirstOrDefault(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
         /// <summary>
-        /// Gets the field information.
+        ///     Gets the field information.
         /// </summary>
         /// <typeparam name="TType">The type of the t type.</typeparam>
         /// <param name="_">The object.</param>
@@ -41,7 +41,7 @@ namespace FastMoq.Extensions
         }
 
         /// <summary>
-        /// Gets the field value.
+        ///     Gets the field value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TType">The type of the t type.</typeparam>
@@ -51,7 +51,7 @@ namespace FastMoq.Extensions
         public static T? GetFieldValue<T, TType>(this object obj, string name) => obj.GetFieldValue<T>(obj.GetFieldInfo<TType>(name));
 
         /// <summary>
-        /// Gets the field value.
+        ///     Gets the field value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj">The object.</param>
@@ -60,7 +60,7 @@ namespace FastMoq.Extensions
         public static T? GetFieldValue<T>(this object? obj, FieldInfo field) => (T?)field.GetValue(obj);
 
         /// <summary>
-        /// Gets the field value.
+        ///     Gets the field value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>
@@ -71,7 +71,7 @@ namespace FastMoq.Extensions
             => obj.GetField(name)?.GetValue(obj) ?? defaultValue ?? default;
 
         /// <summary>
-        /// Gets the property value based on lambda.
+        ///     Gets the property value based on lambda.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TValue">The type of the t value.</typeparam>
@@ -80,12 +80,36 @@ namespace FastMoq.Extensions
         /// <returns>System.Nullable&lt;TValue&gt;.</returns>
         public static MemberInfo GetMember<T, TValue>(this T _, Expression<Func<T, TValue>> memberLambda) => memberLambda.GetMemberExpression().Member;
 
+        /// <summary>
+        ///     Gets the name of the member.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TValue">The type of the t value.</typeparam>
+        /// <param name="_">The .</param>
+        /// <param name="memberLambda">The member lambda.</param>
+        /// <returns>System.String.</returns>
         public static string GetMemberName<T, TValue>(this T _, Expression<Func<T, TValue>> memberLambda) => memberLambda.GetMemberExpression().Member.Name;
 
+        /// <summary>
+        ///     Gets the name of the member.
+        /// </summary>
+        /// <param name="memberLambda">The member lambda.</param>
+        /// <returns>System.String.</returns>
         public static string GetMemberName(this Expression memberLambda) => memberLambda.GetMemberExpressionInternal().Member.Name;
 
+        /// <summary>
+        ///     Gets the member expression.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="method">The method.</param>
+        /// <returns>MemberExpression.</returns>
         public static MemberExpression GetMemberExpression<T>(this Expression<T> method) => method.GetMemberExpressionInternal();
 
+        /// <summary>
+        ///     Gets the member expression.
+        /// </summary>
+        /// <param name="method">The method.</param>
+        /// <returns>MemberExpression.</returns>
         public static MemberExpression GetMemberExpression(this Expression method) => method.GetMemberExpressionInternal();
 
         private static MemberExpression GetMemberExpressionInternal(this Expression method)
@@ -106,7 +130,7 @@ namespace FastMoq.Extensions
         }
 
         /// <summary>
-        /// Gets the method.
+        ///     Gets the method.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>
@@ -117,7 +141,7 @@ namespace FastMoq.Extensions
                 .FirstOrDefault(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
         /// <summary>
-        /// Gets the method value.
+        ///     Gets the method value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>
@@ -129,7 +153,7 @@ namespace FastMoq.Extensions
             => obj.GetMethod(name)?.Invoke(obj, args) ?? defaultValue;
 
         /// <summary>
-        /// Gets the property.
+        ///     Gets the property.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>
@@ -140,7 +164,7 @@ namespace FastMoq.Extensions
                 .FirstOrDefault(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
         /// <summary>
-        /// Gets the property value.
+        ///     Gets the property value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>
@@ -152,7 +176,7 @@ namespace FastMoq.Extensions
             obj.GetProperty(name)?.GetValue(obj) ?? defaultValue ?? default;
 
         /// <summary>
-        /// Sets the field value.
+        ///     Sets the field value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>
@@ -162,7 +186,7 @@ namespace FastMoq.Extensions
             obj.GetField(name)?.SetValue(obj, value);
 
         /// <summary>
-        /// Sets the property value.
+        ///     Sets the property value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
         /// <param name="obj">The object.</param>

@@ -76,12 +76,7 @@ namespace FastMoq.Models
 
         #region IEqualityComparer<MockModel<T>>
 
-        /// <summary>
-        ///     Determines whether the specified objects are equal.
-        /// </summary>
-        /// <param name="x">The first object of type <paramref name="T" /> to compare.</param>
-        /// <param name="y">The second object of type <paramref name="T" /> to compare.</param>
-        /// <returns><see langword="true" /> if the specified objects are equal; otherwise, <see langword="false" />.</returns>
+        /// <inheritdoc />
         public bool Equals(MockModel<T>? x, MockModel<T>? y)
         {
             // If both are null, or both are same instance, return true.
@@ -100,25 +95,14 @@ namespace FastMoq.Models
             return x.Type.Name.Equals(y.Type.Name, StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <summary>
-        ///     Returns a hash code for this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="T:System.Object" /> for which a hash code is to be returned.</param>
-        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+        /// <inheritdoc />
         public int GetHashCode(MockModel<T> obj) => obj.Type.GetHashCode();
 
         #endregion
 
         #region IEquatable<MockModel<T>>
 
-        /// <summary>
-        ///     Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        ///     <see langword="true" /> if the current object is equal to the <paramref name="other" /> parameter; otherwise,
-        ///     <see langword="false" />.
-        /// </returns>
+        /// <inheritdoc />
         public bool Equals(MockModel<T>? other) => Equals(this, other);
 
         #endregion
@@ -213,12 +197,7 @@ namespace FastMoq.Models
 
         #region IEqualityComparer<MockModel>
 
-        /// <summary>
-        ///     Determines whether the specified objects are equal.
-        /// </summary>
-        /// <param name="x">The first object of type <paramref name="T" /> to compare.</param>
-        /// <param name="y">The second object of type <paramref name="T" /> to compare.</param>
-        /// <returns><see langword="true" /> if the specified objects are equal; otherwise, <see langword="false" />.</returns>
+        /// <inheritdoc />
         public bool Equals(MockModel? x, MockModel? y)
         {
             // If both are null, or both are same instance, return true.
