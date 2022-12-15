@@ -4,7 +4,9 @@ using Bunit;
 using Bunit.Rendering;
 using Bunit.TestDoubles;
 using FastMoq.Collections;
+using FastMoq.Extensions;
 using FastMoq.Web.Blazor.Interfaces;
+using FastMoq.Web.Blazor.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +26,6 @@ namespace FastMoq.Web.Blazor
     ///     Implements the <see cref="IMockerBlazorTestHelpers{T}" />
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="TestContext" />
     /// <seealso cref="IMockerBlazorTestHelpers{T}" />
     /// <seealso cref="ComponentBase" />
     /// <inheritdoc cref="TestContext" />
@@ -62,20 +63,34 @@ namespace FastMoq.Web.Blazor
     ///     <code language="cs"><![CDATA[
     /// protected override Action<Mocker> SetupComponent => mocker =>
     /// {
-    ///     mocker.GetMock<IFile>().Setup(f => f.Exists(It.IsAny<string>())).Returns(true); // Add setup
-    ///     mocker.Initialize<IDirectory>(mock => mock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true)); // Clears existing mocks
-    ///     mocker.GetMock<IDirectory>().Setup(d=>d.Exists("C:\\testfile.txt")).Returns(false); // add setup
+    ///     mocker.GetMock<IFile>().Setup(f => f.Exists(It.IsAny<string>())).Returns(true);                     // Add setup to mock.
+    ///     mocker.Initialize<IDirectory>(mock => mock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true)); // Clears existing mocks and set new mock.
+    ///     mocker.GetMock<IDirectory>().Setup(d=>d.Exists("C:\\testfile.txt")).Returns(false);                 // add setup to existing mock.
     /// };
     /// ]]></code>
     /// </example>
     /// <example>
-    ///     Click Button by class, tag, or id.
+    ///     Click Button by class, tag, or id and check the navigation manager for changes.
     ///     <code language="cs"><![CDATA[
-    /// ClickButton("button", () => true).Should().BeTrue();
-    /// ClickButton("button[id='testbutton']", () => count > 0).Should().BeTrue();
-    /// ClickButton(Component.FindAll("button").First(x => x.Id == "testbutton"), () => IsPressed == true).Should().BeTrue();
-    /// ClickButton(FindAllByTag("button").First(x => x.Id == "testbutton"), () => true).Should().BeTrue();
-    /// ClickButton(FindById("testbutton"), () => true).Should().BeTrue();
+    /// NavigationManager.History.Count.Should().Be(0);
+    /// 
+    /// ClickButton("button", () => NavigationManager.History.Count == 1);
+    /// NavigationManager.History.Count.Should().Be(1);
+    /// 
+    /// ClickButton("button[id='testbutton']", () => NavigationManager.History.Count == 2);
+    /// NavigationManager.History.Count.Should().Be(2);
+    /// 
+    /// ClickButton(FindAllByTag("button").First(x => x.Id == "testbutton"), () => NavigationManager.History.Count == 3);
+    /// NavigationManager.History.Count.Should().Be(3);
+    /// 
+    /// ClickButton(FindById("testbutton"), () => NavigationManager.History.Count == 4);
+    /// NavigationManager.History.Count.Should().Be(4);
+    /// 
+    /// ClickButton("button", () => NavigationManager.History.Count == 5, Component, TimeSpan.FromSeconds(5));
+    /// NavigationManager.History.Count.Should().Be(5);
+    /// 
+    /// ClickButton(e => e.Id == "testbutton", () => NavigationManager.History.Count == 6);
+    /// NavigationManager.History.Count.Should().Be(6);
     /// ]]></code>
     /// </example>
     public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHelpers<T> where T : ComponentBase
@@ -119,6 +134,12 @@ namespace FastMoq.Web.Blazor
         ///     Gets the navigation manager.
         /// </summary>
         /// <value>The navigation manager.</value>
+        /// <example>
+        ///     Click Button by class, tag, or id and check the navigation manager for changes.
+        ///     <code language="cs"><![CDATA[
+        /// NavigationManager.History.Count.Should().Be(2);
+        /// ]]></code>
+        /// </example>
         protected FakeNavigationManager NavigationManager => Services.GetRequiredService<FakeNavigationManager>();
 
         /// <summary>
@@ -191,9 +212,9 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <summary>
-        ///     Gets or sets the component.
+        ///     Gets or sets the component under test.
         /// </summary>
-        /// <value>The component.</value>
+        /// <value>The component under test.</value>
         protected IRenderedComponent<T>? Component { get; set; }
 
         /// <summary>
@@ -201,7 +222,7 @@ namespace FastMoq.Web.Blazor
         /// </summary>
         /// <value>The configure services.</value>
         /// <example>
-        ///     Setup Services
+        ///     Setup Services.
         ///     <code language="cs"><![CDATA[
         /// protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices => (services, c, m) => services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
         /// ]]></code>
@@ -216,20 +237,21 @@ namespace FastMoq.Web.Blazor
         protected T? Instance => Component?.Instance;
 
         /// <summary>
-        ///     Gets the mocks.
+        ///     Gets the mock controller.
         /// </summary>
-        /// <value>The mocks.</value>
+        /// <value>The mocks controller.</value>
+        /// <seealso cref="Mocker"/>
         protected Mocker Mocks { get; } = new();
 
         /// <summary>
-        ///     Gets the render parameters.
+        ///     Gets the list of parameters used when rendering. This is used to setup a component before the test constructor runs.
         /// </summary>
         /// <value>The render parameters.</value>
         [ExcludeFromCodeCoverage]
         protected virtual List<ComponentParameter> RenderParameters { get; } = new();
 
         /// <summary>
-        ///     Gets or sets the setup component.
+        ///     Gets or sets the setup component action. This is used to setup a component before the test constructor runs.
         /// </summary>
         /// <value>The setup component.</value>
         [ExcludeFromCodeCoverage]

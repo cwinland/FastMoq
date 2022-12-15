@@ -102,11 +102,6 @@
 <div class="Hidden">
 </div>
 </div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.TestClassExtensions.htm" target="_self">TestClassExtensions Class</a>
-<div class="Hidden">
-</div>
-</div>
 </div>
 </div>
 <div class="TreeNode">
@@ -119,6 +114,16 @@
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Collections.MockerObservableCollectionChangedEventArgs.htm" target="_self">MockerObservableCollectionChangedEventArgs Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Extensions.htm" target="_self">FastMoq.Extensions Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.TestClassExtensions.htm" target="_self">TestClassExtensions Class</a>
 <div class="Hidden">
 </div>
 </div>
@@ -152,16 +157,6 @@
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Blazor.htm" target="_self">FastMoq.Web.Blazor Namespace</a>
 <div class="Hidden">
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.ComponentState.htm" target="_self">ComponentState Class</a>
-<div class="Hidden">
-</div>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.ComponentState-1.htm" target="_self">ComponentState(T) Class</a>
-<div class="Hidden">
-</div>
-</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm" target="_self">MockerBlazorTestBase(T) Class</a>
 <div class="Hidden">
@@ -198,15 +193,15 @@
 </div>
 </div>
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Mocks.htm" target="_self">FastMoq.Web.Mocks Namespace</a>
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Blazor.Models.htm" target="_self">FastMoq.Web.Blazor.Models Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Mocks.MockIConfiguration.htm" target="_self">MockIConfiguration Class</a>
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.Models.ComponentState.htm" target="_self">ComponentState Class</a>
 <div class="Hidden">
 </div>
 </div>
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Mocks.MockNavigationManager.htm" target="_self">MockNavigationManager Class</a>
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.Models.ComponentState-1.htm" target="_self">ComponentState(T) Class</a>
 <div class="Hidden">
 </div>
 </div>
@@ -273,16 +268,30 @@
        Setup Mocks
       <span id="cbc_5" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">protected</span> <span class="highlight-keyword">override</span> Action&lt;Mocker&gt; SetupComponent =&gt; mocker =&gt;
 {
-    mocker.GetMock&lt;IFile&gt;().Setup(f =&gt; f.Exists(It.IsAny&lt;<span class="highlight-keyword">string</span>&gt;())).Returns(<span class="highlight-keyword">true</span>); <span class="highlight-comment">// Add setup</span>
-    mocker.Initialize&lt;IDirectory&gt;(mock =&gt; mock.Setup(d =&gt; d.Exists(It.IsAny&lt;<span class="highlight-keyword">string</span>&gt;())).Returns(<span class="highlight-keyword">true</span>)); <span class="highlight-comment">// Clears existing mocks</span>
-    mocker.GetMock&lt;IDirectory&gt;().Setup(d=&gt;d.Exists(<span class="highlight-literal">"C:\\testfile.txt"</span>)).Returns(<span class="highlight-keyword">false</span>); <span class="highlight-comment">// add setup</span>
+    mocker.GetMock&lt;IFile&gt;().Setup(f =&gt; f.Exists(It.IsAny&lt;<span class="highlight-keyword">string</span>&gt;())).Returns(<span class="highlight-keyword">true</span>);                     <span class="highlight-comment">// Add setup to mock.</span>
+    mocker.Initialize&lt;IDirectory&gt;(mock =&gt; mock.Setup(d =&gt; d.Exists(It.IsAny&lt;<span class="highlight-keyword">string</span>&gt;())).Returns(<span class="highlight-keyword">true</span>)); <span class="highlight-comment">// Clears existing mocks and set new mock.</span>
+    mocker.GetMock&lt;IDirectory&gt;().Setup(d=&gt;d.Exists(<span class="highlight-literal">"C:\\testfile.txt"</span>)).Returns(<span class="highlight-keyword">false</span>);                 <span class="highlight-comment">// add setup to existing mock.</span>
 };</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
-       Click Button by class, tag, or id.
-      <span id="cbc_6" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve">ButtonClick(<span class="highlight-literal">"button"</span>, () =&gt; <span class="highlight-keyword">true</span>).Should().BeTrue();
-ButtonClick(<span class="highlight-literal">"button[id='testbutton']"</span>, () =&gt; count &gt; <span class="highlight-number">0</span>).Should().BeTrue();
-ButtonClick(Component.FindAll(<span class="highlight-literal">"button"</span>).First(x =&gt; x.Id == <span class="highlight-literal">"testbutton"</span>), () =&gt; IsPressed == <span class="highlight-keyword">true</span>).Should().BeTrue();
-ButtonClick(FindAllByTag(<span class="highlight-literal">"button"</span>).First(x =&gt; x.Id == <span class="highlight-literal">"testbutton"</span>), () =&gt; <span class="highlight-keyword">true</span>).Should().BeTrue();
-ButtonClick(FindById(<span class="highlight-literal">"testbutton"</span>), () =&gt; <span class="highlight-keyword">true</span>).Should().BeTrue();</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Inheritance Hierarchy</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="familySection"><!----></a><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><br />  <span class="nolink">TestContextBase</span><br />    <span class="nolink">TestContext</span><br />      <span class="selflink">FastMoq.Web.Blazor<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></span><br /></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor Namespace</a></div><div class="seeAlsoStyle"><span class="nolink">TestContext</span></div><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">FastMoq.Web.Blazor.Interfaces<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>IMockerBlazorTestHelpers<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></a></div><div class="seeAlsoStyle"><a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.componentbase" target="_blank">ComponentBase</a></div></div></div>
+       Click Button by class, tag, or id and check the navigation manager for changes.
+      <span id="cbc_6" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve">NavigationManager.History.Count.Should().Be(<span class="highlight-number">0</span>);
+
+ClickButton(<span class="highlight-literal">"button"</span>, () =&gt; NavigationManager.History.Count == <span class="highlight-number">1</span>);
+NavigationManager.History.Count.Should().Be(<span class="highlight-number">1</span>);
+
+ClickButton(<span class="highlight-literal">"button[id='testbutton']"</span>, () =&gt; NavigationManager.History.Count == <span class="highlight-number">2</span>);
+NavigationManager.History.Count.Should().Be(<span class="highlight-number">2</span>);
+
+ClickButton(FindAllByTag(<span class="highlight-literal">"button"</span>).First(x =&gt; x.Id == <span class="highlight-literal">"testbutton"</span>), () =&gt; NavigationManager.History.Count == <span class="highlight-number">3</span>);
+NavigationManager.History.Count.Should().Be(<span class="highlight-number">3</span>);
+
+ClickButton(FindById(<span class="highlight-literal">"testbutton"</span>), () =&gt; NavigationManager.History.Count == <span class="highlight-number">4</span>);
+NavigationManager.History.Count.Should().Be(<span class="highlight-number">4</span>);
+
+ClickButton(<span class="highlight-literal">"button"</span>, () =&gt; NavigationManager.History.Count == <span class="highlight-number">5</span>, Component, TimeSpan.FromSeconds(<span class="highlight-number">5</span>));
+NavigationManager.History.Count.Should().Be(<span class="highlight-number">5</span>);
+
+ClickButton(e =&gt; e.Id == <span class="highlight-literal">"testbutton"</span>, () =&gt; NavigationManager.History.Count == <span class="highlight-number">6</span>);
+NavigationManager.History.Count.Should().Be(<span class="highlight-number">6</span>);</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Inheritance Hierarchy</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="familySection"><!----></a><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><br />  <span class="nolink">TestContextBase</span><br />    <span class="nolink">TestContext</span><br />      <span class="selflink">FastMoq.Web.Blazor<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></span><br /></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor Namespace</a></div><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">FastMoq.Web.Blazor.Interfaces<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>IMockerBlazorTestHelpers<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></a></div><div class="seeAlsoStyle"><a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.componentbase" target="_blank">ComponentBase</a></div></div></div>
             </div>
           </div>
         </div>

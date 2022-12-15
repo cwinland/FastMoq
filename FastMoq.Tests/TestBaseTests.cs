@@ -4,6 +4,7 @@ using System.IO.Abstractions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using FastMoq.Extensions;
 using FastMoq.Models;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.

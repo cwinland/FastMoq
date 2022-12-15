@@ -1,4 +1,5 @@
-﻿using FastMoq.Models;
+﻿using FastMoq.Extensions;
+using FastMoq.Models;
 using Moq;
 using Moq.Protected;
 using System.Collections;

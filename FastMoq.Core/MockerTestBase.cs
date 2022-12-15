@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using FastMoq.Extensions;
 using FastMoq.Models;
 
 namespace FastMoq
@@ -35,9 +36,7 @@ namespace FastMoq
     ///     Example of how to set up for mocks that require specific functionality.
     ///     <code><![CDATA[
     /// public class CarTest : MockerTestBase<Car> {
-    ///      public CarTest() : base(mocks => {
-    ///              mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
-    ///      }
+    ///      public CarTest() : base(mocks => mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
     /// }
     ///  ]]>
     ///  </code>
@@ -136,6 +135,11 @@ namespace FastMoq
             Action<TComponent?>? createdComponentAction = null)
             : this(null, createComponentAction, createdComponentAction) { }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="T:FastMoq.MockerTestBase`1" /> class.
+        /// </summary>
+        /// <param name="innerMockResolution">if set to <c>true</c> [inner mock resolution].</param>
+        /// <inheritdoc />
         protected MockerTestBase(bool innerMockResolution) : this() => Mocks.InnerMockResolution = innerMockResolution;
 
         /// <summary>
@@ -163,6 +167,7 @@ namespace FastMoq
         /// <param name="waitBetweenChecks">Time between each check.</param>
         /// <returns>T.</returns>
         /// <exception cref="System.ArgumentNullException">logic</exception>
+        /// <exception cref="System.ApplicationException">Waitfor Timeout</exception>
         public static T WaitFor<T>(Func<T> logic, TimeSpan timespan, TimeSpan waitBetweenChecks)
         {
             if (logic == null)
@@ -203,18 +208,16 @@ namespace FastMoq
 
         /// <summary>
         ///     Sets the <see cref="Component" /> property with a new instance while maintaining the constructor setup and any
-        ///     other changes.
+        /// other changes.
         /// </summary>
         /// <example>
-        ///     CreateComponent allows creating the component when desired, instead of in the base class constructor.
-        ///     <code><![CDATA[
+        /// CreateComponent allows creating the component when desired, instead of in the base class constructor.
+        /// <code><![CDATA[
         /// public void Test() {
         ///     Mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
         ///     CreateComponent();
         /// }
-        /// ]]>
-        /// </code>
-        /// </example>
+        /// ]]></code></example>
         protected void CreateComponent()
         {
             foreach (var customMock in CustomMocks)
@@ -230,21 +233,19 @@ namespace FastMoq
         /// <summary>
         ///     Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <param name="disposing">
-        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
-        ///     unmanaged resources.
-        /// </param>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        /// unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    // Dispose managed state (managed objects)
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
+                // Free unmanaged resources (unmanaged objects) and override finalizer
+                // Set large fields to null
                 disposedValue = true;
             }
         }
@@ -255,6 +256,8 @@ namespace FastMoq
         /// <param name="funcMethod">The function.</param>
         /// <param name="resultAction">The result action.</param>
         /// <param name="args">The arguments.</param>
+        /// <exception cref="System.ArgumentNullException">funcMethod</exception>
+        /// <exception cref="System.InvalidOperationException"></exception>
         protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction,
             params object?[]? args)
         {
@@ -321,6 +324,9 @@ namespace FastMoq
 
         #region IDisposable
 
+        /// <summary>
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method

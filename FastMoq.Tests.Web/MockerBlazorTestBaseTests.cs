@@ -1,6 +1,7 @@
 ﻿using AngleSharp.Dom;
 using FastMoq.Tests.Blazor.Data;
 using FastMoq.Tests.Blazor.Pages;
+using FastMoq.Web.Blazor.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -72,17 +73,17 @@ namespace FastMoq.Tests.Web
         public void ClickButton_ShouldClick()
         {
             NavigationManager.History.Count.Should().Be(0);
-            ClickButton("button", () => true);
+            ClickButton("button", () => NavigationManager.History.Count == 1);
             NavigationManager.History.Count.Should().Be(1);
-            ClickButton("button[id='testbutton']", () => true);
+            ClickButton("button[id='testbutton']", () => NavigationManager.History.Count == 2);
             NavigationManager.History.Count.Should().Be(2);
-            ClickButton(FindAllByTag("button").First(x => x.Id == "testbutton"), () => true);
+            ClickButton(FindAllByTag("button").First(x => x.Id == "testbutton"), () => NavigationManager.History.Count == 3);
             NavigationManager.History.Count.Should().Be(3);
-            ClickButton(FindById("testbutton"), () => true);
+            ClickButton(FindById("testbutton"), () => NavigationManager.History.Count == 4);
             NavigationManager.History.Count.Should().Be(4);
-            ClickButton("button", () => true, Component, TimeSpan.FromSeconds(5));
+            ClickButton("button", () => NavigationManager.History.Count == 5, Component, TimeSpan.FromSeconds(5));
             NavigationManager.History.Count.Should().Be(5);
-            ClickButton(e => e.Id == "testbutton", () => true);
+            ClickButton(e => e.Id == "testbutton", () => NavigationManager.History.Count == 6);
             NavigationManager.History.Count.Should().Be(6);
         }
 

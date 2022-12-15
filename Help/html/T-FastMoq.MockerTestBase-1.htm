@@ -119,11 +119,6 @@
 </div>
 </div>
 </div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.TestClassExtensions.htm" target="_self">TestClassExtensions Class</a>
-<div class="Hidden">
-</div>
-</div>
 </div>
 </div>
 <div class="TreeNode">
@@ -136,6 +131,16 @@
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Collections.MockerObservableCollectionChangedEventArgs.htm" target="_self">MockerObservableCollectionChangedEventArgs Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Extensions.htm" target="_self">FastMoq.Extensions Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.TestClassExtensions.htm" target="_self">TestClassExtensions Class</a>
 <div class="Hidden">
 </div>
 </div>
@@ -170,16 +175,6 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Blazor.htm" target="_self">FastMoq.Web.Blazor Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.ComponentState.htm" target="_self">ComponentState Class</a>
-<div class="Hidden">
-</div>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.ComponentState-1.htm" target="_self">ComponentState(T) Class</a>
-<div class="Hidden">
-</div>
-</div>
-<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm" target="_self">MockerBlazorTestBase(T) Class</a>
 <div class="Hidden">
 </div>
@@ -197,15 +192,15 @@
 </div>
 </div>
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Mocks.htm" target="_self">FastMoq.Web.Mocks Namespace</a>
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Blazor.Models.htm" target="_self">FastMoq.Web.Blazor.Models Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Mocks.MockIConfiguration.htm" target="_self">MockIConfiguration Class</a>
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.Models.ComponentState.htm" target="_self">ComponentState Class</a>
 <div class="Hidden">
 </div>
 </div>
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Mocks.MockNavigationManager.htm" target="_self">MockNavigationManager Class</a>
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.Models.ComponentState-1.htm" target="_self">ComponentState(T) Class</a>
 <div class="Hidden">
 </div>
 </div>
@@ -273,9 +268,7 @@
 }</pre></div></span>
        Example of how to set up for mocks that require specific functionality.
       <span id="cbc_2" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> CarTest : MockerTestBase&lt;Car&gt; {
-     <span class="highlight-keyword">public</span> CarTest() : <span class="highlight-keyword">base</span>(mocks =&gt; {
-             mocks.Initialize&lt;ICarService&gt;(mock =&gt; mock.Setup(x =&gt; x.StartCar).Returns(<span class="highlight-keyword">true</span>));
-     }
+     <span class="highlight-keyword">public</span> CarTest() : <span class="highlight-keyword">base</span>(mocks =&gt; mocks.Initialize&lt;ICarService&gt;(mock =&gt; mock.Setup(x =&gt; x.StartCar).Returns(<span class="highlight-keyword">true</span>));
 }</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Inheritance Hierarchy</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="familySection"><!----></a><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><br />  <span class="selflink">FastMoq<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></span><br /></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.MockerTestBase-1.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.htm">FastMoq Namespace</a></div></div></div>
             </div>
           </div>
