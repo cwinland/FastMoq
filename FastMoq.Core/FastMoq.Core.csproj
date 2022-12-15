@@ -1,0 +1,99 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <DebugType>embedded</DebugType>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Winland, $(AssemblyName)</Authors>
+    <Company>$(Authors)</Company>
+    <Copyright>Copyright(c) 2022 Christopher Winland</Copyright>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing.</Description>
+    <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Easy;fast;injection;inject;mock;extension;Moq;moqthis;framework;mocking;class</PackageTags>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);SetPackageVersion</GenerateNuspecDependsOn>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <RootNamespace>FastMoq</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <Target Name="SetPackageVersion">
+    <PropertyGroup>
+      <!-- You can customize the format and the rule about how version increases here. -->
+      <PackageVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</PackageVersion>
+      <Version>2.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</Version>
+    </PropertyGroup>
+  </Target>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.*" />
+
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.*" />
+
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="*" />
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>    
+    <PackageReference Include="Moq" Version="4.18.*" />
+    <PackageReference Include="coverlet.collector" Version="3.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; buildtransitive</IncludeAssets>
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

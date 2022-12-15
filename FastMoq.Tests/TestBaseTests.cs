@@ -1,15 +1,19 @@
-﻿using FluentAssertions;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
+using FastMoq.Extensions;
+using FastMoq.Models;
 
-#pragma warning disable CS8604
-#pragma warning disable CS8602
+#pragma warning disable CS8604 // Possible null reference argument for parameter.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+#pragma warning disable CS0649 // Field 'field' is never assigned to, and will always have its default value 'value'.
+#pragma warning disable CS8618 // Non-nullable variable must contain a non-null value when exiting constructor. Consider declaring it as nullable.
+#pragma warning disable CS8974 // Converting method group to non-delegate type
+#pragma warning disable CS0472 // The result of the expression is always 'value1' since a value of type 'value2' is never equal to 'null' of type 'value3'.
 
 namespace FastMoq.Tests
 {
@@ -33,11 +37,15 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetMember()
+        public void GetMember_MustBeMemberName()
         {
-            Component.GetMember(p => p.field2).Name.Should().Be("field2");
-            Component.GetMember(p => p.field3).Name.Should().Be("field3");
-            Component.GetMember(p => p.property4).Name.Should().Be("property4");
+            Component.GetMemberName(p => p.field2).Should().Be(Component.GetMember(p => p.field2).Name);
+            Component.GetMemberName(p => p.field3).Should().Be(Component.GetMember(p => p.field3).Name);
+            Component.GetMemberName(p => p.property4).Should().Be(Component.GetMember(p => p.property4).Name);
+
+            Component.GetMember(p => p.field2).Name.Should().Be(nameof(TestClass.field2));
+            Component.GetMember(p => p.field3).Name.Should().Be(nameof(TestClass.field3));
+            Component.GetMember(p => p.property4).Name.Should().Be(nameof(TestClass.property4));
         }
 
         [Theory]
@@ -104,7 +112,7 @@ namespace FastMoq.Tests
 
             if (getOnly)
             {
-                a.Should().Throw<Exception>();
+                a.Should()?.Throw<Exception>();
             }
             else
             {
@@ -114,14 +122,14 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void TestMethod_ShouldThrow()
+        public void TestMethod_ShouldThrow_WhenNull()
         {
-            List<object?> dataResult = null;
+            List<object?>? dataResult = null;
 
             TestMethodParametersAsync(x => x.TestMethod,
-                (func, paramName, data) =>
+                (func, paramName, data, info) =>
                 {
-                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                    func.Should()?.ThrowAsync<ArgumentNullException>(paramName);
                     dataResult = data;
                 },
                 1,
@@ -135,12 +143,12 @@ namespace FastMoq.Tests
         [Fact]
         public void TestMethod2_ShouldThrow()
         {
-            List<object?> dataResult = null;
+            List<object?>? dataResult = null;
 
             TestMethodParametersAsync(x => x.TestMethod2,
-                (func, paramName, data) =>
+                (func, paramName, data, info) =>
                 {
-                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
+                    func.Should()?.ThrowAsync<ArgumentNullException>(paramName);
                     dataResult = data;
                 },
                 TestClass.TestEnum.test2,
@@ -153,10 +161,10 @@ namespace FastMoq.Tests
         [Fact]
         public void TestMethod2Async_ShouldThrow()
         {
-            List<object?> dataResult = null;
+            List<object?>? dataResult = null;
 
             TestMethodParametersAsync(x => x.TestMethod2Async,
-                (func, paramName, data) =>
+                (func, paramName, data, info) =>
                 {
                     func.Should().ThrowAsync<ArgumentNullException>(paramName);
                     dataResult = data;
@@ -173,18 +181,18 @@ namespace FastMoq.Tests
         public void TestMethodAsync_MethodInfo_Null_ShouldThrow()
         {
             var obj = new TestBaseTestClass();
-            new Action(() => obj.TestMethodParameters(null, (func, s, arg3) => { })).Should().Throw<ArgumentNullException>();
+            new Action(() => obj.TestMethodParameters(null, (func, s, arg3, info) => { })).Should().Throw<ArgumentNullException>();
             new Action(() => obj.TestMethodParameters(obj.GetMethod("TestMethodParameters"), null)).Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
         public void TestMethodAsync_MethodInfo_ShouldPass()
         {
-            List<object?> dataResult = null;
+            List<object?>? dataResult = null;
             var methodInfo = Component.GetType().GetMethod("TestMethodAsync", BindingFlags.NonPublic | BindingFlags.Instance);
 
             TestMethodParametersAsync(methodInfo,
-                (func, paramName, data) =>
+                (func, paramName, data, info) =>
                 {
                     func.Should().ThrowAsync<ArgumentNullException>(paramName);
                     dataResult = data;
@@ -198,36 +206,12 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void TestMethodAsync_MismatchArgs()
-        {
-            List<object?> dataResult = null;
-
-            var a = () => TestMethodParametersAsync(x => x.TestMethodAsync,
-                (func, paramName, data) =>
-                {
-                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
-                    dataResult = data;
-                },
-                1,
-                "2",
-                new TestClass(),
-                "3"
-            );
-
-            a.Should().Throw<ArgumentOutOfRangeException>(
-                "Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')"
-            );
-
-            dataResult.Should().HaveCount(4);
-        }
-
-        [Fact]
         public void TestMethodAsync_ShouldThrow()
         {
-            List<object?> dataResult = null;
+            List<object?>? dataResult = null;
 
             TestMethodParametersAsync(x => x.TestMethodAsync,
-                (func, paramName, data) =>
+                (func, paramName, data, info) =>
                 {
                     func.Should().ThrowAsync<ArgumentNullException>(paramName);
                     dataResult = data;
@@ -272,7 +256,7 @@ namespace FastMoq.Tests
 
     public class TestBaseTestClass : MockerTestBase<TestClass>
     {
-        public void TestMethodParameters(MethodInfo methodInfo, Action<Func<Task>, string?, List<object?>> resultAction, params object?[]? args) =>
+        public void TestMethodParameters(MethodInfo methodInfo, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction, params object?[]? args) =>
             TestMethodParametersAsync(methodInfo, resultAction, args);
     }
 

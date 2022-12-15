@@ -1,0 +1,19 @@
+﻿@page "/counter"
+@using System.IO.Abstractions
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    [Inject]
+    public IFileSystem FileSystem { get; set; } // Added for testing only.
+
+    internal int currentCount = 0;
+
+    private void IncrementCount() => currentCount++;
+}
