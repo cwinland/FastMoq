@@ -71,11 +71,11 @@ namespace FastMoq.Web.Blazor
     /// <example>
     ///     Click Button by class, tag, or id.
     ///     <code language="cs"><![CDATA[
-    /// ButtonClick("button", () => true).Should().BeTrue();
-    /// ButtonClick("button[id='testbutton']", () => count > 0).Should().BeTrue();
-    /// ButtonClick(Component.FindAll("button").First(x => x.Id == "testbutton"), () => IsPressed == true).Should().BeTrue();
-    /// ButtonClick(FindAllByTag("button").First(x => x.Id == "testbutton"), () => true).Should().BeTrue();
-    /// ButtonClick(FindById("testbutton"), () => true).Should().BeTrue();
+    /// ClickButton("button", () => true).Should().BeTrue();
+    /// ClickButton("button[id='testbutton']", () => count > 0).Should().BeTrue();
+    /// ClickButton(Component.FindAll("button").First(x => x.Id == "testbutton"), () => IsPressed == true).Should().BeTrue();
+    /// ClickButton(FindAllByTag("button").First(x => x.Id == "testbutton"), () => true).Should().BeTrue();
+    /// ClickButton(FindById("testbutton"), () => true).Should().BeTrue();
     /// ]]></code>
     /// </example>
     public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHelpers<T> where T : ComponentBase
@@ -114,6 +114,12 @@ namespace FastMoq.Web.Blazor
         /// ]]></code>
         /// </example>
         protected TestAuthorizationContext AuthContext { get; }
+
+        /// <summary>
+        ///     Gets the navigation manager.
+        /// </summary>
+        /// <value>The navigation manager.</value>
+        protected FakeNavigationManager NavigationManager => Services.GetRequiredService<FakeNavigationManager>();
 
         /// <summary>
         ///     Gets the authorized claims.
@@ -262,18 +268,15 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <summary>
-        ///     Gets all components.
+        ///     Gets all components of a specific type, regardless of render tree.
         /// </summary>
-        /// <typeparam name="TComponent">The type of the t component.</typeparam>
+        /// <typeparam name="TComponent">The type of the component.</typeparam>
         /// <returns>Dictionary&lt;TComponent, ComponentState&gt;.</returns>
         /// <exception cref="System.ArgumentNullException">Component</exception>
         protected internal Dictionary<TComponent, ComponentState> GetAllComponents<TComponent>() where TComponent : ComponentBase
         {
             var list = new Dictionary<TComponent, ComponentState>();
-
-            var renderer = Component?.Services.GetRequiredService<ITestRenderer>() as TestRenderer ??
-                           throw new ArgumentNullException(nameof(Component));
-
+            var renderer = Component?.Services.GetRequiredService<ITestRenderer>() as TestRenderer ?? throw new ArgumentNullException(nameof(Component));
             var componentList = renderer.GetFieldValue<IDictionary, Renderer>(COMPONENT_LIST_NAME);
 
             if (componentList == null)
@@ -294,13 +297,13 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <summary>
-        ///     Gets all components.
+        ///     Gets all components, regardless of render tree.
         /// </summary>
         /// <returns>Dictionary&lt;IComponent, ComponentState&gt;.</returns>
         protected internal Dictionary<ComponentBase, ComponentState> GetAllComponents() => GetAllComponents<ComponentBase>();
 
         /// <summary>
-        ///     Setups this instance.
+        ///     Setup and create component.
         /// </summary>
         protected internal void Setup()
         {
@@ -367,7 +370,7 @@ namespace FastMoq.Web.Blazor
         #region IMockerBlazorTestHelpers<T>
 
         /// <inheritdoc />
-        public bool ButtonClick(IElement button, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+        public IMockerBlazorTestHelpers<T> ClickButton(IElement button, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
             if (button == null)
             {
@@ -377,62 +380,49 @@ namespace FastMoq.Web.Blazor
             button.Click();
             WaitForState(waitFunc, waitTimeout);
 
-            return true;
+            return this;
         }
 
         /// <inheritdoc />
-        public bool ButtonClick(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+        public IMockerBlazorTestHelpers<T> ClickButton(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
             if (Component == null)
             {
                 throw new ArgumentNullException(nameof(Component));
             }
 
-            return ButtonClick(Component.Find(cssSelector), waitFunc, waitTimeout);
+            return ClickButton(Component.Find(cssSelector), waitFunc, waitTimeout);
         }
 
         /// <inheritdoc />
-        public bool ButtonClick<TComponent>(string cssSelector, Func<bool> waitFunc, IRenderedComponent<TComponent> startingComponent,
+        public IMockerBlazorTestHelpers<T>  ClickButton<TComponent>(string cssSelector, Func<bool> waitFunc, IRenderedComponent<TComponent> startingComponent,
             TimeSpan? waitTimeout = null)
             where TComponent : class, IComponent =>
-            ButtonClick(startingComponent.Find(cssSelector), waitFunc, waitTimeout);
+            ClickButton(startingComponent.Find(cssSelector), waitFunc, waitTimeout);
 
         /// <inheritdoc />
-        public bool ButtonClick(Func<IElement, bool> cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+        public IMockerBlazorTestHelpers<T> ClickButton(Func<IElement, bool> cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
-            if (cssSelector == null)
-            {
-                throw new ArgumentNullException(nameof(cssSelector));
-            }
+            var buttons = cssSelector == null ? throw new ArgumentNullException(nameof(cssSelector)) :
+                Component == null ? throw new ArgumentNullException(nameof(Component)) : Component.FindAll("*").ToCollection()
+                    .Where(cssSelector);
 
-            if (Component == null)
-            {
-                throw new ArgumentNullException(nameof(Component));
-            }
+            buttons.ForEach(button => ClickButton(button, waitFunc, waitTimeout));
 
-            return Component.FindAll("*").ToCollection()
-                .Where(cssSelector)
-                .Select(b => ButtonClick(b, waitFunc, waitTimeout))
-                .FirstOrDefault();
+            return this;
         }
 
         /// <inheritdoc />
-        public bool ButtonClick<TComponent>(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
-            where TComponent : class, IComponent
-        {
-            if (string.IsNullOrWhiteSpace(cssSelector))
-            {
-                throw new ArgumentNullException(nameof(cssSelector));
-            }
-
-            return ButtonClick(GetComponent<TComponent>().Find(cssSelector), waitFunc, waitTimeout);
-        }
+        public IMockerBlazorTestHelpers<T>  ClickButton<TComponent>(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+            where TComponent : class, IComponent => string.IsNullOrWhiteSpace(cssSelector)
+            ? throw new ArgumentNullException(nameof(cssSelector))
+            : ClickButton(GetComponent<TComponent>().Find(cssSelector), waitFunc, waitTimeout);
 
         /// <inheritdoc />
         public IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(IRenderedComponent<TComponent> component,
             string cssSelector, string propName, Func<bool> waitFunc) where TComponent : class, IComponent
         {
-            ButtonClick(component
+            ClickButton(component
                     .FindAll(cssSelector)
                     .First(e => e.InnerHtml == propName),
                 waitFunc
@@ -444,16 +434,9 @@ namespace FastMoq.Web.Blazor
         /// <inheritdoc />
         /// <exception cref="T:System.ArgumentNullException">Component</exception>
         public IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(string propName, Func<bool> waitFunc,
-            string itemCssSelector = "a.dropdown-item") where TComponent : class, IComponent
-        {
-            if (Component == null)
-            {
-                throw new ArgumentNullException(nameof(Component));
-            }
-
-            IRenderedComponent<TComponent> dropDown = Component.FindComponent<TComponent>();
-            return ClickDropdownItem(dropDown, itemCssSelector, propName, waitFunc);
-        }
+            string itemCssSelector = "a.dropdown-item") where TComponent : class, IComponent => Component == null
+            ? throw new ArgumentNullException(nameof(Component))
+            : ClickDropdownItem(Component.FindComponent<TComponent>(), itemCssSelector, propName, waitFunc);
 
         /// <inheritdoc />
         public IEnumerable<IElement> FindAllByTag(string tagName) =>
@@ -526,27 +509,32 @@ namespace FastMoq.Web.Blazor
         public IEnumerable<PropertyInfo> GetInjections(Type type) => GetInjections(type, typeof(InjectAttribute));
 
         /// <inheritdoc />
-        public void InjectComponent(Type type) => InjectComponent(type, typeof(InjectAttribute));
+        public IMockerBlazorTestHelpers<T>  InjectComponent(Type type) => InjectComponent(type, typeof(InjectAttribute));
 
         /// <inheritdoc />
-        public void InjectComponent(Type type, Type injectAttribute) => GetInjections(type, injectAttribute)
-            .ForEach(y =>
-                {
-                    InjectComponent(y.PropertyType);
+        public IMockerBlazorTestHelpers<T>  InjectComponent(Type type, Type injectAttribute)
+        {
+            GetInjections(type, injectAttribute)
+                .ForEach(y =>
+                    {
+                        InjectComponent(y.PropertyType);
 
-                    Services
-                        .TryAddSingleton(y.PropertyType,
-                            _ => Mocks.GetObject(y.PropertyType) ??
-                                 throw new NullReferenceException($"Mock object of {y.PropertyType} cannot be null.")
-                        );
-                }
-            );
+                        Services
+                            .TryAddSingleton(y.PropertyType,
+                                _ => Mocks.GetObject(y.PropertyType) ??
+                                     throw new NullReferenceException($"Mock object of {y.PropertyType} cannot be null.")
+                            );
+                    }
+                );
+
+            return this;
+        }
 
         /// <inheritdoc />
-        public void InjectComponent<TComponent>() => InjectComponent(typeof(TComponent));
+        public IMockerBlazorTestHelpers<T>  InjectComponent<TComponent>() => InjectComponent(typeof(TComponent));
 
         /// <inheritdoc />
-        public void InjectComponent<TComponent, TInjectAttribute>() where TInjectAttribute : Attribute =>
+        public IMockerBlazorTestHelpers<T>  InjectComponent<TComponent, TInjectAttribute>() where TInjectAttribute : Attribute =>
             InjectComponent(typeof(TComponent), typeof(TInjectAttribute));
 
         /// <inheritdoc />
@@ -622,7 +610,7 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public void SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+        public IMockerBlazorTestHelpers<T> SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null) where TComponent : class, IComponent
         {
             IElement? nameFilter = null;
@@ -678,10 +666,12 @@ namespace FastMoq.Web.Blazor
             var checkbox = ((Wrapper<IElement>) nameFilter).WrappedElement;
             checkbox.Change(isChecked);
             WaitForState(waitFunc, waitTimeout);
+
+            return this;
         }
 
         /// <inheritdoc />
-        public void SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+        public IMockerBlazorTestHelpers<T> SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null) where TComponent : class, IComponent
         {
             IElement? nameFilter = null;
@@ -737,10 +727,12 @@ namespace FastMoq.Web.Blazor
             var theSwitch = ((Wrapper<IElement>) nameFilter).WrappedElement;
             theSwitch.Change(isChecked);
             WaitForState(waitFunc, waitTimeout);
+
+            return this;
         }
 
         /// <inheritdoc />
-        public void SetElementText(IElement element, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+        public IMockerBlazorTestHelpers<T> SetElementText(IElement element, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
             if (element == null)
             {
@@ -749,11 +741,12 @@ namespace FastMoq.Web.Blazor
 
             element.Input(text);
             WaitForState(waitFunc, waitTimeout);
+
+            return this;
         }
 
         /// <inheritdoc />
-        public void SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
-            IRenderedFragment? startingPoint = null)
+        public IMockerBlazorTestHelpers<T> SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null)
         {
             if (string.IsNullOrWhiteSpace(cssSelector))
             {
@@ -784,11 +777,11 @@ namespace FastMoq.Web.Blazor
                 ? Component.Find(cssSelector)
                 : startingPoint.Find(cssSelector);
 
-            SetElementText(nameFilter, text, waitFunc, waitTimeout);
+            return SetElementText(nameFilter, text, waitFunc, waitTimeout);
         }
 
         /// <inheritdoc />
-        public void WaitDelay(TimeSpan? waitTimeout = null)
+        public IMockerBlazorTestHelpers<T> WaitDelay(TimeSpan? waitTimeout = null)
         {
             try
             {
@@ -798,16 +791,18 @@ namespace FastMoq.Web.Blazor
             {
                 // Ignore
             }
+
+            return this;
         }
 
         /// <inheritdoc />
-        public void WaitForExists(string cssSelector, TimeSpan? waitTimeout = null) => WaitForState(() => IsExists(cssSelector), waitTimeout);
+        public IMockerBlazorTestHelpers<T> WaitForExists(string cssSelector, TimeSpan? waitTimeout = null) => WaitForState(() => IsExists(cssSelector), waitTimeout);
 
         /// <inheritdoc />
-        public void WaitForNotExists(string cssSelector, TimeSpan? waitTimeout = null) => WaitForState(() => !IsExists(cssSelector), waitTimeout);
+        public IMockerBlazorTestHelpers<T> WaitForNotExists(string cssSelector, TimeSpan? waitTimeout = null) => WaitForState(() => !IsExists(cssSelector), waitTimeout);
 
         /// <inheritdoc />
-        public bool WaitForState(Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+        public IMockerBlazorTestHelpers<T> WaitForState(Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
             if (Component == null)
             {
@@ -815,7 +810,7 @@ namespace FastMoq.Web.Blazor
             }
 
             Component.WaitForState(waitFunc, waitTimeout ?? TimeSpan.FromSeconds(3));
-            return true;
+            return this;
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using FastMoq.Models;
+using Moq;
 using Moq.Protected;
 using System.Collections;
 using System.IO.Abstractions;

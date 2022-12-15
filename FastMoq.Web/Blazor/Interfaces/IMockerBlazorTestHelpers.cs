@@ -12,56 +12,56 @@ namespace FastMoq.Web.Blazor.Interfaces
     public interface IMockerBlazorTestHelpers<T> where T : ComponentBase
     {
         /// <summary>
-        ///     Buttons the click.
+        ///     Clicks the button element.
         /// </summary>
         /// <param name="button">The button.</param>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        /// <exception cref="ArgumentNullException">button</exception>
-        bool ButtonClick(IElement button, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> ClickButton(IElement button, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
 
         /// <summary>
-        ///     Buttons the click.
+        ///     Clicks the button element.
         /// </summary>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        bool ButtonClick(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> ClickButton(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
 
         /// <summary>
-        ///     Buttons the click.
+        ///     Clicks the button element.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="startingComponent">The starting component.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        bool ButtonClick<TComponent>(string cssSelector, Func<bool> waitFunc, IRenderedComponent<TComponent> startingComponent,
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> ClickButton<TComponent>(string cssSelector, Func<bool> waitFunc, IRenderedComponent<TComponent> startingComponent,
             TimeSpan? waitTimeout = null) where TComponent : class, IComponent;
 
         /// <summary>
-        ///     Buttons the click.
+        ///     Clicks the button element.
         /// </summary>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
-        bool ButtonClick(Func<IElement, bool> cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
+        IMockerBlazorTestHelpers<T> ClickButton(Func<IElement, bool> cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
 
         /// <summary>
-        ///     Buttons the click.
+        ///     Clicks the button element.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
-        bool ButtonClick<TComponent>(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null) where TComponent : class, IComponent;
+        IMockerBlazorTestHelpers<T> ClickButton<TComponent>(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+            where TComponent : class, IComponent;
 
         /// <summary>
         ///     Clicks the dropdown item.
@@ -107,11 +107,10 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
         /// <example>
-        ///     Get FetchData component. /&gt;
-        ///     <code language="cs"><![CDATA[
+        /// Get FetchData component. /&gt;
+        /// <code language="cs"><![CDATA[
         /// var comp = GetComponent<FetchData>();
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         IRenderedComponent<TComponent> GetComponent<TComponent>() where TComponent : class, IComponent;
 
         /// <summary>
@@ -121,17 +120,15 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="predicate">The predicate.</param>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
         /// <example>
-        ///     Get FetchData component with Id 1234. /&gt;
-        ///     <code language="cs"><![CDATA[
+        /// Get FetchData component with Id 1234. /&gt;
+        /// <code language="cs"><![CDATA[
         /// var comp = GetComponent<FetchData>(x => x.ComponentId == 1234));
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         /// <example>
-        ///     Get FetchData instance property. /&gt;
-        ///     <code language="cs"><![CDATA[
+        /// Get FetchData instance property. /&gt;
+        /// <code language="cs"><![CDATA[
         /// var comp = GetComponent<FetchData>(x => x.Instance.IsRunning));
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> predicate)
             where TComponent : class, IComponent;
 
@@ -142,11 +139,10 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="predicate">The predicate.</param>
         /// <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
         /// <example>
-        ///     Get FetchData component with inner html containing text. /&gt;
-        ///     <code language="cs"><![CDATA[
+        /// Get FetchData component with inner html containing text. /&gt;
+        /// <code language="cs"><![CDATA[
         /// var comp = GetComponent<FetchData>(element => element.InnerHtml.Contains("hello"));
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IElement, bool> predicate) where TComponent : class, IComponent;
 
         /// <summary>
@@ -156,17 +152,15 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="predicate">The where function.</param>
         /// <returns>List&lt;IRenderedComponent&lt;TComponent&gt;&gt;.</returns>
         /// <example>
-        ///     Get FetchData component with Id 1234. /&gt;
-        ///     <code language="cs"><![CDATA[
+        /// Get FetchData component with Id 1234. /&gt;
+        /// <code language="cs"><![CDATA[
         /// var list = GetComponent<FetchData>(x => x.ComponentId == 1234));
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         /// <example>
-        ///     Get FetchData instance property. /&gt;
-        ///     <code language="cs"><![CDATA[
+        /// Get FetchData instance property. /&gt;
+        /// <code language="cs"><![CDATA[
         /// var list = GetComponent<FetchData>(x => x.Instance.IsRunning));
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         List<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IRenderedComponent<TComponent>, bool>? predicate = null)
             where TComponent : class, IComponent;
 
@@ -177,11 +171,10 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="predicate">The predicate.</param>
         /// <returns>List&lt;IRenderedComponent&lt;TComponent&gt;&gt;.</returns>
         /// <example>
-        ///     Get FetchData component with inner html containing text. /&gt;
-        ///     <code language="cs"><![CDATA[
+        /// Get FetchData component with inner html containing text. /&gt;
+        /// <code language="cs"><![CDATA[
         /// var list = GetComponent<FetchData>(element => element.InnerHtml.Contains("hello"));
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         List<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IElement, bool>? predicate = null) where TComponent : class, IComponent;
 
         /// <summary>
@@ -211,26 +204,30 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="injectAttribute">The inject attribute.</param>
-        void InjectComponent(Type type, Type injectAttribute);
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> InjectComponent(Type type, Type injectAttribute);
 
         /// <summary>
         ///     Injects the component.
         /// </summary>
         /// <param name="type">The type.</param>
-        void InjectComponent(Type type);
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> InjectComponent(Type type);
 
         /// <summary>
         ///     Injects the component.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
-        void InjectComponent<TComponent>();
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> InjectComponent<TComponent>();
 
         /// <summary>
         ///     Injects the component.
         /// </summary>
         /// <typeparam name="TComponent">The type of the t component.</typeparam>
         /// <typeparam name="TInjectAttribute">The type of the t inject attribute.</typeparam>
-        void InjectComponent<TComponent, TInjectAttribute>() where TInjectAttribute : Attribute;
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> InjectComponent<TComponent, TInjectAttribute>() where TInjectAttribute : Attribute;
 
         /// <summary>
         ///     Determines whether the specified CSS selector is exists.
@@ -246,17 +243,15 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="forceNew">if set to <c>true</c> [force new].</param>
         /// <returns>IRenderedComponent&lt;T&gt;.</returns>
         /// <example>
-        ///     Render again without losing context. This honors any parameters in the RenderParameters action. /&gt;
-        ///     <code language="cs"><![CDATA[
+        /// Render again without losing context. This honors any parameters in the RenderParameters action. /&gt;
+        /// <code language="cs"><![CDATA[
         /// RenderComponent()
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         /// <example>
-        ///     Force initial render.
-        ///     <code language="cs"><![CDATA[
+        /// Force initial render.
+        /// <code language="cs"><![CDATA[
         /// RenderComponent(true);
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         IRenderedComponent<T> RenderComponent(bool forceNew = false);
 
         /// <summary>
@@ -266,17 +261,15 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="forceNew">if set to <c>true</c> [force new].</param>
         /// <returns>IRenderedComponent&lt;T&gt;.</returns>
         /// <example>
-        ///     Render again with parameters without losing context
-        ///     <code language="cs"><![CDATA[
+        /// Render again with parameters without losing context
+        /// <code language="cs"><![CDATA[
         /// RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()));
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         /// <example>
-        ///     Force initial render with parameters
-        ///     <code language="cs"><![CDATA[
+        /// Force initial render with parameters
+        /// <code language="cs"><![CDATA[
         /// RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()), true);
-        /// ]]></code>
-        /// </example>
+        /// ]]></code></example>
         IRenderedComponent<T> RenderComponent(Action<ComponentParameterCollectionBuilder<T>> parameterBuilder, bool forceNew = false);
 
         /// <summary>
@@ -298,9 +291,10 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
         /// <param name="startingPoint">The starting point.</param>
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
         /// <exception cref="ElementNotFoundException"></exception>
-        void SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+        IMockerBlazorTestHelpers<T> SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null)
             where TComponent : class, IComponent;
 
@@ -313,8 +307,10 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
         /// <param name="startingPoint">The starting point.</param>
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
-        void SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+        IMockerBlazorTestHelpers<T> SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc,
+            TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null) where TComponent : class, IComponent;
 
         /// <summary>
@@ -324,7 +320,8 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="text">The text.</param>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        void SetElementText(IElement element, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> SetElementText(IElement element, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null);
 
         /// <summary>
         ///     Sets the element text.
@@ -334,30 +331,34 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
         /// <param name="startingPoint">The starting point.</param>
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
-        void SetElementText(string cssSelector, string text, Func<bool> waitFunc,
+        IMockerBlazorTestHelpers<T> SetElementText(string cssSelector, string text, Func<bool> waitFunc,
             TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null);
 
         /// <summary>
         ///     Waits the delay time. Use only when absolutely needed. Prefer use of WaitForState, WaitForExists, or
-        ///     WaitForNotExists.
+        /// WaitForNotExists.
         /// </summary>
         /// <param name="waitTimeout">The wait timeout.</param>
-        void WaitDelay(TimeSpan? waitTimeout = null);
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> WaitDelay(TimeSpan? waitTimeout = null);
 
         /// <summary>
         ///     Waits for exists.
         /// </summary>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        void WaitForExists(string cssSelector, TimeSpan? waitTimeout = null);
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> WaitForExists(string cssSelector, TimeSpan? waitTimeout = null);
 
         /// <summary>
         ///     Waits for not exists.
         /// </summary>
         /// <param name="cssSelector">The CSS selector.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        void WaitForNotExists(string cssSelector, TimeSpan? waitTimeout = null);
+        /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
+        IMockerBlazorTestHelpers<T> WaitForNotExists(string cssSelector, TimeSpan? waitTimeout = null);
 
         /// <summary>
         ///     Waits for state.
@@ -365,6 +366,6 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        bool WaitForState(Func<bool> waitFunc, TimeSpan? waitTimeout = null);
+        IMockerBlazorTestHelpers<T> WaitForState(Func<bool> waitFunc, TimeSpan? waitTimeout = null);
     }
 }

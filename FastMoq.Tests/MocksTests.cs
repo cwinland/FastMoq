@@ -1,3 +1,4 @@
+using FastMoq.Models;
 using FastMoq.Tests.TestClasses;
 using System;
 using System.Collections.Generic;

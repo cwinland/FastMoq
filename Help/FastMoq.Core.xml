@@ -4,64 +4,61 @@
     <name>FastMoq.Core</name>
   </assembly>
   <members>
-    <member name="T:FastMoq.InstanceModel`1">
+    <member name="T:FastMoq.Collections.MockerObservableCollection`1">
       <inheritdoc />
-      <summary>
-       Class InstanceModel.
-       Implements the <see cref="T:FastMoq.InstanceModel" /></summary>
-      <typeparam name="TClass">The type of the t class.</typeparam>
-      <seealso cref="T:FastMoq.InstanceModel" />
     </member>
-    <member name="T:FastMoq.InstanceModel">
+    <member name="F:FastMoq.Collections.MockerObservableCollection`1.Changed">
       <summary>
-       Class InstanceModel.
-   Implements the <see cref="T:FastMoq.InstanceModel" /></summary>
-      <seealso cref="T:FastMoq.InstanceModel" />
-    </member>
-    <member name="P:FastMoq.InstanceModel`1.CreateFunc">
-      <summary>
-       Gets or sets the create function.
+       Occurs when the collection changes, either by adding or removing an item.
    </summary>
-      <value>The create function.</value>
     </member>
-    <member name="M:FastMoq.InstanceModel`1.#ctor">
+    <member name="M:FastMoq.Collections.MockerObservableCollection`1.#ctor">
       <inheritdoc />
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
-   </summary>
     </member>
-    <member name="M:FastMoq.InstanceModel`1.#ctor(System.Nullable{Func{Mocker, `0}})">
+    <member name="M:FastMoq.Collections.MockerObservableCollection`1.#ctor(IEnumerable{`0})">
+      <exception cref="ArgumentNullException"> collection is a null reference </exception>
       <inheritdoc />
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
-   </summary>
-      <param name="createFunc">The create function.</param>
     </member>
-    <member name="M:FastMoq.InstanceModel`1.#ctor(System.Nullable{Func{Mocker, `0}},List{System.Object})">
+    <member name="M:FastMoq.Collections.MockerObservableCollection`1.OnChanged(System.Nullable{System.Object},System.Nullable{NotifyCollectionChangedEventArgs})">
+      <summary>
+       Handles the <see cref="E:Changed" /> event.
+   </summary>
+      <param name="sender">The sender.</param>
+      <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
+    </member>
+    <member name="M:FastMoq.Collections.MockerObservableCollection`1.OnChanged(System.Nullable{System.Object},System.Nullable{PropertyChangedEventArgs})">
+      <summary>
+       Handles the <see cref="E:Changed" /> event.
+   </summary>
+      <param name="sender">The sender.</param>
+      <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs" /> instance containing the event data.</param>
+    </member>
+    <member name="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs">
       <inheritdoc />
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
-   </summary>
-      <param name="createFunc">The create function.</param>
-      <param name="arguments">The arguments.</param>
     </member>
-    <member name="P:FastMoq.InstanceModel.InstanceType">
+    <member name="P:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.NotifyCollectionChangedEventArgs">
       <summary>
-       Gets or sets the type of the instance.
+       Gets the notify collection changed event arguments.
    </summary>
-      <value>The type of the instance.</value>
+      <value>The notify collection changed event arguments.</value>
     </member>
-    <member name="P:FastMoq.InstanceModel.CreateFunc">
+    <member name="P:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.PropertyChangedEventArgs">
       <summary>
-       Gets or sets the create function.
+       Gets the property changed event arguments.
    </summary>
-      <value>The create function.</value>
+      <value>The property changed event arguments.</value>
     </member>
-    <member name="P:FastMoq.InstanceModel.Arguments">
+    <member name="M:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.#ctor(System.Nullable{NotifyCollectionChangedEventArgs})">
       <summary>
-       Gets the arguments.
+       Initializes a new instance of the <see cref="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs" /> class.
    </summary>
-      <value>The arguments.</value>
+      <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
+    </member>
+    <member name="M:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.#ctor(System.Nullable{PropertyChangedEventArgs})">
+      <summary>
+       Initializes a new instance of the <see cref="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs" /> class.
+   </summary>
+      <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs" /> instance containing the event data.</param>
     </member>
     <member name="T:FastMoq.Mocker">
       <summary>
@@ -75,7 +72,7 @@ The virtual mock file system that is used by mocker unless overridden with the <
     </member>
     <member name="F:FastMoq.Mocker.mockCollection">
       <summary>
-List of <see cref="T:FastMoq.MockModel`1" />.
+List of <see cref="T:FastMoq.Models.MockModel`1" />.
 </summary>
     </member>
     <member name="P:FastMoq.Mocker.HttpClient">
@@ -95,10 +92,10 @@ Gets or sets a value indicating whether this <see cref="T:FastMoq.Mocker" /> is 
       <remarks>
 If strict, the mock
 <see cref="T:System.IO.Abstractions.IFileSystem" /> does
-not use <see cref="T:System.IO.Abstractions.TestingHelpers.MockFileSystem" /> and uses <see cref="T:FastMoq.MockModel`1.Mock" /> of <see cref="T:System.IO.Abstractions.IFileSystem" />.
+not use <see cref="T:System.IO.Abstractions.TestingHelpers.MockFileSystem" /> and uses <see cref="T:FastMoq.Models.MockModel`1.Mock" /> of <see cref="T:System.IO.Abstractions.IFileSystem" />.
 Gets or sets a value indicating whether this <see cref="T:FastMoq.Mocker" /> is strict. If strict, the mock
 <see cref="T:FastMoq.Mocker.HttpClient" /> does
-not use the pre-built HttpClient and uses <see cref="T:FastMoq.MockModel`1.Mock" /> of <see cref="T:FastMoq.Mocker.HttpClient" />.
+not use the pre-built HttpClient and uses <see cref="T:FastMoq.Models.MockModel`1.Mock" /> of <see cref="T:FastMoq.Mocker.HttpClient" />.
 </remarks>
       <value>
         <c>true</c> if strict <see cref="T:System.IO.Abstractions.IFileSystem" /> resolution; otherwise, <c>false</c> uses the built-in virtual
@@ -114,7 +111,7 @@ not use the pre-built HttpClient and uses <see cref="T:FastMoq.MockModel`1.Mock"
 Initializes a new instance of the <see cref="T:FastMoq.Mocker" /> class.
 </summary>
     </member>
-    <member name="M:FastMoq.Mocker.#ctor(System.Collections.Generic.Dictionary{System.Type,FastMoq.InstanceModel})">
+    <member name="M:FastMoq.Mocker.#ctor(System.Collections.Generic.Dictionary{System.Type,FastMoq.Models.InstanceModel})">
       <inheritdoc />
       <summary>
 Initializes a new instance of the <see cref="T:FastMoq.Mocker" /> class using the specific typeMap.
@@ -133,8 +130,8 @@ Adds the injections to the specified object properties and fields.
     </member>
     <member name="M:FastMoq.Mocker.AddMock``1(Moq.Mock{``0},System.Boolean,System.Boolean)">
       <summary>
-Creates a <see cref="T:FastMoq.MockModel`1" /> with the given <see cref="T:FastMoq.MockModel`1.Mock" /> with the option of overwriting an existing
-<see cref="T:FastMoq.MockModel`1" /></summary>
+Creates a <see cref="T:FastMoq.Models.MockModel`1" /> with the given <see cref="T:FastMoq.Models.MockModel`1.Mock" /> with the option of overwriting an existing
+<see cref="T:FastMoq.Models.MockModel`1" /></summary>
       <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
       <param name="mock">Mock to Add.</param>
       <param name="overwrite">
@@ -143,7 +140,7 @@ false.
 </param>
       <param name="nonPublic">if set to <c>true</c> uses public and non public constructors.</param>
       <returns>
-        <see cref="T:FastMoq.MockModel&lt;T&gt;" />.</returns>
+        <see cref="T:FastMoq.Models.MockModel&lt;T&gt;" />.</returns>
     </member>
     <member name="M:FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object},System.Boolean)">
       <summary>
@@ -182,7 +179,7 @@ Determines whether this instance contains the Mock of <c>type</c>.
 </summary>
       <param name="type">The <see cref="T:Type" />, usually an interface.</param>
       <returns>
-        <c>true</c> if <see cref="T:FastMoq.MockModel&lt;T&gt;.Mock" /> exists; otherwise, <c>false</c>.</returns>
+        <c>true</c> if <see cref="T:FastMoq.Models.MockModel&lt;T&gt;.Mock" /> exists; otherwise, <c>false</c>.</returns>
       <exception cref="T:System.ArgumentNullException">type</exception>
       <exception cref="T:System.ArgumentException">type must be a class. - type</exception>
     </member>
@@ -363,7 +360,7 @@ Creates the instance non public.
     </member>
     <member name="M:FastMoq.Mocker.CreateMock(System.Type,System.Boolean)">
       <summary>
-Creates the <see cref="T:FastMoq.MockModel`1" /> from the <c>Type</c>. This throws an exception if the mock already exists.
+Creates the <see cref="T:FastMoq.Models.MockModel`1" /> from the <c>Type</c>. This throws an exception if the mock already exists.
 </summary>
       <param name="type">The type.</param>
       <param name="nonPublic">
@@ -375,7 +372,7 @@ Creates the <see cref="T:FastMoq.MockModel`1" /> from the <c>Type</c>. This thro
     </member>
     <member name="M:FastMoq.Mocker.CreateMock``1(System.Boolean)">
       <summary>
-Creates the <see cref="T:FastMoq.MockModel`1" /> from the type <c>T</c>. This throws an exception if the mock already exists.
+Creates the <see cref="T:FastMoq.Models.MockModel`1" /> from the type <c>T</c>. This throws an exception if the mock already exists.
 </summary>
       <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
       <param name="nonPublic">if set to <c>true</c> public and non public constructors are used.</param>
@@ -509,7 +506,7 @@ Gets or creates the mock of type <c>T</c>.
 </summary>
       <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
       <returns>
-        <see cref="T:FastMoq.MockModel&lt;T&gt;.Mock" />.</returns>
+        <see cref="T:FastMoq.Models.MockModel&lt;T&gt;.Mock" />.</returns>
     </member>
     <member name="M:FastMoq.Mocker.GetMock(System.Type)">
       <summary>
@@ -517,7 +514,7 @@ Gets of creates the mock of <c>type</c>.
 </summary>
       <param name="type">The type.</param>
       <returns>
-        <see cref="T:FastMoq.MockModel`1.Mock" />.</returns>
+        <see cref="T:FastMoq.Models.MockModel`1.Mock" />.</returns>
     </member>
     <member name="M:FastMoq.Mocker.GetObject(System.Reflection.ParameterInfo)">
       <summary>
@@ -582,7 +579,7 @@ Gets the required mock.
 </summary>
       <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
       <returns>
-        <see cref="T:FastMoq.MockModel&lt;T&gt;.Mock" />.</returns>
+        <see cref="T:FastMoq.Models.MockModel&lt;T&gt;.Mock" />.</returns>
       <exception cref="T:System.ArgumentException">type must be a class. - type</exception>
       <exception cref="T:System.InvalidOperationException">Mock must exist. - type</exception>
     </member>
@@ -603,7 +600,7 @@ Gets or Creates then Initializes the specified Mock of <c>T</c>.
         <c>False to keep the existing setup.</c>
       </param>
       <returns>
-        <see cref="T:FastMoq.MockModel&lt;T&gt;.Mock" />
+        <see cref="T:FastMoq.Models.MockModel&lt;T&gt;.Mock" />
       </returns>
       <exception cref="T:System.InvalidOperationException">Invalid Mock.</exception>
       <example>
@@ -871,7 +868,7 @@ Setups the message protected asynchronous.
        unmanaged resources.
    </param>
     </member>
-    <member name="M:FastMoq.MockerTestBase`1.TestMethodParametersAsync(Expression{Func{`0, System.Object}},Action{Func{System.Nullable{Task}}, System.Nullable{System.String}, System.Nullable{List{System.Nullable{System.Object}}}, ParameterInfo},System.Nullable{System.Object}[])">
+    <member name="M:FastMoq.MockerTestBase`1.TestMethodParametersAsync(Expression{Func{`0, System.Object}},Action{System.Nullable{Func{Task}}, System.Nullable{System.String}, System.Nullable{List{System.Nullable{System.Object}}}, ParameterInfo},System.Nullable{System.Object}[])">
       <summary>
        Tests the asynchronous function.
    </summary>
@@ -879,7 +876,7 @@ Setups the message protected asynchronous.
       <param name="resultAction">The result action.</param>
       <param name="args">The arguments.</param>
     </member>
-    <member name="M:FastMoq.MockerTestBase`1.TestMethodParametersAsync(MethodInfo,Action{Func{System.Nullable{Task}}, System.Nullable{System.String}, System.Nullable{List{System.Nullable{System.Object}}}, ParameterInfo},System.Nullable{System.Object}[])">
+    <member name="M:FastMoq.MockerTestBase`1.TestMethodParametersAsync(MethodInfo,Action{System.Nullable{Func{Task}}, System.Nullable{System.String}, System.Nullable{List{System.Nullable{System.Object}}}, ParameterInfo},System.Nullable{System.Object}[])">
       <summary>
        Tests the method parameters asynchronous.
    </summary>
@@ -888,72 +885,6 @@ Setups the message protected asynchronous.
       <param name="args">The arguments.</param>
       <exception cref="T:System.ArgumentNullException">methodInfo</exception>
       <exception cref="T:System.ArgumentNullException">resultAction</exception>
-    </member>
-    <member name="T:FastMoq.MockModel`1">
-      <summary>
-       Class MockModel.
-       Implements the <see cref="T:FastMoq.MockModel" /></summary>
-      <typeparam name="T">
-      </typeparam>
-      <seealso cref="T:FastMoq.MockModel" />
-      <inheritdoc cref="T:FastMoq.MockModel" />
-    </member>
-    <member name="T:FastMoq.MockModel">
-      <summary>
-       Contains Mock and Type information.
-   </summary>
-    </member>
-    <member name="P:FastMoq.MockModel`1.Mock">
-      <summary>
-       Gets or sets the mock.
-   </summary>
-      <value>The mock.</value>
-    </member>
-    <member name="M:FastMoq.MockModel`1.Equals(System.Nullable{System.Object})">
-      <inheritdoc />
-    </member>
-    <member name="M:FastMoq.MockModel`1.GetHashCode">
-      <inheritdoc />
-    </member>
-    <member name="M:FastMoq.MockModel`1.CompareTo(System.Nullable{System.Object})">
-      <inheritdoc />
-    </member>
-    <member name="M:FastMoq.MockModel`1.CompareTo(System.Nullable{MockModel{`0}})">
-      <inheritdoc />
-    </member>
-    <member name="P:FastMoq.MockModel.Mock">
-      <summary>
-       Gets or sets the mock.
-   </summary>
-      <value>The mock.</value>
-    </member>
-    <member name="P:FastMoq.MockModel.Type">
-      <summary>
-       Gets or sets the type.
-   </summary>
-      <value>The type.</value>
-    </member>
-    <member name="P:FastMoq.MockModel.NonPublic">
-      <summary>
-       Gets or sets a value indicating whether [non public].
-   </summary>
-      <value>
-        <c>true</c> if [non public]; otherwise, <c>false</c>.</value>
-    </member>
-    <member name="M:FastMoq.MockModel.Equals(System.Nullable{System.Object})">
-      <inheritdoc />
-    </member>
-    <member name="M:FastMoq.MockModel.GetHashCode">
-      <inheritdoc />
-    </member>
-    <member name="M:FastMoq.MockModel.ToString">
-      <inheritdoc />
-    </member>
-    <member name="M:FastMoq.MockModel.CompareTo(System.Nullable{System.Object})">
-      <inheritdoc />
-    </member>
-    <member name="M:FastMoq.MockModel.CompareTo(System.Nullable{MockModel})">
-      <inheritdoc />
     </member>
     <member name="T:FastMoq.TestClassExtensions">
       <summary>
@@ -1082,61 +1013,153 @@ Setups the message protected asynchronous.
       <param name="name">The name.</param>
       <param name="value">The value.</param>
     </member>
-    <member name="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs">
+    <member name="T:FastMoq.Models.MockModel`1">
+      <summary>
+       Class MockModel.
+       Implements the <see cref="T:FastMoq.Models.MockModel" /></summary>
+      <typeparam name="T">
+      </typeparam>
+      <seealso cref="T:FastMoq.Models.MockModel" />
+      <inheritdoc cref="T:FastMoq.Models.MockModel" />
+    </member>
+    <member name="T:FastMoq.Models.MockModel">
+      <summary>
+       Contains Mock and Type information.
+   </summary>
+    </member>
+    <member name="P:FastMoq.Models.MockModel`1.Mock">
+      <summary>
+       Gets or sets the mock.
+   </summary>
+      <value>The mock.</value>
+    </member>
+    <member name="M:FastMoq.Models.MockModel`1.Equals(System.Nullable{System.Object})">
       <inheritdoc />
     </member>
-    <member name="P:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.NotifyCollectionChangedEventArgs">
-      <summary>
-       Gets the notify collection changed event arguments.
-   </summary>
-      <value>The notify collection changed event arguments.</value>
-    </member>
-    <member name="P:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.PropertyChangedEventArgs">
-      <summary>
-       Gets the property changed event arguments.
-   </summary>
-      <value>The property changed event arguments.</value>
-    </member>
-    <member name="M:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.#ctor(System.Nullable{NotifyCollectionChangedEventArgs})">
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs" /> class.
-   </summary>
-      <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
-    </member>
-    <member name="M:FastMoq.Collections.MockerObservableCollectionChangedEventArgs.#ctor(System.Nullable{PropertyChangedEventArgs})">
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs" /> class.
-   </summary>
-      <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs" /> instance containing the event data.</param>
-    </member>
-    <member name="T:FastMoq.Collections.MockerObservableCollection`1">
+    <member name="M:FastMoq.Models.MockModel`1.GetHashCode">
       <inheritdoc />
     </member>
-    <member name="F:FastMoq.Collections.MockerObservableCollection`1.Changed">
-      <summary>
-       Occurs when the collection changes, either by adding or removing an item.
-   </summary>
-    </member>
-    <member name="M:FastMoq.Collections.MockerObservableCollection`1.#ctor">
+    <member name="M:FastMoq.Models.MockModel`1.CompareTo(System.Nullable{System.Object})">
       <inheritdoc />
     </member>
-    <member name="M:FastMoq.Collections.MockerObservableCollection`1.#ctor(IEnumerable{`0})">
-      <exception cref="ArgumentNullException"> collection is a null reference </exception>
+    <member name="M:FastMoq.Models.MockModel`1.CompareTo(System.Nullable{MockModel{`0}})">
+      <summary>Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.</summary>
       <inheritdoc />
+      <param name="other">An object to compare with this instance.</param>
+      <returns>A value that indicates the relative order of the objects being compared. The return value has these meanings:  
+  
+ <list type="table"><listheader><term> Value</term><description> Meaning</description></listheader><item><term> Less than zero</term><description> This instance precedes <paramref name="other" /> in the sort order.</description></item><item><term> Zero</term><description> This instance occurs in the same position in the sort order as <paramref name="other" />.</description></item><item><term> Greater than zero</term><description> This instance follows <paramref name="other" /> in the sort order.</description></item></list></returns>
     </member>
-    <member name="M:FastMoq.Collections.MockerObservableCollection`1.OnChanged(System.Nullable{System.Object},System.Nullable{NotifyCollectionChangedEventArgs})">
+    <member name="P:FastMoq.Models.MockModel.Mock">
       <summary>
-       Handles the <see cref="E:Changed" /> event.
+       Gets or sets the mock.
    </summary>
-      <param name="sender">The sender.</param>
-      <param name="e">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> instance containing the event data.</param>
+      <value>The mock.</value>
     </member>
-    <member name="M:FastMoq.Collections.MockerObservableCollection`1.OnChanged(System.Nullable{System.Object},System.Nullable{PropertyChangedEventArgs})">
+    <member name="P:FastMoq.Models.MockModel.Type">
       <summary>
-       Handles the <see cref="E:Changed" /> event.
+       Gets or sets the type.
    </summary>
-      <param name="sender">The sender.</param>
-      <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs" /> instance containing the event data.</param>
+      <value>The type.</value>
+    </member>
+    <member name="P:FastMoq.Models.MockModel.NonPublic">
+      <summary>
+       Gets or sets a value indicating whether [non public].
+   </summary>
+      <value>
+        <c>true</c> if [non public]; otherwise, <c>false</c>.</value>
+    </member>
+    <member name="M:FastMoq.Models.MockModel.Equals(System.Nullable{System.Object})">
+      <summary>Determines whether the specified object is equal to the current object.</summary>
+      <inheritdoc />
+      <param name="obj">The object to compare with the current object.</param>
+      <returns>
+        <see langword="true" /> if the specified object  is equal to the current object; otherwise, <see langword="false" />.</returns>
+    </member>
+    <member name="M:FastMoq.Models.MockModel.GetHashCode">
+      <summary>Serves as the default hash function.</summary>
+      <inheritdoc />
+      <returns>A hash code for the current object.</returns>
+    </member>
+    <member name="M:FastMoq.Models.MockModel.ToString">
+      <summary>Returns a string that represents the current object.</summary>
+      <inheritdoc />
+      <returns>A string that represents the current object.</returns>
+    </member>
+    <member name="M:FastMoq.Models.MockModel.CompareTo(System.Nullable{System.Object})">
+      <summary>Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.</summary>
+      <inheritdoc />
+      <param name="obj">An object to compare with this instance.</param>
+      <returns>A value that indicates the relative order of the objects being compared. The return value has these meanings:  
+  
+ <list type="table"><listheader><term> Value</term><description> Meaning</description></listheader><item><term> Less than zero</term><description> This instance precedes <paramref name="obj" /> in the sort order.</description></item><item><term> Zero</term><description> This instance occurs in the same position in the sort order as <paramref name="obj" />.</description></item><item><term> Greater than zero</term><description> This instance follows <paramref name="obj" /> in the sort order.</description></item></list></returns>
+    </member>
+    <member name="M:FastMoq.Models.MockModel.CompareTo(System.Nullable{MockModel})">
+      <summary>Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.</summary>
+      <inheritdoc />
+      <param name="other">An object to compare with this instance.</param>
+      <returns>A value that indicates the relative order of the objects being compared. The return value has these meanings:  
+  
+ <list type="table"><listheader><term> Value</term><description> Meaning</description></listheader><item><term> Less than zero</term><description> This instance precedes <paramref name="other" /> in the sort order.</description></item><item><term> Zero</term><description> This instance occurs in the same position in the sort order as <paramref name="other" />.</description></item><item><term> Greater than zero</term><description> This instance follows <paramref name="other" /> in the sort order.</description></item></list></returns>
+    </member>
+    <member name="T:FastMoq.Models.InstanceModel`1">
+      <inheritdoc />
+      <summary>
+       Class InstanceModel.
+       Implements the <see cref="T:FastMoq.InstanceModel" /></summary>
+      <typeparam name="TClass">The type of the t class.</typeparam>
+      <seealso cref="T:FastMoq.InstanceModel" />
+    </member>
+    <member name="T:FastMoq.Models.InstanceModel">
+      <summary>
+       Class InstanceModel.
+   Implements the <see cref="T:FastMoq.Models.InstanceModel" /></summary>
+      <seealso cref="T:FastMoq.Models.InstanceModel" />
+    </member>
+    <member name="P:FastMoq.Models.InstanceModel`1.CreateFunc">
+      <summary>
+       Gets or sets the create function.
+   </summary>
+      <value>The create function.</value>
+    </member>
+    <member name="M:FastMoq.Models.InstanceModel`1.#ctor">
+      <inheritdoc />
+      <summary>
+       Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
+   </summary>
+    </member>
+    <member name="M:FastMoq.Models.InstanceModel`1.#ctor(System.Nullable{Func{Mocker, `0}})">
+      <inheritdoc />
+      <summary>
+       Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
+   </summary>
+      <param name="createFunc">The create function.</param>
+    </member>
+    <member name="M:FastMoq.Models.InstanceModel`1.#ctor(System.Nullable{Func{Mocker, `0}},List{System.Object})">
+      <inheritdoc />
+      <summary>
+       Initializes a new instance of the <see cref="T:FastMoq.Models.InstanceModel`1" /> class.
+   </summary>
+      <param name="createFunc">The create function.</param>
+      <param name="arguments">The arguments.</param>
+    </member>
+    <member name="P:FastMoq.Models.InstanceModel.InstanceType">
+      <summary>
+       Gets or sets the type of the instance.
+   </summary>
+      <value>The type of the instance.</value>
+    </member>
+    <member name="P:FastMoq.Models.InstanceModel.CreateFunc">
+      <summary>
+       Gets or sets the create function.
+   </summary>
+      <value>The create function.</value>
+    </member>
+    <member name="P:FastMoq.Models.InstanceModel.Arguments">
+      <summary>
+       Gets the arguments.
+   </summary>
+      <value>The arguments.</value>
     </member>
   </members>
 </doc>
