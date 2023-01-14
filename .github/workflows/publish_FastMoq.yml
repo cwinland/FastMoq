@@ -23,7 +23,7 @@ jobs:
           
       # Publish
       - name: Build FastMoq Web
-        run: dotnet build -c Release
+        run: dotnet build
 
       - name: Creating a package
         run: dotnet pack -o .
