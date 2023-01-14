@@ -53,6 +53,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\.github\workflows\publish_FastMoq.yml" Link="publish_FastMoq.yml" />
     <None Include="..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
