@@ -521,6 +521,7 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="nonPublic">if set to <c>true</c> public and non public constructors are used.</param>
+        /// <param name="args">The arguments used to find the correct constructor for a class.</param>
         /// <returns><see cref="List{T}" />.</returns>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.ArgumentException">type already exists. - type</exception>
@@ -532,7 +533,7 @@ namespace FastMoq
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
-        /// <param name="args"></param>
+        /// <param name="args">The arguments used to find the correct constructor for a class.</param>
         /// <returns>Mock.</returns>
         /// <exception cref="ArgumentException">type must be a class or interface., nameof(type)</exception>
         /// <exception cref="ApplicationException">Cannot create instance.</exception>
@@ -586,7 +587,7 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
-        /// <param name="args"></param>
+        /// <param name="args">The arguments used to find the correct constructor for a class.</param>
         /// <returns>Mock.</returns>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
@@ -766,7 +767,7 @@ namespace FastMoq
         ///     Gets of creates the mock of <c>type</c>.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="args"></param>
+        /// <param name="args">The arguments used to find the correct constructor for a class.</param>
         /// <returns><see cref="Mock" />.</returns>
         public Mock GetMock(Type type, params object?[] args)
         {
@@ -965,7 +966,7 @@ namespace FastMoq
         /// <typeparam name="TClass">The type of the t class.</typeparam>
         /// <param name="methodName">Name of the method.</param>
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
-        /// <param name="args">The arguments.</param>
+        /// <param name="args">The arguments used for the method.</param>
         /// <returns><see cref="Nullable" />.</returns>
         public object? InvokeMethod<TClass>(string methodName, bool nonPublic = false, params object?[] args)
             where TClass : class => InvokeMethod<TClass>(null, methodName, nonPublic, args);
@@ -977,7 +978,7 @@ namespace FastMoq
         /// <param name="obj">The object.</param>
         /// <param name="methodName">Name of the method.</param>
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
-        /// <param name="args">The arguments.</param>
+        /// <param name="args">The arguments used for the method.</param>
         /// <returns><see cref="Nullable" />.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public object? InvokeMethod<TClass>(TClass? obj, string methodName, bool nonPublic = false, params object?[] args)

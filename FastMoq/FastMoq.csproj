@@ -22,7 +22,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);SetPackageVersion</GenerateNuspecDependsOn>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Version>$(PackageVersion)</Version>
   </PropertyGroup>
@@ -42,18 +41,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
     <DebugType>portable</DebugType>
   </PropertyGroup>
- 
-  <Target Name="SetPackageVersion">
-    <PropertyGroup>
-      <!-- You can customize the format and the rule about how version increases here. -->
-      <PackageVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</PackageVersion>
-      <Version>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</Version>
-      <AssemblyVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</AssemblyVersion>
-      <VersionPrefix>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</VersionPrefix>
-      <AssemblyVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</AssemblyVersion>
-      <AssemblyFileVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</AssemblyFileVersion>
-    </PropertyGroup>
-  </Target>
 
   <ItemGroup>
     <None Include="..\README.md">
@@ -69,6 +56,6 @@
     <ProjectReference Include="..\FastMoq.Web\FastMoq.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NuGet.Versioning" Version="6.*" />
+    <PackageReference Include="MinVer" PrivateAssets="All" Version="*" />
   </ItemGroup>
 </Project>
