@@ -26,7 +26,7 @@ jobs:
         run: dotnet build FastMoq-Release.sln -c Release
       
       - name: Creating a package
-        run: dotnet pack FastMoq-Release.sln --no-build --framework -c Release -o .
+        run: dotnet pack FastMoq-Release.sln --no-build -c Release -o .
 
       #- name: Publish to Nuget 
       #  run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate -n 
