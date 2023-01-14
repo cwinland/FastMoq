@@ -23,7 +23,7 @@ jobs:
           
       # Publish
       - name: Build FastMoq
-        run: dotnet build FastMoq/FastMoq.csproj -o .
+        run: dotnet build fastmoq-release.sln -o .
              dotnet pack -o .
       
       - name: Creating a package
