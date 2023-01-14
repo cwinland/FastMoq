@@ -23,7 +23,6 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <Version>$(PackageVersion)</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
