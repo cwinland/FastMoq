@@ -22,10 +22,7 @@ jobs:
           dotnet-version: 7.0.x
           
       # Publish
-       - name: Build FastMoq Web
-        run: dotnet build -c Release
-
-       - name: Build FastMoq Web
+      - name: Build FastMoq Web
         run: dotnet build -c Release
 
       - name: Creating a package
