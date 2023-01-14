@@ -30,6 +30,7 @@
 
   <PropertyGroup>
     <MinVerIgnoreHeight>true</MinVerIgnoreHeight>
+    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);MyTarget</GenerateNuspecDependsOn>
   </PropertyGroup>
 
   <PropertyGroup>
