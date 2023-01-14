@@ -6,7 +6,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <DebugType>embedded</DebugType>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Winland, $(AssemblyName)</Authors>
     <Company>$(Authors)</Company>
     <Copyright>Copyright(c) 2022 Christopher Winland</Copyright>
@@ -45,8 +45,12 @@
   <Target Name="SetPackageVersion">
     <PropertyGroup>
       <!-- You can customize the format and the rule about how version increases here. -->
-      <PackageVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</PackageVersion>
-      <Version>2.$([System.DateTime]::Now.ToString("yy.MMdd.HHmm"))</Version>
+      <PackageVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</PackageVersion>
+      <Version>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</Version>
+      <AssemblyVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</AssemblyVersion>
+      <VersionPrefix>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</VersionPrefix>
+      <AssemblyVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</AssemblyVersion>
+      <AssemblyFileVersion>2.$([System.DateTime]::Now.ToString("yy.MMdd.HH"))</AssemblyFileVersion>
     </PropertyGroup>
   </Target>
 
@@ -82,6 +86,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>    
+    <PackageReference Include="NuGet.Versioning" Version="6.*" />
   </ItemGroup>
 
   <ItemGroup>
