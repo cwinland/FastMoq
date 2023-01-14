@@ -6,7 +6,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <DebugType>embedded</DebugType>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Winland, $(AssemblyName)</Authors>
     <Company>$(Authors)</Company>
     <Copyright>Copyright(c) 2021-2022 Christopher Winland</Copyright>
