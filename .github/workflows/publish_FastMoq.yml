@@ -23,10 +23,10 @@ jobs:
           
       # Publish
       - name: Build FastMoq
-        run: dotnet build fastmoq-release.sln -o .
+        run: dotnet build FastMoq-Release.sln -c Release -o .
       
       - name: Creating a package
-        run: dotnet pack -o .
+        run: dotnet pack --no-build -c Release -o .
 
       #- name: Publish to Nuget 
       #  run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate -n 
