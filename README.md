@@ -1,16 +1,20 @@
 # [FastMoq](http://help.fastmoq.com/)
 
-[http://help.fastmoq.com](http://help.fastmoq.com/)
-
 Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework for mocking and auto injection of classes when testing.
+
+## API Documentation
+
+[FastMoq API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)
 
 ## Features
 
 - NOW BLAZOR SUPPORT in FastMoq and FastMoq.Web.
 - Test without declaring Mocks (unless needed).
 - Creates objects with chain of automatic injections in objects and their dependencies.
+- Creates Mocks and Objects with properties populated.
 - Automatically injects and creates components or services.
 - Injection: Automatically determines what interfaces need to be injected into the constructor and creates mocks if they do not exist.
+  - Generate Mock using specific data.
   - Best guess picks the multiple parameter constructor over the default constructor.
   - Specific mapping allows the tester to create an instance using a specific constructor and specific data.
   - Supports Inject Attributes and multiple constructors.
@@ -29,7 +33,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 
 - .NET 7
 - .NET 6
-- .NET 5 (Deprecated. Remains in FastMoq.Core Only - Will be removed in future)
+- ~~.NET 5~~ (Deprecated and removed)
 - ~~.NET Core 3.1~~ (Deprecated and removed)
 
 ## Most used classes in the FastMoq namespace
@@ -128,7 +132,7 @@ Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
 [FastMoq API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)
 
 ## Breaking Change
-
+- 2.23.Latest    => Removed support for .NET Core 5.
 - 2.22.1215 => Removed support for .NET Core 3.1 in FastMoq.Core. Deprecated .NET Core 5 and moved package supporting .NET Core 5.0 from FastMoq to FastMoq.Core.
 - 1.22.810 => Removed setters on the MockerTestBase virtual methods: SetupMocksAction, CreateComponentAction, CreatedComponentAction
 - 1.22.810 => Update Package Dependencies
@@ -136,3 +140,5 @@ Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
 - 1.22.604 => Renamed Mocks to Mocker, Renamed TestBase to MockerTestBase.
 
 ## [License - MIT](./License)
+
+[http://help.fastmoq.com](http://help.fastmoq.com/)

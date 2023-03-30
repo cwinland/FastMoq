@@ -34,7 +34,7 @@ namespace FastMoq.Tests.Web
             Setup();
             Component = RenderComponent(true);
             // Will be null because interface does not have inject attribute
-            Instance.WeatherService.FileSystem.Should().BeNull();
+            Instance.WeatherService.FileSystem.Should().NotBeNull();
         }
 
         [Fact]

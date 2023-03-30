@@ -338,7 +338,7 @@ namespace FastMoq.Tests
         public void CreateMockObjectWithInjectParameters()
         {
             Mocks.GetObject<ITestClassOne>().Should().NotBeNull();
-            Mocks.GetObject<ITestClassOne>().FileSystem.Should().BeNull();
+            Mocks.GetObject<ITestClassOne>().FileSystem.Should().NotBeNull();
         }
 
         [Fact]
@@ -685,7 +685,7 @@ namespace FastMoq.Tests
         public void Mocker_CreateMockInstance_InnerMockResolution_False_ShouldThrow()
         {
             Component.InnerMockResolution = false;
-            new Action(() => Component.CreateMockInstance<TestClassMultiple>()).Should().Throw<ArgumentException>();
+            new Action(() => Component.CreateMockInstance<TestClassMultiple>()).Should().NotThrow<ArgumentException>();
         }
 
         [Fact]
@@ -773,7 +773,7 @@ namespace FastMoq.Tests
             isValid.Should().Be(expected);
         }
 
-        private void CheckTypes(IReadOnlyList<object?> argData, List<Type> types)
+        private static void CheckTypes(IReadOnlyList<object?> argData, List<Type> types)
         {
             for (var i = 0; i < argData.Count; i++)
             {

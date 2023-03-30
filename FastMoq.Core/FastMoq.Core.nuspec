@@ -13,12 +13,6 @@
     <tags>Easy fast injection inject mock extension Moq moqthis framework mocking class</tags>
     <repository type="git" url="https://github.com/cwinland/FastMoq" />
     <dependencies>
-      <group targetFramework="net5.0">
-        <dependency id="Microsoft.Extensions.Http" version="5.0.0" exclude="Build,Analyzers" />
-        <dependency id="Moq" version="4.18.4" exclude="Build,Analyzers" />
-        <dependency id="NuGet.Versioning" version="6.4.0" exclude="Build,Analyzers" />
-        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="19.1.5" exclude="Build,Analyzers" />
-      </group>
       <group targetFramework="net6.0">
         <dependency id="Microsoft.Extensions.Http" version="6.0.0" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.18.4" exclude="Build,Analyzers" />

@@ -2,6 +2,7 @@
 using FastMoq.Tests.Blazor.Data;
 using FastMoq.Tests.Blazor.Pages;
 using FastMoq.Web.Blazor.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -112,7 +113,7 @@ namespace FastMoq.Tests.Web
             AuthContext.IsAuthenticated.Should().BeTrue();
         }
 
-        private void TestAuth<T>(Func<IEnumerable<T>> authCollection, ICollection<T> baseCollection, T newItem)
+        private static void TestAuth<T>(Func<IEnumerable<T>> authCollection, ICollection<T> baseCollection, T newItem)
         {
             authCollection.Invoke().Should().BeEquivalentTo(baseCollection.ToArray());
             authCollection.Invoke().Should().HaveCount(0);
@@ -123,12 +124,52 @@ namespace FastMoq.Tests.Web
         }
 
         [Fact]
-        public void AuthRoles_Set_ShouldChangeRoles() => TestAuth<string>(() => AuthContext.Roles, AuthorizedRoles, "testRole");
+        public void AuthRoles_Set_ShouldChangeRoles() => TestAuth(() => AuthContext.Roles, AuthorizedRoles, "testRole");
 
         [Fact]
-        public void AuthClaims_Set_ShouldChangeClaims() => TestAuth<Claim>(() => AuthContext.Claims, AuthorizedClaims, new Claim("group", "testClaim"));
+        public void AuthClaims_Set_ShouldChangeClaims() => TestAuth(() => AuthContext.Claims, AuthorizedClaims, new Claim("group", "testClaim"));
 
         [Fact]
-        public void AuthPolicies_Set_ShouldChange() => TestAuth<string>(() => AuthContext.Policies, AuthorizedPolicies, "testPolicy");
+        public void AuthPolicies_Set_ShouldChange() => TestAuth(() => AuthContext.Policies, AuthorizedPolicies, "testPolicy");
+
+        [Fact]
+        public void InterfaceProperties()
+        {
+            var obj = Mocks.GetObject<IHttpContextAccessor>();
+            obj.HttpContext.Should().NotBeNull();
+
+            var obj2 = Mocks.GetMock<IHttpContextAccessor>().Object;
+            obj2.HttpContext.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void ClassProperties()
+        {
+            var obj = Mocks.CreateInstance<HttpContextAccessor>();
+            obj.HttpContext.Should().NotBeNull();
+
+            var obj2 = Mocks.CreateInstance<Microsoft.AspNetCore.Http.HttpContextAccessor>();
+            obj2.HttpContext.Should().NotBeNull();
+
+            var obj3 = Mocks.GetObject<HttpContextAccessor>();
+            obj3.HttpContext.Should().NotBeNull();
+
+            var obj4 = Mocks.GetMock<HttpContextAccessor>().Object;
+            obj4.HttpContext.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void ClassProperties_NoResolution()
+        {
+            Mocks.InnerMockResolution = false;
+            var obj4 = Mocks.GetMock<HttpContextAccessor>().Object;
+            obj4.HttpContext.Should().BeNull();
+        }
+    }
+
+    public class HttpContextAccessor : IHttpContextAccessor
+    {
+        /// <inheritdoc />
+        public HttpContext? HttpContext { get; set; }
     }
 }
