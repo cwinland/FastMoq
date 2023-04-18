@@ -1,8 +1,11 @@
 ﻿using FastMoq.Extensions;
 using FastMoq.Models;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.Protected;
 using System.Collections;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
@@ -53,6 +56,12 @@ namespace FastMoq
         #endregion
 
         #region Properties
+
+        /// <summary>
+        ///     Gets the database connection.
+        /// </summary>
+        /// <value>The database connection.</value>
+        public DbConnection DbConnection { get; private set; }
 
         /// <summary>
         ///     The virtual mock http client that is used by mocker unless overridden with the <see cref="Strict" /> property.
@@ -542,8 +551,8 @@ namespace FastMoq
         /// <returns>Mock.</returns>
         /// <exception cref="ArgumentException">type must be a class or interface., nameof(type)</exception>
         /// <exception cref="ApplicationException">type must be a class or interface., nameof(type)</exception>
-        /// <exception cref="System.ArgumentException">Cannot create instance.</exception>
-        /// <exception cref="System.ApplicationException">type must be a class. - type</exception>
+        /// <exception cref="System.ArgumentException">type must be a class or interface., nameof(type)</exception>
+        /// <exception cref="System.ApplicationException">type must be a class or interface., nameof(type)</exception>
         public Mock CreateMockInstance(Type type, bool nonPublic = false, params object?[] args)
         {
             if (type == null || (!type.IsClass && !type.IsInterface))
@@ -610,7 +619,7 @@ namespace FastMoq
         public T? AddProperties<T>(T obj)
         {
             var o = AddProperties(typeof(T), obj);
-            return o is not null ? (T) o : default;
+            return o is not null ? (T)o : default;
         }
 
         /// <summary>
@@ -634,7 +643,7 @@ namespace FastMoq
                 {
                     try
                     {
-                        if (writableProperty.GetValue(obj) is null)
+                        if (writableProperty.GetValue(obj) is null && !creatingTypeList.Contains(writableProperty.PropertyType))
                         {
                             writableProperty.SetValue(obj, GetObject(writableProperty.PropertyType));
                         }
@@ -860,7 +869,7 @@ namespace FastMoq
         /// <returns><see cref="Nullable{Object}" /></returns>
         /// <exception cref="ArgumentNullException">nameof(info)</exception>
         /// <exception cref="System.ArgumentNullException">nameof(info)</exception>
-        /// <exception cref="System.InvalidProgramException">type</exception>
+        /// <exception cref="System.InvalidProgramException">nameof(info)</exception>
         public object? GetObject(ParameterInfo info)
         {
             if (info == null)
@@ -893,7 +902,7 @@ namespace FastMoq
         /// <returns><see cref="Nullable{Object}" />.</returns>
         /// <exception cref="ArgumentNullException">nameof(type)</exception>
         /// <exception cref="System.ArgumentNullException">nameof(type)</exception>
-        /// <exception cref="System.InvalidProgramException">type</exception>
+        /// <exception cref="System.InvalidProgramException">nameof(type)</exception>
         public object? GetObject(Type type, Action<object?>? initAction = null)
         {
             if (type == null)
@@ -1308,17 +1317,16 @@ namespace FastMoq
         /// <exception cref="AmbiguousImplementationException">Multiple parameterized constructors exist. Cannot decide which to use.</exception>
         /// <exception cref="NotImplementedException">Unable to find the constructor.</exception>
         /// <exception cref="System.Runtime.AmbiguousImplementationException">Multiple parameterized constructors exist. Cannot decide which to use.</exception>
-        /// <exception cref="System.NotImplementedException">Multiple parameterized constructors exist. Cannot
-        /// decide which to use.</exception>
+        /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
         internal ConstructorModel FindConstructor(bool bestGuess, Type type, bool nonPublic, List<ConstructorInfo>? excludeList = null)
         {
             excludeList ??= new();
 
             var constructors = (nonPublic ? GetConstructorsNonPublic(type) : GetConstructors(type))
-                .Where(x=> excludeList.All(y => y != x.ConstructorInfo)).ToList();
+                .Where(x => excludeList.All(y => y != x.ConstructorInfo)).ToList();
 
             // if it is not best guess, then we can't know which constructor.
-            if (!bestGuess && constructors.Count(x=>x.ParameterList.Any()) > 1)
+            if (!bestGuess && constructors.Count(x => x.ParameterList.Any()) > 1)
             {
                 throw new AmbiguousImplementationException(
                     "Multiple parameterized constructors exist. Cannot decide which to use.");
@@ -1476,6 +1484,37 @@ namespace FastMoq
                         .ToList()
                 )
                 .Select(x => new ConstructorModel(x)).ToList();
+        }
+
+        /// <summary>
+        ///     Gets the database context.
+        /// </summary>
+        /// <typeparam name="TContext">The type of the t context.</typeparam>
+        /// <returns>TContext.</returns>
+        public TContext GetDbContext<TContext>() where TContext : DbContext, new()
+        {
+            return GetDbContext(_=> new TContext());
+        }
+
+        /// <summary>
+        ///     Gets the database context.
+        /// </summary>
+        /// <typeparam name="TContext">The type of the t context.</typeparam>
+        /// <param name="newObjectFunc">The new object function.</param>
+        /// <returns>TContext.</returns>
+        public TContext GetDbContext<TContext>(Func<DbContextOptions, TContext> newObjectFunc) where TContext : DbContext
+        {
+            DbConnection = new SqliteConnection("DataSource=:memory:");
+            DbConnection.Open();
+            var dbContextOptions = new DbContextOptionsBuilder<TContext>()
+                .UseSqlite(DbConnection)
+                .Options;
+
+            var context = newObjectFunc(dbContextOptions);
+            context.Database.EnsureCreated();
+            context.SaveChanges();
+
+            return context;
         }
 
         /// <summary>
