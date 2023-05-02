@@ -327,9 +327,10 @@ namespace FastMoq.Web.Blazor
         /// <summary>
         ///     Setup and create component.
         /// </summary>
-        protected internal void Setup()
+        protected internal void Setup(InvocationMatcher? jsInvocationMatcher = null, bool isCatchAll = false)
         {
             SetupMocks();
+            AddUtilities(JSInterop, jsInvocationMatcher, isCatchAll);
             SetupServices();
             SetupAuthorization();
 
@@ -338,6 +339,23 @@ namespace FastMoq.Web.Blazor
             AuthorizedClaims.Changed += (_, _) => AuthContext.SetClaims(AuthorizedClaims.ToArray());
 
             Component = RenderComponent(true);
+        }
+
+        /// <summary>
+        ///     Adds the utilities.
+        /// </summary>
+        /// <param name="jsInterop">The js interop.</param>
+        /// <param name="jsInvocationMatcher">The js invocation matcher.</param>
+        /// <param name="isCatchAll">if set to <c>true</c> [is catch all].</param>
+        public virtual void AddUtilities(BunitJSInterop jsInterop, InvocationMatcher? jsInvocationMatcher, bool isCatchAll)
+        {
+            var module = jsInvocationMatcher is null ? jsInterop.SetupModule() : jsInterop.SetupModule(jsInvocationMatcher, isCatchAll);
+            module.SetupVoid("import", _ => true).SetVoidResult();
+            module.SetupVoid("setProperty", _ => true).SetVoidResult();
+            module.Setup<string>("getUserAgent", _ => true).SetResult(String.Empty);
+            module.SetupVoid("scrollElementIntoView", _ => true).SetVoidResult();
+            module.SetupVoid("focus", _ => true).SetVoidResult();
+            module.SetupVoid("log", _ => true).SetVoidResult();
         }
 
         /// <inheritdoc />
