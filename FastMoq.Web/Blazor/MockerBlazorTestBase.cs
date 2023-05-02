@@ -330,7 +330,7 @@ namespace FastMoq.Web.Blazor
         protected internal void Setup(InvocationMatcher? jsInvocationMatcher = null, bool isCatchAll = false)
         {
             SetupMocks();
-            AddUtilities(JSInterop, jsInvocationMatcher, isCatchAll);
+            SetupJsInterop(JSInterop, jsInvocationMatcher, isCatchAll);
             SetupServices();
             SetupAuthorization();
 
@@ -347,7 +347,7 @@ namespace FastMoq.Web.Blazor
         /// <param name="jsInterop">The js interop.</param>
         /// <param name="jsInvocationMatcher">The js invocation matcher.</param>
         /// <param name="isCatchAll">if set to <c>true</c> [is catch all].</param>
-        public virtual void AddUtilities(BunitJSInterop jsInterop, InvocationMatcher? jsInvocationMatcher, bool isCatchAll)
+        public virtual void SetupJsInterop(BunitJSInterop jsInterop, InvocationMatcher? jsInvocationMatcher, bool isCatchAll)
         {
             var module = jsInvocationMatcher is null ? jsInterop.SetupModule() : jsInterop.SetupModule(jsInvocationMatcher, isCatchAll);
             module.SetupVoid("import", _ => true).SetVoidResult();
