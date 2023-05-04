@@ -275,8 +275,10 @@ namespace FastMoq.Web.Blazor
         ///     Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.MockerBlazorTestBase`1" /> class.
         /// </summary>
         /// <param name="skipSetup">if set to <c>true</c> [skip setup].</param>
+        /// <param name="jsInvocationMatcher">Optional invocation matcher for JSInterop.</param>
+        /// <param name="isCatchAllMatcher">Indicates if the invocationMatches is also a catch all.</param>
         /// <inheritdoc />
-        protected MockerBlazorTestBase(bool skipSetup)
+        protected MockerBlazorTestBase(bool skipSetup, InvocationMatcher? jsInvocationMatcher = null, bool isCatchAllMatcher = false)
         {
             JSInterop.Mode = JSRuntimeMode.Loose;
             AuthContext = this.AddTestAuthorization();
@@ -286,7 +288,7 @@ namespace FastMoq.Web.Blazor
                 return;
             }
 
-            Setup();
+            Setup(jsInvocationMatcher, isCatchAllMatcher);
         }
 
         /// <summary>
@@ -327,10 +329,10 @@ namespace FastMoq.Web.Blazor
         /// <summary>
         ///     Setup and create component.
         /// </summary>
-        protected internal void Setup(InvocationMatcher? jsInvocationMatcher = null, bool isCatchAll = false)
+        protected internal void Setup(InvocationMatcher? jsInvocationMatcher = null, bool isCatchAllMatcher = false)
         {
             SetupMocks();
-            SetupJsInterop(JSInterop, jsInvocationMatcher, isCatchAll);
+            SetupJsInterop(JSInterop, jsInvocationMatcher, isCatchAllMatcher);
             SetupServices();
             SetupAuthorization();
 

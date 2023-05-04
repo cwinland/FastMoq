@@ -61,7 +61,7 @@ namespace FastMoq
         ///     Gets the database connection.
         /// </summary>
         /// <value>The database connection.</value>
-        public DbConnection DbConnection { get; private set; }
+        public DbConnection DbConnection { get; private set; } = new SqliteConnection("DataSource=:memory:");
 
         /// <summary>
         ///     The virtual mock http client that is used by mocker unless overridden with the <see cref="Strict" /> property.
