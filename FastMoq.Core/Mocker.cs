@@ -177,6 +177,14 @@ namespace FastMoq
         }
 
         /// <summary>
+        ///     Adds the type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="createFunc">The create function.</param>
+        /// <param name="replace">if set to <c>true</c> [replace].</param>
+        public void AddType<T>(Func<Mocker, T>? createFunc = null, bool replace = false) where T : class => AddType<T, T>(createFunc, replace);
+
+        /// <summary>
         ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
         /// </summary>
         /// <typeparam name="TInterface">The interface or class Type which can be mapped to a specific Class.</typeparam>

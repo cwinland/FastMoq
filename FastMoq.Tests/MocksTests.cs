@@ -350,6 +350,28 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void AddTypeT_ShouldBe_AddTypeTT()
+        {
+            Mocks.AddType<TestClassOne>(_ => Mocks.CreateInstance<TestClassOne>());
+            var t = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
+            Mocks.typeMap.Clear();
+            Mocks.AddType<TestClassOne, TestClassOne>(_=> Mocks.CreateInstance<TestClassOne>());
+            var t2 = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
+            t.Should().BeEquivalentTo(t2);
+        }
+
+        [Fact]
+        public void AddTypeT_ShouldBe_AddType()
+        {
+            Mocks.AddType<TestClassOne>(_ => Mocks.CreateInstance<TestClassOne>());
+            var t = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
+            Mocks.typeMap.Clear();
+            Mocks.AddType(typeof(TestClassOne), typeof(TestClassOne), _=> Mocks.CreateInstance<TestClassOne>());
+            var t2 = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
+            t.Should().BeEquivalentTo(t2);
+        }
+
+        [Fact]
         public void FileSystem_ShouldBeValid()
         {
             Mocks.fileSystem.Should().NotBeNull();
