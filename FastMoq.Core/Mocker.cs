@@ -1602,10 +1602,24 @@ namespace FastMoq
         /// </summary>
         /// <param name="parameterType">Type of the parameter.</param>
         /// <returns>object?.</returns>
-        internal object? GetParameter(Type parameterType) =>
-            (parameterType.IsClass || parameterType.IsInterface) && !parameterType.IsSealed
-                ? GetObject(parameterType)
-                : GetDefaultValue(parameterType);
+        internal object? GetParameter(Type parameterType)
+        {
+            if (parameterType.IsClass || parameterType.IsInterface)
+            {
+                var typeValueModel = GetMapModel(parameterType);
+                if (typeValueModel?.CreateFunc != null)
+                {
+                    return typeValueModel.CreateFunc.Invoke(this);
+                }
+
+                if (!parameterType.IsSealed)
+                {
+                    return GetObject(parameterType);
+                }
+            }
+
+            return GetDefaultValue(parameterType);
+        }
 
         /// <summary>
         ///     Gets the type from interface.
