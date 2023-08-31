@@ -25,6 +25,12 @@
         /// <value>The type of the instance.</value>
         Type InstanceType { get; }
 
+        /// <summary>
+        ///     Gets the arguments.
+        /// </summary>
+        /// <value>The arguments.</value>
+        List<object?> Arguments { get; }
+
         #endregion
     }
 }

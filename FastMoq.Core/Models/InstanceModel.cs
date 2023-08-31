@@ -23,10 +23,7 @@ namespace FastMoq.Models
         /// <inheritdoc />
         public Func<Mocker, object>? CreateFunc { get; internal set; }
 
-        /// <summary>
-        ///     Gets the arguments.
-        /// </summary>
-        /// <value>The arguments.</value>
+        /// <inheritdoc />
         public List<object?> Arguments { get; internal set; } = new();
 
         #endregion
