@@ -5,7 +5,7 @@ namespace FastMoq.Models
     /// <summary>
     ///     Class ConstructorModel.
     /// </summary>
-    internal class ConstructorModel
+    public class ConstructorModel : IHistoryModel
     {
         #region Properties
 

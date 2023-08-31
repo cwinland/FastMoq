@@ -28,10 +28,10 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateNullType()
         {
-            Action a = () => _ = new InstanceModel(null) { CreateFunc = _ => new FileSystem() };
+            Action a = () => _ = new InstanceModel(null, null) { CreateFunc = _ => new FileSystem() };
             a.Should().Throw<ArgumentNullException>();
 
-            var im = new InstanceModel<IFileSystem>(null);
+            var im = new InstanceModel<IFileSystem>(default(Func<Mocker, IFileSystem>));
             im.InstanceType.Should().Be(typeof(IFileSystem));
             im.CreateFunc.Should().BeNull();
         }
@@ -39,12 +39,12 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateInstance()
         {
-            var obj = new InstanceModel(typeof(IFileSystem), mocker => new FileSystem(), new List<object>());
+            var obj = new InstanceModel(typeof(IFileSystem), typeof(FileSystem), mocker => new FileSystem(), new List<object>());
             obj.Should().NotBeNull();
             obj.CreateFunc.Should().NotBeNull();
             obj.Arguments.Should().HaveCount(0);
 
-            new Action(() => new InstanceModel(typeof(IFileSystem), mocker => new FileSystem(), null)).Should().Throw<ArgumentNullException>();
+            new Action(() => new InstanceModel(typeof(IFileSystem), typeof(FileSystem), mocker => new FileSystem(), null)).Should().Throw<ArgumentNullException>();
         }
     }
 }

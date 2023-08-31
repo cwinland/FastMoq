@@ -158,6 +158,14 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void Create_WithMapTest1b()
+        {
+            Mocks.AddType<ITestClassDouble, TestClassDouble1>();
+            var o = Mocks.CreateInstance<ITestClassDouble>();
+            o.Should().BeOfType<TestClassDouble1>();
+        }
+
+        [Fact]
         public void Create_WithMapTest2()
         {
             Action a = () => Mocks.CreateInstance<ITestClassDouble>();
@@ -365,10 +373,14 @@ namespace FastMoq.Tests
         {
             Mocks.AddType<TestClassOne>(_ => Mocks.CreateInstance<TestClassOne>());
             var t = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
+            var o = Mocks.CreateInstance<TestClassOne>();
+            o.Should().BeEquivalentTo(t);
             Mocks.typeMap.Clear();
             Mocks.AddType(typeof(TestClassOne), typeof(TestClassOne), _=> Mocks.CreateInstance<TestClassOne>());
             var t2 = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
             t.Should().BeEquivalentTo(t2);
+            o = Mocks.CreateInstance<TestClassOne>();
+            o.Should().BeEquivalentTo(t2);
         }
 
         [Fact]
@@ -605,9 +617,17 @@ namespace FastMoq.Tests
         {
             var obj = Component.GetObject<TestClass>(t => t.field2 = 3);
             obj.field2.Should().Be(3);
-
+            Component.AddType<ITestClassDouble, TestClassDouble2>();
             var obj2 = Component.GetObject<ITestClassDouble>(t => t.Value = 333.333);
             obj2.Value.Should().Be(333.333);
+        }
+
+        [Fact]
+        public void GetObject_InitAction_ShouldThrowWithoutMap()
+        {
+            var obj = Component.GetObject<TestClass>(t => t.field2 = 3);
+            obj.field2.Should().Be(3);
+            new Action (() => Component.GetObject<ITestClassDouble>(t => t.Value = 333.333)).Should().Throw<AmbiguousImplementationException>();
         }
 
         [Fact]
@@ -724,14 +744,14 @@ namespace FastMoq.Tests
         [Fact]
         public void Mocker_CreateWithEmptyMap()
         {
-            var test = new Mocker(new Dictionary<Type, InstanceModel>());
+            var test = new Mocker(new Dictionary<Type, IInstanceModel>());
             test.typeMap.Should().BeEmpty();
         }
 
         [Fact]
         public void Mocker_CreateWithMap()
         {
-            var map = new Dictionary<Type, InstanceModel>
+            var map = new Dictionary<Type, IInstanceModel>
             {
                 {typeof(IFileSystem), new InstanceModel<IFileSystem>()},
                 {typeof(IFile), new InstanceModel<IFile>(_ => new MockFileSystem().File)}
