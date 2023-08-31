@@ -1719,7 +1719,11 @@ namespace FastMoq
 
             if (possibleTypes.Count > 1)
             {
-                throw new AmbiguousImplementationException();
+                var publicCount = (possibleTypes.Count(x => x.IsPublic));
+                if (publicCount > 1)
+                {
+                    throw new AmbiguousImplementationException();
+                }
             }
 
             return !possibleTypes.Any() ? tType : possibleTypes[0];
