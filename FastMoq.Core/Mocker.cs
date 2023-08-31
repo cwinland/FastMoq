@@ -1372,8 +1372,9 @@ namespace FastMoq
 
             if (possibleTypes.Count > 1)
             {
-                var publicCount = (possibleTypes.Count(x => x.IsPublic));
-                return publicCount > 1 ? throw new AmbiguousImplementationException() : possibleTypes.FirstOrDefault(x => x.IsPublic) ?? tType;
+                return possibleTypes.Count(x => x.IsPublic) > 1
+                    ? throw new AmbiguousImplementationException()
+                    : possibleTypes.FirstOrDefault(x => x.IsPublic) ?? tType;
             }
 
             return !possibleTypes.Any() ? tType : possibleTypes[0];
@@ -1396,17 +1397,17 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Gets the map model.
+        ///     Gets the type model from the type map or create a model if it does not exist.
         /// </summary>
         /// <typeparam name="TModel">The type of the t model.</typeparam>
-        /// <returns>FastMoq.Models.InstanceModel&lt;TModel&gt;?.</returns>
+        /// <returns>FastMoq.Models.IInstanceModel.</returns>
         internal IInstanceModel GetTypeModel<TModel>() where TModel : class => GetTypeModel(typeof(TModel)) ?? new InstanceModel<TModel>();
 
         /// <summary>
-        ///     Gets the map model.
+        ///     Gets the type model from the type map or create a model if it does not exist.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns>FastMoq.Models.InstanceModel?.</returns>
+        /// <returns>FastMoq.Models.IInstanceModel.</returns>
         internal IInstanceModel GetTypeModel(Type type) =>
             typeMap.ContainsKey(type) ? typeMap[type] : new InstanceModel(type, GetTypeFromInterface(type));
 
@@ -1426,8 +1427,7 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <returns><c>true</c> if [is nullable type] [the specified type]; otherwise, <c>false</c>.</returns>
         internal static bool IsNullableType(Type type) => type.IsClass ||
-                                                          (
-                                                              type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+                                                          (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
 
         /// <summary>
         ///     Returns true if the argument list == 0 or the types match the constructor exactly.
@@ -1519,9 +1519,7 @@ namespace FastMoq
             var parameters = new List<object?> { Strict ? MockBehavior.Strict : MockBehavior.Loose };
             constructor?.ParameterList.ToList().ForEach(parameters.Add);
 
-            return Activator.CreateInstance(newType, parameters.ToArray()) is not Mock oMock
-                ? throw new ApplicationException("Cannot create instance.")
-                : oMock;
+            return Activator.CreateInstance(newType, parameters.ToArray()) as Mock ?? throw new ApplicationException("Cannot create instance.");
         }
 
         /// <summary>

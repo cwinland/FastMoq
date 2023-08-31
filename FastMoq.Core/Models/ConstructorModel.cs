@@ -2,6 +2,7 @@
 
 namespace FastMoq.Models
 {
+    /// <inheritdoc />
     /// <summary>
     ///     Class ConstructorModel.
     /// </summary>
