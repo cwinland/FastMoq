@@ -1,7 +1,10 @@
-using System.Linq.Expressions;
-using System.Reflection;
 using FastMoq.Extensions;
 using FastMoq.Models;
+using Moq;
+using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Reflection;
+
 #pragma warning disable CS8603
 
 namespace FastMoq
@@ -160,6 +163,163 @@ namespace FastMoq
         }
 
         /// <summary>
+        ///     Creates the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="constructorIndex">Index of the constructor.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>T.</returns>
+        /// <exception cref="ArgumentException">Invalid constructor index.</exception>
+        public static T CreateInstanceByConstructor<T>(int constructorIndex, params object[] parameters)
+        {
+            // Get the constructors for the specified type
+            var constructors = typeof(T).GetConstructors();
+
+            // Check if the provided index is within range
+            if (constructorIndex < 0 || constructorIndex >= constructors.Length)
+            {
+                throw new ArgumentException("Invalid constructor index.");
+            }
+
+            // Get the selected constructor
+            var constructor = constructors[constructorIndex];
+
+            // Invoke the constructor with the provided parameters
+            var instance = (T) constructor.Invoke(parameters);
+
+            // Return the created instance
+            return instance;
+        }
+
+        /// <summary>
+        ///     Lists the constructors.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public static void ListConstructors<T>()
+        {
+            // Get the constructors for the specified type
+            var constructors = typeof(T).GetConstructors();
+
+            // List the constructors
+            Console.WriteLine("Constructors for type {0}:", typeof(T).Name);
+            for (var i = 0; i < constructors.Length; i++)
+            {
+                Console.WriteLine("{0}: {1}", i, constructors[i]);
+            }
+        }
+
+        /// <summary>
+        ///     Tests the constructor parameters.
+        /// </summary>
+        /// <param name="logReport">The log report.</param>
+        /// <param name="testData">The test data.</param>
+        /// <param name="testParameters">The test parameters.</param>
+        protected internal void TestConstructorParameters(out IReadOnlyCollection<ITestReportItem> logReport, object[]? testData = null, IReadOnlyList<bool[]>? testParameters = null)
+        {
+            var constructors = typeof(TComponent).GetConstructors();
+            TestParameters<TComponent, ConstructorInfo>(constructors, testData ?? Array.Empty<object>(), testParameters ?? new List<bool[]>().AsReadOnly(), out logReport);
+        }
+
+        /// <summary>
+        ///     Tests the methods.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="logReport">The log report.</param>
+        /// <param name="testData">The test data.</param>
+        /// <param name="testParameters">The test parameters.</param>
+        /// <exception cref="AggregateException"></exception>
+        public void TestMethodParameters<T>(out IReadOnlyCollection<ITestReportItem> logReport, object[]? testData = null, IReadOnlyList<bool[]>? testParameters = null)
+        {
+            // Get the methods for the specified type
+            var methods = typeof(T).GetMethods(BindingFlags.Public | BindingFlags.Instance);
+
+            TestParameters<T, MethodInfo>(methods, testData ?? Array.Empty<object>(),  testParameters ?? new List<bool[]>().AsReadOnly(), out logReport);
+        }
+
+        /// <summary>
+        ///     Tests the parameters.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TMethod">The type of the t method.</typeparam>
+        /// <param name="methods">The methods.</param>
+        /// <param name="testData">The test data.</param>
+        /// <param name="testParameters">The test parameters.</param>
+        /// <param name="logReport">The log report.</param>
+        /// <exception cref="AggregateException"></exception>
+        public void TestParameters<T, TMethod>(TMethod[] methods, object[] testData, IReadOnlyList<bool[]> testParameters, out IReadOnlyCollection<ITestReportItem> logReport)
+            where TMethod : MethodBase
+        {
+            var log = new Collection<ITestReportItem>();
+
+            // Create a list to store exceptions
+            var exceptions = new List<Exception>();
+
+            // Iterate over each constructor
+            foreach (var method in methods.Select((value, index) => new { value, index }))
+            {
+                // Get the parameters for the constructor
+                var parameters = method.value.GetParameters();
+
+                // Iterate over each parameter
+                foreach (var parameter in parameters.Select((value, index) => new { value, index })
+                             .Where(x => IsNullable(x.value) && IsTestParameter(testParameters, method.index, x.index)))
+                {
+                    // Create an array of parameter values
+                    var parameterValues = parameters.Select((p, i) =>
+                            i == parameter.index
+                                ? null
+                                : GetTestData(testData, i, p))
+                        .ToArray();
+
+                    // Try to invoke the constructor with the parameter values
+                    ITestReportItem testReportItem = new TestReportItem(method.value);
+
+                    try
+                    {
+                        if (testReportItem.Method is ConstructorInfo constructorInfo)
+                        {
+                            constructorInfo.Invoke(parameterValues);
+                        }
+                        else
+                        {
+                            // Create an instance of the class
+                            var instance = Activator.CreateInstance<T>();
+                            method.value.Invoke(instance, parameterValues);
+                        }
+
+                        var exception = new Exception(
+                            $"Constructor for {method.value.DeclaringType?.Name} ({method.index}) did not throw ArgumentNullException for null parameter {parameter.value.Name}."); 
+
+                        testReportItem.IsErrorThrown = false;
+                        testReportItem.Error = exception;
+                        exceptions.Add(exception);
+                    }
+                    catch (TargetInvocationException ex) when (ex.InnerException is ArgumentNullException)
+                    {
+                        // Constructor threw ArgumentNullException as expected
+                        testReportItem.IsErrorThrown = true;
+                        testReportItem.Error = ex.InnerException;
+                    }
+                    finally
+                    {
+                        log.Add(testReportItem);
+                    }
+                }
+            }
+
+            logReport = log.ToList().AsReadOnly();
+
+            // Check if there were any exceptions
+            if (exceptions.Any())
+            {
+                throw new AggregateException(exceptions);
+            }
+        }
+
+        private object GetTestData(IReadOnlyList<object>? testData, int i, ParameterInfo p) =>
+            testData != null && i < testData.Count ? testData[i] : Mocks.GetDefaultValue(p.ParameterType);
+
+        /// <summary>
         ///     Waits for an action.
         /// </summary>
         /// <typeparam name="T">Logic of T.</typeparam>
@@ -167,6 +327,8 @@ namespace FastMoq
         /// <param name="timespan">The maximum time to wait.</param>
         /// <param name="waitBetweenChecks">Time between each check.</param>
         /// <returns>T.</returns>
+        /// <exception cref="ArgumentNullException">logic</exception>
+        /// <exception cref="ApplicationException">Waitfor Timeout</exception>
         /// <exception cref="System.ArgumentNullException">logic</exception>
         /// <exception cref="System.ApplicationException">Waitfor Timeout</exception>
         public static T WaitFor<T>(Func<T> logic, TimeSpan timespan, TimeSpan waitBetweenChecks)
@@ -185,7 +347,9 @@ namespace FastMoq
                 Thread.Sleep(waitBetweenChecks);
             }
 
-            return !EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now > timeout ? throw new ApplicationException("Waitfor Timeout") : result;
+            return !EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now > timeout
+                ? throw new ApplicationException("Waitfor Timeout")
+                : result;
         }
 
         /// <summary>
@@ -257,9 +421,13 @@ namespace FastMoq
         /// <param name="funcMethod">The function.</param>
         /// <param name="resultAction">The result action.</param>
         /// <param name="args">The arguments.</param>
+        /// <exception cref="ArgumentNullException">funcMethod</exception>
+        /// <exception cref="InvalidOperationException"></exception>
         /// <exception cref="System.ArgumentNullException">funcMethod</exception>
         /// <exception cref="System.InvalidOperationException"></exception>
-        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction,
+        [Obsolete("Use TestMethodParameters, TestConstructorParameters, or TestParameters. This will be removed.")]
+        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod,
+            Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction,
             params object?[]? args)
         {
             if (funcMethod == null)
@@ -285,9 +453,13 @@ namespace FastMoq
         /// <param name="methodInfo">The method information.</param>
         /// <param name="resultAction">The result action.</param>
         /// <param name="args">The arguments.</param>
+        /// <exception cref="ArgumentNullException">methodInfo</exception>
+        /// <exception cref="ArgumentNullException">resultAction</exception>
         /// <exception cref="System.ArgumentNullException">methodInfo</exception>
         /// <exception cref="System.ArgumentNullException">resultAction</exception>
-        protected void TestMethodParametersAsync(MethodInfo methodInfo, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction, params object?[]? args)
+        [Obsolete("Use TestMethodParameters, TestConstructorParameters, or TestParameters. This will be removed.")]
+        protected void TestMethodParametersAsync(MethodInfo methodInfo, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction,
+            params object?[]? args)
         {
             if (methodInfo == null)
             {
@@ -323,8 +495,20 @@ namespace FastMoq
             }
         }
 
+        private static bool IsNullable(ParameterInfo parameterValue) =>
+            !parameterValue.ParameterType.IsValueType || Nullable.GetUnderlyingType(parameterValue.ParameterType) != null;
+
+        private static bool IsTestParameter(IReadOnlyList<bool[]> testParameters, int constructorIndex, int parameterIndex) =>
+            testParameters == null ||
+            !testParameters.Any() ||
+            (constructorIndex < testParameters.Count &&
+             testParameters[constructorIndex] != null &&
+             parameterIndex < testParameters[constructorIndex].Length &&
+             testParameters[constructorIndex][parameterIndex]);
+
         #region IDisposable
 
+        /// <inheritdoc />
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>

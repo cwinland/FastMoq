@@ -1,4 +1,5 @@
 using FastMoq.Models;
+using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
 using System;
 using System.Collections.Generic;
@@ -256,7 +257,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateInstance()
+        public void CreateInstance_ShouldNotBeNull()
         {
             Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
             Mocks.CreateInstance<TestClassDouble1>().Should().NotBeNull();
@@ -808,6 +809,14 @@ namespace FastMoq.Tests
             new Action(() => Mocks.CreateInstance<ITestClassDouble>()).Should().Throw<AmbiguousImplementationException>();
             Mocks.AddType<ITestClassDouble, TestClassDouble1>();
             Mocks.CreateInstance<ITestClassDouble>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void TestCreateEmptyUri()
+        {
+            var uri = new UriBuilder().Uri;
+
+            uri.Should().BeEquivalentTo(Mocks.GetDefaultValue(typeof(Uri)));
         }
 
         [Fact]

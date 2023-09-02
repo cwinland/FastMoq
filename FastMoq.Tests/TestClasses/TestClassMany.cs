@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System;
+using System.IO.Abstractions;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -24,9 +25,16 @@ namespace FastMoq.Tests.TestClasses
 
         public TestClassMany(int x) => value = x;
 
-        public TestClassMany(string y) => value = y;
+        public TestClassMany(string y)
+        {
+            value = y;
+        }
 
-        public TestClassMany(int x, string y) => value = $"{x} {y}";
+        public TestClassMany(int x, string y)
+        {
+            ArgumentNullException.ThrowIfNull(y);
+            value = $"{x} {y}";
+        }
     }
 
     public interface ITestClassMany

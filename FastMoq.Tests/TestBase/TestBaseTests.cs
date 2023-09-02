@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FastMoq;
+using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Reflection;
@@ -6,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using FastMoq.Extensions;
 using FastMoq.Models;
+using FastMoq.Tests.TestClasses;
+using System.Linq;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -15,7 +18,7 @@ using FastMoq.Models;
 #pragma warning disable CS8974 // Converting method group to non-delegate type
 #pragma warning disable CS0472 // The result of the expression is always 'value1' since a value of type 'value2' is never equal to 'null' of type 'value3'.
 
-namespace FastMoq.Tests
+namespace FastMoq.Tests.TestBase
 {
     public class TestBaseTests : MockerTestBase<TestClass>
     {
@@ -252,96 +255,40 @@ namespace FastMoq.Tests
             task1.Dispose();
             task2.Dispose();
         }
+
+        [Fact]
+        public void TestConstructor_NoParams()
+        {
+            new Action(() =>
+            {
+                TestConstructorParameters(out var log);
+                log.Count.Should().Be(0);
+            }).Should().NotThrow<Exception>();
+        }
     }
 
-    public class TestBaseTestClass : MockerTestBase<TestClass>
+    public class TestManyTestBase : MockerTestBase<TestClassMany>
     {
-        public void TestMethodParameters(MethodInfo methodInfo, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction, params object?[]? args) =>
-            TestMethodParametersAsync(methodInfo, resultAction, args);
-    }
+        /// <inheritdoc />
+        protected override Func<Mocker, TestClassMany?> CreateComponentAction => (_) => new TestClassMany(1);
 
-    public class TestClass
-    {
-        #region Fields
-
-        private static readonly int sField = 123;
-        public object field2 = 111;
-        public int field3 = 222;
-
-        private int field = sField;
-
-        #endregion
-
-        #region Properties
-
-        public object property4 => property3;
-        private object property { get; set; } = sProperty;
-        private object property2 { get; } = 789;
-        private int property3 => int.Parse(property2.ToString());
-
-        private static int sProperty { get; } = 456;
-
-        #endregion
-
-        internal void TestMethod(int i, string s, TestClass c)
+        [Fact]
+        public void TestConstructors()
         {
-            if (i == null)
+            IReadOnlyCollection<ITestReportItem> log = new List<ITestReportItem>();
+
+            try
             {
-                throw new ArgumentNullException(nameof(i));
+                TestConstructorParameters(out log);
+            }
+            catch (AggregateException ex)
+            {
+                ex.InnerExceptions.Should().HaveCount(1);
             }
 
-            if (string.IsNullOrEmpty(s))
-            {
-                throw new ArgumentNullException(nameof(s));
-            }
-
-            if (c == null)
-            {
-                throw new ArgumentNullException(nameof(c));
-            }
-        }
-
-        internal void TestMethod2(TestEnum testEnum, string s)
-        {
-            if (s == null)
-            {
-                throw new InvalidOperationException(nameof(s));
-            }
-        }
-
-        internal async Task TestMethod2Async(int i, string s, TestClass c) => await TestMethodAsync(i, s, c);
-
-        internal async Task TestMethodAsync(int? i, string s, TestClass c)
-        {
-            if (i == null)
-            {
-                throw new ArgumentNullException(nameof(i));
-            }
-
-            if (string.IsNullOrEmpty(s))
-            {
-                throw new ArgumentNullException(nameof(s));
-            }
-
-            if (c == null)
-            {
-                throw new ArgumentNullException(nameof(c));
-            }
-
-            await Task.Delay(TimeSpan.FromMilliseconds(100));
-        }
-
-        private object method() => "test";
-        private string method2() => "test2";
-
-        internal enum TestEnum
-        {
-            test1,
-            test2,
-            test3,
-            test4,
-            test5,
-            test6
+            log.Count(x => x.Error.Message.Contains("Value cannot be null")).Should().Be(1);
+            log.Select(x => x.IsErrorThrown).Should().Contain(true);
+            log.Select(x => x.IsErrorThrown).Should().Contain(false);
         }
     }
 }
