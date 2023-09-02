@@ -491,15 +491,25 @@ namespace FastMoq
         ///     Gets the default value.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns><see cref="Nullable{T}" />.</returns>
-        public static object? GetDefaultValue(Type type) => type switch
+        /// <param name="mocker">The mocker.</param>
+        /// <returns>object?.</returns>
+        public static object? GetDefaultValue(Type type, Mocker? mocker) => type switch
         {
-            { FullName: "System.Uri" } => new Uri("http://localhost"),
-            { FullName: "System.String" } => string.Empty,
+            { IsInterface: true } when mocker != null => mocker.GetObject(type),
+            _ when type.FullName == typeof(Uri).FullName => new UriBuilder().Uri,
+            _ when type.FullName == typeof(string).FullName => string.Empty,
             _ when typeof(IEnumerable).IsAssignableFrom(type) => Array.CreateInstance(type.GetElementType() ?? typeof(object), 0),
             { IsClass: true } => null,
             _ => Activator.CreateInstance(type),
         };
+
+        /// <summary>
+        ///     Gets the default value.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns><see cref="Nullable{T}" />.</returns>
+        /// <remarks>This is for backwards compatibility.</remarks>
+        public object? GetDefaultValue(Type type) => GetDefaultValue(type, this);
 
         /// <summary>
         ///     Gets the HTTP handler setup.
@@ -1097,7 +1107,7 @@ namespace FastMoq
             {
                 false when !nonPublic && !Strict => FindConstructor(type, true, args),
                 false => throw new NotImplementedException("Unable to find the constructor."),
-                _ => constructors.FirstOrDefault(x=>x.ParameterList.Length == args.Length) ?? constructors[0],
+                _ => constructors.FirstOrDefault(x => x.ParameterList.Length == args.Length) ?? constructors[0],
             };
         }
 
@@ -1115,8 +1125,8 @@ namespace FastMoq
         /// </exception>
         /// <exception cref="NotImplementedException">Unable to find the constructor.</exception>
         /// <exception cref="System.Runtime.AmbiguousImplementationException">
-        ///     Multiple parameterized constructors exist. Cannot
-        ///     decide which to use.
+        ///     Multiple parameterized constructors exist. Cannot decide which to
+        ///     use.
         /// </exception>
         /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
         internal ConstructorModel FindConstructor(bool bestGuess, Type type, bool nonPublic, List<ConstructorInfo>? excludeList = null)
@@ -1282,6 +1292,7 @@ namespace FastMoq
         /// <param name="mock">The mock.</param>
         /// <param name="autoCreate">Create Mock if it doesn't exist.</param>
         /// <returns><see cref="MockModel" />.</returns>
+        /// <exception cref="NotImplementedException"></exception>
         /// <exception cref="System.NotImplementedException"></exception>
         internal MockModel GetMockModel(Type type, Mock? mock = null, bool autoCreate = true)
         {
