@@ -27,13 +27,15 @@ namespace FastMoq
         ///     Tests all constructor parameters.
         /// </summary>
         /// <param name="createAction">The create action.</param>
-        protected void TestAllConstructorParameters(Action<Action, string, string> createAction)
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="validValue">The valid value.</param>
+        protected void TestAllConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null)
         {
             ConstructorInfo[] constructorList = typeof(TComponent).GetConstructors();
 
             foreach (var constructorInfo in constructorList)
             {
-                TestConstructorParameters(constructorInfo, createAction);
+                TestConstructorParameters(constructorInfo, createAction, defaultValue, validValue);
             }
         }
 
@@ -41,27 +43,58 @@ namespace FastMoq
         ///     Tests the constructor parameters.
         /// </summary>
         /// <param name="createAction">The create action.</param>
-        protected void TestConstructorParameters(Action<Action, string, string> createAction) => TestConstructorParameters(GetConstructor(), createAction);
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="validValue">The valid value.</param>
+        protected void TestConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null) => TestConstructorParameters(GetConstructor(), createAction, defaultValue, validValue);
 
         /// <summary>
         ///     Tests the constructor parameters.
         /// </summary>
         /// <param name="constructorInfo">The constructor information.</param>
         /// <param name="createAction">The create action.</param>
-        protected void TestConstructorParameters(ConstructorInfo constructorInfo, Action<Action, string, string> createAction)
+        /// <param name="defaultValue">The value replaced when testing a parameter.</param>
+        /// <param name="validValue">The valid value.</param>
+        protected void TestConstructorParameters(ConstructorInfo constructorInfo, Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null)
         {
-            ParameterInfo[] parameters = constructorInfo.GetParameters();
-
+            var parameters = constructorInfo.GetParameters();
+            var constructorName = GetMethodName(constructorInfo);
+            defaultValue ??= _ => default;
+            validValue ??= info => Mocks.GetObject(info.ParameterType);
             for (var paramIndex = 0; paramIndex < parameters.Length; paramIndex++)
             {
+                var paramName = parameters[paramIndex].Name ?? string.Empty;
                 createAction?.Invoke(() =>
-                    constructorInfo.Invoke(parameters
-                        .Select((t, i) => paramIndex == i ? null : Mocks.GetObject(t.ParameterType)).ToArray()
-                    ),
-                    constructorInfo.ToString(),
-                    parameters[paramIndex].Name
+                    {
+                        try
+                        {
+                            constructorInfo.Invoke(parameters
+                                .Select((t, i) => paramIndex == i ? defaultValue.Invoke(t) : validValue.Invoke(t)).ToArray()
+                            );
+                        }
+                        catch (TargetInvocationException tie)
+                        {
+                            if (tie.InnerException != null)
+                            {
+                                throw tie.InnerException;
+                            }
+
+                            throw;
+                        }
+                    },
+                    constructorName,
+                    paramName
                 );
             }
         }
+
+        private static string GetMethodName(MethodBase constructorInfo)
+        {
+            var parameters = constructorInfo.GetParameters();
+            var ctrParams = string.Join(", ", parameters.Select(GetParamNameInfo));
+            return $"{constructorInfo.Name}({ctrParams})";
+
+            static string GetParamNameInfo(ParameterInfo info) => $"{info.ParameterType.Name} {info.Name}";
+        }
+
     }
 }

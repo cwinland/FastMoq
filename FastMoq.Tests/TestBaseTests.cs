@@ -283,8 +283,7 @@ namespace FastMoq.Tests
                 output?.WriteLine($"{c} - {p}");
                 action
                     .Should()
-                    .Throw<TargetInvocationException>()
-                    .WithInnerException<ArgumentNullException>()
+                    .Throw<ArgumentNullException>()
                     .WithMessage($"*{p}*");
             });
         }
@@ -297,8 +296,7 @@ namespace FastMoq.Tests
                 output?.WriteLine($"{c} - {p}");
                 action
                     .Should()
-                    .Throw<TargetInvocationException>()
-                    .WithInnerException<ArgumentNullException>()
+                    .Throw<ArgumentNullException>()
                     .WithMessage($"*{p}*");
             });
         }
@@ -314,10 +312,36 @@ namespace FastMoq.Tests
                     output?.WriteLine($"{c} - {p}");
                     action
                         .Should()
-                        .Throw<TargetInvocationException>()
-                        .WithInnerException<ArgumentNullException>()
+                        .Throw<ArgumentNullException>()
                         .WithMessage($"*{p}*");
                 });
+            }
+        }
+
+        [Fact]
+        public void TestConstructorInfo_Values()
+        {
+            var constructors = typeof(ConstructorTestClass).GetConstructors();
+            foreach (var constructorInfo in constructors)
+            {
+                TestConstructorParameters(constructorInfo, (action, c, p) =>
+                {
+                    output?.WriteLine($"{c} - {p}");
+                    action
+                        .Should()
+                        .Throw<ArgumentNullException>()
+                        .WithMessage($"*{p}*");
+                },
+                    info => null,
+                    info =>
+                    {
+                        return info switch
+                        {
+                            _ when info.ParameterType.Name == nameof(IFileSystem) => new FileSystem(),
+                            _ => null,
+                        };
+                    }
+                );
             }
         }
     }
