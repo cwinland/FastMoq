@@ -181,6 +181,19 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="T-FastMoq.Models.IHistoryModel.htm" target="_self">IHistoryModel Interface</a>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IInstanceModel.htm" target="_self">IInstanceModel Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.InstanceModel.htm" target="_self">InstanceModel Class</a>
 <div class="Hidden">
 </div>
@@ -237,6 +250,16 @@
 </div>
 </div>
 </div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Extensions.htm" target="_self">FastMoq.Web.Extensions Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Extensions.TestWebExtensions.htm" target="_self">TestWebExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
 
             </div>
 
@@ -267,27 +290,25 @@
             <div id="mainSection">
               <div id="mainBody">
                 <div class="summary">
-   Gets the field value.
+       Gets the field value.
    </div>
                 <p />
     <b>Namespace:</b> 
    <a href="N-FastMoq.Extensions.htm">FastMoq.Extensions</a><br />
     <b>Assembly:</b>
    <span sdata="assembly">FastMoq.Core</span> (in FastMoq.Core.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:white;border-bottom-color:white"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTab VisualBasicTab" id="VisualBasicTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','VisualBasicCode','VisualBasicTabId');" title="Visual Basic">VB</a></div><div class="CodeSnippetContainerTab ManagedCPlusPlusTab" id="ManagedCPlusPlusTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','ManagedCPlusPlusCode','ManagedCPlusPlusTabId');" title="Visual C++">C++</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">static</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>&lt;T&gt; <span class="identifier">GetFieldValue</span>&lt;T&gt;(
-	<span class="keyword">this</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a>&gt; <span class="parameter">obj</span>,
-	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.reflection.fieldinfo" target="_blank">FieldInfo</a> <span class="parameter">field</span>
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a>&gt; <span class="parameter">obj</span>,
+	<span class="nolink">FieldInfo</span> <span class="parameter">field</span>
 )
-</pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode">&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.extensionattribute" target="_blank">ExtensionAttribute</a>&gt; _
-<span class="keyword">Public</span> <span class="keyword">Shared</span> <span class="keyword">Function</span> <span class="identifier">GetFieldValue</span>(<span class="keyword">Of</span> T) ( _
+</pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Public</span> <span class="keyword">Shared</span> <span class="keyword">Function</span> <span class="identifier">GetFieldValue</span>(<span class="keyword">Of</span> T) ( _
 	<span class="parameter">obj</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>(<span class="keyword">Of</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a>), _
-	<span class="parameter">field</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.reflection.fieldinfo" target="_blank">FieldInfo</a> _
-) <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>(<span class="keyword">Of</span> T)</pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode">[<a href="https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.extensionattribute" target="_blank">ExtensionAttribute</a>]
-<span class="keyword">public</span>:
+	<span class="parameter">field</span> <span class="keyword">As</span> <span class="nolink">FieldInfo</span> _
+) <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>(<span class="keyword">Of</span> T)</pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span>:
 <span class="keyword">generic</span>&lt;<span class="keyword">typename</span> T&gt;
 <span class="keyword">static</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>&lt;T&gt; <span class="identifier">GetFieldValue</span>(
 	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a>^&gt; <span class="parameter">obj</span>, 
-	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.reflection.fieldinfo" target="_blank">FieldInfo</a>^ <span class="parameter">field</span>
-)</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">T</span></dt><dd /></dl><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="obj"><dt><span class="parameterItalic">obj</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a><span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><br />The object.</dd></dl><dl paramName="field"><dt><span class="parameterItalic">field</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.reflection.fieldinfo" target="_blank">FieldInfo</a><br />The field.</dd></dl></div><h4 class="subHeading">Return Value</h4>System.Nullable&lt;T&gt;.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Extensions.TestClassExtensions.htm">TestClassExtensions Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.Extensions.TestClassExtensions.GetFieldValue-.htm">GetFieldValue Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Extensions.htm">FastMoq.Extensions Namespace</a></div></div></div>
+	<span class="nolink">FieldInfo</span>^ <span class="parameter">field</span>
+)</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">T</span></dt><dd /></dl><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="obj"><dt><span class="parameterItalic">obj</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a><span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><br />The object.</dd></dl><dl paramName="field"><dt><span class="parameterItalic">field</span></dt><dd>Type: <span class="nolink">FieldInfo</span><br />The field.</dd></dl></div><h4 class="subHeading">Return Value</h4>System.Nullable&lt;T&gt;.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Extensions.TestClassExtensions.htm">TestClassExtensions Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.Extensions.TestClassExtensions.GetFieldValue-.htm">GetFieldValue Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Extensions.htm">FastMoq.Extensions Namespace</a></div></div></div>
             </div>
           </div>
         </div>

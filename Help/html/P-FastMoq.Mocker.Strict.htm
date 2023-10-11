@@ -112,6 +112,12 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Properties.T-FastMoq.Mocker.htm" target="_self">Mocker Properties</a>
 <div class="Hidden">
 <div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="P-FastMoq.Mocker.ConstructorHistory.htm" target="_self">ConstructorHistory Property </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="P-FastMoq.Mocker.DbConnection.htm" target="_self">DbConnection Property </a>
+</div>
+<div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="P-FastMoq.Mocker.HttpClient.htm" target="_self">HttpClient Property </a>
 </div>
 <div class="TreeItem">
@@ -159,6 +165,19 @@
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
 <div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="T-FastMoq.Models.IHistoryModel.htm" target="_self">IHistoryModel Interface</a>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IInstanceModel.htm" target="_self">IInstanceModel Interface</a>
+<div class="Hidden">
+</div>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.InstanceModel.htm" target="_self">InstanceModel Class</a>
 <div class="Hidden">
@@ -216,6 +235,16 @@
 </div>
 </div>
 </div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Extensions.htm" target="_self">FastMoq.Web.Extensions Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Extensions.TestWebExtensions.htm" target="_self">TestWebExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
 
             </div>
 
@@ -258,14 +287,12 @@ Gets or sets a value indicating whether this <a href="T-FastMoq.Mocker.htm">Mock
 <span class="keyword">property</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">bool</a>^ <span class="identifier">Strict</span> {
 	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">bool</a>^ <span class="keyword">get</span> ();
 	<span class="keyword">void</span> <span class="keyword">set</span> (<a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">bool</a>^ <span class="parameter">value</span>);
-}</pre></div></div></div><h4 class="subHeading">Field Value</h4><span class="code">true</span> if strict <a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.abstractions.ifilesystem" target="_blank">IFileSystem</a> resolution; otherwise, <span class="code">false</span> uses the built-in virtual
-<a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.abstractions.testinghelpers.mockfilesystem" target="_blank">MockFileSystem</a>.
-<h4 class="subHeading">Field Value</h4><span class="code">true</span> if strict <span class="nolink">HttpClient</span> resolution; otherwise, <span class="code">false</span> uses the built-in virtual
-<span class="nolink">HttpClient</span>.
+}</pre></div></div></div><h4 class="subHeading">Field Value</h4><span class="code">true</span> if strict <span class="nolink">[IFileSystem]</span> resolution; otherwise, <span class="code">false</span> uses the built-in virtual
+<span class="nolink">[MockFileSystem]</span>.
 </div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Remarks</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="remarksSection"><!----></a>
 If strict, the mock
-<a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.abstractions.ifilesystem" target="_blank">IFileSystem</a> does
-not use <a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.abstractions.testinghelpers.mockfilesystem" target="_blank">MockFileSystem</a> and uses <span class="nolink">Mock</span> of <a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.abstractions.ifilesystem" target="_blank">IFileSystem</a>.
+<span class="nolink">[IFileSystem]</span> does
+not use <span class="nolink">[MockFileSystem]</span> and uses <span class="nolink">Mock</span> of <span class="nolink">[IFileSystem]</span>.
 Gets or sets a value indicating whether this <a href="T-FastMoq.Mocker.htm">Mocker</a> is strict. If strict, the mock
 <span class="nolink">HttpClient</span> does
 not use the pre-built HttpClient and uses <span class="nolink">Mock</span> of <span class="nolink">HttpClient</span>.
