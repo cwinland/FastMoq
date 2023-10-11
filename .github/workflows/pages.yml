@@ -10,6 +10,9 @@ on:
       - README.md
       - CODE_OF_CONDUCT.md
       - license.txt
+      - FastMoq/**
+      - FastMoq.Core/**
+      - FastMoq.Web/**
       
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
