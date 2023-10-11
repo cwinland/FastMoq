@@ -44,7 +44,7 @@ namespace FastMoq
     /// </example>
     /// <typeparam name="TComponent">The type of the t component.</typeparam>
     /// <inheritdoc />
-    public abstract class MockerTestBase<TComponent> : IDisposable where TComponent : class
+    public abstract partial class MockerTestBase<TComponent> : IDisposable where TComponent : class
     {
         #region Fields
 

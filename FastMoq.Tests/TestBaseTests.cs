@@ -6,6 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using FastMoq.Extensions;
 using FastMoq.Models;
+using FluentAssertions.Equivalency;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -251,6 +254,71 @@ namespace FastMoq.Tests
             result2.Should().BeTrue();
             task1.Dispose();
             task2.Dispose();
+        }
+    }
+
+    public class ConstructorTestClass
+    {
+        public ConstructorTestClass()
+        {
+
+        }
+
+        public ConstructorTestClass(IFileSystem fileSystem, string field)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            ArgumentNullException.ThrowIfNull(field);
+        }
+    }
+
+    public class TestBaseConstructorTestClass : MockerTestBase<ConstructorTestClass>
+    {
+        private readonly ITestOutputHelper output;
+        public TestBaseConstructorTestClass(ITestOutputHelper output) => this.output = output;
+        [Fact]
+        public void TestConstructor()
+        {
+            TestConstructorParameters((action, c, p) =>
+            {
+                output?.WriteLine($"{c} - {p}");
+                action
+                    .Should()
+                    .Throw<TargetInvocationException>()
+                    .WithInnerException<ArgumentNullException>()
+                    .WithMessage($"*{p}*");
+            });
+        }
+
+        [Fact]
+        public void TestAllConstructors()
+        {
+            TestAllConstructorParameters((action, c, p) =>
+            {
+                output?.WriteLine($"{c} - {p}");
+                action
+                    .Should()
+                    .Throw<TargetInvocationException>()
+                    .WithInnerException<ArgumentNullException>()
+                    .WithMessage($"*{p}*");
+            });
+        }
+
+        [Fact]
+        public void TestConstructorInfo()
+        {
+            var constructors = typeof(ConstructorTestClass).GetConstructors();
+            foreach (var constructorInfo in constructors)
+            {
+                TestConstructorParameters(constructorInfo, (action, c, p) =>
+                {
+                    output?.WriteLine($"{c} - {p}");
+                    action
+                        .Should()
+                        .Throw<TargetInvocationException>()
+                        .WithInnerException<ArgumentNullException>()
+                        .WithMessage($"*{p}*");
+                });
+            }
         }
     }
 

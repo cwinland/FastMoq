@@ -9,8 +9,8 @@ namespace FastMoq.Models
     {
         #region Properties
 
-        internal ConstructorInfo? ConstructorInfo { get; }
-        internal object?[] ParameterList { get; }
+        public ConstructorInfo? ConstructorInfo { get; }
+        public object?[] ParameterList { get; }
 
         #endregion
 
