@@ -736,9 +736,10 @@ namespace FastMoq
         /// <param name="options">The options.</param>
         /// <param name="connection">The connection.</param>
         /// <returns>TContext of the database context.</returns>
-        public TContext GetDbContext<TContext>(DbContextOptions<TContext>? options = null, DbConnection? connection = null) where TContext : DbContext => GetDbContext<TContext>(options =>
+        public TContext GetDbContext<TContext>(DbContextOptions<TContext>? options = null, DbConnection? connection = null) where TContext : DbContext =>
+            GetDbContext<TContext>(options =>
             {
-                AddType(_ => options);
+                AddType(_ => options, replace: true);
                 return CreateInstance<TContext>() ?? throw new InvalidOperationException("Unable to create DbContext.");
             }, options, connection
         );
