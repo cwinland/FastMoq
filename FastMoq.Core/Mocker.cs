@@ -742,7 +742,12 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="TContext">The type of the t context.</typeparam>
         /// <returns>TContext.</returns>
-        public TContext GetDbContext<TContext>() where TContext : DbContext, new() => GetDbContext(_ => new TContext());
+        public TContext GetDbContext<TContext>() where TContext : DbContext => GetDbContext<TContext>(options =>
+            {
+                AddType(_ => options);
+                return CreateInstance<TContext>();
+            }
+        );
 
         /// <summary>
         ///     Gets the database context.
@@ -750,11 +755,11 @@ namespace FastMoq
         /// <typeparam name="TContext">The type of the t context.</typeparam>
         /// <param name="newObjectFunc">The new object function.</param>
         /// <returns>TContext.</returns>
-        public TContext GetDbContext<TContext>(Func<DbContextOptions, TContext> newObjectFunc) where TContext : DbContext
+        public TContext GetDbContext<TContext>(Func<DbContextOptions<TContext>, TContext> newObjectFunc, DbContextOptions<TContext>? options = null) where TContext : DbContext
         {
             DbConnection = new SqliteConnection("DataSource=:memory:");
             DbConnection.Open();
-            var dbContextOptions = new DbContextOptionsBuilder<TContext>()
+            var dbContextOptions = options ?? new DbContextOptionsBuilder<TContext>()
                 .UseSqlite(DbConnection)
                 .Options;
 
