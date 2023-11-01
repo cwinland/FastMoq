@@ -24,7 +24,7 @@ namespace FastMoq
     [SuppressMessage("ReSharper", "ConditionalAccessQualifierIsNonNullableAccordingToAPIContract")]
     [SuppressMessage("ReSharper", "NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract")]
     [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract")]
-    public class Mocker
+    public partial class Mocker
     {
         #region Fields
 
@@ -169,7 +169,7 @@ namespace FastMoq
         public T? AddProperties<T>(T obj)
         {
             var o = AddProperties(typeof(T), obj);
-            return o is not null ? (T) o : default;
+            return o is not null ? (T)o : default;
         }
 
         /// <summary>
@@ -306,10 +306,10 @@ namespace FastMoq
             if (!Contains<HttpMessageHandler>())
             {
                 SetupHttpMessage(() => new HttpResponseMessage
-                    {
-                        StatusCode = statusCode,
-                        Content = new StringContent(stringContent),
-                    }
+                {
+                    StatusCode = statusCode,
+                    Content = new StringContent(stringContent),
+                }
                 );
             }
 
@@ -542,7 +542,7 @@ namespace FastMoq
                 try
                 {
                     AddToConstructorHistory(tType, typeInstanceModel);
-                    obj = (T) typeInstanceModel.CreateFunc.Invoke(this);
+                    obj = (T)typeInstanceModel.CreateFunc.Invoke(this);
                 }
                 finally
                 {
@@ -580,7 +580,7 @@ namespace FastMoq
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
 
             return type.CreateFunc != null
-                ? (T) type.CreateFunc.Invoke(this)
+                ? (T)type.CreateFunc.Invoke(this)
                 : CreateInstanceNonPublic(type.InstanceType, args) as T;
         }
 
@@ -661,7 +661,7 @@ namespace FastMoq
                 if (!type.IsInterface)
                 {
                     // Find the best constructor and build the parameters.
-                    constructor = args.Length > 0 ? FindConstructor(type, true, args) : FindConstructor(true, type, nonPublic);
+                    constructor = args.Length > 0 || nonPublic ? FindConstructor(type, true, args) : FindConstructor(true, type, nonPublic);
                 }
             }
             catch
@@ -696,7 +696,7 @@ namespace FastMoq
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
         public Mock<T> CreateMockInstance<T>(bool nonPublic = false, params object?[] args) where T : class =>
-            (Mock<T>) CreateMockInstance(typeof(T), nonPublic, args);
+            (Mock<T>)CreateMockInstance(typeof(T), nonPublic, args);
 
         /// <summary>
         ///     Gets the argument data.
@@ -728,44 +728,6 @@ namespace FastMoq
         /// <returns>System.IO.Stream.</returns>
         public async Task<Stream> GetContentStream(HttpContent content) =>
             content is ByteArrayContent data ? await data.ReadAsStreamAsync() : Stream.Null;
-
-        /// <summary>
-        ///     Gets the database context.
-        /// </summary>
-        /// <typeparam name="TContext">The type of the t context.</typeparam>
-        /// <param name="options">The options.</param>
-        /// <param name="connection">The connection.</param>
-        /// <returns>TContext of the database context.</returns>
-        public TContext GetDbContext<TContext>(DbContextOptions<TContext>? options = null, DbConnection? connection = null) where TContext : DbContext =>
-            GetDbContext<TContext>(options =>
-            {
-                AddType(_ => options, replace: true);
-                return CreateInstance<TContext>() ?? throw new InvalidOperationException("Unable to create DbContext.");
-            }, options, connection
-        );
-
-        /// <summary>
-        ///     Gets the database context.
-        /// </summary>
-        /// <typeparam name="TContext">The type of the t context.</typeparam>
-        /// <param name="newObjectFunc">The new object function.</param>
-        /// <param name="options">The options.</param>
-        /// <param name="connection">The connection.</param>
-        /// <returns>TContext.</returns>
-        public TContext GetDbContext<TContext>(Func<DbContextOptions<TContext>, TContext> newObjectFunc, DbContextOptions<TContext>? options = null, DbConnection? connection = null) where TContext : DbContext
-        {
-            DbConnection = connection ?? new SqliteConnection("DataSource=:memory:");
-            DbConnection.Open();
-            var dbContextOptions = options ?? new DbContextOptionsBuilder<TContext>()
-                .UseSqlite(DbConnection)
-                .Options;
-
-            var context = newObjectFunc(dbContextOptions);
-            context.Database.EnsureCreated();
-            context.SaveChanges();
-
-            return context;
-        }
 
         /// <summary>
         ///     Gets the default value.
@@ -918,7 +880,7 @@ namespace FastMoq
             }
 
             var args = new List<object?>();
-            method.GetParameters().ToList().ForEach(p => { args.Add(GetDefaultValue(p.ParameterType)); });
+            method.GetParameters().ToList().ForEach(p => args.Add(GetDefaultValue(p.ParameterType)));
 
             return args.ToArray();
         }
@@ -929,7 +891,7 @@ namespace FastMoq
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="args">The arguments to get the constructor.</param>
         /// <returns><see cref="Mock{T}" />.</returns>
-        public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>) GetMock(typeof(T), args);
+        public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>)GetMock(typeof(T), args);
 
         /// <summary>
         ///     Gets of creates the mock of <c>type</c>.
@@ -944,6 +906,18 @@ namespace FastMoq
             if (!Contains(type))
             {
                 CreateMock(type, args.Length > 0, args);
+            }
+
+            return GetRequiredMock(type);
+        }
+
+        public Mock GetProtectedMock(Type type, params object?[] args)
+        {
+            type = CleanType(type);
+
+            if (!Contains(type))
+            {
+                CreateMock(type, true, args);
             }
 
             return GetRequiredMock(type);
@@ -1081,7 +1055,7 @@ namespace FastMoq
         /// <returns><see cref="Mock{T}" />.</returns>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.InvalidOperationException">Mock must exist. - type</exception>
-        public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>) GetRequiredMock(typeof(T));
+        public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>)GetRequiredMock(typeof(T));
 
         /// <summary>
         ///     Gets the content of the string.
@@ -1354,7 +1328,7 @@ namespace FastMoq
 
             if (type.CreateFunc != null)
             {
-                return (T) type.CreateFunc.Invoke(this);
+                return (T)type.CreateFunc.Invoke(this);
             }
 
             data ??= new Dictionary<Type, object?>();
@@ -1881,7 +1855,7 @@ namespace FastMoq
             {
                 try
                 {
-                    // Test Constructor.
+                    // SetupSetMethod Constructor.
                     var mock = CreateMockInternal(type, constructor);
                     _ = mock.Object;
                     validConstructors.Add(constructor);

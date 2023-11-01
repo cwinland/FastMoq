@@ -47,7 +47,7 @@ namespace FastMoq.Tests
             // Execute Http request.
             var result = await Component.http.GetAsync(new Uri("api/test", UriKind.Relative));
 
-            // Test Results
+            // SetupSetMethod Results
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -76,7 +76,7 @@ namespace FastMoq.Tests
             // Execute Http request.
             var result = await Component.http.GetAsync(new Uri("api/test", UriKind.Relative));
 
-            // Test Results
+            // SetupSetMethod Results
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(HttpStatusCode.Accepted);
 
@@ -112,7 +112,7 @@ namespace FastMoq.Tests
             // Execute Http request.
             var result = await Component.http.GetAsync(new Uri("api/test2", UriKind.Relative));
 
-            // Test Results
+            // SetupSetMethod Results
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(HttpStatusCode.OK);
 
