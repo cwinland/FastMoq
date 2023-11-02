@@ -26,6 +26,7 @@ namespace FastMoq
             GetDbContext(contextOptions =>
                 {
                     AddType(_ => contextOptions, true);
+                    AddType<TContext>(_ => CreateInstance<TContext>(), true);
                     return CreateInstance<TContext>() ?? throw new InvalidOperationException("Unable to create DbContext.");
                 },
                 options,

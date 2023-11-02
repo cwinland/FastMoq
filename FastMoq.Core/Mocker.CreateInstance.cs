@@ -223,30 +223,33 @@ namespace FastMoq
             var tType = typeof(T);
             var typeInstanceModel = GetTypeModel<T>();
 
-            if (typeInstanceModel.CreateFunc != null && !creatingTypeList.Contains(tType))
+            if (!creatingTypeList.Contains(tType))
             {
-                creatingTypeList.Add(tType);
-                T obj;
-
-                try
+                if (typeInstanceModel.CreateFunc != null)
                 {
-                    AddToConstructorHistory(tType, typeInstanceModel);
-                    obj = (T) typeInstanceModel.CreateFunc(this);
-                }
-                finally
-                {
-                    creatingTypeList.Remove(tType);
+                    creatingTypeList.Add(tType);
+                    T obj;
+
+                    try
+                    {
+                        AddToConstructorHistory(tType, typeInstanceModel);
+                        obj = (T) typeInstanceModel.CreateFunc(this);
+                    }
+                    finally
+                    {
+                        creatingTypeList.Remove(tType);
+                    }
+
+                    return obj;
                 }
 
-                return obj;
+                if (tType.IsAssignableTo(typeof(Microsoft.EntityFrameworkCore.DbContext)))
+                {
+                    return (T?) GetMockDbContext(tType).Object;
+                }
             }
 
             args ??= Array.Empty<object>();
-
-            if (tType.IsAssignableTo(typeof(Microsoft.EntityFrameworkCore.DbContext)))
-            {
-                return (T?)GetMockDbContext(tType).Object;
-            }
 
             var constructor =
                 args.Length > 0
