@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
 namespace FastMoq.Tests
@@ -19,10 +18,9 @@ namespace FastMoq.Tests
         {
             var mockDbContext = Mocks.GetMockDbContext<MyDbContext>();
             Component.MyDbUpdateMethod();
-            var test = Mocks.mockCollection.ToList();
             Component.Set<MockDataModel>().Add(new());
             Component.Set<MockDataModel>("MyDbSetData").Add(new());
-            Component.MyDbSetData.Add(new MockDataModel());
+            mockDbContext.Object.MyDbSetData.Add(new MockDataModel());
             Component.MyDbSetData.Should().HaveCount(3);
         }
     }

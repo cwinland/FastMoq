@@ -9,7 +9,15 @@ namespace FastMoq.Models
     {
         #region Properties
 
+        /// <summary>
+        ///     Gets the constructor information.
+        /// </summary>
+        /// <value>The constructor information.</value>
         public ConstructorInfo? ConstructorInfo { get; }
+        /// <summary>
+        ///     Gets the parameter list.
+        /// </summary>
+        /// <value>The parameter list.</value>
         public object?[] ParameterList { get; }
 
         #endregion

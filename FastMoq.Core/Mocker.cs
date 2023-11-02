@@ -1,7 +1,6 @@
 ﻿using FastMoq.Extensions;
 using FastMoq.Models;
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.Language.Flow;
 using Moq.Protected;
@@ -45,7 +44,7 @@ namespace FastMoq
 
         /// <summary>
         ///     <see cref="Dictionary{TKey,TValue}" /> of <see cref="Type" /> mapped to <see cref="InstanceModel" />.
-        /// This map assists in resolution of interfaces to instances.
+        ///     This map assists in resolution of interfaces to instances.
         /// </summary>
         /// <value>The type map.</value>
         internal readonly Dictionary<Type, IInstanceModel> typeMap;
@@ -92,14 +91,18 @@ namespace FastMoq
         /// <summary>
         ///     Gets or sets a value indicating whether this <see cref="Mocker" /> is strict.
         /// </summary>
-        /// <value><c>true</c> if strict <see cref="IFileSystem" /> resolution; otherwise, <c>false</c> uses the built-in virtual
-        /// <see cref="MockFileSystem" />.</value>
-        /// <remarks>If strict, the mock
-        /// <see cref="IFileSystem" /> does
-        /// not use <see cref="MockFileSystem" /> and uses <see cref="Mock" /> of <see cref="IFileSystem" />.
-        /// Gets or sets a value indicating whether this <see cref="Mocker" /> is strict. If strict, the mock
-        /// <see cref="HttpClient" /> does
-        /// not use the pre-built HttpClient and uses <see cref="Mock" /> of <see cref="HttpClient" />.</remarks>
+        /// <value>
+        ///     <c>true</c> if strict <see cref="IFileSystem" /> resolution; otherwise, <c>false</c> uses the built-in virtual
+        ///     <see cref="MockFileSystem" />.
+        /// </value>
+        /// <remarks>
+        ///     If strict, the mock
+        ///     <see cref="IFileSystem" /> does
+        ///     not use <see cref="MockFileSystem" /> and uses <see cref="Mock" /> of <see cref="IFileSystem" />.
+        ///     Gets or sets a value indicating whether this <see cref="Mocker" /> is strict. If strict, the mock
+        ///     <see cref="HttpClient" /> does
+        ///     not use the pre-built HttpClient and uses <see cref="Mock" /> of <see cref="HttpClient" />.
+        /// </remarks>
         public bool Strict { get; set; }
 
         #endregion
@@ -149,12 +152,14 @@ namespace FastMoq
 
         /// <summary>
         ///     Creates a <see cref="MockModel" /> with the given <see cref="Mock" /> with the option of overwriting an existing
-        /// <see cref="MockModel" />
+        ///     <see cref="MockModel" />
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="mock">Mock to Add.</param>
-        /// <param name="overwrite">Overwrite if the mock exists or throw <see cref="ArgumentException" /> if this parameter is
-        /// false.</param>
+        /// <param name="overwrite">
+        ///     Overwrite if the mock exists or throw <see cref="ArgumentException" /> if this parameter is
+        ///     false.
+        /// </param>
         /// <param name="nonPublic">if set to <c>true</c> uses public and non public constructors.</param>
         /// <returns><see cref="MockModel{T}" />.</returns>
         public MockModel<T> AddMock<T>(Mock<T> mock, bool overwrite, bool nonPublic = false) where T : class =>
@@ -169,7 +174,7 @@ namespace FastMoq
         public T? AddProperties<T>(T obj)
         {
             var o = AddProperties(typeof(T), obj);
-            return o is not null ? (T)o : default;
+            return o is not null ? (T) o : default;
         }
 
         /// <summary>
@@ -189,6 +194,7 @@ namespace FastMoq
             {
                 creatingTypeList.Add(type);
                 var writableProperties = type.GetProperties().Where(x => x.CanWrite && x.CanRead).ToList();
+
                 foreach (var writableProperty in writableProperties)
                 {
                     try
@@ -306,10 +312,10 @@ namespace FastMoq
             if (!Contains<HttpMessageHandler>())
             {
                 SetupHttpMessage(() => new HttpResponseMessage
-                {
-                    StatusCode = statusCode,
-                    Content = new StringContent(stringContent),
-                }
+                    {
+                        StatusCode = statusCode,
+                        Content = new StringContent(stringContent),
+                    }
                 );
             }
 
@@ -326,13 +332,13 @@ namespace FastMoq
 
         /// <summary>
         ///     Creates an instance of <c>T</c>. Parameters allow matching of constructors and using those values in the creation
-        /// of the instance.
+        ///     of the instance.
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="args">The optional arguments used to create the instance.</param>
         /// <returns><see cref="Nullable{T}" />.</returns>
         /// <example>
-        ///   <code><![CDATA[
+        ///     <code><![CDATA[
         /// IFileSystem fileSystem = CreateInstance<IFileSystem>();
         /// ]]></code>
         /// </example>
@@ -542,7 +548,7 @@ namespace FastMoq
                 try
                 {
                     AddToConstructorHistory(tType, typeInstanceModel);
-                    obj = (T)typeInstanceModel.CreateFunc.Invoke(this);
+                    obj = (T) typeInstanceModel.CreateFunc(this);
                 }
                 finally
                 {
@@ -564,14 +570,16 @@ namespace FastMoq
 
         /// <summary>
         ///     Creates an instance of <c>T</c>.
-        /// Non public constructors are included as options for creating the instance.
-        /// Parameters allow matching of constructors and using those values in the creation of the instance.
+        ///     Non public constructors are included as options for creating the instance.
+        ///     Parameters allow matching of constructors and using those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="args">The arguments.</param>
-        /// <returns><see cref="Nullable{T}" /></returns>
+        /// <returns>
+        ///     <see cref="Nullable{T}" />
+        /// </returns>
         /// <example>
-        ///   <code><![CDATA[
+        ///     <code><![CDATA[
         /// IModel model = CreateInstanceNonPublic<IModel>();
         /// ]]></code>
         /// </example>
@@ -580,7 +588,7 @@ namespace FastMoq
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
 
             return type.CreateFunc != null
-                ? (T)type.CreateFunc.Invoke(this)
+                ? (T) type.CreateFunc(this)
                 : CreateInstanceNonPublic(type.InstanceType, args) as T;
         }
 
@@ -696,7 +704,7 @@ namespace FastMoq
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
         public Mock<T> CreateMockInstance<T>(bool nonPublic = false, params object?[] args) where T : class =>
-            (Mock<T>)CreateMockInstance(typeof(T), nonPublic, args);
+            (Mock<T>) CreateMockInstance(typeof(T), nonPublic, args);
 
         /// <summary>
         ///     Gets the argument data.
@@ -736,10 +744,10 @@ namespace FastMoq
         /// <returns><see cref="Nullable{T}" />.</returns>
         public static object? GetDefaultValue(Type type) => type switch
         {
-            { FullName: "System.Uri" } => new Uri("http://localhost"),
-            { FullName: "System.String" } => string.Empty,
+            {FullName: "System.Uri"} => new Uri("http://localhost"),
+            {FullName: "System.String"} => string.Empty,
             _ when typeof(IEnumerable).IsAssignableFrom(type) => Array.CreateInstance(type.GetElementType() ?? typeof(object), 0),
-            { IsClass: true } => null,
+            {IsClass: true} => null,
             _ => Activator.CreateInstance(type),
         };
 
@@ -751,8 +759,10 @@ namespace FastMoq
         /// <returns>ISetup&lt;HttpMessageHandler, Task&lt;HttpResponseMessage&gt;&gt;.</returns>
         public ISetup<HttpMessageHandler, Task<HttpResponseMessage>>? GetHttpHandlerSetup(Expression? request = null,
             Expression? cancellationToken = null) =>
-            GetMessageProtectedAsync<HttpMessageHandler, HttpResponseMessage>("SendAsync", request ?? ItExpr.IsAny<HttpRequestMessage>(),
-                cancellationToken ?? ItExpr.IsAny<CancellationToken>());
+            GetMessageProtectedAsync<HttpMessageHandler, HttpResponseMessage>("SendAsync",
+                request ?? ItExpr.IsAny<HttpRequestMessage>(),
+                cancellationToken ?? ItExpr.IsAny<CancellationToken>()
+            );
 
         /// <summary>
         ///     Gets a list with the specified number of list items, using a custom function.
@@ -763,14 +773,15 @@ namespace FastMoq
         /// <param name="initAction">The initialize action.</param>
         /// <returns><see cref="List{T}" />.</returns>
         /// <example>
-        /// Example of how to create a list.
-        /// <code><![CDATA[
+        ///     Example of how to create a list.
+        ///     <code><![CDATA[
         /// GetList<Model>(3, (i) => new Model(name: i.ToString()));
         /// ]]></code>
-        /// or
-        /// <code><![CDATA[
+        ///     or
+        ///     <code><![CDATA[
         /// GetList<IModel>(3, (i) => Mocks.CreateInstance<IModel>(i));
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         public static List<T> GetList<T>(int count, Func<int, T>? func, Action<int, T>? initAction)
         {
             var results = new List<T>();
@@ -796,14 +807,15 @@ namespace FastMoq
         /// <param name="func">The function for creating the list items.</param>
         /// <returns><see cref="List{T}" />.</returns>
         /// <example>
-        /// Example of how to create a list.
-        /// <code><![CDATA[
+        ///     Example of how to create a list.
+        ///     <code><![CDATA[
         /// GetList<Model>(3, (i) => new Model(name: i.ToString()));
         /// ]]></code>
-        /// or
-        /// <code><![CDATA[
+        ///     or
+        ///     <code><![CDATA[
         /// GetList<IModel>(3, (i) => Mocks.CreateInstance<IModel>(i));
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         public static List<T> GetList<T>(int count, Func<int, T>? func) => GetList(count, func, null);
 
         /// <summary>
@@ -814,14 +826,15 @@ namespace FastMoq
         /// <param name="func">The function for creating the list items.</param>
         /// <returns><see cref="List{T}" />.</returns>
         /// <example>
-        /// Example of how to create a list.
-        /// <code><![CDATA[
+        ///     Example of how to create a list.
+        ///     <code><![CDATA[
         /// GetList<Model>(3, () => new Model(name: Guid.NewGuid().ToString()));
         /// ]]></code>
-        /// or
-        /// <code><![CDATA[
+        ///     or
+        ///     <code><![CDATA[
         /// GetList<IModel>(3, () => Mocks.CreateInstance<IModel>());
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         public static List<T> GetList<T>(int count, Func<T>? func) =>
             func == null ? new List<T>() : GetList(count, _ => func.Invoke());
 
@@ -891,7 +904,7 @@ namespace FastMoq
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="args">The arguments to get the constructor.</param>
         /// <returns><see cref="Mock{T}" />.</returns>
-        public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>)GetMock(typeof(T), args);
+        public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>) GetMock(typeof(T), args);
 
         /// <summary>
         ///     Gets of creates the mock of <c>type</c>.
@@ -911,23 +924,13 @@ namespace FastMoq
             return GetRequiredMock(type);
         }
 
-        public Mock GetProtectedMock(Type type, params object?[] args)
-        {
-            type = CleanType(type);
-
-            if (!Contains(type))
-            {
-                CreateMock(type, true, args);
-            }
-
-            return GetRequiredMock(type);
-        }
-
         /// <summary>
         ///     Gets the instance for the given <see cref="ParameterInfo" />.
         /// </summary>
         /// <param name="info">The <see cref="ParameterInfo" />.</param>
-        /// <returns><see cref="Nullable{Object}" /></returns>
+        /// <returns>
+        ///     <see cref="Nullable{Object}" />
+        /// </returns>
         /// <exception cref="ArgumentNullException">nameof(info)</exception>
         /// <exception cref="System.ArgumentNullException">nameof(info)</exception>
         /// <exception cref="System.InvalidProgramException">nameof(info)</exception>
@@ -1037,6 +1040,18 @@ namespace FastMoq
             return CreateInstanceInternal<T>(constructor.ConstructorInfo, args);
         }
 
+        public Mock GetProtectedMock(Type type, params object?[] args)
+        {
+            type = CleanType(type);
+
+            if (!Contains(type))
+            {
+                CreateMock(type, true, args);
+            }
+
+            return GetRequiredMock(type);
+        }
+
         /// <summary>
         ///     Gets the required mock.
         /// </summary>
@@ -1055,7 +1070,7 @@ namespace FastMoq
         /// <returns><see cref="Mock{T}" />.</returns>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.InvalidOperationException">Mock must exist. - type</exception>
-        public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>)GetRequiredMock(typeof(T));
+        public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>) GetRequiredMock(typeof(T));
 
         /// <summary>
         ///     Gets the content of the string.
@@ -1070,17 +1085,22 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="action">The action.</param>
-        /// <param name="reset"><c>False to keep the existing setup.</c></param>
-        /// <returns><see cref="Mock{T}" /></returns>
+        /// <param name="reset">
+        ///     <c>False to keep the existing setup.</c>
+        /// </param>
+        /// <returns>
+        ///     <see cref="Mock{T}" />
+        /// </returns>
         /// <exception cref="System.InvalidOperationException">Invalid Mock.</exception>
         /// <example>
-        /// Example of how to set up for mocks that require specific functionality.
-        /// <code><![CDATA[
+        ///     Example of how to set up for mocks that require specific functionality.
+        ///     <code><![CDATA[
         /// mocks.Initialize<ICarService>(mock => {
         /// mock.Setup(x => x.StartCar).Returns(true));
         /// mock.Setup(x => x.StopCar).Returns(false));
         /// }
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         public Mock<T> Initialize<T>(Action<Mock<T>> action, bool reset = true) where T : class
         {
             var mock = GetMock<T>() ?? throw new InvalidOperationException("Invalid Mock.");
@@ -1186,7 +1206,8 @@ namespace FastMoq
         public void SetupMessageAsync<TMock, TReturn>(Expression<Func<TMock, Task<TReturn>>> expression, Func<TReturn> messageFunc)
             where TMock : class =>
             (GetMock<TMock>()
-                .Setup(expression) ?? throw new InvalidDataException($"Unable to setup '{typeof(TMock)}'."))
+                 .Setup(expression) ??
+             throw new InvalidDataException($"Unable to setup '{typeof(TMock)}'."))
             .ReturnsAsync(messageFunc)?.Verifiable();
 
         /// <summary>
@@ -1222,8 +1243,10 @@ namespace FastMoq
         /// </summary>
         /// <param name="mock">Mock to Add.</param>
         /// <param name="type">Type of Mock.</param>
-        /// <param name="overwrite">Overwrite if the mock exists or throw <see cref="ArgumentException" /> if this parameter is
-        /// false.</param>
+        /// <param name="overwrite">
+        ///     Overwrite if the mock exists or throw <see cref="ArgumentException" /> if this parameter is
+        ///     false.
+        /// </param>
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
         /// <returns><see cref="Mock{T}" />.</returns>
         /// <exception cref="ArgumentNullException">nameof(mock)</exception>
@@ -1273,9 +1296,10 @@ namespace FastMoq
             }
 
             var item = ConstructorHistory.FirstOrDefault(x => x.Key == key);
+
             if (item?.Key is null)
             {
-                constructorHistory.Add(key, new List<IHistoryModel> { instanceModel });
+                constructorHistory.Add(key, new List<IHistoryModel> {instanceModel});
             }
             else
             {
@@ -1328,7 +1352,7 @@ namespace FastMoq
 
             if (type.CreateFunc != null)
             {
-                return (T)type.CreateFunc.Invoke(this);
+                return (T) type.CreateFunc.Invoke(this);
             }
 
             data ??= new Dictionary<Type, object?>();
@@ -1420,10 +1444,15 @@ namespace FastMoq
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
         /// <param name="excludeList">Constructors to ignore.</param>
         /// <returns><see cref="Tuple{ConstructorInfo, List}" />.</returns>
-        /// <exception cref="AmbiguousImplementationException">Multiple parameterized constructors exist. Cannot decide which to use.</exception>
+        /// <exception cref="AmbiguousImplementationException">
+        ///     Multiple parameterized constructors exist. Cannot decide which to
+        ///     use.
+        /// </exception>
         /// <exception cref="NotImplementedException">Unable to find the constructor.</exception>
-        /// <exception cref="System.Runtime.AmbiguousImplementationException">Multiple parameterized constructors exist. Cannot decide which to
-        /// use.</exception>
+        /// <exception cref="System.Runtime.AmbiguousImplementationException">
+        ///     Multiple parameterized constructors exist. Cannot decide which to
+        ///     use.
+        /// </exception>
         /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
         internal ConstructorModel FindConstructor(bool bestGuess, Type type, bool nonPublic, List<ConstructorInfo>? excludeList = null)
         {
@@ -1436,7 +1465,8 @@ namespace FastMoq
             if (!bestGuess && constructors.Count(x => x.ParameterList.Any()) > 1)
             {
                 throw new AmbiguousImplementationException(
-                    "Multiple parameterized constructors exist. Cannot decide which to use.");
+                    "Multiple parameterized constructors exist. Cannot decide which to use."
+                );
             }
 
             // Best Guess //
@@ -1565,8 +1595,10 @@ namespace FastMoq
             type
                 .GetRuntimeFields()
                 .Where(x => x.CustomAttributes.Any(y =>
-                    y.AttributeType == attributeType ||
-                    y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)));
+                        y.AttributeType == attributeType ||
+                        y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)
+                    )
+                );
 
         /// <summary>
         ///     Gets the injection properties.
@@ -1578,8 +1610,10 @@ namespace FastMoq
             type
                 .GetRuntimeProperties()
                 .Where(x => x.CustomAttributes.Any(y =>
-                    y.AttributeType == attributeType ||
-                    y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)));
+                        y.AttributeType == attributeType ||
+                        y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)
+                    )
+                );
 
         /// <summary>
         ///     Gets the mock model.
@@ -1593,6 +1627,7 @@ namespace FastMoq
         internal MockModel GetMockModel(Type type, Mock? mock = null, bool autoCreate = true)
         {
             var first = mockCollection.FirstOrDefault(x => x.Type == type && (x.Mock == mock || mock == null));
+
             if (first != null)
             {
                 return first;
@@ -1637,6 +1672,7 @@ namespace FastMoq
             }
 
             var typeValueModel = GetTypeModel(parameterType);
+
             if (typeValueModel.CreateFunc != null)
             {
                 return typeValueModel.CreateFunc.Invoke(this);
@@ -1679,7 +1715,8 @@ namespace FastMoq
 
             if (possibleTypes.Count > 1)
             {
-                var publicCount = (possibleTypes.Count(x => x.IsPublic));
+                var publicCount = possibleTypes.Count(x => x.IsPublic);
+
                 if (publicCount > 1)
                 {
                     throw new AmbiguousImplementationException();
@@ -1825,7 +1862,7 @@ namespace FastMoq
             var newType = typeof(Mock<>).MakeGenericType(type);
 
             // Execute new Mock with Loose Behavior and arguments from constructor, if applicable.
-            var parameters = new List<object?> { Strict ? MockBehavior.Strict : MockBehavior.Loose };
+            var parameters = new List<object?> {Strict ? MockBehavior.Strict : MockBehavior.Loose};
             constructor?.ParameterList.ToList().ForEach(parameters.Add);
 
             return Activator.CreateInstance(newType, parameters.ToArray()) is not Mock oMock
