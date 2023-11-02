@@ -1,4 +1,5 @@
-﻿using FastMoq.Models;
+﻿using FastMoq.Extensions;
+using FastMoq.Models;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -310,7 +311,7 @@ namespace FastMoq
 
             if (Contains(type))
             {
-                ThrowAlreadyExists(type);
+                type.ThrowAlreadyExists();
             }
 
             var oMock = CreateMockInstance(type, nonPublic, args);

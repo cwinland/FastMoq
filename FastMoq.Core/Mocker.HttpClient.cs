@@ -1,20 +1,28 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FastMoq
 {
     public partial class Mocker
     {
+        #region Fields
+
+        /// <summary>
+        ///     The setup HTTP factory
+        /// </summary>
+        private bool setupHttpFactory;
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///     The virtual mock http client that is used by mocker unless overridden with the <see cref="Strict" /> property.
         /// </summary>
         /// <value>The HTTP client.</value>
         public HttpClient HttpClient { get; }
+
+        #endregion
 
         /// <summary>
         ///     Creates the HTTP client.
@@ -32,10 +40,10 @@ namespace FastMoq
             if (!Contains<HttpMessageHandler>())
             {
                 SetupHttpMessage(() => new HttpResponseMessage
-                {
-                    StatusCode = statusCode,
-                    Content = new StringContent(stringContent),
-                }
+                    {
+                        StatusCode = statusCode,
+                        Content = new StringContent(stringContent),
+                    }
                 );
             }
 
@@ -60,6 +68,5 @@ namespace FastMoq
             {
                 BaseAddress = baseUri,
             };
-
     }
 }

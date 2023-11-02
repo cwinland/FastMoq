@@ -10,9 +10,8 @@ namespace FastMoq.Models
     /// </summary>
     /// <typeparam name="TEntity">The type of the t entity.</typeparam>
     /// <inheritdoc />
-    /// <seealso cref="Mock{DbSet{TEntity}}" />
-    public class DbSetMock<TEntity> : Mock<DbSet<TEntity>>
-        where TEntity : class
+    /// <seealso cref="Mock{T}" />
+    public class DbSetMock<TEntity> : Mock<DbSet<TEntity>> where TEntity : class
     {
         #region Fields
 
@@ -20,13 +19,15 @@ namespace FastMoq.Models
 
         #endregion
 
+        /// <inheritdoc />
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DbSetMock{TEntity}" /> class.
+        ///     Initializes a new instance of the <see cref="T:FastMoq.Models.DbSetMock`1" /> class.
         /// </summary>
         public DbSetMock() : this(null) { }
 
+        /// <inheritdoc />
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DbSetMock{TEntity}" /> class.
+        ///     Initializes a new instance of the <see cref="T:FastMoq.Models.DbSetMock`1" /> class.
         /// </summary>
         /// <param name="initialData">The initial data.</param>
         public DbSetMock(IList<TEntity>? initialData)

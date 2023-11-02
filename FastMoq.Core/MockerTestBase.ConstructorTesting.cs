@@ -31,7 +31,7 @@ namespace FastMoq
         /// <param name="validValue">The valid value.</param>
         protected void TestAllConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null)
         {
-            ConstructorInfo[] constructorList = typeof(TComponent).GetConstructors();
+            var constructorList = typeof(TComponent).GetConstructors();
 
             foreach (var constructorInfo in constructorList)
             {

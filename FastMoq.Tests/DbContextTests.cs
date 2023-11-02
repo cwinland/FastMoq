@@ -10,6 +10,10 @@ namespace FastMoq.Tests
         {
             var mockDbContext = Mocks.GetMockDbContext<MyDbContext>();
             mockDbContext.Object.Should().BeSameAs(Component);
+
+            Mocks.GetMock<MyDbContext>().Object.Should().BeSameAs(Component);
+
+            mockDbContext.Should().BeSameAs(Mocks.GetMock<MyDbContext>());
         }
 
         [Fact]

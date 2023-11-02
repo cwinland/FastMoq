@@ -63,8 +63,8 @@ namespace FastMoq
         /// </summary>
         /// <param name="contextType">Type of the context.</param>
         /// <returns>Mock of the mock database context.</returns>
-        /// <exception cref="NotSupportedException">Context Type must inherit from Microsoft.EntityFrameworkCore.DbContext.</exception>
-        /// <exception cref="MissingMethodException">Method 'FastMoq.Mocker.GetMockDbContext' not found.</exception>
+        /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="MissingMethodException">GetMockDbContext</exception>
         public Mock GetMockDbContext(Type contextType)
         {
             if (!contextType.IsAssignableTo(typeof(DbContext)))
@@ -92,7 +92,11 @@ namespace FastMoq
                 return GetMock<TDbContext>();
             }
 
-            AddType(_ => new DbContextOptions<TDbContext>(), true);
+            // Add DbContextOptions wrapper to mocks.
+            if (!Contains<DbContextOptions<TDbContext>>())
+            {
+                AddMock(new MockDbContextOptions<TDbContext>(), false);
+            }
 
             var genericDbSets = typeof(TDbContext).GetProperties()
                 .Where(x => x.CanRead && x.PropertyType.IsGenericType && x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
@@ -100,6 +104,7 @@ namespace FastMoq
             var mock = (Mock<TDbContext>) GetProtectedMock(typeof(TDbContext));
             mock.CallBase = true;
 
+            // Go through the DbSets and attempt to map each property and the set methods to their properties.
             genericDbSets.ForEach(x =>
                 {
                     var value = GetValue(x.PropertyType);
@@ -180,6 +185,7 @@ namespace FastMoq
         /// <typeparam name="TContext">The type of the t context.</typeparam>
         /// <param name="mockDbContext">The mock database context.</param>
         /// <param name="propertyInfo">The property information.</param>
+        /// <exception cref="InvalidOperationException">Unable to get Set method.</exception>
         public void SetupDbContextSetMethods<TContext>(Mock<TContext> mockDbContext, PropertyInfo propertyInfo)
             where TContext : DbContext
         {
@@ -187,7 +193,11 @@ namespace FastMoq
 
             // Create a Func<T> at runtime
             var funcType = typeof(Func<>).MakeGenericType(setType);
-            var propValueDelegate = Delegate.CreateDelegate(funcType, mockDbContext.Object, propertyInfo.GetGetMethod());
+
+            var propValueDelegate = Delegate.CreateDelegate(funcType,
+                mockDbContext.Object,
+                propertyInfo.GetGetMethod() ?? throw new MissingMethodException("Unable to get Set method.")
+            );
 
             if (setType.IsGenericType && setType.GetGenericTypeDefinition() == typeof(DbSet<>))
             {
@@ -211,7 +221,7 @@ namespace FastMoq
             var parameter = Expression.Parameter(typeof(T), "x");
             var body = Expression.Property(parameter, propertyInfo);
             var lambda = Expression.Lambda<Func<T, TProperty>>(body, parameter);
-            mock.Setup(lambda).Returns(value);
+            mock.Setup(lambda)?.Returns(value);
         }
 
         /// <summary>
@@ -229,7 +239,7 @@ namespace FastMoq
 
             // Create an expression that represents x => x.Set<setType>(It.IsAny<string>())
             var parameter = Expression.Parameter(typeof(TContext), "x");
-            var method = typeof(TContext).GetMethod("Set", types);
+            var method = typeof(TContext).GetMethod("Set", types) ?? throw new MissingMethodException("Unable to get Set method.");
             var genericMethod = method.MakeGenericMethod(setType);
             var args = new List<Expression>();
             types.ForEach(x => args.Add(Expression.Call(typeof(It), "IsAny", new[] {x})));
@@ -237,7 +247,7 @@ namespace FastMoq
             var expression = Expression.Lambda<Func<TContext, object>>(body, parameter);
 
             // Use the expression to setup mockDbContext
-            var setup = new FastMoqNonVoidSetupPhrase<TContext>(mockDbContext.Setup(expression));
+            var setup = new FastMoqNonVoidSetupPhrase<TContext>(mockDbContext.Setup(expression) ?? throw new InvalidOperationException("Unable to Get Setup."));
             setup.Returns(propValueDelegate, setType);
         }
     }
