@@ -1256,7 +1256,7 @@ namespace FastMoq
             {
                 try
                 {
-                    // SetupSetMethod Constructor.
+                    // Test Constructor.
                     var mock = CreateMockInternal(type, constructor);
                     _ = mock.Object;
                     validConstructors.Add(constructor);
