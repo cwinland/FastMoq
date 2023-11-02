@@ -7,7 +7,7 @@ using FastMoq.Models;
 namespace FastMoq
 {
     /// <summary>
-    ///     Auto Mocking SetupSetMethod Base with Fast Automatic Mocking <see cref="Mocker" />.
+    ///     Auto Mocking Test Base with Fast Automatic Mocking <see cref="Mocker" />.
     /// </summary>
     /// <example>
     ///     Basic example of the base class creating the Car class and auto mocking ICarService.
@@ -214,7 +214,7 @@ namespace FastMoq
         /// <example>
         /// CreateComponent allows creating the component when desired, instead of in the base class constructor.
         /// <code><![CDATA[
-        /// public void SetupSetMethod() {
+        /// public void Test() {
         ///     Mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
         ///     CreateComponent();
         /// }
