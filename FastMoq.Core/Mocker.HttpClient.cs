@@ -1,0 +1,65 @@
+﻿using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FastMoq
+{
+    public partial class Mocker
+    {
+        /// <summary>
+        ///     The virtual mock http client that is used by mocker unless overridden with the <see cref="Strict" /> property.
+        /// </summary>
+        /// <value>The HTTP client.</value>
+        public HttpClient HttpClient { get; }
+
+        /// <summary>
+        ///     Creates the HTTP client.
+        /// </summary>
+        /// <param name="clientName">Name of the client.</param>
+        /// <param name="baseAddress">The base address.</param>
+        /// <param name="statusCode">The status code.</param>
+        /// <param name="stringContent">Content of the string.</param>
+        /// <returns><see cref="HttpClient" />.</returns>
+        public HttpClient CreateHttpClient(string clientName = "FastMoqHttpClient", string baseAddress = "http://localhost",
+            HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1}]")
+        {
+            var baseUri = new Uri(baseAddress);
+
+            if (!Contains<HttpMessageHandler>())
+            {
+                SetupHttpMessage(() => new HttpResponseMessage
+                {
+                    StatusCode = statusCode,
+                    Content = new StringContent(stringContent),
+                }
+                );
+            }
+
+            if (!Contains<IHttpClientFactory>())
+            {
+                setupHttpFactory = true;
+                GetMock<IHttpClientFactory>().Setup(x => x.CreateClient(It.IsAny<string>())).Returns(() => CreateHttpClientInternal(baseUri));
+            }
+
+            return setupHttpFactory
+                ? GetObject<IHttpClientFactory>()?.CreateClient(clientName) ?? throw new ApplicationException("Unable to create IHttpClientFactory.")
+                : CreateHttpClientInternal(baseUri);
+        }
+
+        /// <summary>
+        ///     Creates the HTTP client internal.
+        /// </summary>
+        /// <param name="baseUri">The base URI.</param>
+        /// <returns>System.Net.Http.HttpClient.</returns>
+        internal HttpClient CreateHttpClientInternal(Uri baseUri) =>
+            new(GetObject<HttpMessageHandler>() ?? throw new ApplicationException("Unable to create HttpMessageHandler."))
+            {
+                BaseAddress = baseUri,
+            };
+
+    }
+}

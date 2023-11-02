@@ -61,10 +61,37 @@ namespace FastMoq
         /// <summary>
         ///     Gets the mock database context.
         /// </summary>
+        /// <param name="contextType">Type of the context.</param>
+        /// <returns>Mock of the mock database context.</returns>
+        /// <exception cref="NotSupportedException">Context Type must inherit from Microsoft.EntityFrameworkCore.DbContext.</exception>
+        /// <exception cref="MissingMethodException">Method 'FastMoq.Mocker.GetMockDbContext' not found.</exception>
+        public Mock GetMockDbContext(Type contextType)
+        {
+            if (!contextType.IsAssignableTo(typeof(DbContext)))
+
+            {
+                throw new NotSupportedException($"{contextType} must inherit from {typeof(DbContext).FullName}.");
+            }
+
+            var method = GetType().GetMethods().FirstOrDefault(x=> x.Name.Equals(nameof(GetMockDbContext)) && x.IsGenericMethodDefinition) ??
+                         throw new MissingMethodException(GetType().FullName, nameof(GetMockDbContext));
+
+            var generic = method.MakeGenericMethod(contextType);
+            return (Mock)generic.Invoke(this, null);
+        }
+
+        /// <summary>
+        ///     Gets the mock database context.
+        /// </summary>
         /// <typeparam name="TDbContext">The type of the t database context.</typeparam>
         /// <returns>Mock&lt;TDbContext&gt; of the mock database context.</returns>
         public Mock<TDbContext> GetMockDbContext<TDbContext>() where TDbContext : DbContext
         {
+            if (Contains<TDbContext>())
+            {
+                return GetMock<TDbContext>();
+            }
+
             AddType(_ => new DbContextOptions<TDbContext>(), true);
 
             var genericDbSets = typeof(TDbContext).GetProperties()
