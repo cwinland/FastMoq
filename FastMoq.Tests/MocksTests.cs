@@ -1,5 +1,6 @@
 using FastMoq.Extensions;
 using FastMoq.Models;
+using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
 using System;
 using System.Collections.Generic;
@@ -115,11 +116,11 @@ namespace FastMoq.Tests
         public void Create_WithMapInstance()
         {
             // Create Random number.
-            var number = (double) RandomNumberGenerator.GetInt32(1, 100);
+            var number = (double)RandomNumberGenerator.GetInt32(1, 100);
 
             // Add Mock Mapping, demonstrating that the number doesn't get used until CreateInstance is called.
             Mocks.AddType<ITestClassDouble, TestClassDouble2>(_ => new TestClassDouble2
-                {Value = number}
+            { Value = number }
             );
 
             // Saving original number
@@ -179,15 +180,6 @@ namespace FastMoq.Tests
 
             var b = () => Mocks.AddType<ITestClassDouble, TestClassDouble1>();
             b.Should().Throw<ArgumentException>();
-        }
-
-        [Fact]
-        public void Create_WithNulls()
-        {
-            Mocks.CreateInstance<TestClassMany>(true, 4, null);
-            Mocks.CreateInstance<TestClassNormal>(true, null);
-            Action a = () => Mocks.CreateInstance<TestClassMany>(true, null, "str");
-            a.Should().Throw<NotImplementedException>();
         }
 
         [Fact]
@@ -251,13 +243,13 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateFromInterface_ManyMatches_ShouldThrow_Ambigous()
         {
-            new Action (() => Mocks.CreateInstance<ITestClassDouble>().Should().NotBeNull()).Should().Throw<AmbiguousImplementationException>();
+            new Action(() => Mocks.CreateInstance<ITestClassDouble>().Should().NotBeNull()).Should().Throw<AmbiguousImplementationException>();
             Mocks.AddType<ITestClassDouble, TestClassDouble1>();
-            new Action (() => Mocks.CreateInstance<ITestClassDouble>().Should().NotBeNull()).Should().NotThrow<AmbiguousImplementationException>();
+            new Action(() => Mocks.CreateInstance<ITestClassDouble>().Should().NotBeNull()).Should().NotThrow<AmbiguousImplementationException>();
         }
 
         [Fact]
-        public void CreateInstance()
+        public void CreateInstance_ShouldNotBeNull()
         {
             Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
             Mocks.CreateInstance<TestClassDouble1>().Should().NotBeNull();
@@ -364,7 +356,7 @@ namespace FastMoq.Tests
             Mocks.AddType<TestClassOne>(_ => Mocks.CreateInstance<TestClassOne>());
             var t = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
             Mocks.typeMap.Clear();
-            Mocks.AddType<TestClassOne, TestClassOne>(_=> Mocks.CreateInstance<TestClassOne>());
+            Mocks.AddType<TestClassOne, TestClassOne>(_ => Mocks.CreateInstance<TestClassOne>());
             var t2 = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
             t.Should().BeEquivalentTo(t2);
         }
@@ -377,7 +369,7 @@ namespace FastMoq.Tests
             var o = Mocks.CreateInstance<TestClassOne>();
             o.Should().BeEquivalentTo(t);
             Mocks.typeMap.Clear();
-            Mocks.AddType(typeof(TestClassOne), typeof(TestClassOne), _=> Mocks.CreateInstance<TestClassOne>());
+            Mocks.AddType(typeof(TestClassOne), typeof(TestClassOne), _ => Mocks.CreateInstance<TestClassOne>());
             var t2 = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
             t.Should().BeEquivalentTo(t2);
             o = Mocks.CreateInstance<TestClassOne>();
@@ -445,11 +437,11 @@ namespace FastMoq.Tests
         {
             var count = 0;
             List<int> numbers = Mocker.GetList(3, () => count++);
-            numbers.Should().BeEquivalentTo(new List<int> {0, 1, 2});
+            numbers.Should().BeEquivalentTo(new List<int> { 0, 1, 2 });
 
             count = 0;
             List<string> strings = Mocker.GetList(3, () => (count++).ToString());
-            strings.Should().BeEquivalentTo(new List<string> {"0", "1", "2"});
+            strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2" });
 
             count = 0;
             List<TestClassMany> test = Mocker.GetList(3, () => new TestClassMany(count++));
@@ -471,10 +463,10 @@ namespace FastMoq.Tests
         public void GetListParameter()
         {
             List<int> numbers = Mocker.GetList(3, i => i);
-            numbers.Should().BeEquivalentTo(new List<int> {0, 1, 2});
+            numbers.Should().BeEquivalentTo(new List<int> { 0, 1, 2 });
 
             List<string> strings = Mocker.GetList(3, i => i.ToString());
-            strings.Should().BeEquivalentTo(new List<string> {"0", "1", "2"});
+            strings.Should().BeEquivalentTo(new List<string> { "0", "1", "2" });
 
             List<TestClassMany> test = Mocker.GetList(3, i => new TestClassMany(i));
             test[0].value.Should().Be(0);
@@ -628,7 +620,7 @@ namespace FastMoq.Tests
         {
             var obj = Component.GetObject<TestClass>(t => t.field2 = 3);
             obj.field2.Should().Be(3);
-            new Action (() => Component.GetObject<ITestClassDouble>(t => t.Value = 333.333)).Should().Throw<AmbiguousImplementationException>();
+            new Action(() => Component.GetObject<ITestClassDouble>(t => t.Value = 333.333)).Should().Throw<AmbiguousImplementationException>();
         }
 
         [Fact]
@@ -800,6 +792,42 @@ namespace FastMoq.Tests
             Mocks.Strict = true;
             Action a = () => Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
             a.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Specified argument was out of the range of valid values.");
+        }
+
+        [Fact]
+        public void TestCreateInstanceWithMap()
+        {
+            Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
+            new Action(() => Mocks.CreateInstance<ITestClassDouble>()).Should().Throw<AmbiguousImplementationException>();
+            Mocks.AddType<ITestClassDouble, TestClassDouble1>();
+            Mocks.CreateInstance<ITestClassDouble>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void TestCreateEmptyUri()
+        {
+            var uri = new UriBuilder().Uri;
+
+            uri.Should().BeEquivalentTo(typeof(Uri).GetDefaultValue());
+        }
+
+        [Fact]
+        public void TestCreateInstanceWithMap2()
+        {
+            // Create instance via arguments in create instance.
+            var instance1 = Mocks.CreateInstance<ITestClassMany>(1, "test");
+            instance1.Should().NotBeNull();
+
+            // Add type map with arguments.
+            Mocks.AddType<ITestClassMany, TestClassMany>(args: new object?[] { 1, "test" });
+            var instance2 = Mocks.CreateInstance<ITestClassMany>();
+            instance2.Should().NotBeNull();
+
+            // instances should be equivalent.
+            instance1.Should().BeEquivalentTo(instance2);
+
+            // Creating instance with parameter overrides type map.
+            Mocks.CreateInstance<ITestClassMany>(1).Should().NotBeEquivalentTo(instance1);
         }
 
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)

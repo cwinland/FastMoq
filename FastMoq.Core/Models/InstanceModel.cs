@@ -23,10 +23,7 @@ namespace FastMoq.Models
         /// <inheritdoc />
         public Func<Mocker, object>? CreateFunc { get; internal set; }
 
-        /// <summary>
-        ///     Gets the arguments.
-        /// </summary>
-        /// <value>The arguments.</value>
+        /// <inheritdoc />
         public List<object?> Arguments { get; internal set; } = new();
 
         #endregion
@@ -36,7 +33,6 @@ namespace FastMoq.Models
         /// </summary>
         /// <param name="originalType">Type of the original.</param>
         /// <param name="instanceType">Type of the instance.</param>
-        /// <exception cref="ArgumentNullException">instanceType</exception>
         internal InstanceModel(Type originalType, Type instanceType)
         {
             Type = originalType;

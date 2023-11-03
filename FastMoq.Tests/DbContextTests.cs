@@ -20,10 +20,10 @@ namespace FastMoq.Tests
         public void TestComponent_SetAdd()
         {
             Component.MyDbUpdateMethod();
-            Component.Set<MockDataModel>().Add(new());
-            Component.Set<MockDataModel>("MyDbSetData").Add(new());
-            Component.MyDbSetData.Add(new MockDataModel());
-            Component.MyDbSetData.Should().HaveCount(3);
+            Component.Set<MockDataModel>().Add(new() { Name="test1" }); // This brings back the second one because it was set twice and last one wins.
+            Component.Set<MockDataModel>("MyDbSetData2").Add(new() { Name="Test2" });
+            Component.MyDbSetData2.Add(new () { Name="Test3" });
+            Component.MyDbSetData2.Should().HaveCount(3);
         }
 
         [Fact]
@@ -32,10 +32,10 @@ namespace FastMoq.Tests
             var mockDbContext = Mocks.GetMockDbContext<MyDbContext>();
 
             mockDbContext.Object.MyDbUpdateMethod();
-            mockDbContext.Object.Set<MockDataModel>().Add(new());
-            mockDbContext.Object.Set<MockDataModel>("MyDbSetData").Add(new());
-            mockDbContext.Object.MyDbSetData.Add(new MockDataModel());
-            mockDbContext.Object.MyDbSetData.Should().HaveCount(3);
+            mockDbContext.Object.Set<MockDataModel>().Add(new() { Name="test1" });  // This brings back the second one because it was set twice and last one wins.
+            mockDbContext.Object.Set<MockDataModel>("MyDbSetData2").Add(new() { Name="Test2" });
+            mockDbContext.Object.MyDbSetData2.Add(new () { Name="Test3" });
+            mockDbContext.Object.MyDbSetData2.Should().HaveCount(3);
         }
 
         [Fact]
@@ -70,9 +70,7 @@ namespace FastMoq.Tests
         public virtual DbSet<MockDataModel> MyDbSetData { get; set; } // Dataset 1
         public virtual DbSet<MockDataModel> MyDbSetData2 { get; set; } // Dataset 2
         public DbSet<X509Certificate2> X509Certificates { get; set; } // Not Mockable and should be ignored.
-
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
-
         public bool MyDbUpdateMethod() => CustomProp = true;
     }
 }
