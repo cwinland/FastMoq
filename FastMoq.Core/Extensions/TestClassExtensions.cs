@@ -331,5 +331,39 @@ namespace FastMoq.Extensions
         /// <param name="type">The type.</param>
         /// <exception cref="System.ArgumentException"></exception>
         internal static void ThrowAlreadyExists(this Type type) => throw new ArgumentException($"{type} already exists.");
+
+        /// <summary>
+        ///     Ensures the null check thrown.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="constructorName">Name of the constructor.</param>
+        /// <param name="output">The output.</param>
+        public static void EnsureNullCheckThrown(this Action action, string parameterName, string? constructorName = "", Action<string>? output = null)
+        {
+            try
+            {
+                output?.Invoke($"Testing {constructorName}\n - {parameterName}");
+
+                try
+                {
+                    action();
+                }
+                catch (ArgumentNullException ex)
+                {
+                    if (!ex.Message.Contains(parameterName))
+                    {
+                        throw;
+                    }
+                }
+
+                output?.Invoke($"Passed {parameterName}");
+            }
+            catch
+            {
+                output?.Invoke($"Failed {parameterName}");
+                throw;
+            }
+        }
     }
 }
