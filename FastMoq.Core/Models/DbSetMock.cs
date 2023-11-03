@@ -15,9 +15,11 @@ namespace FastMoq.Models
     {
         #region Fields
 
-        private readonly List<TEntity> _store = new();
+        private readonly List<TEntity> store = new();
 
         #endregion
+
+        private Mock<IQueryable<TEntity>> QueryableMock => As<IQueryable<TEntity>>() ?? throw new InvalidOperationException("Unable to get IQueryable");
 
         /// <inheritdoc />
         /// <summary>
@@ -34,24 +36,24 @@ namespace FastMoq.Models
         {
             if (initialData != null)
             {
-                _store.AddRange(initialData);
+                store.AddRange(initialData);
             }
 
-            var data = _store.AsQueryable();
-            As<IQueryable<TEntity>>().Setup(x => x.Provider).Returns(data.Provider);
-            As<IQueryable<TEntity>>().Setup(x => x.Expression).Returns(data.Expression);
-            As<IQueryable<TEntity>>().Setup(x => x.ElementType).Returns(data.ElementType);
-            As<IQueryable<TEntity>>().Setup(x => x.GetEnumerator()).Returns(() => data.GetEnumerator());
-            As<IEnumerable>().Setup(x => x.GetEnumerator()).Returns(() => data.GetEnumerator());
+            var data = store.AsQueryable();
 
-            Setup(x => x.Add(It.IsAny<TEntity>())).Callback<TEntity>(_store.Add);
-            Setup(x => x.AddRange(It.IsAny<IEnumerable<TEntity>>())).Callback<IEnumerable<TEntity>>(_store.AddRange);
-            Setup(x => x.Remove(It.IsAny<TEntity>())).Callback<TEntity>(x => _store.Remove(x));
+            QueryableMock.Setup(x => x.Provider).Returns(() => data.Provider);
+            QueryableMock.Setup(x => x.Expression).Returns(() => data.Expression);
+            QueryableMock.Setup(x => x.ElementType).Returns(() => data.ElementType);
+            QueryableMock.Setup(x => x.GetEnumerator()).Returns(() => data.GetEnumerator());
+
+            Setup(x => x.Add(It.IsAny<TEntity>())).Callback<TEntity>(store.Add);
+            Setup(x => x.AddRange(It.IsAny<IEnumerable<TEntity>>())).Callback<IEnumerable<TEntity>>(store.AddRange);
+            Setup(x => x.Remove(It.IsAny<TEntity>())).Callback<TEntity>(x => store.Remove(x));
 
             Setup(x => x.RemoveRange(It.IsAny<IEnumerable<TEntity>>()))
-                .Callback<IEnumerable<TEntity>>(x => x.ToList().ForEach(y => _store.Remove(y)));
+                .Callback<IEnumerable<TEntity>>(x => x.ToList().ForEach(y => store.Remove(y)));
 
-            Setup(x => x.Find(It.IsAny<object[]>())).Returns<object[]>(x => _store.Find(y => y.Equals(x)));
+            Setup(x => x.Find(It.IsAny<object[]>())).Returns<object[]>(x => store.Find(y => y.Equals(x)));
         }
     }
 }

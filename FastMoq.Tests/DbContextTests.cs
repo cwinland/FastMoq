@@ -45,6 +45,17 @@ namespace FastMoq.Tests
             Component.MyDbUpdateMethod();
             Component.CustomProp.Should().BeTrue();
         }
+
+        [Fact]
+        public void TestSetByName()
+        {
+            Component.Set<MockDataModel>("MyDbSetData").Should().BeSameAs(Component.MyDbSetData);
+            Component.Set<MockDataModel>("MyDbSetData2").Should().BeSameAs(Component.MyDbSetData2);
+
+            Component.MyDbSetData.Add(new MockDataModel());
+            Component.Set<MockDataModel>("MyDbSetData").Should().HaveCount(1);
+            Component.Set<MockDataModel>("MyDbSetData2").Should().HaveCount(0);
+        }
     }
 
     public class MockDataModel
@@ -56,9 +67,10 @@ namespace FastMoq.Tests
     public class MyDbContext : DbContext
     {
         public bool CustomProp { get; set; }
-        public virtual DbSet<MockDataModel> MyDbSetData { get; set; }
-        public virtual DbSet<X509Certificate2> X509Certificates { get; set; }
-        
+        public virtual DbSet<MockDataModel> MyDbSetData { get; set; } // Dataset 1
+        public virtual DbSet<MockDataModel> MyDbSetData2 { get; set; } // Dataset 2
+        public DbSet<X509Certificate2> X509Certificates { get; set; } // Not Mockable and should be ignored.
+
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
 
         public bool MyDbUpdateMethod() => CustomProp = true;
