@@ -39,6 +39,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
@@ -66,7 +67,7 @@
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>    
     <PackageReference Include="Moq" Version="4.18.*" />
-    <PackageReference Include="coverlet.collector" Version="3.2.0">
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; buildtransitive</IncludeAssets>
       <ExcludeAssets>analyzers</ExcludeAssets>

@@ -32,7 +32,7 @@
       <MSHelp:Attr Name="Locale" Value="en-us" />
       <MSHelp:Attr Name="TopicType" Value="kbSyntax" />
       <MSHelp:Attr Name="TopicType" Value="apiref" />
-      <MSHelp:Attr Name="Abstract" Value="Auto Mocking Test Base with Fast Automatic Mocking ." />
+      <MSHelp:Attr Name="Abstract" Value="Auto Mocking Test Base with Fast Automatic Mocking . Class MockerTestBase. Implements the" />
       <MSHelp:Attr Name="AssemblyVersion" Value="" />
     </xml>
     <link type="text/css" rel="stylesheet" href="../styles/highlight.css" />
@@ -150,6 +150,19 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="T-FastMoq.Models.IHistoryModel.htm" target="_self">IHistoryModel Interface</a>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IInstanceModel.htm" target="_self">IInstanceModel Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.InstanceModel.htm" target="_self">InstanceModel Class</a>
 <div class="Hidden">
 </div>
@@ -206,6 +219,16 @@
 </div>
 </div>
 </div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Extensions.htm" target="_self">FastMoq.Web.Extensions Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Extensions.TestWebExtensions.htm" target="_self">TestWebExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
 
             </div>
 
@@ -235,41 +258,15 @@
             <h1 class="title">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><span class="typeparameter">TComponent</span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Class</h1>
             <div id="mainSection">
               <div id="mainBody">
-                <div class="summary">
-       Auto Mocking Test Base with Fast Automatic Mocking <a href="T-FastMoq.Mocker.htm">Mocker</a>.
-   </div>
+                <div class="summary">     Auto Mocking Test Base with Fast Automatic Mocking <a href="T-FastMoq.Mocker.htm">Mocker</a>. </div>
+                <div class="summary">     Class MockerTestBase.     Implements the <span class="nolink">[IDisposable]</span></div>
                 <p />
     <b>Namespace:</b> 
    <a href="N-FastMoq.htm">FastMoq</a><br />
     <b>Assembly:</b>
    <span sdata="assembly">FastMoq.Core</span> (in FastMoq.Core.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:white;border-bottom-color:white"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTab VisualBasicTab" id="VisualBasicTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','VisualBasicCode','VisualBasicTabId');" title="Visual Basic">VB</a></div><div class="CodeSnippetContainerTab ManagedCPlusPlusTab" id="ManagedCPlusPlusTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','ManagedCPlusPlusCode','ManagedCPlusPlusTabId');" title="Visual C++">C++</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="identifier">MockerTestBase</span>&lt;TComponent&gt;
 </pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Public</span> <span class="keyword">MustInherit</span> <span class="keyword">Class</span> <span class="identifier">MockerTestBase</span>(<span class="keyword">Of</span> TComponent)</pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">generic</span>&lt;<span class="keyword">typename</span> TComponent&gt;
-<span class="keyword">public</span> <span class="keyword">ref class</span> <span class="identifier">MockerTestBase</span> <span class="keyword">abstract</span></pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">TComponent</span></dt><dd>The type of the t component.</dd></dl></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
-       Basic example of the base class creating the Car class and auto mocking ICarService.
-      <span id="cbc_1" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> CarTest : MockerTestBase&lt;Car&gt; {
-     [Fact]
-     <span class="highlight-keyword">public</span> <span class="highlight-keyword">void</span> TestCar() {
-         Component.Color.Should().Be(Color.Green);
-         Component.CarService.Should().NotBeNull();
-     }
-}
-
-<span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> Car {
-     <span class="highlight-keyword">public</span> Color Color { <span class="highlight-keyword">get</span>; <span class="highlight-keyword">set</span>; } = Color.Green;
-     <span class="highlight-keyword">public</span> ICarService CarService { <span class="highlight-keyword">get</span>; }
-     <span class="highlight-keyword">public</span> Car(ICarService carService) =&gt; CarService = carService;
-}
-
-<span class="highlight-keyword">public</span> <span class="highlight-keyword">interface</span> ICarService
-{
-     Color Color { <span class="highlight-keyword">get</span>; <span class="highlight-keyword">set</span>; }
-     ICarService CarService { <span class="highlight-keyword">get</span>; }
-     <span class="highlight-keyword">bool</span> StartCar();
-}</pre></div></span>
-       Example of how to set up for mocks that require specific functionality.
-      <span id="cbc_2" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> CarTest : MockerTestBase&lt;Car&gt; {
-     <span class="highlight-keyword">public</span> CarTest() : <span class="highlight-keyword">base</span>(mocks =&gt; mocks.Initialize&lt;ICarService&gt;(mock =&gt; mock.Setup(x =&gt; x.StartCar).Returns(<span class="highlight-keyword">true</span>));
-}</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Inheritance Hierarchy</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="familySection"><!----></a><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><br />  <span class="selflink">FastMoq<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></span><br /></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.MockerTestBase-1.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.htm">FastMoq Namespace</a></div></div></div>
+<span class="keyword">public</span> <span class="keyword">ref class</span> <span class="identifier">MockerTestBase</span> <span class="keyword">abstract</span></pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">TComponent</span></dt><dd>The type of the t component.The type of the t component.</dd></dl></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>     Basic example of the base class creating the Car class and auto mocking ICarService.    <span id="cbc_1" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> CarTest : MockerTestBase&lt;Car&gt; {      [Fact]      <span class="highlight-keyword">public</span> <span class="highlight-keyword">void</span> TestCar() {          Component.Color.Should().Be(Color.Green);          Component.CarService.Should().NotBeNull();      } } <span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> Car {      <span class="highlight-keyword">public</span> Color Color { <span class="highlight-keyword">get</span>; <span class="highlight-keyword">set</span>; } = Color.Green;      <span class="highlight-keyword">public</span> ICarService CarService { <span class="highlight-keyword">get</span>; }      <span class="highlight-keyword">public</span> Car(ICarService carService) =&gt; CarService = carService; } <span class="highlight-keyword">public</span> <span class="highlight-keyword">interface</span> ICarService {      Color Color { <span class="highlight-keyword">get</span>; <span class="highlight-keyword">set</span>; }      ICarService CarService { <span class="highlight-keyword">get</span>; }      <span class="highlight-keyword">bool</span> StartCar(); }</pre></div></span>     Example of how to set up for mocks that require specific functionality.    <span id="cbc_2" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> CarTest : MockerTestBase&lt;Car&gt; {      <span class="highlight-keyword">public</span> CarTest() : <span class="highlight-keyword">base</span>(mocks =&gt; mocks.Initialize&lt;ICarService&gt;(mock =&gt; mock.Setup(x =&gt; x.StartCar).Returns(<span class="highlight-keyword">true</span>)); }</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.MockerTestBase-1.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.htm">FastMoq Namespace</a></div><div class="seeAlsoStyle"><span class="nolink">[IDisposable]</span></div></div></div>
             </div>
           </div>
         </div>

@@ -23,7 +23,6 @@
       <MSHelp:Attr Name="Locale" Value="en-us" />
       <MSHelp:Attr Name="TopicType" Value="kbSyntax" />
       <MSHelp:Attr Name="TopicType" Value="apiref" />
-      <MSHelp:Attr Name="Abstract" Value="Injects the component." />
       <MSHelp:Attr Name="AssemblyVersion" Value="" />
     </xml>
   <link rel="stylesheet" href="../TOC.css"><script type="text/javascript" src="../TOC.js"></script></head>
@@ -121,6 +120,19 @@
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
 <div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="T-FastMoq.Models.IHistoryModel.htm" target="_self">IHistoryModel Interface</a>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IInstanceModel.htm" target="_self">IInstanceModel Interface</a>
+<div class="Hidden">
+</div>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.InstanceModel.htm" target="_self">InstanceModel Class</a>
 <div class="Hidden">
@@ -245,6 +257,9 @@
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.SetupAuthorization.htm" target="_self">SetupAuthorization Method </a>
 </div>
 <div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.SetupJsInterop.htm" target="_self">SetupJsInterop Method </a>
+</div>
+<div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.SetupMocks.htm" target="_self">SetupMocks Method </a>
 </div>
 <div class="TreeItem">
@@ -298,6 +313,16 @@
 </div>
 </div>
 </div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Extensions.htm" target="_self">FastMoq.Web.Extensions Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Extensions.TestWebExtensions.htm" target="_self">TestWebExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
 
             </div>
 
@@ -327,9 +352,6 @@
             <h1 class="title">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><span class="typeparameter">T</span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>InjectComponent<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><span class="typeparameter">TComponent</span>, <span class="typeparameter">TInjectAttribute</span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Method </h1>
             <div id="mainSection">
               <div id="mainBody">
-                <div class="summary">
-        Injects the component.
-    </div>
                 <p />
     <b>Namespace:</b> 
    <a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor</a><br />
@@ -339,7 +361,7 @@
 </pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Public</span> <span class="keyword">Function</span> <span class="identifier">InjectComponent</span>(<span class="keyword">Of</span> TComponent, TInjectAttribute <span class="keyword">As</span> <span class="nolink">Attribute</span>) <span class="keyword">As</span> <a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">IMockerBlazorTestHelpers</a>(<span class="keyword">Of</span> T)</pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span>:
 <span class="keyword">generic</span>&lt;<span class="keyword">typename</span> TComponent, <span class="keyword">typename</span> TInjectAttribute&gt;
 <span class="keyword">where</span> TInjectAttribute : <span class="nolink">Attribute</span>
-<a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">IMockerBlazorTestHelpers</a>&lt;T&gt;^ <span class="identifier">InjectComponent</span>()</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">TComponent</span></dt><dd>The type of the t component.</dd><dt><span class="parameterItalic">TInjectAttribute</span></dt><dd>The type of the t inject attribute.</dd></dl><h4 class="subHeading">Return Value</h4>IMockerBlazorTestHelpers&lt;T&gt;.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.InjectComponent.htm">InjectComponent Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor Namespace</a></div></div></div>
+<a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">IMockerBlazorTestHelpers</a>&lt;T&gt;^ <span class="identifier">InjectComponent</span>()</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">TComponent</span></dt><dd /><dt><span class="parameterItalic">TInjectAttribute</span></dt><dd /></dl></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.InjectComponent.htm">InjectComponent Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor Namespace</a></div></div></div>
             </div>
           </div>
         </div>

@@ -47,7 +47,7 @@ namespace FastMoq
     /// </example>
     /// <typeparam name="TComponent">The type of the t component.</typeparam>
     /// <inheritdoc />
-    public abstract class MockerTestBase<TComponent> : IDisposable where TComponent : class
+    public abstract partial class MockerTestBase<TComponent> : IDisposable where TComponent : class
     {
         #region Fields
 
@@ -268,7 +268,7 @@ namespace FastMoq
                     var parameterValues = parameters.Select((p, i) =>
                             i == parameter.index
                                 ? null
-                                : GetTestData(testData, i, p))
+                                : testData.GetTestData(i, p))
                         .ToArray();
 
                     // Try to invoke the constructor with the parameter values
@@ -315,9 +315,6 @@ namespace FastMoq
                 throw new AggregateException(exceptions);
             }
         }
-
-        private object GetTestData(IReadOnlyList<object>? testData, int i, ParameterInfo p) =>
-            testData != null && i < testData.Count ? testData[i] : Mocks.GetDefaultValue(p.ParameterType);
 
         /// <summary>
         ///     Waits for an action.

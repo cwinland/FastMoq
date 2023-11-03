@@ -1,12 +1,19 @@
-﻿using FastMoq.Models;
+﻿using FastMoq.Extensions;
+using FastMoq.Models;
+using Moq;
+using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FastMoq
 {
     public partial class Mocker
     {
-        /// <summary>
+               /// <summary>
         ///     Creates an instance of <c>T</c>. Parameters allow matching of constructors and using those values in the creation
         ///     of the instance.
         /// </summary>
@@ -204,7 +211,7 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
-        /// <param name="args">The arguments. These arguments will override the type map, if present.</param>
+        /// <param name="args">The arguments.</param>
         /// <returns><see cref="Nullable{T}" />.</returns>
         public T? CreateInstance<T>(bool usePredefinedFileSystem, params object?[] args) where T : class
         {
@@ -216,32 +223,36 @@ namespace FastMoq
             var tType = typeof(T);
             var typeInstanceModel = GetTypeModel<T>();
 
-            if (typeInstanceModel.CreateFunc != null && !creatingTypeList.Contains(tType))
+            if (!creatingTypeList.Contains(tType))
             {
-                creatingTypeList.Add(tType);
-                T obj;
-
-                try
+                if (typeInstanceModel.CreateFunc != null)
                 {
-                    AddToConstructorHistory(tType, typeInstanceModel);
-                    obj = (T) typeInstanceModel.CreateFunc.Invoke(this);
-                }
-                finally
-                {
-                    creatingTypeList.Remove(tType);
+                    creatingTypeList.Add(tType);
+                    T obj;
+
+                    try
+                    {
+                        AddToConstructorHistory(tType, typeInstanceModel);
+                        obj = (T) typeInstanceModel.CreateFunc(this);
+                    }
+                    finally
+                    {
+                        creatingTypeList.Remove(tType);
+                    }
+
+                    return obj;
                 }
 
-                return obj;
+                if (tType.IsAssignableTo(typeof(Microsoft.EntityFrameworkCore.DbContext)))
+                {
+                    var mockObj = GetMockDbContext(tType);
+                    return (T?) mockObj.Object;
+                }
             }
 
-            // Ensure arguments are valid or empty.
-            args ??= Array.Empty<object>();
-
-            // if the arguments are not present, but the type map has arguments, use those instead.
-            if (args.Length == 0 && typeInstanceModel.Arguments.Count > 0)
+            if (typeInstanceModel?.Arguments.Count > 0 && args.Length == 0)
             {
-                args = new object?[typeInstanceModel.Arguments.Count];
-                typeInstanceModel.Arguments.CopyTo(args);
+                args = typeInstanceModel.Arguments.ToArray();
             }
 
             var constructor =
@@ -272,7 +283,7 @@ namespace FastMoq
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
 
             return type.CreateFunc != null
-                ? (T) type.CreateFunc.Invoke(this)
+                ? (T) type.CreateFunc(this)
                 : CreateInstanceNonPublic(type.InstanceType, args) as T;
         }
 
@@ -293,6 +304,116 @@ namespace FastMoq
         }
 
         /// <summary>
+        ///     Creates the <see cref="MockModel" /> from the <c>Type</c>. This throws an exception if the mock already exists.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="nonPublic"><c>true</c> if non public and public constructors are used.</param>
+        /// <param name="args">The arguments used to match to the constructor.</param>
+        /// <returns><see cref="List{Mock}" />.</returns>
+        /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
+        /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
+        public List<MockModel> CreateMock(Type type, bool nonPublic = false, params object?[] args)
+        {
+            type = CleanType(type);
+
+            if (Contains(type))
+            {
+                type.ThrowAlreadyExists();
+            }
+
+            var oMock = CreateMockInstance(type, nonPublic, args);
+
+            AddMock(oMock, type);
+            return mockCollection;
+        }
+
+        /// <summary>
+        ///     Creates the <see cref="MockModel" /> from the type <c>T</c>. This throws an exception if the mock already exists.
+        /// </summary>
+        /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
+        /// <param name="nonPublic">if set to <c>true</c> public and non public constructors are used.</param>
+        /// <param name="args">The arguments used to find the correct constructor for a class.</param>
+        /// <returns><see cref="List{T}" />.</returns>
+        /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
+        /// <exception cref="System.ArgumentException">type already exists. - type</exception>
+        /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
+        public List<MockModel> CreateMock<T>(bool nonPublic = false, params object?[] args) where T : class => CreateMock(typeof(T), nonPublic, args);
+
+        /// <summary>
+        ///     Creates the mock instance that is not automatically injected.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <param name="args">The arguments used to find the correct constructor for a class.</param>
+        /// <returns>Mock.</returns>
+        /// <exception cref="ArgumentException">type must be a class or interface., nameof(type)</exception>
+        /// <exception cref="ApplicationException">type must be a class or interface., nameof(type)</exception>
+        /// <exception cref="System.ArgumentException">type must be a class or interface., nameof(type)</exception>
+        /// <exception cref="System.ApplicationException">type must be a class or interface., nameof(type)</exception>
+        public Mock CreateMockInstance(Type type, bool nonPublic = false, params object?[] args)
+        {
+            if (type == null || (!type.IsClass && !type.IsInterface))
+            {
+                throw new ArgumentException("type must be a class or interface.", nameof(type));
+            }
+
+            var constructor = new ConstructorModel(null, args.ToList());
+
+            try
+            {
+                if (!type.IsInterface)
+                {
+                    // Find the best constructor and build the parameters.
+                    constructor = args.Length > 0 || nonPublic ? FindConstructor(type, true, args) : FindConstructor(true, type, nonPublic);
+                }
+            }
+            catch
+            {
+                // Ignore
+            }
+
+            if (constructor?.ConstructorInfo == null && !HasParameterlessConstructor(type))
+            {
+                try
+                {
+                    constructor = (nonPublic ? GetConstructorsNonPublic(type) : GetConstructors(type)).OrderBy(x => x.ConstructorInfo.GetParameters().Length).ToList().FirstOrDefault() ?? constructor;
+                }
+                catch
+                {
+                    // It's okay if this fails.
+                }
+            }
+
+            var oMock = CreateMockInternal(type, constructor);
+
+            if (!Strict)
+            {
+                InvokeMethod<Mock>(null, "SetupAllProperties", true, oMock);
+
+                if (InnerMockResolution)
+                {
+                    AddProperties(type, oMock.Object);
+                }
+            }
+
+            AddInjections(oMock.Object, GetTypeModel(type)?.InstanceType ?? type);
+
+            return oMock;
+        }
+
+        /// <summary>
+        ///     Creates the mock instance that is not automatically injected.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <param name="args">The arguments used to find the correct constructor for a class.</param>
+        /// <returns>Mock.</returns>
+        /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
+        /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
+        public Mock<T> CreateMockInstance<T>(bool nonPublic = false, params object?[] args) where T : class =>
+            (Mock<T>) CreateMockInstance(typeof(T), nonPublic, args);
+
+               /// <summary>
         ///     Create an instance using the constructor by the function.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -360,5 +481,6 @@ namespace FastMoq
             var obj = AddInjections(info?.Invoke(newArgs.ToArray()));
             return InnerMockResolution ? AddProperties(type, obj) : obj;
         }
+
     }
 }

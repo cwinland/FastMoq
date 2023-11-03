@@ -1,8 +1,10 @@
 name: publish to nuget
 on:
+  release:
+    types: [published]
   push:
     branches:
-      - master # Default release branch
+      - master # Release branch
     paths:
       - FastMoq/**
       - FastMoq.Core/**

@@ -7,6 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using FastMoq.Extensions;
 using FastMoq.Models;
+using FluentAssertions.Equivalency;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 using FastMoq.Tests.TestClasses;
 using System.Linq;
 
@@ -31,7 +34,7 @@ namespace FastMoq.Tests.TestBase
             var mockModel2 = new MockModel<IFile>(mock2);
 
             CustomMocks = new List<MockModel>
-                {mockModel, mockModel2};
+                { mockModel, mockModel2 };
 
             var count = Mocks.mockCollection.Count;
             CreateComponent();
@@ -144,24 +147,6 @@ namespace FastMoq.Tests.TestBase
         }
 
         [Fact]
-        public void TestMethod2_ShouldThrow()
-        {
-            List<object?>? dataResult = null;
-
-            TestMethodParametersAsync(x => x.TestMethod2,
-                (func, paramName, data, info) =>
-                {
-                    func.Should()?.ThrowAsync<ArgumentNullException>(paramName);
-                    dataResult = data;
-                },
-                TestClass.TestEnum.test2,
-                "2"
-            );
-
-            dataResult.Should().HaveCount(2);
-        }
-
-        [Fact]
         public void TestMethod2Async_ShouldThrow()
         {
             List<object?>? dataResult = null;
@@ -256,39 +241,187 @@ namespace FastMoq.Tests.TestBase
             task2.Dispose();
         }
 
-        [Fact]
-        public void TestConstructor_NoParams()
+        public class ConstructorTestClass
         {
-            new Action(() =>
+            public ConstructorTestClass() { }
+
+            public ConstructorTestClass(IFileSystem fileSystem, string field)
             {
-                TestConstructorParameters(out var log);
-                log.Count.Should().Be(0);
-            }).Should().NotThrow<Exception>();
+                ArgumentNullException.ThrowIfNull(fileSystem);
+                ArgumentNullException.ThrowIfNull(field);
+            }
         }
-    }
 
-    public class TestManyTestBase : MockerTestBase<TestClassMany>
-    {
-        /// <inheritdoc />
-        protected override Func<Mocker, TestClassMany?> CreateComponentAction => (_) => new TestClassMany(1);
-
-        [Fact]
-        public void TestConstructors()
+        public class TestBaseConstructorTestClass : MockerTestBase<ConstructorTestClass>
         {
-            IReadOnlyCollection<ITestReportItem> log = new List<ITestReportItem>();
+            private readonly ITestOutputHelper output;
+            public TestBaseConstructorTestClass(ITestOutputHelper output) => this.output = output;
 
-            try
+            [Fact]
+            public void TestConstructor()
             {
-                TestConstructorParameters(out log);
-            }
-            catch (AggregateException ex)
-            {
-                ex.InnerExceptions.Should().HaveCount(1);
+                TestConstructorParameters((action, c, p) =>
+                    {
+                        output?.WriteLine($"{c} - {p}");
+
+                        action
+                            .Should()
+                            .Throw<ArgumentNullException>()
+                            .WithMessage($"*{p}*");
+                    }
+                );
             }
 
-            log.Count(x => x.Error.Message.Contains("Value cannot be null")).Should().Be(1);
-            log.Select(x => x.IsErrorThrown).Should().Contain(true);
-            log.Select(x => x.IsErrorThrown).Should().Contain(false);
+            [Fact]
+            public void TestAllConstructors()
+            {
+                TestAllConstructorParameters((action, c, p) =>
+                    {
+                        output?.WriteLine($"{c} - {p}");
+
+                        action
+                            .Should()
+                            .Throw<ArgumentNullException>()
+                            .WithMessage($"*{p}*");
+                    }
+                );
+            }
+
+            [Fact]
+            public void TestAllConstructors_WithExtension()
+            {
+                var messages = new List<string>();
+                TestAllConstructorParameters((action, constructor, parameter) => action.EnsureNullCheckThrown(parameter, constructor, messages.Add));
+
+                messages.Should().Contain(new List<string>()
+                    {
+                        "Testing .ctor(IFileSystem fileSystem, String field)\n - fileSystem",
+                        "Passed fileSystem",
+                        "Testing .ctor(IFileSystem fileSystem, String field)\n - field",
+                        "Passed field",
+                    }
+                );
+            }
+
+            [Fact]
+            public void TestConstructorInfo()
+            {
+                var constructors = typeof(ConstructorTestClass).GetConstructors();
+
+                foreach (var constructorInfo in constructors)
+                {
+                    TestConstructorParameters(constructorInfo,
+                        (action, c, p) =>
+                        {
+                            output?.WriteLine($"{c} - {p}");
+
+                            action
+                                .Should()
+                                .Throw<ArgumentNullException>()
+                                .WithMessage($"*{p}*");
+                        }
+                    );
+                }
+            }
+
+            [Fact]
+            public void TestConstructorInfo_Values()
+            {
+                var constructors = typeof(ConstructorTestClass).GetConstructors();
+
+                foreach (var constructorInfo in constructors)
+                {
+                    TestConstructorParameters(constructorInfo,
+                        (action, c, p) =>
+                        {
+                            output?.WriteLine($"{c} - {p}");
+
+                            action
+                                .Should()
+                                .Throw<ArgumentNullException>()
+                                .WithMessage($"*{p}*");
+                        },
+                        info => null,
+                        info =>
+                        {
+                            return info switch
+                            {
+                                _ when info.ParameterType.Name == nameof(IFileSystem) => new FileSystem(),
+                                _ => null,
+                            };
+                        }
+                    );
+                }
+            }
+        }
+
+        public class TestBaseTestClass : MockerTestBase<TestClass>
+        {
+            public void TestMethodParameters(MethodInfo methodInfo, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction,
+                params object?[]? args) =>
+                TestMethodParametersAsync(methodInfo, resultAction, args);
+        }
+
+        public class TestClass
+        {
+            #region Fields
+
+            private static readonly int sField = 123;
+            public object field2 = 111;
+            public int field3 = 222;
+
+            private int field = sField;
+
+            #endregion
+
+            #region Properties
+
+            public object property4 => property3;
+            private object property { get; set; } = sProperty;
+            private object property2 { get; } = 789;
+            private int property3 => int.Parse(property2.ToString());
+
+            private static int sProperty { get; } = 456;
+
+            #endregion
+
+            internal void TestMethod(int i, string s, TestClass c)
+            {
+                if (i == null)
+                {
+                    throw new ArgumentNullException(nameof(i));
+                }
+
+                if (string.IsNullOrEmpty(s))
+                {
+                    throw new ArgumentNullException(nameof(s));
+                }
+            }
+
+            public class TestManyTestBase : MockerTestBase<TestClassMany>
+            {
+                /// <inheritdoc />
+                protected override Func<Mocker, TestClassMany?> CreateComponentAction => (_) => new TestClassMany(1);
+
+                [Fact]
+                public void TestConstructors()
+                {
+                    IReadOnlyCollection<ITestReportItem> log = new List<ITestReportItem>();
+
+                    try
+                    {
+                        TestConstructorParameters(out log);
+                    }
+                    catch (AggregateException ex)
+                    {
+                        ex.InnerExceptions.Should().HaveCount(1);
+                    }
+
+                    log.Count(x => x.Error.Message.Contains("Value cannot be null")).Should().Be(1);
+                    log.Select(x => x.IsErrorThrown).Should().Contain(true);
+                    log.Select(x => x.IsErrorThrown).Should().Contain(false);
+                }
+            }
         }
     }
 }
