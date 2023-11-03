@@ -22,16 +22,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <MinVerIgnoreHeight>true</MinVerIgnoreHeight>
-    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);MyTarget</GenerateNuspecDependsOn>
+    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn)</GenerateNuspecDependsOn>
   </PropertyGroup>
-
-  <Target Name="MyTarget" AfterTargets="MinVer">
-    <PropertyGroup>
-      <PackageVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PackageVersion>
-      <Version>$(PackageVersion)</Version>
-    </PropertyGroup>
-  </Target>
 
   <PropertyGroup>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -52,6 +44,6 @@
     <ProjectReference Include="..\FastMoq.Web\FastMoq.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MinVer" PrivateAssets="All" Version="*" />
+    <Folder Include="Properties\" />
   </ItemGroup>
 </Project>

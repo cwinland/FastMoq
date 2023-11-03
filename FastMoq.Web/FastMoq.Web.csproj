@@ -21,16 +21,8 @@
     <IsPackable>true</IsPackable>
   </PropertyGroup>
 
-  <Target Name="MyTarget" AfterTargets="MinVer">
-    <PropertyGroup>
-      <PackageVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PackageVersion>
-      <Version>$(PackageVersion)</Version>
-    </PropertyGroup>
-  </Target>
-
   <PropertyGroup>
-    <MinVerIgnoreHeight>true</MinVerIgnoreHeight>
-    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);MyTarget</GenerateNuspecDependsOn>
+    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn)</GenerateNuspecDependsOn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -89,7 +81,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>    
-    <PackageReference Include="MinVer" PrivateAssets="All" Version="*" />
   </ItemGroup>
 
   <ItemGroup>

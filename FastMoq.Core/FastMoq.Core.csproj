@@ -22,16 +22,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <MinVerIgnoreHeight>true</MinVerIgnoreHeight>
-    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);MyTarget</GenerateNuspecDependsOn>
+    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn)</GenerateNuspecDependsOn>
   </PropertyGroup>
-
-  <Target Name="MyTarget" AfterTargets="MinVer">
-    <PropertyGroup>
-      <PackageVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PackageVersion>
-      <Version>$(PackageVersion)</Version>
-    </PropertyGroup>
-  </Target>
 
   <PropertyGroup>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -72,6 +64,5 @@
       <IncludeAssets>runtime; build; native; buildtransitive</IncludeAssets>
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="MinVer" PrivateAssets="All" Version="*" />
   </ItemGroup>
 </Project>
