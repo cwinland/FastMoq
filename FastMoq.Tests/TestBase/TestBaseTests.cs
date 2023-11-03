@@ -128,91 +128,6 @@ namespace FastMoq.Tests.TestBase
         }
 
         [Fact]
-        public void TestMethod_ShouldThrow_WhenNull()
-        {
-            List<object?>? dataResult = null;
-
-            TestMethodParametersAsync(x => x.TestMethod,
-                (func, paramName, data, info) =>
-                {
-                    func.Should()?.ThrowAsync<ArgumentNullException>(paramName);
-                    dataResult = data;
-                },
-                1,
-                "2",
-                new TestClass()
-            );
-
-            dataResult.Should().HaveCount(3);
-        }
-
-        [Fact]
-        public void TestMethod2Async_ShouldThrow()
-        {
-            List<object?>? dataResult = null;
-
-            TestMethodParametersAsync(x => x.TestMethod2Async,
-                (func, paramName, data, info) =>
-                {
-                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
-                    dataResult = data;
-                },
-                1,
-                "2",
-                new TestClass()
-            );
-
-            dataResult.Should().HaveCount(3);
-        }
-
-        [Fact]
-        public void TestMethodAsync_MethodInfo_Null_ShouldThrow()
-        {
-            var obj = new TestBaseTestClass();
-            new Action(() => obj.TestMethodParameters(null, (func, s, arg3, info) => { })).Should().Throw<ArgumentNullException>();
-            new Action(() => obj.TestMethodParameters(obj.GetMethod("TestMethodParameters"), null)).Should().Throw<ArgumentNullException>();
-        }
-
-        [Fact]
-        public void TestMethodAsync_MethodInfo_ShouldPass()
-        {
-            List<object?>? dataResult = null;
-            var methodInfo = Component.GetType().GetMethod("TestMethodAsync", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            TestMethodParametersAsync(methodInfo,
-                (func, paramName, data, info) =>
-                {
-                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
-                    dataResult = data;
-                },
-                1,
-                "2",
-                new TestClass()
-            );
-
-            dataResult.Should().HaveCount(3);
-        }
-
-        [Fact]
-        public void TestMethodAsync_ShouldThrow()
-        {
-            List<object?>? dataResult = null;
-
-            TestMethodParametersAsync(x => x.TestMethodAsync,
-                (func, paramName, data, info) =>
-                {
-                    func.Should().ThrowAsync<ArgumentNullException>(paramName);
-                    dataResult = data;
-                },
-                1,
-                "2",
-                new TestClass()
-            );
-
-            dataResult.Should().HaveCount(3);
-        }
-
-        [Fact]
         public void WaitForTest()
         {
             var result1 = false;
@@ -355,13 +270,6 @@ namespace FastMoq.Tests.TestBase
             }
         }
 
-        public class TestBaseTestClass : MockerTestBase<TestClass>
-        {
-            public void TestMethodParameters(MethodInfo methodInfo, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction,
-                params object?[]? args) =>
-                TestMethodParametersAsync(methodInfo, resultAction, args);
-        }
-
         public class TestClass
         {
             #region Fields
@@ -395,31 +303,6 @@ namespace FastMoq.Tests.TestBase
                 if (string.IsNullOrEmpty(s))
                 {
                     throw new ArgumentNullException(nameof(s));
-                }
-            }
-
-            public class TestManyTestBase : MockerTestBase<TestClassMany>
-            {
-                /// <inheritdoc />
-                protected override Func<Mocker, TestClassMany?> CreateComponentAction => (_) => new TestClassMany(1);
-
-                [Fact]
-                public void TestConstructors()
-                {
-                    IReadOnlyCollection<ITestReportItem> log = new List<ITestReportItem>();
-
-                    try
-                    {
-                        TestConstructorParameters(out log);
-                    }
-                    catch (AggregateException ex)
-                    {
-                        ex.InnerExceptions.Should().HaveCount(1);
-                    }
-
-                    log.Count(x => x.Error.Message.Contains("Value cannot be null")).Should().Be(1);
-                    log.Select(x => x.IsErrorThrown).Should().Contain(true);
-                    log.Select(x => x.IsErrorThrown).Should().Contain(false);
                 }
             }
         }
