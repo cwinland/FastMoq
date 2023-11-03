@@ -21,20 +21,19 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 - Use Mocks without managing fields and properties. Mocks are managed by the Mocker framework. No need to keep track of Mocks. Just use them!
 - Create instances of Mocks with non public constructors.
 - HttpClient and IFileSystem test helpers
+- DbContext support - SqlLite and mockable objects.
 - Supports Null method parameter testing.
 
 ## Packages
 
 - FastMoq - Combines FastMoq.Core and FastMoq.Web. -.NET Core 6.0 and 7.0.
-- FastMoq.Core - Original FastMoq testing Mocker. -.NET Core 5.0, 6.0, and 7.0.
+- FastMoq.Core - Original FastMoq testing Mocker. -.NET 6.0, and 7.0.
 - FastMoq.Web - New Blazor and Web support. -.NET Core 6.0 and 7.0.
 
 ## Targets
 
 - .NET 7
 - .NET 6
-- ~~.NET 5~~ (Deprecated and removed)
-- ~~.NET Core 3.1~~ (Deprecated and removed)
 
 ## Most used classes in the FastMoq namespace
 
@@ -125,6 +124,102 @@ The map also accepts parameters to tell it how to create the instance.
 
 ```cs
 Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
+```
+
+### DbContext Mocking
+
+#### Test ContextDb
+
+```cs
+public class DbContextTests : MockerTestBase<MyDbContext>
+```
+
+#### Use ContextDb in test methods
+
+```cs
+    var mockDbContext = Mocks.GetMockDbContext<MyDbContext>();
+    var dbContext = mockDbContext.Object;
+```
+
+### Null / Parameter checking
+
+Testing constructor parameters is very easy with TestAllConstructorParameters and TestConstructorParameters.
+
+TestConstructorParameters - Test the constructor that MockerTestBase used to create the Component for the test.
+TestAllConstructorParameters - Test all constructors in the component, regardless if the constructor was used to create the component for the test.
+
+#### Example: Check values for null
+
+```cs
+    // Check values for null
+    [Fact]
+    public void Service_NullArgChecks() => TestConstructorParameters((action, constructorName, parameterName) =>
+    {
+        output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
+        
+        action
+            .Should()
+            .Throw<ArgumentNullException>()
+            .WithMessage($"*{parameterName}*");
+    });
+
+```
+
+#### Example: Check values for specific criteria
+
+```cs
+        
+    // Check values for specific criteria.
+    [Fact]
+    public void Service_NullArgChecks() => TestConstructorParameters((action, constructorName, parameterName) =>
+        {
+            output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
+        
+            action
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithMessage($"*{parameterName}*");
+        },
+        info =>
+        {
+            return info switch
+            {
+                { ParameterType: { Name: "string" }} => string.Empty,
+                { ParameterType: { Name: "int" }} => -1,
+                _ => default,
+            };
+        },
+        info =>
+        {
+            return info switch
+            {
+                { ParameterType: { Name: "string" }} => "Valid Value",
+                { ParameterType: { Name: "int" }} => 22,
+                _ => Mocks.GetObject(info.ParameterType),
+            };
+        }
+    );
+```
+
+#### Example: Test constructors for null with output
+
+```cs
+    // Test constructors for null, using built-in extension and log the output.
+    [Fact]
+    public void TestAllConstructors_WithExtension()
+    {
+        var messages = new List<string>();
+        TestAllConstructorParameters((action, constructor, parameter) => action.EnsureNullCheckThrown(parameter, constructor, messages.Add));
+
+        messages.Should().Contain(new List<string>()
+            {
+                "Testing .ctor(IFileSystem fileSystem, String field)\n - fileSystem",
+                "Passed fileSystem",
+                "Testing .ctor(IFileSystem fileSystem, String field)\n - field",
+                "Passed field",
+            }
+        );
+    }
 ```
 
 ## Additional Documentation

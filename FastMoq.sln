@@ -15,7 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Web", "FastMoq.Web\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Tests.Blazor", "FastMoq.Tests.Blazor\FastMoq.Tests.Blazor.csproj", "{E7557AED-E9FC-48D9-B1C9-656044164D41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastMoq.Tests.Web", "FastMoq.Tests.Web\FastMoq.Tests.Web.csproj", "{F06DE053-0DEA-4128-9DD0-1991E735271F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Tests.Web", "FastMoq.Tests.Web\FastMoq.Tests.Web.csproj", "{F06DE053-0DEA-4128-9DD0-1991E735271F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{042CE096-3EFF-42C5-9D41-827E5F529EDD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
