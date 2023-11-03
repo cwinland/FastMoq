@@ -33,7 +33,6 @@ namespace FastMoq.Models
         /// </summary>
         /// <param name="originalType">Type of the original.</param>
         /// <param name="instanceType">Type of the instance.</param>
-        /// <exception cref="ArgumentNullException">instanceType</exception>
         internal InstanceModel(Type originalType, Type instanceType)
         {
             Type = originalType;
