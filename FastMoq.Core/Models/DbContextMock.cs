@@ -18,11 +18,7 @@ namespace FastMoq.Models
         #region Properties
 
         /// <inheritdoc />
-        public override bool CallBase
-        {
-            get => true;
-            set { }
-        }
+        public override bool CallBase { get; set; } = true;
 
         internal IEnumerable<PropertyInfo> DbSets => typeof(TEntity).GetProperties()
             .Where(x => x.CanRead && x.PropertyType.IsGenericType && x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
