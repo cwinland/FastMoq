@@ -17,11 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Tests.Blazor", "Fas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Tests.Web", "FastMoq.Tests.Web\FastMoq.Tests.Web.csproj", "{F06DE053-0DEA-4128-9DD0-1991E735271F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{042CE096-3EFF-42C5-9D41-827E5F529EDD}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
