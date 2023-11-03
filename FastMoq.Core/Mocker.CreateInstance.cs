@@ -245,7 +245,8 @@ namespace FastMoq
 
                 if (tType.IsAssignableTo(typeof(Microsoft.EntityFrameworkCore.DbContext)))
                 {
-                    return (T?) GetMockDbContext(tType).Object;
+                    var mockObj = GetMockDbContext(tType);
+                    return (T?) mockObj.Object;
                 }
             }
 
@@ -366,6 +367,18 @@ namespace FastMoq
             catch
             {
                 // Ignore
+            }
+
+            if (constructor?.ConstructorInfo == null && !HasParameterlessConstructor(type))
+            {
+                try
+                {
+                    constructor = (nonPublic ? GetConstructorsNonPublic(type) : GetConstructors(type)).OrderBy(x => x.ConstructorInfo.GetParameters().Length).ToList().FirstOrDefault() ?? constructor;
+                }
+                catch
+                {
+                    // It's okay if this fails.
+                }
             }
 
             var oMock = CreateMockInternal(type, constructor);

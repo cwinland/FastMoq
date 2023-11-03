@@ -302,6 +302,22 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void TestAllConstructors_WithExtension()
+        {
+            var messages = new List<string>();
+            TestAllConstructorParameters((action, constructor, parameter) => action.EnsureNullCheckThrown(parameter, constructor, messages.Add));
+
+            messages.Should().Contain(new List<string>()
+                {
+                    "Testing .ctor(IFileSystem fileSystem, String field)\n - fileSystem",
+                    "Passed fileSystem",
+                    "Testing .ctor(IFileSystem fileSystem, String field)\n - field",
+                    "Passed field",
+                }
+            );
+        }
+
+        [Fact]
         public void TestConstructorInfo()
         {
             var constructors = typeof(ConstructorTestClass).GetConstructors();

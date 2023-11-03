@@ -8,7 +8,7 @@ namespace FastMoq.Tests
         [Fact]
         public void GetMockDbContext_SameAs_Component()
         {
-            var mockDbContext = Mocks.GetMockDbContext<MyDbContext>();
+            var mockDbContext = Mocks.GetMockDbContext(typeof(MyDbContext));
             mockDbContext.Object.Should().BeSameAs(Component);
 
             Mocks.GetMock<MyDbContext>().Object.Should().BeSameAs(Component);
@@ -58,7 +58,7 @@ namespace FastMoq.Tests
         public bool CustomProp { get; set; }
         public virtual DbSet<MockDataModel> MyDbSetData { get; set; }
         public virtual DbSet<X509Certificate2> X509Certificates { get; set; }
-        protected MyDbContext() {}
+        
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
 
         public bool MyDbUpdateMethod() => CustomProp = true;

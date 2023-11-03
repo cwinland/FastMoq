@@ -896,9 +896,11 @@ namespace FastMoq
         /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
         internal ConstructorModel FindConstructor(Type type, bool nonPublic, params object?[] args)
         {
+            // Get all constructors
             var allConstructors =
                 nonPublic ? GetConstructorsNonPublic(type, args) : GetConstructors(type, args);
 
+            // Filter constructors
             var constructors = allConstructors
                 .Where(x => x.ParameterList
                     .Select(z => z?.GetType())
@@ -908,6 +910,7 @@ namespace FastMoq
 
             return constructors.Any() switch
             {
+                // Since we looked for only public, see if there is a protected/private/internal constructor.
                 false when !nonPublic && !Strict => FindConstructor(type, true, args),
                 false => throw new NotImplementedException("Unable to find the constructor."),
                 _ => constructors[0],
@@ -1218,21 +1221,31 @@ namespace FastMoq
         /// <summary>
         ///     Creates the mock internal.
         /// </summary>
-        /// <param name="type">The type to create.</param>
-        /// <param name="constructor">The constructor model.</param>
-        /// <returns>Mock.</returns>
-        private Mock CreateMockInternal(Type type, ConstructorModel constructor)
+        /// <param name="type">The type.</param>
+        /// <param name="constructor">The constructor.</param>
+        /// <param name="isNonPublic">if set to <c>true</c> [is non public].</param>
+        /// <returns>Creates the mock internal.</returns>
+        /// <exception cref="ApplicationException">Cannot create instance.</exception>
+        private Mock CreateMockInternal(Type type, ConstructorModel constructor, bool isNonPublic = false)
         {
-            var newType = typeof(Mock<>).MakeGenericType(type);
+            var flags = isNonPublic
+                ? BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.CreateInstance
+                : BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance;
+            var isDbContext = type.IsAssignableTo(typeof(Microsoft.EntityFrameworkCore.DbContext));
+            var newType = isDbContext ?  typeof(DbContextMock<>).MakeGenericType(type) : typeof(Mock<>).MakeGenericType(type);
 
             // Execute new Mock with Loose Behavior and arguments from constructor, if applicable.
             var parameters = new List<object?> { Strict ? MockBehavior.Strict : MockBehavior.Loose };
             constructor?.ParameterList.ToList().ForEach(parameters.Add);
 
-            return Activator.CreateInstance(newType, parameters.ToArray()) is not Mock oMock
+            return Activator.CreateInstance(newType, flags, null, parameters.ToArray(), null, null) is not Mock oMock
                 ? throw new ApplicationException("Cannot create instance.")
                 : oMock;
         }
+
+        public bool HasParameterlessConstructor(Type type) =>
+            GetConstructors(type).FirstOrDefault(x => x.ParameterList.Length == 0) != null;
+
 
         /// <summary>
         ///     Gets the tested constructors.
