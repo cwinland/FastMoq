@@ -1,7 +1,10 @@
-using System.Linq.Expressions;
-using System.Reflection;
 using FastMoq.Extensions;
 using FastMoq.Models;
+using Moq;
+using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Reflection;
+
 #pragma warning disable CS8603
 
 namespace FastMoq
@@ -167,6 +170,8 @@ namespace FastMoq
         /// <param name="timespan">The maximum time to wait.</param>
         /// <param name="waitBetweenChecks">Time between each check.</param>
         /// <returns>T.</returns>
+        /// <exception cref="ArgumentNullException">logic</exception>
+        /// <exception cref="ApplicationException">Waitfor Timeout</exception>
         /// <exception cref="System.ArgumentNullException">logic</exception>
         /// <exception cref="System.ApplicationException">Waitfor Timeout</exception>
         public static T WaitFor<T>(Func<T> logic, TimeSpan timespan, TimeSpan waitBetweenChecks)
@@ -185,7 +190,9 @@ namespace FastMoq
                 Thread.Sleep(waitBetweenChecks);
             }
 
-            return !EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now > timeout ? throw new ApplicationException("Waitfor Timeout") : result;
+            return !EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now > timeout
+                ? throw new ApplicationException("Waitfor Timeout")
+                : result;
         }
 
         /// <summary>
@@ -251,80 +258,9 @@ namespace FastMoq
             }
         }
 
-        /// <summary>
-        ///     Tests the asynchronous function.
-        /// </summary>
-        /// <param name="funcMethod">The function.</param>
-        /// <param name="resultAction">The result action.</param>
-        /// <param name="args">The arguments.</param>
-        /// <exception cref="System.ArgumentNullException">funcMethod</exception>
-        /// <exception cref="System.InvalidOperationException"></exception>
-        protected void TestMethodParametersAsync(Expression<Func<TComponent, object>> funcMethod, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction,
-            params object?[]? args)
-        {
-            if (funcMethod == null)
-            {
-                throw new ArgumentNullException(nameof(funcMethod));
-            }
-
-            if (funcMethod.Body is UnaryExpression unary &&
-                unary.Operand is MethodCallExpression methodCallExpression &&
-                methodCallExpression.Object.GetPropertyValue("Value") is MethodInfo methodInfo)
-            {
-                TestMethodParametersAsync(methodInfo, resultAction, args);
-            }
-            else
-            {
-                throw new InvalidOperationException($"{nameof(funcMethod)} is not a valid method.");
-            }
-        }
-
-        /// <summary>
-        ///     Tests the method parameters asynchronous.
-        /// </summary>
-        /// <param name="methodInfo">The method information.</param>
-        /// <param name="resultAction">The result action.</param>
-        /// <param name="args">The arguments.</param>
-        /// <exception cref="System.ArgumentNullException">methodInfo</exception>
-        /// <exception cref="System.ArgumentNullException">resultAction</exception>
-        protected void TestMethodParametersAsync(MethodInfo methodInfo, Action<Func<Task>?, string?, List<object?>?, ParameterInfo> resultAction, params object?[]? args)
-        {
-            if (methodInfo == null)
-            {
-                throw new ArgumentNullException(nameof(methodInfo));
-            }
-
-            if (resultAction == null)
-            {
-                throw new ArgumentNullException(nameof(resultAction));
-            }
-
-            var names = methodInfo.GetParameters().ToList();
-            var subs = Mocks.GetMethodDefaultData(methodInfo).ToList();
-
-            for (var i = 0; i < subs.Count; i++)
-            {
-                var list = new List<object?>();
-                list.AddRange(subs);
-
-                for (var j = 0; j < subs.Count; j++)
-                {
-                    if (j != i && args?.Length >= j)
-                    {
-                        list[j] = args[j];
-                    }
-                }
-
-                resultAction(() => methodInfo.Invoke(Component, list.ToArray()) as Task,
-                    names.Select(x => x.Name).Skip(i).First(),
-                    list,
-                    names[i]
-                );
-            }
-        }
-
         #region IDisposable
 
+        /// <inheritdoc />
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>

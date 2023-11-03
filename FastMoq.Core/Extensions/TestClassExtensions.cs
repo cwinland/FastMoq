@@ -9,6 +9,10 @@ namespace FastMoq.Extensions
     /// </summary>
     public static class TestClassExtensions
     {
+
+        public static object GetTestData(this IReadOnlyList<object>? testData, int i, ParameterInfo p) =>
+            testData != null && i < testData.Count ? testData[i] : p.ParameterType.GetDefaultValue();
+
         /// <summary>
         ///     Gets the default value.
         /// </summary>

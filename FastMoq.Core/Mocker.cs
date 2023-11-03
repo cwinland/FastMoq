@@ -913,7 +913,7 @@ namespace FastMoq
                 // Since we looked for only public, see if there is a protected/private/internal constructor.
                 false when !nonPublic && !Strict => FindConstructor(type, true, args),
                 false => throw new NotImplementedException("Unable to find the constructor."),
-                _ => constructors[0],
+                _ => constructors.FirstOrDefault(x => x.ParameterList.Length == args.Length) ?? constructors[0],
             };
         }
 
@@ -1164,17 +1164,14 @@ namespace FastMoq
                 !interfaces.Any(iType => iType.IsAssignableFrom(type))
             ).ToList();
 
-            if (possibleTypes.Count > 1)
+            return possibleTypes.Count switch
             {
-                var publicCount = possibleTypes.Count(x => x.IsPublic);
-
-                if (publicCount > 1)
-                {
-                    throw new AmbiguousImplementationException();
-                }
-            }
-
-            return !possibleTypes.Any() ? tType : possibleTypes[0];
+                > 1 => possibleTypes.Count(x => x.IsPublic) > 1
+                    ? throw new AmbiguousImplementationException()
+                    : possibleTypes.FirstOrDefault(x => x.IsPublic) ?? possibleTypes.FirstOrDefault() ?? tType,
+                1 => possibleTypes[0],
+                _ => tType,
+            };
         }
 
         /// <summary>
@@ -1194,17 +1191,17 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Gets the map model.
+        ///     Gets the type model from the type map or create a model if it does not exist.
         /// </summary>
         /// <typeparam name="TModel">The type of the t model.</typeparam>
-        /// <returns>FastMoq.Models.InstanceModel&lt;TModel&gt;?.</returns>
+        /// <returns>FastMoq.Models.IInstanceModel.</returns>
         internal IInstanceModel GetTypeModel<TModel>() where TModel : class => GetTypeModel(typeof(TModel)) ?? new InstanceModel<TModel>();
 
         /// <summary>
-        ///     Gets the map model.
+        ///     Gets the type model from the type map or create a model if it does not exist.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns>FastMoq.Models.InstanceModel?.</returns>
+        /// <returns>FastMoq.Models.IInstanceModel.</returns>
         internal IInstanceModel GetTypeModel(Type type) =>
             typeMap.ContainsKey(type) ? typeMap[type] : new InstanceModel(type, GetTypeFromInterface(type));
 

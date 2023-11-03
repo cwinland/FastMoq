@@ -250,7 +250,10 @@ namespace FastMoq
                 }
             }
 
-            args ??= Array.Empty<object>();
+            if (typeInstanceModel?.Arguments.Count > 0 && args.Length == 0)
+            {
+                args = typeInstanceModel.Arguments.ToArray();
+            }
 
             var constructor =
                 args.Length > 0
