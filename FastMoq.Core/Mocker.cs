@@ -1164,14 +1164,14 @@ namespace FastMoq
                 !interfaces.Any(iType => iType.IsAssignableFrom(type))
             ).ToList();
 
-            if (possibleTypes.Count > 1)
+            return possibleTypes.Count switch
             {
-                return possibleTypes.Count(x => x.IsPublic) > 1
+                > 1 => possibleTypes.Count(x => x.IsPublic) > 1
                     ? throw new AmbiguousImplementationException()
-                    : possibleTypes.FirstOrDefault(x => x.IsPublic) ?? tType;
-            }
-
-            return !possibleTypes.Any() ? tType : possibleTypes[0];
+                    : possibleTypes.FirstOrDefault(x => x.IsPublic) ?? possibleTypes.FirstOrDefault() ?? tType,
+                1 => possibleTypes[0],
+                _ => tType,
+            };
         }
 
         /// <summary>
