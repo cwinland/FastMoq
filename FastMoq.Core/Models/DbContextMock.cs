@@ -21,7 +21,7 @@ namespace FastMoq.Models
         public override bool CallBase { get; set; } = true;
 
         internal IEnumerable<PropertyInfo> DbSets => typeof(TEntity).GetProperties()
-            .Where(x => x.CanRead && x.PropertyType.IsGenericType && x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
+            .Where(x => x.GetGetMethod().IsVirtual && x.CanRead && x.PropertyType.IsGenericType && x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
 
         #endregion
 
@@ -65,7 +65,7 @@ namespace FastMoq.Models
             }
 
             SetupSetMethod(setType, propValueDelegate);
-            SetupSetMethod(setType, propValueDelegate, new[] { typeof(string) });
+            SetupSetMethod(setType, propValueDelegate, new[] { typeof(string) }, new [] { propertyInfo.Name });
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace FastMoq.Models
         /// <param name="types">The types.</param>
         /// <exception cref="MissingMethodException">Unable to get Set method.</exception>
         /// <exception cref="InvalidOperationException">Unable to Get Setup.</exception>
-        public void SetupSetMethod(Type setType, Delegate propValueDelegate, Type[]? types = null)
+        public void SetupSetMethod(Type setType, Delegate propValueDelegate, Type[]? types = null, object?[]? parameters = null)
         {
             types ??= new Type[] { };
 
@@ -130,6 +130,11 @@ namespace FastMoq.Models
             var genericMethod = method.MakeGenericMethod(setType);
             var args = new List<Expression>();
             types.ForEach(x => args.Add(Expression.Call(typeof(It), "IsAny", new[] { x })));
+            parameters ??= Array.Empty<object?>();
+            for (var i = 0; i < parameters.Length && i < types.Length; i++)
+            {
+                args[i] = Expression.Constant(parameters[i]);
+            }
             var body = Expression.Call(parameter, genericMethod, args.ToArray());
             var expression = Expression.Lambda<Func<TEntity, object>>(body, parameter);
 
