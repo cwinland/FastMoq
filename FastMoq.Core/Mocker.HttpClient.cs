@@ -25,13 +25,13 @@ namespace FastMoq
         #endregion
 
         /// <summary>
-        ///     Creates the HTTP client.
+        ///     Creates the HTTP client using a mockable IHttpClientFactory.
         /// </summary>
         /// <param name="clientName">Name of the client.</param>
         /// <param name="baseAddress">The base address.</param>
         /// <param name="statusCode">The status code.</param>
         /// <param name="stringContent">Content of the string.</param>
-        /// <returns><see cref="HttpClient" />.</returns>
+        /// <returns>HttpClient object.</returns>
         public HttpClient CreateHttpClient(string clientName = "FastMoqHttpClient", string baseAddress = "http://localhost",
             HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1}]")
         {

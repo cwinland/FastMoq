@@ -13,9 +13,8 @@ namespace FastMoq
 {
     public partial class Mocker
     {
-               /// <summary>
-        ///     Creates an instance of <c>T</c>. Parameters allow matching of constructors and using those values in the creation
-        ///     of the instance.
+        /// <summary>
+        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
         /// <param name="args">The optional arguments used to create the instance.</param>
@@ -28,19 +27,18 @@ namespace FastMoq
         public T? CreateInstance<T>(params object?[] args) where T : class => CreateInstance<T>(true, args);
 
         /// <summary>
-        ///     Creates the instance.
+        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
         public T? CreateInstance<T, TParam1>(Dictionary<Type, object?> data) where T : class => CreateInstanceInternal<T>(
-            model => FindConstructorByType(model.InstanceType, true, typeof(TParam1)),
-            data
+            model => FindConstructorByType(model.InstanceType, true, typeof(TParam1)), data
         );
 
         /// <summary>
-        ///     Creates the instance.
+        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
@@ -53,7 +51,7 @@ namespace FastMoq
         );
 
         /// <summary>
-        ///     Creates the instance.
+        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
@@ -68,7 +66,7 @@ namespace FastMoq
             );
 
         /// <summary>
-        ///     Creates the instance.
+        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
@@ -90,7 +88,7 @@ namespace FastMoq
             );
 
         /// <summary>
-        ///     Creates the instance.
+        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
@@ -114,7 +112,7 @@ namespace FastMoq
             );
 
         /// <summary>
-        ///     Creates the instance.
+        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
@@ -140,7 +138,7 @@ namespace FastMoq
         );
 
         /// <summary>
-        ///     Creates the instance.
+        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
@@ -168,7 +166,7 @@ namespace FastMoq
         );
 
         /// <summary>
-        ///     Creates the instance.
+        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
@@ -264,8 +262,8 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Creates an instance of <c>T</c>.
-        ///     Non public constructors are included as options for creating the instance.
+        ///     Creates the instance of the given type.
+        ///     Public and non public constructors are searched.
         ///     Parameters allow matching of constructors and using those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
@@ -288,7 +286,9 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Creates the instance non public.
+        ///     Creates the instance of the given type.
+        ///     Public and non public constructors are searched.
+        ///     Parameters allow matching of constructors and using those values in the creation of the instance.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments.</param>
@@ -340,7 +340,7 @@ namespace FastMoq
         public List<MockModel> CreateMock<T>(bool nonPublic = false, params object?[] args) where T : class => CreateMock(typeof(T), nonPublic, args);
 
         /// <summary>
-        ///     Creates the mock instance that is not automatically injected.
+        ///     Creates an instance of the mock.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>

@@ -288,7 +288,7 @@
       <param name="startingPoint">The starting point.</param>
       <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
       <exception cref="ArgumentNullException">cssSelector</exception>
-      <exception cref="ElementNotFoundException">
+      <exception cref="T:Bunit.ElementNotFoundException">
       </exception>
     </member>
     <member name="M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,Func{System.Boolean},System.Nullable{TimeSpan},System.Nullable{IRenderedFragment})">
@@ -418,12 +418,6 @@
    </summary>
       <value>The state of the parent component.</value>
     </member>
-    <member name="P:FastMoq.Web.Blazor.Models.ComponentState.ComponentType">
-      <summary>
-       Gets or sets the type of the component.
-   </summary>
-      <value>The type of the component.</value>
-    </member>
     <member name="M:FastMoq.Web.Blazor.Models.ComponentState.#ctor(System.Nullable{System.Object},IServiceProvider)">
       <summary>
        Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.Models.ComponentState" /> class.
@@ -450,13 +444,13 @@
     <member name="T:FastMoq.Web.Blazor.MockerBlazorTestBase`1">
       <summary>
        Class MockerBlazorTestBase.
-       Implements the <see cref="TestContext" />
+       Implements the <see cref="T:Bunit.TestContext" />
        Implements the <see cref="T:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1" /></summary>
       <typeparam name="T">
       </typeparam>
       <seealso cref="T:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1" />
-      <seealso cref="ComponentBase" />
-      <inheritdoc cref="TestContext" />
+      <seealso cref="T:Microsoft.AspNetCore.Components.ComponentBase" />
+      <inheritdoc cref="T:Bunit.TestContext" />
       <inheritdoc cref="T:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1" />
       <example>
        Basic Example
@@ -516,176 +510,6 @@
    NavigationManager.History.Count.Should().Be(6);
    ]]></code></example>
     </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthContext">
-      <summary>
-       Gets the authentication context.
-   </summary>
-      <value>The authentication context.</value>
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedClaims" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedPolicies" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedRoles" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthUsername" />
-      <example>
-       Set not authorized.
-      <code language="cs"><![CDATA[
-   AuthContext.SetNotAuthorized()
-   ]]></code></example>
-      <example>
-       Set authorized user.
-      <code language="cs"><![CDATA[
-   AuthContext.SetAuthorized("username")
-   ]]></code></example>
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.NavigationManager">
-      <summary>
-       Gets the navigation manager.
-   </summary>
-      <value>The navigation manager.</value>
-      <example>
-       Click Button by class, tag, or id and check the navigation manager for changes.
-      <code language="cs"><![CDATA[
-   NavigationManager.History.Count.Should().Be(2);
-   ]]></code></example>
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedClaims">
-      <summary>
-       Gets the authorized claims.
-   </summary>
-      <value>The authorized claims.</value>
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedPolicies" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedRoles" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthContext" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthUsername" />
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedPolicies">
-      <summary>
-       Gets the authorized policies.
-   </summary>
-      <value>The authorized policies.</value>
-      <example>
-       Setup Policies.
-      <code language="cs"><![CDATA[
-   protected override MockerObservableCollection<string> AuthorizedPolicies => new MockerObservableCollection<string>() { "Policy1", "Policy2"}
-   ]]></code></example>
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedClaims" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedRoles" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthContext" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthUsername" />
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedRoles">
-      <summary>
-       Gets the authorized roles.
-   </summary>
-      <value>The authorized roles.</value>
-      <example>
-       Setup Roles.
-      <code language="cs"><![CDATA[
-   protected override MockerObservableCollection<string> AuthorizedRoles => new MockerObservableCollection<string>() { "Role1", "Role2"}
-   ]]></code></example>
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedPolicies" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedClaims" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthContext" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthUsername" />
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthUsername">
-      <summary>
-       Gets or sets the authentication username.
-   </summary>
-      <value>The authentication username.</value>
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedClaims" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedPolicies" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedRoles" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthContext" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthUsername" />
-      <example>
-       Set authorized user.
-      <code language="cs"><![CDATA[
-   AuthContext.SetAuthorized("username")
-   AuthUsername = "TestUser";
-   ]]></code></example>
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.Component">
-      <summary>
-       Gets or sets the component under test.
-   </summary>
-      <value>The component under test.</value>
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ConfigureServices">
-      <summary>
-       Gets the configure services.
-   </summary>
-      <value>The configure services.</value>
-      <example>
-       Setup Services.
-      <code language="cs"><![CDATA[
-   protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices => (services, c, m) => services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
-   ]]></code></example>
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.Instance">
-      <summary>
-       Gets the instance.
-   </summary>
-      <value>The instance.</value>
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.Mocks">
-      <summary>
-       Gets the mock controller.
-   </summary>
-      <value>The mocks controller.</value>
-      <seealso cref="T:FastMoq.Mocker" />
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderParameters">
-      <summary>
-       Gets the list of parameters used when rendering. This is used to setup a component before the test constructor runs.
-   </summary>
-      <value>The render parameters.</value>
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupComponent">
-      <summary>
-       Gets or sets the setup component action. This is used to setup a component before the test constructor runs.
-   </summary>
-      <value>The setup component.</value>
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.TokenSource">
-      <summary>
-       Gets the token source.
-   </summary>
-      <value>The token source.</value>
-    </member>
-    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.#ctor">
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.MockerBlazorTestBase`1" /> class.
-   </summary>
-      <inheritdoc />
-    </member>
-    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.#ctor(System.Boolean,System.Nullable{InvocationMatcher},System.Boolean)">
-      <summary>
-       Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.MockerBlazorTestBase`1" /> class.
-   </summary>
-      <param name="skipSetup">if set to <c>true</c> [skip setup].</param>
-      <param name="jsInvocationMatcher">Optional invocation matcher for JSInterop.</param>
-      <param name="isCatchAllMatcher">Indicates if the invocationMatches is also a catch all.</param>
-      <inheritdoc />
-    </member>
-    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetAllComponents``1">
-      <summary>
-       Gets all components of a specific type, regardless of render tree.
-   </summary>
-      <typeparam name="TComponent">The type of the component.</typeparam>
-      <returns>Dictionary&lt;TComponent, ComponentState&gt;.</returns>
-      <exception cref="System.ArgumentNullException">Component</exception>
-    </member>
-    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetAllComponents">
-      <summary>
-       Gets all components, regardless of render tree.
-   </summary>
-      <returns>Dictionary&lt;IComponent, ComponentState&gt;.</returns>
-    </member>
-    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.Setup(System.Nullable{InvocationMatcher},System.Boolean)">
-      <summary>
-       Setup and create component.
-   </summary>
-    </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupJsInterop(BunitJSInterop,System.Nullable{InvocationMatcher},System.Boolean)">
       <summary>
        Adds the utilities.
@@ -693,30 +517,6 @@
       <param name="jsInterop">The js interop.</param>
       <param name="jsInvocationMatcher">The js invocation matcher.</param>
       <param name="isCatchAll">if set to <c>true</c> [is catch all].</param>
-    </member>
-    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.Dispose(System.Boolean)">
-      <inheritdoc />
-    </member>
-    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupAuthorization">
-      <summary>
-       Setups the authorization.
-   </summary>
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedClaims" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedPolicies" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedRoles" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthContext" />
-      <seealso cref="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthUsername" />
-    </member>
-    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupMocks">
-      <summary>
-       Setups the mocks.
-   </summary>
-    </member>
-    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupServices">
-      <summary>
-       Setups the services.
-   </summary>
-      <exception cref="System.IO.InvalidDataException">Unable to get {nameof(IConfigurationRoot)} object.</exception>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ClickButton(IElement,Func{System.Boolean},System.Nullable{TimeSpan})">
       <inheritdoc />

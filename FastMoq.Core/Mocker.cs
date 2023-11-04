@@ -6,7 +6,6 @@ using Moq.Language.Flow;
 using Moq.Protected;
 using System.Collections.ObjectModel;
 using System.Data.Common;
-using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq.Expressions;
@@ -18,9 +17,6 @@ namespace FastMoq
     /// <summary>
     ///     Initializes the mocking helper object. This class creates and manages the automatic mocking and custom mocking.
     /// </summary>
-    [SuppressMessage("ReSharper", "ConditionalAccessQualifierIsNonNullableAccordingToAPIContract", Justification = "Because")]
-    [SuppressMessage("ReSharper", "NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract", Justification = "Because")]
-    [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract", Justification = "Because")]
     public partial class Mocker
     {
         #region Fields
@@ -47,9 +43,6 @@ namespace FastMoq
         /// <value>The type map.</value>
         internal readonly Dictionary<Type, IInstanceModel> typeMap;
 
-        /// <summary>
-        ///     The constructor history
-        /// </summary>
         private readonly Dictionary<Type, List<IHistoryModel>> constructorHistory = new();
 
         #endregion
@@ -57,34 +50,41 @@ namespace FastMoq
         #region Properties
 
         /// <summary>
-        ///     Gets the constructor history.
+        ///     Gets the constructor history collection.
         /// </summary>
         /// <value>The constructor history.</value>
+        /// <remarks>Constructor history is a list of all constructors used to create instances of objects.</remarks>
         public ILookup<Type, ReadOnlyCollection<IHistoryModel>> ConstructorHistory => constructorHistory.ToLookup(pair => pair.Key, pair => pair.Value.AsReadOnly());
 
         /// <summary>
-        ///     Gets the database connection.
+        ///     Gets the database connection. The default value is an memory Sqlite database connection unless otherwise set.
         /// </summary>
         /// <value>The database connection.</value>
         public DbConnection DbConnection { get; private set; } = new SqliteConnection("DataSource=:memory:");
 
         /// <summary>
-        ///     When creating a mocks of a class, this indicates to recursively inject the mocks inside of that class.
+        ///     When creating a mocks of a class, <c>true</c> indicates to recursively inject the mocks inside of that class;
+        ///     otherwise properties are not auto mocked.
         /// </summary>
         /// <value>The inner mock resolution.</value>
         public bool InnerMockResolution { get; set; } = true;
 
         /// <summary>
         ///     Gets or sets a value indicating whether this <see cref="Mocker" /> is strict.
+        ///     Strict prevents certain features for automatically assuming or substituting preconfigured objects such as IFileSystem and HttpClient.
+        ///     Strict prevents private methods from being used during an invoke if public was requested. Not strict would mean that private methods may be
+        ///     substituted if the public methods are not found.
+        ///     Strict prevents private constructors from being used during object creation if public was requested. Not strict would mean that private constructors may be
+        ///     substituted if the public constructors are not found.
+        ///     Strict sets the <see cref="MockBehavior"/> option.
         /// </summary>
-        /// <value><c>true</c> if strict <see cref="IFileSystem" /> resolution; otherwise, <c>false</c> uses the built-in virtual
+        /// <value><c>true</c> if strict <see cref="IFileSystem" /> and <see cref="HttpClient" /> resolution; otherwise, <c>false</c> uses the built-in virtual
         /// <see cref="MockFileSystem" />.</value>
-        /// <remarks>If strict, the mock
-        /// <see cref="IFileSystem" /> does
-        /// not use <see cref="MockFileSystem" /> and uses <see cref="Mock" /> of <see cref="IFileSystem" />.
+        /// <remarks>
+        /// If strict, the mock <see cref="IFileSystem" /> does not use <see cref="MockFileSystem" /> and uses <see cref="Mock" /> of <see cref="IFileSystem" />.
         /// Gets or sets a value indicating whether this <see cref="Mocker" /> is strict. If strict, the mock
-        /// <see cref="HttpClient" /> does
-        /// not use the pre-built HttpClient and uses <see cref="Mock" /> of <see cref="HttpClient" />.</remarks>
+        /// <see cref="HttpClient" /> does not use the pre-built HttpClient and uses <see cref="Mock" /> of <see cref="HttpClient" />.
+        /// </remarks>
         public bool Strict { get; set; }
 
         #endregion
@@ -146,7 +146,7 @@ namespace FastMoq
             new(AddMock(mock, typeof(T), overwrite, nonPublic));
 
         /// <summary>
-        ///     Adds the property data to the object.
+        ///     Adds a default mock object to the writable properties in the object, if possible.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj">The object.</param>
@@ -158,7 +158,7 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Adds the property data to the object.
+        ///     Adds a default mock object to the writable properties in the object, if possible.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="obj">The object.</param>
@@ -177,17 +177,7 @@ namespace FastMoq
 
                 foreach (var writableProperty in writableProperties)
                 {
-                    try
-                    {
-                        if (writableProperty.GetValue(obj) is null && !creatingTypeList.Contains(writableProperty.PropertyType))
-                        {
-                            writableProperty.SetValue(obj, GetObject(writableProperty.PropertyType));
-                        }
-                    }
-                    catch
-                    {
-                        // Continue
-                    }
+                    AddProperty(obj, writableProperty);
                 }
             }
             finally
@@ -198,6 +188,21 @@ namespace FastMoq
             return obj;
         }
 
+        private void AddProperty(object? obj, PropertyInfo writableProperty)
+        {
+            try
+            {
+                if (writableProperty.GetValue(obj) is null && !creatingTypeList.Contains(writableProperty.PropertyType))
+                {
+                    writableProperty.SetValue(obj, GetObject(writableProperty.PropertyType));
+                }
+            }
+            catch
+            {
+                // Continue
+            }
+        }
+
         /// <summary>
         ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
         /// </summary>
@@ -206,7 +211,7 @@ namespace FastMoq
         /// <param name="createFunc">An optional create function used to create the class.</param>
         /// <param name="replace">Replace type if already exists. Default: false.</param>
         /// <param name="args">arguments needed in model.</param>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="System.ArgumentException"></exception>
         public void AddType(Type tInterface, Type tClass, Func<Mocker, object>? createFunc = null, bool replace = false, params object?[]? args)
         {
             if (tClass.IsInterface)
@@ -228,11 +233,11 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Adds the type.
+        ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="createFunc">The create function.</param>
-        /// <param name="replace">if set to <c>true</c> [replace].</param>
+        /// <param name="createFunc">An optional create function used to create the class.</param>
+        /// <param name="replace">Replace type if already exists. Default: false.</param>
         /// <param name="args">arguments needed in model.</param>
         public void AddType<T>(Func<Mocker, T>? createFunc = null, bool replace = false, params object?[]? args) where T : class =>
             AddType<T, T>(createFunc, replace, args);
@@ -254,7 +259,7 @@ namespace FastMoq
         ///     Determines whether this instance contains a Mock of <c>T</c>.
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
-        /// <returns><c>true</c> if the <c><![CDATA[Mock<T>]]></c> exists; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the Mock exists for the given type; otherwise, <c>false</c>.</returns>
         /// <exception cref="System.ArgumentNullException">type is null.</exception>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         public bool Contains<T>() where T : class => Contains(typeof(T));
@@ -264,9 +269,7 @@ namespace FastMoq
         /// </summary>
         /// <param name="type">The <see cref="T:Type" />, usually an interface.</param>
         /// <returns><c>true</c> if <see cref="Mock{T}" /> exists; otherwise, <c>false</c>.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentException">type must be a class. - type</exception>
-        /// <exception cref="System.ArgumentNullException">type</exception>
+        /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         public bool Contains(Type type)
         {
@@ -278,10 +281,13 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Gets the argument data.
+        ///     Gets the argument data for the given type T.
+        ///     Public and non-public constructors are used.
+        ///     A data map is used to fill in the data used in the constructor by the parameter type.
+        ///     If the data is missing for a given parameter type, Mocks or default values are used.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="data">The data.</param>
+        /// <param name="data">The data map used when generating the object argument data for a constructor.</param>
         /// <returns>System.Nullable&lt;System.Object&gt;[].</returns>
         public object?[] GetArgData<T>(Dictionary<Type, object?>? data = null) where T : class
         {
@@ -411,7 +417,7 @@ namespace FastMoq
         /// <param name="method">The method.</param>
         /// <param name="data">The data.</param>
         /// <returns>System.Nullable&lt;System.Object&gt;[].</returns>
-        /// <exception cref="ArgumentNullException">method</exception>
+        /// <exception cref="System.ArgumentNullException">method</exception>
         public object?[] GetMethodArgData(MethodInfo method, Dictionary<Type, object?>? data = null)
         {
             if (method == null)
@@ -438,7 +444,7 @@ namespace FastMoq
         /// </summary>
         /// <param name="method">The method.</param>
         /// <returns>object?[].</returns>
-        /// <exception cref="ArgumentNullException">method</exception>
+        /// <exception cref="System.ArgumentNullException">method</exception>
         public object?[] GetMethodDefaultData(MethodInfo method)
         {
             if (method == null)
@@ -483,9 +489,8 @@ namespace FastMoq
         /// </summary>
         /// <param name="info">The <see cref="ParameterInfo" />.</param>
         /// <returns><see cref="Nullable{Object}" /></returns>
-        /// <exception cref="ArgumentNullException">info</exception>
-        /// <exception cref="System.ArgumentNullException">nameof(info)</exception>
-        /// <exception cref="System.InvalidProgramException">nameof(info)</exception>
+        /// <exception cref="System.ArgumentNullException">info</exception>
+        /// <exception cref="System.InvalidProgramException">info</exception>
         public object? GetObject(ParameterInfo info)
         {
             if (info == null)
@@ -509,10 +514,8 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <param name="initAction">The initialize action.</param>
         /// <returns><see cref="Nullable{Object}" />.</returns>
-        /// <exception cref="ArgumentNullException">type</exception>
-        /// <exception cref="InvalidProgramException">Unable to get the Mock.</exception>
-        /// <exception cref="System.ArgumentNullException">nameof(type)</exception>
-        /// <exception cref="System.InvalidProgramException">nameof(type)</exception>
+        /// <exception cref="System.ArgumentNullException">type</exception>
+        /// <exception cref="System.InvalidProgramException">Unable to get the Mock.</exception>
         public object? GetObject(Type type, Action<object?>? initAction = null)
         {
             if (type == null)
@@ -616,7 +619,6 @@ namespace FastMoq
         /// </summary>
         /// <param name="type">The mock type, usually an interface.</param>
         /// <returns>Mock.</returns>
-        /// <exception cref="ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.InvalidOperationException">type must be a class. - type</exception>
         public Mock GetRequiredMock(Type type) => type == null || (!type.IsClass && !type.IsInterface)
@@ -647,7 +649,6 @@ namespace FastMoq
         /// <param name="action">The action.</param>
         /// <param name="reset"><c>False to keep the existing setup.</c></param>
         /// <returns><see cref="Mock{T}" /></returns>
-        /// <exception cref="InvalidOperationException">Invalid Mock.</exception>
         /// <exception cref="System.InvalidOperationException">Invalid Mock.</exception>
         /// <example>
         /// Example of how to set up for mocks that require specific functionality.
@@ -691,7 +692,6 @@ namespace FastMoq
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
         /// <param name="args">The arguments used for the method.</param>
         /// <returns><see cref="Nullable" />.</returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public object? InvokeMethod<TClass>(TClass? obj, string methodName, bool nonPublic = false, params object?[] args)
             where TClass : class
@@ -760,7 +760,7 @@ namespace FastMoq
         /// <typeparam name="TReturn">The type of the return value.</typeparam>
         /// <param name="expression">The expression.</param>
         /// <param name="messageFunc">The message function.</param>
-        /// <exception cref="InvalidDataException">Unable to setup '{typeof(TMock)}'.</exception>
+        /// <exception cref="System.IO.InvalidDataException">Unable to setup '{typeof(TMock)}'.</exception>
         public void SetupMessageAsync<TMock, TReturn>(Expression<Func<TMock, Task<TReturn>>> expression, Func<TReturn> messageFunc)
             where TMock : class =>
             (GetMock<TMock>()
@@ -997,14 +997,10 @@ namespace FastMoq
         {
             var args = new List<object?>();
 
-            constructor?.GetParameters().ToList().ForEach(p =>
-                {
-                    args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
+            constructor?.GetParameters().ToList().ForEach(p => args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
                         ? data.First(x => x.Key == p.ParameterType).Value
                         : GetParameter(p.ParameterType)
-                    );
-                }
-            );
+                    ));
 
             return args.ToArray();
         }
@@ -1235,14 +1231,17 @@ namespace FastMoq
             var parameters = new List<object?> { Strict ? MockBehavior.Strict : MockBehavior.Loose };
             constructor?.ParameterList.ToList().ForEach(parameters.Add);
 
-            return Activator.CreateInstance(newType, flags, null, parameters.ToArray(), null, null) is not Mock oMock
-                ? throw new ApplicationException("Cannot create instance.")
-                : oMock;
+            return Activator.CreateInstance(newType, flags, null, parameters.ToArray(), null, null) as Mock
+                   ?? throw new ApplicationException("Cannot create instance.");
         }
 
+        /// <summary>
+        ///     Determines whether [has parameterless constructor] [the specified type].
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns><c>true</c> if type specified type has a parameterless constructor; otherwise, <c>false</c>.</returns>
         public bool HasParameterlessConstructor(Type type) =>
             GetConstructors(type).FirstOrDefault(x => x.ParameterList.Length == 0) != null;
-
 
         /// <summary>
         ///     Gets the tested constructors.

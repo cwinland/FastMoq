@@ -5,8 +5,6 @@ using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Reflection;
 
-#pragma warning disable CS8603
-
 namespace FastMoq
 {
     /// <summary>
@@ -14,7 +12,8 @@ namespace FastMoq
     /// </summary>
     /// <example>
     ///     Basic example of the base class creating the Car class and auto mocking ICarService.
-    ///     <code><![CDATA[
+    ///     <code>
+    /// <![CDATA[
     /// public class CarTest : MockerTestBase<Car> {
     ///      [Fact]
     ///      public void TestCar() {
@@ -38,7 +37,8 @@ namespace FastMoq
     ///  ]]>
     ///  </code>
     ///     Example of how to set up for mocks that require specific functionality.
-    ///     <code><![CDATA[
+    ///     <code>
+    /// <![CDATA[
     /// public class CarTest : MockerTestBase<Car> {
     ///      public CarTest() : base(mocks => mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
     /// }
@@ -170,8 +170,6 @@ namespace FastMoq
         /// <param name="timespan">The maximum time to wait.</param>
         /// <param name="waitBetweenChecks">Time between each check.</param>
         /// <returns>T.</returns>
-        /// <exception cref="ArgumentNullException">logic</exception>
-        /// <exception cref="ApplicationException">Waitfor Timeout</exception>
         /// <exception cref="System.ArgumentNullException">logic</exception>
         /// <exception cref="System.ApplicationException">Waitfor Timeout</exception>
         public static T WaitFor<T>(Func<T> logic, TimeSpan timespan, TimeSpan waitBetweenChecks)
