@@ -241,6 +241,7 @@ namespace FastMoq
                     return obj;
                 }
 
+                // Special handling for DbContext types.
                 if (tType.IsAssignableTo(typeof(Microsoft.EntityFrameworkCore.DbContext)))
                 {
                     var mockObj = GetMockDbContext(tType);
