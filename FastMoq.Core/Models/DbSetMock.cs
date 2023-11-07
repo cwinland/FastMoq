@@ -55,24 +55,11 @@ namespace FastMoq.Models
 
             AsyncMock.Setup(m => m.GetAsyncEnumerator(It.IsAny<CancellationToken>()))
                 .Returns(new MockAsyncEnumerator<TEntity>(data.GetEnumerator()));
-
         }
 
-        public virtual void SetupListMethods()
-        {
-            var data = store.AsQueryable();
-
-            Setup(x => x.AsQueryable()).Returns(data);
-            Setup(x => x.Add(It.IsAny<TEntity>())).Callback<TEntity>(store.Add);
-            Setup(x => x.AddRange(It.IsAny<IEnumerable<TEntity>>())).Callback<IEnumerable<TEntity>>(store.AddRange);
-            Setup(x => x.Remove(It.IsAny<TEntity>())).Callback<TEntity>(x => store.Remove(x));
-
-            Setup(x => x.RemoveRange(It.IsAny<IEnumerable<TEntity>>()))
-                .Callback<IEnumerable<TEntity>>(x => x.ToList().ForEach(y => store.Remove(y)));
-
-            Setup(x => x.Find(It.IsAny<object[]>())).Returns<object[]>(x => store.Find(y => y.Equals(x)));
-        }
-
+        /// <summary>
+        ///     Setups the asynchronous list methods.
+        /// </summary>
         public virtual void SetupAsyncListMethods()
         {
             var data = store.AsQueryable();
@@ -89,6 +76,24 @@ namespace FastMoq.Models
             Setup(m => m.AddRangeAsync(It.IsAny<TEntity[]>()))
                 .Callback((TEntity[] source) => store.AddRange(source))
                 .Returns(Task.CompletedTask);
+        }
+
+        /// <summary>
+        ///     Setups the list methods.
+        /// </summary>
+        public virtual void SetupListMethods()
+        {
+            var data = store.AsQueryable();
+
+            Setup(x => x.AsQueryable()).Returns(data);
+            Setup(x => x.Add(It.IsAny<TEntity>())).Callback<TEntity>(store.Add);
+            Setup(x => x.AddRange(It.IsAny<IEnumerable<TEntity>>())).Callback<IEnumerable<TEntity>>(store.AddRange);
+            Setup(x => x.Remove(It.IsAny<TEntity>())).Callback<TEntity>(x => store.Remove(x));
+
+            Setup(x => x.RemoveRange(It.IsAny<IEnumerable<TEntity>>()))
+                .Callback<IEnumerable<TEntity>>(x => x.ToList().ForEach(y => store.Remove(y)));
+
+            Setup(x => x.Find(It.IsAny<object[]>())).Returns<object[]>(x => store.Find(y => y.Equals(x)));
         }
     }
 }

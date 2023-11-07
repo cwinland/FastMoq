@@ -4,8 +4,6 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Data.Common;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace FastMoq
 {
@@ -26,8 +24,11 @@ namespace FastMoq
             GetDbContext(contextOptions =>
                 {
                     AddType(_ => contextOptions, true);
-                    AddType<TContext>(_ => CreateInstance<TContext>(), true);
-                    return CreateInstance<TContext>() ?? throw new InvalidOperationException("Unable to create DbContext.");
+                    var newInstance = CreateInstanceNonPublic<TContext>() ?? throw new InvalidOperationException("Unable to create DbContext.");
+
+                    AddType(_ => newInstance, true);
+
+                    return newInstance;
                 },
                 options,
                 connection
@@ -43,6 +44,7 @@ namespace FastMoq
         {
             DbConnection = new SqliteConnection("DataSource=:memory:");
             DbConnection.Open();
+
             var dbContextOptions = new DbContextOptionsBuilder<TContext>()
                 .UseSqlite(DbConnection)
                 .Options;
@@ -88,11 +90,10 @@ namespace FastMoq
         /// <exception cref="System.InvalidOperationException">Unable to get MockDb. Try GetDbContext to use internal database.</exception>
         /// <exception cref="NotSupportedException"></exception>
         /// <exception cref="MissingMethodException">GetMockDbContext</exception>
-        public Mock GetMockDbContext(Type contextType)
-        {
-            return contextType.CallGenericMethod(this) as Mock ??
-                   throw new InvalidOperationException("Unable to get MockDb. Try GetDbContext to use internal database.");
-        }
+        public Mock GetMockDbContext(Type contextType) => contextType.CallGenericMethod(this) as Mock ??
+                                                          throw new InvalidOperationException(
+                                                              "Unable to get MockDb. Try GetDbContext to use internal database."
+                                                          );
 
         /// <summary>
         ///     Gets the mock database context.

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,6 +8,24 @@ namespace FastMoq.Tests
 {
     public class DbContextTests : MockerTestBase<MyDbContext>
     {
+        [Fact]
+        public void GetDbContext_WithOptions()
+        {
+            var mockDbContext = Mocks.GetDbContext(options => new MyDbContext((DbContextOptions<MyDbContext>)options));
+            mockDbContext.Certificates.Should().HaveCount(0);
+            mockDbContext.MyDbSetData.Should().HaveCount(0);
+            mockDbContext.MyDbSetData2.Should().HaveCount(0);
+        }
+
+        [Fact]
+        public void GetDbContext_WithoutOptions()
+        {
+            var mockDbContext = Mocks.GetDbContext<MyDbContext>();
+            mockDbContext.Certificates.Should().HaveCount(0);
+            mockDbContext.MyDbSetData.Should().HaveCount(0);
+            mockDbContext.MyDbSetData2.Should().HaveCount(0);
+        }
+
         [Fact]
         public void GetMockDbContext_SameAs_Component()
         {
@@ -110,9 +127,13 @@ namespace FastMoq.Tests
             }
 
             return list;
-            
         }
+    }
 
+    public class MockDataModel2
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 
     public class MockDataModel
@@ -126,7 +147,7 @@ namespace FastMoq.Tests
         public bool CustomProp { get; set; }
         public virtual DbSet<MockDataModel> MyDbSetData { get; set; } // Dataset 1
         public virtual DbSet<MockDataModel> MyDbSetData2 { get; set; } // Dataset 2
-        public DbSet<X509Certificate2> X509Certificates { get; set; } // Not Mockable and should be ignored.
+        public DbSet<MockDataModel2> Certificates { get; set; } // Not Mockable and should be ignored.
 
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
