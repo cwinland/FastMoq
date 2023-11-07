@@ -4,8 +4,6 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Data.Common;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace FastMoq
 {
@@ -15,23 +13,48 @@ namespace FastMoq
     public partial class Mocker
     {
         /// <summary>
-        ///     Gets the database context using a SqlLite DB or provided options and DbConnection.
+        ///     Gets the database context.
         /// </summary>
         /// <typeparam name="TContext">The type of the t context.</typeparam>
         /// <param name="options">The options.</param>
         /// <param name="connection">The connection.</param>
-        /// <returns>TContext of the database context.</returns>
+        /// <returns>TContext.</returns>
         public TContext GetDbContext<TContext>(DbContextOptions<TContext>? options = null, DbConnection? connection = null)
             where TContext : DbContext =>
             GetDbContext(contextOptions =>
                 {
                     AddType(_ => contextOptions, true);
-                    AddType<TContext>(_ => CreateInstance<TContext>(), true);
-                    return CreateInstance<TContext>() ?? throw new InvalidOperationException("Unable to create DbContext.");
+                    var newInstance = CreateInstanceNonPublic<TContext>() ?? throw new InvalidOperationException("Unable to create DbContext.");
+
+                    AddType(_ => newInstance, true);
+
+                    return newInstance;
                 },
                 options,
                 connection
             );
+
+        /// <summary>
+        ///     Gets the database context.
+        /// </summary>
+        /// <typeparam name="TContext">The type of the t context.</typeparam>
+        /// <param name="newObjectFunc">The new object function.</param>
+        /// <returns>TContext.</returns>
+        public TContext GetDbContext<TContext>(Func<DbContextOptions, TContext> newObjectFunc) where TContext : DbContext
+        {
+            DbConnection = new SqliteConnection("DataSource=:memory:");
+            DbConnection.Open();
+
+            var dbContextOptions = new DbContextOptionsBuilder<TContext>()
+                .UseSqlite(DbConnection)
+                .Options;
+
+            var context = newObjectFunc(dbContextOptions);
+            context.Database.EnsureCreated();
+            context.SaveChanges();
+
+            return context;
+        }
 
         /// <summary>
         ///     Gets the database context using a SqlLite DB or provided options and DbConnection.
@@ -41,8 +64,8 @@ namespace FastMoq
         /// <param name="options">The options.</param>
         /// <param name="connection">The connection.</param>
         /// <returns>TContext.</returns>
-        public TContext GetDbContext<TContext>(Func<DbContextOptions<TContext>, TContext> newObjectFunc, DbContextOptions<TContext>? options = null,
-            DbConnection? connection = null) where TContext : DbContext
+        public TContext GetDbContext<TContext>(Func<DbContextOptions<TContext>, TContext> newObjectFunc, DbContextOptions<TContext>? options,
+            DbConnection? connection) where TContext : DbContext
         {
             DbConnection = connection ?? new SqliteConnection("DataSource=:memory:");
             DbConnection.Open();
@@ -64,22 +87,13 @@ namespace FastMoq
         /// </summary>
         /// <param name="contextType">Type of the context.</param>
         /// <returns>Mock of the mock database context.</returns>
+        /// <exception cref="System.InvalidOperationException">Unable to get MockDb. Try GetDbContext to use internal database.</exception>
         /// <exception cref="NotSupportedException"></exception>
         /// <exception cref="MissingMethodException">GetMockDbContext</exception>
-        public Mock GetMockDbContext(Type contextType)
-        {
-            if (!contextType.IsAssignableTo(typeof(DbContext)))
-
-            {
-                throw new NotSupportedException($"{contextType} must inherit from {typeof(DbContext).FullName}.");
-            }
-
-            var method = GetType().GetMethods().FirstOrDefault(x=> x.Name.Equals(nameof(GetMockDbContext)) && x.IsGenericMethodDefinition) ??
-                         throw new MissingMethodException(GetType().FullName, nameof(GetMockDbContext));
-
-            var generic = method.MakeGenericMethod(contextType);
-            return (Mock)generic.Invoke(this, null);
-        }
+        public Mock GetMockDbContext(Type contextType) => contextType.CallGenericMethod(this) as Mock ??
+                                                          throw new InvalidOperationException(
+                                                              "Unable to get MockDb. Try GetDbContext to use internal database."
+                                                          );
 
         /// <summary>
         ///     Gets the mock database context.

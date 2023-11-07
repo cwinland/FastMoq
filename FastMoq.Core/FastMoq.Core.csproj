@@ -44,14 +44,15 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.*" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="6.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.*" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.*" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="7.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.*" />
   </ItemGroup>
 
   <ItemGroup>
+
     <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="*" />
     <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">
       <PrivateAssets>all</PrivateAssets>

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace FastMoq.Extensions
 {
@@ -9,9 +10,66 @@ namespace FastMoq.Extensions
     /// </summary>
     public static class TestClassExtensions
     {
+        /// <summary>
+        ///     Calls the generic method.
+        /// </summary>
+        /// <param name="typeParameter">The type parameter.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="methodName">Name of the method.</param>
+        /// <param name="parameterTypes">The parameter types.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>Calls the generic method.</returns>
+        public static object? CallGenericMethod(this Type typeParameter, object obj, [CallerMemberName] string? methodName = null,
+            Type[]? parameterTypes = null, object[]? parameters = null)
+        {
+            parameterTypes ??= Array.Empty<Type>();
+            parameters ??= Array.Empty<object>();
 
-        public static object GetTestData(this IReadOnlyList<object>? testData, int i, ParameterInfo p) =>
-            testData != null && i < testData.Count ? testData[i] : p.ParameterType.GetDefaultValue();
+            var method = obj.GetType().GetMethods()
+                             .FirstOrDefault(m => m.Name == methodName &&
+                                                  m.IsGenericMethodDefinition &&
+                                                  m.GetParameters().Select(p => p.ParameterType).SequenceEqual(parameterTypes)
+                             ) ??
+                         throw new MissingMethodException(obj.GetType().FullName, methodName);
+
+            var genericMethod = method.MakeGenericMethod(typeParameter);
+            return genericMethod.Invoke(obj, parameters);
+        }
+
+        /// <summary>
+        ///     Ensures the null check thrown.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="constructorName">Name of the constructor.</param>
+        /// <param name="output">The output.</param>
+        public static void EnsureNullCheckThrown(this Action action, string parameterName, string? constructorName = "",
+            Action<string>? output = null)
+        {
+            try
+            {
+                output?.Invoke($"Testing {constructorName}\n - {parameterName}");
+
+                try
+                {
+                    action();
+                }
+                catch (ArgumentNullException ex)
+                {
+                    if (!ex.Message.Contains(parameterName))
+                    {
+                        throw;
+                    }
+                }
+
+                output?.Invoke($"Passed {parameterName}");
+            }
+            catch
+            {
+                output?.Invoke($"Failed {parameterName}");
+                throw;
+            }
+        }
 
         /// <summary>
         ///     Gets the default value.
@@ -171,6 +229,16 @@ namespace FastMoq.Extensions
         public static object? GetPropertyValue<TObject>(this TObject obj, string name, object? defaultValue = null)
             where TObject : class? =>
             obj.GetProperty(name)?.GetValue(obj) ?? defaultValue ?? default;
+
+        /// <summary>
+        ///     Gets the test data.
+        /// </summary>
+        /// <param name="testData">The test data.</param>
+        /// <param name="i">The i.</param>
+        /// <param name="p">The p.</param>
+        /// <returns>object of the test data.</returns>
+        public static object GetTestData(this IReadOnlyList<object>? testData, int i, ParameterInfo p) =>
+            testData != null && i < testData.Count ? testData[i] : p.ParameterType.GetDefaultValue();
 
         /// <summary>
         ///     Sets the field value.
@@ -335,39 +403,5 @@ namespace FastMoq.Extensions
         /// <param name="type">The type.</param>
         /// <exception cref="System.ArgumentException"></exception>
         internal static void ThrowAlreadyExists(this Type type) => throw new ArgumentException($"{type} already exists.");
-
-        /// <summary>
-        ///     Ensures the null check thrown.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="constructorName">Name of the constructor.</param>
-        /// <param name="output">The output.</param>
-        public static void EnsureNullCheckThrown(this Action action, string parameterName, string? constructorName = "", Action<string>? output = null)
-        {
-            try
-            {
-                output?.Invoke($"Testing {constructorName}\n - {parameterName}");
-
-                try
-                {
-                    action();
-                }
-                catch (ArgumentNullException ex)
-                {
-                    if (!ex.Message.Contains(parameterName))
-                    {
-                        throw;
-                    }
-                }
-
-                output?.Invoke($"Passed {parameterName}");
-            }
-            catch
-            {
-                output?.Invoke($"Failed {parameterName}");
-                throw;
-            }
-        }
     }
 }
