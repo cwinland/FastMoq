@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
@@ -9,7 +9,7 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Winland, $(AssemblyName)</Authors>
     <Company>$(Authors)</Company>
-    <Copyright>Copyright(c) 2022 Christopher Winland</Copyright>
+    <Copyright>Copyright(c) 2023 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
     <Description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing. Now with Blazor support.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
@@ -19,6 +19,7 @@
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IsPackable>true</IsPackable>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -27,22 +28,6 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
-    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,23 +42,9 @@
     <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-  </ItemGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.38" />
-	  
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.38" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
     <PackageReference Include="bunit" Version="1.24.10" />
     <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">

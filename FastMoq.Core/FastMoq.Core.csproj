@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
@@ -9,7 +9,7 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Winland, $(AssemblyName)</Authors>
     <Company>$(Authors)</Company>
-    <Copyright>Copyright(c) 2022 Christopher Winland</Copyright>
+    <Copyright>Copyright(c) 2023 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
     <Description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
@@ -42,16 +42,14 @@
     <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.Extensions.Http" Version="6.*" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.*" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-    <PackageReference Include="Microsoft.Extensions.Http" Version="7.*" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.*" />
-  </ItemGroup>
-
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.*" Condition="'$(TargetFramework)' == 'net7.0'" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'" />
+
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.*" Condition="'$(TargetFramework)' == 'net7.0'" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'" />
 
     <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="*" />
     <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">
