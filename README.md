@@ -24,11 +24,11 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 - DbContext support - SqlLite and mockable objects.
 - Supports Null method parameter testing.
 
-## Packages
+## Packages .NET 6.0,7.0,8.0
 
-- FastMoq - Combines FastMoq.Core and FastMoq.Web. -.NET Core 6.0 and 7.0.
-- FastMoq.Core - Original FastMoq testing Mocker. -.NET 6.0, and 7.0.
-- FastMoq.Web - New Blazor and Web support. -.NET Core 6.0 and 7.0.
+- FastMoq - Combines FastMoq.Core and FastMoq.Web.
+- FastMoq.Core - Original FastMoq testing Mocker.
+- FastMoq.Web - New Blazor and Web support.
 
 ## Targets
 
@@ -226,6 +226,10 @@ TestAllConstructorParameters - Test all constructors in the component, regardles
 
 [FastMoq API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)
 
+## Full Change Log
+
+[Full Change Log](https://github.com/cwinland/FastMoq/releases)
+
 ## Breaking Change
 - 2.23.Latest    => Removed support for .NET Core 5.
 - 2.22.1215 => Removed support for .NET Core 3.1 in FastMoq.Core. Deprecated .NET Core 5 and moved package supporting .NET Core 5.0 from FastMoq to FastMoq.Core.
@@ -233,6 +237,8 @@ TestAllConstructorParameters - Test all constructors in the component, regardles
 - 1.22.810 => Update Package Dependencies
 - 1.22.728 => Initialize method will reset the mock, if it already exists. This is overridable by settings the reset parameter to false.
 - 1.22.604 => Renamed Mocks to Mocker, Renamed TestBase to MockerTestBase.
+- 
+- 2.23.200 => Support .NET 8
 
 ## [License - MIT](./License)
 
