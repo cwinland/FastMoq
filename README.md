@@ -24,7 +24,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 - DbContext support - SqlLite and mockable objects.
 - Supports Null method parameter testing.
 
-## Packages .NET 6.0,7.0,8.0
+## Packages
 
 - FastMoq - Combines FastMoq.Core and FastMoq.Web.
 - FastMoq.Core - Original FastMoq testing Mocker.
@@ -32,6 +32,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 
 ## Targets
 
+- .NET 8
 - .NET 7
 - .NET 6
 
