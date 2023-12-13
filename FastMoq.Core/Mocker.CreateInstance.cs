@@ -385,7 +385,7 @@ namespace FastMoq
                 }
             }
 
-            var oMock = CreateMockInternal(type, constructor);
+            var oMock = CreateMockInternal(type, constructor, nonPublic);
 
             if (!Strict)
             {
