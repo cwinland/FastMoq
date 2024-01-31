@@ -63,5 +63,6 @@
       <IncludeAssets>runtime; build; native; buildtransitive</IncludeAssets>
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>
+    <PackageReference Include="xunit.abstractions" Version="2.0.3" />
   </ItemGroup>
 </Project>
