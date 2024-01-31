@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using Moq;
+using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Xunit.Abstractions;
 
 namespace FastMoq.Extensions
 {
@@ -22,8 +24,10 @@ namespace FastMoq.Extensions
         public static object? CallGenericMethod(this Type typeParameter, object obj, [CallerMemberName] string? methodName = null,
             Type[]? parameterTypes = null, object[]? parameters = null)
         {
-            parameterTypes ??= Array.Empty<Type>();
-            parameters ??= Array.Empty<object>();
+            ArgumentNullException.ThrowIfNull(obj);
+
+            parameterTypes ??= [];
+            parameters ??= [];
 
             var method = obj.GetType().GetMethods()
                              .FirstOrDefault(m => m.Name == methodName &&
@@ -46,6 +50,8 @@ namespace FastMoq.Extensions
         public static void EnsureNullCheckThrown(this Action action, string parameterName, string? constructorName = "",
             Action<string>? output = null)
         {
+            ArgumentNullException.ThrowIfNull(action);
+
             try
             {
                 output?.Invoke($"Testing {constructorName}\n - {parameterName}");
@@ -56,7 +62,7 @@ namespace FastMoq.Extensions
                 }
                 catch (ArgumentNullException ex)
                 {
-                    if (!ex.Message.Contains(parameterName))
+                    if (!ex.Message.Contains(parameterName, StringComparison.OrdinalIgnoreCase))
                     {
                         throw;
                     }
@@ -72,6 +78,17 @@ namespace FastMoq.Extensions
         }
 
         /// <summary>
+        ///     Ensures the null check thrown.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="constructorName">Name of the constructor.</param>
+        /// <param name="output">The output.</param>
+        public static void EnsureNullCheckThrown(this Action action, string parameterName,
+            string? constructorName = "", ITestOutputHelper? output = null) =>
+            action.EnsureNullCheckThrown(parameterName, constructorName, s => output?.WriteLine(s));
+
+        /// <summary>
         ///     Gets the default value.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -82,6 +99,7 @@ namespace FastMoq.Extensions
             { FullName: "System.String" } => string.Empty,
             _ when typeof(IEnumerable).IsAssignableFrom(type) => Array.CreateInstance(type.GetElementType() ?? typeof(object), 0),
             { IsClass: true } => null,
+            { IsInterface: true } => null,
             _ => Activator.CreateInstance(type),
         };
 
