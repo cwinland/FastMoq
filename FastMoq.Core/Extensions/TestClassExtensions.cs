@@ -85,7 +85,7 @@ namespace FastMoq.Extensions
         /// <param name="constructorName">Name of the constructor.</param>
         /// <param name="output">The output.</param>
         public static void EnsureNullCheckThrown(this Action action, string parameterName,
-            string? constructorName = "", ITestOutputHelper? output = null) =>
+            string? constructorName, ITestOutputHelper? output) =>
             action.EnsureNullCheckThrown(parameterName, constructorName, s => output?.WriteLine(s));
 
         /// <summary>
