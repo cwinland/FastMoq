@@ -264,7 +264,7 @@ namespace FastMoq
 
         /// <summary>
         ///     Creates the instance of the given type.
-        ///     Public and non public constructors are searched.
+        ///     Public and non-public constructors are searched.
         ///     Parameters allow matching of constructors and using those values in the creation of the instance.
         /// </summary>
         /// <typeparam name="T">The Mock <see cref="T:Type" />, usually an interface.</typeparam>
@@ -288,13 +288,13 @@ namespace FastMoq
 
         /// <summary>
         ///     Creates the instance of the given type.
-        ///     Public and non public constructors are searched.
+        ///     Public and non-public constructors are searched.
         ///     Parameters allow matching of constructors and using those values in the creation of the instance.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
-        public object? CreateInstanceNonPublic(Type type, params object?[] args)
+        public object? CreateInstanceNonPublic(Type type, params object?[]? args)
         {
             var constructor =
                 args.Length > 0
@@ -308,12 +308,12 @@ namespace FastMoq
         ///     Creates the <see cref="MockModel" /> from the <c>Type</c>. This throws an exception if the mock already exists.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="nonPublic"><c>true</c> if non public and public constructors are used.</param>
+        /// <param name="nonPublic"><c>true</c> if non-public and public constructors are used.</param>
         /// <param name="args">The arguments used to match to the constructor.</param>
         /// <returns><see cref="List{Mock}" />.</returns>
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
-        public List<MockModel> CreateMock(Type type, bool nonPublic = false, params object?[] args)
+        public List<MockModel> CreateMock(Type type, bool nonPublic = false, params object?[]? args)
         {
             type = CleanType(type);
 
