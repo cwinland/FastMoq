@@ -197,7 +197,7 @@ namespace FastMoq
         /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
         /// <returns><see cref="Nullable{IFileSystem}" />.</returns>
         public IFileSystem? CreateInstance<T>(bool usePredefinedFileSystem) where T : class, IFileSystem =>
-            CreateInstance<T>(usePredefinedFileSystem, Array.Empty<object>());
+            CreateInstance<T>(usePredefinedFileSystem, []);
 
         /// <summary>
         ///     Creates the instance.
@@ -244,15 +244,19 @@ namespace FastMoq
                 }
             }
 
-            if (typeInstanceModel?.Arguments.Count > 0 && args.Length == 0)
+            args.RaiseIfNull();
+
+            if (typeInstanceModel.Arguments.Count > 0 && args.Length == 0)
             {
                 args = typeInstanceModel.Arguments.ToArray();
             }
 
+            var instanceType = typeInstanceModel.InstanceType;
+
             var constructor =
                 args.Length > 0
-                    ? FindConstructor(typeInstanceModel.InstanceType, false, args)
-                    : FindConstructor(false, typeInstanceModel.InstanceType, false);
+                    ? FindConstructor(instanceType, false, args)
+                    : FindConstructor(false, instanceType, false);
 
             return CreateInstanceInternal<T>(constructor);
         }
