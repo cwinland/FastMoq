@@ -171,7 +171,7 @@ namespace FastMoq
             return Component ?? throw CannotCreateComponentException;
         }
 
-        private static InvalidProgramException CannotCreateComponentException => new InvalidProgramException("Cannot create component");
+        private static InvalidProgramException CannotCreateComponentException => new("Cannot create component");
 
         /// <summary>
         ///     Releases unmanaged and - optionally - managed resources.
