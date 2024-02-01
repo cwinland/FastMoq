@@ -1192,7 +1192,7 @@ namespace FastMoq
             // Get Types that contain T, but are not interfaces.
             var possibleTypes = types.Where(type =>
                 type.GetInterfaces().Contains(tType) &&
-                interfaces.Exists(iType => type != iType) &&
+                interfaces.TrueForAll(iType => type != iType) &&
                 !interfaces.Exists(iType => iType.IsAssignableFrom(type))
             ).ToList();
 
