@@ -156,7 +156,7 @@ namespace FastMoq.Models
 
         private static object? GetValue(Type x, Mocker mocks)
         {
-            var genericType = typeof(DbSetMock<>).MakeGenericType(x.GenericTypeArguments.First());
+            var genericType = typeof(DbSetMock<>).MakeGenericType(x.GenericTypeArguments[0]);
             var value = Activator.CreateInstance(genericType) as Mock ?? throw new InvalidOperationException("Cannot create Mock.");
             mocks.AddMock(value, genericType, true, x.IsNotPublic);
             var obj = value.Object;

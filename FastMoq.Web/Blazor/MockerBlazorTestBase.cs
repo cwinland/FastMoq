@@ -354,7 +354,7 @@ namespace FastMoq.Web.Blazor
             var module = jsInvocationMatcher is null ? jsInterop.SetupModule() : jsInterop.SetupModule(jsInvocationMatcher, isCatchAll);
             module.SetupVoid("import", _ => true).SetVoidResult();
             module.SetupVoid("setProperty", _ => true).SetVoidResult();
-            module.Setup<string>("getUserAgent", _ => true).SetResult(String.Empty);
+            module.Setup<string>("getUserAgent", _ => true).SetResult(string.Empty);
             module.SetupVoid("scrollElementIntoView", _ => true).SetVoidResult();
             module.SetupVoid("focus", _ => true).SetVoidResult();
             module.SetupVoid("log", _ => true).SetVoidResult();

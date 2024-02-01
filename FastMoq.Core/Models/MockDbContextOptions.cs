@@ -9,6 +9,8 @@ namespace FastMoq.Models
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <inheritdoc />
-    /// <seealso cref="Mock{DbContextOptions{T}}" />
-    public class MockDbContextOptions<T> : Mock<DbContextOptions<T>> where T : DbContext { }
+    public class MockDbContextOptions<T> : Mock<DbContextOptions<T>> where T : DbContext
+    {
+        // Left Blank.
+    }
 }

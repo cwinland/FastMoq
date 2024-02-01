@@ -490,7 +490,7 @@ namespace FastMoq
 
             if (!Contains(type))
             {
-                CreateMock(type, args?.Length > 0, args);
+                CreateMock(type, args?.Length > 0, args ?? []);
             }
 
             return GetRequiredMock(type);
@@ -668,7 +668,7 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <returns><c>true</c> if type specified type has a parameterless constructor; otherwise, <c>false</c>.</returns>
         public bool HasParameterlessConstructor(Type type) =>
-            GetConstructors(type).FirstOrDefault(x => x.ParameterList.Length == 0) != null;
+            GetConstructors(type).Find(x => x.ParameterList.Length == 0) != null;
 
         /// <summary>
         ///     Gets or Creates then Initializes the specified Mock of <c>T</c>.
@@ -743,7 +743,7 @@ namespace FastMoq
             return method switch
             {
                 null when !nonPublic && !Strict => InvokeMethod(obj, methodName, true, args),
-                null => throw new ArgumentOutOfRangeException(),
+                null => throw new ArgumentOutOfRangeException(nameof(methodName)),
                 _ => method.Invoke(obj, flags, null, args?.Any() ?? false ? args.ToArray() : GetMethodArgData(method), null),
             };
         }
