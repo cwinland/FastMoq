@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+#pragma warning disable CS8777 // Parameter must have a non-null value when exiting.
 
 namespace FastMoq.Extensions
 {

@@ -11,7 +11,10 @@ using System.IO.Abstractions;
 
 namespace FastMoq.Tests.TestClasses
 {
-    public class InjectAttribute : Attribute { }
+    public class InjectAttribute : Attribute
+    {
+        // Left blank
+    }
 
     internal class TestClassParameters
     {
@@ -31,7 +34,10 @@ namespace FastMoq.Tests.TestClasses
 
         internal TestClassParameters(int x, string y, IFileSystem fileSystem)
         {
-            if (fileSystem == null) throw new ArgumentNullException(nameof(fileSystem));
+            if (fileSystem == null)
+            {
+                throw new ArgumentNullException(nameof(fileSystem));
+            }
         }
     }
 }

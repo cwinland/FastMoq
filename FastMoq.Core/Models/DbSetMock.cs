@@ -52,7 +52,6 @@ namespace FastMoq.Models
             QueryableMock.Setup(x => x.Expression).Returns(() => data.Expression);
             QueryableMock.Setup(x => x.ElementType).Returns(() => data.ElementType);
             QueryableMock.Setup(x => x.GetEnumerator()).Returns(data.GetEnumerator);
-
             AsyncMock.Setup(m => m.GetAsyncEnumerator(It.IsAny<CancellationToken>()))
                 .Returns(new MockAsyncEnumerator<TEntity>(data.GetEnumerator()));
         }
@@ -65,12 +64,12 @@ namespace FastMoq.Models
             var data = store.AsQueryable();
 
             Setup(x => x.AsAsyncEnumerable()).Returns(() => new MockAsyncEnumerable<TEntity>(data));
-            Setup(x => x.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>())).Callback<TEntity, CancellationToken>((e, c) => store.Add(e));
-            Setup(m => m.FindAsync(It.IsAny<object[]>())).Returns(new ValueTask<TEntity>(data.FirstOrDefault()));
-            Setup(m => m.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Returns(new ValueTask<TEntity>(data.FirstOrDefault()));
+            Setup(x => x.AddAsync(It.IsAny<TEntity>(), It.IsAny<CancellationToken>())).Callback<TEntity, CancellationToken>((e, _) => store.Add(e));
+            Setup(m => m.FindAsync(It.IsAny<object[]>())).Returns(new ValueTask<TEntity?>(data.FirstOrDefault()));
+            Setup(m => m.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).Returns(new ValueTask<TEntity?>(data.FirstOrDefault()));
 
             Setup(m => m.AddRangeAsync(It.IsAny<IEnumerable<TEntity>>(), It.IsAny<CancellationToken>()))
-                .Callback((IEnumerable<TEntity> source, CancellationToken token) => store.AddRange(source))
+                .Callback((IEnumerable<TEntity> source, CancellationToken _) => store.AddRange(source))
                 .Returns(Task.CompletedTask);
 
             Setup(m => m.AddRangeAsync(It.IsAny<TEntity[]>()))

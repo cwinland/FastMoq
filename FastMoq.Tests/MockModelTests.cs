@@ -52,8 +52,11 @@ namespace FastMoq.Tests
             Component.Type.Should().Be(typeof(IFileSystem));
             Component.Mock.Should().BeOfType(typeof(Mock<IFileSystem>));
             mockModel.Mock.Should().BeOfType(typeof(Mock<IFileSystem>));
-            var mockModel2 = new MockModel<IFileSystem>(new Mock<IFileSystem>());
-            mockModel2.Mock = mockModel.Mock;
+            var mockModel2 = new MockModel<IFileSystem>(new Mock<IFileSystem>())
+            {
+                Mock = mockModel.Mock,
+            };
+
             mockModel2.Mock.Should().BeEquivalentTo(mockModel.Mock);
             mockModel2.Should().BeEquivalentTo(mockModel);
         }

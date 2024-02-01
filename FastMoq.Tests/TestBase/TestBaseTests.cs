@@ -1,17 +1,12 @@
-﻿using FastMoq;
+﻿using FastMoq.Extensions;
+using FastMoq.Models;
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using FastMoq.Extensions;
-using FastMoq.Models;
-using FluentAssertions.Equivalency;
 using Xunit.Abstractions;
-using Xunit.Sdk;
-using FastMoq.Tests.TestClasses;
-using System.Linq;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -208,7 +203,7 @@ namespace FastMoq.Tests.TestBase
                 var messages = new List<string>();
                 TestAllConstructorParameters((action, constructor, parameter) => action.EnsureNullCheckThrown(parameter, constructor, messages.Add));
 
-                messages.Should().Contain(new List<string>()
+                messages.Should().Contain(new List<string>
                     {
                         "Testing .ctor(IFileSystem fileSystem, String field)\n - fileSystem",
                         "Passed fileSystem",

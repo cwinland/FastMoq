@@ -8,7 +8,7 @@
     <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
     <readme>README.md</readme>
     <projectUrl>https://github.com/cwinland/FastMoq</projectUrl>
-    <description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing. Now with Blazor support.</description>
+    <description>Easy and fast extension of the famous Moq mocking framework for mocking and auto-injection of classes when testing. Now with Blazor support.</description>
     <copyright>Copyright(c) 2023 Christopher Winland</copyright>
     <tags>Easy fast injection inject mock extension Moq moqthis framework mocking class</tags>
     <repository type="git" url="https://github.com/cwinland/FastMoq" />

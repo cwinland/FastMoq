@@ -26,12 +26,14 @@ namespace FastMoq
         /// <summary>
         ///     Tests all constructor parameters.
         /// </summary>
-        /// <param name="createAction">The create action.</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <param name="validValue">The valid value.</param>
-        protected void TestAllConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null)
+        /// <param name="createAction">The action used for each parameter of each constructor.</param>
+        /// <param name="defaultValue">The default value used when testing the parameter.</param>
+        /// <param name="validValue">The valid value used when not testing the parameter.</param>
+        /// <param name="bindingFlags">The binding flags.</param>
+        protected void TestAllConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null,
+            Func<ParameterInfo, object?>? validValue = null, BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance)
         {
-            var constructorList = typeof(TComponent).GetConstructors();
+            var constructorList = typeof(TComponent).GetConstructors(bindingFlags);
 
             foreach (var constructorInfo in constructorList)
             {

@@ -14,11 +14,9 @@ namespace FastMoq.Tests
     {
         #region Fields
 
-        private readonly Mocker mocks;
+        private readonly Mocker mocks = new();
 
         #endregion
-
-        public NestedClassTests() => mocks = new Mocker();
 
         [Fact]
         public void GetTypeFromInterface()

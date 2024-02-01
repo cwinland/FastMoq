@@ -39,7 +39,7 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateInstance_ShouldNotBeNull()
         {
-            var obj = new InstanceModel(typeof(IFileSystem), typeof(FileSystem), mocker => new FileSystem(), new List<object>());
+            var obj = new InstanceModel(typeof(IFileSystem), typeof(FileSystem), mocker => new FileSystem(), new List<object?>());
             obj.Should().NotBeNull();
             obj.CreateFunc.Should().NotBeNull();
             obj.Arguments.Should().HaveCount(0);

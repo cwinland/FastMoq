@@ -1,9 +1,4 @@
-using FastMoq.Extensions;
 using FastMoq.Models;
-using Moq;
-using System.Collections.ObjectModel;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace FastMoq
 {
@@ -61,7 +56,7 @@ namespace FastMoq
         ///     Gets or sets the component under test.
         /// </summary>
         /// <value>The service.</value>
-        protected internal TComponent? Component { get; set; }
+        protected internal TComponent Component { get; set; }
 
         /// <summary>
         ///     Gets or sets the custom mocks. These are added whenever the component is created.
@@ -73,7 +68,7 @@ namespace FastMoq
         ///     Gets or sets the create component action. This action is run whenever the component is created.
         /// </summary>
         /// <value>The create component action.</value>
-        protected virtual Func<Mocker, TComponent?> CreateComponentAction { get; }
+        protected virtual Func<Mocker, TComponent> CreateComponentAction { get; }
 
         /// <summary>
         ///     Gets or sets the setup mocks action. This action is run before the component is created.
@@ -85,7 +80,7 @@ namespace FastMoq
         ///     Gets or sets the created component action. This action is run after the component is created.
         /// </summary>
         /// <value>The created component action.</value>
-        protected virtual Action<TComponent?>? CreatedComponentAction { get; }
+        protected virtual Action<TComponent>? CreatedComponentAction { get; }
 
         /// <summary>
         ///     Gets the <see cref="Mocker" />.
@@ -93,74 +88,7 @@ namespace FastMoq
         /// <value>The mocks.</value>
         protected Mocker Mocks { get; } = new();
 
-        private Func<Mocker, TComponent?> DefaultCreateAction => _ => Component = Mocks.CreateInstance<TComponent>();
-
         #endregion
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class with the default createAction.
-        /// </summary>
-        protected MockerTestBase() : this(null, null, null) { }
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class with a setup action.
-        /// </summary>
-        /// <param name="setupMocksAction">The setup mocks action.</param>
-        protected MockerTestBase(Action<Mocker> setupMocksAction) : this(setupMocksAction, null, null) { }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="T:FastMoq.MockerTestBase`1" /> class.
-        /// </summary>
-        /// <param name="setupMocksAction">The setup mocks action.</param>
-        /// <param name="createComponentAction">The create component action.</param>
-        /// <inheritdoc />
-        protected MockerTestBase(Action<Mocker> setupMocksAction, Func<Mocker, TComponent> createComponentAction)
-            : this(setupMocksAction, createComponentAction, null) { }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class.
-        /// </summary>
-        /// <param name="setupMocksAction">The setup mocks action.</param>
-        /// <param name="createdComponentAction">The created component action.</param>
-        /// <inheritdoc />
-        protected MockerTestBase(Action<Mocker>? setupMocksAction, Action<TComponent?>? createdComponentAction = null)
-            : this(setupMocksAction, null, createdComponentAction) { }
-
-        /// <inheritdoc />
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class with a create action and optional
-        ///     createdAction.
-        /// </summary>
-        /// <param name="createComponentAction">The create component action.</param>
-        /// <param name="createdComponentAction">The created component action.</param>
-        protected MockerTestBase(Func<Mocker, TComponent> createComponentAction,
-            Action<TComponent?>? createdComponentAction = null)
-            : this(null, createComponentAction, createdComponentAction) { }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="T:FastMoq.MockerTestBase`1" /> class.
-        /// </summary>
-        /// <param name="innerMockResolution">if set to <c>true</c> [inner mock resolution].</param>
-        /// <inheritdoc />
-        protected MockerTestBase(bool innerMockResolution) : this() => Mocks.InnerMockResolution = innerMockResolution;
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class.
-        /// </summary>
-        /// <param name="setupMocksAction">The setup mocks action.</param>
-        /// <param name="createComponentAction">The create component action.</param>
-        /// <param name="createdComponentAction">The created component action.</param>
-        protected MockerTestBase(Action<Mocker>? setupMocksAction,
-            Func<Mocker, TComponent?>? createComponentAction,
-            Action<TComponent?>? createdComponentAction = null)
-        {
-            SetupMocksAction = setupMocksAction;
-            CreateComponentAction = createComponentAction ?? DefaultCreateAction;
-            CreatedComponentAction = createdComponentAction;
-            CreateComponent();
-        }
 
         /// <summary>
         ///     Waits for an action.
@@ -171,7 +99,7 @@ namespace FastMoq
         /// <param name="waitBetweenChecks">Time between each check.</param>
         /// <returns>T.</returns>
         /// <exception cref="System.ArgumentNullException">logic</exception>
-        /// <exception cref="System.ApplicationException">Waitfor Timeout</exception>
+        /// <exception cref="System.ApplicationException">Timeout waiting for condition</exception>
         public static T WaitFor<T>(Func<T> logic, TimeSpan timespan, TimeSpan waitBetweenChecks)
         {
             if (logic == null)
@@ -189,7 +117,7 @@ namespace FastMoq
             }
 
             return !EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now > timeout
-                ? throw new ApplicationException("Waitfor Timeout")
+                ? throw new ApplicationException("Timeout waiting for condition")
                 : result;
         }
 
@@ -226,15 +154,24 @@ namespace FastMoq
         /// ]]></code></example>
         protected void CreateComponent()
         {
+            GetComponent();
+        }
+
+        private TComponent GetComponent()
+        {
             foreach (var customMock in CustomMocks)
             {
                 Mocks.AddMock(customMock.Mock, customMock.Type, true);
             }
 
             SetupMocksAction?.Invoke(Mocks);
-            Component = CreateComponentAction?.Invoke(Mocks);
+            Component = CreateComponentAction.Invoke(Mocks) ?? throw CannotCreateComponentException;
             CreatedComponentAction?.Invoke(Component);
+
+            return Component ?? throw CannotCreateComponentException;
         }
+
+        private static InvalidProgramException CannotCreateComponentException => new("Cannot create component");
 
         /// <summary>
         ///     Releases unmanaged and - optionally - managed resources.

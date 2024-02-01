@@ -29,14 +29,14 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateUri()
         {
-            Mocks.AddType<Uri, Uri>((_) => new Uri("http://localhost"));
+            Mocks.AddType<Uri, Uri>(_ => new Uri("http://localhost"));
             var m = Mocks.GetObject<Uri>().ToString().Should().Be("http://localhost/");
 
             // Adding same type will throw an error.
-            new Action(() => Mocks.AddType<Uri, Uri>((_) => new Uri("http://localhost2/test"))).Should().Throw<ArgumentException>();
+            new Action(() => Mocks.AddType<Uri, Uri>(_ => new Uri("http://localhost2/test"))).Should().Throw<ArgumentException>();
 
             // Adding same type with replace = true, will replace.
-            Mocks.AddType<Uri, Uri>((_) => new Uri("http://localhost2/test/"), true);
+            Mocks.AddType<Uri, Uri>(_ => new Uri("http://localhost2/test/"), true);
             Mocks.GetObject<Uri>().ToString().Should().Be("http://localhost2/test/");
 
         }
@@ -69,7 +69,7 @@ namespace FastMoq.Tests
             Mocks.SetupHttpMessage(() => new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.Accepted,
-                    Content = new StringContent("[{'id':55, 'value':'33'}]")
+                    Content = new StringContent("[{'id':55, 'value':'33'}]"),
                 }
             );
 
@@ -103,7 +103,7 @@ namespace FastMoq.Tests
                     new HttpResponseMessage
                     {
                         StatusCode = HttpStatusCode.OK,
-                        Content = new StringContent("[{'id':2, 'value':'2'}]")
+                        Content = new StringContent("[{'id':2, 'value':'2'}]"),
                     }
                 ).Verifiable();
 

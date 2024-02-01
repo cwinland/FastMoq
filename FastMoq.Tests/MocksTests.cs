@@ -49,7 +49,7 @@ namespace FastMoq.Tests
         {
             var mock = new Mock<IFileSystemInfo>
             {
-                Name = "First"
+                Name = "First",
             };
 
             MockModel<IFileSystemInfo> mockResult = Mocks.AddMock(mock, false);
@@ -63,7 +63,7 @@ namespace FastMoq.Tests
         {
             var mock = new Mock<IFileSystemInfo>
             {
-                Name = "First"
+                Name = "First",
             };
 
             Mocks.AddMock(mock, false).Mock.Should().Be(mock);
@@ -77,7 +77,7 @@ namespace FastMoq.Tests
         {
             var mock = new Mock<IFileSystemInfo>
             {
-                Name = "First"
+                Name = "First",
             };
 
             Mock<IFileSystemInfo> mock1 = Mocks.AddMock(mock, false).Mock;
@@ -262,7 +262,7 @@ namespace FastMoq.Tests
         {
             var test = Component.CreateInstance<ITestClassMultiple, IFileSystem, IFile>(new Dictionary<Type, object?>
                 {
-                    {typeof(IFileSystem), null}
+                    {typeof(IFileSystem), null},
                 }
             );
 
@@ -271,7 +271,7 @@ namespace FastMoq.Tests
 
             var test2 = Component.CreateInstance<ITestClassMultiple, IFileSystem, IFile>(new Dictionary<Type, object?>
                 {
-                    {typeof(IFile), null}
+                    {typeof(IFile), null},
                 }
             );
 
@@ -504,7 +504,7 @@ namespace FastMoq.Tests
             types = new List<Type>
             {
                 typeof(string), typeof(BindingFlags), typeof(Binder), typeof(CallingConventions), typeof(Type[]),
-                typeof(ParameterModifier[])
+                typeof(ParameterModifier[]),
             };
 
             methodInfo = type.GetType().GetMethod("GetMethod", types.ToArray());
@@ -710,11 +710,11 @@ namespace FastMoq.Tests
 
         [Fact]
         public void Mocker_AddMapClassIncompatibleInterface_ShouldThrow() => new Action(() => Component.AddType<IFileInfo, FileSystem>())
-            .Should().ThrowExactly<ArgumentException>($"{typeof(FileSystem).Name} is not assignable to {typeof(IFileInfo).Name}.");
+            .Should().ThrowExactly<ArgumentException>($"{nameof(FileSystem)} is not assignable to {nameof(IFileInfo)}.");
 
         [Fact]
         public void Mocker_AddMapInterfaceAsClass_ShouldThrow() => new Action(() => Component.AddType<IFileInfo, IFile>())
-            .Should().ThrowExactly<ArgumentException>($"{typeof(IFile).Name} cannot be an interface.");
+            .Should().ThrowExactly<ArgumentException>($"{nameof(IFile)} cannot be an interface.");
 
         [Fact]
         public void Mocker_CreateMockInstance_InnerMockResolution_False_ShouldThrow()
@@ -747,7 +747,7 @@ namespace FastMoq.Tests
             var map = new Dictionary<Type, IInstanceModel>
             {
                 {typeof(IFileSystem), new InstanceModel<IFileSystem>()},
-                {typeof(IFile), new InstanceModel<IFile>(_ => new MockFileSystem().File)}
+                {typeof(IFile), new InstanceModel<IFile>(_ => new MockFileSystem().File)},
             };
 
             var test = new Mocker(map);
@@ -791,7 +791,7 @@ namespace FastMoq.Tests
 
             Mocks.Strict = true;
             Action a = () => Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
-            a.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Specified argument was out of the range of valid values.");
+            a.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Specified argument was out of the range of valid values.*");
         }
 
         [Fact]
