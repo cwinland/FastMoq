@@ -4,11 +4,11 @@ namespace FastMoq.Models
 {
     /// <summary>
     ///     Class InstanceModel.
-    /// Implements the <see cref="T:FastMoq.Models.InstanceModel" />
+    /// Implements the <see cref="InstanceModel" />
     /// </summary>
     /// <inheritdoc cref="IHistoryModel" />
     /// <inheritdoc cref="IInstanceModel" />
-    /// <seealso cref="T:FastMoq.Models.InstanceModel" />
+    /// <seealso cref="InstanceModel" />
     [ExcludeFromCodeCoverage]
     public class InstanceModel : IInstanceModel
     {
@@ -39,12 +39,6 @@ namespace FastMoq.Models
             InstanceType = instanceType ?? throw new ArgumentNullException(nameof(instanceType));
         }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="InstanceModel"/> class.
-        /// </summary>
-        /// <param name="originalType">Type of the original.</param>
-        /// <param name="instanceType">Type of the instance.</param>
-        /// <param name="createFunc">The create function.</param>
         /// <inheritdoc />
         internal InstanceModel(Type originalType, Type instanceType, Func<Mocker, object>? createFunc) : this(originalType, instanceType)
             => CreateFunc = createFunc;

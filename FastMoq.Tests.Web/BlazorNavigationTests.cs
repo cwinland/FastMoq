@@ -6,6 +6,12 @@ using Index = FastMoq.Tests.Blazor.Pages.Index;
 
 namespace FastMoq.Tests.Web
 {
+    /// <summary>
+    ///     Class BlazorNavigationTests.
+    ///     Implements the <see cref="MockerBlazorTestBase{Index}" />
+    /// </summary>
+    /// <inheritdoc />
+    /// <seealso cref="MockerBlazorTestBase{Index}" />
     public class BlazorNavigationTests : MockerBlazorTestBase<Index>
     {
         #region Overrides of MockerBlazorTestBase<Index>
@@ -16,9 +22,15 @@ namespace FastMoq.Tests.Web
 
         #endregion
 
+        /// <summary>
+        ///     Defines the test method Created.
+        /// </summary>
         [Fact]
         public void Created() => Component.Should().NotBeNull();
 
+        /// <summary>
+        ///     Defines the test method NavigateTest.
+        /// </summary>
         [Fact]
         public void NavigateTest()
         {

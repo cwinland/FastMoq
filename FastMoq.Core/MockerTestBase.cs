@@ -3,41 +3,31 @@ using FastMoq.Models;
 namespace FastMoq
 {
     /// <summary>
-    ///     Auto Mocking Test Base with Fast Automatic Mocking <see cref="Mocker" />.
+    ///     Mock Test Base with Automatic Mocking using <see cref="Mocker" />.
+    ///     This class contains the <see cref="Mocks"/> property to create and track all Mocks from creation of the component.
     /// </summary>
     /// <example>
-    ///     Basic example of the base class creating the Car class and auto mocking ICarService.
+    ///     Test example of the base class creating the Car class and auto mocking ICarService.
+    ///     Start by creating the test class that inherits <see cref="MockerTestBase{TComponent}"/>. The object that is passed is the concrete class being tested.
+    ///     Use <see cref="Component" /> Property to access the test object.
     ///     <code>
-    /// <![CDATA[
-    /// public class CarTest : MockerTestBase<Car> {
-    ///      [Fact]
+    /// <![CDATA[public class CarTest : MockerTestBase<Car> {]]>
     ///      public void TestCar() {
-    ///          Component.Color.Should().Be(Color.Green);
     ///          Component.CarService.Should().NotBeNull();
     ///      }
     /// }
-    /// 
-    /// public class Car {
-    ///      public Color Color { get; set; } = Color.Green;
-    ///      public ICarService CarService { get; }
+    /// </code>
+    /// ICarService is automatically injected into the Car object when created by the base class.
+    /// <code>
+    /// public partial class Car {
     ///      public Car(ICarService carService) => CarService = carService;
     /// }
-    /// 
-    /// public interface ICarService
-    /// {
-    ///      Color Color { get; set; }
-    ///      ICarService CarService { get; }
-    ///      bool StartCar();
-    /// }
-    ///  ]]>
     ///  </code>
-    ///     Example of how to set up for mocks that require specific functionality.
+    ///     When needing to set up mocks before the component is created, use the <see cref="get_SetupMocksAction"/> property or the base class constructor.
+    ///     This example shows creating a database context and adding it to the Type Map for resolution during creation of objects.
     ///     <code>
-    /// <![CDATA[
-    /// public class CarTest : MockerTestBase<Car> {
-    ///      public CarTest() : base(mocks => mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
-    /// }
-    ///  ]]>
+    /// <![CDATA[protected override Action<Mocker>]]> SetupMocksAction => mocker =>
+    ///     mocker.AddType(_ => <![CDATA[mocker.GetMockDbContext<ApplicationDbContext>().Object);]]>
     ///  </code>
     /// </example>
     /// <typeparam name="TComponent">The type of the t component.</typeparam>
@@ -67,7 +57,7 @@ namespace FastMoq
         /// <summary>
         ///     Gets or sets the create component action. This action is run whenever the component is created.
         /// </summary>
-        /// <value>The create component action.</value>
+        /// <value>The action to override the component creation.</value>
         protected virtual Func<Mocker, TComponent> CreateComponentAction { get; }
 
         /// <summary>
@@ -196,9 +186,6 @@ namespace FastMoq
         #region IDisposable
 
         /// <inheritdoc />
-        /// <summary>
-        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method

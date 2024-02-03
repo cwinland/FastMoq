@@ -1,12 +1,6 @@
 ﻿namespace FastMoq.Models
 {
-    /// <summary>
-    ///     Class MockAsyncEnumerator.
-    ///     Implements the <see cref="System.Collections.Generic.IAsyncEnumerator{T}" />
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <inheritdoc />
-    /// <seealso cref="System.Collections.Generic.IAsyncEnumerator{T}" />
+    /// <exclude />
     public class MockAsyncEnumerator<T> : IAsyncEnumerator<T>
     {
         #region Fields
@@ -41,14 +35,6 @@
         /// <inheritdoc />
         public T Current => inner.Current;
 
-        /// <summary>
-        ///     Advances the enumerator asynchronously to the next element of the collection.
-        /// </summary>
-        /// <returns>
-        ///     A <see cref="T:System.Threading.Tasks.ValueTask`1" /> that will complete with a result of
-        ///     <see langword="true" /> if the enumerator was successfully advanced to the next element, or
-        ///     <see langword="false" /> if the enumerator has passed the end of the collection.
-        /// </returns>
         /// <inheritdoc />
         public ValueTask<bool> MoveNextAsync() => new(inner.MoveNext());
 

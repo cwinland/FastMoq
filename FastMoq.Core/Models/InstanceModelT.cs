@@ -5,10 +5,10 @@ namespace FastMoq.Models
     /// <inheritdoc />
     /// <summary>
     ///     Class InstanceModel.
-    ///     Implements the <see cref="T:FastMoq.InstanceModel" />
+    ///     Implements the <see cref="InstanceModel" />
     /// </summary>
     /// <typeparam name="TClass">The type of the t class.</typeparam>
-    /// <seealso cref="T:FastMoq.InstanceModel" />
+    /// <seealso cref="InstanceModel" />
     [ExcludeFromCodeCoverage]
     public class InstanceModel<TClass> : InstanceModel where TClass : class
     {
@@ -30,32 +30,16 @@ namespace FastMoq.Models
         #endregion
 
         /// <inheritdoc />
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
-        /// </summary>
         public InstanceModel() : this(default(Func<Mocker, TClass>)) { }
 
         /// <inheritdoc />
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="T:FastMoq.InstanceModel`1" /> class.
-        /// </summary>
-        /// <param name="createFunc">The create function.</param>
         public InstanceModel(Func<Mocker, TClass>? createFunc) : base(typeof(TClass), typeof(TClass), createFunc) { }
 
         /// <inheritdoc />
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="InstanceModel{TClass}" /> class.
-        /// </summary>
-        /// <param name="createFunc">The create function.</param>
-        /// <param name="arguments">The arguments.</param>
         public InstanceModel(Func<Mocker, TClass>? createFunc, List<object?> arguments) : this(createFunc) =>
             Arguments = arguments;
 
         /// <inheritdoc />
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="T:FastMoq.Models.InstanceModel{T}" /> class.
-        /// </summary>
-        /// <param name="model">The model.</param>
         public InstanceModel(InstanceModel model) : this(model.CreateFunc as Func<Mocker, TClass>, model.Arguments) { }
     }
 }

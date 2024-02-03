@@ -21,6 +21,12 @@ using Index = FastMoq.Tests.Blazor.Pages.Index;
 
 namespace FastMoq.Tests.Web
 {
+    /// <summary>
+    ///     Class MockerBlazorTestBaseTests.
+    ///     Implements the <see cref="MockerBlazorTestBase{Index}" />
+    /// </summary>
+    /// <inheritdoc />
+    /// <seealso cref="MockerBlazorTestBase{Index}" />
     public class MockerBlazorTestBaseTests : MockerBlazorTestBase<Index>
     {
         #region Properties
@@ -31,9 +37,15 @@ namespace FastMoq.Tests.Web
 
         #endregion
 
+        /// <summary>
+        ///     Defines the test method Create.
+        /// </summary>
         [Fact]
         public void Create() => Component.Should().NotBeNull();
 
+        /// <summary>
+        ///     Defines the test method GetChildComponent_ShouldNotBeNull.
+        /// </summary>
         [Fact]
         public void GetChildComponent_ShouldNotBeNull()
         {
@@ -43,9 +55,15 @@ namespace FastMoq.Tests.Web
                 .WithMessage("Sequence contains no matching element");
         }
 
+        /// <summary>
+        ///     Defines the test method GetComponent_ShouldBeGetComponentPredicate.
+        /// </summary>
         [Fact]
         public void GetComponent_ShouldBeGetComponentPredicate() => GetComponent<FetchData>().Should().Be(GetComponent<FetchData>((IElement _) => true));
 
+        /// <summary>
+        ///     Defines the test method GetComponent_ShouldNotBeNull.
+        /// </summary>
         [Fact]
         public void GetComponent_ShouldNotBeNull()
         {
@@ -62,6 +80,9 @@ namespace FastMoq.Tests.Web
             fetchData.Value.IsComponentBase.Should().BeTrue();
         }
 
+        /// <summary>
+        ///     Defines the test method GetComponents_ShouldReturnGetComponentEquivalent.
+        /// </summary>
         [Fact]
         public void GetComponents_ShouldReturnGetComponentEquivalent()
         {
@@ -71,6 +92,9 @@ namespace FastMoq.Tests.Web
             renderedComponent.Should().BeEquivalentTo(GetComponent<FetchData>((IElement _) => true));
         }
 
+        /// <summary>
+        ///     Defines the test method ClickButton_Invalid_ShouldThrow.
+        /// </summary>
         [Fact]
         public void ClickButton_Invalid_ShouldThrow()
         {
@@ -78,6 +102,9 @@ namespace FastMoq.Tests.Web
             new Action(() => ClickButton(button, () => true)).Should().Throw<ArgumentNullException>();
         }
 
+        /// <summary>
+        ///     Defines the test method ClickButton_ShouldClick.
+        /// </summary>
         [Fact]
         public void ClickButton_ShouldClick()
         {
@@ -96,12 +123,21 @@ namespace FastMoq.Tests.Web
             NavigationManager.History.Count.Should().Be(6);
         }
 
+        /// <summary>
+        ///     Defines the test method FindById_ShouldFind.
+        /// </summary>
         [Fact]
         public void FindById_ShouldFind() => Component.FindAll("button").First(x => x.Id == "testbutton").Should().Be(FindById("testbutton"));
 
+        /// <summary>
+        ///     Defines the test method FindByName_ShouldFind.
+        /// </summary>
         [Fact]
         public void FindByName_ShouldFind() => FindAllByTag("button").Should().HaveCount(1);
 
+        /// <summary>
+        ///     Defines the test method AuthUser_Set_ShouldChangeUser.
+        /// </summary>
         [Fact]
         public void AuthUser_Set_ShouldChangeUser()
         {
@@ -123,15 +159,27 @@ namespace FastMoq.Tests.Web
             authCollection.Invoke().Should().Contain(newItem);
         }
 
+        /// <summary>
+        ///     Defines the test method AuthRoles_Set_ShouldChangeRoles.
+        /// </summary>
         [Fact]
         public void AuthRoles_Set_ShouldChangeRoles() => TestAuth(() => AuthContext.Roles, AuthorizedRoles, "testRole");
 
+        /// <summary>
+        ///     Defines the test method AuthClaims_Set_ShouldChangeClaims.
+        /// </summary>
         [Fact]
         public void AuthClaims_Set_ShouldChangeClaims() => TestAuth(() => AuthContext.Claims, AuthorizedClaims, new Claim("group", "testClaim"));
 
+        /// <summary>
+        ///     Defines the test method AuthPolicies_Set_ShouldChange.
+        /// </summary>
         [Fact]
         public void AuthPolicies_Set_ShouldChange() => TestAuth(() => AuthContext.Policies, AuthorizedPolicies, "testPolicy");
 
+        /// <summary>
+        ///     Defines the test method InterfaceProperties.
+        /// </summary>
         [Fact]
         public void InterfaceProperties()
         {
@@ -142,6 +190,9 @@ namespace FastMoq.Tests.Web
             obj2.HttpContext.Should().NotBeNull();
         }
 
+        /// <summary>
+        ///     Defines the test method ClassProperties.
+        /// </summary>
         [Fact]
         public void ClassProperties()
         {
@@ -158,6 +209,9 @@ namespace FastMoq.Tests.Web
             obj4.HttpContext.Should().NotBeNull();
         }
 
+        /// <summary>
+        ///     Defines the test method ClassProperties_NoResolution.
+        /// </summary>
         [Fact]
         public void ClassProperties_NoResolution()
         {
@@ -167,6 +221,12 @@ namespace FastMoq.Tests.Web
         }
     }
 
+    /// <summary>
+    ///     Class HttpContextAccessor.
+    ///     Implements the <see cref="IHttpContextAccessor" />
+    /// </summary>
+    /// <inheritdoc />
+    /// <seealso cref="IHttpContextAccessor" />
     public class HttpContextAccessor : IHttpContextAccessor
     {
         /// <inheritdoc />

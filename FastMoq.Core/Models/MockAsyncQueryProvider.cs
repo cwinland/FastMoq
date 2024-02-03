@@ -12,21 +12,25 @@ namespace FastMoq.Models
             this.inner = inner;
         }
 
+        /// <inheritdoc />
         public IQueryable CreateQuery(Expression expression)
         {
             return new MockAsyncEnumerable<TEntity>(expression);
         }
 
+        /// <inheritdoc />
         public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
             return new MockAsyncEnumerable<TElement>(expression);
         }
 
+        /// <inheritdoc />
         public object? Execute(Expression expression)
         {
             return inner.Execute(expression);
         }
 
+        /// <inheritdoc />
         public TResult Execute<TResult>(Expression expression)
         {
             return inner.Execute<TResult>(expression);

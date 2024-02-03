@@ -3,13 +3,7 @@ using System.Reflection;
 
 namespace FastMoq
 {
-    /// <summary>
-    ///     Class MockerTestBase.
-    ///     Implements the <see cref="IDisposable" />
-    /// </summary>
-    /// <typeparam name="TComponent">The type of the t component.</typeparam>
     /// <inheritdoc />
-    /// <seealso cref="IDisposable" />
     public partial class MockerTestBase<TComponent>
     {
         /// <summary>
@@ -91,7 +85,8 @@ namespace FastMoq
         ///     }
         /// );
         /// ]]></code></example>
-        protected void TestConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null) => TestConstructorParameters(GetConstructor(), createAction, defaultValue, validValue);
+        protected void TestConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null) =>
+            TestConstructorParameters(GetConstructor(), createAction, defaultValue, validValue);
 
         /// <summary>
         ///     Tests the constructor parameters.
@@ -100,7 +95,8 @@ namespace FastMoq
         /// <param name="createAction">The create action.</param>
         /// <param name="defaultValue">The value replaced when testing a parameter.</param>
         /// <param name="validValue">The valid value.</param>
-        protected void TestConstructorParameters(ConstructorInfo constructorInfo, Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null)
+        protected void TestConstructorParameters(ConstructorInfo constructorInfo, Action<Action, string, string> createAction,
+            Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null)
         {
             var parameters = constructorInfo.GetParameters();
             var constructorName = GetMethodName(constructorInfo);

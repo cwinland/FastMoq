@@ -31,7 +31,7 @@ namespace FastMoq.Web.Blazor.Models
 
         /// <inheritdoc />
         /// <summary>
-        ///     Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.ComponentState`1" /> class.
+        ///     Initializes a new instance of the <see cref="ComponentState{T}" /> class.
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="services">The services.</param>

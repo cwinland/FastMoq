@@ -7,9 +7,7 @@ using System.Data.Common;
 
 namespace FastMoq
 {
-    /// <summary>
-    ///     Class Mocker.
-    /// </summary>
+    /// <inheritdoc cref="Mocker" />
     public partial class Mocker
     {
         /// <summary>

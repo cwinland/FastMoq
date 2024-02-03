@@ -29,16 +29,9 @@ namespace FastMoq.Models
         #endregion
 
         /// <inheritdoc />
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="T:FastMoq.Models.DbSetMock`1" /> class.
-        /// </summary>
         public DbSetMock() : this(new List<TEntity>()) { }
 
         /// <inheritdoc />
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="T:FastMoq.Models.DbSetMock`1" /> class.
-        /// </summary>
-        /// <param name="initialData">The initial data.</param>
         public DbSetMock(IList<TEntity> initialData)
         {
             if (initialData != null)

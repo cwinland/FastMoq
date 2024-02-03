@@ -3,6 +3,7 @@ using System.Net;
 
 namespace FastMoq
 {
+    /// <inheritdoc cref="Mocker" />
     public partial class Mocker
     {
         #region Fields

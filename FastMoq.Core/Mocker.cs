@@ -18,6 +18,33 @@ namespace FastMoq
     /// <summary>
     ///     Initializes the mocking helper object. This class creates and manages the automatic mocking and custom mocking.
     /// </summary>
+    /// <remarks>
+    ///     This class is used inside <see cref="MockerTestBase{TComponent}" />.
+    ///     This may be used independently; however, to ensure that mocks are not duplicated, use only one instance of this class.
+    ///     If using <see cref="MockerTestBase{TComponent}" />, use the <see cref="Mocks" /> property or create this class for a specific test only.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// <![CDATA[
+    /// // Arrange
+    /// var id = 1234;
+    /// var blogsTestData = new List<Blog> { new Blog { Id = id } };
+    /// 
+    /// // Create a mock DbContext
+    /// var mocker = new Mocker(); // Create a new mocker only if not already using MockerTestBase; otherwise use Mocks included in the base class.
+    /// 
+    /// var dbContextMock = mocker.GetMockDbContext<ApplicationDbContext>();
+    /// var dbContext = dbContextMock.Object;
+    /// dbContext.Blogs.Add(blogsTestData); // Can also be dbContext.Set<Blog>().Add(blogsTestData)
+    /// 
+    /// var validator = new BtnValidator(dbContext);
+    /// 
+    /// // Act
+    /// var result = validator.IsValid(id);
+    /// 
+    /// // Assert
+    /// Assert.True(result);
+    /// ]]></code></example>
     public partial class Mocker
     {
         #region Fields
@@ -61,7 +88,7 @@ namespace FastMoq
             constructorHistory.ToLookup(pair => pair.Key, pair => pair.Value.AsReadOnly());
 
         /// <summary>
-        ///     Gets the database connection. The default value is an memory Sqlite database connection unless otherwise set.
+        ///     Gets the database connection. The default value is a memory Sqlite database connection unless otherwise set.
         /// </summary>
         /// <value>The database connection.</value>
         public DbConnection DbConnection { get; private set; } = new SqliteConnection("DataSource=:memory:");
@@ -118,11 +145,6 @@ namespace FastMoq
         }
 
         /// <inheritdoc />
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Mocker" /> class using the specific typeMap.
-        ///     The typeMap assists in resolution of interfaces to instances.
-        /// </summary>
-        /// <param name="typeMap">The type map.</param>
         public Mocker(Dictionary<Type, IInstanceModel> typeMap) : this() => this.typeMap = typeMap;
 
         /// <summary>

@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace FastMoq.Collections
 {
-    /// <inheritdoc />
+    /// <exclude />
     public class MockerObservableCollectionChangedEventArgs : EventArgs
     {
         #region Properties

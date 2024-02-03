@@ -27,17 +27,9 @@ namespace FastMoq.Models
 
         #endregion
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MockModel{T}" /> class.
-        /// </summary>
-        /// <param name="mock">The mock.</param>
         /// <inheritdoc />
         internal MockModel(Mock mock) : base(typeof(T), mock) { }
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="T:FastMoq.MockModel`1" /> class.
-        /// </summary>
-        /// <param name="mockModel">The mock model.</param>
         /// <inheritdoc />
         internal MockModel(MockModel mockModel) : base(mockModel.Type, mockModel.Mock) { }
 

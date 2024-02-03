@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace FastMoq.Collections
 {
-    /// <inheritdoc />
+    /// <exclude />
     public class MockerObservableCollection<T> : ObservableCollection<T>
     {
         #region Fields

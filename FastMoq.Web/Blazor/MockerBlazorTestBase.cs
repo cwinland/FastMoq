@@ -265,18 +265,15 @@ namespace FastMoq.Web.Blazor
 
         #endregion
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MockerBlazorTestBase{T}" /> class.
-        /// </summary>
         /// <inheritdoc />
         protected MockerBlazorTestBase() : this(false) { }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.MockerBlazorTestBase`1" /> class.
+        ///     Initializes a new instance of the <see cref="MockerBlazorTestBase{T}" /> class.
         /// </summary>
         /// <param name="skipSetup">if set to <c>true</c> [skip setup].</param>
         /// <param name="jsInvocationMatcher">Optional invocation matcher for JSInterop.</param>
-        /// <param name="isCatchAllMatcher">Indicates if the invocationMatches is also a catch all.</param>
+        /// <param name="isCatchAllMatcher">Indicates if the invocationMatches is also a catch-all.</param>
         /// <inheritdoc />
         protected MockerBlazorTestBase(bool skipSetup, InvocationMatcher? jsInvocationMatcher = null, bool isCatchAllMatcher = false)
         {
