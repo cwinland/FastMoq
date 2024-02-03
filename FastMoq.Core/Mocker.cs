@@ -408,7 +408,7 @@ namespace FastMoq
         /// ]]></code>
         /// </example>
         public static List<T> GetList<T>(int count, Func<T>? func) =>
-            func == null ? new List<T>() : GetList(count, _ => func.Invoke());
+            func == null ? [] : GetList(count, _ => func.Invoke());
 
         /// <summary>
         ///     Gets the message protected asynchronous.
@@ -440,12 +440,10 @@ namespace FastMoq
             var args = new List<object?>();
 
             method.GetParameters().ToList().ForEach(p =>
-                {
-                    args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
-                        ? data.First(x => x.Key == p.ParameterType).Value
-                        : GetParameter(p.ParameterType)
-                    );
-                }
+                args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
+                    ? data.First(x => x.Key == p.ParameterType).Value
+                    : GetParameter(p.ParameterType)
+                )
             );
 
             return args.ToArray();
@@ -653,6 +651,20 @@ namespace FastMoq
         /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
         /// <exception cref="System.InvalidOperationException">Mock must exist. - type</exception>
         public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>) GetRequiredMock(typeof(T));
+
+        /// <summary>
+        ///     Gets the required object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>T of the required object.</returns>
+        public T GetRequiredObject<T>() where T : class
+        {
+            var obj = GetObject<T>();
+
+            obj.RaiseIfNull();
+
+            return obj;
+        }
 
         /// <summary>
         ///     Gets the content of the string.
