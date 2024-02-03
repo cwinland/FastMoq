@@ -129,18 +129,117 @@ Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
 
 ### DbContext Mocking
 
-#### Test ContextDb
+Create Your DbContext. *The DbContext can either have virtual DbSet(s) or an interface. In this example, we use virtual DbSets.*
+
+Suppose you have an ApplicationDbContext with a ```virtual DbSet<Blog>```:
 
 ```cs
-public class DbContextTests : MockerTestBase<MyDbContext>
+public class ApplicationDbContext : DbContext
+{
+    public virtual DbSet<Blog> Blogs { get; set; }
+    // ...other DbSet properties
+
+    // This can be public, but we make it internal to hide it for testing only.
+    // This is only required if the public constructor does things that we don't want to do.
+    internal ApplicationDbContext()
+    {
+        // In order for an internal to work, you may need to add InternalsVisibleTo attribute in the AssemblyInfo or project to allow the mocker to see the internals.
+        // [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+    }
+
+    // Public constructor used by application.
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) => Database.EnsureCreated();
+
+    // ... Initialize and setup
+}
 ```
 
-#### Use ContextDb in test methods
+Suppose you want to test a repository class that uses the ApplicationDbContext:
 
 ```cs
-    var mockDbContext = Mocks.GetMockDbContext<MyDbContext>();
-    var dbContext = mockDbContext.Object;
+public class BlogRepo(ApplicationDbContext dbContext)
+{
+    public Blog? GetBlogById(int id) => dbContext.Blogs.AsEnumerable().FirstOrDefault(x => x.Id == id);
+}
 ```
+
+#### Sample Unit Test Using DbContext in MockerTestBase
+
+In your unit test, you want to override the SetupMocksAction to create a mock DbContext using Mocker.
+Here’s an example using xUnit:
+
+```cs
+public class BlogRepoTests : MockerTestBase<BlogRepo>
+{
+    // This runs actions before BlogRepo is created.
+    // This cannot be done in the constructor because the component is created in the base class.
+    // An alternative way is to pass the code to the base constructor.
+    protected override Action<Mocker> SetupMocksAction => mocker =>
+    {
+        var dbContextMock = mocker.GetMockDbContext<ApplicationDbContext>(); // Create DbContextMock
+        mocker.AddType(_ => dbContextMock.Object); // Add DbContext to the Type Map.
+        // In this example, we don't use a IDbContextFactory, but if we did, it would do this instead of AddType:
+        // mocker.GetMock<IDbContextFactory<ApplicationDbContext>>().Setup(x => x.CreateDbContext()).Returns(dbContextMock.Object);
+    };
+
+    [Fact]
+    public void GetBlog_ShouldReturnBlog_WhenPassedId()
+    {
+        // Arrange
+        const int ID = 1234;
+        var blogsTestData = new List<Blog> { new() { Id = ID } };
+
+        // Create a mock DbContext
+        var dbContext = Mocks.GetRequiredObject<ApplicationDbContext>();
+        dbContext.Blogs.AddRange(blogsTestData); // Can also be dbContext.Set<Blog>().AddRange(blogsTestData)
+
+        // Act
+        var result = Component.GetBlogById(ID);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(result.Id.Equals(ID));
+    }
+}
+```
+
+*Run Your Tests*: Execute your unit tests, and the mock DbContext will behave like a real DbContext, allowing you to test your BlogRepo logic without hitting the actual database.
+
+#### Sample Unit Test Using DbContext Directly In Test Methods
+
+In your unit test, you want to create a mock DbContext using Mocker.
+This can be done directly in the test if the context is either only needed for the method or the component is created manually.
+Here’s an example using xUnit:
+
+```cs
+public class BtnValidatorTests
+{
+    [Fact]
+    public void BtnValidatorIsValid_ShouldReturnTrue()
+    {
+        // Arrange
+        var id = 1234;
+        var blogsTestData = new List<Blog> { new Blog { Id = id } };
+
+        // Create a mock DbContext
+        var mocker = new Mocker(); // Create a new mocker only if not already using MockerTestBase; otherwise use Mocks included in the base class.
+
+        var dbContextMock = mocker.GetMockDbContext<ApplicationDbContext>();
+        var dbContext = dbContextMock.Object;
+        dbContext.Blogs.Add(blogsTestData); // Can also be dbContext.Set<Blog>().Add(blogsTestData)
+
+        var validator = new BtnValidator(dbContext);
+
+        // Act
+        var result = validator.IsValid(id);
+
+        // Assert
+        Assert.True(result);
+    }
+}
+```
+
+*Run Your Tests*: Execute your unit tests, and the mock DbContext will behave like a real DbContext, allowing you to test your BtnValidator logic without hitting the actual database.
 
 ### Null / Parameter checking
 
@@ -222,6 +321,17 @@ TestAllConstructorParameters - Test all constructors in the component, regardles
         );
     }
 ```
+
+## Troubleshooting
+
+### System.MethodAccessException
+
+If the test returns:
+
+- System.MethodAccessException: Attempt by method 'Castle.Proxies.ApplicationDbContextProxy..ctor(Castle.DynamicProxy.IInterceptor[])' to access method
+
+Add the following ```InternalsVisibleTo``` line to the AssemblyInfo file.
+```[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]```
 
 ## Additional Documentation
 
