@@ -380,13 +380,38 @@ namespace FastMoq
 
                 if (InnerMockResolution)
                 {
-                    AddProperties(type, oMock.Object);
+                    AddProperties(type, GetSafeMockObject(oMock));
                 }
             }
 
-            AddInjections(oMock.Object, GetTypeModel(type)?.InstanceType ?? type);
+            AddInjections(GetSafeMockObject(oMock), GetTypeModel(type)?.InstanceType ?? type);
 
             return oMock;
+        }
+
+        private object GetSafeMockObject(Mock mock)
+        {
+            try
+            {
+                return mock.Object;
+            }
+            catch (TargetInvocationException ex)
+            {
+                exceptionLog.Add(ex.Message);
+                ex.ThrowIfCastleMethodAccessException();
+                throw;
+            }
+            catch (MethodAccessException ex)
+            {
+                exceptionLog.Add(ex.Message);
+                ex.ThrowIfCastleMethodAccessException();
+                throw;
+            }
+            catch (Exception ex)
+            {
+                exceptionLog.Add(ex.Message);
+                throw;
+            }
         }
 
         private ConstructorModel GetTypeConstructor(Type type, bool nonPublic, object?[] args)

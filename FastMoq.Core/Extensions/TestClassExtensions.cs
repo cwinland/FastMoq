@@ -255,8 +255,8 @@ namespace FastMoq.Extensions
         /// <param name="i">The i.</param>
         /// <param name="p">The p.</param>
         /// <returns>object of the test data.</returns>
-        public static object GetTestData(this IReadOnlyList<object>? testData, int i, ParameterInfo p) =>
-            testData != null && i < testData.Count ? testData[i] : p.ParameterType.GetDefaultValue();
+        public static object? GetTestData(this IReadOnlyList<object>? testData, int i, ParameterInfo p) =>
+            testData != null && i < testData.Count ? testData[i] : p?.ParameterType.GetDefaultValue();
 
         /// <summary>
         ///     Sets the field value.
@@ -421,5 +421,25 @@ namespace FastMoq.Extensions
         /// <param name="type">The type.</param>
         /// <exception cref="System.ArgumentException"></exception>
         internal static void ThrowAlreadyExists(this Type type) => throw new ArgumentException($"{type} already exists.");
+
+        internal static void ThrowIfCastleMethodAccessException(this Exception ex)
+        {
+            if (IsCastleMethodAccessException(ex))
+            {
+                ThrowInternalConstructorException(ex);
+            }
+
+            if (IsCastleMethodAccessException(ex.GetBaseException()))
+            {
+                ThrowInternalConstructorException(ex.GetBaseException());
+            }
+
+            bool IsCastleMethodAccessException(Exception innerException) => innerException.Message.Contains("Castle.DynamicProxy.IInterceptor[]", StringComparison.Ordinal);
+
+            void ThrowInternalConstructorException(Exception innerException) => throw new MethodAccessException(
+                "The test cannot see the internal constructor. Add [assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2\")] to the AssemblyInfo or project file.",
+                innerException
+            );
+        }
     }
 }
