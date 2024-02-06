@@ -40,6 +40,6 @@ namespace FastMoq.Models
             Arguments = arguments;
 
         /// <inheritdoc />
-        public InstanceModel(InstanceModel model) : this(model.CreateFunc as Func<Mocker, TClass>, model.Arguments) { }
+        public InstanceModel(IInstanceModel model) : this(model?.CreateFunc as Func<Mocker, TClass>, model?.Arguments ?? []) { }
     }
 }

@@ -26,7 +26,7 @@ namespace FastMoq
         #endregion
 
         /// <summary>
-        ///     Creates the HTTP client using a mockable IHttpClientFactory.
+        ///     Creates the HTTP client using a mock IHttpClientFactory.
         /// </summary>
         /// <param name="clientName">Name of the client.</param>
         /// <param name="baseAddress">The base address.</param>

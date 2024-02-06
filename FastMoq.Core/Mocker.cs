@@ -181,7 +181,7 @@ namespace FastMoq
         ///     Overwrite if the mock exists or throw <see cref="ArgumentException" /> if this parameter is
         ///     false.
         /// </param>
-        /// <param name="nonPublic">if set to <c>true</c> uses public and non public constructors.</param>
+        /// <param name="nonPublic">if set to <c>true</c> uses public and non-public constructors.</param>
         /// <returns><see cref="MockModel{T}" />.</returns>
         public MockModel<T> AddMock<T>(Mock<T> mock, bool overwrite, bool nonPublic = false) where T : class =>
             new(AddMock(mock, typeof(T), overwrite, nonPublic));
@@ -874,7 +874,7 @@ namespace FastMoq
         ///     Overwrite if the mock exists or throw <see cref="ArgumentException" /> if this parameter is
         ///     false.
         /// </param>
-        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <param name="nonPublic">if set to <c>true</c> [non-public].</param>
         /// <returns><see cref="Mock{T}" />.</returns>
         /// <exception cref="ArgumentNullException">nameof(mock)</exception>
         /// <exception cref="ArgumentNullException">nameof(type)</exception>
@@ -882,15 +882,8 @@ namespace FastMoq
         /// <exception cref="System.ArgumentNullException">nameof(type)</exception>
         internal MockModel AddMock(Mock mock, Type type, bool overwrite = false, bool nonPublic = false)
         {
-            if (mock == null)
-            {
-                throw new ArgumentNullException(nameof(mock));
-            }
-
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(type);
 
             if (Contains(type))
             {
@@ -1261,7 +1254,7 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="TModel">The type of the t model.</typeparam>
         /// <returns>FastMoq.Models.IInstanceModel.</returns>
-        internal IInstanceModel GetTypeModel<TModel>() where TModel : class => GetTypeModel(typeof(TModel)) ?? new InstanceModel<TModel>();
+        internal IInstanceModel GetTypeModel<TModel>() where TModel : class => GetTypeModel(typeof(TModel));
 
         /// <summary>
         ///     Gets the type model from the type map or create a model if it does not exist.
@@ -1269,7 +1262,7 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <returns>FastMoq.Models.IInstanceModel.</returns>
         internal IInstanceModel GetTypeModel(Type type) =>
-            typeMap.ContainsKey(type) ? typeMap[type] : new InstanceModel(type, GetTypeFromInterface(type));
+            typeMap.TryGetValue(type, out var model) && model is not null ? model : new InstanceModel(type, GetTypeFromInterface(type));
 
         /// <summary>
         ///     Determines whether [is mock file system] [the specified use predefined file system].
@@ -1335,7 +1328,7 @@ namespace FastMoq
         /// <returns>List&lt;FastMoq.Models.ConstructorModel&gt;.</returns>
         private List<ConstructorModel> GetTestedConstructors(Type type, List<ConstructorModel> constructors)
         {
-            constructors ??= new();
+            constructors ??= [];
             var validConstructors = new List<ConstructorModel>();
 
             if (constructors.Count <= 1)

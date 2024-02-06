@@ -5,13 +5,13 @@ namespace FastMoq.Models
 {
     /// <summary>
     ///     Class DbSetMock.
-    ///     Implements the <see cref="Mock{T}" />
+    ///     Implements the <see cref="Mock{TEntity}" />
     /// </summary>
     /// <typeparam name="TEntity">The type of the t entity.</typeparam>
-    /// <inheritdoc cref="Mock{T}" />
+    /// <inheritdoc cref="Mock{TEntity}" />
     /// />
     /// <inheritdoc cref="IDbSetMock" />
-    /// <seealso cref="Mock{T}" />
+    /// <seealso cref="Mock{TEntity}" />
     public class DbSetMock<TEntity> : Mock<DbSet<TEntity>>, IDbSetMock where TEntity : class
     {
         #region Fields

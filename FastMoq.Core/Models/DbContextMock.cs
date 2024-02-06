@@ -11,7 +11,7 @@ namespace FastMoq.Models
     ///     Implements the <see cref="Mock{TEntity}" />
     /// </summary>
     /// <typeparam name="TEntity">The type of the t entity.</typeparam>
-    /// <inheritdoc cref="IDbContextMock" />
+    /// <inheritdoc cref="IDbContextMock{TEntity}" />
     /// <inheritdoc cref="Mock{TEntity}" />
     /// <seealso cref="Mock{TEntity}" />
     public class DbContextMock<TEntity> : Mock<TEntity>, IDbContextMock<TEntity> where TEntity : DbContext
