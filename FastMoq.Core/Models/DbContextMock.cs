@@ -11,9 +11,10 @@ namespace FastMoq.Models
     ///     Implements the <see cref="Mock{TEntity}" />
     /// </summary>
     /// <typeparam name="TEntity">The type of the t entity.</typeparam>
-    /// <inheritdoc />
+    /// <inheritdoc cref="IDbContextMock" />
+    /// <inheritdoc cref="Mock{TEntity}" />
     /// <seealso cref="Mock{TEntity}" />
-    public class DbContextMock<TEntity> : Mock<TEntity> where TEntity : DbContext
+    public class DbContextMock<TEntity> : Mock<TEntity>, IDbContextMock<TEntity> where TEntity : DbContext
     {
         #region Properties
 
@@ -45,14 +46,31 @@ namespace FastMoq.Models
         /// <inheritdoc />
         public DbContextMock(MockBehavior behavior, params object[] args) : base(behavior, args) { }
 
-        /// <summary>
-        ///     Setups the mock.
-        /// </summary>
+        private static object? GetValue(Type x, Mocker mocks)
+        {
+            var genericType = typeof(DbSetMock<>).MakeGenericType(x.GenericTypeArguments[0]);
+            var value = Activator.CreateInstance(genericType) as Mock ?? throw new InvalidOperationException("Cannot create Mock.");
+            mocks.AddMock(value, genericType, true, x.IsNotPublic);
+            var obj = value.Object;
+
+            var dbSetMock = (IDbSetMock) value;
+
+            // Setup List methods.
+            dbSetMock.SetupMockMethods();
+
+            return obj;
+        }
+
+        #region IDbContextMock
+
+        /// <inheritdoc />
         /// <param name="propertyInfo">The property information.</param>
         /// <exception cref="System.MissingMethodException">Unable to get Set method.</exception>
         /// <exception cref="InvalidOperationException">Unable to get Set method.</exception>
         public void SetupDbContextSetMethods(PropertyInfo propertyInfo)
         {
+            ArgumentNullException.ThrowIfNull(propertyInfo);
+
             var setType = propertyInfo.PropertyType;
 
             // Create a Func<T> at runtime
@@ -70,25 +88,17 @@ namespace FastMoq.Models
             }
 
             SetupSetMethod(setType, propValueDelegate);
-            SetupSetMethod(setType, propValueDelegate, new[] { typeof(string) }, new object?[] { propertyInfo.Name });
+            SetupSetMethod(setType, propValueDelegate, [typeof(string)], [propertyInfo.Name]);
         }
 
-        /// <summary>
-        ///     Setups the database set properties.
-        /// </summary>
-        /// <param name="propertyInfo">The property information.</param>
-        /// <param name="value">The value.</param>
+        /// <inheritdoc />
         public virtual void SetupDbSetProperties(PropertyInfo propertyInfo, object value)
         {
             SetupDbSetPropertyGet(propertyInfo, value);
             SetupDbContextSetMethods(propertyInfo);
         }
 
-        /// <summary>
-        ///     Setups the get.
-        /// </summary>
-        /// <param name="propertyInfo">The property information.</param>
-        /// <param name="value">The value.</param>
+        /// <inheritdoc />
         public void SetupDbSetPropertyGet(PropertyInfo propertyInfo, object value)
         {
             var parameter = Expression.Parameter(typeof(TEntity), "x");
@@ -97,11 +107,46 @@ namespace FastMoq.Models
             Setup(lambda)?.Returns(value);
         }
 
-        /// <summary>
-        ///     Setup the database sets that are marked as virtual.
-        /// </summary>
-        /// <param name="mocks">The <see cref="Mocker" /> from test context.</param>
-        /// <returns>DbContext Mock.</returns>
+        /// <inheritdoc />
+        /// <exception cref="System.MissingMethodException">Unable to get Set method.</exception>
+        /// <exception cref="System.InvalidOperationException">Unable to Get Setup.</exception>
+        public void SetupSetMethod(Type setType, Delegate propValueDelegate, Type[]? types = null, object?[]? parameters = null)
+        {
+            types ??= [];
+            parameters ??= [];
+
+            // Create an expression that represents x => x.Set<setType>(It.IsAny<string>())
+            var parameter = Expression.Parameter(typeof(TEntity), "x");
+
+            // Get Set method for given parameter type. Either the one without parameters or the string parameter.
+            var method = typeof(TEntity).GetMethod("Set", types) ?? throw new MissingMethodException("Unable to get Set method.");
+            var genericMethod = method.MakeGenericMethod(setType);
+            var args = new List<Expression>();
+            types.ForEach(x => args.Add(Expression.Call(typeof(It), "IsAny", [x])));
+
+            // Setup parameters
+            parameters.RaiseIfNull();
+            types.RaiseIfNull();
+
+            for (var i = 0; i < parameters.Length && i < types.Length; i++)
+            {
+                // Replace IsAny with specified parameter.
+                args[i] = Expression.Constant(parameters[i]);
+            }
+
+            var body = Expression.Call(parameter, genericMethod, args.ToArray());
+            var expression = Expression.Lambda<Func<TEntity, object>>(body, parameter);
+
+            // Use the expression to set up the mockDbContext
+            var setup = new FastMoqNonVoidSetupPhrase<TEntity>(Setup(expression) ?? throw new InvalidOperationException("Unable to Get Setup."));
+            setup.Returns(propValueDelegate, setType);
+        }
+
+        #endregion
+
+        #region IDbContextMock<TEntity>
+
+        /// <inheritdoc />
         public DbContextMock<TEntity> SetupDbSets(Mocker mocks)
         {
             // Go through the DbSets and attempt to map each property and the set methods to their properties.
@@ -115,61 +160,6 @@ namespace FastMoq.Models
             return this;
         }
 
-        /// <summary>
-        ///     Setup the set method.
-        /// </summary>
-        /// <param name="setType">Type of the set.</param>
-        /// <param name="propValueDelegate">The property value delegate.</param>
-        /// <param name="types">The types.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <exception cref="System.MissingMethodException">Unable to get Set method.</exception>
-        /// <exception cref="System.InvalidOperationException">Unable to Get Setup.</exception>
-        public void SetupSetMethod(Type setType, Delegate propValueDelegate, Type[]? types = null, object?[]? parameters = null)
-        {
-            types ??= Array.Empty<Type>();
-
-            // Create an expression that represents x => x.Set<setType>(It.IsAny<string>())
-            var parameter = Expression.Parameter(typeof(TEntity), "x");
-
-            // Get Set method for given paramer type. Either the one without parameters or the string parameter.
-            var method = typeof(TEntity).GetMethod("Set", types) ?? throw new MissingMethodException("Unable to get Set method.");
-            var genericMethod = method.MakeGenericMethod(setType);
-            var args = new List<Expression>();
-            types.ForEach(x => args.Add(Expression.Call(typeof(It), "IsAny", new[] { x })));
-
-            // Setup parameters
-            parameters ??= Array.Empty<object?>();
-
-            for (var i = 0; i < parameters.Length && i < types.Length; i++)
-            {
-                // Replace IsAny with specified parameter.
-                args[i] = Expression.Constant(parameters[i]);
-            }
-
-            var body = Expression.Call(parameter, genericMethod, args.ToArray());
-            var expression = Expression.Lambda<Func<TEntity, object>>(body, parameter);
-
-            // Use the expression to setup mockDbContext
-            var setup = new FastMoqNonVoidSetupPhrase<TEntity>(Setup(expression) ?? throw new InvalidOperationException("Unable to Get Setup."));
-            setup.Returns(propValueDelegate, setType);
-        }
-
-        private static object? GetValue(Type x, Mocker mocks)
-        {
-            var genericType = typeof(DbSetMock<>).MakeGenericType(x.GenericTypeArguments[0]);
-            var value = Activator.CreateInstance(genericType) as Mock ?? throw new InvalidOperationException("Cannot create Mock.");
-            mocks.AddMock(value, genericType, true, x.IsNotPublic);
-            var obj = value.Object;
-
-            dynamic dbSetMock = value;
-
-            // Setup Async List methods.
-            dbSetMock.SetupAsyncListMethods();
-
-            // Setup List methods.
-            dbSetMock.SetupListMethods();
-
-            return obj;
-        }
+        #endregion
     }
 }

@@ -8,13 +8,15 @@ namespace FastMoq.Models
     ///     Implements the <see cref="Mock{T}" />
     /// </summary>
     /// <typeparam name="TEntity">The type of the t entity.</typeparam>
-    /// <inheritdoc />
+    /// <inheritdoc cref="Mock{T}" />
+    /// />
+    /// <inheritdoc cref="IDbSetMock" />
     /// <seealso cref="Mock{T}" />
-    public class DbSetMock<TEntity> : Mock<DbSet<TEntity>> where TEntity : class
+    public class DbSetMock<TEntity> : Mock<DbSet<TEntity>>, IDbSetMock where TEntity : class
     {
         #region Fields
 
-        private readonly List<TEntity> store = new();
+        private readonly List<TEntity> store = [];
 
         #endregion
 
@@ -45,13 +47,14 @@ namespace FastMoq.Models
             QueryableMock.Setup(x => x.Expression).Returns(() => data.Expression);
             QueryableMock.Setup(x => x.ElementType).Returns(() => data.ElementType);
             QueryableMock.Setup(x => x.GetEnumerator()).Returns(data.GetEnumerator);
+
             AsyncMock.Setup(m => m.GetAsyncEnumerator(It.IsAny<CancellationToken>()))
                 .Returns(new MockAsyncEnumerator<TEntity>(data.GetEnumerator()));
         }
 
-        /// <summary>
-        ///     Setups the asynchronous list methods.
-        /// </summary>
+        #region IDbSetMock
+
+        /// <inheritdoc />
         public virtual void SetupAsyncListMethods()
         {
             var data = store.AsQueryable();
@@ -70,9 +73,7 @@ namespace FastMoq.Models
                 .Returns(Task.CompletedTask);
         }
 
-        /// <summary>
-        ///     Setups the list methods.
-        /// </summary>
+        /// <inheritdoc />
         public virtual void SetupListMethods()
         {
             var data = store.AsQueryable();
@@ -87,5 +88,14 @@ namespace FastMoq.Models
 
             Setup(x => x.Find(It.IsAny<object[]>())).Returns<object[]>(x => store.Find(y => y.Equals(x)));
         }
+
+        /// <inheritdoc />
+        public virtual void SetupMockMethods()
+        {
+            SetupAsyncListMethods();
+            SetupListMethods();
+        }
+
+        #endregion
     }
 }
