@@ -23,7 +23,7 @@ pre.libCScode {
 }
 
 .libCScode .keyword {
-    color: Navy;
+    color: #569CD6;
 }
 
 
@@ -38,8 +38,8 @@ div.CodeSnippetContainerCode.JSharpCode {
 
 
 div.CodeSnippetContainerTab.CSharpTab {
-    background:white;
-    border-bottom-color:White;
+    background:#242424;
+    border-bottom-color:#242424;
 }
 
 /**
@@ -58,61 +58,63 @@ div.CodeSnippetContainerTabs {
 	font-size:10pt!important;
 	height:192.3%;
 	position:relative;
-	z-index:1
+	margin-left: auto;
+	background-color: #242424;
 }
 .codeSnippetContainerTabs>div:first-child{
-	border-left:1px solid #939393;
+	border-left:1px solid #454545;
 }
 .codeSnippetContainerTabs>div:last-child {
-    border-right: 1px solid #939393;
-    border-top-right-radius: 4px;
+    border-right: 1px solid #454545;
 }
 .CodeSnippetContainerTabLeft, .CodeSnippetContainerTabRight, .CodeSnippetContainerTabLeftActive, .CodeSnippetContainerTabRightActive, .CodeSnippetContainerTabRightActiveDisabled, .CodeSnippetContainerTabLeftUnrecognized, .CodeSnippetContainerTabRightUnrecognized, .CodeSnippetContainerTabLeftDisabled, .CodeSnippetContainerTabRightDisabled {
-	width:6px;
+	width:1px;
 	height:23px;
 	float:left;
+	border-left: 1px solid #454545;
 	border-bottom:none;
 }
 .CodeSnippetContainerTabLeft {
-	background-image:url(../Images/LT_tab_white.gif)
+/*	background-image:url(../Images/LT_tab_white.gif) */
+	display: none;
 }
 .CodeSnippetContainerTabRight {
-	background-image:url(../Images/RT_tab_white.gif)
+/*	background-image:url(../Images/RT_tab_white.gif) */
 }
 .CodeSnippetContainerTabLeftActive {
 	height:184.6%;
 	border-bottom:none;
-	background-image:url(../Images/LT_tab_white.gif)
+/*	background-image:url(../Images/LT_tab_white.gif) */
 }
 .CodeSnippetContainerTabRightActive, .CodeSnippetContainerTabRightActiveDisabled {
 	height:184.6%;
 	border-bottom:none;
-	background-image:url(../Images/RT_tab_white.gif)
+/*	background-image:url(../Images/RT_tab_white.gif) */
 }
 .CodeSnippetContainerTabLeftUnrecognized {
 	height:184.6%;
 	border-bottom:none;
-	background-image:url(../Images/LT_tab_white.gif)
+/*	background-image:url(../Images/LT_tab_white.gif) */
 }
 .CodeSnippetContainerTabRightUnrecognized {
 	height:184.6%;
 	border-bottom:none;
-	background-image:url(../Images/RT_tab_white.gif)
+/*	background-image:url(../Images/RT_tab_white.gif) */
 }
 .CodeSnippetContainerTabLeftDisabled {
-	background-image:url(../Images/LT_tab_white.gif)
+/*	background-image:url(../Images/LT_tab_white.gif) */
 }
 .CodeSnippetContainerTabRightDisabled {
-	background-image:url(../Images/RT_tab_white.gif)
+/*	background-image:url(../Images/RT_tab_white.gif) */
 }
 .CodeSnippetContainerTabFirst, .CodeSnippetContainerTab, .CodeSnippetContainerTabUnrecognized, .CodeSnippetContainerTabUnrecognizedNotFirst, .CodeSnippetContainerTabActive, .CodeSnippetContainerTabActiveNotFirst, .CodeSnippetContainerTabDisabled, .CodeSnippetContainerTabDisabledNotFirst, .CodeSnippetContainerTabDisabledActive, .CodeSnippetContainerTabDisabledActiveNotFirst {
 	height:161.5%;
 	float:left;
 	width:auto;
-	border-top:solid 1px #939393;
-	border-bottom:solid 1px #939393;
-	padding:0 12px 0 12px;
-	background: #fff;
+	border-top:solid 1px #454545;
+	border-bottom:solid 1px #454545;
+	padding:0 30px 0 30px;
+	background: #242424;
 }
 .CodeSnippetContainerTabDisabledActive A {
 	FONT-WEIGHT:bold;
@@ -120,21 +122,22 @@ div.CodeSnippetContainerTabs {
 	TEXT-DECORATION:none
 }
 .CodeSnippetContainerTabFirst {
-	padding:0 12px 0 6px
+	border-left: 1px solid #454545;
+	padding:0 30px 0 30px;
 }
 .CodeSnippetContainerTabDisabled, .CodeSnippetContainerTabDisabledNotFirst {
-	background:#fff;
+	background:#242424;
 }
 .CodeSnippetContainerTabActive, .CodeSnippetContainerTabActiveNotFirst, .CodeSnippetContainerTabDisabledActive, .CodeSnippetContainerTabDisabledActiveNotFirst {
-	background:#fff;
-	border-bottom:solid 1px #fff
+	background:#242424;
+	border-bottom:solid 1px #242424
 }
 .CodeSnippetContainerTabUnrecognized {
-	background:#fff;
-	border-bottom:solid 2px #fff
+	background:#242424;
+	border-bottom:solid 2px #242424
 }
 .CodeSnippetContainerTab, .CodeSnippetContainerTabUnrecognizedNotFirst, .CodeSnippetContainerTabActiveNotFirst, .CodeSnippetContainerTabDisabledNotFirst, .CodeSnippetContainerTabDisabledActiveNotFirst {
-	border-left:solid 1px #939393;
+	border-left:solid 1px #454545;
 }
 div.CodeSnippetContainerTabUnrecognized a, div.CodeSnippetContainerTabActive a, div.CodeSnippetContainerTabActiveNotFirst a, div.CodeSnippetContainerTabDisabledActiveNotFirst a {
 	color:#000;
@@ -172,15 +175,15 @@ div.CodeSnippetContainerTabDisabledNotFirst a:hover {
 .CodeSnippetToolBar {
 	width:auto;
 	height:auto;
-	border-top:solid 1px #939393;
-	border-left:solid 0px #939393;
-	border-right:solid 0px #939393;
+	border-top:solid 1px #454545;
+	border-left:solid 0px #454545;
+	border-right:solid 0px #454545;
 }
 .CodeSnippetToolBarText {
 	float:right;
 	top:-10px;
 	position:relative;
-	background-color:#fff;
+	background-color:#242424;
 	width:auto;
 	margin-right:8px;
 	padding-left:8px;
@@ -195,7 +198,7 @@ div.CodeSnippetToolBarText a:link, div.CodeSnippetToolBarText a:visited, div.Cod
 	color:#3390b1;
 	font-family:'Segoe UI', Verdana, Arial;
 	font-size:10pt;
-	background-color:White
+	background-color:#242424;
 }
 div.CodeSnippetToolBarText a:hover {
 	margin-left:5px;
@@ -206,9 +209,9 @@ div.CodeSnippetToolBarText a:hover {
 	font-size:10pt
 }
 .CodeSnippetContainerCodeCollection {
-	border-left:solid 1px #939393;
-	border-bottom:solid 1px #939393;
-	border-right:solid 1px #939393;
+	border-left:solid 1px #454545;
+	border-bottom:solid 1px #454545;
+	border-right:solid 1px #454545;
 	clear:both;
 	margin-bottom:12px;
 	position:relative;
@@ -218,7 +221,8 @@ div.CodeSnippetToolBarText a:hover {
 	font-size:1.1em;
 	padding:0.8em;
 	width:auto;
-	margin:0
+	margin:0;
+	background-color: #2e2e2e;
 }
 kbd {
 	display: inline-block;

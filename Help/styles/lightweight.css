@@ -1,28 +1,34 @@
+:root {
+  color-scheme: dark;
+}
 
 html {
     font-size: 100%;
 	margin:0;
 	padding:0;
+    height: 100%;
 }
 
 body {
-	font:.875em/1.35 'Segoe UI','Lucida Grande',Verdana,Arial,Helvetica,sans-serif;
+	font:16px 'Segoe UI','Lucida Grande',Verdana,Arial,Helvetica,sans-serif;
 	margin:0;
 	padding:0;
 	font-family:'Segoe UI',Tahoma,Helvetica,Sans-Serif;
-	font-size:0.8125em;
-   line-height: 153.8%;
-	color:#000;
+	font-size: 16px;
+	line-height: 153.8%;
+	color:#e3e3e3;
 	font-style:normal;
 	padding-right:0;
 	padding-left:0;
 	word-wrap:break-word;
+	background-color: #171717;
+        height: 100%;
         /*overflow: auto;*/
         /*overflow-x: hidden;*/
 }
 
 p {
-	color:#2a2a2a;
+	color:#e3e3e3;
 /*
 	margin-top:0;
 	margin-bottom:0;
@@ -57,7 +63,7 @@ img {
 	margin:0;
 	font-family:'Segoe UI',Tahoma,Helvetica,Sans-Serif;
 	font-size:2.0em;
-	color:#000;
+	color:#e3e3e3;
 	font-weight:400;
 	line-height:100%;
 }
@@ -65,7 +71,7 @@ img {
 .h2, h2 {
 	font-family:'Segoe UI',Tahoma,Helvetica,Sans-Serif;
 	font-size:1.3em;
-	color:#000;
+	color:#e3e3e3;
 	font-weight:bold;
 	line-height:100%;
 }
@@ -73,7 +79,7 @@ img {
 .h3, h3 {
 	font-family:'Segoe UI',Tahoma,Helvetica,Sans-Serif;
 	font-size:1.1em;
-	color:#000;
+	color:#e3e3e3;
 	font-weight:bold;
 	line-height:100%;
 }
@@ -81,21 +87,21 @@ img {
 .title table {
 	font-family:'Segoe UI',Tahoma,Helvetica,Sans-Serif;
 	font-size:1.1em;
-	color:#333;
+	color:#e3e3e3;
 	font-style:normal
 }
 
 table {
 	border-style:solid;
 	border-width:1px;
-	border-color:#bbb;
+	border-color:#454545;
 	border-collapse:collapse
 }
 
 table th {
 	border-style:solid;
 	border-width:1px;
-	border-color:#bbb;
+	border-color:#454545;
 	padding: 10px 8px;
 	font-weight:bold;
 }
@@ -103,7 +109,7 @@ table th {
 table td {
 	border-style:solid;
 	border-width:1px;
-	border-color:#bbb;
+	border-color:#454545;
 	padding: 10px 8px;
 }
 
@@ -111,7 +117,6 @@ td p {
 	margin-top:0;
 	margin-bottom:0;
 }
-
 
 .borderLine {
 	border-width:1px;
@@ -301,7 +306,8 @@ td p {
 	text-align:left;
 	width:100%;
 	border-bottom-style:none;
-	overflow:hidden
+	overflow:hidden;
+	background-color: #171717;
 }
 
 .content {
@@ -310,12 +316,12 @@ td p {
 	border-width:1px;
 	overflow:hidden;
 	width:auto;
-	border-left:1px solid #bbb;
+	border-left:0px solid transparent;
 	border-bottom:0
 }
 
 .content .summary {
-	color:#333;
+	color:#e3e3e3;
 }
 
 .logo {
@@ -340,7 +346,7 @@ td p {
 .topicContainer .topic .title {
 	font-family:'Segoe UI',Tahoma,Helvetica,Sans-Serif;
 	font-size:2.77em;
-	color:#000;
+	color:#e3e3e3;
 	font-weight:400;
 }
 
@@ -355,13 +361,13 @@ td p {
 }
 
 .topicContainer table th {
-	background-color:#eDeDeD;
+	background-color:#242424;
 	padding: 10px 8px 10px 8px;
 	text-align:left;
 	height:21px;
 	font-family:'Segoe UI',Tahoma,Helvetica,Sans-Serif;
 	font-size:1.0em;
-	color:#636363;
+	color:#e3e3e3;
 	font-style:normal;
 	font-weight:bold;
 }
@@ -375,7 +381,7 @@ td p {
 }
 
 .topicContainer table td {
-	background-color:#fff;
+	background-color:#2E2E2E;
 	line-height:140%;
 	padding: 10px 8px 10px 8px;
 	margin:1px;
@@ -405,7 +411,7 @@ td p {
 .LW_CollapsibleArea_Title {
 	font-family:'Segoe UI',Tahoma,Helvetica,Sans-Serif;
 	font-size:2.16em;
-	color:#000;
+	color:#e3e3e3;
 	font-weight:normal;
 	float:left;
 	padding-top: 15px;
@@ -934,7 +940,7 @@ span.mtps-th {
 	font-family:'Segoe UI',Tahoma,Helvetica,Sans-Serif;
 	color:#fff;
 	border:none;
-	border-bottom:1px #505050 solid;
+/*	border-bottom:1px #2e2e2e solid; */
 	background-color:#232323;
 	min-width:700px
 }
@@ -1042,7 +1048,7 @@ span.code {
 {
 	font-weight:	bold;
 	margin-bottom:	4;
-	color:#333;
+	color:#e3e3e3;
 }
 span.parameterItalic {
 	font-style: italic;
@@ -1058,6 +1064,200 @@ span.parameterItalic {
 {
 	font-weight:	normal;
 	margin-bottom:	4;
-	color: #333;
+	color: #e3e3e3;
 	font-size: 107.7%;
 }
+
+/*
+// table of content (TOC)
+*/
+#TOCDiv * {
+    margin-top: -1px;
+    margin-bottom: -1px;
+    padding-top: -1px;
+    padding-bottom: -1px;
+}
+#TOCDiv {
+    background-color: #171717;
+    color: #e3e3e3;
+    overflow: hidden;
+    font-size: 10pt;
+}
+
+#TOCDiv input
+{
+    margin-top:5px;
+    margin-bottom:5px;
+    font-size: 10pt;
+}
+
+#TOCDiv img
+{
+    border: 0;
+    margin-left: 5px;
+    margin-right: 2px;
+}
+
+#TOCDiv a {
+	color: #e3e3e3;
+    padding: 3px 5px 3px 5px;
+}
+
+img.TreeNodeImg
+{
+    cursor: pointer;
+}
+
+img.TOCLink
+{
+    cursor: pointer;
+    margin-left: 5;
+    margin-right: 0;
+}
+
+a.SelectedNode, a.UnselectedNode
+{
+/*    color: black; */
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+a.SelectedNode
+{
+    border: solid 0px #2e2e2e;
+    background-color: #2e2e2e;
+    background-size: 90% auto;
+    width: 100%;
+}
+
+a.UnselectedNode:hover, a.SelectedNode:hover
+{
+/*
+    background-color: #eee;
+    border: solid 1px #ccc;
+    padding: 0px 2px 0px 2px;
+*/
+    text-decoration: underline;
+}
+
+.Visible
+{
+    display: block;
+    margin-left: 2em;
+}
+
+.Hidden
+{
+    display: none;
+}
+
+.Title {
+    white-space: nowrap;
+    font-family: wf_segoe-ui_light,"Segoe UI Light","Segoe WP Light",wf_segoe-ui_normal,"Segoe UI",Segoe,"Segoe WP",Tahoma,Verdana,Arial,sans-serif !important;
+    font-size: 1.3em;
+}
+.Tree
+{
+    background-color: #171717;
+    color: #e3e3e3;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.TreeNode, .TreeItem
+{
+    white-space: nowrap;
+    margin: 2px 2px 2px 2px;
+}
+
+.TOCDiv
+{
+    position: relative;
+    float: left;
+    width: 305px;
+}
+
+.TOCSizer {
+    clear: none;
+    float: left;
+    width: 7px;
+    height: 100%;
+    background-color: #2e2e2e;
+    background-image: url("../splitter_bar.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: absolute;
+    cursor: w-resize;
+    top: 0;
+    left: 305px;
+    /*position: relative;
+    cursor: w-resize;*/
+}
+
+.TopicContent
+{
+    position: relative;
+    float: right;
+    height: 100%;
+}
+
+.SearchOpts
+{
+    padding: 5px 5px 0px 5px;
+    background-color: #2e2e2e;
+    color: white;
+    width: 300px;
+}
+.SearchOpts input[type=button] {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.SearchOptsInner
+{
+    padding: 5px 3px 5px 4px;
+}
+.SearchOptsInner input[type=text] {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.SearchOptsInner input[type=checkbox] {
+    vertical-align:middle; 
+}
+
+.NavOpts
+{
+    padding: 5px 5px 2px 5px;
+    background-color: #2e2e2e;
+    color: white;
+    width: 300px;
+}
+
+.IndexOpts
+{
+    padding: 5px 5px 0px 5px;
+    background-color: #2e2e2e;
+    color: white;
+    width: 300px;
+}
+
+.IndexItem
+{
+    white-space: nowrap;
+    margin: 2px 2px 2px 2px;
+}
+
+.IndexSubItem
+{
+    white-space: nowrap;
+    margin: 2px 2px 2px 12px;
+}
+
+.PaddedText
+{
+    margin: 10px 10px 10px 10px;
+}
+/*
+// /table of content (TOC)
+*/
+

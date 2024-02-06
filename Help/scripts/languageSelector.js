@@ -6,17 +6,17 @@ function setActiveTab(baseClass,activeClassName,activeTab) {
   var classElements = getElementsByClass("CodeSnippetContainerTab", null, 'div');
   if(classElements != null) {
     for(i=0; i<classElements.length; i++) {       
- 	  classElements[i].style.backgroundColor = "#fff";
- 	  classElements[i].style.borderTop = "1px solid #939393";
- 	  classElements[i].style.borderBottom = "1px solid #939393";
+ 	  classElements[i].style.backgroundColor = "#242424";
+ 	  classElements[i].style.borderTop = "1px solid #454545";
+ 	  classElements[i].style.borderBottom = "1px solid #454545";
     }
   }
   var classElements = getElementsByClass("CodeSnippetContainerTabFirst", null, 'div');
   if(classElements != null) {
     for(i=0; i<classElements.length; i++) {       
- 	  classElements[i].style.backgroundColor = "#fff";
- 	  classElements[i].style.borderTop = "1px solid #939393";
- 	  classElements[i].style.borderBottom = "1px solid #939393";
+ 	  classElements[i].style.backgroundColor = "#242424";
+ 	  classElements[i].style.borderTop = "1px solid #454545";
+ 	  classElements[i].style.borderBottom = "1px solid #454545";
     }
   }
   
@@ -37,8 +37,8 @@ function setActiveTab(baseClass,activeClassName,activeTab) {
   var element = document.getElementById(activeTab);
   if(element != null)
   {
-    element.style.backgroundColor = "white";
-    element.style.borderBottomColor = "white";
+    element.style.backgroundColor = "#242424";
+    element.style.borderBottomColor = "#242424";
   } 
 }
 

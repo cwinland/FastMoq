@@ -29,9 +29,10 @@
       <MSHelp:Attr Name="Locale" Value="en-us" />
       <MSHelp:Attr Name="TopicType" Value="kbSyntax" />
       <MSHelp:Attr Name="TopicType" Value="apiref" />
-      <MSHelp:Attr Name="Abstract" Value="Initializes the mocking helper object. This class creates and manages the automatic mocking and custom mocking. Class Mocker." />
+      <MSHelp:Attr Name="Abstract" Value="Initializes the mocking helper object. This class creates and manages the automatic mocking and custom mocking." />
       <MSHelp:Attr Name="AssemblyVersion" Value="" />
     </xml>
+    <link type="text/css" rel="stylesheet" href="../styles/highlight.css" />
   <link rel="stylesheet" href="../TOC.css"><script type="text/javascript" src="../TOC.js"></script></head>
   <body onload="javascript: Initialize();" onresize="javascript: ResizeTree();">
             <div id="TOCDiv" class="TOCDiv" style="width: 310px; float: left; position: relative; ">
@@ -123,23 +124,13 @@
 </div>
 </div>
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Collections.htm" target="_self">FastMoq.Collections Namespace</a>
-<div class="Hidden">
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Collections.MockerObservableCollection-1.htm" target="_self">MockerObservableCollection(T) Class</a>
-<div class="Hidden">
-</div>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Collections.MockerObservableCollectionChangedEventArgs.htm" target="_self">MockerObservableCollectionChangedEventArgs Class</a>
-<div class="Hidden">
-</div>
-</div>
-</div>
-</div>
-<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Extensions.htm" target="_self">FastMoq.Extensions Namespace</a>
 <div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.ObjectExtensions.htm" target="_self">ObjectExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.TestClassExtensions.htm" target="_self">TestClassExtensions Class</a>
 <div class="Hidden">
@@ -167,6 +158,21 @@
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.FastMoqNonVoidSetupPhrase-1.htm" target="_self">FastMoqNonVoidSetupPhrase(T) Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IDbContextMock.htm" target="_self">IDbContextMock Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IDbContextMock-1.htm" target="_self">IDbContextMock(TEntity) Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IDbSetMock.htm" target="_self">IDbSetMock Interface</a>
 <div class="Hidden">
 </div>
 </div>
@@ -266,22 +272,37 @@
             <h1 class="title">Mocker Class</h1>
             <div id="mainSection">
               <div id="mainBody">
-                <div class="summary">     Initializes the mocking helper object. This class creates and manages the automatic mocking and custom mocking. </div>
-                <div class="summary">     Class Mocker. </div>
+                <div class="summary">
+Initializes the mocking helper object. This class creates and manages the automatic mocking and custom mocking.
+</div>
                 <p />
     <b>Namespace:</b> 
    <a href="N-FastMoq.htm">FastMoq</a><br />
     <b>Assembly:</b>
-   <span sdata="assembly">FastMoq.Core</span> (in FastMoq.Core.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:white;border-bottom-color:white"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTab VisualBasicTab" id="VisualBasicTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','VisualBasicCode','VisualBasicTabId');" title="Visual Basic">VB</a></div><div class="CodeSnippetContainerTab ManagedCPlusPlusTab" id="ManagedCPlusPlusTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','ManagedCPlusPlusCode','ManagedCPlusPlusTabId');" title="Visual C++">C++</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode">[<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.suppressmessageattribute" target="_blank">SuppressMessageAttribute</a>]
-[<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.suppressmessageattribute" target="_blank">SuppressMessageAttribute</a>]
-[<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.suppressmessageattribute" target="_blank">SuppressMessageAttribute</a>]
-<span class="keyword">public</span> <span class="keyword">class</span> <span class="identifier">Mocker</span></pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode">&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.suppressmessageattribute" target="_blank">SuppressMessageAttribute</a>&gt; _
-&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.suppressmessageattribute" target="_blank">SuppressMessageAttribute</a>&gt; _
-&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.suppressmessageattribute" target="_blank">SuppressMessageAttribute</a>&gt; _
-<span class="keyword">Public</span> <span class="keyword">Class</span> <span class="identifier">Mocker</span></pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode">[<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.suppressmessageattribute" target="_blank">SuppressMessageAttribute</a>]
-[<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.suppressmessageattribute" target="_blank">SuppressMessageAttribute</a>]
-[<a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.suppressmessageattribute" target="_blank">SuppressMessageAttribute</a>]
-<span class="keyword">public</span> <span class="keyword">ref class</span> <span class="identifier">Mocker</span></pre></div></div></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Inheritance Hierarchy</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="familySection"><!----></a><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><br />  <span class="selflink">FastMoq<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>Mocker</span><br /></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.Mocker.htm">Mocker Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.htm">FastMoq Namespace</a></div></div></div>
+   <span sdata="assembly">FastMoq.Core</span> (in FastMoq.Core.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:inherit;"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTab VisualBasicTab" id="VisualBasicTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','VisualBasicCode','VisualBasicTabId');" title="Visual Basic">VB</a></div><div class="CodeSnippetContainerTab ManagedCPlusPlusTab" id="ManagedCPlusPlusTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','ManagedCPlusPlusCode','ManagedCPlusPlusTabId');" title="Visual C++">C++</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">class</span> <span class="identifier">Mocker</span></pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Public</span> <span class="keyword">Class</span> <span class="identifier">Mocker</span></pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">ref class</span> <span class="identifier">Mocker</span></pre></div></div></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Remarks</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="remarksSection"><!----></a>
+This class is used inside <span class="nolink">[T:FastMoq.MockerTestBase&lt;TComponent&gt;]</span>.
+This may be used independently; however, to ensure that mocks are not duplicated, use only one instance of this
+class.
+If using <span class="nolink">[T:FastMoq.MockerTestBase&lt;TComponent&gt;]</span>, use the <span class="nolink">Mocks</span> property or create this class for
+a specific test only.
+</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a><span id="cbc_1" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-comment">// Arrange</span>
+<span class="highlight-keyword">var</span> id = <span class="highlight-number">1234</span>;
+<span class="highlight-keyword">var</span> blogsTestData = <span class="highlight-keyword">new</span> List&lt;Blog&gt; { <span class="highlight-keyword">new</span> Blog { Id = id } };
+
+<span class="highlight-comment">// Create a mock DbContext</span>
+<span class="highlight-keyword">var</span> mocker = <span class="highlight-keyword">new</span> Mocker(); <span class="highlight-comment">// Create a new mocker only if not already using MockerTestBase; otherwise use Mocks included in the base class.</span>
+
+<span class="highlight-keyword">var</span> dbContextMock = mocker.GetMockDbContext&lt;ApplicationDbContext&gt;();
+<span class="highlight-keyword">var</span> dbContext = dbContextMock.Object;
+dbContext.Blogs.Add(blogsTestData); <span class="highlight-comment">// Can also be dbContext.Set&lt;Blog&gt;().Add(blogsTestData)</span>
+
+<span class="highlight-keyword">var</span> validator = <span class="highlight-keyword">new</span> BtnValidator(dbContext);
+
+<span class="highlight-comment">// Act</span>
+<span class="highlight-keyword">var</span> result = validator.IsValid(id);
+
+<span class="highlight-comment">// Assert</span>
+Assert.True(result);</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Inheritance Hierarchy</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="familySection"><!----></a><a href="https://docs.microsoft.com/en-us/dotnet/api/system.object" target="_blank">Object</a><br />  <span class="selflink">FastMoq<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>Mocker</span><br /></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="AllMembers.T-FastMoq.Mocker.htm">Mocker Members</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.htm">FastMoq Namespace</a></div></div></div>
             </div>
           </div>
         </div>

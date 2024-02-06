@@ -110,6 +110,9 @@
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="P-FastMoq.Mocker.DbConnection.htm" target="_self">DbConnection Property </a>
 </div>
 <div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="P-FastMoq.Mocker.ExceptionLog.htm" target="_self">ExceptionLog Property </a>
+</div>
+<div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="P-FastMoq.Mocker.HttpClient.htm" target="_self">HttpClient Property </a>
 </div>
 <div class="TreeItem">
@@ -130,23 +133,13 @@
 </div>
 </div>
 <div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Collections.htm" target="_self">FastMoq.Collections Namespace</a>
-<div class="Hidden">
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Collections.MockerObservableCollection-1.htm" target="_self">MockerObservableCollection(T) Class</a>
-<div class="Hidden">
-</div>
-</div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Collections.MockerObservableCollectionChangedEventArgs.htm" target="_self">MockerObservableCollectionChangedEventArgs Class</a>
-<div class="Hidden">
-</div>
-</div>
-</div>
-</div>
-<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Extensions.htm" target="_self">FastMoq.Extensions Namespace</a>
 <div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.ObjectExtensions.htm" target="_self">ObjectExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.TestClassExtensions.htm" target="_self">TestClassExtensions Class</a>
 <div class="Hidden">
@@ -174,6 +167,21 @@
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.FastMoqNonVoidSetupPhrase-1.htm" target="_self">FastMoqNonVoidSetupPhrase(T) Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IDbContextMock.htm" target="_self">IDbContextMock Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IDbContextMock-1.htm" target="_self">IDbContextMock(TEntity) Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IDbSetMock.htm" target="_self">IDbSetMock Interface</a>
 <div class="Hidden">
 </div>
 </div>
@@ -301,8 +309,8 @@
                       </td>
                       <td>
                         <div class="summary">
-       Gets the constructor history.
-   </div>
+Gets the constructor history collection.
+</div>
                       </td>
                     </tr>
                     <tr data="public;declared;notNetfw;">
@@ -314,8 +322,21 @@
                       </td>
                       <td>
                         <div class="summary">
-       Gets the database connection.
-   </div>
+Gets the database connection. The default value is a memory Sqlite database connection unless otherwise set.
+</div>
+                      </td>
+                    </tr>
+                    <tr data="public;declared;notNetfw;">
+                      <td>
+                        <img src="../icons/pubproperty.gif" alt="Public property" title="Public property" />
+                      </td>
+                      <td>
+                        <a href="P-FastMoq.Mocker.ExceptionLog.htm">ExceptionLog</a>
+                      </td>
+                      <td>
+                        <div class="summary">
+Tracks internal exceptions for debugging.
+</div>
                       </td>
                     </tr>
                     <tr data="public;declared;notNetfw;">
@@ -327,8 +348,8 @@
                       </td>
                       <td>
                         <div class="summary">
-       The virtual mock http client that is used by mocker unless overridden with the <a href="P-FastMoq.Mocker.Strict.htm">Strict</a> property.
-   </div>
+The virtual mock http client that is used by mocker unless overridden with the <span class="nolink">Strict</span> property.
+</div>
                       </td>
                     </tr>
                     <tr data="public;declared;notNetfw;">
@@ -340,8 +361,9 @@
                       </td>
                       <td>
                         <div class="summary">
-       When creating a mocks of a class, this indicates to recursively inject the mocks inside of that class.
-   </div>
+When creating a mocks of a class, <span class="code">true</span> indicates to recursively inject the mocks inside of that class;
+otherwise properties are not auto mocked.
+</div>
                       </td>
                     </tr>
                     <tr data="public;declared;notNetfw;">
@@ -353,8 +375,17 @@
                       </td>
                       <td>
                         <div class="summary">
-       Gets or sets a value indicating whether this <a href="T-FastMoq.Mocker.htm">Mocker</a> is strict.
-   </div>
+Gets or sets a value indicating whether this <a href="T-FastMoq.Mocker.htm">Mocker</a> is strict.
+Strict prevents certain features for automatically assuming or substituting preconfigured objects such as
+IFileSystem and HttpClient.
+Strict prevents private methods from being used during an invoke if public was requested. Not strict would mean
+that private methods may be
+substituted if the public methods are not found.
+Strict prevents private constructors from being used during object creation if public was requested. Not strict
+would mean that private constructors may be
+substituted if the public constructors are not found.
+Strict sets the <span class="nolink">MockBehavior</span> option.
+</div>
                       </td>
                     </tr>
                   </table>
