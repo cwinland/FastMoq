@@ -112,8 +112,8 @@ namespace FastMoq.Models
         /// <exception cref="System.InvalidOperationException">Unable to Get Setup.</exception>
         public void SetupSetMethod(Type setType, Delegate propValueDelegate, Type[]? types = null, object?[]? parameters = null)
         {
-            types ??= [];
-            parameters ??= [];
+            types ??= Array.Empty<Type>();
+            parameters ??= Array.Empty<object?>();
 
             // Create an expression that represents x => x.Set<setType>(It.IsAny<string>())
             var parameter = Expression.Parameter(typeof(TEntity), "x");

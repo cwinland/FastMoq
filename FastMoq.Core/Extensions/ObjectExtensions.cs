@@ -32,10 +32,16 @@ namespace FastMoq.Extensions
         /// <param name="line">The line.</param>
         /// <param name="exp">The exp.</param>
         /// <exception cref="System.InvalidOperationException"></exception>
-        public static void RaiseIfNull<T>([NotNull] this T? thing, [CallerMemberName] string? name = null, [CallerFilePath] string? path = null,
+        public static T RaiseIfNull<T>([NotNull] this T? thing, [CallerMemberName] string? name = null, [CallerFilePath] string? path = null,
             [CallerLineNumber] int? line = null, [CallerArgumentExpression(nameof(thing))] string? exp = null)
             where T : class
-            => RaiseIf(() => thing is null, name ?? string.Empty, path ?? string.Empty, line ?? 0, exp ?? string.Empty);
+        {
+            RaiseIf(() => thing is null, name ?? string.Empty, path ?? string.Empty, line ?? 0, exp ?? string.Empty);
+
+            ArgumentNullException.ThrowIfNull(thing); // This is to tell the compiler this will never be null.
+
+            return thing;
+        }
 
         /// <summary>
         ///     Raises if null.

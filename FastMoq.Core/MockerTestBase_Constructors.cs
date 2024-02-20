@@ -1,4 +1,6 @@
-﻿namespace FastMoq
+﻿using FastMoq.Extensions;
+
+namespace FastMoq
 {
     /// <inheritdoc />
     public partial class MockerTestBase<TComponent> where TComponent : class

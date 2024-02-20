@@ -1,5 +1,6 @@
 ﻿namespace FastMoq.Models
 {
+    /// <inheritdoc />
     /// <summary>
     ///     Interface IInstanceModel
     /// </summary>

@@ -1,7 +1,8 @@
-﻿using Moq;
+﻿using FastMoq.Models;
 using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime;
 using System.Runtime.CompilerServices;
 using Xunit.Abstractions;
 
@@ -21,13 +22,15 @@ namespace FastMoq.Extensions
         /// <param name="parameterTypes">The parameter types.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>Calls the generic method.</returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.MissingMethodException"></exception>
         public static object? CallGenericMethod(this Type typeParameter, object obj, [CallerMemberName] string? methodName = null,
             Type[]? parameterTypes = null, object[]? parameters = null)
         {
             ArgumentNullException.ThrowIfNull(obj);
 
-            parameterTypes ??= [];
-            parameters ??= [];
+            parameterTypes ??= Array.Empty<Type>();
+            parameters ??= Array.Empty<object>();
 
             var method = obj.GetType().GetMethods()
                              .FirstOrDefault(m => m.Name == methodName &&
@@ -47,6 +50,7 @@ namespace FastMoq.Extensions
         /// <param name="parameterName">Name of the parameter.</param>
         /// <param name="constructorName">Name of the constructor.</param>
         /// <param name="output">The output.</param>
+        /// <exception cref="System.ArgumentNullException"></exception>
         public static void EnsureNullCheckThrown(this Action action, string parameterName, string? constructorName = "",
             Action<string>? output = null)
         {
@@ -259,6 +263,49 @@ namespace FastMoq.Extensions
             testData != null && i < testData.Count ? testData[i] : p?.ParameterType.GetDefaultValue();
 
         /// <summary>
+        ///     Gets the type from interface.
+        /// </summary>
+        /// <param name="mocker">The mocker.</param>
+        /// <param name="tType">Type of the t.</param>
+        /// <returns>Type.</returns>
+        /// <exception cref="System.Runtime.AmbiguousImplementationException"></exception>
+        public static Type GetTypeFromInterface(this Mocker mocker, Type tType)
+        {
+            if (!tType.IsInterface)
+            {
+                return tType;
+            }
+
+            var mappedType = mocker.typeMap.Where(x => x.Key == tType).Select(x => x.Value).FirstOrDefault();
+
+            if (mappedType != null)
+            {
+                return mappedType.InstanceType;
+            }
+
+            var types = tType.Assembly.GetTypes().ToList();
+
+            // Get interfaces that contain T.
+            var interfaces = types.Where(type => type.IsInterface && type.GetInterfaces().Contains(tType)).ToList();
+
+            // Get Types that contain T, but are not interfaces.
+            var possibleTypes = types.Where(type =>
+                type.GetInterfaces().Contains(tType) &&
+                interfaces.TrueForAll(iType => type != iType) &&
+                !interfaces.Exists(iType => iType.IsAssignableFrom(type))
+            ).ToList();
+
+            return possibleTypes.Count switch
+            {
+                > 1 => possibleTypes.Count(x => x.IsPublic) > 1
+                    ? throw new AmbiguousImplementationException()
+                    : possibleTypes.Find(x => x.IsPublic) ?? possibleTypes.FirstOrDefault() ?? tType,
+                1 => possibleTypes[0],
+                _ => tType,
+            };
+        }
+
+        /// <summary>
         ///     Sets the field value.
         /// </summary>
         /// <typeparam name="TObject">The type of the t object.</typeparam>
@@ -285,6 +332,25 @@ namespace FastMoq.Extensions
         /// <param name="iEnumerable">The <see cref="IEnumerable{T}" />.</param>
         /// <param name="action">The action.</param>
         internal static void ForEach<T>(this IEnumerable<T> iEnumerable, Action<T> action) => iEnumerable.ToList().ForEach(action);
+
+        /// <summary>
+        ///     Gets the argument data.
+        /// </summary>
+        /// <param name="constructor">The constructor.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>Array of nullable objects.</returns>
+        internal static object?[] GetArgData(this Mocker mocker, ConstructorInfo? constructor, Dictionary<Type, object?>? data)
+        {
+            var args = new List<object?>();
+
+            constructor?.GetParameters().ToList().ForEach(p => args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
+                    ? data.First(x => x.Key == p.ParameterType).Value
+                    : mocker.GetParameter(p.ParameterType)
+                )
+            );
+
+            return args.ToArray();
+        }
 
         /// <summary>
         ///     Gets the injection fields.
@@ -337,6 +403,48 @@ namespace FastMoq.Extensions
             };
 
             return memberExpr ?? throw new ArgumentNullException(nameof(method));
+        }
+
+        /// <summary>
+        ///     Gets the tested constructors.
+        /// </summary>
+        /// <param name="type">The type to try to create.</param>
+        /// <param name="constructors">The constructors to test with the specified type.</param>
+        /// <returns>List&lt;FastMoq.Models.ConstructorModel&gt;.</returns>
+        internal static List<ConstructorModel> GetTestedConstructors(this Mocker mocker, Type type, List<ConstructorModel> constructors)
+        {
+            constructors ??= new();
+            var validConstructors = new List<ConstructorModel>();
+
+            if (constructors.Count <= 1)
+            {
+                return constructors;
+            }
+
+            var targetError = new List<ConstructorModel>();
+
+            foreach (var constructor in constructors)
+            {
+                try
+                {
+                    // Test Constructor.
+                    var mock = mocker.CreateMockInternal(type, constructor.ParameterList);
+                    _ = mock.Object;
+                    validConstructors.Add(constructor);
+                }
+                catch (TargetInvocationException ex)
+                {
+                    // Track invocation issues to bubble up if a good constructor is not found.
+                    mocker.exceptionLog.Add(ex.Message);
+                    targetError.Add(constructor);
+                }
+                catch (Exception ex)
+                {
+                    mocker.exceptionLog.Add(ex.Message);
+                }
+            }
+
+            return validConstructors.Count > 0 ? validConstructors : targetError;
         }
 
         /// <summary>
@@ -434,7 +542,8 @@ namespace FastMoq.Extensions
                 ThrowInternalConstructorException(ex.GetBaseException());
             }
 
-            bool IsCastleMethodAccessException(Exception innerException) => innerException.Message.Contains("Castle.DynamicProxy.IInterceptor[]", StringComparison.Ordinal);
+            bool IsCastleMethodAccessException(Exception innerException) =>
+                innerException.Message.Contains("Castle.DynamicProxy.IInterceptor[]", StringComparison.Ordinal);
 
             void ThrowInternalConstructorException(Exception innerException) => throw new MethodAccessException(
                 "The test cannot see the internal constructor. Add [assembly: InternalsVisibleTo(\"DynamicProxyGenAssembly2\")] to the AssemblyInfo or project file.",

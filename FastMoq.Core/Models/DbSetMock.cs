@@ -16,7 +16,7 @@ namespace FastMoq.Models
     {
         #region Fields
 
-        private readonly List<TEntity> store = [];
+        private readonly List<TEntity> store = new();
 
         #endregion
 
