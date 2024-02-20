@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"[]>
+<html>
+  <head><link rel="shortcut icon" href="../favicon.ico" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="save" content="history" />
+    <title>CreateHttpClient Method </title>
+    <link rel="stylesheet" type="text/css" href="../styles/lightweight.css" xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:mshelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:msxsl="urn:schemas-microsoft-com:xslt" />
+    <link rel="stylesheet" type="text/css" href="../styles/lw-code.css" xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:mshelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:msxsl="urn:schemas-microsoft-com:xslt" />
+    <script type="text/javascript" xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:mshelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:msxsl="urn:schemas-microsoft-com:xslt" src="../scripts/languageSelector.js"> </script>
+    <meta name="container" content="FastMoq.Extensions" xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:mshelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:msxsl="urn:schemas-microsoft-com:xslt" />
+    <meta name="file" content="M-FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient" xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:mshelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:msxsl="urn:schemas-microsoft-com:xslt" />
+    <meta name="guid" content="M-FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient" xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:mshelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:msxsl="urn:schemas-microsoft-com:xslt" />
+    <xml xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:mshelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+      <MSHelp:Attr Name="AssetID" Value="M:FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(Mocker,System.String,System.String,HttpStatusCode,System.String)" />
+      <MSHelp:TOCTitle Title="CreateHttpClient Method " />
+      <MSHelp:RLTitle Title="MockerHttpExtensions.CreateHttpClient Method  (FastMoq.Extensions)" />
+      <MSHelp:Keyword Index="A" Term="M:FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(Mocker,System.String,System.String,HttpStatusCode,System.String)" />
+      <MSHelp:Keyword Index="A" Term="frlrfFastMoqExtensionsMockerHttpExtensionsClassCreateHttpClientTopic" />
+      <MSHelp:Keyword Index="K" Term="CreateHttpClient method" />
+      <MSHelp:Keyword Index="K" Term="MockerHttpExtensions.CreateHttpClient method" />
+      <MSHelp:Keyword Index="F" Term="FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient" />
+      <MSHelp:Attr Name="APIType" Value="Managed" />
+      <MSHelp:Attr Name="APILocation" Value="FastMoq.Core.dll" />
+      <MSHelp:Attr Name="APIName" Value="FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient" />
+      <MSHelp:Attr Name="DevLang" Value="CSharp" />
+      <MSHelp:Attr Name="DevLang" Value="VB" />
+      <MSHelp:Attr Name="Locale" Value="en-us" />
+      <MSHelp:Attr Name="TopicType" Value="kbSyntax" />
+      <MSHelp:Attr Name="TopicType" Value="apiref" />
+      <MSHelp:Attr Name="Abstract" Value="Creates the HTTP client using a mock IHttpClientFactory." />
+      <MSHelp:Attr Name="AssemblyVersion" Value="" />
+    </xml>
+  <link rel="stylesheet" href="../TOC.css"><script type="text/javascript" src="../TOC.js"></script></head>
+  <body onload="javascript: Initialize();" onresize="javascript: ResizeTree();">
+            <div id="TOCDiv" class="TOCDiv" style="width: 310px; float: left; position: relative; ">
+
+            <div id="divSearchOpts" class="SearchOpts" style="height: 95px; display: none;">
+                <div class="SearchOptsInner">
+                    <img class="TOCLink" onclick="javascript: ShowHideSearch(false);" src="../Close.png" height="24" width="24" alt="Hide Search" title="Hide Search" style="float: right;" />
+                    <span class="Title">Keyword(s) to search:</span>
+                </div>
+                <div class="SearchOptsInner">
+                    <input id="txtSearchText" type="text" style="width: 95.5%;" onkeypress="javascript: return OnSearchTextKeyPress(event);" />
+                </div>
+                <div class="SearchOptsInner">
+                    <input id="chkSortByTitle" type="checkbox" />&nbsp;Sort results by title
+                    <input type="button" value="Search" onclick="javascript: return PerformSearch();" style="float: right;" />
+                </div>
+            </div>
+
+            <div id="divIndexOpts" class="IndexOpts" style="height: 28px; display: none;">
+                <img class="TOCLink" onclick="javascript: ShowHideIndex(false);"
+                     src="../Close.png" height="24" width="24" alt="Hide Keyword Index" title="Hide Keyword Index" style="float: right;" />
+                <span class="Title">Keyword Index</span>
+            </div>
+
+            <div id="divNavOpts" class="NavOpts" style="height: 28px;">
+                <!--<img class="TOCLink" onclick="javascript: SyncTOC();" src="../SyncTOC.png"
+                     height="24" width="24" alt="Sync to TOC" title="Sync to TOC" />-->
+                <img class="TOCLink" onclick="javascript: ExpandOrCollapseAll(true);"
+                     src="../ExpandAll.png" height="24" width="24" alt="Expand all" title="Expand all" />
+                <img class="TOCLink" onclick="javascript: ExpandOrCollapseAll(false);"
+                     src="../CollapseAll.png" height="24" width="24" alt="Collapse all" title="Collapse all" />
+                <!--<img class="TOCLink" onclick="javascript: alert('Please make sure to use either Index.aspx or Index.php to enable the Keyword Index feature.');"
+                     src="../Index.png" height="24" width="24" alt="Keyword Index" title="Keyword Index" />-->
+                <img class="TOCLink" onclick="javascript: ShowHideSearch(true);"
+                     src="../Search.png" height="24" width="24" alt="Search" title="Search" />
+                <img class="TOCLink" onclick="javascript: ShowDirectLink();"
+                     src="../Link.png" height="24" width="24" alt="Get direct link to the displayed topic" title="Get direct link to the displayed topic" />
+                <a href="#" onclick="javascript: window.history.go(-1); return false;">
+                    <img class="TOCLink" style="float: right;"
+                         src="../Back.png" height="24" width="24" alt="Previous page" title="Previous page" />
+                </a>
+            </div>
+
+            <div class="Tree" id="divSearchResults" style="display: none;"
+                 onselectstart="javascript: return false;">
+            </div>
+
+            <div class="Tree" id="divIndexResults" style="display: none;"
+                 onselectstart="javascript: return false;">
+            </div>
+
+            <div class="Tree" id="divTree" onselectstart="javascript: return false;">
+              <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.htm" target="_self">FastMoq Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Mocker.htm" target="_self">Mocker Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.MockerTestBase-1.htm" target="_self">MockerTestBase(TComponent) Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Extensions.htm" target="_self">FastMoq.Extensions Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerBooleanExtensions.htm" target="_self">MockerBooleanExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerCreationExtensions.htm" target="_self">MockerCreationExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerHttpExtensions.htm" target="_self">MockerHttpExtensions Class</a>
+<div class="Hidden">
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="AllMembers.T-FastMoq.Extensions.MockerHttpExtensions.htm" target="_self">MockerHttpExtensions Members</a>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Methods.T-FastMoq.Extensions.MockerHttpExtensions.htm" target="_self">MockerHttpExtensions Methods</a>
+<div class="Hidden">
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient.htm" target="_self">CreateHttpClient Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync.htm" target="_self">GetContentBytesAsync Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync.htm" target="_self">GetContentStreamAsync Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage.htm" target="_self">SetupHttpMessage Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Extensions.MockerHttpExtensions.SetupMessage--2.htm" target="_self">SetupMessage(TMock, TReturn) Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync--2.htm" target="_self">SetupMessageAsync(TMock, TReturn) Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected--2.htm" target="_self">SetupMessageProtected(TMock, TReturn) Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync--2.htm" target="_self">SetupMessageProtectedAsync(TMock, TReturn) Method </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.ObjectExtensions.htm" target="_self">ObjectExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.TestClassExtensions.htm" target="_self">TestClassExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.DbContextMock-1.htm" target="_self">DbContextMock(TEntity) Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.DbSetMock-1.htm" target="_self">DbSetMock(TEntity) Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.FastMoqNonVoidSetupPhrase-1.htm" target="_self">FastMoqNonVoidSetupPhrase(T) Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IDbContextMock.htm" target="_self">IDbContextMock Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IDbContextMock-1.htm" target="_self">IDbContextMock(TEntity) Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IDbSetMock.htm" target="_self">IDbSetMock Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IHistoryModel.htm" target="_self">IHistoryModel Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IInstanceModel.htm" target="_self">IInstanceModel Interface</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.InstanceModel.htm" target="_self">InstanceModel Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.InstanceModel-1.htm" target="_self">InstanceModel(TClass) Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.MockDbContextOptions-1.htm" target="_self">MockDbContextOptions(T) Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.MockModel.htm" target="_self">MockModel Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.MockModel-1.htm" target="_self">MockModel(T) Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Blazor.htm" target="_self">FastMoq.Web.Blazor Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm" target="_self">MockerBlazorTestBase(T) Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Blazor.Interfaces.htm" target="_self">FastMoq.Web.Blazor.Interfaces Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm" target="_self">IMockerBlazorTestHelpers(T) Interface</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Blazor.Models.htm" target="_self">FastMoq.Web.Blazor.Models Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.Models.ComponentState.htm" target="_self">ComponentState Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Blazor.Models.ComponentState-1.htm" target="_self">ComponentState(T) Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Web.Extensions.htm" target="_self">FastMoq.Web.Extensions Namespace</a>
+<div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Web.Extensions.TestWebExtensions.htm" target="_self">TestWebExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+</div>
+</div>
+
+            </div>
+
+        </div>
+
+        <div id="TOCSizer" class="TOCSizer" onmousedown="OnMouseDown(event)" onselectstart="javascript: return false;"></div>
+        
+        <div id ="TopicContent" name="TopicContent" class="TopicContent" style="float: none; margin-left: 312px;height: -webkit-fill-available;display:block;overflow: auto;">
+          
+          <!-- Content Starts Here -->
+          <div class="contentPlaceHolder" xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:mshelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+      <div class="content">
+        <div class="topicContainer">
+          <div class="topic">
+            <p class="majorTitle" />
+            <h1 class="title">MockerHttpExtensions<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>CreateHttpClient Method </h1>
+            <div id="mainSection">
+              <div id="mainBody">
+                <div class="summary">
+       Creates the HTTP client using a mock IHttpClientFactory.
+   </div>
+                <p />
+    <b>Namespace:</b> 
+   <a href="N-FastMoq.Extensions.htm">FastMoq.Extensions</a><br />
+    <b>Assembly:</b>
+   <span sdata="assembly">FastMoq.Core</span> (in FastMoq.Core.dll)<div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Syntax</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="syntaxSection"><!----></a><div class="CodeSnippetContainer"><div class="CodeSnippetContainerTabs"><div class="CodeSnippetContainerTabLeft"><!----></div><div class="CodeSnippetContainerTabFirst CSharpTab" id="CSharpTabId" style="background:inherit;"><a href="javascript:setActiveTab('CodeSnippetContainerCode','CSharpCode','CSharpTabId');" title="C#">C#</a></div><div class="CodeSnippetContainerTab VisualBasicTab" id="VisualBasicTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','VisualBasicCode','VisualBasicTabId');" title="Visual Basic">VB</a></div><div class="CodeSnippetContainerTab ManagedCPlusPlusTab" id="ManagedCPlusPlusTabId"><a href="javascript:setActiveTab('CodeSnippetContainerCode','ManagedCPlusPlusCode','ManagedCPlusPlusTabId');" title="Visual C++">C++</a></div><div class="CodeSnippetContainerTabRight"><!----></div></div><div class="CodeSnippetContainerCodeCollection"><div class="CodeSnippetToolBar"><div class="CodeSnippetToolBarText" /></div><div class="CodeSnippetContainerCode CSharpCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span> <span class="keyword">static</span> <span class="nolink">HttpClient</span> <span class="identifier">CreateHttpClient</span>(
+	<span class="keyword">this</span> <a href="T-FastMoq.Mocker.htm">Mocker</a> <span class="parameter">mocker</span>,
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">string</a> <span class="parameter">clientName</span>,
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">string</a> <span class="parameter">baseAddress</span>,
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.httpstatuscode" target="_blank">HttpStatusCode</a> <span class="parameter">statusCode</span>,
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">string</a> <span class="parameter">stringContent</span>
+)</pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode">&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.extensionattribute" target="_blank">ExtensionAttribute</a>&gt; _
+<span class="keyword">Public</span> <span class="keyword">Shared</span> <span class="keyword">Function</span> <span class="identifier">CreateHttpClient</span> ( _
+	<span class="parameter">mocker</span> <span class="keyword">As</span> <a href="T-FastMoq.Mocker.htm">Mocker</a>, _
+	<span class="parameter">clientName</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a>, _
+	<span class="parameter">baseAddress</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a>, _
+	<span class="parameter">statusCode</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.httpstatuscode" target="_blank">HttpStatusCode</a>, _
+	<span class="parameter">stringContent</span> <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a> _
+) <span class="keyword">As</span> <span class="nolink">HttpClient</span></pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode">[<a href="https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.extensionattribute" target="_blank">ExtensionAttribute</a>]
+<span class="keyword">public</span>:
+<span class="keyword">static</span> <span class="nolink">HttpClient</span>^ <span class="identifier">CreateHttpClient</span>(
+	<a href="T-FastMoq.Mocker.htm">Mocker</a>^ <span class="parameter">mocker</span>, 
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a>^ <span class="parameter">clientName</span>, 
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a>^ <span class="parameter">baseAddress</span>, 
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.httpstatuscode" target="_blank">HttpStatusCode</a>^ <span class="parameter">statusCode</span>, 
+	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a>^ <span class="parameter">stringContent</span>
+)</pre></div></div></div><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="mocker"><dt><span class="parameterItalic">mocker</span></dt><dd>Type: <a href="T-FastMoq.Mocker.htm">FastMoq<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>Mocker</a><br />The mocker.</dd></dl><dl paramName="clientName"><dt><span class="parameterItalic">clientName</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a><br />Name of the client.</dd></dl><dl paramName="baseAddress"><dt><span class="parameterItalic">baseAddress</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a><br />The base address.</dd></dl><dl paramName="statusCode"><dt><span class="parameterItalic">statusCode</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.net.httpstatuscode" target="_blank">HttpStatusCode</a><br />The status code.</dd></dl><dl paramName="stringContent"><dt><span class="parameterItalic">stringContent</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string" target="_blank">String</a><br />Content of the string.</dd></dl></div><h4 class="subHeading">Return Value</h4>HttpClient object.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Exceptions</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exceptionsSection"><!----></a><div class="tableSection"><table width="100%" cellspacing="0" cellpadding="5" frame="lhs"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><a href="https://docs.microsoft.com/en-us/dotnet/api/system.applicationexception" target="_blank">ApplicationException</a></td><td>Unable to create IHttpClientFactory.</td></tr></table></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Extensions.MockerHttpExtensions.htm">MockerHttpExtensions Class</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Extensions.htm">FastMoq.Extensions Namespace</a></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div id="footer" class="footerContainer">
+          <div class="footerLogoContainer">
+            <div style="margin-top:5px">
+              <span class="customCopyrightFooter" />
+            </div>
+            <div style="margin-top:5px" class="copyrightFooter">Help File generated with GhostDoc</div>
+            <div> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+          <!-- /Content Ends Here -->
+        </div>
+
+
+  </body>
+</html>
