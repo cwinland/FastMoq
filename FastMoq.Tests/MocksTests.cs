@@ -238,6 +238,16 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateExact_ByTypeWithMultiClass()
+        {
+            Mocks.CreateInstanceByType<TestClassMany>(true, new Type[] { typeof(int) }).Should().NotBeNull();
+            Mocks.CreateInstanceByType<TestClassMany>(true, new Type[] { typeof(string) }).Should().NotBeNull();
+            Mocks.CreateInstanceByType<TestClassMany>(true, new Type[] { typeof(int), typeof(string) }).Should().NotBeNull();
+            Action a = () => Mocks.CreateInstance<TestClassMany>(new Type[] { typeof(string), typeof(string) }).Should().NotBeNull();
+            a.Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
         public void CreateFromInterface_BestGuess() => Mocks.CreateInstance<ITestClassNormal>().Should().NotBeNull();
 
         [Fact]

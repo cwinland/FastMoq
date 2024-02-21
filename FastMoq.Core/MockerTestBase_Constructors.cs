@@ -7,6 +7,8 @@
 
         private Func<Mocker, TComponent> DefaultCreateAction => _ => Component = Mocks.CreateInstance<TComponent>() ?? throw CannotCreateComponentException;
 
+        private static Func<Mocker, TComponent> CreateActionWithTypes(params Type?[] args) => m => m.CreateInstanceByType<TComponent>(false, args) ?? throw CannotCreateComponentException;
+
         /// <inheritdoc />
         protected MockerTestBase() : this(DefaultAction, null, DefaultAction) { }
 
@@ -53,5 +55,16 @@
             Component = GetComponent();
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class.
+        /// </summary>
+        /// <param name="useCreateActionWithTypes">if set to <c>true</c> [use create action with types].</param>
+        /// <param name="setupMocksAction">The setup mocks action.</param>
+        /// <param name="createComponentTypes">The create component types.</param>
+        /// <param name="createdComponentAction">The created component action.</param>
+        protected MockerTestBase(bool useCreateActionWithTypes, Action<Mocker> setupMocksAction,
+                Type[]? createComponentTypes,
+                Action<TComponent> createdComponentAction)
+            : this(setupMocksAction, (useCreateActionWithTypes && createComponentTypes != null ? CreateActionWithTypes(createComponentTypes) : null), createdComponentAction) { }
     }
 }
