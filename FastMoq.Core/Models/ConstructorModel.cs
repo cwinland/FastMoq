@@ -26,7 +26,7 @@ namespace FastMoq.Models
         internal ConstructorModel(ConstructorInfo? constructorInfo, IEnumerable<object?> parameterList)
         {
             ConstructorInfo = constructorInfo;
-            ParameterList = parameterList.ToArray();
+            ParameterList = parameterList?.ToArray() ?? new object?[] { };
         }
 
         internal ConstructorModel(KeyValuePair<ConstructorInfo, List<object?>> kvp) : this(kvp.Key, kvp.Value) { }

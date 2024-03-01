@@ -3,7 +3,7 @@ using FastMoq.Models;
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
-using System.Reflection;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
@@ -20,6 +20,20 @@ namespace FastMoq.Tests.TestBase
 {
     public class TestBaseTests : MockerTestBase<TestClass>
     {
+        [Fact]
+        public void History_ShouldShowConstructor()
+        {
+            Mocks.ConstructorHistory.Should().NotBeNull();
+            Mocks.ConstructorHistory.ToList().Should().HaveCount(1);
+            Mocks.ConstructorHistory.Count.Should().Be(1);
+            Mocks.ConstructorHistory.Contains(typeof(TestClass)).Should().BeTrue();
+            Mocks.ConstructorHistory[0].Key.Name.Should().Be(nameof(TestClass));
+            var values = Mocks.ConstructorHistory[Mocks.ConstructorHistory[0].Key].ToList();
+            values.Count.Should().Be(1);
+            values.Should().HaveCount(1);
+            values.First().Should().BeOfType<ConstructorModel>();
+        }
+
         [Fact]
         public void CustomMocksTest()
         {

@@ -80,19 +80,15 @@ namespace FastMoq
         /// <value>The type map.</value>
         internal readonly Dictionary<Type, IInstanceModel> typeMap;
 
-        private readonly Dictionary<Type, List<IHistoryModel>> constructorHistory = new();
+        /// <summary>
+        ///     Gets the constructor history.
+        /// </summary>
+        /// <value>The constructor history.</value>
+        public ConstructorHistory ConstructorHistory { get; } = new();
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        ///     Gets the constructor history collection.
-        /// </summary>
-        /// <value>The constructor history.</value>
-        /// <remarks>Constructor history is a list of all constructors used to create instances of objects.</remarks>
-        public ILookup<Type, ReadOnlyCollection<IHistoryModel>> ConstructorHistory =>
-            constructorHistory.ToLookup(pair => pair.Key, pair => pair.Value.AsReadOnly());
 
         /// <summary>
         ///     Gets the database connection. The default value is a memory Sqlite database connection unless otherwise set.
@@ -352,7 +348,7 @@ namespace FastMoq
 
                     try
                     {
-                        AddToConstructorHistory(tType, typeInstanceModel);
+                        ConstructorHistory.AddOrUpdate(tType, typeInstanceModel);
                         obj = (T) typeInstanceModel.CreateFunc(this);
                     }
                     finally
@@ -1042,7 +1038,7 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="TClass">The type of the t class.</typeparam>
         /// <param name="methodName">Name of the method.</param>
-        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <param name="nonPublic">if set to <c>true</c> [non-public].</param>
         /// <param name="args">The arguments used for the method.</param>
         /// <returns><see cref="Nullable" />.</returns>
         public object? InvokeMethod<TClass>(string methodName, bool nonPublic = false, params object?[] args)
@@ -1054,7 +1050,7 @@ namespace FastMoq
         /// <typeparam name="TClass">The type of the t class.</typeparam>
         /// <param name="obj">The object.</param>
         /// <param name="methodName">Name of the method.</param>
-        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <param name="nonPublic">if set to <c>true</c> [non-public].</param>
         /// <param name="args">The arguments used for the method.</param>
         /// <returns><see cref="Nullable" />.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
@@ -1129,33 +1125,6 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Adds to constructor history.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="instanceModel">The instance model.</param>
-        /// <returns>bool.</returns>
-        internal bool AddToConstructorHistory(Type key, IHistoryModel instanceModel)
-        {
-            if (key is null || instanceModel is null)
-            {
-                return false;
-            }
-
-            if (ConstructorHistory.FirstOrDefault(x => x.Key == key)?.Key is null)
-            {
-                // Add first instance model to key value's list.
-                constructorHistory.Add(key, [instanceModel]);
-            }
-            else
-            {
-                // Add instance model to key value's list.
-                constructorHistory[key].Add(instanceModel);
-            }
-
-            return true;
-        }
-
-        /// <summary>
         ///     Ensure Type is correct.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -1168,7 +1137,7 @@ namespace FastMoq
         ///     Finds the constructor matching args EXACTLY by type.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <param name="nonPublic">if set to <c>true</c> [non-public].</param>
         /// <param name="args">The arguments.</param>
         /// <returns>ConstructorInfo.</returns>
         /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
@@ -1199,7 +1168,7 @@ namespace FastMoq
         /// </summary>
         /// <param name="bestGuess">if set to <c>true</c> [best guess].</param>
         /// <param name="type">The type.</param>
-        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <param name="nonPublic">if set to <c>true</c> [non-public].</param>
         /// <param name="excludeList">Constructors to ignore.</param>
         /// <returns><see cref="Tuple{ConstructorInfo, List}" />.</returns>
         /// <exception cref="AmbiguousImplementationException">
@@ -1243,7 +1212,7 @@ namespace FastMoq
         ///     Finds the type of the constructor by.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
+        /// <param name="nonPublic">if set to <c>true</c> [non-public].</param>
         /// <param name="args">The arguments.</param>
         /// <returns>ConstructorInfo.</returns>
         /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
@@ -1263,7 +1232,7 @@ namespace FastMoq
         ///     Gets the constructors.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="nonPublic">The non public.</param>
+        /// <param name="nonPublic">The non-public.</param>
         /// <param name="instanceParameterValues">The instance parameter values.</param>
         /// <returns><see cref="List{ConstructorModel}" />.</returns>
         internal List<ConstructorModel> GetConstructors(Type type, bool nonPublic, params object?[] instanceParameterValues)
@@ -1289,7 +1258,7 @@ namespace FastMoq
         /// <summary>
         ///     Gets the constructors non-public.
         /// </summary>
-        /// <param name="nonPublic">Include non public constructors.</param>
+        /// <param name="nonPublic">Include non-public constructors.</param>
         /// <param name="type">The type.</param>
         /// <param name="parameterTypes">The parameter types.</param>
         /// <returns><see cref="List{ConstructorInfo}" />.</returns>

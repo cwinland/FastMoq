@@ -334,7 +334,7 @@ namespace FastMoq.Extensions
         /// <returns>object?.</returns>
         internal static object? CreateInstanceInternal(this Mocker mocker, Type type, ConstructorInfo? info, params object?[] args)
         {
-            mocker.AddToConstructorHistory(type, new ConstructorModel(info, args));
+            mocker.ConstructorHistory.AddOrUpdate(type, new ConstructorModel(info, args));
             var paramList = info?.GetParameters().ToList() ?? new();
             var newArgs = args.ToList();
 

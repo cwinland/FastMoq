@@ -161,7 +161,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <code language="cs"><![CDATA[
         /// var list = GetComponent<FetchData>(x => x.Instance.IsRunning));
         /// ]]></code></example>
-        List<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IRenderedComponent<TComponent>, bool>? predicate = null)
+        IReadOnlyList<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IRenderedComponent<TComponent>, bool>? predicate = null)
             where TComponent : class, IComponent;
 
         /// <summary>

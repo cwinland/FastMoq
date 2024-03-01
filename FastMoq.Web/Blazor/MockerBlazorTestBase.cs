@@ -515,7 +515,7 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IRenderedComponent<TOfType>, bool>? predicate)
+        public IReadOnlyList<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IRenderedComponent<TOfType>, bool>? predicate)
             where TOfType : class, IComponent
         {
             IEnumerable<IRenderedComponent<TOfType>> components = GetAllComponents()

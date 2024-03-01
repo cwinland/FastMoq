@@ -37,9 +37,9 @@ namespace FastMoq.Models
         /// <param name="arguments">The arguments.</param>
         /// <exception cref="ArgumentNullException">arguments</exception>
         /// <inheritdoc />
-        internal InstanceModel(Type originalType, Type instanceType, Func<Mocker, object>? createFunc, List<object?> arguments)
+        internal InstanceModel(Type originalType, Type instanceType, Func<Mocker, object>? createFunc, IReadOnlyList<object?> arguments)
             : this(originalType, instanceType, createFunc) =>
-            Arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
+            Arguments = new List<object?>(arguments ?? throw new ArgumentNullException(nameof(arguments)));
 
         #region IInstanceModel
 
