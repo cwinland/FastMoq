@@ -24,7 +24,7 @@ namespace FastMoq.Tests.TestBase
         public void History_ShouldShowConstructor()
         {
             Mocks.ConstructorHistory.Should().NotBeNull();
-            Mocks.ConstructorHistory.ToList().Should().HaveCount(1);
+            Mocks.ConstructorHistory.AsEnumerable().Should().HaveCount(1);
             Mocks.ConstructorHistory.Count.Should().Be(1);
             Mocks.ConstructorHistory.Contains(typeof(TestClass)).Should().BeTrue();
             Mocks.ConstructorHistory[0].Key.Name.Should().Be(nameof(TestClass));

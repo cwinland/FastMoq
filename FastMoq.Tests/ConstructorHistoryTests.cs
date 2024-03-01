@@ -1,5 +1,7 @@
 ﻿using FastMoq.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Reflection;
@@ -59,6 +61,52 @@ namespace FastMoq.Tests
             Component.AddOrUpdate(typeof(IFile), new ConstructorModel(Mocks.GetObject<ConstructorInfo>(), new List<object?> { "1" }));
             Component.Count.Should().Be(1);
             Component[typeof(IFile)].Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void ToList()
+        {
+            var model = new ConstructorModel(Mocks.GetObject<ConstructorInfo>(), new List<object?>());
+            Component.Count.Should().Be(0);
+            Component.AddOrUpdate(typeof(IFile), model);
+
+            var result = Component.AsEnumerable().ToDictionary(x=>x.Key, x=>x.Value);
+            Component[0].Key.Should().Be(result.First().Key);
+            Component[0].Key.FullName.Should().Be(result.First().Key.FullName);
+            Component[0].Value.Should().BeEquivalentTo(result.First().Value);
+        }
+
+        [Fact]
+        public void InterfacesAreValid_WhenUsingAsMethods()
+        {
+            Component.AsReadOnlyDictionary().GetType().IsAssignableTo(typeof(IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>)).Should().BeTrue();
+            Component.AsEnumerable().GetType().IsAssignableTo(typeof(IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>)).Should().BeTrue();
+            Component.AsEnumerable().GetType().IsAssignableTo(typeof(IEnumerable<KeyValuePair<Type, IEnumerable<IHistoryModel>>>)).Should().BeTrue();
+            Component.AsLookup().GetType().IsAssignableTo(typeof(IEnumerable<KeyValuePair<Type, IEnumerable<IHistoryModel>>>)).Should().BeTrue();
+            Component.AsLookup().GetType().IsAssignableTo(typeof(ILookup<Type, IHistoryModel>)).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Enumerator()
+        {
+            var model = new ConstructorModel(Mocks.GetObject<ConstructorInfo>(), new List<object?>());
+            Component.Count.Should().Be(0);
+            Component.AddOrUpdate(typeof(IFile), model);
+            var count = 0;
+            foreach (var keyValuePair in Component.AsEnumerable())
+            {
+                count++;
+            }
+
+            count.Should().Be(1);
+
+            count = 0;
+            foreach (var o in Component)
+            {
+                count++;
+            }
+
+            count.Should().Be(1);
         }
     }
 }
