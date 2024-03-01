@@ -14,7 +14,7 @@ namespace FastMoq.Models
     /// <seealso cref="System.Collections.Generic.IReadOnlyDictionary{Type, IReadonlyList}" />
     public class ConstructorHistory :
         ILookup<Type, IHistoryModel>,
-        IReadOnlyCollection<KeyValuePair<Type, ReadOnlyCollection<IHistoryModel>>>
+        IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>
 
     {
         #region Fields
@@ -46,8 +46,6 @@ namespace FastMoq.Models
             }
         }
 
-        public IEnumerable<Type> Keys => constructorHistory.Keys;
-
         /// <summary>
         ///     Gets the values.
         /// </summary>
@@ -78,8 +76,6 @@ namespace FastMoq.Models
         public ConstructorHistory(IDictionary<Type, List<IHistoryModel>> dictionary) : this() =>
             dictionary.ForEach(pair => constructorHistory.Add(pair.Key, pair.Value));
 
-        public bool ContainsKey(Type key) => constructorHistory.ContainsKey(key);
-
         /// <summary>
         ///     Gets the constructor.
         /// </summary>
@@ -96,25 +92,29 @@ namespace FastMoq.Models
         /// <returns>To the list.</returns>
         public IReadOnlyCollection<KeyValuePair<Type, ReadOnlyCollection<IHistoryModel>>> ToList() => this;
 
-        public bool TryGetValue(Type key, out List<IHistoryModel> value) => constructorHistory.TryGetValue(key, out value);
-
         /// <summary>
         ///     Adds or Updates History
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="model">The model.</param>
-        internal void AddOrUpdate(Type key, IHistoryModel model)
+        /// <returns>Adds the or update.</returns>
+        internal bool AddOrUpdate(Type key, IHistoryModel model)
         {
             if (!constructorHistory.ContainsKey(key))
             {
                 // Add first instance model to key value's list.
                 constructorHistory.Add(key, [model]);
+                return true;
             }
-            else
+
+            // Add instance model to key value's list.
+            if (!constructorHistory[key].Contains(model))
             {
-                // Add instance model to key value's list.
                 constructorHistory[key].Add(model);
+                return true;
             }
+
+            return false;
         }
 
         #region IEnumerable
@@ -169,6 +169,39 @@ namespace FastMoq.Models
 
         /// <inheritdoc />
         public IEnumerable<IHistoryModel> this[Type key] => ReadOnlyHistory[key].ToList();
+
+        #endregion
+
+        #region IReadOnlyDictionary<Type,ReadOnlyCollection<IHistoryModel>>
+
+        /// <summary>
+        ///     Determines whether the specified key contains key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>Containses the key.</returns>
+        public bool ContainsKey(Type key) => constructorHistory.ContainsKey(key);
+
+        /// <inheritdoc />
+        ReadOnlyCollection<IHistoryModel> IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>.this[Type key] =>
+            new(ReadOnlyHistory[key].ToList());
+
+        /// <summary>
+        ///     Gets the keys.
+        /// </summary>
+        /// <value>The keys.</value>
+        public IEnumerable<Type> Keys => constructorHistory.Keys;
+
+        /// <inheritdoc />
+        public bool TryGetValue(Type key, out ReadOnlyCollection<IHistoryModel> value)
+        {
+            var result = constructorHistory.TryGetValue(key, out var value2);
+            value = value2?.AsReadOnly();
+            return result;
+        }
+
+        /// <inheritdoc />
+        IEnumerable<ReadOnlyCollection<IHistoryModel>> IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>.Values =>
+            constructorHistory.Values.Select(x => x.AsReadOnly());
 
         #endregion
 

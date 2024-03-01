@@ -1,5 +1,4 @@
 ﻿using FastMoq.Models;
-using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
@@ -42,6 +41,24 @@ namespace FastMoq.Tests
             Component.TryGetValue(typeof(IFileSystem), out var invalid).Should().BeFalse();
         }
 
+        [Fact]
+        public void Add_ShouldAddTwo_WhenDifferentModels()
+        {
+            var model = new ConstructorModel(Mocks.GetObject<ConstructorInfo>(), new List<object?>());
+            Component.Count.Should().Be(0);
+            Component.AddOrUpdate(typeof(IFile), model);
+            Component.Count.Should().Be(1);
+            Component[typeof(IFile)].Should().HaveCount(1);
+            Component.AddOrUpdate(typeof(IFile), model);
+            Component.Count.Should().Be(1);
+            Component[typeof(IFile)].Should().HaveCount(1);
+            Component.AddOrUpdate(typeof(IFile), new ConstructorModel(Mocks.GetObject<ConstructorInfo>(), new List<object?> { "1" }));
+            Component.Count.Should().Be(1);
+            Component[typeof(IFile)].Should().HaveCount(2);
 
+            Component.AddOrUpdate(typeof(IFile), new ConstructorModel(Mocks.GetObject<ConstructorInfo>(), new List<object?> { "1" }));
+            Component.Count.Should().Be(1);
+            Component[typeof(IFile)].Should().HaveCount(2);
+        }
     }
 }
