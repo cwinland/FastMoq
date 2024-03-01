@@ -10,6 +10,21 @@ namespace FastMoq.Extensions
     public static class ObjectExtensions
     {
         /// <summary>
+        ///     Adds or updates (if key exists) the value in the dictionary.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the t key.</typeparam>
+        /// <typeparam name="TValue">The type of the t value.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        public static void AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
+        {
+            ArgumentNullException.ThrowIfNull(dictionary);
+
+            dictionary[key] = value;
+        }
+
+        /// <summary>
         ///     Raises if predicate is true.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
@@ -31,6 +46,8 @@ namespace FastMoq.Extensions
         /// <param name="path">The path.</param>
         /// <param name="line">The line.</param>
         /// <param name="exp">The exp.</param>
+        /// <returns>Raises if null.</returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.InvalidOperationException"></exception>
         public static T RaiseIfNull<T>([NotNull] this T? thing, [CallerMemberName] string? name = null, [CallerFilePath] string? path = null,
             [CallerLineNumber] int? line = null, [CallerArgumentExpression(nameof(thing))] string? exp = null)

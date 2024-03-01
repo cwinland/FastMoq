@@ -995,9 +995,10 @@ namespace FastMoq
         ///     Determines whether [has parameterless constructor] [the specified type].
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns><c>true</c> if type specified type has a parameterless constructor; otherwise, <c>false</c>.</returns>
-        public bool HasParameterlessConstructor(Type type) =>
-            GetConstructors(type).Find(x => x.ParameterList.Length == 0) != null;
+        /// <param name="nonPublic">The non-public.</param>
+        /// <returns>Has the parameterless constructor.</returns>
+        public bool HasParameterlessConstructor(Type type, bool nonPublic = false) =>
+            GetConstructors(type, nonPublic).Find(x => x.ParameterList.Length == 0) != null;
 
         /// <summary>
         ///     Gets or Creates then Initializes the specified Mock of <c>T</c>.
@@ -1140,14 +1141,14 @@ namespace FastMoq
                 return false;
             }
 
-            var item = ConstructorHistory.FirstOrDefault(x => x.Key == key);
-
-            if (item?.Key is null)
+            if (ConstructorHistory.FirstOrDefault(x => x.Key == key)?.Key is null)
             {
-                constructorHistory.Add(key, new List<IHistoryModel> { instanceModel });
+                // Add first instance model to key value's list.
+                constructorHistory.Add(key, [instanceModel]);
             }
             else
             {
+                // Add instance model to key value's list.
                 constructorHistory[key].Add(instanceModel);
             }
 
@@ -1155,22 +1156,12 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Adds to constructor history.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="constructorInfo">The constructor information.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>bool.</returns>
-        internal bool AddToConstructorHistory(Type key, ConstructorInfo? constructorInfo, List<object?> args) =>
-            AddToConstructorHistory(key, new ConstructorModel(constructorInfo, args));
-
-        /// <summary>
         ///     Ensure Type is correct.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>Type.</returns>
-        internal Type CleanType(Type type) => type.Name.EndsWith('&')
-            ? type.Assembly.GetTypes().FirstOrDefault(x => x.Name.Equals(type.Name.TrimEnd('&'))) ?? type
+        internal static Type CleanType(Type type) => type.Name.EndsWith('&')
+            ? type.Assembly.GetTypes().FirstOrDefault(x => x.Name.Equals(type.Name.TrimEnd('&'), StringComparison.Ordinal)) ?? type
             : type;
 
         /// <summary>
@@ -1184,8 +1175,7 @@ namespace FastMoq
         internal ConstructorModel FindConstructor(Type type, bool nonPublic, params object?[] args)
         {
             // Get all constructors
-            var allConstructors =
-                nonPublic ? GetConstructorsNonPublic(type, args) : GetConstructors(type, args);
+            var allConstructors = GetConstructors(type, nonPublic, args);
 
             // Filter constructors
             var constructors = allConstructors
@@ -1226,7 +1216,7 @@ namespace FastMoq
         {
             excludeList ??= new();
 
-            var constructors = (nonPublic ? GetConstructorsNonPublic(type) : GetConstructors(type))
+            var constructors = GetConstructors(type, nonPublic)
                 .Where(x => excludeList.TrueForAll(y => y != x.ConstructorInfo)).ToList();
 
             // if it is not best guess, then we can't know which constructor.
@@ -1273,11 +1263,17 @@ namespace FastMoq
         ///     Gets the constructors.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="instanceParameterValues">Optional arguments.</param>
-        /// <returns><see cref="Dictionary{ConstructorInfo, List}" />.</returns>
-        internal List<ConstructorModel> GetConstructors(Type type, params object?[] instanceParameterValues)
+        /// <param name="nonPublic">The non public.</param>
+        /// <param name="instanceParameterValues">The instance parameter values.</param>
+        /// <returns><see cref="List{ConstructorModel}" />.</returns>
+        internal List<ConstructorModel> GetConstructors(Type type, bool nonPublic, params object?[] instanceParameterValues)
         {
-            var constructors = type.GetConstructors()
+            var flags = nonPublic
+                ? BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public
+                : BindingFlags.Instance | BindingFlags.Public;
+
+            var constructors = type
+                .GetConstructors(flags)
                 .Where(x => x.GetParameters().All(y => y.ParameterType != type))
                 .Where(x => type.IsValidConstructor(x, instanceParameterValues))
                 .OrderBy(x => x.GetParameters().Length);
@@ -1303,28 +1299,6 @@ namespace FastMoq
                 .Where(x => x.IsValidConstructorByType(parameterTypes) && (nonPublic || x.IsPublic))
                 .OrderBy(x => x.GetParameters().Length)
                 .ToList();
-
-        /// <summary>
-        ///     Gets the constructors non public.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="instanceParameterValues">The instance parameter values.</param>
-        /// <returns><see cref="Dictionary{ConstructorInfo, List}" />.</returns>
-        internal List<ConstructorModel> GetConstructorsNonPublic(Type type,
-            params object?[] instanceParameterValues)
-        {
-            var constructors = type
-                .GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public)
-                .Where(x => type.IsValidConstructor(x, instanceParameterValues))
-                .OrderBy(x => x.GetParameters().Length);
-
-            return constructors
-                .ToDictionary(x => x,
-                    y => (instanceParameterValues.Length > 0 ? instanceParameterValues : y.GetParameters().Select(GetObject))
-                        .ToList()
-                )
-                .Select(x => new ConstructorModel(x)).ToList();
-        }
 
         /// <summary>
         ///     Gets the mock model.

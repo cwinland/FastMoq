@@ -1,7 +1,6 @@
 ﻿using FastMoq.Models;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System.IO.Abstractions;
 using System.Reflection;
 
 namespace FastMoq.Extensions
@@ -248,7 +247,7 @@ namespace FastMoq.Extensions
 
         internal static ConstructorModel GetTypeConstructor(this Mocker mocker, Type type, bool nonPublic, object?[] args)
         {
-            var constructor = new ConstructorModel(null, args.ToList());
+            var constructor = new ConstructorModel(null, args);
 
             try
             {
@@ -267,7 +266,7 @@ namespace FastMoq.Extensions
             {
                 try
                 {
-                    constructor = (nonPublic ? mocker.GetConstructorsNonPublic(type) : mocker.GetConstructors(type)).MinBy(x => x.ConstructorInfo?.GetParameters().Length ?? 0) ?? constructor;
+                    constructor = mocker.GetConstructors(type, nonPublic).MinBy(x => x.ConstructorInfo?.GetParameters().Length ?? 0) ?? constructor;
                 }
                 catch (Exception ex)
                 {
@@ -335,7 +334,7 @@ namespace FastMoq.Extensions
         /// <returns>object?.</returns>
         internal static object? CreateInstanceInternal(this Mocker mocker, Type type, ConstructorInfo? info, params object?[] args)
         {
-            mocker.AddToConstructorHistory(type, info, args.ToList());
+            mocker.AddToConstructorHistory(type, new ConstructorModel(info, args));
             var paramList = info?.GetParameters().ToList() ?? new();
             var newArgs = args.ToList();
 

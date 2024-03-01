@@ -23,7 +23,7 @@ namespace FastMoq.Models
 
         #endregion
 
-        internal ConstructorModel(ConstructorInfo? constructorInfo, List<object?> parameterList)
+        internal ConstructorModel(ConstructorInfo? constructorInfo, IEnumerable<object?> parameterList)
         {
             ConstructorInfo = constructorInfo;
             ParameterList = parameterList.ToArray();
