@@ -269,10 +269,10 @@ namespace FastMoq
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
         /// <param name="args">The type arguments.</param>
         /// <returns></returns>
-        public T? CreateInstanceByType<T>(bool nonPublic, params Type?[] args) where T : class
+        public T? CreateInstanceByType<T>(params Type?[] args) where T : class
         {
             var tType = typeof(T);
-            var constructor = FindConstructorByType(tType, nonPublic, args);
+            var constructor = FindConstructorByType(tType, true, args);
 
             return CreateInstanceInternal<T>(constructor);
         }
