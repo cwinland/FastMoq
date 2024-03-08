@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
@@ -173,6 +174,51 @@ namespace FastMoq.Tests.TestBase
             {
                 ArgumentNullException.ThrowIfNull(fileSystem);
                 ArgumentNullException.ThrowIfNull(field);
+            }
+        }
+
+        public class TestBaseTypeConstructor : MockerTestBase<ConstructorTestClass>
+        {
+            public TestBaseTypeConstructor() : base(typeof(IFileSystem), typeof(string))
+            {
+
+            }
+
+            [Fact]
+            public void ComponentNotNull()
+            {
+                Component.Should().NotBeNull();
+            }
+
+            [Fact]
+            public void ConstructorCreatedUsingCorrectTypes()
+            {
+                Mocks.ConstructorHistory.AsEnumerable().Should().NotBeEmpty();
+                var parameters = GetConstructor().GetParameters().Select(x => x.ParameterType).ToList();
+                parameters[0].Should().Be(typeof(IFileSystem));
+                parameters[1].Should().Be(typeof(string));
+            }
+        }
+
+        public class TestBaseTypeConstructorEmpty : MockerTestBase<ConstructorTestClass>
+        {
+            public TestBaseTypeConstructorEmpty() : base(DefaultAction, DefaultAction, Array.Empty<Type>())
+            {
+
+            }
+
+            [Fact]
+            public void ComponentNotNull()
+            {
+                Component.Should().NotBeNull();
+            }
+
+            [Fact]
+            public void ConstructorCreatedUsingCorrectTypes()
+            {
+                Mocks.ConstructorHistory.AsEnumerable().Should().NotBeEmpty();
+                var parameters = GetConstructor().GetParameters().Select(x => x.ParameterType).ToList();
+                parameters.Count().Should().Be(0);
             }
         }
 
