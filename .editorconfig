@@ -892,7 +892,7 @@ dotnet_diagnostic.S3963.severity = warning
 dotnet_diagnostic.S3967.severity = warning
 
 # S4018: Minor :: Generic methods should provide type parameters
-dotnet_diagnostic.S4018.severity = warning
+dotnet_diagnostic.S4018.severity = silent
 
 # S4022: Minor :: Enumerations should have "Int32" storage
 dotnet_diagnostic.S4022.severity = silent
