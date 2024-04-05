@@ -495,16 +495,16 @@ namespace FastMoq
         /// <param name="nonPublic">if set to <c>true</c> can use non-public constructor.</param>
         /// <param name="args">The arguments used to find the correct constructor for a class.</param>
         /// <returns>Mock.</returns>
-        /// <exception cref="System.ArgumentException">type must be a class or interface. - type</exception>
-        /// <exception cref="ApplicationException">type must be a class or interface. - type</exception>
-        /// <exception cref="System.ApplicationException">type must be a class or interface., nameof(type)</exception>
+        /// <exception cref="System.ArgumentException">type must be a class or interface. - type.</exception>
+        /// <exception cref="ApplicationException">Type must be a class or interface. - type.</exception>
+        /// <exception cref="System.ApplicationException">Type must be a class or interface., nameof(type)</exception>
         public Mock CreateMockInstance(Type type, bool nonPublic = false, params object?[] args)
         {
             const string SETUP_ALL_PROPERTIES_METHOD_NAME = "SetupAllProperties";
 
             if (type == null || (!type.IsClass && !type.IsInterface))
             {
-                throw new ArgumentException("type must be a class or interface.", nameof(type));
+                throw new ArgumentException("Type must be a class or interface.", nameof(type));
             }
 
             var constructor = this.GetTypeConstructor(type, nonPublic, args);
@@ -816,7 +816,7 @@ namespace FastMoq
                 AddMock(new MockDbContextOptions<TDbContext>(), false);
             }
 
-            var mock = (DbContextMock<TDbContext>) GetProtectedMock(typeof(TDbContext));
+            var mock = (DbContextMock<TDbContext>) GetProtectedMock<TDbContext>();
 
             return mock.SetupDbSets(this);
         }
@@ -940,6 +940,14 @@ namespace FastMoq
             var constructor = FindConstructor(type.InstanceType, true, args);
             return this.CreateInstanceInternal<T>(constructor.ConstructorInfo, args);
         }
+
+        /// <summary>
+        ///     Gets the protected mock.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Mock of the protected mock.</returns>
+        public Mock GetProtectedMock<T>(params object?[] args) => GetProtectedMock(typeof(T), args);
 
         /// <summary>
         ///     Gets the protected mock.
