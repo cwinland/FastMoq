@@ -13,6 +13,9 @@
         #endregion
 
         /// <inheritdoc />
+        /// <summary>
+        /// Create instance with default actions and no extra setup. See other constructors to set Mocks before instantiation of the Component.
+        /// </summary>
         protected MockerTestBase() : this(DefaultAction, null, DefaultAction) { }
 
         /// <inheritdoc />
@@ -40,6 +43,10 @@
             : this(DefaultAction, null, createdComponentAction) { }
 
         /// <inheritdoc />
+        /// <summary>
+        /// Create instance and setting mock resolution. Mock resolution is on by default.
+        /// When it is off, it may not be able to fill in properties or other injections of components.
+        /// </summary>
         protected MockerTestBase(bool innerMockResolution) : this() => Mocks.InnerMockResolution = innerMockResolution;
 
         /// <summary>
@@ -59,6 +66,7 @@
         }
 
         /// <inheritdoc />
+        /// <summary>Create instance using the component constructor that matches the type parameters.</summary>
         protected MockerTestBase(params Type[] createArgumentTypes)
             : this(DefaultAction, CreateActionWithTypes(createArgumentTypes), DefaultAction) { }
 

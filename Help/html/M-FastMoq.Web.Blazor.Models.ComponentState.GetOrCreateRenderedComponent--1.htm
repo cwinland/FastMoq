@@ -23,7 +23,7 @@
       <MSHelp:Attr Name="Locale" Value="en-us" />
       <MSHelp:Attr Name="TopicType" Value="kbSyntax" />
       <MSHelp:Attr Name="TopicType" Value="apiref" />
-      <MSHelp:Attr Name="Abstract" Value="Creates the rendered component." />
+      <MSHelp:Attr Name="Abstract" Value="Gets the or create rendered component." />
       <MSHelp:Attr Name="AssemblyVersion" Value="" />
     </xml>
   <link rel="stylesheet" href="../TOC.css"><script type="text/javascript" src="../TOC.js"></script></head>
@@ -127,6 +127,11 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorHistory.htm" target="_self">ConstructorHistory Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
 <div class="Hidden">
 </div>
@@ -161,10 +166,8 @@
 <div class="Hidden">
 </div>
 </div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IHistoryModel.htm" target="_self">IHistoryModel Interface</a>
-<div class="Hidden">
-</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="T-FastMoq.Models.IHistoryModel.htm" target="_self">IHistoryModel Interface</a>
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.IInstanceModel.htm" target="_self">IInstanceModel Interface</a>
@@ -181,10 +184,8 @@
 <div class="Hidden">
 </div>
 </div>
-<div class="TreeNode">
-<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.MockDbContextOptions-1.htm" target="_self">MockDbContextOptions(T) Class</a>
-<div class="Hidden">
-</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="T-FastMoq.Models.MockDbContextOptions-1.htm" target="_self">MockDbContextOptions(T) Class</a>
 </div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.MockModel.htm" target="_self">MockModel Class</a>
@@ -283,7 +284,7 @@
             <div id="mainSection">
               <div id="mainBody">
                 <div class="summary">
-       Creates the rendered component.
+       Gets the or create rendered component.
    </div>
                 <p />
     <b>Namespace:</b> 
@@ -294,7 +295,7 @@
 </pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Public</span> <span class="keyword">Overridable</span> <span class="keyword">Function</span> <span class="identifier">GetOrCreateRenderedComponent</span>(<span class="keyword">Of</span> T <span class="keyword">As</span> <span class="nolink">ComponentBase</span>) <span class="keyword">As</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>(<span class="keyword">Of</span> <span class="nolink">IRenderedComponentBase</span>(<span class="keyword">Of</span> T))</pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">public</span>:
 <span class="keyword">generic</span>&lt;<span class="keyword">typename</span> T&gt;
 <span class="keyword">where</span> T : <span class="nolink">ComponentBase</span>
-<span class="keyword">virtual</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>&lt;<span class="nolink">IRenderedComponentBase</span>&lt;T&gt;^&gt; <span class="identifier">GetOrCreateRenderedComponent</span>()</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">T</span></dt><dd /></dl><h4 class="subHeading">Return Value</h4>System.Nullable&lt;System.Object&gt;.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.Models.ComponentState.htm">ComponentState Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent.htm">GetOrCreateRenderedComponent Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.Models.htm">FastMoq.Web.Blazor.Models Namespace</a></div></div></div>
+<span class="keyword">virtual</span> <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>&lt;<span class="nolink">IRenderedComponentBase</span>&lt;T&gt;^&gt; <span class="identifier">GetOrCreateRenderedComponent</span>()</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">T</span></dt><dd /></dl><h4 class="subHeading">Return Value</h4>System ofNullable&lt;IRenderedComponentBase&lt;T&gt;&gt; of the or create rendered component.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.Models.ComponentState.htm">ComponentState Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent.htm">GetOrCreateRenderedComponent Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.Models.htm">FastMoq.Web.Blazor.Models Namespace</a></div></div></div>
             </div>
           </div>
         </div>

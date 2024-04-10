@@ -342,14 +342,15 @@ Add the following ```InternalsVisibleTo``` line to the AssemblyInfo file.
 [Full Change Log](https://github.com/cwinland/FastMoq/releases)
 
 ## Breaking Change
-- 2.23.Latest    => Removed support for .NET Core 5.
+
+- 2.25.Latest => Some methods moved to extensions that are no longer in the MockerTestBase or Mocker. Removed extra CreateInstance<T> methods.
+- 2.23.200 => Support .NET 8
+- 2.23.x    => Removed support for .NET Core 5.
 - 2.22.1215 => Removed support for .NET Core 3.1 in FastMoq.Core. Deprecated .NET Core 5 and moved package supporting .NET Core 5.0 from FastMoq to FastMoq.Core.
 - 1.22.810 => Removed setters on the MockerTestBase virtual methods: SetupMocksAction, CreateComponentAction, CreatedComponentAction
 - 1.22.810 => Update Package Dependencies
 - 1.22.728 => Initialize method will reset the mock, if it already exists. This is overridable by settings the reset parameter to false.
 - 1.22.604 => Renamed Mocks to Mocker, Renamed TestBase to MockerTestBase.
-- 
-- 2.23.200 => Support .NET 8
 
 ## [License - MIT](./License)
 

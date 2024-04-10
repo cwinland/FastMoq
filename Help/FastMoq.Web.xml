@@ -365,13 +365,14 @@
        Implements the <see cref="T:FastMoq.Web.Blazor.Models.ComponentState" /></summary>
       <typeparam name="T">
       </typeparam>
-      <seealso cref="T:FastMoq.Web.Blazor.Models.ComponentState" />
       <inheritdoc />
+      <seealso cref="T:FastMoq.Web.Blazor.Models.ComponentState" />
     </member>
     <member name="T:FastMoq.Web.Blazor.Models.ComponentState">
       <summary>
        Class ComponentState.
-   </summary>
+       Implements the <see cref="T:FastMoq.Web.Blazor.Models.ComponentState" /></summary>
+      <seealso cref="T:FastMoq.Web.Blazor.Models.ComponentState" />
     </member>
     <member name="P:FastMoq.Web.Blazor.Models.ComponentState`1.Component">
       <summary>
@@ -379,13 +380,13 @@
    </summary>
       <value>The component.</value>
     </member>
-    <member name="M:FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Nullable{System.Object},IServiceProvider)">
-      <inheritdoc />
+    <member name="M:FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Nullable{System.Object},TestRenderer)">
       <summary>
        Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.Models.ComponentState`1" /> class.
    </summary>
       <param name="obj">The object.</param>
-      <param name="services">The services.</param>
+      <param name="renderer">The renderer.</param>
+      <inheritdoc />
     </member>
     <member name="P:FastMoq.Web.Blazor.Models.ComponentState.Component">
       <summary>
@@ -424,28 +425,29 @@
    </summary>
       <value>The type of the component.</value>
     </member>
-    <member name="M:FastMoq.Web.Blazor.Models.ComponentState.#ctor(System.Nullable{System.Object},IServiceProvider)">
+    <member name="M:FastMoq.Web.Blazor.Models.ComponentState.#ctor(System.Nullable{System.Object},TestRenderer)">
       <summary>
        Initializes a new instance of the <see cref="T:FastMoq.Web.Blazor.Models.ComponentState" /> class.
    </summary>
       <param name="obj">The object.</param>
-      <param name="services">The services.</param>
-      <exception cref="ArgumentNullException">services</exception>
+      <param name="renderer">The renderer.</param>
+      <exception cref="T:System.ArgumentNullException">renderer</exception>
+      <exception cref="T:System.ArgumentNullException">services</exception>
     </member>
     <member name="M:FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(Type)">
       <summary>
        Gets the or create rendered component.
    </summary>
       <param name="type">The type.</param>
-      <returns>IRenderedComponentBase&lt;ComponentBase&gt;.</returns>
+      <returns>System ofNullable&lt;IRenderedComponentBase&lt;ComponentBase&gt;&gt; of the or create rendered component.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent``1">
       <summary>
-       Creates the rendered component.
+       Gets the or create rendered component.
    </summary>
       <typeparam name="T">
       </typeparam>
-      <returns>System.Nullable&lt;System.Object&gt;.</returns>
+      <returns>System ofNullable&lt;IRenderedComponentBase&lt;T&gt;&gt; of the or create rendered component.</returns>
     </member>
     <member name="T:FastMoq.Web.Blazor.MockerBlazorTestBase`1">
       <summary>
@@ -480,7 +482,8 @@
       <example>
        Setup Http Response Message
       <code language="cs"><![CDATA[
-   protected override Action<Mocker> SetupComponent => mocker => mocker.SetupHttpMessage(() => new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent("ContextGoesHere")});
+   protected override Action<Mocker> SetupComponent => mocker =>
+   mocker.SetupHttpMessage(() => new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent("ContextGoesHere")});
    ]]></code></example>
       <example>
        Setup Mocks
@@ -534,17 +537,6 @@
        Set authorized user.
       <code language="cs"><![CDATA[
    AuthContext.SetAuthorized("username")
-   ]]></code></example>
-    </member>
-    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.NavigationManager">
-      <summary>
-       Gets the navigation manager.
-   </summary>
-      <value>The navigation manager.</value>
-      <example>
-       Click Button by class, tag, or id and check the navigation manager for changes.
-      <code language="cs"><![CDATA[
-   NavigationManager.History.Count.Should().Be(2);
    ]]></code></example>
     </member>
     <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthorizedClaims">
@@ -634,9 +626,21 @@
       <value>The mocks controller.</value>
       <seealso cref="T:FastMoq.Mocker" />
     </member>
+    <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.NavigationManager">
+      <summary>
+       Gets the navigation manager.
+   </summary>
+      <value>The navigation manager.</value>
+      <example>
+       Click Button by class, tag, or id and check the navigation manager for changes.
+      <code language="cs"><![CDATA[
+   NavigationManager.History.Count.Should().Be(2);
+   ]]></code></example>
+    </member>
     <member name="P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderParameters">
       <summary>
-       Gets the list of parameters used when rendering. This is used to setup a component before the test constructor runs.
+       Gets the list of parameters used when rendering. This is used to setup a component before the test constructor
+       runs.
    </summary>
       <value>The render parameters.</value>
     </member>
@@ -653,6 +657,9 @@
       <value>The token source.</value>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Bunit.TestContext" /> class.
+            </summary>
       <inheritdoc />
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.#ctor(System.Boolean,System.Nullable{InvocationMatcher},System.Boolean)">
@@ -664,13 +671,21 @@
       <param name="isCatchAllMatcher">Indicates if the invocationMatches is also a catch-all.</param>
       <inheritdoc />
     </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupJsInterop(BunitJSInterop,System.Nullable{InvocationMatcher},System.Boolean)">
+      <summary>
+       Adds the utilities.
+   </summary>
+      <param name="jsInterop">The js interop.</param>
+      <param name="jsInvocationMatcher">The js invocation matcher.</param>
+      <param name="isCatchAll">if set to <c>true</c> [is catch all].</param>
+    </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetAllComponents``1">
       <summary>
-       Gets all components of a specific type, regardless of render tree.
+       Gets all components from the renderer and their state.
    </summary>
-      <typeparam name="TComponent">The type of the component.</typeparam>
-      <returns>Dictionary&lt;TComponent, ComponentState&gt;.</returns>
-      <exception cref="T:System.ArgumentNullException">Component</exception>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>Dictionary&lt;TComponent, ComponentState&gt; of all components.</returns>
+      <exception cref="T:System.ArgumentException">Unable to get the renderer for this component.</exception>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetAllComponents">
       <summary>
@@ -683,16 +698,18 @@
        Setup and create component.
    </summary>
     </member>
-    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupJsInterop(BunitJSInterop,System.Nullable{InvocationMatcher},System.Boolean)">
-      <summary>
-       Adds the utilities.
-   </summary>
-      <param name="jsInterop">The js interop.</param>
-      <param name="jsInvocationMatcher">The js invocation matcher.</param>
-      <param name="isCatchAll">if set to <c>true</c> [is catch all].</param>
-    </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.Dispose(System.Boolean)">
+      <summary>
+            Disposes of the test context resources, in particular it disposes the <see cref="P:Bunit.TestContextBase.Services" />
+            service provider. Any async services registered with the service provider will disposed first,
+            but their disposal will not be awaited..
+            </summary>
       <inheritdoc />
+      <param name="disposing">Set to true if called from <see cref="M:Bunit.TestContextBase.Dispose" />, false if called from a finalizer.f.</param>
+      <remarks>
+            The disposing parameter should be false when called from a finalizer, and true when called from the
+            <see cref="M:Bunit.TestContextBase.Dispose" /> method. In other words, it is true when deterministically called and false when non-deterministically called.
+            </remarks>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupAuthorization">
       <summary>
@@ -715,42 +732,152 @@
    </summary>
       <exception cref="T:System.IO.InvalidDataException">Unable to get {nameof(IConfigurationRoot)} object.</exception>
     </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.OnAuthorizedClaimsChanged(System.Nullable{System.Object},System.Nullable{MockerObservableCollectionChangedEventArgs})">
+      <summary>
+       Handles the <see cref="E:AuthorizedClaimsChanged" /> event.
+   </summary>
+      <param name="o">The o.</param>
+      <param name="mockerObservableCollectionChangedEventArgs">The <see cref="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs" /> instance containing the event data.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.OnAuthorizedPoliciesChanged(System.Nullable{System.Object},System.Nullable{MockerObservableCollectionChangedEventArgs})">
+      <summary>
+       Handles the <see cref="E:AuthorizedPoliciesChanged" /> event.
+   </summary>
+      <param name="o">The o.</param>
+      <param name="mockerObservableCollectionChangedEventArgs">The <see cref="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs" /> instance containing the event data.</param>
+    </member>
+    <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.OnAuthorizedRolesChanged(System.Nullable{System.Object},System.Nullable{MockerObservableCollectionChangedEventArgs})">
+      <summary>
+       Handles the <see cref="E:AuthorizedRolesChanged" /> event.
+   </summary>
+      <param name="o">The o.</param>
+      <param name="mockerObservableCollectionChangedEventArgs">The <see cref="T:FastMoq.Collections.MockerObservableCollectionChangedEventArgs" /> instance containing the event data.</param>
+    </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ClickButton(IElement,Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Clicks the button element.
+    </summary>
       <inheritdoc />
+      <param name="button">The button.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ClickButton(System.String,Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Clicks the button element.
+    </summary>
       <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ClickButton``1(System.String,Func{System.Boolean},IRenderedComponent{``0},System.Nullable{TimeSpan})">
+      <summary>
+        Clicks the button element.
+    </summary>
       <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="startingComponent">The starting component.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ClickButton(Func{IElement, System.Boolean},Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Clicks the button element.
+    </summary>
       <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ClickButton``1(System.String,Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Clicks the button element.
+    </summary>
       <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ClickDropdownItem``1(IRenderedComponent{``0},System.String,System.String,Func{System.Boolean})">
+      <summary>
+        Clicks the dropdown item.
+    </summary>
       <inheritdoc />
+      <param name="component">The component.</param>
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="propName">Name of the property.</param>
+      <param name="waitFunc">The wait function.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.ClickDropdownItem``1(System.String,Func{System.Boolean},System.String)">
       <inheritdoc />
       <exception cref="T:System.ArgumentNullException">Component</exception>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.FindAllByTag(System.String)">
+      <summary>
+        Finds all by tag.
+    </summary>
       <inheritdoc />
+      <param name="tagName">Name of the tag.</param>
+      <returns>IEnumerable&lt;IElement&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.FindById(System.String)">
+      <summary>
+        Finds the by identifier.
+    </summary>
       <inheritdoc />
+      <param name="id">The identifier.</param>
+      <returns>IElement.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetComponent``1">
+      <summary>
+        Gets the component.
+    </summary>
       <inheritdoc />
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+      <example>
+    Get FetchData component. /&gt;
+    <code language="cs"><![CDATA[
+    var comp = GetComponent<FetchData>();
+    ]]></code></example>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetComponent``1(Func{IRenderedComponent{``0}, System.Boolean})">
+      <summary>
+        Gets the component.
+    </summary>
       <inheritdoc />
+      <param name="predicate">The predicate.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+      <example>
+    Get FetchData component with Id 1234. /&gt;
+    <code language="cs"><![CDATA[
+    var comp = GetComponent<FetchData>(x => x.ComponentId == 1234));
+    ]]></code></example>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetComponent``1(Func{IElement, System.Boolean})">
+      <summary>
+        Gets the component.
+    </summary>
       <inheritdoc />
+      <param name="predicate">The predicate.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IRenderedComponent&lt;TComponent&gt;.</returns>
+      <example>
+    Get FetchData component with inner html containing text. /&gt;
+    <code language="cs"><![CDATA[
+    var comp = GetComponent<FetchData>(element => element.InnerHtml.Contains("hello"));
+    ]]></code></example>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetComponents``1(System.Nullable{Func{IRenderedComponent{``0}, System.Boolean}})">
       <inheritdoc />
@@ -759,30 +886,68 @@
       <inheritdoc />
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetInjections(Type,Type)">
+      <summary>
+        Gets the injections.
+    </summary>
       <inheritdoc />
+      <param name="type">The type.</param>
+      <param name="injectAttribute">The inject attribute.</param>
+      <returns>IEnumerable&lt;PropertyInfo&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetInjections``1">
+      <summary>
+        Gets the injections.
+    </summary>
       <inheritdoc />
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IEnumerable&lt;PropertyInfo&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.GetInjections(Type)">
+      <summary>
+        Gets the injections.
+    </summary>
       <inheritdoc />
+      <param name="type">The type.</param>
+      <returns>IEnumerable&lt;PropertyInfo&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.InjectComponent(Type)">
+      <summary>
+        Injects the component.
+    </summary>
       <inheritdoc />
+      <param name="type">The type.</param>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.InjectComponent(Type,Type)">
+      <summary>
+        Injects the component.
+    </summary>
       <inheritdoc />
+      <param name="type">The type.</param>
+      <param name="injectAttribute">The inject attribute.</param>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.InjectComponent``1">
+      <summary>
+        Injects the component.
+    </summary>
       <inheritdoc />
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.InjectComponent``2">
+      <summary>
+        Injects the component.
+    </summary>
       <inheritdoc />
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <typeparam name="TInjectAttribute">The type of the t inject attribute.</typeparam>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.IsExists(System.String,System.Boolean)">
       <summary>
-Determines whether the specified CSS selector is exists.
-</summary>
+        Determines whether the specified CSS selector is exists.
+    </summary>
       <inheritdoc />
       <param name="cssSelector">The CSS selector.</param>
       <param name="throwOnNotExist">if set to <c>true</c> [throw on not exist].</param>
@@ -790,37 +955,128 @@ Determines whether the specified CSS selector is exists.
         <c>true</c> if the specified CSS selector is exists; otherwise, <c>false</c>.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderComponent(System.Boolean)">
+      <summary>
+        Renders the component. If the component is already rendered, it will act like a stateChanged.
+    </summary>
       <inheritdoc />
+      <param name="forceNew">if set to <c>true</c> [force new].</param>
+      <returns>IRenderedComponent&lt;T&gt;.</returns>
+      <example>
+    Render again without losing context. This honors any parameters in the RenderParameters action. /&gt;
+    <code language="cs"><![CDATA[
+    RenderComponent()
+    ]]></code></example>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderComponent(Action{ComponentParameterCollectionBuilder{`0}},System.Boolean)">
+      <summary>
+        Renders the component. If the component is already rendered, it will act like a stateChanged.
+    </summary>
       <inheritdoc />
+      <param name="parameterBuilder">The parameter builder.</param>
+      <param name="forceNew">if set to <c>true</c> [force new].</param>
+      <returns>IRenderedComponent&lt;T&gt;.</returns>
+      <example>
+    Render again with parameters without losing context
+    <code language="cs"><![CDATA[
+    RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()));
+    ]]></code></example>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetAutoComplete(System.String,System.String,Func{System.Boolean},System.String)">
+      <summary>
+        Sets the automatic complete.
+    </summary>
       <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="filterText">The filter text.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="itemCssSelector">The item CSS selector.</param>
+      <returns>Task.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,Func{System.Boolean},System.Nullable{TimeSpan},System.Nullable{IRenderedFragment})">
+      <summary>
+        Sets the element check.
+    </summary>
       <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="isChecked">if set to <c>true</c> [is checked].</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <param name="startingPoint">The starting point.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,Func{System.Boolean},System.Nullable{TimeSpan},System.Nullable{IRenderedFragment})">
+      <summary>
+        Sets the element switch.
+    </summary>
       <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="isChecked">if set to <c>true</c> [is checked].</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <param name="startingPoint">The starting point.</param>
+      <typeparam name="TComponent">The type of the t component.</typeparam>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(IElement,System.String,Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Sets the element text.
+    </summary>
       <inheritdoc />
+      <param name="element">The element.</param>
+      <param name="text">The text.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,Func{System.Boolean},System.Nullable{TimeSpan},System.Nullable{IRenderedFragment})">
+      <summary>
+        Sets the element text.
+    </summary>
       <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="text">The text.</param>
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <param name="startingPoint">The starting point.</param>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitDelay(System.Nullable{TimeSpan})">
+      <summary>
+        Waits the delay time. Use only when absolutely needed. Prefer use of WaitForState, WaitForExists, or
+    WaitForNotExists.
+    </summary>
       <inheritdoc />
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitForExists(System.String,System.Nullable{TimeSpan})">
+      <summary>
+        Waits for exists.
+    </summary>
       <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitForNotExists(System.String,System.Nullable{TimeSpan})">
+      <summary>
+        Waits for not exists.
+    </summary>
       <inheritdoc />
+      <param name="cssSelector">The CSS selector.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
     </member>
     <member name="M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitForState(Func{System.Boolean},System.Nullable{TimeSpan})">
+      <summary>
+        Waits for state.
+    </summary>
       <inheritdoc />
+      <param name="waitFunc">The wait function.</param>
+      <param name="waitTimeout">The wait timeout.</param>
+      <returns>
+        <c>true</c> if XXXX, <c>false</c> otherwise.</returns>
     </member>
     <member name="T:FastMoq.Web.Extensions.TestWebExtensions">
       <summary>

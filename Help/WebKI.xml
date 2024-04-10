@@ -11,8 +11,13 @@
   <HelpKINode Title=".PropertyChangedEventArgs property" Url="html/P-FastMoq.Collections.MockerObservableCollectionChangedEventArgs.PropertyChangedEventArgs.htm" />
   <HelpKINode Title="AddInjections(Of T) method" Url="html/M-FastMoq.Mocker.AddInjections--1.htm" />
   <HelpKINode Title="AddInjections&lt;T&gt; method" Url="html/M-FastMoq.Mocker.AddInjections--1.htm" />
+  <HelpKINode Title="AddOrUpdate(Of TKey, TValue) method" Url="html/M-FastMoq.Extensions.ObjectExtensions.AddOrUpdate--2.htm" />
+  <HelpKINode Title="AddOrUpdate&lt;TKey, TValue&gt; method" Url="html/M-FastMoq.Extensions.ObjectExtensions.AddOrUpdate--2.htm" />
   <HelpKINode Title="Arguments property" Url="html/P-FastMoq.Models.IInstanceModel.Arguments.htm" />
   <HelpKINode Title="Arguments property" Url="html/P-FastMoq.Models.InstanceModel.Arguments.htm" />
+  <HelpKINode Title="AsEnumerable method" Url="html/M-FastMoq.Models.ConstructorHistory.AsEnumerable.htm" />
+  <HelpKINode Title="AsLookup method" Url="html/M-FastMoq.Models.ConstructorHistory.AsLookup.htm" />
+  <HelpKINode Title="AsReadOnlyDictionary method" Url="html/M-FastMoq.Models.ConstructorHistory.AsReadOnlyDictionary.htm" />
   <HelpKINode Title="AuthContext property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.AuthContext.htm" />
   <HelpKINode Title="AuthorizedClaims property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.AuthorizedClaims.htm" />
   <HelpKINode Title="AuthorizedPolicies property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.AuthorizedPolicies.htm" />
@@ -72,7 +77,31 @@
   <HelpKINode Title="ComponentState&lt;T&gt;.ComponentState constructor" Url="html/M-FastMoq.Web.Blazor.Models.ComponentState-1.-ctor.htm" />
   <HelpKINode Title="ComponentType property" Url="html/P-FastMoq.Web.Blazor.Models.ComponentState.ComponentType.htm" />
   <HelpKINode Title="ConfigureServices property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.ConfigureServices.htm" />
+  <HelpKINode Title="ConstructorHistory class" Url="html/AllMembers.T-FastMoq.Models.ConstructorHistory.htm" />
+  <HelpKINode Title="ConstructorHistory class" Url="html/T-FastMoq.Models.ConstructorHistory.htm" />
+  <HelpKINode Title="ConstructorHistory class">
+    <HelpKINode Title="about ConstructorHistory class" Url="html/T-FastMoq.Models.ConstructorHistory.htm" />
+    <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Models.ConstructorHistory.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload-FastMoq.Models.ConstructorHistory.-ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Models.ConstructorHistory.htm" />
+    <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Models.ConstructorHistory.htm" />
+  </HelpKINode>
   <HelpKINode Title="ConstructorHistory property" Url="html/P-FastMoq.Mocker.ConstructorHistory.htm" />
+  <HelpKINode Title="ConstructorHistory.AsEnumerable method" Url="html/M-FastMoq.Models.ConstructorHistory.AsEnumerable.htm" />
+  <HelpKINode Title="ConstructorHistory.AsLookup method" Url="html/M-FastMoq.Models.ConstructorHistory.AsLookup.htm" />
+  <HelpKINode Title="ConstructorHistory.AsReadOnlyDictionary method" Url="html/M-FastMoq.Models.ConstructorHistory.AsReadOnlyDictionary.htm" />
+  <HelpKINode Title="ConstructorHistory.ConstructorHistory constructor" Url="html/Overload-FastMoq.Models.ConstructorHistory.-ctor.htm" />
+  <HelpKINode Title="ConstructorHistory.Contains method" Url="html/M-FastMoq.Models.ConstructorHistory.Contains.htm" />
+  <HelpKINode Title="ConstructorHistory.ContainsKey method" Url="html/M-FastMoq.Models.ConstructorHistory.ContainsKey.htm" />
+  <HelpKINode Title="ConstructorHistory.Count property" Url="html/P-FastMoq.Models.ConstructorHistory.Count.htm" />
+  <HelpKINode Title="ConstructorHistory.GetConstructor method" Url="html/M-FastMoq.Models.ConstructorHistory.GetConstructor.htm" />
+  <HelpKINode Title="ConstructorHistory.GetEnumerator method" Url="html/M-FastMoq.Models.ConstructorHistory.GetEnumerator.htm" />
+  <HelpKINode Title="ConstructorHistory.Item property" Url="html/Overload-FastMoq.Models.ConstructorHistory.Item.htm" />
+  <HelpKINode Title="ConstructorHistory.Item property" Url="html/P-FastMoq.Models.ConstructorHistory.Item-System.Int32-.htm" />
+  <HelpKINode Title="ConstructorHistory.Item property" Url="html/P-FastMoq.Models.ConstructorHistory.Item-System.Type-.htm" />
+  <HelpKINode Title="ConstructorHistory.Keys property" Url="html/P-FastMoq.Models.ConstructorHistory.Keys.htm" />
+  <HelpKINode Title="ConstructorHistory.TryGetValue method" Url="html/M-FastMoq.Models.ConstructorHistory.TryGetValue.htm" />
+  <HelpKINode Title="ConstructorHistory.Values property" Url="html/P-FastMoq.Models.ConstructorHistory.Values.htm" />
   <HelpKINode Title="ConstructorInfo property" Url="html/P-FastMoq.Models.ConstructorModel.ConstructorInfo.htm" />
   <HelpKINode Title="ConstructorModel class" Url="html/AllMembers.T-FastMoq.Models.ConstructorModel.htm" />
   <HelpKINode Title="ConstructorModel class" Url="html/T-FastMoq.Models.ConstructorModel.htm" />
@@ -83,7 +112,13 @@
     <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Models.ConstructorModel.htm" />
   </HelpKINode>
   <HelpKINode Title="ConstructorModel.ConstructorInfo property" Url="html/P-FastMoq.Models.ConstructorModel.ConstructorInfo.htm" />
+  <HelpKINode Title="ConstructorModel.Equals method" Url="html/Overload-FastMoq.Models.ConstructorModel.Equals.htm" />
+  <HelpKINode Title="ConstructorModel.GetHashCode method" Url="html/M-FastMoq.Models.ConstructorModel.GetHashCode.htm" />
   <HelpKINode Title="ConstructorModel.ParameterList property" Url="html/P-FastMoq.Models.ConstructorModel.ParameterList.htm" />
+  <HelpKINode Title="ConstructorModel.ToString method" Url="html/M-FastMoq.Models.ConstructorModel.ToString.htm" />
+  <HelpKINode Title="Contains method" Url="html/M-FastMoq.Models.ConstructorHistory.Contains.htm" />
+  <HelpKINode Title="ContainsKey method" Url="html/M-FastMoq.Models.ConstructorHistory.ContainsKey.htm" />
+  <HelpKINode Title="Count property" Url="html/P-FastMoq.Models.ConstructorHistory.Count.htm" />
   <HelpKINode Title="CreateComponent method" Url="html/M-FastMoq.MockerTestBase-1.CreateComponent.htm" />
   <HelpKINode Title="CreateComponentAction property" Url="html/P-FastMoq.MockerTestBase-1.CreateComponentAction.htm" />
   <HelpKINode Title="CreatedComponentAction property" Url="html/P-FastMoq.MockerTestBase-1.CreatedComponentAction.htm" />
@@ -92,6 +127,8 @@
   <HelpKINode Title="CreateFunc property" Url="html/P-FastMoq.Models.InstanceModel.CreateFunc.htm" />
   <HelpKINode Title="CreateHttpClient method" Url="html/M-FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient.htm" />
   <HelpKINode Title="CreateInstance method" Url="html/Overload-FastMoq.Mocker.CreateInstance-.htm" />
+  <HelpKINode Title="CreateInstanceByType(Of T) method" Url="html/M-FastMoq.Mocker.CreateInstanceByType--1.htm" />
+  <HelpKINode Title="CreateInstanceByType&lt;T&gt; method" Url="html/M-FastMoq.Mocker.CreateInstanceByType--1.htm" />
   <HelpKINode Title="CreateMockInternal method" Url="html/M-FastMoq.Extensions.MockerCreationExtensions.CreateMockInternal.htm" />
   <HelpKINode Title="creatingTypeList field" Url="html/F-FastMoq.Mocker.creatingTypeList.htm" />
   <HelpKINode Title="Current property" Url="html/P-FastMoq.Models.MockAsyncEnumerator-1.Current.htm" />
@@ -137,7 +174,6 @@
     <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Models.DbSetMock-1.htm" />
     <HelpKINode Title="constructor" Url="html/Overload-FastMoq.Models.DbSetMock-1.-ctor.htm" />
     <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Models.DbSetMock-1.htm" />
-    <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Models.DbSetMock-1.htm" />
   </HelpKINode>
   <HelpKINode Title="DbSetMock(Of TEntity).DbSetMock constructor" Url="html/Overload-FastMoq.Models.DbSetMock-1.-ctor.htm" />
   <HelpKINode Title="DbSetMock(Of TEntity).SetupAsyncListMethods method" Url="html/M-FastMoq.Models.DbSetMock-1.SetupAsyncListMethods.htm" />
@@ -150,7 +186,6 @@
     <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Models.DbSetMock-1.htm" />
     <HelpKINode Title="constructor" Url="html/Overload-FastMoq.Models.DbSetMock-1.-ctor.htm" />
     <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Models.DbSetMock-1.htm" />
-    <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Models.DbSetMock-1.htm" />
   </HelpKINode>
   <HelpKINode Title="DbSetMock&lt;TEntity&gt;.DbSetMock constructor" Url="html/Overload-FastMoq.Models.DbSetMock-1.-ctor.htm" />
   <HelpKINode Title="DbSetMock&lt;TEntity&gt;.SetupAsyncListMethods method" Url="html/M-FastMoq.Models.DbSetMock-1.SetupAsyncListMethods.htm" />
@@ -158,11 +193,11 @@
   <HelpKINode Title="DbSetMock&lt;TEntity&gt;.SetupMockMethods method" Url="html/M-FastMoq.Models.DbSetMock-1.SetupMockMethods.htm" />
   <HelpKINode Title="Dispose method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.Dispose.htm" />
   <HelpKINode Title="Dispose method" Url="html/Overload-FastMoq.MockerTestBase-1.Dispose.htm" />
-  <HelpKINode Title="Dispose method" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.Dispose.htm" />
   <HelpKINode Title="DisposeAsync method" Url="html/M-FastMoq.Models.MockAsyncEnumerator-1.DisposeAsync.htm" />
   <HelpKINode Title="EnsureNullCheckThrown method" Url="html/Overload-FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown.htm" />
   <HelpKINode Title="Equality operator" Url="html/M-FastMoq.Models.MockModel-1.op_Equality.htm" />
   <HelpKINode Title="Equality operator" Url="html/M-FastMoq.Models.MockModel.op_Equality.htm" />
+  <HelpKINode Title="Equals method" Url="html/Overload-FastMoq.Models.ConstructorModel.Equals.htm" />
   <HelpKINode Title="Equals method" Url="html/Overload-FastMoq.Models.MockModel-1.Equals.htm" />
   <HelpKINode Title="Equals method" Url="html/Overload-FastMoq.Models.MockModel.Equals.htm" />
   <HelpKINode Title="ExceptionLog property" Url="html/P-FastMoq.Mocker.ExceptionLog.htm" />
@@ -185,6 +220,8 @@
   <HelpKINode Title="FastMoq.MockerTestBase&lt;TComponent&gt; class" Url="html/AllMembers.T-FastMoq.MockerTestBase-1.htm" />
   <HelpKINode Title="FastMoq.MockerTestBase&lt;TComponent&gt; class" Url="html/T-FastMoq.MockerTestBase-1.htm" />
   <HelpKINode Title="FastMoq.Models namespace" Url="html/N-FastMoq.Models.htm" />
+  <HelpKINode Title="FastMoq.Models.ConstructorHistory class" Url="html/AllMembers.T-FastMoq.Models.ConstructorHistory.htm" />
+  <HelpKINode Title="FastMoq.Models.ConstructorHistory class" Url="html/T-FastMoq.Models.ConstructorHistory.htm" />
   <HelpKINode Title="FastMoq.Models.ConstructorModel class" Url="html/AllMembers.T-FastMoq.Models.ConstructorModel.htm" />
   <HelpKINode Title="FastMoq.Models.ConstructorModel class" Url="html/T-FastMoq.Models.ConstructorModel.htm" />
   <HelpKINode Title="FastMoq.Models.DbContextMock(Of TEntity) class" Url="html/AllMembers.T-FastMoq.Models.DbContextMock-1.htm" />
@@ -206,7 +243,6 @@
   <HelpKINode Title="FastMoq.Models.IDbContextMock&lt;TEntity&gt; interface" Url="html/T-FastMoq.Models.IDbContextMock-1.htm" />
   <HelpKINode Title="FastMoq.Models.IDbSetMock interface" Url="html/AllMembers.T-FastMoq.Models.IDbSetMock.htm" />
   <HelpKINode Title="FastMoq.Models.IDbSetMock interface" Url="html/T-FastMoq.Models.IDbSetMock.htm" />
-  <HelpKINode Title="FastMoq.Models.IHistoryModel interface" Url="html/AllMembers.T-FastMoq.Models.IHistoryModel.htm" />
   <HelpKINode Title="FastMoq.Models.IHistoryModel interface" Url="html/T-FastMoq.Models.IHistoryModel.htm" />
   <HelpKINode Title="FastMoq.Models.IInstanceModel interface" Url="html/AllMembers.T-FastMoq.Models.IInstanceModel.htm" />
   <HelpKINode Title="FastMoq.Models.IInstanceModel interface" Url="html/T-FastMoq.Models.IInstanceModel.htm" />
@@ -216,9 +252,7 @@
   <HelpKINode Title="FastMoq.Models.InstanceModel(Of TClass) class" Url="html/T-FastMoq.Models.InstanceModel-1.htm" />
   <HelpKINode Title="FastMoq.Models.InstanceModel&lt;TClass&gt; class" Url="html/AllMembers.T-FastMoq.Models.InstanceModel-1.htm" />
   <HelpKINode Title="FastMoq.Models.InstanceModel&lt;TClass&gt; class" Url="html/T-FastMoq.Models.InstanceModel-1.htm" />
-  <HelpKINode Title="FastMoq.Models.MockDbContextOptions(Of T) class" Url="html/AllMembers.T-FastMoq.Models.MockDbContextOptions-1.htm" />
   <HelpKINode Title="FastMoq.Models.MockDbContextOptions(Of T) class" Url="html/T-FastMoq.Models.MockDbContextOptions-1.htm" />
-  <HelpKINode Title="FastMoq.Models.MockDbContextOptions&lt;T&gt; class" Url="html/AllMembers.T-FastMoq.Models.MockDbContextOptions-1.htm" />
   <HelpKINode Title="FastMoq.Models.MockDbContextOptions&lt;T&gt; class" Url="html/T-FastMoq.Models.MockDbContextOptions-1.htm" />
   <HelpKINode Title="FastMoq.Models.MockModel class" Url="html/AllMembers.T-FastMoq.Models.MockModel.htm" />
   <HelpKINode Title="FastMoq.Models.MockModel class" Url="html/T-FastMoq.Models.MockModel.htm" />
@@ -274,15 +308,18 @@
   <HelpKINode Title="GetComponents method" Url="html/Overload-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.GetComponents-.htm" />
   <HelpKINode Title="GetComponents method" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.GetComponents-.htm" />
   <HelpKINode Title="GetConstructor method" Url="html/M-FastMoq.MockerTestBase-1.GetConstructor.htm" />
+  <HelpKINode Title="GetConstructor method" Url="html/M-FastMoq.Models.ConstructorHistory.GetConstructor.htm" />
   <HelpKINode Title="GetContentBytesAsync method" Url="html/M-FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync.htm" />
   <HelpKINode Title="GetContentStreamAsync method" Url="html/M-FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync.htm" />
   <HelpKINode Title="GetDbContext method" Url="html/Overload-FastMoq.Mocker.GetDbContext-.htm" />
   <HelpKINode Title="GetDefaultValue method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetDefaultValue.htm" />
+  <HelpKINode Title="GetEnumerator method" Url="html/M-FastMoq.Models.ConstructorHistory.GetEnumerator.htm" />
   <HelpKINode Title="GetField(Of TObject) method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetField--1.htm" />
   <HelpKINode Title="GetField&lt;TObject&gt; method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetField--1.htm" />
   <HelpKINode Title="GetFieldInfo(Of TType) method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetFieldInfo--1.htm" />
   <HelpKINode Title="GetFieldInfo&lt;TType&gt; method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetFieldInfo--1.htm" />
   <HelpKINode Title="GetFieldValue method" Url="html/Overload-FastMoq.Extensions.TestClassExtensions.GetFieldValue-.htm" />
+  <HelpKINode Title="GetHashCode method" Url="html/M-FastMoq.Models.ConstructorModel.GetHashCode.htm" />
   <HelpKINode Title="GetHashCode method" Url="html/Overload-FastMoq.Models.MockModel-1.GetHashCode.htm" />
   <HelpKINode Title="GetHashCode method" Url="html/Overload-FastMoq.Models.MockModel.GetHashCode.htm" />
   <HelpKINode Title="GetHttpHandlerSetup method" Url="html/M-FastMoq.Mocker.GetHttpHandlerSetup.htm" />
@@ -308,7 +345,6 @@
   <HelpKINode Title="GetProperty&lt;TObject&gt; method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetProperty--1.htm" />
   <HelpKINode Title="GetPropertyValue(Of TObject) method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetPropertyValue--1.htm" />
   <HelpKINode Title="GetPropertyValue&lt;TObject&gt; method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetPropertyValue--1.htm" />
-  <HelpKINode Title="GetProtectedMock method" Url="html/M-FastMoq.Mocker.GetProtectedMock.htm" />
   <HelpKINode Title="GetRequiredObject(Of T) method" Url="html/M-FastMoq.Mocker.GetRequiredObject--1.htm" />
   <HelpKINode Title="GetRequiredObject&lt;T&gt; method" Url="html/M-FastMoq.Mocker.GetRequiredObject--1.htm" />
   <HelpKINode Title="GetStringContent method" Url="html/M-FastMoq.Mocker.GetStringContent.htm" />
@@ -350,19 +386,15 @@
   <HelpKINode Title="IDbSetMock.SetupAsyncListMethods method" Url="html/M-FastMoq.Models.IDbSetMock.SetupAsyncListMethods.htm" />
   <HelpKINode Title="IDbSetMock.SetupListMethods method" Url="html/M-FastMoq.Models.IDbSetMock.SetupListMethods.htm" />
   <HelpKINode Title="IDbSetMock.SetupMockMethods method" Url="html/M-FastMoq.Models.IDbSetMock.SetupMockMethods.htm" />
-  <HelpKINode Title="IHistoryModel interface" Url="html/AllMembers.T-FastMoq.Models.IHistoryModel.htm" />
   <HelpKINode Title="IHistoryModel interface" Url="html/T-FastMoq.Models.IHistoryModel.htm" />
   <HelpKINode Title="IHistoryModel interface">
     <HelpKINode Title="about IHistoryModel interface" Url="html/T-FastMoq.Models.IHistoryModel.htm" />
-    <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Models.IHistoryModel.htm" />
-    <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Models.IHistoryModel.htm" />
   </HelpKINode>
   <HelpKINode Title="IInstanceModel interface" Url="html/AllMembers.T-FastMoq.Models.IInstanceModel.htm" />
   <HelpKINode Title="IInstanceModel interface" Url="html/T-FastMoq.Models.IInstanceModel.htm" />
   <HelpKINode Title="IInstanceModel interface">
     <HelpKINode Title="about IInstanceModel interface" Url="html/T-FastMoq.Models.IInstanceModel.htm" />
     <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Models.IInstanceModel.htm" />
-    <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Models.IInstanceModel.htm" />
     <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Models.IInstanceModel.htm" />
   </HelpKINode>
   <HelpKINode Title="IInstanceModel.Arguments property" Url="html/P-FastMoq.Models.IInstanceModel.Arguments.htm" />
@@ -431,7 +463,6 @@
   <HelpKINode Title="InstanceModel class">
     <HelpKINode Title="about InstanceModel class" Url="html/T-FastMoq.Models.InstanceModel.htm" />
     <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Models.InstanceModel.htm" />
-    <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Models.InstanceModel.htm" />
     <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Models.InstanceModel.htm" />
   </HelpKINode>
   <HelpKINode Title="InstanceModel(Of TClass) class" Url="html/AllMembers.T-FastMoq.Models.InstanceModel-1.htm" />
@@ -440,7 +471,6 @@
     <HelpKINode Title="about InstanceModel(Of TClass) class" Url="html/T-FastMoq.Models.InstanceModel-1.htm" />
     <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Models.InstanceModel-1.htm" />
     <HelpKINode Title="constructor" Url="html/Overload-FastMoq.Models.InstanceModel-1.-ctor.htm" />
-    <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Models.InstanceModel-1.htm" />
     <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Models.InstanceModel-1.htm" />
   </HelpKINode>
   <HelpKINode Title="InstanceModel(Of TClass).CreateFunc property" Url="html/P-FastMoq.Models.InstanceModel-1.CreateFunc.htm" />
@@ -456,7 +486,6 @@
     <HelpKINode Title="about InstanceModel&lt;TClass&gt; class" Url="html/T-FastMoq.Models.InstanceModel-1.htm" />
     <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Models.InstanceModel-1.htm" />
     <HelpKINode Title="constructor" Url="html/Overload-FastMoq.Models.InstanceModel-1.-ctor.htm" />
-    <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Models.InstanceModel-1.htm" />
     <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Models.InstanceModel-1.htm" />
   </HelpKINode>
   <HelpKINode Title="InstanceModel&lt;TClass&gt;.CreateFunc property" Url="html/P-FastMoq.Models.InstanceModel-1.CreateFunc.htm" />
@@ -471,24 +500,20 @@
   <HelpKINode Title="IsEqual&lt;T&gt; method" Url="html/M-FastMoq.Models.MockModel.IsEqual--1.htm" />
   <HelpKINode Title="IsExists method" Url="html/M-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.IsExists.htm" />
   <HelpKINode Title="IsExists method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.IsExists.htm" />
+  <HelpKINode Title="Item property" Url="html/Overload-FastMoq.Models.ConstructorHistory.Item.htm" />
+  <HelpKINode Title="Item property" Url="html/P-FastMoq.Models.ConstructorHistory.Item-System.Int32-.htm" />
+  <HelpKINode Title="Item property" Url="html/P-FastMoq.Models.ConstructorHistory.Item-System.Type-.htm" />
+  <HelpKINode Title="Keys property" Url="html/P-FastMoq.Models.ConstructorHistory.Keys.htm" />
   <HelpKINode Title="Mock property" Url="html/P-FastMoq.Models.MockModel-1.Mock.htm" />
   <HelpKINode Title="Mock property" Url="html/P-FastMoq.Models.MockModel.Mock.htm" />
   <HelpKINode Title="mockCollection field" Url="html/F-FastMoq.Mocker.mockCollection.htm" />
-  <HelpKINode Title="MockDbContextOptions(Of T) class" Url="html/AllMembers.T-FastMoq.Models.MockDbContextOptions-1.htm" />
   <HelpKINode Title="MockDbContextOptions(Of T) class" Url="html/T-FastMoq.Models.MockDbContextOptions-1.htm" />
   <HelpKINode Title="MockDbContextOptions(Of T) class">
     <HelpKINode Title="about MockDbContextOptions(Of T) class" Url="html/T-FastMoq.Models.MockDbContextOptions-1.htm" />
-    <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Models.MockDbContextOptions-1.htm" />
-    <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Models.MockDbContextOptions-1.htm" />
-    <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Models.MockDbContextOptions-1.htm" />
   </HelpKINode>
-  <HelpKINode Title="MockDbContextOptions&lt;T&gt; class" Url="html/AllMembers.T-FastMoq.Models.MockDbContextOptions-1.htm" />
   <HelpKINode Title="MockDbContextOptions&lt;T&gt; class" Url="html/T-FastMoq.Models.MockDbContextOptions-1.htm" />
   <HelpKINode Title="MockDbContextOptions&lt;T&gt; class">
     <HelpKINode Title="about MockDbContextOptions&lt;T&gt; class" Url="html/T-FastMoq.Models.MockDbContextOptions-1.htm" />
-    <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Models.MockDbContextOptions-1.htm" />
-    <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Models.MockDbContextOptions-1.htm" />
-    <HelpKINode Title="properties" Url="html/Properties.T-FastMoq.Models.MockDbContextOptions-1.htm" />
   </HelpKINode>
   <HelpKINode Title="Mocker class" Url="html/AllMembers.T-FastMoq.Mocker.htm" />
   <HelpKINode Title="Mocker class" Url="html/T-FastMoq.Mocker.htm" />
@@ -504,6 +529,8 @@
   <HelpKINode Title="Mocker.AddInjections&lt;T&gt; method" Url="html/M-FastMoq.Mocker.AddInjections--1.htm" />
   <HelpKINode Title="Mocker.ConstructorHistory property" Url="html/P-FastMoq.Mocker.ConstructorHistory.htm" />
   <HelpKINode Title="Mocker.CreateInstance method" Url="html/Overload-FastMoq.Mocker.CreateInstance-.htm" />
+  <HelpKINode Title="Mocker.CreateInstanceByType(Of T) method" Url="html/M-FastMoq.Mocker.CreateInstanceByType--1.htm" />
+  <HelpKINode Title="Mocker.CreateInstanceByType&lt;T&gt; method" Url="html/M-FastMoq.Mocker.CreateInstanceByType--1.htm" />
   <HelpKINode Title="Mocker.creatingTypeList field" Url="html/F-FastMoq.Mocker.creatingTypeList.htm" />
   <HelpKINode Title="Mocker.DbConnection property" Url="html/P-FastMoq.Mocker.DbConnection.htm" />
   <HelpKINode Title="Mocker.ExceptionLog property" Url="html/P-FastMoq.Mocker.ExceptionLog.htm" />
@@ -518,7 +545,6 @@
   <HelpKINode Title="Mocker.GetMethodArgData method" Url="html/M-FastMoq.Mocker.GetMethodArgData.htm" />
   <HelpKINode Title="Mocker.GetMethodDefaultData method" Url="html/M-FastMoq.Mocker.GetMethodDefaultData.htm" />
   <HelpKINode Title="Mocker.GetObject method" Url="html/Overload-FastMoq.Mocker.GetObject.htm" />
-  <HelpKINode Title="Mocker.GetProtectedMock method" Url="html/M-FastMoq.Mocker.GetProtectedMock.htm" />
   <HelpKINode Title="Mocker.GetRequiredObject(Of T) method" Url="html/M-FastMoq.Mocker.GetRequiredObject--1.htm" />
   <HelpKINode Title="Mocker.GetRequiredObject&lt;T&gt; method" Url="html/M-FastMoq.Mocker.GetRequiredObject--1.htm" />
   <HelpKINode Title="Mocker.GetStringContent method" Url="html/M-FastMoq.Mocker.GetStringContent.htm" />
@@ -552,7 +578,6 @@
   <HelpKINode Title="MockerBlazorTestBase(Of T).Component property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.Component.htm" />
   <HelpKINode Title="MockerBlazorTestBase(Of T).ConfigureServices property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.ConfigureServices.htm" />
   <HelpKINode Title="MockerBlazorTestBase(Of T).Dispose method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.Dispose.htm" />
-  <HelpKINode Title="MockerBlazorTestBase(Of T).Dispose method" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.Dispose.htm" />
   <HelpKINode Title="MockerBlazorTestBase(Of T).FindAllByTag method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.FindAllByTag.htm" />
   <HelpKINode Title="MockerBlazorTestBase(Of T).FindById method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.FindById.htm" />
   <HelpKINode Title="MockerBlazorTestBase(Of T).GetComponent method" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.GetComponent-.htm" />
@@ -564,6 +589,9 @@
   <HelpKINode Title="MockerBlazorTestBase(Of T).MockerBlazorTestBase constructor" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.-ctor.htm" />
   <HelpKINode Title="MockerBlazorTestBase(Of T).Mocks property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.Mocks.htm" />
   <HelpKINode Title="MockerBlazorTestBase(Of T).NavigationManager property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.NavigationManager.htm" />
+  <HelpKINode Title="MockerBlazorTestBase(Of T).OnAuthorizedClaimsChanged method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedClaimsChanged.htm" />
+  <HelpKINode Title="MockerBlazorTestBase(Of T).OnAuthorizedPoliciesChanged method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedPoliciesChanged.htm" />
+  <HelpKINode Title="MockerBlazorTestBase(Of T).OnAuthorizedRolesChanged method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedRolesChanged.htm" />
   <HelpKINode Title="MockerBlazorTestBase(Of T).RenderComponent method" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.RenderComponent.htm" />
   <HelpKINode Title="MockerBlazorTestBase(Of T).RenderParameters property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.RenderParameters.htm" />
   <HelpKINode Title="MockerBlazorTestBase(Of T).SetAutoComplete method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.SetAutoComplete.htm" />
@@ -600,7 +628,6 @@
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.Component property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.Component.htm" />
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.ConfigureServices property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.ConfigureServices.htm" />
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.Dispose method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.Dispose.htm" />
-  <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.Dispose method" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.Dispose.htm" />
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.FindAllByTag method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.FindAllByTag.htm" />
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.FindById method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.FindById.htm" />
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.GetComponent method" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.GetComponent-.htm" />
@@ -612,6 +639,9 @@
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.MockerBlazorTestBase constructor" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.-ctor.htm" />
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.Mocks property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.Mocks.htm" />
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.NavigationManager property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.NavigationManager.htm" />
+  <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.OnAuthorizedClaimsChanged method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedClaimsChanged.htm" />
+  <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.OnAuthorizedPoliciesChanged method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedPoliciesChanged.htm" />
+  <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.OnAuthorizedRolesChanged method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedRolesChanged.htm" />
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.RenderComponent method" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.RenderComponent.htm" />
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.RenderParameters property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.RenderParameters.htm" />
   <HelpKINode Title="MockerBlazorTestBase&lt;T&gt;.SetAutoComplete method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.SetAutoComplete.htm" />
@@ -772,10 +802,15 @@
     <HelpKINode Title="all members" Url="html/AllMembers.T-FastMoq.Extensions.ObjectExtensions.htm" />
     <HelpKINode Title="methods" Url="html/Methods.T-FastMoq.Extensions.ObjectExtensions.htm" />
   </HelpKINode>
+  <HelpKINode Title="ObjectExtensions.AddOrUpdate(Of TKey, TValue) method" Url="html/M-FastMoq.Extensions.ObjectExtensions.AddOrUpdate--2.htm" />
+  <HelpKINode Title="ObjectExtensions.AddOrUpdate&lt;TKey, TValue&gt; method" Url="html/M-FastMoq.Extensions.ObjectExtensions.AddOrUpdate--2.htm" />
   <HelpKINode Title="ObjectExtensions.RaiseIf method" Url="html/M-FastMoq.Extensions.ObjectExtensions.RaiseIf.htm" />
   <HelpKINode Title="ObjectExtensions.RaiseIfNull method" Url="html/Overload-FastMoq.Extensions.ObjectExtensions.RaiseIfNull-.htm" />
   <HelpKINode Title="ObjectExtensions.RaiseIfNullOrEmpty method" Url="html/M-FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrEmpty.htm" />
   <HelpKINode Title="ObjectExtensions.RaiseIfNullOrWhitespace method" Url="html/M-FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace.htm" />
+  <HelpKINode Title="OnAuthorizedClaimsChanged method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedClaimsChanged.htm" />
+  <HelpKINode Title="OnAuthorizedPoliciesChanged method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedPoliciesChanged.htm" />
+  <HelpKINode Title="OnAuthorizedRolesChanged method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedRolesChanged.htm" />
   <HelpKINode Title="ParameterList property" Url="html/P-FastMoq.Models.ConstructorModel.ParameterList.htm" />
   <HelpKINode Title="ParentComponentState property" Url="html/P-FastMoq.Web.Blazor.Models.ComponentState.ParentComponentState.htm" />
   <HelpKINode Title="PropertyChangedEventArgs property" Url="html/P-FastMoq.Collections.MockerObservableCollectionChangedEventArgs.PropertyChangedEventArgs.htm" />
@@ -883,11 +918,14 @@
   <HelpKINode Title="TestWebExtensions.GetObjectResultContent(Of T) method" Url="html/M-FastMoq.Web.Extensions.TestWebExtensions.GetObjectResultContent--1.htm" />
   <HelpKINode Title="TestWebExtensions.GetObjectResultContent&lt;T&gt; method" Url="html/M-FastMoq.Web.Extensions.TestWebExtensions.GetObjectResultContent--1.htm" />
   <HelpKINode Title="TokenSource property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.TokenSource.htm" />
+  <HelpKINode Title="ToString method" Url="html/M-FastMoq.Models.ConstructorModel.ToString.htm" />
   <HelpKINode Title="ToString method" Url="html/M-FastMoq.Models.MockModel.ToString.htm" />
+  <HelpKINode Title="TryGetValue method" Url="html/M-FastMoq.Models.ConstructorHistory.TryGetValue.htm" />
   <HelpKINode Title="Type property" Url="html/P-FastMoq.Models.IInstanceModel.Type.htm" />
   <HelpKINode Title="Type property" Url="html/P-FastMoq.Models.InstanceModel.Type.htm" />
   <HelpKINode Title="Type property" Url="html/P-FastMoq.Models.MockModel-1.Type.htm" />
   <HelpKINode Title="Type property" Url="html/P-FastMoq.Models.MockModel.Type.htm" />
+  <HelpKINode Title="Values property" Url="html/P-FastMoq.Models.ConstructorHistory.Values.htm" />
   <HelpKINode Title="WaitDelay method" Url="html/M-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.WaitDelay.htm" />
   <HelpKINode Title="WaitDelay method" Url="html/M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.WaitDelay.htm" />
   <HelpKINode Title="WaitFor method" Url="html/Overload-FastMoq.MockerTestBase-1.WaitFor-.htm" />
