@@ -331,40 +331,17 @@ namespace FastMoq
         /// <returns><see cref="Nullable{T}" />.</returns>
         public T? CreateInstance<T>(bool usePredefinedFileSystem, params object?[] args) where T : class
         {
-            if (typeof(T).IsMockFileSystem(usePredefinedFileSystem))
+            if (usePredefinedFileSystem && fileSystem is T mockFileSystem)
             {
-                return fileSystem as T;
+                return mockFileSystem;
             }
 
             var tType = typeof(T);
             var typeInstanceModel = GetTypeModel(tType);
 
-            if (!creatingTypeList.Contains(tType))
+            if (TryGetExistingObject(tType, typeInstanceModel, out T? instance))
             {
-                if (typeInstanceModel.CreateFunc != null)
-                {
-                    creatingTypeList.Add(tType);
-                    T obj;
-
-                    try
-                    {
-                        ConstructorHistory.AddOrUpdate(tType, typeInstanceModel);
-                        obj = (T) typeInstanceModel.CreateFunc(this);
-                    }
-                    finally
-                    {
-                        creatingTypeList.Remove(tType);
-                    }
-
-                    return obj;
-                }
-
-                // Special handling for DbContext types.
-                if (tType.IsAssignableTo(typeof(DbContext)))
-                {
-                    var mockObj = GetMockDbContext(tType);
-                    return (T?) mockObj.Object;
-                }
+                return instance;
             }
 
             args.RaiseIfNull();
@@ -376,12 +353,75 @@ namespace FastMoq
 
             var instanceType = typeInstanceModel.InstanceType;
 
-            var constructor =
-                args.Length > 0
-                    ? FindConstructor(instanceType, false, args)
-                    : FindConstructor(false, instanceType, false);
+            var constructor = GetConstructorByArgs(args, instanceType, false);
 
             return this.CreateInstanceInternal<T>(constructor);
+        }
+
+        private ConstructorModel GetConstructorByArgs(object?[] args, Type instanceType, bool nonPublic)
+        {
+            var constructor =
+                args.Length > 0
+                    ? FindConstructor(instanceType, nonPublic, args)
+                    : FindConstructor(false, instanceType, nonPublic);
+
+            return constructor;
+        }
+
+        private bool TryGetExistingObject<T>(Type tType, IInstanceModel typeInstanceModel, out T? instance) where T : class
+        {
+            instance = default;
+
+            if (!creatingTypeList.Contains(tType))
+            {
+                if (TryGetModelInstance(typeInstanceModel, tType, out var modelInstance))
+                {
+                    {
+                        instance = (T?) modelInstance;
+                        return true;
+                    }
+                }
+
+                // Special handling for DbContext types.
+                if (tType.IsAssignableTo(typeof(DbContext)))
+                {
+                    var mockObj = GetMockDbContext(tType);
+
+                    {
+                        instance = (T?) mockObj.Object;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool TryGetModelInstance(IInstanceModel typeInstanceModel, Type tType, out object? instance)
+        {
+            if (typeInstanceModel.CreateFunc != null)
+            {
+                creatingTypeList.Add(tType);
+                object obj;
+
+                try
+                {
+                    ConstructorHistory.AddOrUpdate(tType, typeInstanceModel);
+                    obj = typeInstanceModel.CreateFunc(this);
+                }
+                finally
+                {
+                    creatingTypeList.Remove(tType);
+                }
+
+                {
+                    instance = obj;
+                    return true;
+                }
+            }
+
+            instance = null;
+            return false;
         }
 
         /// <summary>
@@ -432,11 +472,7 @@ namespace FastMoq
         /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
         public object? CreateInstanceNonPublic(Type type, params object?[] args)
         {
-            var constructor =
-                args?.Length > 0
-                    ? FindConstructor(type, true, args)
-                    : FindConstructor(false, type, true);
-
+            var constructor = GetConstructorByArgs(args, type, true);
             return constructor.ConstructorInfo?.Invoke(constructor.ParameterList);
         }
 

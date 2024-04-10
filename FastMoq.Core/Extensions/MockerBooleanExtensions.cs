@@ -33,15 +33,5 @@ namespace FastMoq.Extensions
                 ? throw new ArgumentException("type must be a class.", nameof(type))
                 : mocker.mockCollection.Exists(x => x.Type == type);
         }
-
-        /// <summary>
-        ///     Determines whether [is mock file system] [the specified use predefined file system].
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
-        /// <returns><c>true</c> if [is mock file system] [the specified use predefined file system]; otherwise, <c>false</c>.</returns>
-        internal static bool IsMockFileSystem(this Type type, bool usePredefinedFileSystem) => usePredefinedFileSystem &&
-                                                                                               (type == typeof(IFileSystem) ||
-                                                                                                type == typeof(FileSystem));
     }
 }
