@@ -11,10 +11,7 @@ namespace FastMoq
         /// </summary>
         /// <returns>ConstructorInfo of the constructor.</returns>
         /// <exception cref="TypeAccessException">Error finding the constructor used to create the component.</exception>
-        protected ConstructorInfo GetConstructor() => Mocks.ConstructorHistory
-                                                          .First(x => x.Key.Name == typeof(TComponent).Name)
-                                                          .SelectMany(x => x).OfType<ConstructorModel>().Select(x => x.ConstructorInfo)
-                                                          .LastOrDefault() ??
+        protected ConstructorInfo GetConstructor() => Mocks.ConstructorHistory.GetConstructor(typeof(TComponent)) ??
                                                       throw new TypeAccessException("Error finding the constructor used to create the component.");
 
         /// <summary>

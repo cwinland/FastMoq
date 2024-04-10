@@ -4,7 +4,7 @@ namespace FastMoq.Models
 {
     /// <inheritdoc />
     /// <summary>
-    ///     Class InstanceModel.
+    ///     Class InstanceModel{TClass} represents a type and how to create that type's instance.
     ///     Implements the <see cref="InstanceModel" />
     /// </summary>
     /// <typeparam name="TClass">The type of the t class.</typeparam>

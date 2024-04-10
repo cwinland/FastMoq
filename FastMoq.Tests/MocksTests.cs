@@ -198,6 +198,7 @@ namespace FastMoq.Tests
             new Action(() => Mocks.CreateInstance<TestClassMany>()).Should().Throw<AmbiguousImplementationException>();
             new Action(() => Mocks.CreateInstanceNonPublic<TestClassOne>().Should().NotBeNull()).Should().Throw<AmbiguousImplementationException>();
 
+            Mocks.Strict = true;
             // No Constructor.
             new Action(() => Mocks.CreateInstance<IFileSystem>(false).Should().NotBeNull()).Should().Throw<NotImplementedException>();
 
@@ -228,6 +229,7 @@ namespace FastMoq.Tests
             Mocks.CreateInstance<TestClassMany>(4).Should().NotBeNull();
             Mocks.CreateInstance<TestClassMany>("str").Should().NotBeNull();
             Mocks.CreateInstance<TestClassMany>(true, 4, "str").Should().NotBeNull();
+
             Action a = () => Mocks.CreateInstance<TestClassMany>("4", "str").Should().NotBeNull();
             a.Should().Throw<NotImplementedException>();
             IFile file = new FileWrapper(new FileSystem());

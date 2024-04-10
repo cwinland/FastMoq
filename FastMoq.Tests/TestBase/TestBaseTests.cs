@@ -22,6 +22,20 @@ namespace FastMoq.Tests.TestBase
     public class TestBaseTests : MockerTestBase<TestClass>
     {
         [Fact]
+        public void History_ShouldShowConstructor()
+        {
+            Mocks.ConstructorHistory.Should().NotBeNull();
+            Mocks.ConstructorHistory.AsEnumerable().Should().HaveCount(1);
+            Mocks.ConstructorHistory.Count.Should().Be(1);
+            Mocks.ConstructorHistory.Contains(typeof(TestClass)).Should().BeTrue();
+            Mocks.ConstructorHistory[0].Key.Name.Should().Be(nameof(TestClass));
+            var values = Mocks.ConstructorHistory[Mocks.ConstructorHistory[0].Key].ToList();
+            values.Count.Should().Be(1);
+            values.Should().HaveCount(1);
+            values.First().Should().BeOfType<ConstructorModel>();
+        }
+
+        [Fact]
         public void CustomMocksTest()
         {
             var mock = new Mock<IFileSystem>();
@@ -179,7 +193,7 @@ namespace FastMoq.Tests.TestBase
             [Fact]
             public void ConstructorCreatedUsingCorrectTypes()
             {
-                Mocks.ConstructorHistory.Should().NotBeEmpty();
+                Mocks.ConstructorHistory.AsEnumerable().Should().NotBeEmpty();
                 var parameters = GetConstructor().GetParameters().Select(x => x.ParameterType).ToList();
                 parameters[0].Should().Be(typeof(IFileSystem));
                 parameters[1].Should().Be(typeof(string));
@@ -202,7 +216,7 @@ namespace FastMoq.Tests.TestBase
             [Fact]
             public void ConstructorCreatedUsingCorrectTypes()
             {
-                Mocks.ConstructorHistory.Should().NotBeEmpty();
+                Mocks.ConstructorHistory.AsEnumerable().Should().NotBeEmpty();
                 var parameters = GetConstructor().GetParameters().Select(x => x.ParameterType).ToList();
                 parameters.Count().Should().Be(0);
             }

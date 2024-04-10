@@ -136,6 +136,21 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Extensions.htm" target="_self">FastMoq.Extensions Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerBooleanExtensions.htm" target="_self">MockerBooleanExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerCreationExtensions.htm" target="_self">MockerCreationExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerHttpExtensions.htm" target="_self">MockerHttpExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.ObjectExtensions.htm" target="_self">ObjectExtensions Class</a>
 <div class="Hidden">
 </div>
@@ -150,6 +165,11 @@
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
 <div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorHistory.htm" target="_self">ConstructorHistory Class</a>
+<div class="Hidden">
+</div>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
 <div class="Hidden">
@@ -309,8 +329,8 @@
                       </td>
                       <td>
                         <div class="summary">
-Gets the constructor history collection.
-</div>
+       Gets the constructor history.
+   </div>
                       </td>
                     </tr>
                     <tr data="public;declared;notNetfw;">
@@ -322,8 +342,8 @@ Gets the constructor history collection.
                       </td>
                       <td>
                         <div class="summary">
-Gets the database connection. The default value is a memory Sqlite database connection unless otherwise set.
-</div>
+       Gets the database connection. The default value is a memory Sqlite database connection unless otherwise set.
+   </div>
                       </td>
                     </tr>
                     <tr data="public;declared;notNetfw;">
@@ -335,8 +355,8 @@ Gets the database connection. The default value is a memory Sqlite database conn
                       </td>
                       <td>
                         <div class="summary">
-Tracks internal exceptions for debugging.
-</div>
+       Tracks internal exceptions for debugging.
+   </div>
                       </td>
                     </tr>
                     <tr data="public;declared;notNetfw;">
@@ -348,8 +368,8 @@ Tracks internal exceptions for debugging.
                       </td>
                       <td>
                         <div class="summary">
-The virtual mock http client that is used by mocker unless overridden with the <span class="nolink">Strict</span> property.
-</div>
+       The virtual mock http client that is used by mocker unless overridden with the <a href="P-FastMoq.Mocker.Strict.htm">Strict</a> property.
+   </div>
                       </td>
                     </tr>
                     <tr data="public;declared;notNetfw;">
@@ -361,9 +381,9 @@ The virtual mock http client that is used by mocker unless overridden with the <
                       </td>
                       <td>
                         <div class="summary">
-When creating a mocks of a class, <span class="code">true</span> indicates to recursively inject the mocks inside of that class;
-otherwise properties are not auto mocked.
-</div>
+       When creating a mocks of a class, <span class="code">true</span> indicates to recursively inject the mocks inside of that class;
+       otherwise properties are not auto mocked.
+   </div>
                       </td>
                     </tr>
                     <tr data="public;declared;notNetfw;">
@@ -375,17 +395,17 @@ otherwise properties are not auto mocked.
                       </td>
                       <td>
                         <div class="summary">
-Gets or sets a value indicating whether this <a href="T-FastMoq.Mocker.htm">Mocker</a> is strict.
-Strict prevents certain features for automatically assuming or substituting preconfigured objects such as
-IFileSystem and HttpClient.
-Strict prevents private methods from being used during an invoke if public was requested. Not strict would mean
-that private methods may be
-substituted if the public methods are not found.
-Strict prevents private constructors from being used during object creation if public was requested. Not strict
-would mean that private constructors may be
-substituted if the public constructors are not found.
-Strict sets the <span class="nolink">MockBehavior</span> option.
-</div>
+       Gets or sets a value indicating whether this <a href="T-FastMoq.Mocker.htm">Mocker</a> is strict.
+       Strict prevents certain features for automatically assuming or substituting preconfigured objects such as
+       IFileSystem and HttpClient.
+       Strict prevents private methods from being used during an invoke if public was requested. Not strict would mean
+       that private methods may be
+       substituted if the public methods are not found.
+       Strict prevents private constructors from being used during object creation if public was requested. Not strict
+       would mean that private constructors may be
+       substituted if the public constructors are not found.
+       Strict sets the <span class="nolink">MockBehavior</span> option.
+   </div>
                       </td>
                     </tr>
                   </table>

@@ -3,6 +3,12 @@ using System.Linq.Expressions;
 
 namespace FastMoq.Models
 {
+    /// <summary>
+    ///     Class MockAsyncQueryProvider.
+    ///     Implements the <see cref="IAsyncQueryProvider" /></summary>
+    /// <typeparam name="TEntity">The type of the t entity.</typeparam>
+    /// <inheritdoc />
+    /// <seealso cref="IAsyncQueryProvider" />
     internal class MockAsyncQueryProvider<TEntity> : IAsyncQueryProvider
     {
         private readonly IQueryProvider inner;
@@ -47,7 +53,7 @@ namespace FastMoq.Models
                 .MakeGenericMethod(expectedResultType)
                 .Invoke(this, [expression]);
 
-            return (TResult)typeof(Task)
+            return (TResult) typeof(Task)
                 .GetMethod(nameof(Task.FromResult))
                 ?.MakeGenericMethod(expectedResultType)
                 .Invoke(null, [executionResult]);

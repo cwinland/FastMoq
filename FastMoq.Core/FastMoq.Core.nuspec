@@ -8,28 +8,28 @@
     <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
     <readme>README.md</readme>
     <projectUrl>https://github.com/cwinland/FastMoq</projectUrl>
-    <description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing.</description>
+    <description>Easy and fast extension of the famous Moq mocking framework for mocking, auto dependency injection, and testing helpers.</description>
     <copyright>Copyright(c) 2023 Christopher Winland</copyright>
     <tags>Easy fast injection inject mock extension Moq moqthis framework mocking class</tags>
     <repository type="git" url="https://github.com/cwinland/FastMoq" />
     <dependencies>
       <group targetFramework="net6.0">
-        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="6.0.25" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="6.0.29" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Http" version="6.0.0" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.18.4" exclude="Build,Analyzers" />
-        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="19.2.87" exclude="Build,Analyzers" />
+        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="21.0.2" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="net7.0">
-        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="7.0.14" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="7.0.18" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Http" version="7.0.0" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.18.4" exclude="Build,Analyzers" />
-        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="19.2.87" exclude="Build,Analyzers" />
+        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="21.0.2" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="net8.0">
-        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="8.0.4" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Extensions.Http" version="8.0.0" exclude="Build,Analyzers" />
         <dependency id="Moq" version="4.18.4" exclude="Build,Analyzers" />
-        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="19.2.87" exclude="Build,Analyzers" />
+        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="21.0.2" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>

@@ -6,7 +6,7 @@ namespace FastMoq.Models
     /// <summary>
     ///     Class ConstructorModel.
     /// </summary>
-    public class ConstructorModel : IHistoryModel
+    public class ConstructorModel : IHistoryModel, IEquatable<ConstructorModel>
     {
         #region Properties
 
@@ -23,12 +23,40 @@ namespace FastMoq.Models
 
         #endregion
 
-        internal ConstructorModel(ConstructorInfo? constructorInfo, List<object?> parameterList)
+        #region Overrides of Object
+
+        /// <inheritdoc />
+        public override string ToString() => $"{ConstructorInfo}-{ParameterString}";
+
+        #endregion
+
+        internal string ParameterString => string.Join(':', ParameterList);
+
+        internal ConstructorModel(ConstructorInfo? constructorInfo, IEnumerable<object?> parameterList)
         {
             ConstructorInfo = constructorInfo;
-            ParameterList = parameterList.ToArray();
+            ParameterList = parameterList?.ToArray() ?? new object?[] { };
         }
 
         internal ConstructorModel(KeyValuePair<ConstructorInfo, List<object?>> kvp) : this(kvp.Key, kvp.Value) { }
+
+        #region Equality members
+
+        /// <inheritdoc />
+        public bool Equals(ConstructorModel? other)
+        {
+            return other is not null && (ReferenceEquals(this, other) || Equals(ToString(), other.ToString()));
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object? obj)
+        {
+            return obj is not null && (ReferenceEquals(this, obj) || (obj.GetType() == GetType() && Equals((ConstructorModel) obj)));
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode() => ToString().GetHashCode();
+
+        #endregion
     }
 }

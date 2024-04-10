@@ -23,7 +23,7 @@
       <MSHelp:Attr Name="Locale" Value="en-us" />
       <MSHelp:Attr Name="TopicType" Value="kbSyntax" />
       <MSHelp:Attr Name="TopicType" Value="apiref" />
-      <MSHelp:Attr Name="Abstract" Value="Gets all components of a specific type, regardless of render tree." />
+      <MSHelp:Attr Name="Abstract" Value="Gets all components from the renderer and their state." />
       <MSHelp:Attr Name="AssemblyVersion" Value="" />
     </xml>
   <link rel="stylesheet" href="../TOC.css"><script type="text/javascript" src="../TOC.js"></script></head>
@@ -97,6 +97,21 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Extensions.htm" target="_self">FastMoq.Extensions Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerBooleanExtensions.htm" target="_self">MockerBooleanExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerCreationExtensions.htm" target="_self">MockerCreationExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerHttpExtensions.htm" target="_self">MockerHttpExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.ObjectExtensions.htm" target="_self">ObjectExtensions Class</a>
 <div class="Hidden">
 </div>
@@ -111,6 +126,11 @@
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
 <div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorHistory.htm" target="_self">ConstructorHistory Class</a>
+<div class="Hidden">
+</div>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
 <div class="Hidden">
@@ -243,6 +263,15 @@
 <div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.IsExists.htm" target="_self">IsExists Method </a>
 </div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedClaimsChanged.htm" target="_self">OnAuthorizedClaimsChanged Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedPoliciesChanged.htm" target="_self">OnAuthorizedPoliciesChanged Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedRolesChanged.htm" target="_self">OnAuthorizedRolesChanged Method </a>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.RenderComponent.htm" target="_self">RenderComponent Method </a>
 <div class="Hidden">
@@ -354,7 +383,7 @@
             <div id="mainSection">
               <div id="mainBody">
                 <div class="summary">
-       Gets all components of a specific type, regardless of render tree.
+       Gets all components from the renderer and their state.
    </div>
                 <p />
     <b>Namespace:</b> 
@@ -365,7 +394,7 @@
 </pre></div><div class="CodeSnippetContainerCode VisualBasicCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">Protected Friend</span> <span class="keyword">Function</span> <span class="identifier">GetAllComponents</span>(<span class="keyword">Of</span> TComponent <span class="keyword">As</span> <span class="nolink">ComponentBase</span>) <span class="keyword">As</span> <span class="nolink">Dictionary</span>(<span class="keyword">Of</span> TComponent, <a href="T-FastMoq.Web.Blazor.Models.ComponentState.htm">ComponentState</a>)</pre></div><div class="CodeSnippetContainerCode ManagedCPlusPlusCode"><pre xml:space="preserve" class="libCScode"><span class="keyword">protected public</span>:
 <span class="keyword">generic</span>&lt;<span class="keyword">typename</span> TComponent&gt;
 <span class="keyword">where</span> TComponent : <span class="nolink">ComponentBase</span>
-<span class="nolink">Dictionary</span>&lt;TComponent, <a href="T-FastMoq.Web.Blazor.Models.ComponentState.htm">ComponentState</a>^&gt;^ <span class="identifier">GetAllComponents</span>()</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">TComponent</span></dt><dd>The type of the component.</dd></dl><h4 class="subHeading">Return Value</h4>Dictionary&lt;TComponent, ComponentState&gt;.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Exceptions</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exceptionsSection"><!----></a><div class="tableSection"><table width="100%" cellspacing="0" cellpadding="5" frame="lhs"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><a href="https://docs.microsoft.com/en-us/dotnet/api/system.argumentnullexception" target="_blank">ArgumentNullException</a></td><td>Component</td></tr></table></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.GetAllComponents-.htm">GetAllComponents Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor Namespace</a></div></div></div>
+<span class="nolink">Dictionary</span>&lt;TComponent, <a href="T-FastMoq.Web.Blazor.Models.ComponentState.htm">ComponentState</a>^&gt;^ <span class="identifier">GetAllComponents</span>()</pre></div></div></div><h4 class="subHeading">Type Parameters</h4><dl><dt><span class="parameterItalic">TComponent</span></dt><dd>The type of the t component.</dd></dl><h4 class="subHeading">Return Value</h4>Dictionary&lt;TComponent, ComponentState&gt; of all components.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Exceptions</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exceptionsSection"><!----></a><div class="tableSection"><table width="100%" cellspacing="0" cellpadding="5" frame="lhs"><tr><th class="exceptionNameColumn">Exception</th><th class="exceptionConditionColumn">Condition</th></tr><tr><td><a href="https://docs.microsoft.com/en-us/dotnet/api/system.argumentexception" target="_blank">ArgumentException</a></td><td>Unable to get the renderer for this component.</td></tr></table></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Class</a></div><div class="seeAlsoStyle"><a href="Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.GetAllComponents-.htm">GetAllComponents Overload</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor Namespace</a></div></div></div>
             </div>
           </div>
         </div>

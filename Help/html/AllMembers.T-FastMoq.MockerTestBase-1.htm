@@ -119,6 +119,21 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Extensions.htm" target="_self">FastMoq.Extensions Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerBooleanExtensions.htm" target="_self">MockerBooleanExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerCreationExtensions.htm" target="_self">MockerCreationExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerHttpExtensions.htm" target="_self">MockerHttpExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.ObjectExtensions.htm" target="_self">ObjectExtensions Class</a>
 <div class="Hidden">
 </div>
@@ -133,6 +148,11 @@
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
 <div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorHistory.htm" target="_self">ConstructorHistory Class</a>
+<div class="Hidden">
+</div>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
 <div class="Hidden">
@@ -291,7 +311,11 @@
                       <td>
                         <a href="M-FastMoq.MockerTestBase-1.-ctor.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>
                       </td>
-                      <td />
+                      <td>
+                        <div class="summary">
+   Create instance with default actions and no extra setup. See other constructors to set Mocks before instantiation of the Component.
+   </div>
+                      </td>
                     </tr>
                     <tr data="protected;declared;notNetfw;">
                       <td>
@@ -354,7 +378,12 @@
                       <td>
                         <a href="M-FastMoq.MockerTestBase-1.-ctor_7.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span>(Boolean)</a>
                       </td>
-                      <td />
+                      <td>
+                        <div class="summary">
+   Create instance and setting mock resolution. Mock resolution is on by default.
+   When it is off, it may not be able to fill in properties or other injections of components.
+   </div>
+                      </td>
                     </tr>
                     <tr data="protected;declared;notNetfw;">
                       <td>
@@ -362,6 +391,30 @@
                       </td>
                       <td>
                         <a href="M-FastMoq.MockerTestBase-1.-ctor_8.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span>(Action<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="fs">&lt;'</span><span class="nu">(</span></span>Mocker<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="fs">&gt;</span><span class="nu">)</span></span>, Nullable<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="fs">&lt;'</span><span class="nu">(</span></span>Func<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="fs">&lt;'</span><span class="nu">(</span></span>Mocker, TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="fs">&gt;</span><span class="nu">)</span></span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="fs">&gt;</span><span class="nu">)</span></span>, Action<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="fs">&lt;'</span><span class="nu">(</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="fs">&gt;</span><span class="nu">)</span></span>)</a>
+                      </td>
+                      <td>
+                        <div class="summary">
+       Initializes a new instance of the <a href="T-FastMoq.MockerTestBase-1.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span></a> class.
+   </div>
+                      </td>
+                    </tr>
+                    <tr data="protected;declared;notNetfw;">
+                      <td>
+                        <img src="../icons/protmethod.gif" alt="Protected method" title="Protected method" />
+                      </td>
+                      <td>
+                        <a href="M-FastMoq.MockerTestBase-1.-ctor_9.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span>(<span class="languageSpecificText"><span class="cpp">array&lt;</span></span>Type<span class="languageSpecificText"><span class="cpp">&gt;</span><span class="cs">[]</span><span class="vb">()</span><span class="nu">[]</span><span class="fs">[]</span></span>)</a>
+                      </td>
+                      <td>
+                        <div class="summary">Create instance using the component constructor that matches the type parameters.</div>
+                      </td>
+                    </tr>
+                    <tr data="protected;declared;notNetfw;">
+                      <td>
+                        <img src="../icons/protmethod.gif" alt="Protected method" title="Protected method" />
+                      </td>
+                      <td>
+                        <a href="M-FastMoq.MockerTestBase-1.-ctor_10.htm">MockerTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span>(Action<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="fs">&lt;'</span><span class="nu">(</span></span>Mocker<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="fs">&gt;</span><span class="nu">)</span></span>, Action<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="fs">&lt;'</span><span class="nu">(</span></span>TComponent<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="fs">&gt;</span><span class="nu">)</span></span>, <span class="languageSpecificText"><span class="cpp">array&lt;</span></span>Type<span class="languageSpecificText"><span class="cpp">&gt;</span><span class="cs">[]</span><span class="vb">()</span><span class="nu">[]</span><span class="fs">[]</span></span>)</a>
                       </td>
                       <td>
                         <div class="summary">
@@ -423,7 +476,9 @@
                       <td>
                         <a href="M-FastMoq.MockerTestBase-1.Dispose_1.htm">Dispose<span class="languageSpecificText"><span class="cs">()</span><span class="cpp">()</span><span class="nu">()</span><span class="fs">()</span></span></a>
                       </td>
-                      <td />
+                      <td>
+                        <div class="summary">Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</div>
+                      </td>
                     </tr>
                     <tr data="protected;declared;notNetfw;">
                       <td>

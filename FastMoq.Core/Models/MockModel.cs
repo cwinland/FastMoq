@@ -4,110 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 namespace FastMoq.Models
 {
     /// <summary>
-    ///     Class MockModel.
-    ///     Implements the <see cref="MockModel" />
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <seealso cref="MockModel" />
-    /// <inheritdoc cref="MockModel" />
-    [ExcludeFromCodeCoverage]
-    public class MockModel<T> : MockModel, IComparable<MockModel<T>>, IEquatable<MockModel<T>>, IEqualityComparer<MockModel<T>> where T : class
-    {
-        #region Properties
-
-        /// <summary>
-        ///     Gets or sets the mock.
-        /// </summary>
-        /// <value>The mock.</value>
-        public new Mock<T> Mock
-        {
-            get => (Mock<T>) base.Mock;
-            set => base.Mock = value;
-        }
-
-        #endregion
-
-        /// <inheritdoc />
-        internal MockModel(Mock mock) : base(typeof(T), mock) { }
-
-        /// <inheritdoc />
-        internal MockModel(MockModel mockModel) : base(mockModel.Type, mockModel.Mock) { }
-
-        /// <inheritdoc />
-        public override int CompareTo(object? obj) =>
-            obj is MockModel<T> mockModel ? CompareTo(mockModel) : throw new Exception($"Not a MockModel<{typeof(T)}> instance");
-
-        /// <inheritdoc />
-        public override bool Equals(object? obj) => Equals(obj as MockModel<T>);
-
-        /// <inheritdoc />
-        public override int GetHashCode() => Type.GetHashCode();
-
-        /// <summary>
-        ///     Implements the == operator.
-        /// </summary>
-        /// <param name="a">a.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator ==(MockModel<T> a, MockModel<T> b) => object.Equals(a, b);
-
-        /// <summary>
-        ///     Implements the != operator.
-        /// </summary>
-        /// <param name="a">a.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The result of the operator.</returns>
-        public static bool operator !=(MockModel<T> a, MockModel<T> b) => !(a == b);
-
-        #region IComparable<MockModel<T>>
-
-        /// <inheritdoc />
-        public int CompareTo(MockModel<T>? other) => base.CompareTo(other);
-
-        #endregion
-
-        #region IEqualityComparer<MockModel<T>>
-
-        /// <inheritdoc />
-        public bool Equals(MockModel<T>? x, MockModel<T>? y)
-        {
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(x, y))
-            {
-                return true;
-            }
-
-            // If one is null, but not both, return false.
-            if (x as object is null || y as object is null)
-            {
-                return false;
-            }
-
-            // Return true if the fields match:
-            return x.Type.Name.Equals(y.Type.Name, StringComparison.OrdinalIgnoreCase);
-        }
-
-        /// <inheritdoc />
-        public int GetHashCode(MockModel<T> obj) => obj.Type.GetHashCode();
-
-        #endregion
-
-        #region IEquatable<MockModel<T>>
-
-        /// <inheritdoc />
-        public bool Equals(MockModel<T>? other) => Equals(this, other);
-
-        #endregion
-    }
-
-    /// <summary>
     ///     Contains Mock and Type information.
     /// </summary>
-    /// <inheritdoc cref="IComparable{T}" />
+    /// <inheritdoc cref="IComparable{MockModel}" />
     /// <inheritdoc cref="IComparable" />
-    /// <inheritdoc cref="IEquatable{T}" />
-    /// <inheritdoc cref="IEqualityComparer{T}" />
-    [ExcludeFromCodeCoverage]
+    /// <inheritdoc cref="IEquatable{MockModel}" />
+    /// <inheritdoc cref="IEqualityComparer{MockModel}" />
     public class MockModel : IComparable<MockModel>, IComparable, IEquatable<MockModel>, IEqualityComparer<MockModel>
     {
         #region Properties
@@ -128,7 +30,7 @@ namespace FastMoq.Models
         ///     Gets or sets the type.
         /// </summary>
         /// <value>The type.</value>
-        public Type Type { get; }
+        public virtual Type Type { get; }
 
         #endregion
 
@@ -138,8 +40,8 @@ namespace FastMoq.Models
         /// <param name="type">The type.</param>
         /// <param name="mock">The mock.</param>
         /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
-        /// <exception cref="ArgumentNullException">type</exception>
-        /// <exception cref="ArgumentNullException">mock</exception>
+        /// <exception cref="System.ArgumentNullException">type</exception>
+        /// <exception cref="System.ArgumentNullException">mock</exception>
         internal MockModel(Type type, Mock mock, bool nonPublic = false)
         {
             Type = type ?? throw new ArgumentNullException(nameof(type));
@@ -148,10 +50,28 @@ namespace FastMoq.Models
         }
 
         /// <inheritdoc />
-        public override bool Equals(object? obj) => Equals(obj as MockModel);
+        public override bool Equals(object? obj) => IsEqual(this, obj as MockModel);
 
         /// <inheritdoc />
+        [ExcludeFromCodeCoverage]
         public override int GetHashCode() => Type.GetHashCode();
+
+        /// <summary>
+        ///     Determines whether the specified x is equal.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <returns><c>true</c> if the specified x is equal; otherwise, <c>false</c>.</returns>
+        public static bool IsEqual<T>(T? x, T? y) where T : MockModel =>
+
+            // If both are null, or both are same instance, return true.
+            ReferenceEquals(x, y) ||
+
+            // If one is null, but not both, return false.
+            (!IsOneNull(x, y) &&
+
+             // Return true if the fields match:
+             IsMockTypeNameEqual(x, y));
 
         /// <summary>
         ///     Implements the == operator.
@@ -159,7 +79,8 @@ namespace FastMoq.Models
         /// <param name="a">a.</param>
         /// <param name="b">The b.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(MockModel? a, MockModel? b) => object.Equals(a, b);
+        [ExcludeFromCodeCoverage]
+        public static bool operator ==(MockModel? a, MockModel? b) => IsEqual(a, b);
 
         /// <summary>
         ///     Implements the != operator.
@@ -167,16 +88,31 @@ namespace FastMoq.Models
         /// <param name="a">a.</param>
         /// <param name="b">The b.</param>
         /// <returns>The result of the operator.</returns>
+        [ExcludeFromCodeCoverage]
         public static bool operator !=(MockModel? a, MockModel? b) => !(a == b);
 
         /// <inheritdoc />
         public override string ToString() => Type.Name;
 
+        internal static bool IsMockTypeNameEqual<T>(T? x, T? y) where T : MockModel =>
+            x?.Type.Name.Equals(y?.Type.Name, StringComparison.OrdinalIgnoreCase) ?? false;
+
+        /// <summary>
+        ///     Determines whether [is one null] [the specified x].
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <param name="y">The y.</param>
+        /// <returns><c>true</c> if [is one null] [the specified x]; otherwise, <c>false</c>.</returns>
+
+        // Safe cast prevents from calling overloaded equality.
+        // ReSharper disable SafeCastIsUsedAsTypeCheck
+        internal static bool IsOneNull<T>(T? x, T? y) where T : MockModel => x as object is null || y as object is null;
+
         #region IComparable
 
         /// <inheritdoc />
         public virtual int CompareTo(object? obj) =>
-            obj is MockModel mockModel ? CompareTo(mockModel) : throw new Exception("Not a MockModel instance");
+            obj is MockModel mockModel ? CompareTo(mockModel) : throw new ArgumentException("Not a MockModel instance");
 
         #endregion
 
@@ -190,44 +126,20 @@ namespace FastMoq.Models
         #region IEqualityComparer<MockModel>
 
         /// <inheritdoc />
-        public bool Equals(MockModel? x, MockModel? y)
-        {
-            // If both are null, or both are same instance, return true.
-            if (ReferenceEquals(x, y))
-            {
-                return true;
-            }
+        [ExcludeFromCodeCoverage]
+        public bool Equals(MockModel? x, MockModel? y) => IsEqual(x, y);
 
-            // If one is null, but not both, return false.
-            if (x as object is null || y as object is null)
-            {
-                return false;
-            }
-
-            // Return true if the fields match:
-            return x.Type.Name.Equals(y.Type.Name, StringComparison.OrdinalIgnoreCase);
-        }
-
-        /// <summary>
-        ///     Returns a hash code for this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="T:System.Object" /> for which a hash code is to be returned.</param>
-        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public int GetHashCode(MockModel obj) => obj.Type.GetHashCode();
+        /// <inheritdoc />
+        [ExcludeFromCodeCoverage]
+        public int GetHashCode(MockModel obj) => GetHashCode();
 
         #endregion
 
         #region IEquatable<MockModel>
 
-        /// <summary>
-        ///     Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>
-        ///     <see langword="true" /> if the current object is equal to the <paramref name="other" /> parameter; otherwise,
-        ///     <see langword="false" />.
-        /// </returns>
-        public bool Equals(MockModel? other) => Equals(this, other);
+        /// <inheritdoc />
+        [ExcludeFromCodeCoverage]
+        public bool Equals(MockModel? other) => IsEqual(this, other);
 
         #endregion
     }

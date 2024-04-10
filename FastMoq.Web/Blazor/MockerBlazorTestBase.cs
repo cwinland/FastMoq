@@ -1,8 +1,8 @@
 ﻿using AngleSharp.Dom;
-using AngleSharpWrappers;
 using Bunit;
 using Bunit.Rendering;
 using Bunit.TestDoubles;
+using Bunit.Web.AngleSharp;
 using FastMoq.Collections;
 using FastMoq.Extensions;
 using FastMoq.Web.Blazor.Interfaces;
@@ -55,7 +55,8 @@ namespace FastMoq.Web.Blazor
     /// <example>
     ///     Setup Http Response Message
     ///     <code language="cs"><![CDATA[
-    /// protected override Action<Mocker> SetupComponent => mocker => mocker.SetupHttpMessage(() => new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent("ContextGoesHere")});
+    /// protected override Action<Mocker> SetupComponent => mocker =>
+    /// mocker.SetupHttpMessage(() => new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent("ContextGoesHere")});
     /// ]]></code>
     /// </example>
     /// <example>
@@ -129,18 +130,6 @@ namespace FastMoq.Web.Blazor
         /// ]]></code>
         /// </example>
         protected TestAuthorizationContext AuthContext { get; }
-
-        /// <summary>
-        ///     Gets the navigation manager.
-        /// </summary>
-        /// <value>The navigation manager.</value>
-        /// <example>
-        ///     Click Button by class, tag, or id and check the navigation manager for changes.
-        ///     <code language="cs"><![CDATA[
-        /// NavigationManager.History.Count.Should().Be(2);
-        /// ]]></code>
-        /// </example>
-        protected FakeNavigationManager NavigationManager => Services.GetRequiredService<FakeNavigationManager>();
 
         /// <summary>
         ///     Gets the authorized claims.
@@ -240,11 +229,24 @@ namespace FastMoq.Web.Blazor
         ///     Gets the mock controller.
         /// </summary>
         /// <value>The mocks controller.</value>
-        /// <seealso cref="Mocker"/>
+        /// <seealso cref="Mocker" />
         protected Mocker Mocks { get; } = new();
 
         /// <summary>
-        ///     Gets the list of parameters used when rendering. This is used to setup a component before the test constructor runs.
+        ///     Gets the navigation manager.
+        /// </summary>
+        /// <value>The navigation manager.</value>
+        /// <example>
+        ///     Click Button by class, tag, or id and check the navigation manager for changes.
+        ///     <code language="cs"><![CDATA[
+        /// NavigationManager.History.Count.Should().Be(2);
+        /// ]]></code>
+        /// </example>
+        protected FakeNavigationManager NavigationManager => Services.GetRequiredService<FakeNavigationManager>();
+
+        /// <summary>
+        ///     Gets the list of parameters used when rendering. This is used to setup a component before the test constructor
+        ///     runs.
         /// </summary>
         /// <value>The render parameters.</value>
         [ExcludeFromCodeCoverage]
@@ -289,15 +291,35 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <summary>
-        ///     Gets all components of a specific type, regardless of render tree.
+        ///     Adds the utilities.
         /// </summary>
-        /// <typeparam name="TComponent">The type of the component.</typeparam>
-        /// <returns>Dictionary&lt;TComponent, ComponentState&gt;.</returns>
-        /// <exception cref="System.ArgumentNullException">Component</exception>
+        /// <param name="jsInterop">The js interop.</param>
+        /// <param name="jsInvocationMatcher">The js invocation matcher.</param>
+        /// <param name="isCatchAll">if set to <c>true</c> [is catch all].</param>
+        public virtual void SetupJsInterop(BunitJSInterop jsInterop, InvocationMatcher? jsInvocationMatcher, bool isCatchAll)
+        {
+            var module = jsInvocationMatcher is null ? jsInterop.SetupModule() : jsInterop.SetupModule(jsInvocationMatcher, isCatchAll);
+            module.SetupVoid("import", _ => true).SetVoidResult();
+            module.SetupVoid("setProperty", _ => true).SetVoidResult();
+            module.Setup<string>("getUserAgent", _ => true).SetResult(string.Empty);
+            module.SetupVoid("scrollElementIntoView", _ => true).SetVoidResult();
+            module.SetupVoid("focus", _ => true).SetVoidResult();
+            module.SetupVoid("log", _ => true).SetVoidResult();
+        }
+
+        /// <summary>
+        ///     Gets all components from the renderer and their state.
+        /// </summary>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
+        /// <returns>Dictionary&lt;TComponent, ComponentState&gt; of all components.</returns>
+        /// <exception cref="System.ArgumentException">Unable to get the renderer for this component.</exception>
         protected internal Dictionary<TComponent, ComponentState> GetAllComponents<TComponent>() where TComponent : ComponentBase
         {
             var list = new Dictionary<TComponent, ComponentState>();
-            var renderer = Component?.Services.GetRequiredService<ITestRenderer>() as TestRenderer ?? throw new ArgumentNullException(nameof(Component));
+
+            var renderer = Component?.Services.GetRequiredService<TestContextBase>().Renderer as TestRenderer ??
+                           throw new ArgumentException("Unable to get the renderer for this component.");
+
             var componentList = renderer.GetFieldValue<IDictionary, Renderer>(COMPONENT_LIST_NAME);
 
             if (componentList == null)
@@ -309,7 +331,7 @@ namespace FastMoq.Web.Blazor
             {
                 if (obj.Key is TComponent component)
                 {
-                    var componentState = new ComponentState<TComponent>(obj.Value, Services);
+                    var componentState = new ComponentState<TComponent>(obj.Value, renderer);
                     list.Add(component, componentState);
                 }
             }
@@ -333,28 +355,11 @@ namespace FastMoq.Web.Blazor
             SetupServices();
             SetupAuthorization();
 
-            AuthorizedPolicies.Changed += (_, _) => AuthContext.SetPolicies(AuthorizedPolicies.ToArray());
-            AuthorizedRoles.Changed += (_, _) => AuthContext.SetRoles(AuthorizedRoles.ToArray());
-            AuthorizedClaims.Changed += (_, _) => AuthContext.SetClaims(AuthorizedClaims.ToArray());
+            AuthorizedPolicies.Changed += OnAuthorizedPoliciesChanged;
+            AuthorizedRoles.Changed += OnAuthorizedRolesChanged;
+            AuthorizedClaims.Changed += OnAuthorizedClaimsChanged;
 
             Component = RenderComponent(true);
-        }
-
-        /// <summary>
-        ///     Adds the utilities.
-        /// </summary>
-        /// <param name="jsInterop">The js interop.</param>
-        /// <param name="jsInvocationMatcher">The js invocation matcher.</param>
-        /// <param name="isCatchAll">if set to <c>true</c> [is catch all].</param>
-        public virtual void SetupJsInterop(BunitJSInterop jsInterop, InvocationMatcher? jsInvocationMatcher, bool isCatchAll)
-        {
-            var module = jsInvocationMatcher is null ? jsInterop.SetupModule() : jsInterop.SetupModule(jsInvocationMatcher, isCatchAll);
-            module.SetupVoid("import", _ => true).SetVoidResult();
-            module.SetupVoid("setProperty", _ => true).SetVoidResult();
-            module.Setup<string>("getUserAgent", _ => true).SetResult(string.Empty);
-            module.SetupVoid("scrollElementIntoView", _ => true).SetVoidResult();
-            module.SetupVoid("focus", _ => true).SetVoidResult();
-            module.SetupVoid("log", _ => true).SetVoidResult();
         }
 
         /// <inheritdoc />
@@ -364,9 +369,9 @@ namespace FastMoq.Web.Blazor
 
             if (disposing)
             {
-                AuthorizedPolicies.Changed -= (_, _) => AuthContext.SetPolicies(AuthorizedPolicies.ToArray());
-                AuthorizedRoles.Changed -= (_, _) => AuthContext.SetRoles(AuthorizedRoles.ToArray());
-                AuthorizedClaims.Changed -= (_, _) => AuthContext.SetClaims(AuthorizedClaims.ToArray());
+                AuthorizedPolicies.Changed -= OnAuthorizedPoliciesChanged;
+                AuthorizedRoles.Changed -= OnAuthorizedRolesChanged;
+                AuthorizedClaims.Changed -= OnAuthorizedClaimsChanged;
             }
         }
 
@@ -381,9 +386,9 @@ namespace FastMoq.Web.Blazor
         protected virtual void SetupAuthorization()
         {
             AuthContext.SetAuthorized(AuthUsername);
-            AuthContext.SetPolicies(AuthorizedPolicies.ToArray());
-            AuthContext.SetRoles(AuthorizedRoles.ToArray());
-            AuthContext.SetClaims(AuthorizedClaims.ToArray());
+            OnAuthorizedPoliciesChanged();
+            OnAuthorizedRolesChanged();
+            OnAuthorizedClaimsChanged();
         }
 
         /// <summary>
@@ -406,15 +411,36 @@ namespace FastMoq.Web.Blazor
             ConfigureServices.Invoke(Services, configuration, Mocks);
         }
 
+        /// <summary>
+        ///     Handles the <see cref="E:AuthorizedClaimsChanged" /> event.
+        /// </summary>
+        /// <param name="o">The o.</param>
+        /// <param name="mockerObservableCollectionChangedEventArgs">The <see cref="MockerObservableCollectionChangedEventArgs"/> instance containing the event data.</param>
+        protected void OnAuthorizedClaimsChanged(object? o = null, MockerObservableCollectionChangedEventArgs? mockerObservableCollectionChangedEventArgs = null) =>
+            AuthContext.SetClaims(AuthorizedClaims.ToArray());
+
+        /// <summary>
+        ///     Handles the <see cref="E:AuthorizedPoliciesChanged" /> event.
+        /// </summary>
+        /// <param name="o">The o.</param>
+        /// <param name="mockerObservableCollectionChangedEventArgs">The <see cref="MockerObservableCollectionChangedEventArgs"/> instance containing the event data.</param>
+        protected void OnAuthorizedPoliciesChanged(object? o = null, MockerObservableCollectionChangedEventArgs? mockerObservableCollectionChangedEventArgs = null) =>
+            AuthContext.SetPolicies(AuthorizedPolicies.ToArray());
+
+        /// <summary>
+        ///     Handles the <see cref="E:AuthorizedRolesChanged" /> event.
+        /// </summary>
+        /// <param name="o">The o.</param>
+        /// <param name="mockerObservableCollectionChangedEventArgs">The <see cref="MockerObservableCollectionChangedEventArgs"/> instance containing the event data.</param>
+        protected void OnAuthorizedRolesChanged(object? o = null, MockerObservableCollectionChangedEventArgs? mockerObservableCollectionChangedEventArgs = null) =>
+            AuthContext.SetRoles(AuthorizedRoles.ToArray());
+
         #region IMockerBlazorTestHelpers<T>
 
         /// <inheritdoc />
         public IMockerBlazorTestHelpers<T> ClickButton(IElement button, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
-            if (button == null)
-            {
-                throw new ArgumentNullException(nameof(button));
-            }
+            ArgumentNullException.ThrowIfNull(button);
 
             button.Click();
             WaitForState(waitFunc, waitTimeout);
@@ -425,16 +451,14 @@ namespace FastMoq.Web.Blazor
         /// <inheritdoc />
         public IMockerBlazorTestHelpers<T> ClickButton(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
-            if (Component == null)
-            {
-                throw new ArgumentNullException(nameof(Component));
-            }
+            Component.RaiseIfNull();
 
             return ClickButton(Component.Find(cssSelector), waitFunc, waitTimeout);
         }
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T>  ClickButton<TComponent>(string cssSelector, Func<bool> waitFunc, IRenderedComponent<TComponent> startingComponent,
+        public IMockerBlazorTestHelpers<T> ClickButton<TComponent>(string cssSelector, Func<bool> waitFunc,
+            IRenderedComponent<TComponent> startingComponent,
             TimeSpan? waitTimeout = null)
             where TComponent : class, IComponent =>
             ClickButton(startingComponent.Find(cssSelector), waitFunc, waitTimeout);
@@ -442,9 +466,12 @@ namespace FastMoq.Web.Blazor
         /// <inheritdoc />
         public IMockerBlazorTestHelpers<T> ClickButton(Func<IElement, bool> cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
-            var buttons = cssSelector == null ? throw new ArgumentNullException(nameof(cssSelector)) :
-                Component == null ? throw new ArgumentNullException(nameof(Component)) : Component.FindAll("*").ToCollection()
-                    .Where(cssSelector);
+            ArgumentNullException.ThrowIfNull(cssSelector);
+            Component.RaiseIfNull();
+
+            var buttons = Component.FindAll("*")
+                .ToCollection()
+                .Where(cssSelector);
 
             buttons.ForEach(button => ClickButton(button, waitFunc, waitTimeout));
 
@@ -452,7 +479,7 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T>  ClickButton<TComponent>(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
+        public IMockerBlazorTestHelpers<T> ClickButton<TComponent>(string cssSelector, Func<bool> waitFunc, TimeSpan? waitTimeout = null)
             where TComponent : class, IComponent => string.IsNullOrWhiteSpace(cssSelector)
             ? throw new ArgumentNullException(nameof(cssSelector))
             : ClickButton(GetComponent<TComponent>().Find(cssSelector), waitFunc, waitTimeout);
@@ -473,9 +500,12 @@ namespace FastMoq.Web.Blazor
         /// <inheritdoc />
         /// <exception cref="T:System.ArgumentNullException">Component</exception>
         public IRenderedComponent<TComponent> ClickDropdownItem<TComponent>(string propName, Func<bool> waitFunc,
-            string itemCssSelector = "a.dropdown-item") where TComponent : class, IComponent => Component == null
-            ? throw new ArgumentNullException(nameof(Component))
-            : ClickDropdownItem(Component.FindComponent<TComponent>(), itemCssSelector, propName, waitFunc);
+            string itemCssSelector = "a.dropdown-item") where TComponent : class, IComponent
+        {
+            Component.RaiseIfNull();
+
+            return ClickDropdownItem(Component.FindComponent<TComponent>(), itemCssSelector, propName, waitFunc);
+        }
 
         /// <inheritdoc />
         public IEnumerable<IElement> FindAllByTag(string tagName) =>
@@ -495,9 +525,10 @@ namespace FastMoq.Web.Blazor
         public IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> predicate)
             where TComponent : class, IComponent
         {
-            IReadOnlyList<IRenderedComponent<TComponent>> components = predicate == null
-                ? throw new ArgumentNullException(nameof(predicate))
-                : Component?.FindComponents<TComponent>() ?? throw new ArgumentNullException(nameof(Component));
+            ArgumentNullException.ThrowIfNull(predicate);
+
+            var components =
+                Component?.FindComponents<TComponent>() ?? throw new ArgumentNullException(nameof(Component));
 
             return components.Count <= 1
                 ? components.First(predicate)
@@ -507,7 +538,7 @@ namespace FastMoq.Web.Blazor
         /// <inheritdoc />
         public IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IElement, bool> predicate) where TComponent : class, IComponent
         {
-            List<IRenderedComponent<TComponent>> components = GetComponents<TComponent>(predicate);
+            var components = GetComponents<TComponent>(predicate);
 
             return components.Count <= 1
                 ? components.First()
@@ -515,10 +546,10 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IRenderedComponent<TOfType>, bool>? predicate)
+        public IReadOnlyList<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IRenderedComponent<TOfType>, bool>? predicate = null)
             where TOfType : class, IComponent
         {
-            IEnumerable<IRenderedComponent<TOfType>> components = GetAllComponents()
+            var components = GetAllComponents()
                 .Where(x => x.Key is TOfType)
                 .Select(x => GetComponent<TOfType>(y => y.ComponentId == (int) (x.Value.GetPropertyValue("ComponentId") ?? 0)));
 
@@ -526,9 +557,9 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IElement, bool>? predicate) where TOfType : class, IComponent
+        public List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IElement, bool>? predicate = null) where TOfType : class, IComponent
         {
-            IEnumerable<IRenderedComponent<TOfType>> components = GetAllComponents()
+            var components = GetAllComponents()
                 .Where(x => x.Key is TOfType)
                 .Select(x => GetComponent<TOfType>(y => y.ComponentId == (int) (x.Value.GetPropertyValue("ComponentId") ?? 0)));
 
@@ -548,10 +579,10 @@ namespace FastMoq.Web.Blazor
         public IEnumerable<PropertyInfo> GetInjections(Type type) => GetInjections(type, typeof(InjectAttribute));
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T>  InjectComponent(Type type) => InjectComponent(type, typeof(InjectAttribute));
+        public IMockerBlazorTestHelpers<T> InjectComponent(Type type) => InjectComponent(type, typeof(InjectAttribute));
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T>  InjectComponent(Type type, Type injectAttribute)
+        public IMockerBlazorTestHelpers<T> InjectComponent(Type type, Type injectAttribute)
         {
             GetInjections(type, injectAttribute)
                 .ForEach(y =>
@@ -570,10 +601,10 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T>  InjectComponent<TComponent>() => InjectComponent(typeof(TComponent));
+        public IMockerBlazorTestHelpers<T> InjectComponent<TComponent>() => InjectComponent(typeof(TComponent));
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T>  InjectComponent<TComponent, TInjectAttribute>() where TInjectAttribute : Attribute =>
+        public IMockerBlazorTestHelpers<T> InjectComponent<TComponent, TInjectAttribute>() where TInjectAttribute : Attribute =>
             InjectComponent(typeof(TComponent), typeof(TInjectAttribute));
 
         /// <inheritdoc />
@@ -625,10 +656,7 @@ namespace FastMoq.Web.Blazor
         public async Task SetAutoComplete(string cssSelector, string filterText, Func<bool> waitFunc,
             string itemCssSelector = ".b-is-autocomplete-suggestion")
         {
-            if (Component == null)
-            {
-                throw new ArgumentNullException(nameof(Component));
-            }
+            Component.RaiseIfNull();
 
             await Component.InvokeAsync(() =>
                 {
@@ -649,15 +677,12 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T> SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+        public IMockerBlazorTestHelpers<T> SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc,
+            TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null) where TComponent : class, IComponent
         {
             IElement? nameFilter = null;
-
-            if (Component == null)
-            {
-                throw new ArgumentNullException(nameof(Component));
-            }
+            Component.RaiseIfNull();
 
             if (string.IsNullOrWhiteSpace(cssSelector))
             {
@@ -702,7 +727,7 @@ namespace FastMoq.Web.Blazor
                 throw new ElementNotFoundException(cssSelector);
             }
 
-            var checkbox = ((Wrapper<IElement>) nameFilter).WrappedElement;
+            var checkbox = nameFilter.Unwrap();
             checkbox.Change(isChecked);
             WaitForState(waitFunc, waitTimeout);
 
@@ -710,15 +735,13 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T> SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+        public IMockerBlazorTestHelpers<T> SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc,
+            TimeSpan? waitTimeout = null,
             IRenderedFragment? startingPoint = null) where TComponent : class, IComponent
         {
             IElement? nameFilter = null;
 
-            if (Component == null)
-            {
-                throw new ArgumentNullException(nameof(Component));
-            }
+            Component.RaiseIfNull();
 
             if (string.IsNullOrWhiteSpace(cssSelector))
             {
@@ -763,7 +786,7 @@ namespace FastMoq.Web.Blazor
                 throw new InvalidOperationException($"{cssSelector} not found.");
             }
 
-            var theSwitch = ((Wrapper<IElement>) nameFilter).WrappedElement;
+            var theSwitch = nameFilter.Unwrap();
             theSwitch.Change(isChecked);
             WaitForState(waitFunc, waitTimeout);
 
@@ -785,28 +808,26 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T> SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null)
+        public IMockerBlazorTestHelpers<T> SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
+            IRenderedFragment? startingPoint = null)
         {
             if (string.IsNullOrWhiteSpace(cssSelector))
             {
                 throw new ArgumentNullException(nameof(cssSelector));
             }
 
-            if (Component == null)
-            {
-                throw new ArgumentNullException(nameof(Component));
-            }
+            Component.RaiseIfNull();
 
             if (startingPoint == null)
             {
-                if (!(Component.FindAll(cssSelector).Count > 0))
+                if (Component.FindAll(cssSelector).Count == 0)
                 {
                     WaitForState(() => Component.FindAll(cssSelector).Count > 0);
                 }
             }
             else
             {
-                if (!(startingPoint.FindAll(cssSelector).Count > 0))
+                if (startingPoint.FindAll(cssSelector).Count == 0)
                 {
                     WaitForState(() => startingPoint.FindAll(cssSelector).Count > 0);
                 }
@@ -835,18 +856,17 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T> WaitForExists(string cssSelector, TimeSpan? waitTimeout = null) => WaitForState(() => IsExists(cssSelector), waitTimeout);
+        public IMockerBlazorTestHelpers<T> WaitForExists(string cssSelector, TimeSpan? waitTimeout = null) =>
+            WaitForState(() => IsExists(cssSelector), waitTimeout);
 
         /// <inheritdoc />
-        public IMockerBlazorTestHelpers<T> WaitForNotExists(string cssSelector, TimeSpan? waitTimeout = null) => WaitForState(() => !IsExists(cssSelector), waitTimeout);
+        public IMockerBlazorTestHelpers<T> WaitForNotExists(string cssSelector, TimeSpan? waitTimeout = null) =>
+            WaitForState(() => !IsExists(cssSelector), waitTimeout);
 
         /// <inheritdoc />
         public IMockerBlazorTestHelpers<T> WaitForState(Func<bool> waitFunc, TimeSpan? waitTimeout = null)
         {
-            if (Component == null)
-            {
-                throw new ArgumentNullException(nameof(Component));
-            }
+            Component.RaiseIfNull();
 
             Component.WaitForState(waitFunc, waitTimeout ?? TimeSpan.FromSeconds(3));
             return this;

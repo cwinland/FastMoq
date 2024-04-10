@@ -1,4 +1,5 @@
-﻿using FastMoq.Tests.TestClasses;
+﻿using FastMoq.Extensions;
+using FastMoq.Tests.TestClasses;
 using Moq.Protected;
 using System;
 using System.Net;

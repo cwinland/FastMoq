@@ -108,6 +108,21 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Extensions.htm" target="_self">FastMoq.Extensions Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerBooleanExtensions.htm" target="_self">MockerBooleanExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerCreationExtensions.htm" target="_self">MockerCreationExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerHttpExtensions.htm" target="_self">MockerHttpExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.ObjectExtensions.htm" target="_self">ObjectExtensions Class</a>
 <div class="Hidden">
 </div>
@@ -122,6 +137,11 @@
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
 <div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorHistory.htm" target="_self">ConstructorHistory Class</a>
+<div class="Hidden">
+</div>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
 <div class="Hidden">
@@ -299,7 +319,8 @@
        Setup Roles.
       <span id="cbc_3" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">protected</span> <span class="highlight-keyword">override</span> MockerObservableCollection&lt;<span class="highlight-keyword">string</span>&gt; AuthorizedRoles =&gt; <span class="highlight-keyword">new</span> MockerObservableCollection&lt;<span class="highlight-keyword">string</span>&gt;() { <span class="highlight-literal">"Role1"</span>, <span class="highlight-literal">"Role2"</span>}</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
        Setup Http Response Message
-      <span id="cbc_4" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">protected</span> <span class="highlight-keyword">override</span> Action&lt;Mocker&gt; SetupComponent =&gt; mocker =&gt; mocker.SetupHttpMessage(() =&gt; <span class="highlight-keyword">new</span> HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = <span class="highlight-keyword">new</span> StringContent(<span class="highlight-literal">"ContextGoesHere"</span>)});</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
+      <span id="cbc_4" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">protected</span> <span class="highlight-keyword">override</span> Action&lt;Mocker&gt; SetupComponent =&gt; mocker =&gt;
+mocker.SetupHttpMessage(() =&gt; <span class="highlight-keyword">new</span> HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = <span class="highlight-keyword">new</span> StringContent(<span class="highlight-literal">"ContextGoesHere"</span>)});</pre></div></span></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">Examples</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="exampleSection"><!----></a>
        Setup Mocks
       <span id="cbc_5" x-lang="CSharp" codeLanguage="CSharp"><div class="highlight-title"><span class="highlight-copycode" tabindex="0"></span>C#</div><div class="code"><pre xml:space="preserve"><span class="highlight-keyword">protected</span> <span class="highlight-keyword">override</span> Action&lt;Mocker&gt; SetupComponent =&gt; mocker =&gt;
 {

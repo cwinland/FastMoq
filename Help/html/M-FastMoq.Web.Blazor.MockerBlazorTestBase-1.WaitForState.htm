@@ -28,6 +28,7 @@
       <MSHelp:Attr Name="Locale" Value="en-us" />
       <MSHelp:Attr Name="TopicType" Value="kbSyntax" />
       <MSHelp:Attr Name="TopicType" Value="apiref" />
+      <MSHelp:Attr Name="Abstract" Value="Waits for state." />
       <MSHelp:Attr Name="AssemblyVersion" Value="" />
     </xml>
   <link rel="stylesheet" href="../TOC.css"><script type="text/javascript" src="../TOC.js"></script></head>
@@ -101,6 +102,21 @@
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Extensions.htm" target="_self">FastMoq.Extensions Namespace</a>
 <div class="Hidden">
 <div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerBooleanExtensions.htm" target="_self">MockerBooleanExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerCreationExtensions.htm" target="_self">MockerCreationExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.MockerHttpExtensions.htm" target="_self">MockerHttpExtensions Class</a>
+<div class="Hidden">
+</div>
+</div>
+<div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Extensions.ObjectExtensions.htm" target="_self">ObjectExtensions Class</a>
 <div class="Hidden">
 </div>
@@ -115,6 +131,11 @@
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="N-FastMoq.Models.htm" target="_self">FastMoq.Models Namespace</a>
 <div class="Hidden">
+<div class="TreeNode">
+<img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorHistory.htm" target="_self">ConstructorHistory Class</a>
+<div class="Hidden">
+</div>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="T-FastMoq.Models.ConstructorModel.htm" target="_self">ConstructorModel Class</a>
 <div class="Hidden">
@@ -247,6 +268,15 @@
 <div class="TreeItem">
 <img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.IsExists.htm" target="_self">IsExists Method </a>
 </div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedClaimsChanged.htm" target="_self">OnAuthorizedClaimsChanged Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedPoliciesChanged.htm" target="_self">OnAuthorizedPoliciesChanged Method </a>
+</div>
+<div class="TreeItem">
+<img src="../Item.gif"/><a class="UnselectedNode" onclick="javascript: return SelectNode(this);" href="M-FastMoq.Web.Blazor.MockerBlazorTestBase-1.OnAuthorizedRolesChanged.htm" target="_self">OnAuthorizedRolesChanged Method </a>
+</div>
 <div class="TreeNode">
 <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="../Collapsed.png"/><a class="UnselectedNode" onclick="javascript: return Expand(this);" href="Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.RenderComponent.htm" target="_self">RenderComponent Method </a>
 <div class="Hidden">
@@ -357,6 +387,9 @@
             <h1 class="title">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><span class="typeparameter">T</span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>WaitForState Method </h1>
             <div id="mainSection">
               <div id="mainBody">
+                <div class="summary">
+        Waits for state.
+    </div>
                 <p />
     <b>Namespace:</b> 
    <a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor</a><br />
@@ -371,7 +404,7 @@
 <a href="T-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.htm">IMockerBlazorTestHelpers</a>&lt;T&gt;^ <span class="identifier">WaitForState</span>(
 	<span class="nolink">Func</span>&lt;<a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">bool</a>^&gt;^ <span class="parameter">waitFunc</span>, 
 	<a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a>&lt;<span class="nolink">TimeSpan</span>^&gt; <span class="parameter">waitTimeout</span>
-)</pre></div></div></div><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="waitFunc"><dt><span class="parameterItalic">waitFunc</span></dt><dd>Type: <span class="nolink">Func</span><span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">Boolean</a><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><br /></dd></dl><dl paramName="waitTimeout"><dt><span class="parameterItalic">waitTimeout</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a><span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><span class="nolink">TimeSpan</span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><br /></dd></dl></div></div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Class</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor Namespace</a></div></div></div>
+)</pre></div></div></div><div id="parameters"><h4 class="subHeading">Parameters</h4><dl paramName="waitFunc"><dt><span class="parameterItalic">waitFunc</span></dt><dd>Type: <span class="nolink">Func</span><span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><a href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean" target="_blank">Boolean</a><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><br />The wait function.</dd></dl><dl paramName="waitTimeout"><dt><span class="parameterItalic">waitTimeout</span></dt><dd>Type: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1" target="_blank">Nullable</a><span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span><span class="nolink">TimeSpan</span><span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span><br />The wait timeout.</dd></dl></div><h4 class="subHeading">Return Value</h4><span class="code">true</span> if XXXX, <span class="code">false</span> otherwise.</div><div class="LW_CollapsibleArea_Container"><div class="LW_CollapsibleArea_TitleDiv"><h2 class="LW_CollapsibleArea_Title">See Also</h2><div class="LW_CollapsibleArea_HrDiv"><hr class="LW_CollapsibleArea_Hr" /></div></div><a id="seeAlsoSection"><!----></a><div class="seeAlsoStyle"><a href="T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm">MockerBlazorTestBase<span class="languageSpecificText"><span class="cs">&lt;</span><span class="vb">(Of </span><span class="cpp">&lt;</span><span class="nu">(</span><span class="fs">&lt;'</span></span>T<span class="languageSpecificText"><span class="cs">&gt;</span><span class="vb">)</span><span class="cpp">&gt;</span><span class="nu">)</span><span class="fs">&gt;</span></span> Class</a></div><div class="seeAlsoStyle"><a href="N-FastMoq.Web.Blazor.htm">FastMoq.Web.Blazor Namespace</a></div></div></div>
             </div>
           </div>
         </div>
