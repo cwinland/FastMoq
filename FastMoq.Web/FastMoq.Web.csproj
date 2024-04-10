@@ -46,7 +46,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.38" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
-    <PackageReference Include="bunit" Version="1.26.64" />
+    <PackageReference Include="bunit" Version="1.27.17" />
     <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>

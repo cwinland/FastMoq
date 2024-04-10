@@ -308,17 +308,17 @@ namespace FastMoq.Web.Blazor
         }
 
         /// <summary>
-        ///     Gets all components of a specific type, regardless of render tree.
+        ///     Gets all components from the renderer and their state.
         /// </summary>
-        /// <typeparam name="TComponent">The type of the component.</typeparam>
-        /// <returns>Dictionary&lt;TComponent, ComponentState&gt;.</returns>
-        /// <exception cref="System.ArgumentNullException">Component</exception>
+        /// <typeparam name="TComponent">The type of the t component.</typeparam>
+        /// <returns>Dictionary&lt;TComponent, ComponentState&gt; of all components.</returns>
+        /// <exception cref="System.ArgumentException">Unable to get the renderer for this component.</exception>
         protected internal Dictionary<TComponent, ComponentState> GetAllComponents<TComponent>() where TComponent : ComponentBase
         {
             var list = new Dictionary<TComponent, ComponentState>();
 
-            var renderer = Component?.Services.GetRequiredService<ITestRenderer>() as TestRenderer ??
-                           throw new ArgumentNullException(nameof(Component));
+            var renderer = Component?.Services.GetRequiredService<TestContextBase>().Renderer as TestRenderer ??
+                           throw new ArgumentException("Unable to get the renderer for this component.");
 
             var componentList = renderer.GetFieldValue<IDictionary, Renderer>(COMPONENT_LIST_NAME);
 
@@ -331,7 +331,7 @@ namespace FastMoq.Web.Blazor
             {
                 if (obj.Key is TComponent component)
                 {
-                    var componentState = new ComponentState<TComponent>(obj.Value, Services);
+                    var componentState = new ComponentState<TComponent>(obj.Value, renderer);
                     list.Add(component, componentState);
                 }
             }
