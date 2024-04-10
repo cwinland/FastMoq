@@ -17,19 +17,19 @@
         <dependency id="FastMoq.Core" version="$version$" exclude="Build,Analyzers" />
         <dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.1.38" exclude="Build,Analyzers" />
         <dependency id="System.Configuration.ConfigurationManager" version="7.0.0" exclude="Build,Analyzers" />
-        <dependency id="bunit" version="1.24.10" exclude="Build,Analyzers" />
+        <dependency id="bunit" version="1.27.17" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="net7.0">
         <dependency id="FastMoq.Core" version="$version$" exclude="Build,Analyzers" />
         <dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.1.38" exclude="Build,Analyzers" />
         <dependency id="System.Configuration.ConfigurationManager" version="7.0.0" exclude="Build,Analyzers" />
-        <dependency id="bunit" version="1.24.10" exclude="Build,Analyzers" />
+        <dependency id="bunit" version="1.27.17" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="net8.0">
         <dependency id="FastMoq.Core" version="$version$" exclude="Build,Analyzers" />
         <dependency id="Microsoft.AspNetCore.Mvc.Core" version="2.1.38" exclude="Build,Analyzers" />
         <dependency id="System.Configuration.ConfigurationManager" version="7.0.0" exclude="Build,Analyzers" />
-        <dependency id="bunit" version="1.24.10" exclude="Build,Analyzers" />
+        <dependency id="bunit" version="1.27.17" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
