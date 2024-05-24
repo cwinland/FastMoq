@@ -13,6 +13,8 @@
   <HelpKINode Title="AddInjections&lt;T&gt; method" Url="html/M-FastMoq.Mocker.AddInjections--1.htm" />
   <HelpKINode Title="AddOrUpdate(Of TKey, TValue) method" Url="html/M-FastMoq.Extensions.ObjectExtensions.AddOrUpdate--2.htm" />
   <HelpKINode Title="AddOrUpdate&lt;TKey, TValue&gt; method" Url="html/M-FastMoq.Extensions.ObjectExtensions.AddOrUpdate--2.htm" />
+  <HelpKINode Title="AddProperties method" Url="html/Overload-FastMoq.Mocker.AddProperties-.htm" />
+  <HelpKINode Title="AddType method" Url="html/Overload-FastMoq.Mocker.AddType.htm" />
   <HelpKINode Title="Arguments property" Url="html/P-FastMoq.Models.IInstanceModel.Arguments.htm" />
   <HelpKINode Title="Arguments property" Url="html/P-FastMoq.Models.InstanceModel.Arguments.htm" />
   <HelpKINode Title="AsEnumerable method" Url="html/M-FastMoq.Models.ConstructorHistory.AsEnumerable.htm" />
@@ -23,8 +25,12 @@
   <HelpKINode Title="AuthorizedPolicies property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.AuthorizedPolicies.htm" />
   <HelpKINode Title="AuthorizedRoles property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.AuthorizedRoles.htm" />
   <HelpKINode Title="AuthUsername property" Url="html/P-FastMoq.Web.Blazor.MockerBlazorTestBase-1.AuthUsername.htm" />
+  <HelpKINode Title="BuildExpression(Of T) method" Url="html/M-FastMoq.Mocker.BuildExpression--1.htm" />
+  <HelpKINode Title="BuildExpression&lt;T&gt; method" Url="html/M-FastMoq.Mocker.BuildExpression--1.htm" />
   <HelpKINode Title="CallBase property" Url="html/P-FastMoq.Models.DbContextMock-1.CallBase.htm" />
   <HelpKINode Title="CallGenericMethod method" Url="html/M-FastMoq.Extensions.TestClassExtensions.CallGenericMethod.htm" />
+  <HelpKINode Title="CallMethod(Of T) method" Url="html/M-FastMoq.Mocker.CallMethod--1.htm" />
+  <HelpKINode Title="CallMethod&lt;T&gt; method" Url="html/M-FastMoq.Mocker.CallMethod--1.htm" />
   <HelpKINode Title="Changed field" Url="html/F-FastMoq.Collections.MockerObservableCollection-1.Changed.htm" />
   <HelpKINode Title="ClickButton method" Url="html/Overload-FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.ClickButton.htm" />
   <HelpKINode Title="ClickButton method" Url="html/Overload-FastMoq.Web.Blazor.MockerBlazorTestBase-1.ClickButton.htm" />
@@ -129,6 +135,9 @@
   <HelpKINode Title="CreateInstance method" Url="html/Overload-FastMoq.Mocker.CreateInstance-.htm" />
   <HelpKINode Title="CreateInstanceByType(Of T) method" Url="html/M-FastMoq.Mocker.CreateInstanceByType--1.htm" />
   <HelpKINode Title="CreateInstanceByType&lt;T&gt; method" Url="html/M-FastMoq.Mocker.CreateInstanceByType--1.htm" />
+  <HelpKINode Title="CreateInstanceNonPublic method" Url="html/Overload-FastMoq.Mocker.CreateInstanceNonPublic-.htm" />
+  <HelpKINode Title="CreateMock method" Url="html/Overload-FastMoq.Mocker.CreateMock.htm" />
+  <HelpKINode Title="CreateMockInstance method" Url="html/Overload-FastMoq.Mocker.CreateMockInstance-.htm" />
   <HelpKINode Title="CreateMockInternal method" Url="html/M-FastMoq.Extensions.MockerCreationExtensions.CreateMockInternal.htm" />
   <HelpKINode Title="creatingTypeList field" Url="html/F-FastMoq.Mocker.creatingTypeList.htm" />
   <HelpKINode Title="Current property" Url="html/P-FastMoq.Models.MockAsyncEnumerator-1.Current.htm" />
@@ -319,6 +328,7 @@
   <HelpKINode Title="GetFieldInfo(Of TType) method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetFieldInfo--1.htm" />
   <HelpKINode Title="GetFieldInfo&lt;TType&gt; method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetFieldInfo--1.htm" />
   <HelpKINode Title="GetFieldValue method" Url="html/Overload-FastMoq.Extensions.TestClassExtensions.GetFieldValue-.htm" />
+  <HelpKINode Title="GetFileSystem method" Url="html/M-FastMoq.Mocker.GetFileSystem.htm" />
   <HelpKINode Title="GetHashCode method" Url="html/M-FastMoq.Models.ConstructorModel.GetHashCode.htm" />
   <HelpKINode Title="GetHashCode method" Url="html/Overload-FastMoq.Models.MockModel-1.GetHashCode.htm" />
   <HelpKINode Title="GetHashCode method" Url="html/Overload-FastMoq.Models.MockModel.GetHashCode.htm" />
@@ -338,6 +348,10 @@
   <HelpKINode Title="GetMethodDefaultData method" Url="html/M-FastMoq.Mocker.GetMethodDefaultData.htm" />
   <HelpKINode Title="GetMethodValue(Of TObject) method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetMethodValue--1.htm" />
   <HelpKINode Title="GetMethodValue&lt;TObject&gt; method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetMethodValue--1.htm" />
+  <HelpKINode Title="GetMock method" Url="html/Overload-FastMoq.Mocker.GetMock-.htm" />
+  <HelpKINode Title="GetMockAsync(Of T) method" Url="html/M-FastMoq.Mocker.GetMockAsync--1.htm" />
+  <HelpKINode Title="GetMockAsync&lt;T&gt; method" Url="html/M-FastMoq.Mocker.GetMockAsync--1.htm" />
+  <HelpKINode Title="GetMockDbContext method" Url="html/Overload-FastMoq.Mocker.GetMockDbContext.htm" />
   <HelpKINode Title="GetObject method" Url="html/Overload-FastMoq.Mocker.GetObject.htm" />
   <HelpKINode Title="GetObjectResultContent(Of T) method" Url="html/M-FastMoq.Web.Extensions.TestWebExtensions.GetObjectResultContent--1.htm" />
   <HelpKINode Title="GetObjectResultContent&lt;T&gt; method" Url="html/M-FastMoq.Web.Extensions.TestWebExtensions.GetObjectResultContent--1.htm" />
@@ -345,6 +359,8 @@
   <HelpKINode Title="GetProperty&lt;TObject&gt; method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetProperty--1.htm" />
   <HelpKINode Title="GetPropertyValue(Of TObject) method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetPropertyValue--1.htm" />
   <HelpKINode Title="GetPropertyValue&lt;TObject&gt; method" Url="html/M-FastMoq.Extensions.TestClassExtensions.GetPropertyValue--1.htm" />
+  <HelpKINode Title="GetProtectedMock method" Url="html/Overload-FastMoq.Mocker.GetProtectedMock-.htm" />
+  <HelpKINode Title="GetRequiredMock method" Url="html/Overload-FastMoq.Mocker.GetRequiredMock.htm" />
   <HelpKINode Title="GetRequiredObject(Of T) method" Url="html/M-FastMoq.Mocker.GetRequiredObject--1.htm" />
   <HelpKINode Title="GetRequiredObject&lt;T&gt; method" Url="html/M-FastMoq.Mocker.GetRequiredObject--1.htm" />
   <HelpKINode Title="GetStringContent method" Url="html/M-FastMoq.Mocker.GetStringContent.htm" />
@@ -527,10 +543,19 @@
   </HelpKINode>
   <HelpKINode Title="Mocker.AddInjections(Of T) method" Url="html/M-FastMoq.Mocker.AddInjections--1.htm" />
   <HelpKINode Title="Mocker.AddInjections&lt;T&gt; method" Url="html/M-FastMoq.Mocker.AddInjections--1.htm" />
+  <HelpKINode Title="Mocker.AddProperties method" Url="html/Overload-FastMoq.Mocker.AddProperties-.htm" />
+  <HelpKINode Title="Mocker.AddType method" Url="html/Overload-FastMoq.Mocker.AddType.htm" />
+  <HelpKINode Title="Mocker.BuildExpression(Of T) method" Url="html/M-FastMoq.Mocker.BuildExpression--1.htm" />
+  <HelpKINode Title="Mocker.BuildExpression&lt;T&gt; method" Url="html/M-FastMoq.Mocker.BuildExpression--1.htm" />
+  <HelpKINode Title="Mocker.CallMethod(Of T) method" Url="html/M-FastMoq.Mocker.CallMethod--1.htm" />
+  <HelpKINode Title="Mocker.CallMethod&lt;T&gt; method" Url="html/M-FastMoq.Mocker.CallMethod--1.htm" />
   <HelpKINode Title="Mocker.ConstructorHistory property" Url="html/P-FastMoq.Mocker.ConstructorHistory.htm" />
   <HelpKINode Title="Mocker.CreateInstance method" Url="html/Overload-FastMoq.Mocker.CreateInstance-.htm" />
   <HelpKINode Title="Mocker.CreateInstanceByType(Of T) method" Url="html/M-FastMoq.Mocker.CreateInstanceByType--1.htm" />
   <HelpKINode Title="Mocker.CreateInstanceByType&lt;T&gt; method" Url="html/M-FastMoq.Mocker.CreateInstanceByType--1.htm" />
+  <HelpKINode Title="Mocker.CreateInstanceNonPublic method" Url="html/Overload-FastMoq.Mocker.CreateInstanceNonPublic-.htm" />
+  <HelpKINode Title="Mocker.CreateMock method" Url="html/Overload-FastMoq.Mocker.CreateMock.htm" />
+  <HelpKINode Title="Mocker.CreateMockInstance method" Url="html/Overload-FastMoq.Mocker.CreateMockInstance-.htm" />
   <HelpKINode Title="Mocker.creatingTypeList field" Url="html/F-FastMoq.Mocker.creatingTypeList.htm" />
   <HelpKINode Title="Mocker.DbConnection property" Url="html/P-FastMoq.Mocker.DbConnection.htm" />
   <HelpKINode Title="Mocker.ExceptionLog property" Url="html/P-FastMoq.Mocker.ExceptionLog.htm" />
@@ -538,13 +563,20 @@
   <HelpKINode Title="Mocker.GetArgData(Of T) method" Url="html/M-FastMoq.Mocker.GetArgData--1.htm" />
   <HelpKINode Title="Mocker.GetArgData&lt;T&gt; method" Url="html/M-FastMoq.Mocker.GetArgData--1.htm" />
   <HelpKINode Title="Mocker.GetDbContext method" Url="html/Overload-FastMoq.Mocker.GetDbContext-.htm" />
+  <HelpKINode Title="Mocker.GetFileSystem method" Url="html/M-FastMoq.Mocker.GetFileSystem.htm" />
   <HelpKINode Title="Mocker.GetHttpHandlerSetup method" Url="html/M-FastMoq.Mocker.GetHttpHandlerSetup.htm" />
   <HelpKINode Title="Mocker.GetList method" Url="html/Overload-FastMoq.Mocker.GetList-.htm" />
   <HelpKINode Title="Mocker.GetMessageProtectedAsync(Of TMock, TReturn) method" Url="html/M-FastMoq.Mocker.GetMessageProtectedAsync--2.htm" />
   <HelpKINode Title="Mocker.GetMessageProtectedAsync&lt;TMock, TReturn&gt; method" Url="html/M-FastMoq.Mocker.GetMessageProtectedAsync--2.htm" />
   <HelpKINode Title="Mocker.GetMethodArgData method" Url="html/M-FastMoq.Mocker.GetMethodArgData.htm" />
   <HelpKINode Title="Mocker.GetMethodDefaultData method" Url="html/M-FastMoq.Mocker.GetMethodDefaultData.htm" />
+  <HelpKINode Title="Mocker.GetMock method" Url="html/Overload-FastMoq.Mocker.GetMock-.htm" />
+  <HelpKINode Title="Mocker.GetMockAsync(Of T) method" Url="html/M-FastMoq.Mocker.GetMockAsync--1.htm" />
+  <HelpKINode Title="Mocker.GetMockAsync&lt;T&gt; method" Url="html/M-FastMoq.Mocker.GetMockAsync--1.htm" />
+  <HelpKINode Title="Mocker.GetMockDbContext method" Url="html/Overload-FastMoq.Mocker.GetMockDbContext.htm" />
   <HelpKINode Title="Mocker.GetObject method" Url="html/Overload-FastMoq.Mocker.GetObject.htm" />
+  <HelpKINode Title="Mocker.GetProtectedMock method" Url="html/Overload-FastMoq.Mocker.GetProtectedMock-.htm" />
+  <HelpKINode Title="Mocker.GetRequiredMock method" Url="html/Overload-FastMoq.Mocker.GetRequiredMock.htm" />
   <HelpKINode Title="Mocker.GetRequiredObject(Of T) method" Url="html/M-FastMoq.Mocker.GetRequiredObject--1.htm" />
   <HelpKINode Title="Mocker.GetRequiredObject&lt;T&gt; method" Url="html/M-FastMoq.Mocker.GetRequiredObject--1.htm" />
   <HelpKINode Title="Mocker.GetStringContent method" Url="html/M-FastMoq.Mocker.GetStringContent.htm" />
