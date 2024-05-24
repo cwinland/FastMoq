@@ -651,6 +651,18 @@ namespace FastMoq
         }
 
         /// <summary>
+        ///     Gets the IFileSystem used in this context.
+        ///     Generally, this means the Mocker.fileSystem property; unless strict is turned on, then it is a Mock.
+        /// </summary>
+        /// <returns></returns>
+        public IFileSystem GetFileSystem(Action<IFileSystem>? action = null)
+        {
+            var fs = GetObject<IFileSystem>() ?? fileSystem;
+            action?.Invoke(fs);
+            return fs;
+        }
+
+        /// <summary>
         ///     Gets the HTTP handler setup.
         /// </summary>
         /// <param name="request">The request.</param>
@@ -802,6 +814,38 @@ namespace FastMoq
         /// <param name="args">The arguments to get the constructor.</param>
         /// <returns><see cref="Mock{T}" />.</returns>
         public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>) GetMock(typeof(T), args);
+
+        /// <summary>
+        ///     Gets the mock and allows an action against the mock.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="mockAction">The mock action.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Mock&lt;T&gt; of the mock.</returns>
+        public Mock<T> GetMock<T>(Action<Mock<T>> mockAction, params object?[] args) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(mockAction);
+
+            var mock = GetMock<T>(args);
+            mockAction.Invoke(mock);
+
+            return mock;
+        }
+
+        /// <summary>
+        ///     Gets the mock and allows an action against the mock.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="mockFunc">The mock action.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Mock&lt;T&gt; of the mock.</returns>
+        public Task GetMockAsync<T>(Func<Mock<T>, Task> mockFunc, params object?[] args) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(mockFunc);
+
+            var mock = GetMock<T>(args);
+            return mockFunc.Invoke(mock);
+        }
 
         /// <summary>
         ///     Gets of creates the mock of <c>type</c>.
@@ -1183,6 +1227,52 @@ namespace FastMoq
         }
 
         /// <summary>
+        ///     Builds IsAny expression for the Type T.
+        /// </summary>
+        /// <typeparam name="T">Type which to build IsAny expression.</typeparam>
+        /// <returns>The expression.</returns>
+        public static Expression<Func<T, bool>> BuildExpression<T>() => It.IsAny<Expression<Func<T, bool>>>();
+
+        /// <summary>
+        ///     Calls the method.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="method">The method.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>Calls the method.</returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public T? CallMethod<T>(Delegate method, params object?[]? args) where T : class
+        {
+            ArgumentNullException.ThrowIfNull(method);
+
+            var parameters = GetMethodArgData(method.GetMethodInfo(), CreateParamTypeDictionary(method.GetMethodInfo(), args));
+            return (T?) method.DynamicInvoke(parameters);
+        }
+
+        internal Dictionary<Type, object?> CreateParamTypeDictionary(MethodBase info, params object?[]? args)
+        {
+            var paramList = info?.GetParameters().ToList() ?? new();
+            var newArgs = new Dictionary<Type, object?>();
+            args ??= [];
+
+            for (var i = 0; i < paramList.Count; i++)
+            {
+                var p = paramList[i];
+
+                var val = i switch
+                {
+                    _ when i < args.Length => args[i],
+                    _ when p.IsOptional => null,
+                    _ => GetParameter(p.ParameterType),
+                };
+
+                newArgs.Add(p.ParameterType, val);
+            }
+
+            return newArgs;
+        }
+
+        /// <summary>
         ///     Ensure Type is correct.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -1197,7 +1287,7 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <param name="nonPublic">if set to <c>true</c> [non-public].</param>
         /// <param name="args">The arguments.</param>
-        /// <returns>ConstructorInfo.</returns>
+        /// <returns>ConstructorModel.</returns>
         /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
         internal ConstructorModel FindConstructor(Type type, bool nonPublic, params object?[] args)
         {

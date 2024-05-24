@@ -543,6 +543,35 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetMockAction()
+        {
+            var mock = Mocks.GetMock<IFileInfo>(mock =>
+            {
+                mock.Should().NotBeNull();
+                mock.Object.FileSystem.Should().BeNull();
+                mock.SetupGet(x => x.FileSystem).Returns(Mocks.fileSystem);
+            });
+            mock.Should().NotBeNull();
+            mock.Object.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetMockAction_WithGetFileSystem()
+        {
+            Mocks.GetFileSystem(fs =>
+                {
+                    fs.Should().BeOfType<MockFileSystem>();
+                    fs.File.Should().BeOfType<MockFile>();
+                }
+            );
+
+            if (Mocks.GetFileSystem() is not IFileSystem)
+            {
+                throw new InvalidCastException("Expected GetFileSystem() to be IFileSystem");
+            }
+        }
+
+        [Fact]
         public void GetMockInstance()
         {
             Mock<ITestClassMany> mock = Component.CreateMockInstance<ITestClassMany>();
@@ -841,6 +870,49 @@ namespace FastMoq.Tests
             // Creating instance with parameter overrides type map.
             Mocks.CreateInstance<ITestClassMany>(1).Should().NotBeEquivalentTo(instance1);
         }
+
+        internal static object?[] CallTestMethod(int num, IFileSystem fileSystem, ITestCollectionOrderer dClass, TestClassMultiple mClass, string name)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            ArgumentNullException.ThrowIfNull(dClass);
+            ArgumentNullException.ThrowIfNull(mClass);
+            ArgumentNullException.ThrowIfNull(num);
+            ArgumentNullException.ThrowIfNull(name);
+
+            return
+            [
+                num, fileSystem, dClass, mClass, name,
+            ];
+        }
+
+        [Fact]
+        public void CallMethod()
+        {
+            var result = Mocks.CallMethod<object?[]>(CallTestMethod);
+            result.Length.Should().Be(5);
+            result[0].Should().Be(0);
+            result[1].Should().BeOfType<MockFileSystem>().And.NotBeNull();
+            result[2].GetType().IsAssignableTo(typeof(ITestCollectionOrderer)).Should().BeTrue();
+            result[2].Should().NotBeNull();
+            result[3].GetType().IsAssignableTo(typeof(TestClassMultiple)).Should().BeTrue();
+            result[3].Should().NotBeNull();
+            result[4].Should().Be("");
+        }
+
+        [Fact]
+        public void CallMethod_WithParams()
+        {
+            var result = Mocks.CallMethod<object?[]>(CallTestMethod, 4);
+            result.Length.Should().Be(5);
+            result[0].Should().Be(4);
+            result[1].Should().BeOfType<MockFileSystem>().And.NotBeNull();
+            result[2].GetType().IsAssignableTo(typeof(ITestCollectionOrderer)).Should().BeTrue();
+            result[2].Should().NotBeNull();
+            result[3].GetType().IsAssignableTo(typeof(TestClassMultiple)).Should().BeTrue();
+            result[3].Should().NotBeNull();
+            result[4].Should().Be("");
+        }
+
 
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)
         {
