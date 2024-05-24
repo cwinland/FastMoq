@@ -263,7 +263,5 @@ namespace FastMoq.Extensions
             var obj = mocker.AddInjections(info?.Invoke(newArgs.ToArray()));
             return mocker.InnerMockResolution ? mocker.AddProperties(type, obj) : obj;
         }
-
-
     }
 }

@@ -336,14 +336,15 @@ namespace FastMoq.Extensions
         /// <summary>
         ///     Gets the argument data.
         /// </summary>
-        /// <param name="constructor">The constructor.</param>
+        /// <param name="mocker">The mocker.</param>
+        /// <param name="method">The method.</param>
         /// <param name="data">The data.</param>
-        /// <returns>Array of nullable objects.</returns>
-        internal static object?[] GetArgData(this Mocker mocker, ConstructorInfo? constructor, Dictionary<Type, object?>? data)
+        /// <returns>object?[] of the argument data.</returns>
+        internal static object?[] GetArgData(this Mocker mocker, MethodBase? method, Dictionary<Type, object?>? data)
         {
             var args = new List<object?>();
 
-            constructor?.GetParameters().ToList().ForEach(p => args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
+            method?.GetParameters().ToList().ForEach(p => args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
                     ? data.First(x => x.Key == p.ParameterType).Value
                     : mocker.GetParameter(p.ParameterType)
                 )
@@ -462,7 +463,7 @@ namespace FastMoq.Extensions
         /// <param name="info">Parameter information.</param>
         /// <param name="instanceParameterValues">Optional arguments.</param>
         /// <returns><c>true</c> if [is valid constructor] [the specified information]; otherwise, <c>false</c>.</returns>
-        internal static bool IsValidConstructor(this Type type, ConstructorInfo info, params object?[] instanceParameterValues)
+        internal static bool IsValidConstructor(this Type type, MethodBase info, params object?[] instanceParameterValues)
         {
             var paramList = info.GetParameters().ToList();
 
@@ -493,10 +494,10 @@ namespace FastMoq.Extensions
         /// <summary>
         ///     Returns true if the argument list == 0 or the types match the constructor exactly.
         /// </summary>
-        /// <param name="info">Parameter information.</param>
+        /// <param name="info">Method.</param>
         /// <param name="instanceParameterValues">Optional arguments.</param>
         /// <returns><c>true</c> if [is valid constructor] [the specified information]; otherwise, <c>false</c>.</returns>
-        internal static bool IsValidConstructorByType(this ConstructorInfo info, params Type?[] instanceParameterValues)
+        internal static bool IsValidConstructorByType(this MethodBase info, params Type?[] instanceParameterValues)
         {
             if (instanceParameterValues.Length == 0)
             {
