@@ -1,4 +1,7 @@
-﻿namespace FastMoq
+﻿using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
+
+namespace FastMoq
 {
     /// <inheritdoc />
     public partial class MockerTestBase<TComponent> where TComponent : class
@@ -62,6 +65,10 @@
             SetupMocksAction = setupMocksAction;
             CreateComponentAction = createComponentAction ?? DefaultCreateAction;
             CreatedComponentAction = createdComponentAction;
+
+#if NET6_0
+            Mocks.AddFileSystemAbstractionMapping();
+#endif
             Component = GetComponent();
         }
 

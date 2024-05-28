@@ -15,7 +15,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Runtime;
 using System.Security.Claims;
 
 namespace FastMoq.Web.Blazor
@@ -532,7 +531,7 @@ namespace FastMoq.Web.Blazor
 
             return components.Count <= 1
                 ? components.First(predicate)
-                : throw new AmbiguousImplementationException($"Multiple components of type '{typeof(TComponent)}' was found.");
+                : throw Mocks.GetAmbiguousImplementationException(typeof(TComponent));
         }
 
         /// <inheritdoc />
@@ -542,7 +541,7 @@ namespace FastMoq.Web.Blazor
 
             return components.Count <= 1
                 ? components.First()
-                : throw new AmbiguousImplementationException($"Multiple components of type '{typeof(TComponent)}' was found.");
+                : throw Mocks.GetAmbiguousImplementationException(typeof(TComponent));
         }
 
         /// <inheritdoc />

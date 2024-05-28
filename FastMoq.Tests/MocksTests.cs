@@ -25,7 +25,10 @@ namespace FastMoq.Tests
 {
     public class MocksTests : MockerTestBase<Mocker>
     {
-        public MocksTests() : base(SetupAction, CreateAction, CreatedAction) { }
+        public MocksTests() : base(SetupAction, CreateAction, CreatedAction)
+        {
+            Component.AddFileSystemAbstractionMapping();
+        }
 
         [Fact]
         public void AddInjections()
@@ -366,10 +369,11 @@ namespace FastMoq.Tests
         public void AddTypeT_ShouldBe_AddTypeTT()
         {
             Mocks.AddType<TestClassOne>(_ => Mocks.CreateInstance<TestClassOne>());
-            var t = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
+            var t = GetTypeMapOf<TestClassOne>().Value.CreateFunc.Invoke(null);
             Mocks.typeMap.Clear();
+            Mocks.AddFileSystemAbstractionMapping();
             Mocks.AddType<TestClassOne, TestClassOne>(_ => Mocks.CreateInstance<TestClassOne>());
-            var t2 = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
+            var t2 = GetTypeMapOf<TestClassOne>().Value.CreateFunc.Invoke(null);
             t.Should().BeEquivalentTo(t2);
         }
 
@@ -377,16 +381,19 @@ namespace FastMoq.Tests
         public void AddTypeT_ShouldBe_AddType()
         {
             Mocks.AddType<TestClassOne>(_ => Mocks.CreateInstance<TestClassOne>());
-            var t = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
+            var t = GetTypeMapOf<TestClassOne>().Value.CreateFunc.Invoke(null);
             var o = Mocks.CreateInstance<TestClassOne>();
             o.Should().BeEquivalentTo(t);
             Mocks.typeMap.Clear();
+            Mocks.AddFileSystemAbstractionMapping(); 
             Mocks.AddType(typeof(TestClassOne), typeof(TestClassOne), _ => Mocks.CreateInstance<TestClassOne>());
-            var t2 = Mocks.typeMap.First().Value.CreateFunc.Invoke(null);
+            var t2 = GetTypeMapOf<TestClassOne>().Value.CreateFunc.Invoke(null);
             t.Should().BeEquivalentTo(t2);
             o = Mocks.CreateInstance<TestClassOne>();
             o.Should().BeEquivalentTo(t2);
         }
+
+        private KeyValuePair<Type, IInstanceModel> GetTypeMapOf<T>() => Mocks.typeMap.First(x => x.Value.Type.FullName == typeof(T).FullName);
 
         [Fact]
         public void FileSystem_ShouldBeValid()
@@ -746,8 +753,26 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void Mocker_AddMapClass() => new Action(() => Component.AddType<IFileSystem, FileSystem>())
-            .Should().NotThrow();
+        public void Mocker_AddMapClass_NotADuplicate()
+        {
+            Component.typeMap.Clear();
+            new Action(() => Component.AddType<IFileSystem, FileSystem>())
+                .Should().NotThrow();
+        }
+
+        [Fact]
+        public void Mocker_AddMapClass_Duplicate()
+        {
+            new Action(() => Component.AddType<IFileSystem, FileSystem>())
+                .Should().Throw<Exception>();
+        }
+
+        [Fact]
+        public void Mocker_AddMapClass_OverwriteDuplicate()
+        {
+            new Action(() => Component.AddType<IFileSystem, FileSystem>(replace: true))
+                .Should().NotThrow();
+        }
 
         [Fact]
         public void Mocker_AddMapClassIncompatibleInterface_ShouldThrow() => new Action(() => Component.AddType<IFileInfo, FileSystem>())

@@ -184,6 +184,28 @@ namespace FastMoq
         }
 
         /// <summary>
+        /// Adds the file io abstraction mapping.
+        /// </summary>
+        public void AddFileSystemAbstractionMapping()
+        {
+            this
+                .AddType<IDirectory, DirectoryBase>()
+                .AddType<IDirectoryInfo, DirectoryInfoBase>()
+                .AddType<IDirectoryInfoFactory, MockDirectoryInfoFactory>()
+                .AddType<IDriveInfo, DriveInfoBase>()
+                .AddType<IDriveInfoFactory, MockDriveInfoFactory>()
+                .AddType<IFile, FileBase>()
+                .AddType<IFileInfo, FileInfoBase>()
+                .AddType<IFileInfoFactory, MockFileInfoFactory>()
+                .AddType<IFileStreamFactory, MockFileStreamFactory>()
+                .AddType<IFileSystem, FileSystemBase>()
+                .AddType<IFileSystemInfo, FileSystemInfoBase>()
+                .AddType<IFileSystemWatcherFactory, MockFileSystemWatcherFactory>()
+                .AddType<IPath, PathBase>()
+                ;
+        }
+
+        /// <summary>
         ///     Creates a <see cref="MockModel" /> with the given <see cref="Mock" /> with the option of overwriting an existing
         ///     <see cref="MockModel" />
         /// </summary>
@@ -252,7 +274,7 @@ namespace FastMoq
         /// <param name="replace">Replace type if already exists. Default: false.</param>
         /// <param name="args">arguments needed in model.</param>
         /// <exception cref="System.ArgumentException"></exception>
-        public void AddType(Type tInterface, Type tClass, Func<Mocker, object>? createFunc = null, bool replace = false, params object?[]? args)
+        public Mocker AddType(Type tInterface, Type tClass, Func<Mocker, object>? createFunc = null, bool replace = false, params object?[]? args)
         {
             ArgumentNullException.ThrowIfNull(tClass);
             ArgumentNullException.ThrowIfNull(tInterface);
@@ -267,12 +289,14 @@ namespace FastMoq
                 throw new ArgumentException($"{tClass.Name} is not assignable to {tInterface.Name}.");
             }
 
-            if (typeMap.ContainsKey(tInterface) && replace)
+            if (replace && typeMap.ContainsKey(tInterface))
             {
                 typeMap.Remove(tInterface);
             }
 
-            typeMap.Add(tInterface, new InstanceModel(tInterface, tClass, createFunc, args?.ToList() ?? new()));
+            typeMap.Add(tInterface, new InstanceModel(tInterface, tClass, createFunc, args?.ToList() ?? []));
+
+            return this;
         }
 
         /// <summary>
@@ -282,7 +306,7 @@ namespace FastMoq
         /// <param name="createFunc">An optional create function used to create the class.</param>
         /// <param name="replace">Replace type if already exists. Default: false.</param>
         /// <param name="args">arguments needed in model.</param>
-        public void AddType<T>(Func<Mocker, T>? createFunc = null, bool replace = false, params object?[]? args) where T : class =>
+        public Mocker AddType<T>(Func<Mocker, T>? createFunc = null, bool replace = false, params object?[]? args) where T : class =>
             AddType<T, T>(createFunc, replace, args);
 
         /// <summary>
@@ -295,7 +319,7 @@ namespace FastMoq
         /// <param name="args">arguments needed in model.</param>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} cannot be an interface."</exception>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}."</exception>
-        public void AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null, bool replace = false, params object?[]? args)
+        public Mocker AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null, bool replace = false, params object?[]? args)
             where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), createFunc, replace, args);
 
         /// <summary>
@@ -1339,9 +1363,7 @@ namespace FastMoq
             // if it is not best guess, then we can't know which constructor.
             if (!bestGuess && constructors.Count(x => x.ParameterList.Length > 0) > 1)
             {
-                throw new AmbiguousImplementationException(
-                    "Multiple parameterized constructors exist. Cannot decide which to use."
-                );
+                throw this.GetAmbiguousConstructorImplementationException(type);
             }
 
             // Best Guess //
