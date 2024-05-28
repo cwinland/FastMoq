@@ -224,7 +224,7 @@ namespace FastMoq.Models
         public bool TryGetValue(Type key, out ReadOnlyCollection<IHistoryModel> value)
         {
             var result = constructorHistory.TryGetValue(key, out var value2);
-            value = value2?.AsReadOnly();
+            value = value2?.AsReadOnly() ?? new List<IHistoryModel>().AsReadOnly();
             return result;
         }
 
