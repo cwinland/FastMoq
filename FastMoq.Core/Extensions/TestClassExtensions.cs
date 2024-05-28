@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Text;
 using Xunit.Abstractions;
 
 namespace FastMoq.Extensions
@@ -267,9 +268,10 @@ namespace FastMoq.Extensions
         /// </summary>
         /// <param name="mocker">The mocker.</param>
         /// <param name="tType">Type of the t.</param>
+        /// <param name="typeList">The type list.</param>
         /// <returns>Type.</returns>
         /// <exception cref="System.Runtime.AmbiguousImplementationException"></exception>
-        public static Type GetTypeFromInterface(this Mocker mocker, Type tType)
+        public static Type GetTypeFromInterface(this Mocker mocker, Type tType, List<Type>? typeList = null)
         {
             if (!tType.IsInterface)
             {
@@ -283,8 +285,12 @@ namespace FastMoq.Extensions
                 return mappedType.InstanceType;
             }
 
-            var types = tType.Assembly.GetTypes().ToList();
+            var types = typeList ?? tType.Assembly.GetTypes().ToList();
+            return GetTypeFromInterfaceList(mocker, tType, types);
+        }
 
+        private static Type GetTypeFromInterfaceList(Mocker mocker, Type tType, List<Type> types)
+        {
             // Get interfaces that contain T.
             var interfaces = types.Where(type => type.IsInterface && type.GetInterfaces().Contains(tType)).ToList();
 
@@ -298,12 +304,53 @@ namespace FastMoq.Extensions
             return possibleTypes.Count switch
             {
                 > 1 => possibleTypes.Count(x => x.IsPublic) > 1
-                    ? throw new AmbiguousImplementationException()
+                    ? throw mocker.GetAmbiguousImplementationException(tType, possibleTypes)
                     : possibleTypes.Find(x => x.IsPublic) ?? possibleTypes.FirstOrDefault() ?? tType,
                 1 => possibleTypes[0],
                 _ => tType,
             };
         }
+
+        /// <summary>
+        /// Throws the ambiguous implementation exception.
+        /// </summary>
+        /// <param name="mocker">The mocker.</param>
+        /// <param name="message">The message.</param>
+        /// <returns>System.Runtime.AmbiguousImplementationException.</returns>
+        public static AmbiguousImplementationException GetAmbiguousImplementationException(this Mocker mocker, string message)
+        {
+            mocker.exceptionLog.Add(message);
+            return new AmbiguousImplementationException(message);
+        }
+
+        /// <summary>
+        /// Gets the ambiguous implementation exception.
+        /// </summary>
+        /// <param name="mocker">The mocker.</param>
+        /// <param name="tType">Type of the t.</param>
+        /// <param name="types">The types.</param>
+        /// <returns>System.Runtime.AmbiguousImplementationException.</returns>
+        public static AmbiguousImplementationException GetAmbiguousImplementationException(this Mocker mocker, Type tType, ICollection<Type>? types = null)
+        {
+            var builder = new StringBuilder($"Multiple components of type '{tType}' was found.");
+
+            if (types?.Count > 1)
+            {
+                builder.AppendLine("\r\nTypes found:");
+
+                builder.AppendJoin(", ", types.Select(x => x.FullName));
+            }
+            return mocker.GetAmbiguousImplementationException(builder.ToString());
+        }
+
+        /// <summary>
+        /// Throws the ambiguous constructor implementation exception.
+        /// </summary>
+        /// <param name="mocker">The mocker.</param>
+        /// <param name="tType">Type of the t.</param>
+        /// <returns>System.Runtime.AmbiguousImplementationException.</returns>
+        public static AmbiguousImplementationException GetAmbiguousConstructorImplementationException(this Mocker mocker, Type tType) =>
+            mocker.GetAmbiguousImplementationException($"Multiple parameterized constructors exist of type '{tType}'. Cannot decide which to use.");
 
         /// <summary>
         ///     Sets the field value.
