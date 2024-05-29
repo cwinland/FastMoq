@@ -938,6 +938,11 @@ namespace FastMoq.Tests
             result[4].Should().Be("");
         }
 
+        [Fact]
+        public void CallMethod_WithException()
+        {
+            Assert.Throws<ArgumentNullException>(() => Mocks.CallMethod<object?[]>(CallTestMethod, 4, null));
+        }
 
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)
         {

@@ -1270,7 +1270,19 @@ namespace FastMoq
             ArgumentNullException.ThrowIfNull(method);
 
             var parameters = GetMethodArgData(method.GetMethodInfo(), CreateParamTypeDictionary(method.GetMethodInfo(), args));
-            return (T?) method.DynamicInvoke(parameters);
+            try
+            {
+                return (T?) method.DynamicInvoke(parameters);
+            }
+            catch (Exception ex)
+            {
+                if (ex is TargetInvocationException te && te.InnerException is { } e)
+                {
+                    throw e;
+                }
+
+                throw;
+            }
         }
 
         internal Dictionary<Type, object?> CreateParamTypeDictionary(MethodBase info, params object?[]? args)
