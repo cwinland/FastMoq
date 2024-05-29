@@ -456,6 +456,7 @@ namespace FastMoq.Extensions
         /// <summary>
         ///     Gets the tested constructors.
         /// </summary>
+        /// <param name="mocker">Mocker object</param>
         /// <param name="type">The type to try to create.</param>
         /// <param name="constructors">The constructors to test with the specified type.</param>
         /// <returns>List&lt;FastMoq.Models.ConstructorModel&gt;.</returns>

@@ -51,6 +51,7 @@ namespace FastMoq.Extensions
         /// <summary>
         ///     Creates the HTTP client internal.
         /// </summary>
+        /// <param name="mocker">Mocker object</param>
         /// <param name="baseUri">The base URI.</param>
         /// <returns>System.Net.Http.HttpClient.</returns>
         /// <exception cref="System.ApplicationException">Unable to create HttpMessageHandler.</exception>

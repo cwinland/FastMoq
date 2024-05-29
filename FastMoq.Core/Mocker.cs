@@ -1258,13 +1258,24 @@ namespace FastMoq
         public static Expression<Func<T, bool>> BuildExpression<T>() => It.IsAny<Expression<Func<T, bool>>>();
 
         /// <summary>
-        ///     Calls the method.
+        ///     Calls the method without needing to specify the parameters.Parameters can be specified if particular values are required.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <example>
+        /// This example shows different ways to call the method. The method can be called with or without parameters.
+        /// All parameters are not required, but the order does matter.
+        /// The generic "T" type is the return value type expected from the method.
+        /// <code>
+        /// <![CDATA[
+        /// object[] a = Mocks.CallMethod<object[]>(CallTestMethod, 4);
+        /// object[] b = Mocks.CallMethod<object?[]>(CallTestMethod, 4, Mocks.fileSystem);
+        /// string c = Mocks.CallMethod<string>(CallStringMethod);
+        /// ]]></code>
+        /// </example>
+        /// <typeparam name="T">Return value type.</typeparam>
         /// <param name="method">The method.</param>
         /// <param name="args">The arguments.</param>
-        /// <returns>Calls the method.</returns>
-        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <returns>Returns value of the called method.</returns>
+        /// <exception cref="System.ArgumentNullException" />
         public T? CallMethod<T>(Delegate method, params object?[]? args) where T : class
         {
             ArgumentNullException.ThrowIfNull(method);

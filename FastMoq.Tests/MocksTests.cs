@@ -939,6 +939,21 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CallMethod_WithParams2()
+        {
+            var result = Mocks.CallMethod<object?[]>(CallTestMethod, 4, Mocks.fileSystem);
+            result.Length.Should().Be(5);
+            result[0].Should().Be(4);
+            result[1].Should().BeOfType<MockFileSystem>().And.NotBeNull();
+            result[2].GetType().IsAssignableTo(typeof(ITestCollectionOrderer)).Should().BeTrue();
+            result[2].Should().NotBeNull();
+            result[3].GetType().IsAssignableTo(typeof(TestClassMultiple)).Should().BeTrue();
+            result[3].Should().NotBeNull();
+            result[4].Should().Be("");
+        }
+
+
+        [Fact]
         public void CallMethod_WithException()
         {
             Assert.Throws<ArgumentNullException>(() => Mocks.CallMethod<object?[]>(CallTestMethod, 4, null));
