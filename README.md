@@ -322,6 +322,102 @@ TestAllConstructorParameters - Test all constructors in the component, regardles
     }
 ```
 
+### Call Method with auto injected parameters
+
+When testing method calls on a component, often the method's parameters are mock objects or just need default values. Instead of maintaining the parameter list, methods can be called without specifying specific parameters until required.
+FastMoq knows how mocks are already defined and the caller can use those mocks or their own provided mocks, if required.
+The helper command, ```CallMethod``` can be used to call any method with or without parameters.
+
+Any method called with ```CallMethod``` can be anywhere such as a component method or a static method. Given the following ```CallTestMethod```, it takes value and reference parameters, many of which can be mocked. If the value cannot be mocked, it can be defaulted.
+
+```cs
+ public object?[] CallTestMethod(int num, IFileSystem fileSystem, ITestCollectionOrderer dClass, TestClassMultiple mClass, string name)
+ {
+     ArgumentNullException.ThrowIfNull(fileSystem);
+     ArgumentNullException.ThrowIfNull(dClass);
+     ArgumentNullException.ThrowIfNull(mClass);
+     ArgumentNullException.ThrowIfNull(num);
+     ArgumentNullException.ThrowIfNull(name);
+
+     return
+     [
+         num, fileSystem, dClass, mClass, name,
+     ];
+ }
+
+```
+
+In this simple call, the method ```CallTestMethod``` will be called with default values and the current mocks.
+
+```cs
+ [Fact]
+ public void CallMethod()
+ {
+     var result = Mocks.CallMethod<object?[]>(Component.CallTestMethod);
+     result.Length.Should().Be(5);
+     result[0].Should().Be(0);
+     result[1].Should().BeOfType<MockFileSystem>().And.NotBeNull();
+     result[2].GetType().IsAssignableTo(typeof(ITestCollectionOrderer)).Should().BeTrue();
+     result[2].Should().NotBeNull();
+     result[3].GetType().IsAssignableTo(typeof(TestClassMultiple)).Should().BeTrue();
+     result[3].Should().NotBeNull();
+     result[4].Should().Be("");
+ }
+
+```
+
+In the previous call, ```CallMethod``` attempts to use mock parameters and then default values. The value for ```num``` was the ```default(int)``` which is 0. The default string value is ```string.Empty```.
+
+To override a value, parameters can be passed to the method. The parameters do not have to have the same count, but they do require the same order. For example, the following code calls ```CallTestMethod``` with num parameter 4 instead of 0. All other parameters are defaulted to their mocks or value default.
+
+```cs
+
+ [Fact]
+ public void CallMethod_WithParams()
+ {
+     var result = Mocks.CallMethod<object?[]>(Component.CallTestMethod, 4);
+     result.Length.Should().Be(5);
+     result[0].Should().Be(4);
+     result[1].Should().BeOfType<MockFileSystem>().And.NotBeNull();
+     result[2].GetType().IsAssignableTo(typeof(ITestCollectionOrderer)).Should().BeTrue();
+     result[2].Should().NotBeNull();
+     result[3].GetType().IsAssignableTo(typeof(TestClassMultiple)).Should().BeTrue();
+     result[3].Should().NotBeNull();
+     result[4].Should().Be("");
+ }
+```
+
+In the next call, the first two parameters are overridden only and the other values are the default mock objects/values.
+
+```cs
+
+ [Fact]
+ public void CallMethod_WithParams2()
+ {
+     var result = Mocks.CallMethod<object?[]>(Component.CallTestMethod, 4, Mocks.fileSystem);
+     result.Length.Should().Be(5);
+     result[0].Should().Be(4);
+     result[1].Should().BeOfType<MockFileSystem>().And.NotBeNull();
+     result[2].GetType().IsAssignableTo(typeof(ITestCollectionOrderer)).Should().BeTrue();
+     result[2].Should().NotBeNull();
+     result[3].GetType().IsAssignableTo(typeof(TestClassMultiple)).Should().BeTrue();
+     result[3].Should().NotBeNull();
+     result[4].Should().Be("");
+ }
+
+```
+
+Exceptions can be caught just like the method was called directly. The example below shows the assert looking for an argument null exception.
+
+```cs
+
+ [Fact]
+ public void CallMethod_WithException()
+ {
+     Assert.Throws<ArgumentNullException>(() => Mocks.CallMethod<object?[]>(Component.CallTestMethod, 4, null));
+ }
+```
+
 ## Troubleshooting
 
 ### System.MethodAccessException

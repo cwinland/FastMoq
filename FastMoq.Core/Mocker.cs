@@ -1268,7 +1268,8 @@ namespace FastMoq
         /// <![CDATA[
         /// object[] a = Mocks.CallMethod<object[]>(CallTestMethod, 4);
         /// object[] b = Mocks.CallMethod<object?[]>(CallTestMethod, 4, Mocks.fileSystem);
-        /// string c = Mocks.CallMethod<string>(CallStringMethod);
+        /// string c = Mocks.CallMethodS<string>(CallStringMethod);
+        /// int c = Mocks.CallMethodI<int>(CallStringMethod);
         /// ]]></code>
         /// </example>
         /// <typeparam name="T">Return value type.</typeparam>
