@@ -792,8 +792,34 @@ namespace FastMoq
         /// <param name="method">The method.</param>
         /// <param name="data">The data.</param>
         /// <returns>System.Nullable&lt;System.Object&gt;[].</returns>
+        ///// <exception cref="System.ArgumentNullException">method</exception>
+        //public object?[] GetMethodArgData(MethodInfo method, Dictionary<Type, object?>? data = null)
+        //{
+        //    if (method == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(method));
+        //    }
+
+        //    var args = new List<object?>();
+
+        //    method.GetParameters().ToList().ForEach(p =>
+        //        args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
+        //            ? data.First(x => x.Key == p.ParameterType).Value
+        //            : GetParameter(p.ParameterType)
+        //        )
+        //    );
+
+        //    return args.ToArray();
+        //}
+
+        /// <summary>
+        ///     Gets the method argument data.
+        /// </summary>
+        /// <param name="method">The method.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>System.Nullable&lt;System.Object&gt;[].</returns>
         /// <exception cref="System.ArgumentNullException">method</exception>
-        public object?[] GetMethodArgData(MethodInfo method, Dictionary<Type, object?>? data = null)
+        public object?[] GetMethodArgData(MethodInfo method, List<KeyValuePair<Type, object?>>? data = null)
         {
             if (method == null)
             {
@@ -1282,7 +1308,7 @@ namespace FastMoq
         {
             ArgumentNullException.ThrowIfNull(method);
 
-            var parameters = GetMethodArgData(method.GetMethodInfo(), CreateParamTypeDictionary(method.GetMethodInfo(), args));
+            var parameters = GetMethodArgData(method.GetMethodInfo(), CreateArgPairList(method.GetMethodInfo(), args));
             try
             {
                 return (T?) method.DynamicInvoke(parameters);
@@ -1316,10 +1342,10 @@ namespace FastMoq
         /// <exception cref="System.ArgumentNullException" />
         public void CallMethod(Delegate method, params object?[]? args) => CallMethod<object>(method, args);
 
-        internal Dictionary<Type, object?> CreateParamTypeDictionary(MethodBase info, params object?[]? args)
+        internal List<KeyValuePair<Type, object?>> CreateArgPairList(MethodBase info, params object?[]? args)
         {
             var paramList = info?.GetParameters().ToList() ?? new();
-            var newArgs = new Dictionary<Type, object?>();
+            var newArgs = new List<KeyValuePair<Type, object?>>();
             args ??= [];
 
             for (var i = 0; i < paramList.Count; i++)
@@ -1333,7 +1359,7 @@ namespace FastMoq
                     _ => GetParameter(p.ParameterType),
                 };
 
-                newArgs.Add(p.ParameterType, val);
+                newArgs.Add(new (p.ParameterType, val));
             }
 
             return newArgs;

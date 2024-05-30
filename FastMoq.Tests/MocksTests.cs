@@ -2,6 +2,9 @@ using FastMoq.Extensions;
 using FastMoq.Models;
 using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +13,7 @@ using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 using System.Reflection;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 
@@ -1016,11 +1020,24 @@ namespace FastMoq.Tests
             result.Should().Be(0);
         }
 
-
         [Fact]
         public void CallMethod_WithException()
         {
             Assert.Throws<ArgumentNullException>(() => Mocks.CallMethod<object?[]>(CallTestMethod, 4, null));
+        }
+
+        private static void LogException(Exception ex, ILogger log, string customMessage = "", [CallerMemberName] string caller = "")
+        {
+            log.LogError("[{caller}] - {customMessage}{errorMessage}", caller, $"{customMessage} ", ex.Message);
+        }
+
+        [Fact]
+        public void TestLogException_CallsLogError()
+        {
+            var ex = new Exception();
+
+            Mocks.AddType<ILogger, Logger<NullLogger>>();
+            Mocks.CallMethod<object>(LogException, ex);
         }
 
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)
