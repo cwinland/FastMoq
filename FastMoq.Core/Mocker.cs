@@ -1266,10 +1266,11 @@ namespace FastMoq
         /// The generic "T" type is the return value type expected from the method.
         /// <code>
         /// <![CDATA[
-        /// object[] a = Mocks.CallMethod<object[]>(CallTestMethod, 4);
-        /// object[] b = Mocks.CallMethod<object?[]>(CallTestMethod, 4, Mocks.fileSystem);
-        /// string c = Mocks.CallMethodS<string>(CallStringMethod);
-        /// int c = Mocks.CallMethodI<int>(CallStringMethod);
+        /// object[] a = Mocks.CallMethod<object[]>(CallTestMethod);
+        /// object[] b = Mocks.CallMethod<object[]>(CallTestMethod, 4);
+        /// object[] c = Mocks.CallMethod<object?[]>(CallTestMethod, 4, Mocks.fileSystem);
+        /// string d = Mocks.CallMethodS<string>(CallStringMethod);
+        /// int e = Mocks.CallMethodI<int>(CallStringMethod);
         /// ]]></code>
         /// </example>
         /// <typeparam name="T">Return value type.</typeparam>
@@ -1296,6 +1297,24 @@ namespace FastMoq
                 throw;
             }
         }
+
+        /// <summary>
+        ///     Calls the method without needing to specify the parameters.Parameters can be specified if particular values are required.
+        /// </summary>
+        /// <example>
+        /// This example shows different ways to call the method. The method can be called with or without parameters.
+        /// All parameters are not required, but the order does matter.
+        /// <code>
+        /// <![CDATA[
+        /// Mocks.CallMethod(CallTestMethod);
+        /// Mocks.CallMethod(CallTestMethod, 4);
+        /// Mocks.CallMethod(CallTestMethod, 4, Mocks.fileSystem);
+        /// ]]></code>
+        /// </example>
+        /// <param name="method">The method.</param>
+        /// <param name="args">The arguments.</param>
+        /// <exception cref="System.ArgumentNullException" />
+        public void CallMethod(Delegate method, params object?[]? args) => CallMethod<object>(method, args);
 
         internal Dictionary<Type, object?> CreateParamTypeDictionary(MethodBase info, params object?[]? args)
         {

@@ -4,6 +4,7 @@ using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
@@ -919,6 +920,37 @@ namespace FastMoq.Tests
             [
                 num, fileSystem, dClass, mClass, name,
             ];
+        }
+
+        internal void CallTestMethodVoid(int num, IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+
+            if (num == 5)
+            {
+                throw new InvalidDataException();
+            }
+        }
+
+        [Fact]
+        public void CallMethod_Success_WhenVoid()
+        {
+            Mocks.CallMethod<object>(CallTestMethodVoid);
+            Mocks.CallMethod(() => CallTestMethodVoid);
+        }
+
+        [Fact]
+        public void CallMethod_Error_WhenNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => Mocks.CallMethod<object>(CallTestMethodVoid, 0, null));
+            Assert.Throws<ArgumentNullException>(() => Mocks.CallMethod(CallTestMethodVoid, 0, null));
+        }
+
+        [Fact]
+        public void CallMethod_Error_When5()
+        {
+            Assert.Throws<InvalidDataException>(() => Mocks.CallMethod<object>(CallTestMethodVoid, 5));
+            Assert.Throws<InvalidDataException>(() => Mocks.CallMethod(CallTestMethodVoid, 5));
         }
 
         [Fact]
