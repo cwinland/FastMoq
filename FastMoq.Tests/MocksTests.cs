@@ -896,6 +896,17 @@ namespace FastMoq.Tests
             Mocks.CreateInstance<ITestClassMany>(1).Should().NotBeEquivalentTo(instance1);
         }
 
+        internal static int CallTestMethodInt(int num, IFileSystem fileSystem, ITestCollectionOrderer dClass, TestClassMultiple mClass, string name)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            ArgumentNullException.ThrowIfNull(dClass);
+            ArgumentNullException.ThrowIfNull(mClass);
+            ArgumentNullException.ThrowIfNull(num);
+            ArgumentNullException.ThrowIfNull(name);
+
+            return num;
+        }
+
         internal static object?[] CallTestMethod(int num, IFileSystem fileSystem, ITestCollectionOrderer dClass, TestClassMultiple mClass, string name)
         {
             ArgumentNullException.ThrowIfNull(fileSystem);
@@ -950,6 +961,27 @@ namespace FastMoq.Tests
             result[3].GetType().IsAssignableTo(typeof(TestClassMultiple)).Should().BeTrue();
             result[3].Should().NotBeNull();
             result[4].Should().Be("");
+        }
+
+        [Fact]
+        public void CallMethod_WithParamsReturnInt()
+        {
+            var result = Mocks.CallMethod<int>(CallTestMethodInt, 4, Mocks.fileSystem);
+            result.Should().Be(4);
+        }
+
+        [Fact]
+        public void CallMethod_WithParamsReturnInt2()
+        {
+            var result = Mocks.CallMethod<int>(CallTestMethodInt, 7);
+            result.Should().Be(7);
+        }
+
+        [Fact]
+        public void CallMethod_WithNoParamsReturnInt()
+        {
+            var result = Mocks.CallMethod<int>(CallTestMethodInt);
+            result.Should().Be(0);
         }
 
 

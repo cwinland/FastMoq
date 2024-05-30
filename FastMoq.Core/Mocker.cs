@@ -1276,7 +1276,7 @@ namespace FastMoq
         /// <param name="args">The arguments.</param>
         /// <returns>Returns value of the called method.</returns>
         /// <exception cref="System.ArgumentNullException" />
-        public T? CallMethod<T>(Delegate method, params object?[]? args) where T : class
+        public T? CallMethod<T>(Delegate method, params object?[]? args)
         {
             ArgumentNullException.ThrowIfNull(method);
 
