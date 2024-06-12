@@ -1,4 +1,6 @@
 ﻿using FastMoq.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -278,6 +280,12 @@ namespace FastMoq.Extensions
                 return tType;
             }
 
+            if (tType == typeof(ILogger) && !mocker.typeMap.ContainsKey(typeof(ILogger)))
+            {
+                mocker.ExceptionLog.Add("WARNING: ILogger found and not mapped. Assuming NullLogger and adding an entry to the type map.");
+                mocker.AddType<ILogger, NullLogger>();
+            }
+
             var mappedType = mocker.typeMap.Where(x => x.Key == tType).Select(x => x.Value).FirstOrDefault();
 
             if (mappedType != null)
@@ -319,7 +327,7 @@ namespace FastMoq.Extensions
         /// <returns>System.Runtime.AmbiguousImplementationException.</returns>
         public static AmbiguousImplementationException GetAmbiguousImplementationException(this Mocker mocker, string message)
         {
-            mocker.exceptionLog.Add(message);
+            mocker.ExceptionLog.Add(message);
             return new AmbiguousImplementationException(message);
         }
 
@@ -332,7 +340,7 @@ namespace FastMoq.Extensions
         /// <returns>System.Runtime.AmbiguousImplementationException.</returns>
         public static AmbiguousImplementationException GetAmbiguousImplementationException(this Mocker mocker, Type tType, ICollection<Type>? types = null)
         {
-            var builder = new StringBuilder($"Multiple components of type '{tType}' was found.");
+            var builder = new StringBuilder($"Multiple components of type '{tType}' was found. Use Mocker.AddType to specify the correct resolution.");
 
             if (types?.Count > 1)
             {
@@ -484,12 +492,12 @@ namespace FastMoq.Extensions
                 catch (TargetInvocationException ex)
                 {
                     // Track invocation issues to bubble up if a good constructor is not found.
-                    mocker.exceptionLog.Add(ex.Message);
+                    mocker.ExceptionLog.Add(ex.Message);
                     targetError.Add(constructor);
                 }
                 catch (Exception ex)
                 {
-                    mocker.exceptionLog.Add(ex.Message);
+                    mocker.ExceptionLog.Add(ex.Message);
                 }
             }
 

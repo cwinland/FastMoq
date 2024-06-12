@@ -141,19 +141,19 @@ namespace FastMoq.Extensions
             }
             catch (TargetInvocationException ex)
             {
-                mocker.exceptionLog.Add(ex.Message);
+                mocker.ExceptionLog.Add(ex.Message);
                 ex.ThrowIfCastleMethodAccessException(); // Throw actual error.
                 throw; // Bubble up since not a CastleAccessException
             }
             catch (MethodAccessException ex)
             {
-                mocker.exceptionLog.Add(ex.Message);
+                mocker.ExceptionLog.Add(ex.Message);
                 ex.ThrowIfCastleMethodAccessException(); // Throw actual error.
                 throw; // Bubble up since not a CastleAccessException
             }
             catch (Exception ex)
             {
-                mocker.exceptionLog.Add(ex.Message);
+                mocker.ExceptionLog.Add(ex.Message);
                 throw;
             }
         }
@@ -172,7 +172,7 @@ namespace FastMoq.Extensions
             }
             catch (Exception ex)
             {
-                mocker.exceptionLog.Add(ex.Message);
+                mocker.ExceptionLog.Add(ex.Message);
             }
 
             if (constructor.ConstructorInfo == null && !mocker.HasParameterlessConstructor(type))
@@ -184,7 +184,7 @@ namespace FastMoq.Extensions
                 catch (Exception ex)
                 {
                     // It's okay if this fails.
-                    mocker.exceptionLog.Add(ex.Message);
+                    mocker.ExceptionLog.Add(ex.Message);
                 }
             }
 

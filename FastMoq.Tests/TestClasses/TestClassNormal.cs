@@ -1,4 +1,6 @@
-﻿using System.IO.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using System;
+using System.IO.Abstractions;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -17,9 +19,10 @@ namespace FastMoq.Tests.TestClasses
             // Left blank
         }
 
-        public TestClassNormal(IFileSystem fileSystem)
+        public TestClassNormal(IFileSystem fileSystem, ILogger logger)
         {
-            // Left blank
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            ArgumentNullException.ThrowIfNull(logger);
         }
     }
 

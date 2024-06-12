@@ -71,8 +71,6 @@ namespace FastMoq
         /// </summary>
         protected internal readonly List<MockModel> mockCollection;
 
-        internal readonly Collection<string> exceptionLog = new();
-
         /// <summary>
         ///     <see cref="Dictionary{TKey,TValue}" /> of <see cref="Type" /> mapped to <see cref="InstanceModel" />.
         ///     This map assists in resolution of interfaces to instances.
@@ -99,7 +97,7 @@ namespace FastMoq
         /// <summary>
         ///     Tracks internal exceptions for debugging.
         /// </summary>
-        public IReadOnlyCollection<string> ExceptionLog => new ReadOnlyCollection<string>(exceptionLog);
+        public ObservableExceptionLog ExceptionLog => new();
 
         /// <summary>
         ///     The virtual mock http client that is used by mocker unless overridden with the <see cref="Strict" /> property.
@@ -267,6 +265,7 @@ namespace FastMoq
 
         /// <summary>
         ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
+        ///     This is similar to dependency injection. It will resolve an interface to the specified concrete class.
         /// </summary>
         /// <param name="tInterface">The interface or class Type which can be mapped to a specific Class.</param>
         /// <param name="tClass">The Class Type (cannot be an interface) that can be created and assigned to tInterface.</param>
@@ -281,7 +280,15 @@ namespace FastMoq
 
             if (tClass.IsInterface)
             {
-                throw new ArgumentException($"{tClass.Name} cannot be an interface.");
+                var message = tInterface.Name switch
+                {
+                    _ when tInterface.Name.Equals(tClass.Name) =>
+                        $"{nameof(AddType)} does not support mapping an interface to itself. Therefore specify a concrete class or map an interface to a concrete class.",
+                    _ =>
+                        $"{tClass.Name} cannot be an interface. An interface must be mapped to a concrete class.",
+                };
+
+                throw new ArgumentException(message);
             }
 
             if (!tInterface.IsAssignableFrom(tClass))
@@ -301,6 +308,7 @@ namespace FastMoq
 
         /// <summary>
         ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
+        ///     This is similar to dependency injection. It will resolve an interface to the specified concrete class.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="createFunc">An optional create function used to create the class.</param>
@@ -311,6 +319,7 @@ namespace FastMoq
 
         /// <summary>
         ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
+        ///     This is similar to dependency injection. It will resolve an interface to the specified concrete class.
         /// </summary>
         /// <typeparam name="TInterface">The interface or class Type which can be mapped to a specific Class.</typeparam>
         /// <typeparam name="TClass">The Class Type (cannot be an interface) that can be created and assigned to TInterface /&gt;.</typeparam>
@@ -973,12 +982,17 @@ namespace FastMoq
             }
             catch (FileNotFoundException ex)
             {
-                exceptionLog.Add(ex.Message);
+                ExceptionLog.Add(ex.Message);
+                throw;
+            }
+            catch (AmbiguousImplementationException ex)
+            {
+                ExceptionLog.Add(ex.Message);
                 throw;
             }
             catch (Exception ex)
             {
-                exceptionLog.Add(ex.Message);
+                ExceptionLog.Add(ex.Message);
                 return info.ParameterType.GetDefaultValue();
             }
         }
@@ -1609,7 +1623,7 @@ namespace FastMoq
             }
             catch (Exception ex)
             {
-                exceptionLog.Add(ex.Message);
+                ExceptionLog.Add(ex.Message);
             }
         }
     }
