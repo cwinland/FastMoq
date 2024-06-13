@@ -55,7 +55,7 @@ namespace FastMoq
         protected IEnumerable<MockModel> CustomMocks { get; set; } = new List<MockModel>();
 
         /// <summary>
-        ///     Gets or sets the create component action. This action is run whenever the component is created.
+        ///     Gets or sets the creation component action. This action is run whenever the component is created.
         /// </summary>
         /// <value>The action to override the component creation.</value>
         protected virtual Func<Mocker, TComponent> CreateComponentAction { get; }

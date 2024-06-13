@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.IO.Abstractions;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
@@ -18,6 +19,9 @@ namespace FastMoq.Tests.TestClasses
 
     internal class TestClassParameters
     {
+        internal readonly IFileSystem fileSystem;
+        internal readonly ILogger logger;
+
         [Inject] internal IFileSystem anotherFileSystem;
 
         [Inject] internal IFileSystem anotherFileSystem2 { get; set; }
@@ -32,12 +36,15 @@ namespace FastMoq.Tests.TestClasses
 
         [Inject] internal string? invalidInjection4;
 
-        internal TestClassParameters(int x, string y, IFileSystem fileSystem)
+        internal TestClassParameters(int x, string y, IFileSystem? fileSystem, ILogger? logger = null)
         {
             if (fileSystem == null)
             {
                 throw new ArgumentNullException(nameof(fileSystem));
             }
+
+            this.fileSystem = fileSystem;
+            this.logger = logger;
         }
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.Language.Flow;
 using Moq.Protected;
-using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
@@ -87,6 +86,12 @@ namespace FastMoq
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the mock optional.
+        /// </summary>
+        /// <value>The mock optional.</value>
+        public bool MockOptional { get; set; } = false;
 
         /// <summary>
         ///     Gets the database connection. The default value is a memory Sqlite database connection unless otherwise set.
@@ -978,7 +983,7 @@ namespace FastMoq
 
             try
             {
-                return info.IsOptional ? null : GetParameter(info.ParameterType);
+                return !MockOptional && info.IsOptional ? null : GetParameter(info.ParameterType);
             }
             catch (FileNotFoundException ex)
             {

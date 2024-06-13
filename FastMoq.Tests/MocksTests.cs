@@ -4,7 +4,6 @@ using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -217,6 +216,7 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateClassWithInjectParameters()
         {
+            Mocks.MockOptional = true;
             var m = Mocks.CreateInstance<TestClassParameters>();
             m.Should().NotBeNull();
             m.anotherFileSystem.Should().NotBeNull();
@@ -226,6 +226,8 @@ namespace FastMoq.Tests
             m.invalidInjection2.Should().BeNull();
             m.invalidInjection3.Should().BeEmpty();
             m.invalidInjection4.Should().BeEmpty();
+            m.fileSystem.Should().NotBeNull();
+            m.logger.Should().NotBeNull();
 
             Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
             (Mocks.CreateInstance<ITestClassOne>() as TestClassOne).FileSystem.Should().NotBeNull();
