@@ -1,6 +1,7 @@
 ﻿using FastMoq.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -12,7 +13,7 @@ using Xunit.Abstractions;
 namespace FastMoq.Extensions
 {
     /// <summary>
-    ///     Class TestClassExtensions.
+    ///     Helper Methods for testing.
     /// </summary>
     public static class TestClassExtensions
     {
@@ -381,6 +382,129 @@ namespace FastMoq.Extensions
             obj.GetProperty(name)?.SetValue(obj, value);
 
         /// <summary>
+        ///     Verifies the Mock ILogger was invoked.
+        /// </summary>
+        /// <param name="loggerMock">The logger mock.</param>
+        /// <param name="logLevel">The expected log level.</param>
+        /// <param name="message">The expected message.</param>
+        /// <param name="times">The expected number of invocations.</param>
+        public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, int times = 1) => loggerMock.VerifyLogger(logLevel, message, null, null, times);
+
+        /// <summary>
+        ///     Verifies the Mock ILogger of T was invoked.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="loggerMock">The logger mock.</param>
+        /// <param name="logLevel">The expected log level.</param>
+        /// <param name="message">The expected message.</param>
+        /// <param name="times">The expected number of invocations.</param>
+        public static void VerifyLogger<T>(this Mock<ILogger<T>> loggerMock, LogLevel logLevel, string message, int times = 1) => loggerMock.VerifyLogger(logLevel, message, null, null, times);
+
+        /// <summary>
+        ///     Verifies the Mock ILogger was invoked.
+        /// </summary>
+        /// <param name="loggerMock">The logger mock.</param>
+        /// <param name="logLevel">The log level.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="eventId">The event identifier.</param>
+        /// <param name="times">The expected number of invocations.</param>
+        public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null,
+                                        int times = 1) => loggerMock.VerifyLogger<Exception>(logLevel, message, exception, eventId, times);
+
+        /// <summary>
+        ///     Verifies the Mock ILogger was invoked.
+        /// </summary>
+        /// <param name="loggerMock">The logger mock.</param>
+        /// <param name="logLevel">The log level.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="eventId">The event identifier.</param>
+        /// <param name="times">The expected number of invocations.</param>
+        public static void VerifyLogger<T>(this Mock<ILogger<T>> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null,
+                                           int times = 1) => loggerMock.VerifyLogger<Exception, T>(logLevel, message, exception, eventId, times);
+
+        /// <summary>
+        ///     Verifies the Mock ILogger was invoked.
+        /// </summary>
+        /// <typeparam name="TException">The type of the exception.</typeparam>
+        /// <param name="loggerMock">The logger mock.</param>
+        /// <param name="logLevel">The log level.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="eventId">The event identifier.</param>
+        /// <param name="times">The expected number of invocations.</param>
+        public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1)
+                where TException : Exception
+                    => loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), Times.Exactly(times));
+
+        /// <summary>
+        ///     Verifies the Mock ILogger was invoked.
+        /// </summary>
+        /// <typeparam name="TException">The type of the exception.</typeparam>
+        /// <typeparam name="TLogger">The type of ILogger.</typeparam>
+        /// <param name="loggerMock">The logger mock.</param>
+        /// <param name="logLevel">The log level.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="eventId">The event identifier.</param>
+        /// <param name="times">The expected number of invocations.</param>
+        public static void VerifyLogger<TException, TLogger>(this Mock<ILogger<TLogger>> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1)
+            where TException : Exception
+            => loggerMock.Verify(TestLoggerExpression<TException, ILogger<TLogger>>(logLevel, message, exception, eventId), Times.Exactly(times));
+
+        /// <summary>
+        ///     Tests the logger expression2.
+        /// </summary>
+        /// <typeparam name="TException">The type of the exception.</typeparam>
+        /// <typeparam name="TLoggerType">The ILogger type.</typeparam>
+        /// <param name="logLevel">The log level.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="eventId">The event identifier.</param>
+        /// <returns>System.Linq.Expressions.Expression&lt;System.Action&lt;T&gt;&gt;.</returns>
+        internal static Expression<Action<TLoggerType>> TestLoggerExpression<TException, TLoggerType>(LogLevel logLevel, string message, TException? exception,
+                                                                                             int? eventId) where TException : Exception where TLoggerType : ILogger =>
+            logger =>
+            logger.Log(
+                logLevel,
+                It.Is<EventId>(e => CheckEventId(e, eventId)),
+                It.Is<It.IsAnyType>((o, t) => CheckMessage(o.ToString() ?? string.Empty, t, message, t)),
+                It.Is<Exception>(e => CheckException(e, exception)),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
+
+        /// <summary>
+        ///     Checks the expectedMessage.
+        /// </summary>
+        /// <param name="verifyMessage">The object.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="expectedMessage">The expected expectedMessage.</param>
+        /// <param name="expectedType">The expected type.</param>
+        /// <returns>System.Boolean.</returns>
+        internal static bool CheckMessage(string verifyMessage, Type type, string expectedMessage, Type expectedType) =>
+            verifyMessage.Contains(expectedMessage, StringComparison.OrdinalIgnoreCase) &&
+            type.IsAssignableTo(expectedType);
+
+        /// <summary>
+        ///     Checks the event identifier.
+        /// </summary>
+        /// <param name="verifyEventId">The event identifier.</param>
+        /// <param name="eventId">The expected event identifier.</param>
+        /// <returns>System.Boolean.</returns>
+        internal static bool CheckEventId(EventId verifyEventId, int? eventId) => eventId == null || verifyEventId == eventId;
+
+        /// <summary>
+        ///     Checks the expectedException.
+        /// </summary>
+        /// <param name="verifyException">The expectedException.</param>
+        /// <param name="expectedException">The expected expectedException.</param>
+        /// <returns>System.Boolean.</returns>
+        internal static bool CheckException(Exception verifyException, Exception? expectedException) => expectedException == null ||
+            (verifyException.Message.Contains(
+                 expectedException.Message, StringComparison.OrdinalIgnoreCase) &&
+             verifyException.GetType().IsAssignableTo(expectedException.GetType()));
+
+        /// <summary>
         ///     ForEach for <see cref="IEnumerable{T}" />.
         /// </summary>
         /// <typeparam name="T">Type of item.</typeparam>
@@ -468,7 +592,7 @@ namespace FastMoq.Extensions
         /// <param name="type">The type to try to create.</param>
         /// <param name="constructors">The constructors to test with the specified type.</param>
         /// <returns>List&lt;FastMoq.Models.ConstructorModel&gt;.</returns>
-        internal static List<ConstructorModel> GetTestedConstructors(this Mocker mocker, Type type, List<ConstructorModel> constructors)
+        internal static List<ConstructorModel> GetTestedConstructors(this Mocker mocker, Type type, List<ConstructorModel>? constructors)
         {
             constructors ??= new();
             var validConstructors = new List<ConstructorModel>();

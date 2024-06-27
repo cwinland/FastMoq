@@ -1028,6 +1028,61 @@ namespace FastMoq.Tests
             Assert.Throws<ArgumentNullException>(() => Mocks.CallMethod<object?[]>(CallTestMethod, 4, null));
         }
 
+        [Fact]
+        public void VerifyLogger_ShouldPass_WhenMatches()
+        {
+            var mLogger = new Mock<ILogger>();
+            mLogger.VerifyLogger(LogLevel.Information, "test", 0);
+
+            mLogger.Object.LogInformation("test");
+            mLogger.VerifyLogger(LogLevel.Information, "test");
+
+            mLogger.Object.LogInformation("test");
+            mLogger.VerifyLogger(LogLevel.Information, "test", 2);
+            mLogger.VerifyLogger(LogLevel.Information, "test", null, null, 2);
+
+            mLogger.Invocations.Clear();
+            mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
+            mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
+            mLogger.VerifyLogger<Exception>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
+        }
+
+        [Fact]
+        public void VerifyLogger_ShouldPass_WhenMatchesILoggerSubtype()
+        {
+            var mLogger = new Mock<ILogger<NullLogger>>();
+            mLogger.VerifyLogger(LogLevel.Information, "test", 0);
+
+            mLogger.Object.LogInformation("test");
+            mLogger.VerifyLogger(LogLevel.Information, "test");
+
+            mLogger.Object.LogInformation("test");
+            mLogger.VerifyLogger(LogLevel.Information, "test", 2);
+            mLogger.VerifyLogger(LogLevel.Information, "test", null, null, 2);
+
+            mLogger.Invocations.Clear();
+            mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
+            mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
+            mLogger.VerifyLogger<Exception, NullLogger>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
+        }
+
+        [Fact]
+        public void VerifyLogger_ShouldThrow_WhenNotMatches()
+        {
+            var mLogger = new Mock<ILogger>();
+            mLogger.VerifyLogger(LogLevel.Information, "test", 0);
+
+            mLogger.Object.LogInformation("test");
+            Assert.Throws<MockException>(() => mLogger.VerifyLogger(LogLevel.Information, "test2")); // Wrong Message.
+
+            mLogger.Object.LogInformation("test");
+            Assert.Throws<MockException>(() => mLogger.VerifyLogger(LogLevel.Information, "test")); // Wrong number of times.
+
+            mLogger.Invocations.Clear();
+            mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
+            Assert.Throws<MockException>(() => mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 0)); // Wrong eventId.
+        }
+
         private static void LogException(Exception ex, ILogger log, string customMessage = "", [CallerMemberName] string caller = "")
         {
             log.LogError("[{caller}] - {customMessage}{errorMessage}", caller, $"{customMessage} ", ex.Message);
