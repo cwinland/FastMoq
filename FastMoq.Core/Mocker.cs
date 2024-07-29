@@ -55,6 +55,9 @@ namespace FastMoq
     {
         #region Fields
 
+        public const string SETUP_ALL_PROPERTIES_METHOD_NAME = "SetupAllProperties";
+        public const string SETUP = "Setup";
+
         /// <summary>
         ///     The virtual mock file system that is used by mocker unless overridden with the <see cref="Strict" /> property.
         /// </summary>
@@ -191,21 +194,19 @@ namespace FastMoq
         /// </summary>
         public void AddFileSystemAbstractionMapping()
         {
-            this
-                .AddType<IDirectory, DirectoryBase>()
-                .AddType<IDirectoryInfo, DirectoryInfoBase>()
-                .AddType<IDirectoryInfoFactory, MockDirectoryInfoFactory>()
-                .AddType<IDriveInfo, DriveInfoBase>()
-                .AddType<IDriveInfoFactory, MockDriveInfoFactory>()
-                .AddType<IFile, FileBase>()
-                .AddType<IFileInfo, FileInfoBase>()
-                .AddType<IFileInfoFactory, MockFileInfoFactory>()
-                .AddType<IFileStreamFactory, MockFileStreamFactory>()
-                .AddType<IFileSystem, FileSystemBase>()
-                .AddType<IFileSystemInfo, FileSystemInfoBase>()
-                .AddType<IFileSystemWatcherFactory, MockFileSystemWatcherFactory>()
-                .AddType<IPath, PathBase>()
-                ;
+            AddType<IDirectory, DirectoryBase>()
+               .AddType<IDirectoryInfo, DirectoryInfoBase>()
+               .AddType<IDirectoryInfoFactory, MockDirectoryInfoFactory>()
+               .AddType<IDriveInfo, DriveInfoBase>()
+               .AddType<IDriveInfoFactory, MockDriveInfoFactory>()
+               .AddType<IFile, FileBase>()
+               .AddType<IFileInfo, FileInfoBase>()
+               .AddType<IFileInfoFactory, MockFileInfoFactory>()
+               .AddType<IFileStreamFactory, MockFileStreamFactory>()
+               .AddType<IFileSystem, FileSystemBase>()
+               .AddType<IFileSystemInfo, FileSystemInfoBase>()
+               .AddType<IFileSystemWatcherFactory, MockFileSystemWatcherFactory>()
+               .AddType<IPath, PathBase>();
         }
 
         /// <summary>
@@ -574,8 +575,6 @@ namespace FastMoq
         /// <exception cref="System.ApplicationException">Type must be a class or interface., nameof(type)</exception>
         public Mock CreateMockInstance(Type type, bool nonPublic = false, params object?[] args)
         {
-            const string SETUP_ALL_PROPERTIES_METHOD_NAME = "SetupAllProperties";
-
             if (type == null || (!type.IsClass && !type.IsInterface))
             {
                 throw new ArgumentException("Type must be a class or interface.", nameof(type));
@@ -585,18 +584,8 @@ namespace FastMoq
 
             var oMock = this.CreateMockInternal(type, constructor.ParameterList, nonPublic);
 
-            if (!Strict)
-            {
-                InvokeMethod<Mock>(null, SETUP_ALL_PROPERTIES_METHOD_NAME, true, oMock);
-
-                if (InnerMockResolution)
-                {
-                    AddProperties(type, this.GetSafeMockObject(oMock));
-                }
-            }
-
-            AddInjections(this.GetSafeMockObject(oMock), GetTypeModel(type)?.InstanceType ?? type);
-
+            SetupMock(type, oMock);
+            oMock.RaiseIfNull();
             return oMock;
         }
 
@@ -806,32 +795,6 @@ namespace FastMoq
         /// <param name="method">The method.</param>
         /// <param name="data">The data.</param>
         /// <returns>System.Nullable&lt;System.Object&gt;[].</returns>
-        ///// <exception cref="System.ArgumentNullException">method</exception>
-        //public object?[] GetMethodArgData(MethodInfo method, Dictionary<Type, object?>? data = null)
-        //{
-        //    if (method == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(method));
-        //    }
-
-        //    var args = new List<object?>();
-
-        //    method.GetParameters().ToList().ForEach(p =>
-        //        args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
-        //            ? data.First(x => x.Key == p.ParameterType).Value
-        //            : GetParameter(p.ParameterType)
-        //        )
-        //    );
-
-        //    return args.ToArray();
-        //}
-
-        /// <summary>
-        ///     Gets the method argument data.
-        /// </summary>
-        /// <param name="method">The method.</param>
-        /// <param name="data">The data.</param>
-        /// <returns>System.Nullable&lt;System.Object&gt;[].</returns>
         /// <exception cref="System.ArgumentNullException">method</exception>
         public object?[] GetMethodArgData(MethodInfo method, List<KeyValuePair<Type, object?>>? data = null)
         {
@@ -912,7 +875,7 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Gets of creates the mock of <c>type</c>.
+        ///     Gets of creates the <see cref="Mock"/> of <c>type</c>.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments used to find the correct constructor for a class.</param>
@@ -1050,7 +1013,7 @@ namespace FastMoq
                     mock.CallBase = true;
                 }
 
-                var mockObject = mock.Object;
+                var mockObject = this.GetSafeMockObject(mock);
                 initAction?.Invoke(mockObject);
                 return mockObject;
             }
@@ -1117,15 +1080,26 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Gets the required mock.
+        ///     Gets the required mock that already exists. If it doesn't exist, an error is raised.
         /// </summary>
         /// <param name="type">The mock type, usually an interface.</param>
         /// <returns>Mock.</returns>
-        /// <exception cref="System.ArgumentException">type must be a class. - type</exception>
-        /// <exception cref="System.InvalidOperationException">type must be a class. - type</exception>
-        public Mock GetRequiredMock(Type type) => type == null || (!type.IsClass && !type.IsInterface)
-            ? throw new ArgumentException("type must be a class.", nameof(type))
-            : mockCollection.First(x => x.Type == type).Mock;
+        /// <exception cref="ArgumentNullException">Type cannot be null.</exception>
+        /// <exception cref="System.ArgumentException">Type must be a class.</exception>
+        /// <exception cref="System.InvalidOperationException">Type must be a class. - type</exception>
+        /// <exception cref="InvalidOperationException">Not Found.</exception>
+        public Mock GetRequiredMock(Type type)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+
+            var mock = (!type.IsClass && !type.IsInterface)
+                ? throw new ArgumentException("Type must be a class.", nameof(type))
+                : mockCollection.First(x => x.Type == type).Mock;
+
+            mock.RaiseIfNull();
+
+            return mock;
+        }
 
         /// <summary>
         ///     Gets the required mock.
@@ -1360,6 +1334,21 @@ namespace FastMoq
         /// <param name="args">The arguments.</param>
         /// <exception cref="System.ArgumentNullException" />
         public void CallMethod(Delegate method, params object?[]? args) => CallMethod<object>(method, args);
+
+        internal void AddProperty(object? obj, PropertyInfo writableProperty)
+        {
+            try
+            {
+                if (writableProperty.GetValue(obj) is null && !creatingTypeList.Contains(writableProperty.PropertyType))
+                {
+                    writableProperty.SetValue(obj, GetObject(writableProperty.PropertyType));
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLog.Add(ex.Message);
+            }
+        }
 
         internal List<KeyValuePair<Type, object?>> CreateArgPairList(MethodBase info, params object?[]? args)
         {
@@ -1617,19 +1606,23 @@ namespace FastMoq
         internal IInstanceModel GetTypeModel(Type type) =>
             typeMap.TryGetValue(type, out var model) && model is not null ? model : new InstanceModel(type, this.GetTypeFromInterface(type));
 
-        private void AddProperty(object? obj, PropertyInfo writableProperty)
+        internal void SetupMock(Type type, Mock oMock)
         {
-            try
+            if (!Strict)
             {
-                if (writableProperty.GetValue(obj) is null && !creatingTypeList.Contains(writableProperty.PropertyType))
+                if (oMock.Setups.Count == 0)
                 {
-                    writableProperty.SetValue(obj, GetObject(writableProperty.PropertyType));
+                    // Only run this if there are no setups.
+                    InvokeMethod<Mock>(null, SETUP_ALL_PROPERTIES_METHOD_NAME, true, oMock);
+                }
+
+                if (InnerMockResolution)
+                {
+                    AddProperties(type, this.GetSafeMockObject(oMock));
                 }
             }
-            catch (Exception ex)
-            {
-                ExceptionLog.Add(ex.Message);
-            }
+
+            AddInjections(this.GetSafeMockObject(oMock), GetTypeModel(type)?.InstanceType ?? type);
         }
     }
 }

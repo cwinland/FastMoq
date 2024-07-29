@@ -44,13 +44,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.*" Condition="'$(TargetFramework)' == 'net7.0'" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'" />
-
-    <PackageReference Include="Microsoft.Extensions.Http" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="7.*" Condition="'$(TargetFramework)' == 'net7.0'" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'" />
 
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.2.3" Condition="'$(TargetFramework)' == 'net6.0'" />
     <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="19.2.91" Condition="'$(TargetFramework)' == 'net7.0'"/>

@@ -609,7 +609,7 @@ namespace FastMoq.Extensions
                 try
                 {
                     // Test Constructor.
-                    var mock = mocker.CreateMockInternal(type, constructor.ParameterList);
+                    var mock = mocker.CreateMockInternal(type, constructor.ParameterList, setupMock: false);
                     _ = mock.Object;
                     validConstructors.Add(constructor);
                 }

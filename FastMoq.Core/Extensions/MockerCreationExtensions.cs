@@ -1,6 +1,7 @@
 ﻿using FastMoq.Models;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace FastMoq.Extensions
@@ -101,15 +102,27 @@ namespace FastMoq.Extensions
             );
 
         /// <summary>
+        ///     Creates a mock given the <typeparam name="T">Type of Mock</typeparam>. Properties will be stubbed and have default setups.
+        /// </summary>
+        /// <typeparam name="T">Type of Mock</typeparam>
+        /// <param name="mocker">The mocker.</param>
+        /// <param name="isNonPublic">if set to <c>true</c>, indicates if non-public constructors should be searched.</param>
+        /// <remarks>This is designed for interface mocks or concrete mocks without parameters.</remarks>
+        /// <exception cref="System.ApplicationException">Cannot create instance of Mock.</exception>
+        public static Mock<T> CreateMockInternal<T>(this Mocker mocker, bool isNonPublic = true) where T : class =>
+            (Mock<T>)mocker.CreateMockInternal(typeof(T), new List<object?>(), true);
+
+        /// <summary>
         ///     Creates the mock internal.
         /// </summary>
         /// <param name="mocker">The mocker.</param>
         /// <param name="type">The type.</param>
-        /// <param name="parameterList">The constructor.</param>
-        /// <param name="isNonPublic">if set to <c>true</c> [is non public].</param>
-        /// <returns>Creates the mock internal.</returns>
-        /// <exception cref="System.ApplicationException">Cannot create instance.</exception>
-        public static Mock CreateMockInternal(this Mocker mocker, Type type, IReadOnlyCollection<object?> parameterList, bool isNonPublic = false)
+        /// <param name="parameterList">The constructor parameters.</param>
+        /// <param name="isNonPublic">if set to <c>true</c>, indicates if non-public constructors should be searched.</param>
+        /// <param name="setupMock">if set to <c>true</c>, attempts to setup internal mocks and properties.</param>
+        /// <remarks>Parameter list only works if the type is concrete. Otherwise, pass an empty list.</remarks>
+        /// <exception cref="System.ApplicationException">Cannot create instance of Mock.</exception>
+        public static Mock CreateMockInternal(this Mocker mocker, Type type, IReadOnlyCollection<object?>? parameterList = null, bool isNonPublic = false, bool setupMock = true)
         {
             var flags = isNonPublic
                 ? BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.CreateInstance
@@ -120,18 +133,31 @@ namespace FastMoq.Extensions
 
             // Execute new Mock with Loose Behavior and arguments from constructor, if applicable.
             var parameters = new List<object?> { mocker.Strict ? MockBehavior.Strict : MockBehavior.Loose };
+            parameterList ??= new List<object>();
             parameterList.ForEach(parameters.Add);
 
-            return Activator.CreateInstance(newType,
-                       flags,
-                       null,
-                       parameters.ToArray(),
-                       null,
-                       null
-                   ) as Mock ??
-                   throw new ApplicationException("Cannot create instance.");
+            var instance = Activator.CreateInstance(newType,
+                               flags,
+                               null,
+                               parameters.ToArray(),
+                               null,
+                               null
+                           ) as Mock ??
+                           throw CannotCreateMock(type);
+
+            if (setupMock)
+            {
+                mocker.SetupMock(type, instance);
+            }
+
+            instance.RaiseIfNull();
+            return instance;
         }
 
+        private static ApplicationException CannotCreateMock(Type type)
+        {
+            return new ApplicationException($"Cannot create instance of 'Mock<{type.Name}>'.");
+        }
 
         internal static object GetSafeMockObject(this Mocker mocker, Mock mock)
         {
@@ -262,6 +288,61 @@ namespace FastMoq.Extensions
 
             var obj = mocker.AddInjections(info?.Invoke(newArgs.ToArray()));
             return mocker.InnerMockResolution ? mocker.AddProperties(type, obj) : obj;
+        }
+
+        /// <summary>
+        /// Setups the mock for given property info.
+        /// </summary>
+        /// <typeparam name="TMock">The type of mock.</typeparam>
+        /// <param name="mock">The mock.</param>
+        /// <param name="propertyInfo">The property information.</param>
+        /// <param name="value">The value.</param>
+        public static void SetupMockProperty<TMock>(this Mock<TMock> mock, PropertyInfo propertyInfo, object value) where TMock : class
+        {
+            // Create a parameter expression for the object instance of type TMock
+            var instanceParam = Expression.Parameter(typeof(TMock), "instance");
+
+            // Create an expression to access the property
+            var propertyAccess = Expression.Property(instanceParam, propertyInfo);
+
+            // Create a lambda expression that represents the getter
+            var getterExpression = Expression.Lambda<Func<TMock, object>>(propertyAccess, instanceParam);
+
+            // Set up the mock to return the provided value for the property getter
+            mock.Setup(getterExpression).Returns(value);
+        }
+
+        public static void SetupMockProperty<TMock>(this Mock<TMock> mock, Expression<Func<TMock, object>> propertyExpression, object value)
+            where TMock : class
+        {
+            var propertyInfo = propertyExpression.GetPropertyInfo();
+            mock.SetupMockProperty(propertyInfo, value);
+        }
+
+        internal static PropertyInfo GetPropertyInfo<TSource, TProperty>(this Expression<Func<TSource, TProperty>> propertyExpression)
+        {
+            if (propertyExpression.Body is MemberExpression memberExpression)
+            {
+                if (memberExpression.Member is PropertyInfo propertyInfo)
+                {
+                    return propertyInfo;
+                }
+            }
+
+            throw new ArgumentException("Expression is not a property access.", nameof(propertyExpression));
+        }
+
+        /// <summary>
+        /// Setups the mock for given property name.
+        /// </summary>
+        /// <typeparam name="TMock">The type of the t mock.</typeparam>
+        /// <param name="mock">The mock.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="value">The value.</param>
+        public static void SetupMockProperty<TMock>(this Mock<TMock> mock, string propertyName, object value) where TMock : class
+        {
+            var propertyInfo = typeof(TMock).GetProperty("Headers");
+            mock.SetupMockProperty(propertyInfo, value);
         }
     }
 }
