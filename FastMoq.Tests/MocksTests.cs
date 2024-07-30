@@ -1083,6 +1083,49 @@ namespace FastMoq.Tests
             Assert.Throws<MockException>(() => mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 0)); // Wrong eventId.
         }
 
+        [Fact]
+        public void AddProperties_WritableProperty_ShouldHaveValue()
+        {
+            var obj = Mocks.GetObject<SubscriptionData>();
+            Component.AddProperties(obj, new KeyValuePair<string, object>("DisplayName", "TestDisplay"), new KeyValuePair<string, object>("SubscriptionId", "testSub"), new KeyValuePair<string, object>("tenantId", Guid.NewGuid()));
+            obj.DisplayName.Should().NotBeNullOrEmpty();
+            obj.SubscriptionId.Should().BeNullOrEmpty();
+            obj.TenantId.Should().BeNull();
+        }
+
+        [Fact]
+        public void AddProperties_WritableProperty_ShouldHaveValue2()
+        {
+            var mock = Mocks.GetMock<SubscriptionData>();
+            var obj = mock.Object;
+            Component.AddProperties(obj, new KeyValuePair<string, object>("DisplayName", "TestDisplay"), new KeyValuePair<string, object>("SubscriptionId", "testSub"), new KeyValuePair<string, object>("tenantId", Guid.NewGuid()));
+            obj.DisplayName.Should().NotBeNullOrEmpty();
+            obj.SubscriptionId.Should().BeNullOrEmpty();
+            obj.TenantId.Should().BeNull();
+        }
+
+        [Fact]
+        public void AddProperties_WritableProperty_WithAddType_ShouldHaveValues2()
+        {
+            Mocks.AddType(_ => "Display Name Test");
+            var mock = Mocks.GetMock<SubscriptionData>();
+            var obj = mock.Object;
+            Component.AddProperties(obj, new KeyValuePair<string, object>("DisplayName", "TestDisplay"));
+            obj.DisplayName.Should().Be("TestDisplay");
+            obj.SubscriptionId.Should().Be("Display Name Test");
+            obj.TenantId.Should().BeNull();
+        }
+
+        //[Fact]
+        //public void AddProperties_WritableProperty_WithAddType_ShouldHaveValues3()
+        //{
+        //    Mocks.AddType(x => "Display Name Test");
+        //    var mock = Mocks.GetMock<SubscriptionData>();
+        //    var obj = mock.Object;
+        //    obj.DisplayName.Should().Be("TestDisplay");
+        //    obj.SubscriptionId.Should().Be("Display Name Test");
+        //    obj.TenantId.Should().BeNull();
+        //}
         private static void LogException(Exception ex, ILogger log, string customMessage = "", [CallerMemberName] string caller = "")
         {
             log.LogError("[{caller}] - {customMessage}{errorMessage}", caller, $"{customMessage} ", ex.Message);

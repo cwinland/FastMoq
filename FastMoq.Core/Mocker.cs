@@ -230,9 +230,9 @@ namespace FastMoq
         /// <typeparam name="T"></typeparam>
         /// <param name="obj">The object.</param>
         /// <returns>T.</returns>
-        public T? AddProperties<T>(T obj)
+        public T? AddProperties<T>(T obj, params KeyValuePair<string, object>[] data)
         {
-            var o = AddProperties(typeof(T), obj);
+            var o = AddProperties(typeof(T), obj, data);
             return o is not null ? (T) o : default;
         }
 
@@ -241,8 +241,8 @@ namespace FastMoq
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="obj">The object.</param>
-        /// <returns>object.</returns>
-        public object? AddProperties(Type type, object? obj)
+        /// <param name="data">Data to insert. <see cref="KeyValuePair" /> should be property name and property value.</param>
+        public object? AddProperties(Type type, object? obj, params KeyValuePair<string, object>[] data)
         {
             ArgumentNullException.ThrowIfNull(type);
 
@@ -258,7 +258,7 @@ namespace FastMoq
 
                 foreach (var writableProperty in writableProperties)
                 {
-                    AddProperty(obj, writableProperty);
+                    AddProperty(obj, writableProperty, data);
                 }
             }
             finally
@@ -1335,13 +1335,26 @@ namespace FastMoq
         /// <exception cref="System.ArgumentNullException" />
         public void CallMethod(Delegate method, params object?[]? args) => CallMethod<object>(method, args);
 
-        internal void AddProperty(object? obj, PropertyInfo writableProperty)
+        internal void AddProperty(object? obj, PropertyInfo writableProperty, params KeyValuePair<string, object>[] data)
         {
             try
             {
-                if (writableProperty.GetValue(obj) is null && !creatingTypeList.Contains(writableProperty.PropertyType))
+                var value = writableProperty.GetValue(obj);
+
+                var canWrite = !creatingTypeList.Contains(writableProperty.PropertyType) &&
+                               (
+                                   data.Any(x => x.Key.Contains(writableProperty.Name, StringComparison.OrdinalIgnoreCase)) ||
+                                   value is null ||
+                                   writableProperty.PropertyType.IsValueType && string.IsNullOrEmpty(value.ToString()) ||
+                                   (writableProperty.PropertyType.Name.Equals("String", StringComparison.OrdinalIgnoreCase) &&
+                                    string.IsNullOrEmpty(value.ToString()))
+                               );
+                if (canWrite)
                 {
-                    writableProperty.SetValue(obj, GetObject(writableProperty.PropertyType));
+                    value = data.Any(x => x.Key.Contains(writableProperty.Name, StringComparison.OrdinalIgnoreCase))
+                        ? data.First(x => x.Key.Contains(writableProperty.Name, StringComparison.OrdinalIgnoreCase)).Value
+                        : GetObject(writableProperty.PropertyType);
+                    writableProperty.SetValue(obj, value);
                 }
             }
             catch (Exception ex)
