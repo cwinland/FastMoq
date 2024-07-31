@@ -438,6 +438,14 @@ namespace FastMoq.Extensions
                 where TException : Exception
                     => loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), Times.Exactly(times));
 
+        public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Times times)
+            where TException : Exception
+            => loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), times);
+
+        public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Func<Times> times)
+            where TException : Exception
+            => loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), times);
+
         /// <summary>
         ///     Verifies the Mock ILogger was invoked.
         /// </summary>
