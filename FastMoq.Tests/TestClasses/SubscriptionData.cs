@@ -9,11 +9,12 @@ namespace FastMoq.Tests.TestClasses
         {
         }
 
-        internal SubscriptionData(string subscriptionId, string displayName, Guid? tenantId, string authorizationSource, IReadOnlyList<Guid> managedByTenants, IReadOnlyDictionary<string, string> tags)
+        internal SubscriptionData(string subscriptionId, string displayName, Guid? tenantId, Guid tenantId2, string authorizationSource, IReadOnlyList<Guid> managedByTenants, IReadOnlyDictionary<string, string> tags)
         {
             SubscriptionId = subscriptionId;
             DisplayName = displayName;
             TenantId = tenantId;
+            TenantId2 = tenantId2;
             AuthorizationSource = authorizationSource;
             ManagedByTenants = managedByTenants;
             Tags = tags;
@@ -24,12 +25,9 @@ namespace FastMoq.Tests.TestClasses
         public string DisplayName { get; set; }
         /// <summary> The subscription tenant ID. </summary>
         public Guid? TenantId { get; }
-        /// <summary> The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted. </summary>
-        /// <summary> The authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'. </summary>
+        public Guid TenantId2 { get; }
         public string AuthorizationSource { get; }
-        /// <summary> An array containing the tenants managing the subscription. </summary>
         public IReadOnlyList<Guid> ManagedByTenants { get; }
-        /// <summary> The tags attached to the subscription. </summary>
         public IReadOnlyDictionary<string, string> Tags { get; }
     }
 }

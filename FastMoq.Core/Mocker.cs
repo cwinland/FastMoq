@@ -254,12 +254,19 @@ namespace FastMoq
             try
             {
                 creatingTypeList.Add(type);
-                var writableProperties = type.GetProperties().Where(x => x.CanWrite && x.CanRead).ToList();
+                var properties = type.GetProperties()
+                                     .Where(x => x.CanRead &&
+                                                 (x.CanWrite || data.Any(d => d.Key.Equals(x.Name, StringComparison.OrdinalIgnoreCase))))
+                                     .ToList();
 
-                foreach (var writableProperty in writableProperties)
+                foreach (var property in properties)
                 {
-                    AddProperty(obj, writableProperty, data);
+                    AddProperty(obj, property, type, data);
                 }
+            }
+            catch (Exception ex)
+            {
+                ExceptionLog.Add(ex.GetBaseException().Message);
             }
             finally
             {
@@ -284,6 +291,34 @@ namespace FastMoq
             ArgumentNullException.ThrowIfNull(tClass);
             ArgumentNullException.ThrowIfNull(tInterface);
 
+            ValidateAndReplaceType(tInterface, tClass, replace);
+
+            typeMap.Add(tInterface, new InstanceModel(tInterface, tClass, createFunc, args?.ToList() ?? []));
+
+            return this;
+        }
+
+        /// <summary>
+        ///     Adds a value to map the datatype to a value for injecting into mock in the <see cref="typeMap" />.
+        ///     This is similar to dependency injection. It will resolve the value based on the data type.
+        /// </summary>
+        /// <remarks>This value will be used in all instances. However, other mechanisms might overwrite the value, if set.</remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value">a value to inject.</param>
+        /// <param name="replace">Replace type if already exists. Default: false.</param>
+        public Mocker AddType<T>(T value, bool replace = false)
+        {
+            if (replace && typeMap.ContainsKey(typeof(T)))
+            {
+                typeMap.Remove(typeof(T));
+            }
+            typeMap.Add(typeof(T), new InstanceModel<T>(_ => value));
+
+            return this;
+        }
+
+        private void ValidateAndReplaceType(Type tInterface, Type tClass, bool replace)
+        {
             if (tClass.IsInterface)
             {
                 var message = tInterface.Name switch
@@ -306,6 +341,14 @@ namespace FastMoq
             {
                 typeMap.Remove(tInterface);
             }
+        }
+
+        public Mocker AddType(Type tInterface, Type tClass, Func<Mocker, object?, object>? createFunc = null, bool replace = false, params object?[]? args)
+        {
+            ArgumentNullException.ThrowIfNull(tClass);
+            ArgumentNullException.ThrowIfNull(tInterface);
+
+            ValidateAndReplaceType(tInterface, tClass, replace);
 
             typeMap.Add(tInterface, new InstanceModel(tInterface, tClass, createFunc, args?.ToList() ?? []));
 
@@ -327,6 +370,28 @@ namespace FastMoq
         ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
         ///     This is similar to dependency injection. It will resolve an interface to the specified concrete class.
         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="createFunc">An optional create function used to create the class.</param>
+        /// <param name="replace">Replace type if already exists. Default: false.</param>
+        /// <param name="args">arguments needed in model.</param>
+        public Mocker AddType<T>(Func<Mocker, object?, T>? createFunc = null, bool replace = false, params object?[]? args) where T : class =>
+            AddType<T, T>(createFunc, replace, args);
+
+        /// <summary>
+        ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
+        ///     This is similar to dependency injection. It will resolve an interface to the specified concrete class.
+        /// </summary>
+        /// <typeparam name="TInterface"></typeparam>
+        /// <typeparam name="TClass"></typeparam>
+        /// <param name="replace">Replace type if already exists. Default: false.</param>
+        /// <param name="args">arguments needed in model.</param>
+        public Mocker AddType<TInterface, TClass>(bool replace = false, params object?[]? args)
+            where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), (Func<Mocker, TClass>?)null, replace, args);
+
+        /// <summary>
+        ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
+        ///     This is similar to dependency injection. It will resolve an interface to the specified concrete class.
+        /// </summary>
         /// <typeparam name="TInterface">The interface or class Type which can be mapped to a specific Class.</typeparam>
         /// <typeparam name="TClass">The Class Type (cannot be an interface) that can be created and assigned to TInterface /&gt;.</typeparam>
         /// <param name="createFunc">An optional create function used to create the class.</param>
@@ -334,7 +399,10 @@ namespace FastMoq
         /// <param name="args">arguments needed in model.</param>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} cannot be an interface."</exception>
         /// <exception cref="ArgumentException">$"{typeof(TClass).Name} is not assignable to {typeof(TInterface).Name}."</exception>
-        public Mocker AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc = null, bool replace = false, params object?[]? args)
+        public Mocker AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc, bool replace = false, params object?[]? args)
+            where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), createFunc, replace, args);
+
+        public Mocker AddType<TInterface, TClass>(Func<Mocker, object?, TClass>? createFunc, bool replace = false, params object?[]? args)
             where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), createFunc, replace, args);
 
         /// <summary>
@@ -446,7 +514,7 @@ namespace FastMoq
                 try
                 {
                     ConstructorHistory.AddOrUpdate(tType, typeInstanceModel);
-                    obj = typeInstanceModel.CreateFunc(this);
+                    obj = typeInstanceModel.CreateFunc.Invoke(this, tType);
                 }
                 finally
                 {
@@ -497,7 +565,7 @@ namespace FastMoq
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
 
             return type.CreateFunc != null
-                ? (T) type.CreateFunc(this)
+                ? (T) type.CreateFunc.Invoke(this, type.InstanceType)
                 : CreateInstanceNonPublic(type.InstanceType, args) as T;
         }
 
@@ -808,7 +876,7 @@ namespace FastMoq
             method.GetParameters().ToList().ForEach(p =>
                 args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
                     ? data.First(x => x.Key == p.ParameterType).Value
-                    : GetParameter(p.ParameterType)
+                    : GetParameter(p)
                 )
             );
 
@@ -946,14 +1014,14 @@ namespace FastMoq
 
             try
             {
-                return !MockOptional && info.IsOptional ? null : GetParameter(info.ParameterType);
+                return (!MockOptional && info.IsOptional) switch
+                {
+                    true when info.HasDefaultValue => info.DefaultValue,
+                    true => null,
+                    _ => GetParameter(info),
+                };
             }
-            catch (FileNotFoundException ex)
-            {
-                ExceptionLog.Add(ex.Message);
-                throw;
-            }
-            catch (AmbiguousImplementationException ex)
+            catch (Exception ex) when (ex is FileNotFoundException or AmbiguousImplementationException)
             {
                 ExceptionLog.Add(ex.Message);
                 throw;
@@ -987,7 +1055,7 @@ namespace FastMoq
             if (typeValueModel.CreateFunc != null)
             {
                 // If a create function is provided, use it instead of a mock object.
-                return AddInjections(typeValueModel.CreateFunc.Invoke(this), typeValueModel.InstanceType);
+                return AddInjections(typeValueModel.CreateFunc.Invoke(this, typeValueModel.InstanceType), typeValueModel.InstanceType);
             }
 
             if (!Strict)
@@ -1335,7 +1403,7 @@ namespace FastMoq
         /// <exception cref="System.ArgumentNullException" />
         public void CallMethod(Delegate method, params object?[]? args) => CallMethod<object>(method, args);
 
-        internal void AddProperty(object? obj, PropertyInfo writableProperty, params KeyValuePair<string, object>[] data)
+        internal void AddProperty(object? obj, PropertyInfo writableProperty, Type objType, params KeyValuePair<string, object>[] data)
         {
             try
             {
@@ -1354,7 +1422,23 @@ namespace FastMoq
                     value = data.Any(x => x.Key.Contains(writableProperty.Name, StringComparison.OrdinalIgnoreCase))
                         ? data.First(x => x.Key.Contains(writableProperty.Name, StringComparison.OrdinalIgnoreCase)).Value
                         : GetObject(writableProperty.PropertyType);
-                    writableProperty.SetValue(obj, value);
+                    if (writableProperty.CanWrite)
+                    {
+                        writableProperty.SetValue(obj, value);
+                    }
+                    else
+                    {
+                        // Access the backing field directly if the property is read-only
+                        var backingField = objType.GetField($"<{writableProperty.Name}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
+                        if (backingField != null)
+                        {
+                            backingField.SetValue(obj, value);
+                        }
+                        else
+                        {
+                            ExceptionLog.Add($"Backing field for property '{writableProperty.Name}' not found.");
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1377,7 +1461,7 @@ namespace FastMoq
                 {
                     _ when i < args.Length => args[i],
                     _ when p.IsOptional => null,
-                    _ => GetParameter(p.ParameterType),
+                    _ => GetParameter(p),
                 };
 
                 newArgs.Add(new (p.ParameterType, val));
@@ -1576,11 +1660,14 @@ namespace FastMoq
         /// <summary>
         ///     Gets the parameter.
         /// </summary>
-        /// <param name="parameterType">Type of the parameter.</param>
+        /// <param name="parameter"><see cref="ParameterInfo"/>.</param>
         /// <returns>object?.</returns>
-        internal object? GetParameter(Type parameterType)
+        internal object? GetParameter(ParameterInfo parameter)
         {
-            if (!parameterType.IsClass && !parameterType.IsInterface)
+            var parameterType = parameter.ParameterType;
+
+
+            if (!typeMap.ContainsKey(parameterType) && !parameterType.IsClass && !parameterType.IsInterface)
             {
                 return parameterType.GetDefaultValue();
             }
@@ -1589,7 +1676,7 @@ namespace FastMoq
 
             if (typeValueModel.CreateFunc != null)
             {
-                return typeValueModel.CreateFunc.Invoke(this);
+                return typeValueModel.CreateFunc.Invoke(this, parameter);
             }
 
             return !parameterType.IsSealed ? GetObject(parameterType) : parameterType.GetDefaultValue();

@@ -193,7 +193,10 @@ namespace FastMoq.Extensions
                 if (!type.IsInterface)
                 {
                     // Find the best constructor and build the parameters.
-                    constructor = args.Length > 0 || nonPublic ? mocker.FindConstructor(type, true, args) : mocker.FindConstructor(true, type, nonPublic);
+                    constructor = args.Length > 0 ||
+                                  nonPublic
+                        ? mocker.FindConstructor(type, true, args)
+                        : mocker.FindConstructor(true, type, nonPublic);
                 }
             }
             catch (Exception ex)
@@ -231,7 +234,7 @@ namespace FastMoq.Extensions
 
             if (type.CreateFunc != null)
             {
-                return (T) type.CreateFunc.Invoke(mocker);
+                return (T?)type.CreateFunc.Invoke(mocker, type.InstanceType);
             }
 
             data ??= new();
@@ -282,7 +285,7 @@ namespace FastMoq.Extensions
                 for (var i = args.Length; i < paramList.Count; i++)
                 {
                     var p = paramList[i];
-                    newArgs.Add(p.IsOptional ? null : mocker.GetParameter(p.ParameterType));
+                    newArgs.Add(p.IsOptional ? null : mocker.GetParameter(p));
                 }
             }
 

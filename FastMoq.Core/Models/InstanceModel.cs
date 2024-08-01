@@ -24,9 +24,13 @@ namespace FastMoq.Models
             InstanceType = instanceType ?? throw new ArgumentNullException(nameof(instanceType));
         }
 
-        /// <inheritdoc />
-        internal InstanceModel(Type originalType, Type instanceType, Func<Mocker, object>? createFunc) : this(originalType, instanceType)
-            => CreateFunc = createFunc;
+        internal InstanceModel(Type originalType, Type instanceType, Delegate? createFunc) : this(originalType, instanceType)
+        {
+            if (createFunc != null)
+            {
+                CreateFunc = new InstanceFunction(instanceType) { Function = createFunc };
+            }
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="InstanceModel" /> class.
@@ -41,13 +45,26 @@ namespace FastMoq.Models
             : this(originalType, instanceType, createFunc) =>
             Arguments = new List<object?>(arguments ?? throw new ArgumentNullException(nameof(arguments)));
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="InstanceModel" /> class.
+        /// </summary>
+        /// <param name="originalType">Type of the original.</param>
+        /// <param name="instanceType">Type of the instance.</param>
+        /// <param name="createFunc">The create function.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <exception cref="ArgumentNullException">arguments</exception>
+        /// <inheritdoc />
+        internal InstanceModel(Type originalType, Type instanceType, Func<Mocker, object, object>? createFunc, IReadOnlyList<object?> arguments)
+            : this(originalType, instanceType, createFunc) =>
+            Arguments = new List<object?>(arguments ?? throw new ArgumentNullException(nameof(arguments)));
+
         #region IInstanceModel
 
         /// <inheritdoc />
         public List<object?> Arguments { get; internal set; } = new();
 
         /// <inheritdoc />
-        public Func<Mocker, object>? CreateFunc { get; internal set; }
+        public InstanceFunction? CreateFunc { get; internal set; }
 
         /// <inheritdoc />
         public virtual Type InstanceType { get; }

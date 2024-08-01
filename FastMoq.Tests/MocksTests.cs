@@ -1045,6 +1045,8 @@ namespace FastMoq.Tests
             mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
             mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
             mLogger.VerifyLogger<Exception>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
+            mLogger.VerifyLogger<Exception>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), null, Times.AtLeastOnce);
+            mLogger.VerifyLogger<Exception>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), null, Times.AtLeastOnce());
         }
 
         [Fact]
@@ -1089,8 +1091,10 @@ namespace FastMoq.Tests
             var obj = Mocks.GetObject<SubscriptionData>();
             Component.AddProperties(obj, new KeyValuePair<string, object>("DisplayName", "TestDisplay"), new KeyValuePair<string, object>("SubscriptionId", "testSub"), new KeyValuePair<string, object>("tenantId", Guid.NewGuid()));
             obj.DisplayName.Should().NotBeNullOrEmpty();
-            obj.SubscriptionId.Should().BeNullOrEmpty();
-            obj.TenantId.Should().BeNull();
+            obj.SubscriptionId.Should().Be("testSub");
+            obj.TenantId.Should().NotBeNull();
+            obj.TenantId.Should().NotBeEmpty();
+            obj.TenantId2.Should().BeEmpty();
         }
 
         [Fact]
@@ -1100,32 +1104,99 @@ namespace FastMoq.Tests
             var obj = mock.Object;
             Component.AddProperties(obj, new KeyValuePair<string, object>("DisplayName", "TestDisplay"), new KeyValuePair<string, object>("SubscriptionId", "testSub"), new KeyValuePair<string, object>("tenantId", Guid.NewGuid()));
             obj.DisplayName.Should().NotBeNullOrEmpty();
-            obj.SubscriptionId.Should().BeNullOrEmpty();
-            obj.TenantId.Should().BeNull();
+            obj.SubscriptionId.Should().NotBeNullOrEmpty();
+            obj.TenantId.Should().NotBeNull();
+            obj.TenantId.Should().NotBeEmpty();
+            obj.TenantId2.Should().BeEmpty();
         }
 
         [Fact]
         public void AddProperties_WritableProperty_WithAddType_ShouldHaveValues2()
         {
-            Mocks.AddType(_ => "Display Name Test");
+            Mocks.AddType("Display Name Test");
             var mock = Mocks.GetMock<SubscriptionData>();
             var obj = mock.Object;
             Component.AddProperties(obj, new KeyValuePair<string, object>("DisplayName", "TestDisplay"));
             obj.DisplayName.Should().Be("TestDisplay");
             obj.SubscriptionId.Should().Be("Display Name Test");
             obj.TenantId.Should().BeNull();
+            obj.TenantId2.Should().BeEmpty();
         }
 
-        //[Fact]
-        //public void AddProperties_WritableProperty_WithAddType_ShouldHaveValues3()
-        //{
-        //    Mocks.AddType(x => "Display Name Test");
-        //    var mock = Mocks.GetMock<SubscriptionData>();
-        //    var obj = mock.Object;
-        //    obj.DisplayName.Should().Be("TestDisplay");
-        //    obj.SubscriptionId.Should().Be("Display Name Test");
-        //    obj.TenantId.Should().BeNull();
-        //}
+        [Fact]
+        public void AddProperties_Test()
+        {
+            var mock = Mocks.GetMock<SubscriptionData>();
+            var obj = mock.Object;
+            Component.AddProperties(obj,
+                new KeyValuePair<string, object>("DisplayName", "TestDisplay"),
+                new KeyValuePair<string, object>("TenantId", Guid.NewGuid()),
+                new KeyValuePair<string, object>("TenantId2", Guid.NewGuid())
+                );
+            obj.DisplayName.Should().Be("TestDisplay");
+            obj.SubscriptionId.Should().BeEmpty();
+            obj.TenantId.Should().NotBeNull();
+            obj.TenantId.Should().NotBeEmpty();
+            obj.TenantId2.Should().NotBeEmpty();
+        }
+
+        [Fact]
+        public void AddType_ShouldHaveValues3_WhenMockOptional()
+        {
+            Mocks.AddType((a,b) =>
+            {
+                if (b is ParameterInfo info)
+                {
+                    return info switch
+                    {
+                        { Name: "displayName" } => "Test1",
+                        { Name: "subscriptionId" } => "Test2",
+                        _ => "Test3",
+                    };
+                }
+
+                return "Display Name Test";
+            });
+            Mocks.AddType(Guid.NewGuid() as Guid?);
+            Mocks.AddType(Guid.NewGuid());
+            Mocks.MockOptional = true;
+            var mock = Mocks.GetMock<SubscriptionData>();
+            var obj = mock.Object;
+            obj.DisplayName.Should().Be("Test1");
+            obj.SubscriptionId.Should().Be("Test2");
+            obj.TenantId.Should().NotBeNull();
+            obj.TenantId.Should().NotBeEmpty();
+            obj.TenantId2.Should().NotBeEmpty();
+        }
+
+        [Fact]
+        public void AddType_ShouldHaveValues3_WhenNotMockOptional()
+        {
+            Mocks.AddType((a, b) =>
+            {
+                if (b is ParameterInfo info)
+                {
+                    return info switch
+                    {
+                        { Name: "displayName" } => "Test1",
+                        { Name: "subscriptionId" } => "Test2",
+                        _ => "Test3",
+                    };
+                }
+
+                return "Display Name Test";
+            });
+            Mocks.AddType(Guid.NewGuid() as Guid?);
+            Mocks.AddType(Guid.NewGuid());
+            var mock = Mocks.GetMock<SubscriptionData>();
+            var obj = mock.Object;
+            obj.DisplayName.Should().Be("Test1");
+            obj.SubscriptionId.Should().Be("Test2");
+            obj.TenantId.Should().NotBeNull();
+            obj.TenantId.Should().NotBeEmpty();
+            obj.TenantId2.Should().NotBeEmpty();
+        }
+
         private static void LogException(Exception ex, ILogger log, string customMessage = "", [CallerMemberName] string caller = "")
         {
             log.LogError("[{caller}] - {customMessage}{errorMessage}", caller, $"{customMessage} ", ex.Message);

@@ -533,7 +533,7 @@ namespace FastMoq.Extensions
 
             method?.GetParameters().ToList().ForEach(p => args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
                     ? data.First(x => x.Key == p.ParameterType).Value
-                    : mocker.GetParameter(p.ParameterType)
+                    : mocker.GetParameter(p)
                 )
             );
 

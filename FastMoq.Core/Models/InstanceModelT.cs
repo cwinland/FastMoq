@@ -10,7 +10,7 @@ namespace FastMoq.Models
     /// <typeparam name="TClass">The type of the t class.</typeparam>
     /// <seealso cref="InstanceModel" />
     [ExcludeFromCodeCoverage]
-    public class InstanceModel<TClass> : InstanceModel where TClass : class
+    public class InstanceModel<TClass> : InstanceModel
     {
         #region Properties
 
@@ -21,9 +21,9 @@ namespace FastMoq.Models
         ///     Gets or sets the create function.
         /// </summary>
         /// <value>The create function.</value>
-        public new Func<Mocker, TClass>? CreateFunc
+        public new InstanceFunction? CreateFunc
         {
-            get => (Func<Mocker, TClass>?) base.CreateFunc;
+            get => base.CreateFunc;
             set => base.CreateFunc = value;
         }
 
@@ -31,6 +31,12 @@ namespace FastMoq.Models
 
         /// <inheritdoc />
         public InstanceModel() : this(default(Func<Mocker, TClass>)) { }
+
+        public InstanceModel(Func<Mocker, object?, TClass>? createFunc) : base(typeof(TClass), typeof(TClass), createFunc) { }
+
+        /// <inheritdoc />
+        public InstanceModel(Func<Mocker, object?, TClass>? createFunc, List<object?> arguments) : this(createFunc) =>
+            Arguments = arguments;
 
         /// <inheritdoc />
         public InstanceModel(Func<Mocker, TClass>? createFunc) : base(typeof(TClass), typeof(TClass), createFunc) { }

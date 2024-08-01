@@ -28,7 +28,7 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateNullType()
         {
-            Action a = () => _ = new InstanceModel(null, null) { CreateFunc = _ => new FileSystem() };
+            Action a = () => _ = new InstanceModel(null, null) { CreateFunc = new InstanceFunction<IFileSystem>( _ => new FileSystem()) };
             a.Should().Throw<ArgumentNullException>();
 
             var im = new InstanceModel<IFileSystem>(default(Func<Mocker, IFileSystem>));

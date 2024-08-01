@@ -18,7 +18,7 @@
         ///     Gets the create function.
         /// </summary>
         /// <value>The create function.</value>
-        Func<Mocker, object>? CreateFunc { get; }
+        InstanceFunction? CreateFunc { get; }
 
         /// <summary>
         ///     Gets the type of the instance.
