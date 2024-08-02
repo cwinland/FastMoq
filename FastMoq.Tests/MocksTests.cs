@@ -1086,6 +1086,18 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void AddFiles_ShouldAddFilesToIFileSystem()
+        {
+            Mocks.fileSystem.AddFiles(new Dictionary<string, MockFileData>()
+            {
+                {"C:\\test\\test.123", new MockFileData("Test file")},
+                {"C:\\test\\test2.123", new MockFileData("Test file2")},
+            });
+
+            Mocks.fileSystem.AllFiles.Should().HaveCount(2);
+        }
+
+        [Fact]
         public void AddProperties_WritableProperty_ShouldHaveValue()
         {
             var obj = Mocks.GetObject<SubscriptionData>();

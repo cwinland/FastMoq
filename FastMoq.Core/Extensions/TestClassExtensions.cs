@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using System.Collections;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
@@ -330,6 +332,14 @@ namespace FastMoq.Extensions
         {
             mocker.ExceptionLog.Add(message);
             return new AmbiguousImplementationException(message);
+        }
+
+        public static void AddFiles(this MockFileSystem fileSystem, IDictionary<string, MockFileData> files)
+        {
+            foreach (var mockFileData in files)
+            {
+                fileSystem.AddFile(mockFileData.Key, mockFileData.Value);
+            }
         }
 
         /// <summary>
