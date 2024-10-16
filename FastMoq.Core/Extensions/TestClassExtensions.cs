@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using System.Collections;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq.Expressions;
@@ -312,14 +314,23 @@ namespace FastMoq.Extensions
                 !interfaces.Exists(iType => iType.IsAssignableFrom(type))
             ).ToList();
 
-            return possibleTypes.Count switch
+            var result = possibleTypes.Count switch
             {
-                > 1 => possibleTypes.Count(x => x.IsPublic) > 1
-                    ? throw mocker.GetAmbiguousImplementationException(tType, possibleTypes)
-                    : possibleTypes.Find(x => x.IsPublic) ?? possibleTypes.FirstOrDefault() ?? tType,
+                > 1 when TryGetSingleMatch(possibleTypes, x => x.FullName?.Equals(tType.FullName, StringComparison.Ordinal) ?? false, out var nameMatch) => nameMatch,
+                > 1 when TryGetSingleMatch(possibleTypes, x => x.IsPublic, out var publicMatch) => publicMatch,
+                > 1 when TryGetSingleMatch(possibleTypes, x => !x.IsAbstract, out var nonAbstractMatch) => nonAbstractMatch,
+                > 1 => throw mocker.GetAmbiguousImplementationException(tType, possibleTypes),
                 1 => possibleTypes[0],
-                _ => tType,
+                _ => possibleTypes.FirstOrDefault() ?? tType,
             };
+
+            return result;
+        }
+
+        private static bool TryGetSingleMatch<T>(List<T> possibleTypes, Func<T, bool> predicate, [NotNullWhen(true)] out T? result)
+        {
+            result = possibleTypes.FirstOrDefault(predicate);
+            return result != null && possibleTypes.Count(predicate) == 1;
         }
 
         /// <summary>

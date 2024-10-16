@@ -229,6 +229,7 @@ namespace FastMoq
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj">The object.</param>
+        /// <param name="data">Name value pair for data. The name must match the property name.</param>
         /// <returns>T.</returns>
         public T? AddProperties<T>(T obj, params KeyValuePair<string, object>[] data)
         {
@@ -1364,7 +1365,7 @@ namespace FastMoq
         /// <param name="method">The method.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>Returns value of the called method.</returns>
-        /// <exception cref="System.ArgumentNullException" />
+        /// <exception cref="System.ArgumentNullException"></exception>
         public T? CallMethod<T>(Delegate method, params object?[]? args)
         {
             ArgumentNullException.ThrowIfNull(method);
@@ -1400,7 +1401,7 @@ namespace FastMoq
         /// </example>
         /// <param name="method">The method.</param>
         /// <param name="args">The arguments.</param>
-        /// <exception cref="System.ArgumentNullException" />
+        /// <exception cref="System.ArgumentNullException"></exception>
         public void CallMethod(Delegate method, params object?[]? args) => CallMethod<object>(method, args);
 
         internal void AddProperty(object? obj, PropertyInfo writableProperty, Type objType, params KeyValuePair<string, object>[] data)

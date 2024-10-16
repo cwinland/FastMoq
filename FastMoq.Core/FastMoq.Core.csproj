@@ -53,10 +53,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'" />
 
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.2.3" Condition="'$(TargetFramework)' == 'net6.0'" />
-    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="19.2.91" Condition="'$(TargetFramework)' == 'net7.0'"/>
-    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="21.*" Condition="'$(TargetFramework)' == 'net8.0'"/>
+    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="19.2.91" Condition="'$(TargetFramework)' == 'net7.0'" />
+    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="21.*" Condition="'$(TargetFramework)' == 'net8.0'" />
 
-    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.4.0">
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.11.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
       <ExcludeAssets>analyzers</ExcludeAssets>
