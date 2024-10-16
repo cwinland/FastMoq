@@ -102,7 +102,7 @@ namespace FastMoq.Extensions
             );
 
         /// <summary>
-        ///     Creates a mock given the <typeparam name="T">Type of Mock</typeparam>. Properties will be stubbed and have default setups.
+        ///     Creates a mock given the Type of Mock. Properties will be stubbed and have default setups.
         /// </summary>
         /// <typeparam name="T">Type of Mock</typeparam>
         /// <param name="mocker">The mocker.</param>

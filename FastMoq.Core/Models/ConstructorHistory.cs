@@ -31,8 +31,7 @@ namespace FastMoq.Models
         #region Properties
 
         /// <summary>
-        ///     Gets the <see cref="System.Collections.Generic.KeyValuePair{Type, IReadOnlyList{IHistoryModel}}" /> at the
-        /// specified index.
+        ///     Gets the key value pair of IReadOnlyList{IHistoryModel} at the specified index.
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>System.Collections.Generic.KeyValuePair&lt;System.Type, System.Collections.Generic.IReadOnlyList&lt;
