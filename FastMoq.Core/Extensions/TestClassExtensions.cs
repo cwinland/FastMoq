@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
@@ -11,6 +12,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Text;
 using Xunit.Abstractions;
 
@@ -285,52 +287,134 @@ namespace FastMoq.Extensions
                 return tType;
             }
 
-            if (tType == typeof(ILogger) && !mocker.typeMap.ContainsKey(typeof(ILogger)))
-            {
-                mocker.ExceptionLog.Add("WARNING: ILogger found and not mapped. Assuming NullLogger and adding an entry to the type map.");
-                mocker.AddType<ILogger, NullLogger>();
-            }
-
             var mappedType = mocker.typeMap.Where(x => x.Key == tType).Select(x => x.Value).FirstOrDefault();
-
             if (mappedType != null)
             {
                 return mappedType.InstanceType;
             }
 
+            foreach (var (interfaceType, defaultType) in TypeMappings)
+            {
+                if (TryMapGenericType(tType, interfaceType, defaultType, mocker, out var result))
+                {
+                    return result;
+                }
+            }
+
+            // Continue with existing logic if no match is found
             var types = typeList ?? tType.Assembly.GetTypes().ToList();
             return GetTypeFromInterfaceList(mocker, tType, types);
+        }
+
+        private static readonly List<(Type InterfaceType, Type DefaultType)> TypeMappings =
+        [
+            (typeof(ILogger), typeof(NullLogger)),
+            (typeof(ILogger<>), typeof(NullLogger)),
+            (typeof(IEnumerable<>), typeof(List<>)),
+            (typeof(IDictionary<,>), typeof(Dictionary<,>)),
+            (typeof(IList<>), typeof(List<>)),
+            (typeof(ICollection<>), typeof(Collection<>)),
+            (typeof(ISet<>), typeof(HashSet<>)),
+            (typeof(IReadOnlyCollection<>), typeof(Collection<>)),
+            (typeof(IReadOnlyList<>), typeof(List<>)),
+            (typeof(IReadOnlyDictionary<,>), typeof(Dictionary<,>)),
+        ];
+
+        private static bool TryMapGenericType(Type tType, Type interfaceType, Type defaultType, Mocker mocker, out Type type)
+        {
+            var sourceType = tType.IsGenericType
+                ? tType.GetGenericTypeDefinition()
+                : tType;
+
+            var destType = defaultType.IsGenericType
+                ? defaultType.GetGenericTypeDefinition()
+                : defaultType;
+
+            var warningMessage = $"WARNING: {sourceType.Name} found and not mapped. Assuming {destType.Name}.";
+
+            if (sourceType == interfaceType)
+            {
+                mocker.ExceptionLog.Add(warningMessage);
+                type = defaultType;
+            }
+            else
+            {
+                type = tType;
+            }
+
+            return sourceType == interfaceType;
+
         }
 
         private static Type GetTypeFromInterfaceList(Mocker mocker, Type tType, List<Type> types)
         {
             // Get interfaces that contain T.
-            var interfaces = types.Where(type => type.IsInterface && type.GetInterfaces().Contains(tType)).ToList();
+            var interfaces = types.Where(type => type.IsInterface && ImplementsGenericInterface(type, tType)).ToList();
 
-            // Get Types that contain T, but are not interfaces.
+            // Updated possibleTypes assignment
             var possibleTypes = types.Where(type =>
-                type.GetInterfaces().Contains(tType) &&
                 interfaces.TrueForAll(iType => type != iType) &&
+                !type.IsAbstract &&
+                (
+                    tType.IsGenericType
+                        ? type.IsGenericType && (IsGenericTypeMatch(type, tType) || ImplementsGenericInterface(type, tType))
+                        : type.GetInterfaces().Contains(tType) || ImplementsGenericInterface(type, tType)
+                ) &&
                 !interfaces.Exists(iType => iType.IsAssignableFrom(type))
             ).ToList();
 
             var result = possibleTypes.Count switch
             {
-                > 1 when TryGetSingleMatch(possibleTypes, x => x.FullName?.Equals(tType.FullName, StringComparison.Ordinal) ?? false, out var nameMatch) => nameMatch,
-                > 1 when TryGetSingleMatch(possibleTypes, x => x.IsPublic, out var publicMatch) => publicMatch,
-                > 1 when TryGetSingleMatch(possibleTypes, x => !x.IsAbstract, out var nonAbstractMatch) => nonAbstractMatch,
-                > 1 => throw mocker.GetAmbiguousImplementationException(tType, possibleTypes),
                 1 => possibleTypes[0],
-                _ => possibleTypes.FirstOrDefault() ?? tType,
+                0 => tType,
+                > 1 when possibleTypes.Count(x => IsGenericTypeMatch(x, tType)) == 1 => possibleTypes.First(x => IsGenericTypeMatch(x, tType)),
+                > 1 when possibleTypes.Count(x => x.Name.Equals(tType.Name)) == 1 => possibleTypes.First(x => x.Name.Equals(tType.Name)),
+                > 1 when possibleTypes.Count(x => x.IsPublic) == 1 => possibleTypes.First(x => x.IsPublic),
+                > 1 when IsIEnumerableGenericType(tType) => possibleTypes[0],
+                > 1 => throw mocker.GetAmbiguousImplementationException(tType, possibleTypes),
+                _ => possibleTypes.FirstOrDefault(x => x.IsPublic) ?? possibleTypes.FirstOrDefault(x => !x.IsPublic) ?? tType,
             };
 
             return result;
         }
 
-        private static bool TryGetSingleMatch<T>(List<T> possibleTypes, Func<T, bool> predicate, [NotNullWhen(true)] out T? result)
+        private static bool IsIEnumerableGenericType(Type tType)
         {
-            result = possibleTypes.FirstOrDefault(predicate);
-            return result != null && possibleTypes.Count(predicate) == 1;
+            return tType.IsGenericType && (tType.GetGenericTypeDefinition() == typeof(IEnumerable<>) || tType.GetInterfaces().Any(t => t == typeof(IEnumerable<>)));
+        }
+
+        private static bool ImplementsGenericInterface(Type givenType, Type genericInterfaceType)
+        {
+            // Ensure we're working with the correct type
+            var genericTypeDefinition = genericInterfaceType.IsGenericType
+                ? genericInterfaceType.GetGenericTypeDefinition()
+                : genericInterfaceType;
+
+            // Check all interfaces implemented by the given type
+            var interfaceTypes = givenType.GetInterfaces();
+
+            // Also check if the given type itself is the generic type
+            return interfaceTypes.Any(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == genericTypeDefinition) || (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericTypeDefinition);
+        }
+
+        private static bool IsGenericTypeMatch(Type x, Type tType)
+        {
+            if (x.IsGenericType && tType.IsGenericType)
+            {
+                var xGenericTypeDef = x.GetGenericTypeDefinition();
+                var tTypeGenericTypeDef = tType.GetGenericTypeDefinition();
+                if (xGenericTypeDef == tTypeGenericTypeDef)
+                {
+                    return true;
+                }
+
+                // Additional check for constructed types
+                if (x.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == tTypeGenericTypeDef))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
