@@ -1,18 +1,15 @@
 ﻿using FastMoq.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Moq;
 using System.Collections;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
-using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-using System.Security.Claims;
 using System.Text;
 using Xunit.Abstractions;
 
@@ -23,6 +20,24 @@ namespace FastMoq.Extensions
     /// </summary>
     public static class TestClassExtensions
     {
+        /// <summary>
+        /// The default type mappings are only in effect when a TypeMap is not manually mapped by the test class. When a map item does not exist, it will look here.
+        /// </summary>
+        private static readonly List<(Type InterfaceType, Type DefaultType)> DefaultTypeMappings =
+        [
+            (typeof(ILogger), typeof(NullLogger)),
+            (typeof(ILogger<>), typeof(NullLogger)),
+            (typeof(IEnumerable<>), typeof(List<>)),
+            (typeof(IDictionary<,>), typeof(Dictionary<,>)),
+            (typeof(IList<>), typeof(List<>)),
+            (typeof(ICollection<>), typeof(Collection<>)),
+            (typeof(ISet<>), typeof(HashSet<>)),
+            (typeof(IReadOnlyCollection<>), typeof(Collection<>)),
+            (typeof(IReadOnlyList<>), typeof(List<>)),
+            (typeof(IReadOnlyDictionary<,>), typeof(Dictionary<,>)),
+            (typeof(IOptions<>), typeof(OptionsWrapper<>)),
+        ];
+
         /// <summary>
         ///     Calls the generic method.
         /// </summary>
@@ -287,13 +302,17 @@ namespace FastMoq.Extensions
                 return tType;
             }
 
+            if (tType.Name.StartsWith("IOptions"))
+            {
+                Console.WriteLine();
+            }
             var mappedType = mocker.typeMap.Where(x => x.Key == tType).Select(x => x.Value).FirstOrDefault();
             if (mappedType != null)
             {
                 return mappedType.InstanceType;
             }
 
-            foreach (var (interfaceType, defaultType) in TypeMappings)
+            foreach (var (interfaceType, defaultType) in DefaultTypeMappings)
             {
                 if (TryMapGenericType(tType, interfaceType, defaultType, mocker, out var result))
                 {
@@ -305,20 +324,6 @@ namespace FastMoq.Extensions
             var types = typeList ?? tType.Assembly.GetTypes().ToList();
             return GetTypeFromInterfaceList(mocker, tType, types);
         }
-
-        private static readonly List<(Type InterfaceType, Type DefaultType)> TypeMappings =
-        [
-            (typeof(ILogger), typeof(NullLogger)),
-            (typeof(ILogger<>), typeof(NullLogger)),
-            (typeof(IEnumerable<>), typeof(List<>)),
-            (typeof(IDictionary<,>), typeof(Dictionary<,>)),
-            (typeof(IList<>), typeof(List<>)),
-            (typeof(ICollection<>), typeof(Collection<>)),
-            (typeof(ISet<>), typeof(HashSet<>)),
-            (typeof(IReadOnlyCollection<>), typeof(Collection<>)),
-            (typeof(IReadOnlyList<>), typeof(List<>)),
-            (typeof(IReadOnlyDictionary<,>), typeof(Dictionary<,>)),
-        ];
 
         private static bool TryMapGenericType(Type tType, Type interfaceType, Type defaultType, Mocker mocker, out Type type)
         {
