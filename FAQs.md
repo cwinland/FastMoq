@@ -13,6 +13,7 @@
 - [Where do I setup my mocks? Constructor, SetupMocksAction, or test method?](#where-do-i-setup-my-mocks-constructor-setupmocksaction-or-test-method)
 - [Why is the constructor parameter null instead of containing a Mock?](#why-is-the-constructor-parameter-null-instead-of-containing-a-mock)
 - [The Mocks exist, but they are not setup while running in the constructor?](#the-mocks-exist-but-they-are-not-setup-while-running-in-the-constructor)
+- [I receive this error: System.MethodAccessException: Attempt by method 'Castle.Proxies.ApplicationDbContextProxy..ctor(Castle.DynamicProxy.IInterceptor[])' to access method](#i-receive-this-error-systemmethodaccessexception-attempt-by-method-castleproxiesapplicationdbcontextproxyctorcastledynamicproxyiinterceptor-to-access-method)
 
 ### More Information
 
@@ -157,6 +158,14 @@ protected override Action<Mocker> SetupMocksAction => m =>
 };
 ```
 
+## I receive this error: System.MethodAccessException: Attempt by method 'Castle.Proxies.ApplicationDbContextProxy..ctor(Castle.DynamicProxy.IInterceptor[])' to access method
+
+Add the following InternalsVisibleTo line to the AssemblyInfo file.
+
+```c#
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+```
+
 ## Where can I find more documentation and support for FastMoq?
 
 You can find more documentation and support resources on the FastMoq GitHub Repository (<https://github.com/cwinland/FastMoq>). For community support and discussions, check out the issues section or open a new thread.
@@ -175,4 +184,4 @@ To report a bug or request a feature, please visit the Issues section on our Git
 
 ## Is FastMoq open source?
 
-Yes, FastMoq is an open-source project. You can view, modify, and distribute the source code under the terms of the MIT license. For more details, refer to the LICENSE file (<https://raw.githubusercontent.com/cwinland/FastMoq/refs/heads/master/license.txt>).
+Yes, FastMoq is an open-source project. You can view, modify, and distribute the source code under the terms of the MIT license. For more details, refer to the [LICENSE file](https://github.com/cwinland/FastMoq?tab=MIT-1-ov-file#).

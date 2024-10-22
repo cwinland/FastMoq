@@ -2,8 +2,9 @@
 
 Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework for mocking and auto injection of classes when testing.
 
-## API Documentation
+## More Documentation
 
+[FAQs](https://github.com/cwinland/FastMoq/wiki/FAQs)
 [FastMoq API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)
 
 ## Features
@@ -33,7 +34,6 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 ## Targets
 
 - .NET 8
-- .NET 7
 - .NET 6
 
 ## Most used classes in the FastMoq namespace
@@ -461,7 +461,8 @@ Add the following ```InternalsVisibleTo``` line to the AssemblyInfo file.
 
 ## Breaking Change
 
-- 2.25.Latest => Some methods moved to extensions that are no longer in the MockerTestBase or Mocker. Removed extra CreateInstance<T> methods.
+- 2.28 => .NET 7 Removed from support.
+- 2.25 => Some methods moved to extensions that are no longer in the MockerTestBase or Mocker. Removed extra CreateInstance&lt;T&gt; methods.
 - 2.23.200 => Support .NET 8
 - 2.23.x    => Removed support for .NET Core 5.
 - 2.22.1215 => Removed support for .NET Core 3.1 in FastMoq.Core. Deprecated .NET Core 5 and moved package supporting .NET Core 5.0 from FastMoq to FastMoq.Core.
