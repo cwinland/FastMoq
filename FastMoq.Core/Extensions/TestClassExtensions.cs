@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq.Expressions;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
@@ -354,7 +355,8 @@ namespace FastMoq.Extensions
         private static Type GetTypeFromInterfaceList(Mocker mocker, Type tType, List<Type> types)
         {
             // Get interfaces that contain T.
-            var interfaces = types.Where(type => type.IsInterface && ImplementsGenericInterface(type, tType)).ToList();
+            var allInterfaces = types.Where(type => type.IsInterface).ToList();
+            var interfaces = allInterfaces.Where(type => ImplementsGenericInterface(type, tType)).ToList();
 
             // Updated possibleTypes assignment
             var possibleTypes = types.Where(type =>
@@ -368,19 +370,37 @@ namespace FastMoq.Extensions
                 !interfaces.Exists(iType => iType.IsAssignableFrom(type))
             ).ToList();
 
-            var result = possibleTypes.Count switch
-            {
-                1 => possibleTypes[0],
-                0 => tType,
-                > 1 when possibleTypes.Count(x => IsGenericTypeMatch(x, tType)) == 1 => possibleTypes.First(x => IsGenericTypeMatch(x, tType)),
-                > 1 when possibleTypes.Count(x => x.Name.Equals(tType.Name)) == 1 => possibleTypes.First(x => x.Name.Equals(tType.Name)),
-                > 1 when possibleTypes.Count(x => x.IsPublic) == 1 => possibleTypes.First(x => x.IsPublic),
-                > 1 when IsIEnumerableGenericType(tType) => possibleTypes[0],
-                > 1 => throw mocker.GetAmbiguousImplementationException(tType, possibleTypes),
-                _ => possibleTypes.FirstOrDefault(x => x.IsPublic) ?? possibleTypes.FirstOrDefault(x => !x.IsPublic) ?? tType,
-            };
+            var result = mocker.FindBestMatch(possibleTypes, tType);
 
             return result;
+        }
+
+        private static Type FindBestMatch(this Mocker mocker, IList<Type> possibleTypes, Type tType)
+        {
+            Type? match;
+
+            return possibleTypes.Count switch
+            {
+                1 => possibleTypes.First(),
+                0 => tType,
+                > 1 when (match = GetSingleMatch(possibleTypes, x => IsGenericTypeMatch(x, tType))) is not null => match,
+                > 1 when (match = GetSingleMatch(possibleTypes, x => x.Name == tType.Name)) is not null => match,
+                > 1 when (match = GetSingleMatch(possibleTypes, x => x.IsPublic)) is not null => match,
+                > 1 when (match = GetSingleMatch(possibleTypes, x => x.GetInterfaces() is { Length: 1 } interfaces && interfaces[0] == tType)) is not
+                    null => match,
+                > 1 when IsIEnumerableGenericType(tType) => possibleTypes.First(),
+                _ => throw mocker.GetAmbiguousImplementationException(tType, possibleTypes)
+            };
+        }
+
+
+        private static T? GetSingleMatch<T>(IEnumerable<T> items, Func<T, bool> predicate)
+        {
+            var matches = items.Where(predicate).Take(2).ToList();
+
+            return matches.Count == 1
+                ? matches[0]
+                : default;
         }
 
         private static bool IsIEnumerableGenericType(Type tType)

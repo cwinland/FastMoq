@@ -11,6 +11,7 @@ using System.IO.Abstractions.TestingHelpers;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
+using Xunit.Abstractions;
 
 namespace FastMoq
 {
@@ -90,8 +91,10 @@ namespace FastMoq
 
         #region Properties
 
+        public virtual ITestOutputHelper TestOutputHelper { get; }
+
         /// <summary>
-        /// Gets the mock optional.
+        ///     Gets or sets the value to indicate if optional parameters should be mocked. If false, then parameters will be null.
         /// </summary>
         /// <value>The mock optional.</value>
         public bool MockOptional { get; set; } = false;
@@ -157,6 +160,7 @@ namespace FastMoq
             mockCollection = new();
             typeMap = new();
             HttpClient = this.CreateHttpClient();
+            TestOutputHelper ??= GetObject<ITestOutputHelper>();
         }
 
         /// <summary>
@@ -1103,7 +1107,7 @@ namespace FastMoq
         public T? GetObject<T>(Action<T?> initAction) where T : class => GetObject(typeof(T), t => initAction.Invoke(t as T)) as T;
 
         /// <summary>
-        ///     Gets the object.
+        ///     Gets the object from the mock.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>System.Nullable&lt;T&gt;.</returns>

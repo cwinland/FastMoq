@@ -1,5 +1,4 @@
-﻿using Castle.Core.Logging;
-using FastMoq.Extensions;
+﻿using FastMoq.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 

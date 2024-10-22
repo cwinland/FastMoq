@@ -1,4 +1,6 @@
+using FastMoq.Extensions;
 using FastMoq.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FastMoq
 {
@@ -15,7 +17,6 @@ namespace FastMoq
     ///      public void TestCar() {
     ///          Component.CarService.Should().NotBeNull();
     ///      }
-    /// }
     /// </code>
     /// ICarService is automatically injected into the Car object when created by the base class.
     /// <code>
@@ -37,6 +38,7 @@ namespace FastMoq
         #region Fields
 
         private bool disposedValue;
+        private TComponent component;
 
         #endregion
 
@@ -46,7 +48,11 @@ namespace FastMoq
         ///     Gets or sets the component under test.
         /// </summary>
         /// <value>The service.</value>
-        protected internal TComponent Component { get; set; }
+        protected internal TComponent Component
+        {
+            get => component.RaiseIfNull();
+            set => component  = value.RaiseIfNull();
+        }
 
         /// <summary>
         ///     Gets or sets the custom mocks. These are added whenever the component is created.
@@ -147,6 +153,7 @@ namespace FastMoq
             GetComponent();
         }
 
+        [return: NotNull]
         private TComponent GetComponent()
         {
             foreach (var customMock in CustomMocks)
