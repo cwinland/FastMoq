@@ -14,6 +14,10 @@
 - [Why is the constructor parameter null instead of containing a Mock?](#why-is-the-constructor-parameter-null-instead-of-containing-a-mock)
 - [The Mocks exist, but they are not setup while running in the constructor?](#the-mocks-exist-but-they-are-not-setup-while-running-in-the-constructor)
 - [I receive this error: System.MethodAccessException: Attempt by method 'Castle.Proxies.ApplicationDbContextProxy..ctor(Castle.DynamicProxy.IInterceptor[])' to access method](#i-receive-this-error-systemmethodaccessexception-attempt-by-method-castleproxiesapplicationdbcontextproxyctorcastledynamicproxyiinterceptor-to-access-method)
+- [Are there additional ways to debug FastMoq or the Mock itself?](#are-there-additional-ways-to-debug-fastmoq-or-the-mock-itself)
+- [What helpers are available in MockerTestBase&lt;T&gt;?](#what-helpers-are-available-in-mockertestbaset)
+- [What helpers are available in Mocker?](#what-helpers-are-available-in-mocker)
+- [What are some settings Mocker providers to alter the way Mocker works?](#what-are-some-settings-mocker-providers-to-alter-the-way-mocker-works)
 
 ### More Information
 
@@ -47,9 +51,19 @@ Install-Package FastMoq
 
 Absolutely! FastMoq is designed to integrate seamlessly with popular .NET testing frameworks like NUnit, MSTest, and xUnit. Just add FastMoq to your test project and start creating mocks.
 
+## How do I create my mocks?
+
+Think of Mocks as they already exist. In general, you do not need to create Mocks. FastMoq creates and manages all the mocks for you. To get a mock (new or existing), use:
+
+```cs
+Mocks.GetMock<TInterface>();
+```
+
+```Mocks``` (referenced above) is the name of the property in ```MockerTestBase<T>``` for ```FastMoq.Mocker```.
+
 ## Where do I setup my mocks? Constructor, SetupMocksAction, or test method?
 
-Where the setups are located depend on the scope of the mock and where it is needed. 
+Placement of the code that sets up the mock depends on the scope of the mock and where it is needed in the component being tested. Although Mocks are almost always injected into a constructor, they might not be called until later in one of the methods being tested. When FastMoq injects the mock, the test still has a reference to all mocks that are injected into the component being tested.
 
 ### FastMoq Locations and Scopes
 
@@ -165,6 +179,48 @@ Add the following InternalsVisibleTo line to the AssemblyInfo file.
 ```c#
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 ```
+
+## Are there additional ways to debug FastMoq or the Mock itself?
+
+Yes, the Mocker class provides properties to track which constructors are called, error messages, etc.
+
+- ```ConstructorHistory``` tracks the constructors that are called.
+- ```ExceptionLog``` tracks any exceptions that are intercepted by FastMoq, whether they are ignored or bubbled to the test, they should listed in this log.
+- ```mockCollection``` tracks all the existing Mocks that the framework can see.
+
+## What helpers are available in MockerTestBase&lt;T&gt;?
+
+- ```TestAllConstructorParameters```
+- ```TestConstructorParameters```
+- ```WaitFor```
+
+## What helpers are available in Mocker?
+
+Properties:
+
+- ```fileSystem``` gets an internal ```MockFileSystem``` for IFileSystem injections.
+- ```HttpClient``` gets the client used for injections.
+- ```DbConnection``` gets the connection used for DbContext injections.
+
+Methods:
+
+- ```AddType``` is dependency injection for tests. Similar to AddSingleton.
+- ```GetMock``` gets the Mock used in the tested component.
+- ```GetObject``` gets the object of the Mock used in the tested component.
+- ```CreateInstance``` creates an instance of a public Type without the need of specifying the injected parameters.
+- ```CreateInstanceNonPublic``` creates an instance of a Type without the need of specifying the injected parameters.
+- ```GetDbContext``` gets the DbContext used in the tested component.
+- ```GetFileSystem```gets the file system used in the tested component.
+- ```GetHttpHandlerSetup``` assists in setting up HttpClient calls.
+- ```GetMockDbContext``` gets a Mock DbContext.
+- ```Initialize``` clears the mock and groups the mock into a callback method for easy setup.
+- ```CallMethod``` calls a method and injects mocks and parameters as required.
+
+## What are some settings Mocker providers to alter the way Mocker works?
+
+- ```InnerMockResolution``` indicates that the Mock should attempt to resolve child mocks and injections. Default is True.
+- ```MockOptional``` allows mocks to be injected into optional or nullable parameters. Default is False.
+- ```Strict``` alters the way that FastMoq uses HttpClient and FileSystems. Strict prevents using the internal versions and pure mocks are used. Default is False.
 
 ## Where can I find more documentation and support for FastMoq?
 
