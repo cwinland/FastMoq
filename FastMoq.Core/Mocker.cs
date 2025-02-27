@@ -11,6 +11,7 @@ using System.IO.Abstractions.TestingHelpers;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
+using System.Text;
 using Xunit.Abstractions;
 
 namespace FastMoq
@@ -154,20 +155,20 @@ namespace FastMoq
         /// <summary>
         ///     Initializes a new instance of the <see cref="Mocker" /> class.
         /// </summary>
-        public Mocker()
+        public Mocker(ITestOutputHelper? testOutputHelper = null)
         {
             fileSystem = new();
             mockCollection = new();
             typeMap = new();
             HttpClient = this.CreateHttpClient();
-            TestOutputHelper ??= GetObject<ITestOutputHelper>();
+            TestOutputHelper = GetObject<ITestOutputHelper>();
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Mocker" /> class with a given type map (mock dependency injection).
         /// </summary>
         /// <inheritdoc />
-        public Mocker(Dictionary<Type, IInstanceModel> typeMap) : this() => this.typeMap = typeMap;
+        public Mocker(Dictionary<Type, IInstanceModel> typeMap, ITestOutputHelper? testOutputHelper = null) : this(testOutputHelper) => this.typeMap = typeMap;
 
         /// <summary>
         ///     Adds the injections to the specified object properties and fields.
@@ -1272,9 +1273,10 @@ namespace FastMoq
         /// <param name="args">The arguments used for the method.</param>
         /// <returns><see cref="Nullable" />.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-        public object? InvokeMethod<TClass>(TClass? obj, string methodName, bool nonPublic = false, params object?[] args)
+        public object? InvokeMethod<TClass>(TClass? obj, string methodName, bool nonPublic = false, params object?[]? args)
             where TClass : class
         {
+            args ??= [];
             var type = typeof(TClass).IsInterface ? GetTypeFromInterface<TClass>() : new InstanceModel<TClass>();
 
             var flags = BindingFlags.IgnoreCase |
@@ -1288,7 +1290,7 @@ namespace FastMoq
             {
                 null when !nonPublic && !Strict => InvokeMethod(obj, methodName, true, args),
                 null => throw new ArgumentOutOfRangeException(nameof(methodName)),
-                _ => method.Invoke(obj, flags, null, args?.Any() ?? false ? args.ToArray() : GetMethodArgData(method), null),
+                _ => method.Invoke(obj, flags, null, args.Any() ? args.ToArray() : GetMethodArgData(method), null),
             };
         }
 
@@ -1370,14 +1372,14 @@ namespace FastMoq
         /// <param name="args">The arguments.</param>
         /// <returns>Returns value of the called method.</returns>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public T? CallMethod<T>(Delegate method, params object?[]? args)
+        public T CallMethod<T>(Delegate method, params object?[]? args)
         {
             ArgumentNullException.ThrowIfNull(method);
 
             var parameters = GetMethodArgData(method.GetMethodInfo(), CreateArgPairList(method.GetMethodInfo(), args));
             try
             {
-                return (T?) method.DynamicInvoke(parameters);
+                return (T) method.DynamicInvoke(parameters);
             }
             catch (Exception ex)
             {
@@ -1407,6 +1409,43 @@ namespace FastMoq
         /// <param name="args">The arguments.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
         public void CallMethod(Delegate method, params object?[]? args) => CallMethod<object>(method, args);
+
+        private static Mock<Stream> CreateMockStream(byte[] initialData)
+        {
+            var mockStream = new Mock<Stream>();
+            var buffer = new MemoryStream(initialData);
+
+            // Setup Read method
+            mockStream.Setup(m => m.Read(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()))
+                      .Returns<byte[], int, int>(buffer.Read);
+
+            // Setup Write method
+            mockStream.Setup(m => m.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()))
+                      .Callback<byte[], int, int>(buffer.Write);
+
+            // Setup Seek method
+            mockStream.Setup(m => m.Seek(It.IsAny<long>(), It.IsAny<SeekOrigin>()))
+                      .Returns<long, SeekOrigin>(buffer.Seek);
+
+            // Setup Length property
+            mockStream.Setup(m => m.Length).Returns(() => buffer.Length);
+
+            // Setup Position property
+            mockStream.SetupProperty(m => m.Position, 0L);
+            mockStream.SetupGet(m => m.Position).Returns(() => buffer.Position);
+            mockStream.SetupSet(m => m.Position = It.IsAny<long>()).Callback<long>(value => buffer.Position = value);
+
+            // Setup Flush method
+            mockStream.Setup(m => m.Flush()).Callback(() => buffer.Flush());
+
+            return mockStream;
+        }
+
+        public Mock<Stream> CreateMockStream(string initialData)
+        {
+            var data = System.Text.Encoding.UTF8.GetBytes(initialData);
+            return Mocker.CreateMockStream(data);
+        }
 
         internal void AddProperty(object? obj, PropertyInfo writableProperty, Type objType, params KeyValuePair<string, object>[] data)
         {

@@ -1,5 +1,6 @@
 ﻿using FastMoq.Extensions;
 using FastMoq.Models;
+using FastMoq.Tests.TestClasses;
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
@@ -219,6 +220,20 @@ namespace FastMoq.Tests.TestBase
                 Mocks.ConstructorHistory.AsEnumerable().Should().NotBeEmpty();
                 var parameters = GetConstructor().GetParameters().Select(x => x.ParameterType).ToList();
                 parameters.Count().Should().Be(0);
+            }
+        }
+
+        public class TestClassParametersTests : MockerTestBase<TestClassMany>
+        {
+            protected override Func<Mocker, TestClassMany> CreateComponentAction => m => m.CreateInstance<TestClassMany>(55, "test");
+            public TestClassParametersTests() : base([typeof(int), typeof(string)])
+            { }
+
+            [Fact]
+            public void ComponentDefault()
+            {
+                Component.Should().NotBeNull();
+                Component.Value.Should().Be("55 test");
             }
         }
 

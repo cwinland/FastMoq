@@ -688,6 +688,34 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateObjectWithCustomData()
+        {
+            // Get argument data or create your own array
+            var args = Component.GetArgData<TestClassParameters>();
+
+            // Set custom values
+            args[0] = 34;
+
+            // Create object
+            var obj1 = Component.GetObject<TestClassParameters>(args);
+            obj1._x.Should().Be(34);
+            obj1._y.Should().BeEmpty();
+            obj1.fileSystem.Should().NotBeNull();
+            obj1.logger.Should().NotBeNull();
+
+            // Set custom values
+            args[1] = "test234";
+
+            // Create object
+            var obj2 = Component.CreateInstance<TestClassParameters>(args);
+
+            obj2._x.Should().Be(34);
+            obj2._y.Should().Be("test234");
+            obj1.fileSystem.Should().NotBeNull();
+            obj1.logger.Should().NotBeNull();
+        }
+
+        [Fact]
         public void GetObjectWithArgs()
         {
             var args = Component.GetArgData<ITestClassMultiple>();

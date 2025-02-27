@@ -35,6 +35,8 @@ namespace FastMoq.Tests.TestClasses
         [Inject] internal string invalidInjection3;
 
         [Inject] internal string? invalidInjection4;
+        internal int _x;
+        internal string _y;
 
         internal TestClassParameters(int x, string y, IFileSystem? fileSystem, ILogger? logger = null)
         {
@@ -42,6 +44,9 @@ namespace FastMoq.Tests.TestClasses
             {
                 throw new ArgumentNullException(nameof(fileSystem));
             }
+
+            _x = x;
+            _y = y;
 
             this.fileSystem = fileSystem;
             this.logger = logger;
