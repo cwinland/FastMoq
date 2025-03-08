@@ -1,4 +1,4 @@
-name: publish to nuget
+name: publish_FastMoq
 on:
   release:
     types: [published]
@@ -7,12 +7,12 @@ on:
       - master # Release branch
     paths:
       - .github/workflows/publish_FastMoq.yml
-      - .github/workflows/PR_FastMoq.yml
+      - .github/workflows/pr_FastMoq.yml
 
 jobs:
   test:
-    uses: ./.github/workflows/PR_FastMoq.yml
-    
+    uses: ./.github/workflows/pr_FastMoq.yml
+
   publish:
     needs: test
     name: build, pack & publish
