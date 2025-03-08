@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
+#pragma warning disable CS8604 // Possible null reference argument for parameter.
+
 namespace FastMoq.Tests
 {
     public class MockerCreationExtensionsTests

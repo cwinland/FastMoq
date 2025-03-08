@@ -24,6 +24,7 @@ using System.Threading;
 #pragma warning disable CS8618 // Non-nullable variable must contain a non-null value when exiting constructor. Consider declaring it as nullable.
 #pragma warning disable CS8974 // Converting method group to non-delegate type
 #pragma warning disable CS0472 // The result of the expression is always 'value1' since a value of type 'value2' is never equal to 'null' of type 'value3'.
+#pragma warning disable CA2264 // Passing non nullable value
 
 namespace FastMoq.Tests
 {
