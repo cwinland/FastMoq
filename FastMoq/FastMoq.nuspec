@@ -21,6 +21,10 @@
         <dependency id="FastMoq.Core" version="$version$" exclude="Build,Analyzers" />
         <dependency id="FastMoq.Web" version="$version$" exclude="Build,Analyzers" />
       </group>
+      <group targetFramework="net9.0">
+        <dependency id="FastMoq.Core" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="FastMoq.Web" version="$version$" exclude="Build,Analyzers" />
+      </group>
     </dependencies>
   </metadata>
 </package>
