@@ -15,13 +15,18 @@
     <dependencies>
       <group targetFramework="net6.0">
         <dependency id="FastMoq.Core" version="$version$" exclude="Build,Analyzers" />
-        <dependency id="System.Configuration.ConfigurationManager" version="8.0.1" exclude="Build,Analyzers" />
-        <dependency id="bunit" version="1.33.3" exclude="Build,Analyzers" />
+        <dependency id="System.Configuration.ConfigurationManager" version="9.0.2" exclude="Build,Analyzers" />
+        <dependency id="bunit" version="1.38.5" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="net8.0">
         <dependency id="FastMoq.Core" version="$version$" exclude="Build,Analyzers" />
-        <dependency id="System.Configuration.ConfigurationManager" version="8.0.1" exclude="Build,Analyzers" />
-        <dependency id="bunit" version="1.33.3" exclude="Build,Analyzers" />
+        <dependency id="System.Configuration.ConfigurationManager" version="9.0.2" exclude="Build,Analyzers" />
+        <dependency id="bunit" version="1.38.5" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net9.0">
+        <dependency id="FastMoq.Core" version="$version$" exclude="Build,Analyzers" />
+        <dependency id="System.Configuration.ConfigurationManager" version="9.0.2" exclude="Build,Analyzers" />
+        <dependency id="bunit" version="1.38.5" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>

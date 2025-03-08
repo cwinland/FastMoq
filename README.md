@@ -33,6 +33,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 
 ## Targets
 
+- .NET 9
 - .NET 8
 - .NET 6
 
@@ -115,16 +116,28 @@ public class TestClassDouble2 : ITestClassDouble {}
 
 ##### Mapping
 
-This code maps ITestClassDouble to TestClassDouble1 when testing a component with ITestClassDouble.
+```AddType``` is a Mocker method like the Dependency Injection method AddSingleton. The Mocker class will track the Mock as a single instance.
+```AddType``` must be specified in SetupMocksAction in order to prevent the Mock from creating the default.
+This is only needed to inject Mocks when:
+
+- Mock Configuration is needed
+- A specific instance is needed for an interface
+- Custom parameters or non-public constructors are required.
+
+This code maps the interfaces to the concrete class.
 
 ```cs
-Mocker.AddType<ITestClassDouble, TestClassDouble1>();
+protected override Action<Mocker> SetupMocksAction => m =>
+{
+    m.AddType<ILogger, Logger<NullLogger>>();
+    m.AddType<IAzResourceService, AzResourceService>();
+};
 ```
 
 The map also accepts parameters to tell it how to create the instance.
 
 ```cs
-Mocks.AddType<ITestClassDouble, TestClassDouble1>(() => new TestClassDouble());
+m.AddType<IAzResourceService, AzResourceService>(() => new AzResourceService("test", 456));
 ```
 
 ### DbContext Mocking
