@@ -4,7 +4,19 @@ on:
   pull_request:
     branches:
       - master
-      
+  push:
+    branches:
+      - master # Release branch
+    paths:
+      - .github/workflows/pr_FastMoq.yml
+      - FastMoq/
+      - FastMoq.Core/
+      - FastMoq.Web/
+      - FastMoq.Tests/
+      - FastMoq.Tests.Web/
+      - FastMoq.Tests.Blazor/
+      - FastMoq.TestingExample/
+
 jobs:
   test:
     name: test
