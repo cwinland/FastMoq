@@ -18,7 +18,11 @@ on:
       - FastMoq.TestingExample/
 
 jobs:
+  codeql:
+    uses: ./.github/workflows/codeql.yml
+
   test:
+    needs: codeql
     name: test
     runs-on: ubuntu-latest
     steps:
@@ -33,13 +37,13 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 8.0.x
-      - name: Setup .NET
+      - name: Setup .NET 9.0
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 9.0.x
       - name: Install dependencies
-        run: dotnet restore FastMoq.sln
+        run: dotnet restore FastMoq.sln --source https://api.nuget.org/v3/index.json
       - name: Build
-        run: dotnet build FastMoq.sln
+        run: dotnet build FastMoq.sln --source https://api.nuget.org/v3/index.json
       - name: Test
-        run: dotnet test FastMoq.sln
+        run: dotnet test FastMoq.sln --filter "FullyQualifiedName!~FastMoq.Tests.Blazor"

@@ -12,6 +12,7 @@
 name: "CodeQL Advanced"
 
 on:
+  workflow_call:
   push:
     branches: [ "master" ]
   pull_request:
