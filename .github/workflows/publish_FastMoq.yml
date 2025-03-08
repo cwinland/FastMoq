@@ -7,9 +7,14 @@ on:
       - master # Release branch
     paths:
       - .github/workflows/publish_FastMoq.yml
-      
+      - .github/workflows/PR_FastMoq.yml
+
 jobs:
+  test:
+    uses: ./.github/workflows/PR_FastMoq.yml
+    
   publish:
+    needs: test
     name: build, pack & publish
     runs-on: ubuntu-latest
     steps:

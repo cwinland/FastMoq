@@ -72,7 +72,7 @@ Placement of the code that sets up the mock depends on the scope of the mock and
 | Test Constructor     | All test methods *(available for all class test methods, but after the test component is created)*         | Yes                       | Used for default setup that either doesn't change or changes for only specific tests. |
 | Test Method          | Current test method | Yes                       | Use for test-specific setup. |
 | SetupMocksAction**   | Test component constructor, Test class constructor, and all test methods                | Yes                       | Use for class component setup needed for constructor. The setup can change based on a class variable or property. [Example](#option-2-override-setupmocksaction)                 |
-| Base Constructor**   | Test component constructor, Test class constructor, and all test methods                | No                        | Use for class component setup; the code does not need to change based on a variable or property of the class. [Example](#option-1-base-class-constructor)
+| Base Constructor**   | Test component constructor, Test class constructor, and all test methods                | No                        | Use for class component setup; the code does not need to change based on a variable or property of the class. [Example](#option-1-base-class-constructor) |
 
 **Note:** The global methods MUST be used if the data is required for the parameters of the component or used in the constructor's code.
 
