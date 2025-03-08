@@ -40,10 +40,10 @@ jobs:
         with:
           dotnet-version: 9.0.x
       - name: Install dependencies
-        run: dotnet restore FastMoq.Tests/FastMoq.Tests.csproj --source https://api.nuget.org/v3/index.json && dotnet restore FastMoq.Tests.Web/FastMoq.Tests.Web.csproj --source https://api.nuget.org/v3/index.json
+        run: dotnet restore FastMoq.Tests/FastMoq.Tests.csproj && dotnet restore FastMoq.Tests.Web/FastMoq.Tests.Web.csproj
       - name: Build
-        run: dotnet build FastMoq.Tests/FastMoq.Tests.csproj --source https://api.nuget.org/v3/index.json && dotnet build FastMoq.Tests.Web/FastMoq.Tests.Web.csproj --source https://api.nuget.org/v3/index.json
+        run: dotnet build FastMoq.Tests/FastMoq.Tests.csproj && dotnet build FastMoq.Tests.Web/FastMoq.Tests.Web.csproj
       - name: Test FastMoq.Tests
-        run: dotnet test FastMoq.Tests/FastMoq.Tests.csproj --source https://api.nuget.org/v3/index.json
+        run: dotnet test FastMoq.Tests/FastMoq.Tests.csproj
       - name: Test FastMoq.Tests.Web
-        run: dotnet test FastMoq.Tests.Web/FastMoq.Tests.Web.csproj --source https://api.nuget.org/v3/index.json
+        run: dotnet test FastMoq.Tests.Web/FastMoq.Tests.Web.csproj
