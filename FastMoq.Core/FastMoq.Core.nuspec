@@ -14,21 +14,21 @@
     <repository type="git" url="https://github.com/cwinland/FastMoq" />
     <dependencies>
       <group targetFramework="net6.0">
-        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="6.0.36" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="6.0.36" exclude="all" />
         <dependency id="Moq" version="4.18.4" exclude="Build,Analyzers" />
-        <dependency id="System.IO.Abstractions.TestingHelpers" version="17.2.3" exclude="Build,Analyzers" />
+        <dependency id="System.IO.Abstractions.TestingHelpers" version="17.2.3" exclude="all" />
         <dependency id="xunit.abstractions" version="2.0.3" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="net8.0">
-        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="8.0.13" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="8.0.13" exclude="all" />
         <dependency id="Moq" version="4.18.4" exclude="Build,Analyzers" />
-        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="22.0.11" exclude="Build,Analyzers" />
+        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="21.3.1" exclude="all" />
         <dependency id="xunit.abstractions" version="2.0.3" exclude="Build,Analyzers" />
       </group>
       <group targetFramework="net9.0">
-        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="9.0.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.EntityFrameworkCore.Sqlite" version="9.0.2" exclude="all" />
         <dependency id="Moq" version="4.18.4" exclude="Build,Analyzers" />
-        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="22.0.11" exclude="Build,Analyzers" />
+        <dependency id="TestableIO.System.IO.Abstractions.TestingHelpers" version="21.3.1" exclude="all"  />
         <dependency id="xunit.abstractions" version="2.0.3" exclude="Build,Analyzers" />
       </group>
     </dependencies>
