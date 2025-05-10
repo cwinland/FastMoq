@@ -1,5 +1,4 @@
-﻿using System.IO.Abstractions;
-using System.IO.Abstractions.TestingHelpers;
+﻿using Microsoft.Extensions.Logging;
 
 namespace FastMoq
 {
@@ -62,14 +61,20 @@ namespace FastMoq
             Func<Mocker, TComponent>? createComponentAction,
             Action<TComponent> createdComponentAction)
         {
+            Mocks = new Mocker(LoggingCallback);
+
             SetupMocksAction = setupMocksAction;
             CreateComponentAction = createComponentAction ?? DefaultCreateAction;
             CreatedComponentAction = createdComponentAction;
-
 #if NET6_0
             Mocks.AddFileSystemAbstractionMapping();
 #endif
             Component = GetComponent();
+        }
+
+        public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message)
+        {
+            Console.WriteLine($"LogLevel: {logLevel}, EventId: {eventId}, Message: {message}");
         }
 
         /// <inheritdoc />

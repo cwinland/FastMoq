@@ -24,7 +24,7 @@ namespace FastMoq.Models
 
             var returnsMethod = setupPhrase.GetType().GetMethod("Returns", BindingFlags.Public | BindingFlags.Instance, [genericFindType]);
 
-            var returnObj = returnsMethod?.Invoke(setupPhrase, new object[] {value});
+            var returnObj = returnsMethod?.Invoke(setupPhrase, [value]);
             return returnObj as IReturnsResult<T>;
         }
     }

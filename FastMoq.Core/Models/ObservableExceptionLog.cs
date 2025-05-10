@@ -7,7 +7,7 @@ namespace FastMoq.Models
 {
     public class ObservableExceptionLog : IReadOnlyCollection<string>, INotifyCollectionChanged, INotifyPropertyChanged
     {
-        private readonly ObservableCollection<string> internalCollection = new ();
+        private readonly ObservableCollection<string> internalCollection = [];
         private readonly ReadOnlyObservableCollection<string> readOnlyCollection;
 
         public ObservableExceptionLog()

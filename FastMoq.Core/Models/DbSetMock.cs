@@ -16,7 +16,7 @@ namespace FastMoq.Models
     {
         #region Fields
 
-        private readonly List<TEntity> store = new();
+        private readonly List<TEntity> store = [];
 
         #endregion
 
@@ -36,7 +36,8 @@ namespace FastMoq.Models
         /// <inheritdoc />
         public DbSetMock(IList<TEntity> initialData)
         {
-            if (initialData != null)
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+            if (initialData != null && initialData.Count > 0)
             {
                 store.AddRange(initialData);
             }

@@ -38,7 +38,8 @@ namespace FastMoq
         #region Fields
 
         private bool disposedValue;
-        private TComponent component;
+        // ReSharper disable once ReplaceWithFieldKeyword
+        private TComponent? component;
 
         #endregion
 
@@ -51,7 +52,7 @@ namespace FastMoq
         protected internal TComponent Component
         {
             get => component.RaiseIfNull();
-            set => component  = value.RaiseIfNull();
+            set => component = value.RaiseIfNull();
         }
 
         /// <summary>
@@ -82,7 +83,7 @@ namespace FastMoq
         ///     Gets the <see cref="Mocker" />.
         /// </summary>
         /// <value>The mocks.</value>
-        protected Mocker Mocks { get; } = new();
+        protected Mocker Mocks { get; }
 
         #endregion
 

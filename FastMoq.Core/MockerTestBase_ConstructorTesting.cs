@@ -1,5 +1,4 @@
-﻿using FastMoq.Models;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace FastMoq
 {
@@ -45,18 +44,18 @@ namespace FastMoq
         /// public void Service_NullArgChecks() => TestConstructorParameters((action, constructorName, parameterName) =>
         /// {
         ///     output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
-        /// 
+        ///
         ///     action
         ///         .Should()
         ///         .Throw<ArgumentNullException>()
         ///         .WithMessage($"*{parameterName}*");
         /// });
-        /// 
+        ///
         /// [Fact]
         /// public void Service_NullArgChecks() => TestConstructorParameters((action, constructorName, parameterName) =>
         ///     {
         ///         output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
-        /// 
+        ///
         ///         action
         ///             .Should()
         ///             .Throw<ArgumentNullException>()

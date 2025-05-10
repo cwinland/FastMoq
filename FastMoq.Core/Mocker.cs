@@ -2,6 +2,7 @@
 using FastMoq.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Language.Flow;
 using Moq.Protected;
@@ -11,8 +12,6 @@ using System.IO.Abstractions.TestingHelpers;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime;
-using System.Text;
-using Xunit.Abstractions;
 
 namespace FastMoq
 {
@@ -32,19 +31,19 @@ namespace FastMoq
     /// // Arrange
     /// var id = 1234;
     /// var blogsTestData = new List<Blog> { new Blog { Id = id } };
-    /// 
+    ///
     /// // Create a mock DbContext
     /// var mocker = new Mocker(); // Create a new mocker only if not already using MockerTestBase; otherwise use Mocks included in the base class.
-    /// 
+    ///
     /// var dbContextMock = mocker.GetMockDbContext<ApplicationDbContext>();
     /// var dbContext = dbContextMock.Object;
     /// dbContext.Blogs.Add(blogsTestData); // Can also be dbContext.Set<Blog>().Add(blogsTestData)
-    /// 
+    ///
     /// var validator = new BtnValidator(dbContext);
-    /// 
+    ///
     /// // Act
     /// var result = validator.IsValid(id);
-    /// 
+    ///
     /// // Assert
     /// Assert.True(result);
     /// ]]></code>
@@ -68,7 +67,7 @@ namespace FastMoq
         /// <summary>
         ///     The list of types in the process of being created. This is used to prevent circular creations.
         /// </summary>
-        protected internal readonly List<Type> creatingTypeList = new();
+        protected internal readonly List<Type> creatingTypeList = [];
 
         /// <summary>
         ///     List of <see cref="MockModel" />.
@@ -92,8 +91,7 @@ namespace FastMoq
 
         #region Properties
 
-        public virtual ITestOutputHelper TestOutputHelper { get; }
-
+        public Action<LogLevel, EventId, string> LoggingCallback { get; }
         /// <summary>
         ///     Gets or sets the value to indicate if optional parameters should be mocked. If false, then parameters will be null.
         /// </summary>
@@ -109,7 +107,7 @@ namespace FastMoq
         /// <summary>
         ///     Tracks internal exceptions for debugging.
         /// </summary>
-        public ObservableExceptionLog ExceptionLog => new();
+        public ObservableExceptionLog ExceptionLog => [];
 
         /// <summary>
         ///     The virtual mock http client that is used by mocker unless overridden with the <see cref="Strict" /> property.
@@ -152,23 +150,35 @@ namespace FastMoq
 
         #endregion
 
+        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:FastMoq.Mocker" /> class.
+        /// </summary>
+        public Mocker() : this((_, _, _) => { }) { }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Mocker" /> class.
         /// </summary>
-        public Mocker(ITestOutputHelper? testOutputHelper = null)
+        public Mocker(Action<LogLevel, EventId, string> loggingCallback)
         {
             fileSystem = new();
-            mockCollection = new();
+            mockCollection = [];
             typeMap = new();
             HttpClient = this.CreateHttpClient();
-            TestOutputHelper = GetObject<ITestOutputHelper>();
+            LoggingCallback = loggingCallback;
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Mocker" /> class with a given type map (mock dependency injection).
         /// </summary>
         /// <inheritdoc />
-        public Mocker(Dictionary<Type, IInstanceModel> typeMap, ITestOutputHelper? testOutputHelper = null) : this(testOutputHelper) => this.typeMap = typeMap;
+        public Mocker(Dictionary<Type, IInstanceModel> typeMap) : this() => this.typeMap = typeMap;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Mocker" /> class with a given type map (mock dependency injection).
+        /// </summary>
+        /// <inheritdoc />
+        public Mocker(Dictionary<Type, IInstanceModel> typeMap, Action<LogLevel, EventId, string> loggingCallback) : this(loggingCallback) => this.typeMap = typeMap;
 
         /// <summary>
         ///     Adds the injections to the specified object properties and fields.
@@ -343,7 +353,7 @@ namespace FastMoq
                 throw new ArgumentException($"{tClass.Name} is not assignable to {tInterface.Name}.");
             }
 
-            if (replace && typeMap.ContainsKey(tInterface))
+            if (replace)
             {
                 typeMap.Remove(tInterface);
             }
@@ -392,7 +402,7 @@ namespace FastMoq
         /// <param name="replace">Replace type if already exists. Default: false.</param>
         /// <param name="args">arguments needed in model.</param>
         public Mocker AddType<TInterface, TClass>(bool replace = false, params object?[]? args)
-            where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), (Func<Mocker, TClass>?)null, replace, args);
+            where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), (Func<Mocker, TClass>?) null, replace, args);
 
         /// <summary>
         ///     Adds an interface to Class mapping to the <see cref="typeMap" /> for easier resolution.
@@ -433,7 +443,7 @@ namespace FastMoq
         /// <param name="usePredefinedFileSystem">if set to <c>true</c> [use predefined file system].</param>
         /// <returns><see cref="Nullable{IFileSystem}" />.</returns>
         public IFileSystem? CreateInstance<T>(bool usePredefinedFileSystem) where T : class, IFileSystem =>
-            CreateInstance<T>(usePredefinedFileSystem, Array.Empty<object?>());
+            CreateInstance<T>(usePredefinedFileSystem, []);
 
         /// <summary>
         ///     Creates the instance.
@@ -515,7 +525,7 @@ namespace FastMoq
             if (typeInstanceModel.CreateFunc != null)
             {
                 creatingTypeList.Add(tType);
-                object obj;
+                object? obj;
 
                 try
                 {
@@ -527,10 +537,8 @@ namespace FastMoq
                     creatingTypeList.Remove(tType);
                 }
 
-                {
-                    instance = obj;
-                    return true;
-                }
+                instance = obj;
+                return true;
             }
 
             instance = null;
@@ -571,7 +579,7 @@ namespace FastMoq
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
 
             return type.CreateFunc != null
-                ? (T) type.CreateFunc.Invoke(this, type.InstanceType)
+                ? (T?) type.CreateFunc.Invoke(this, type.InstanceType)
                 : CreateInstanceNonPublic(type.InstanceType, args) as T;
         }
 
@@ -848,7 +856,8 @@ namespace FastMoq
         /// ]]></code>
         /// </example>
         public static List<T> GetList<T>(int count, Func<T>? func) =>
-            func == null ? new() : GetList(count, _ => func.Invoke());
+            func == null ? []
+                : GetList(count, _ => func.Invoke());
 
         /// <summary>
         ///     Gets the message protected asynchronous.
@@ -861,7 +870,7 @@ namespace FastMoq
         public ISetup<TMock, Task<TReturn>>? GetMessageProtectedAsync<TMock, TReturn>(string methodOrPropertyName, params object?[]? args)
             where TMock : class =>
             GetMock<TMock>().Protected()
-                ?.Setup<Task<TReturn>>(methodOrPropertyName, args ?? Array.Empty<object>());
+                ?.Setup<Task<TReturn>>(methodOrPropertyName, args ?? []);
 
         /// <summary>
         ///     Gets the method argument data.
@@ -954,13 +963,13 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments used to find the correct constructor for a class.</param>
         /// <returns><see cref="Mock" />.</returns>
-        public Mock GetMock(Type type, params object?[] args)
+        public Mock GetMock(Type type, params object?[]? args)
         {
             type = CleanType(type);
 
             if (!this.Contains(type))
             {
-                CreateMock(type, args?.Length > 0, args ?? Array.Empty<object?>());
+                CreateMock(type, args?.Length > 0, args ?? []);
             }
 
             return GetRequiredMock(type);
@@ -1379,7 +1388,7 @@ namespace FastMoq
             var parameters = GetMethodArgData(method.GetMethodInfo(), CreateArgPairList(method.GetMethodInfo(), args));
             try
             {
-                return (T) method.DynamicInvoke(parameters);
+                return (T) method.DynamicInvoke(parameters)!;
             }
             catch (Exception ex)
             {
@@ -1493,7 +1502,7 @@ namespace FastMoq
 
         internal List<KeyValuePair<Type, object?>> CreateArgPairList(MethodBase info, params object?[]? args)
         {
-            var paramList = info?.GetParameters().ToList() ?? new();
+            var paramList = info?.GetParameters().ToList() ?? [];
             var newArgs = new List<KeyValuePair<Type, object?>>();
             args ??= [];
 
@@ -1508,7 +1517,7 @@ namespace FastMoq
                     _ => GetParameter(p),
                 };
 
-                newArgs.Add(new (p.ParameterType, val));
+                newArgs.Add(new(p.ParameterType, val));
             }
 
             return newArgs;
@@ -1573,7 +1582,7 @@ namespace FastMoq
         /// <exception cref="System.NotImplementedException">Unable to find the constructor.</exception>
         internal ConstructorModel FindConstructor(bool bestGuess, Type type, bool nonPublic, List<ConstructorInfo>? excludeList = null)
         {
-            excludeList ??= new();
+            excludeList ??= [];
 
             var constructors = GetConstructors(type, nonPublic)
                 .Where(x => excludeList.TrueForAll(y => y != x.ConstructorInfo)).ToList();
@@ -1737,9 +1746,7 @@ namespace FastMoq
         {
             var tType = typeof(T);
             var newType = this.GetTypeFromInterface(tType);
-            var model = new InstanceModel(tType, newType);
-
-            return model;
+            return new InstanceModel(tType, newType);
         }
 
         /// <summary>
@@ -1748,6 +1755,7 @@ namespace FastMoq
         /// <param name="type">The type.</param>
         /// <returns>FastMoq.Models.IInstanceModel.</returns>
         internal IInstanceModel GetTypeModel(Type type) =>
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             typeMap.TryGetValue(type, out var model) && model is not null ? model : new InstanceModel(type, this.GetTypeFromInterface(type));
 
         internal void SetupMock(Type type, Mock oMock)
@@ -1764,9 +1772,37 @@ namespace FastMoq
                 {
                     AddProperties(type, this.GetSafeMockObject(oMock));
                 }
+
+                if (type.IsAssignableTo(typeof(ILogger)))
+                {
+                    if (oMock is Mock<ILogger> loggerMock)
+                    {
+                        SetupLoggerCallback(loggerMock, LoggingCallback);
+                    }
+                    else if (oMock.GetType().IsGenericType && oMock.GetType().GetGenericTypeDefinition() == typeof(Mock<>))
+                    {
+                        var genericArgument = oMock.GetType().GetGenericArguments();
+                        if (genericArgument.Any(arg => typeof(ILogger).IsAssignableFrom(arg)))
+                        {
+                            var method = Array.Find(GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Static),
+                                                  m => m.Name == nameof(SetupLoggerCallback) && m.IsGenericMethodDefinition);
+
+                            if (method != null)
+                            {
+                                var genericMethod = method.MakeGenericMethod(genericArgument);
+                                genericMethod.Invoke(null, [oMock, LoggingCallback]);
+                            }
+                        }
+                    }
+                }
             }
 
             AddInjections(this.GetSafeMockObject(oMock), GetTypeModel(type)?.InstanceType ?? type);
+        }
+
+        internal static void SetupLoggerCallback<T>(Mock<T> logger, Action<LogLevel, EventId, string> callback) where T : class, ILogger
+        {
+            logger.SetupLoggerCallback(callback);
         }
     }
 }

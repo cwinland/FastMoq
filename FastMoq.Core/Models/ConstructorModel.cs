@@ -2,11 +2,12 @@
 
 namespace FastMoq.Models
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="IHistoryModel" />
+    /// <inheritdoc cref="IEquatable{T}" />
     /// <summary>
     ///     Class ConstructorModel.
     /// </summary>
-    public class ConstructorModel : IHistoryModel, IEquatable<ConstructorModel>
+    public sealed class ConstructorModel : IHistoryModel, IEquatable<ConstructorModel>
     {
         #region Properties
 
@@ -35,7 +36,7 @@ namespace FastMoq.Models
         internal ConstructorModel(ConstructorInfo? constructorInfo, IEnumerable<object?> parameterList)
         {
             ConstructorInfo = constructorInfo;
-            ParameterList = parameterList?.ToArray() ?? new object?[] { };
+            ParameterList = parameterList?.ToArray() ?? [];
         }
 
         internal ConstructorModel(KeyValuePair<ConstructorInfo, List<object?>> kvp) : this(kvp.Key, kvp.Value) { }

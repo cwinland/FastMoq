@@ -1,5 +1,4 @@
 ﻿using AngleSharp.Dom;
-using FastMoq.Extensions;
 using FastMoq.Tests.Blazor.Data;
 using FastMoq.Tests.Blazor.Pages;
 using FastMoq.Web.Blazor.Models;

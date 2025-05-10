@@ -1,13 +1,10 @@
-﻿namespace FastMoq.Models
-{
-    public class InstanceFunction
-    {
-        public Type InstanceType { get; }
+﻿using FastMoq.Extensions;
 
-        public InstanceFunction(Type type)
-        {
-            this.InstanceType = type;
-        }
+namespace FastMoq.Models
+{
+    public class InstanceFunction(Type type)
+    {
+        public Type InstanceType { get; } = type;
 
         // Property to hold the function
         public Delegate? Function { get; set; }
@@ -20,6 +17,7 @@
 
         public object? Invoke(Mocker mocker, params object?[]? parameters)
         {
+            Function.RaiseIfNull();
             var functionType = Function.GetType();
             var genericArguments = functionType.GenericTypeArguments;
 
@@ -33,10 +31,11 @@
 
         private object? InvokeSingleParamFunction(Mocker mocker)
         {
+            Function.RaiseIfNull();
             var method = Function.GetType().GetMethod("Invoke");
             if (method != null)
             {
-                return method.Invoke(Function, new object[] { mocker });
+                return method.Invoke(Function, [mocker]);
             }
 
             throw new InvalidOperationException("Function is not a valid single parameter function.");
@@ -44,10 +43,11 @@
 
         private object? InvokeDoubleParamFunction(Mocker mocker, object?[]? parameters)
         {
+            Function.RaiseIfNull();
             var method = Function.GetType().GetMethod("Invoke");
             if (method != null)
             {
-                return method.Invoke(Function, new object[] { mocker, parameters?[0] ?? null });
+                return method.Invoke(Function, [mocker, parameters?[0] ?? null]);
             }
 
             throw new InvalidOperationException("Function is not a valid double parameter function.");

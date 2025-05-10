@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq.Expressions;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
@@ -55,8 +54,8 @@ namespace FastMoq.Extensions
         {
             ArgumentNullException.ThrowIfNull(obj);
 
-            parameterTypes ??= Array.Empty<Type>();
-            parameters ??= Array.Empty<object>();
+            parameterTypes ??= [];
+            parameters ??= [];
 
             var method = obj.GetType().GetMethods()
                              .FirstOrDefault(m => m.Name == methodName &&
@@ -523,12 +522,14 @@ namespace FastMoq.Extensions
         /// <summary>
         ///     Verifies the Mock ILogger of T was invoked.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TLogger"></typeparam>
         /// <param name="loggerMock">The logger mock.</param>
         /// <param name="logLevel">The expected log level.</param>
         /// <param name="message">The expected message.</param>
         /// <param name="times">The expected number of invocations.</param>
-        public static void VerifyLogger<T>(this Mock<ILogger<T>> loggerMock, LogLevel logLevel, string message, int times = 1) => loggerMock.VerifyLogger(logLevel, message, null, null, times);
+        public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, int times = 1)
+        where TLogger : class, ILogger
+            => loggerMock.VerifyLogger(logLevel, message, null, null, times);
 
         /// <summary>
         ///     Verifies the Mock ILogger was invoked.
@@ -551,8 +552,8 @@ namespace FastMoq.Extensions
         /// <param name="exception">The exception.</param>
         /// <param name="eventId">The event identifier.</param>
         /// <param name="times">The expected number of invocations.</param>
-        public static void VerifyLogger<T>(this Mock<ILogger<T>> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null,
-                                           int times = 1) => loggerMock.VerifyLogger<Exception, T>(logLevel, message, exception, eventId, times);
+        public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null,
+                                           int times = 1) where TLogger : class, ILogger => loggerMock.VerifyLogger<Exception, TLogger>(logLevel, message, exception, eventId, times);
 
         /// <summary>
         ///     Verifies the Mock ILogger was invoked.
@@ -566,15 +567,24 @@ namespace FastMoq.Extensions
         /// <param name="times">The expected number of invocations.</param>
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1)
                 where TException : Exception
-                    => loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), Times.Exactly(times));
+        {
+            loggerMock.RaiseIfNull();
+            loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), Times.Exactly(times));
+        }
 
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Times times)
             where TException : Exception
-            => loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), times);
+        {
+            loggerMock.RaiseIfNull();
+            loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), times);
+        }
 
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Func<Times> times)
             where TException : Exception
-            => loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), times);
+        {
+            loggerMock.RaiseIfNull();
+            loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), times);
+        }
 
         /// <summary>
         ///     Verifies the Mock ILogger was invoked.
@@ -587,9 +597,38 @@ namespace FastMoq.Extensions
         /// <param name="exception">The exception.</param>
         /// <param name="eventId">The event identifier.</param>
         /// <param name="times">The expected number of invocations.</param>
-        public static void VerifyLogger<TException, TLogger>(this Mock<ILogger<TLogger>> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1)
-            where TException : Exception
-            => loggerMock.Verify(TestLoggerExpression<TException, ILogger<TLogger>>(logLevel, message, exception, eventId), Times.Exactly(times));
+        public static void VerifyLogger<TException, TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1)
+            where TException : Exception where TLogger : class, ILogger
+        {
+            loggerMock.RaiseIfNull();
+            loggerMock.Verify(TestLoggerExpression<TException, TLogger>(logLevel, message, exception, eventId), Times.Exactly(times));
+        }
+
+        /// <summary>
+        /// Setups the logger callback.
+        /// </summary>
+        /// <typeparam name="TLogger">Class type of ILogger or ILogger{T}</typeparam>
+        /// <param name="logger">The mock logger.</param>
+        /// <param name="callback">The callback action.</param>
+        public static void SetupLoggerCallback<TLogger>(this Mock<TLogger> logger, Action<LogLevel, EventId, string> callback) where TLogger : class, ILogger
+        {
+            ArgumentNullException.ThrowIfNull(logger);
+            ArgumentNullException.ThrowIfNull(callback);
+
+            logger
+               .Setup(x => x.Log(
+                    It.IsAny<LogLevel>(),
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception?, string>) It.IsAny<object>()))
+               .Callback((LogLevel logLevel, EventId eventId, object state, Exception? exception, Delegate formatter) =>
+                {
+                    // Optional: Capture or inspect log messages here
+                    var message = formatter.DynamicInvoke(state, exception);
+                    callback.Invoke(logLevel, eventId, message?.ToString() ?? string.Empty);
+                });
+        }
 
         /// <summary>
         ///     Tests the logger expression2.
@@ -732,7 +771,7 @@ namespace FastMoq.Extensions
         /// <returns>List&lt;FastMoq.Models.ConstructorModel&gt;.</returns>
         internal static List<ConstructorModel> GetTestedConstructors(this Mocker mocker, Type type, List<ConstructorModel>? constructors)
         {
-            constructors ??= new();
+            constructors ??= [];
             var validConstructors = new List<ConstructorModel>();
 
             if (constructors.Count <= 1)

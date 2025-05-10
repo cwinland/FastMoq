@@ -277,7 +277,7 @@ namespace FastMoq.Extensions
         internal static object? CreateInstanceInternal(this Mocker mocker, Type type, ConstructorInfo? info, params object?[] args)
         {
             mocker.ConstructorHistory.AddOrUpdate(type, new ConstructorModel(info, args));
-            var paramList = info?.GetParameters().ToList() ?? new();
+            var paramList = info?.GetParameters().ToList() ?? [];
             var newArgs = args.ToList();
 
             if (args.Length < paramList.Count)
@@ -294,6 +294,19 @@ namespace FastMoq.Extensions
         }
 
         /// <summary>
+        /// Setups the mock for given property name.
+        /// </summary>
+        /// <typeparam name="TMock">The type of the t mock.</typeparam>
+        /// <param name="mock">The mock.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="value">The value.</param>
+        public static void SetupMockProperty<TMock>(this Mock<TMock> mock, string propertyName, object value) where TMock : class
+        {
+            var propertyInfo = typeof(TMock).GetProperty(propertyName) ?? throw new InvalidFilterCriteriaException($"{propertyName} not found in SetupMockProperty.");
+            mock.SetupMockProperty(propertyInfo, value);
+        }
+
+        /// <summary>
         /// Setups the mock for given property info.
         /// </summary>
         /// <typeparam name="TMock">The type of mock.</typeparam>
@@ -302,6 +315,7 @@ namespace FastMoq.Extensions
         /// <param name="value">The value.</param>
         public static void SetupMockProperty<TMock>(this Mock<TMock> mock, PropertyInfo propertyInfo, object value) where TMock : class
         {
+            mock.RaiseIfNull();
             // Create a parameter expression for the object instance of type TMock
             var instanceParam = Expression.Parameter(typeof(TMock), "instance");
 
@@ -333,19 +347,6 @@ namespace FastMoq.Extensions
             }
 
             throw new ArgumentException("Expression is not a property access.", nameof(propertyExpression));
-        }
-
-        /// <summary>
-        /// Setups the mock for given property name.
-        /// </summary>
-        /// <typeparam name="TMock">The type of the t mock.</typeparam>
-        /// <param name="mock">The mock.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <param name="value">The value.</param>
-        public static void SetupMockProperty<TMock>(this Mock<TMock> mock, string propertyName, object value) where TMock : class
-        {
-            var propertyInfo = typeof(TMock).GetProperty("Headers");
-            mock.SetupMockProperty(propertyInfo, value);
         }
     }
 }

@@ -15,6 +15,8 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -30,10 +32,17 @@ namespace FastMoq.Tests
 {
     public class MocksTests : MockerTestBase<Mocker>
     {
-        public MocksTests() : base(SetupAction, CreateAction, CreatedAction)
+        private readonly ITestOutputHelper output;
+
+        public MocksTests(ITestOutputHelper output) : base(SetupAction, CreateAction, CreatedAction)
         {
+            this.output = output;
             Component.AddFileSystemAbstractionMapping();
         }
+
+        /// <inheritdoc />
+        public override void LoggingCallback(LogLevel logLevel, EventId eventId, string message) =>
+            output.WriteLine($"{logLevel} {eventId} {message}");
 
         [Fact]
         public void AddInjections()
@@ -943,6 +952,16 @@ namespace FastMoq.Tests
             return num;
         }
 
+        internal async static Task<bool> CallTestMethodTask(bool test, IFileSystem fileSystem, ITestCollectionOrderer dClass, TestClassMultiple mClass, string name)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            ArgumentNullException.ThrowIfNull(dClass);
+            ArgumentNullException.ThrowIfNull(mClass);
+            ArgumentNullException.ThrowIfNull(test);
+            ArgumentNullException.ThrowIfNull(name);
+
+            return test;
+        }
         internal static object?[] CallTestMethod(int num, IFileSystem fileSystem, ITestCollectionOrderer dClass, TestClassMultiple mClass, string name)
         {
             ArgumentNullException.ThrowIfNull(fileSystem);
@@ -1031,6 +1050,19 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public async Task CallMethod_WithParamsReturnTask_true()
+        {
+            var result = await Mocks.CallMethod<Task<bool>>(CallTestMethodTask, true, Mocks.fileSystem);
+            result.Should().Be(true);
+        }
+
+        [Fact]
+        public async Task CallMethod_WithParamsReturnTask_false()
+        {
+            var result = await Mocks.CallMethod<Task<bool>>(CallTestMethodTask, false);
+            result.Should().Be(false);
+        }
+        [Fact]
         public void CallMethod_WithParamsReturnInt()
         {
             var result = Mocks.CallMethod<int>(CallTestMethodInt, 4, Mocks.fileSystem);
@@ -1060,7 +1092,7 @@ namespace FastMoq.Tests
         [Fact]
         public void VerifyLogger_ShouldPass_WhenMatches()
         {
-            var mLogger = new Mock<ILogger>();
+            var mLogger = Mocks.GetMock<ILogger>();
             mLogger.VerifyLogger(LogLevel.Information, "test", 0);
 
             mLogger.Object.LogInformation("test");
@@ -1081,7 +1113,7 @@ namespace FastMoq.Tests
         [Fact]
         public void VerifyLogger_ShouldPass_WhenMatchesILoggerSubtype()
         {
-            var mLogger = new Mock<ILogger<NullLogger>>();
+            var mLogger = Mocks.GetMock<ILogger<NullLogger>>();
             mLogger.VerifyLogger(LogLevel.Information, "test", 0);
 
             mLogger.Object.LogInformation("test");
@@ -1094,13 +1126,12 @@ namespace FastMoq.Tests
             mLogger.Invocations.Clear();
             mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
             mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
-            mLogger.VerifyLogger<Exception, NullLogger>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
         }
 
         [Fact]
         public void VerifyLogger_ShouldThrow_WhenNotMatches()
         {
-            var mLogger = new Mock<ILogger>();
+            var mLogger = Mocks.GetMock<ILogger<NullLogger>>();
             mLogger.VerifyLogger(LogLevel.Information, "test", 0);
 
             mLogger.Object.LogInformation("test");

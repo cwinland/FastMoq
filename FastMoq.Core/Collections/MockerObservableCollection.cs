@@ -12,6 +12,7 @@ namespace FastMoq.Collections
         /// <summary>
         ///     Occurs when the collection changes, either by adding or removing an item.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public EventHandler<MockerObservableCollectionChangedEventArgs?>? Changed;
 
         #endregion
@@ -26,7 +27,7 @@ namespace FastMoq.Collections
         /// <exception cref="ArgumentNullException"> collection is a null reference </exception>
         /// <inheritdoc />
         public MockerObservableCollection(IEnumerable<T> collection) : base(
-            new List<T>(collection ?? throw new ArgumentNullException(nameof(collection)))
+            [..collection ?? throw new ArgumentNullException(nameof(collection))]
         )
         {
             base.PropertyChanged += OnChanged;

@@ -118,7 +118,7 @@ namespace FastMoq.Extensions
         public static void SetupMessageProtected<TMock, TReturn>(this Mocker mocker, string methodOrPropertyName, Func<TReturn> messageFunc, params object?[]? args)
             where TMock : class =>
             mocker.GetMock<TMock>().Protected()
-                ?.Setup<TReturn>(methodOrPropertyName, args ?? Array.Empty<object>())
+                ?.Setup<TReturn>(methodOrPropertyName, args ?? [])
                 ?.Returns(messageFunc)?.Verifiable();
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace FastMoq.Extensions
         public static void SetupMessageProtectedAsync<TMock, TReturn>(this Mocker mocker, string methodOrPropertyName, Func<TReturn> messageFunc, params object?[]? args)
             where TMock : class =>
             mocker.GetMock<TMock>().Protected()
-                ?.Setup<Task<TReturn>>(methodOrPropertyName, args ?? Array.Empty<object>())
+                ?.Setup<Task<TReturn>>(methodOrPropertyName, args ?? [])
                 ?.ReturnsAsync(messageFunc)?.Verifiable();
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace FastMoq.Extensions
         /// <param name="content">The content.</param>
         /// <returns>byte[].</returns>
         public static async Task<byte[]> GetContentBytesAsync(this HttpContent content) =>
-            content is ByteArrayContent data ? await data.ReadAsByteArrayAsync() : Array.Empty<byte>();
+            content is ByteArrayContent data ? await data.ReadAsByteArrayAsync() : [];
 
         /// <summary>
         ///     Gets the content stream.

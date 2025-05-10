@@ -43,7 +43,7 @@ namespace FastMoq.Models
         /// <inheritdoc />
         internal InstanceModel(Type originalType, Type instanceType, Func<Mocker, object>? createFunc, IReadOnlyList<object?> arguments)
             : this(originalType, instanceType, createFunc) =>
-            Arguments = new List<object?>(arguments ?? throw new ArgumentNullException(nameof(arguments)));
+            Arguments = [..arguments ?? throw new ArgumentNullException(nameof(arguments))];
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="InstanceModel" /> class.
@@ -56,12 +56,12 @@ namespace FastMoq.Models
         /// <inheritdoc />
         internal InstanceModel(Type originalType, Type instanceType, Func<Mocker, object, object>? createFunc, IReadOnlyList<object?> arguments)
             : this(originalType, instanceType, createFunc) =>
-            Arguments = new List<object?>(arguments ?? throw new ArgumentNullException(nameof(arguments)));
+            Arguments = [..arguments ?? throw new ArgumentNullException(nameof(arguments))];
 
         #region IInstanceModel
 
         /// <inheritdoc />
-        public List<object?> Arguments { get; internal set; } = new();
+        public List<object?> Arguments { get; internal set; } = [];
 
         /// <inheritdoc />
         public InstanceFunction? CreateFunc { get; internal set; }

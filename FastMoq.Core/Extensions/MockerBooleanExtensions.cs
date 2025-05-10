@@ -1,6 +1,4 @@
-﻿using System.IO.Abstractions;
-
-namespace FastMoq.Extensions
+﻿namespace FastMoq.Extensions
 {
     /// <summary>
     ///     Mocker Boolean Extensions Class.

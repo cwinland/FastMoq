@@ -48,13 +48,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.*" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" PrivateAssets="*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'" PrivateAssets="*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.*" Condition="'$(TargetFramework)' == 'net9.0'" PrivateAssets="*" />
 
-    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.2.3" Condition="'$(TargetFramework)' == 'net6.0'" />
-    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="*" Condition="'$(TargetFramework)' == 'net8.0'" />
-    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="*" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.2.3" Condition="'$(TargetFramework)' == 'net6.0'" PrivateAssets="*" />
+    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="21.3.1" Condition="'$(TargetFramework)' == 'net8.0'" PrivateAssets="*" />
+    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="21.3.1" Condition="'$(TargetFramework)' == 'net9.0'" PrivateAssets="*" />
 
     <!-- Will never upgrade over 4.18.* -->
     <PackageReference Include="Moq" Version="4.18.*" />
