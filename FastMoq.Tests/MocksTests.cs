@@ -952,7 +952,7 @@ namespace FastMoq.Tests
             return num;
         }
 
-        internal async static Task<bool> CallTestMethodTask(bool test, IFileSystem fileSystem, ITestCollectionOrderer dClass, TestClassMultiple mClass, string name)
+        internal static Task<bool> CallTestMethodTask(bool test, IFileSystem fileSystem, ITestCollectionOrderer dClass, TestClassMultiple mClass, string name)
         {
             ArgumentNullException.ThrowIfNull(fileSystem);
             ArgumentNullException.ThrowIfNull(dClass);
@@ -960,8 +960,9 @@ namespace FastMoq.Tests
             ArgumentNullException.ThrowIfNull(test);
             ArgumentNullException.ThrowIfNull(name);
 
-            return test;
+            return Task.FromResult(test);
         }
+
         internal static object?[] CallTestMethod(int num, IFileSystem fileSystem, ITestCollectionOrderer dClass, TestClassMultiple mClass, string name)
         {
             ArgumentNullException.ThrowIfNull(fileSystem);

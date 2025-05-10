@@ -472,8 +472,9 @@ Add the following ```InternalsVisibleTo``` line to the AssemblyInfo file.
 
 [Full Change Log](https://github.com/cwinland/FastMoq/releases)
 
-## Breaking Change
+## Breaking Change(s)
 
+- 3.0 => .NET 9 Added; Update FindBestMatch; Component Creation; Logging Callbacks and helpers;
 - 2.28 => .NET 7 Removed from support.
 - 2.25 => Some methods moved to extensions that are no longer in the MockerTestBase or Mocker. Removed extra CreateInstance&lt;T&gt; methods.
 - 2.23.200 => Support .NET 8
