@@ -18,6 +18,25 @@
         <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Xunit.StaFact" Version="1.2.69" />
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'">
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'">
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.*" Condition="'$(TargetFramework)' == 'net9.0'">
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="[17.2.3]" Condition="'$(TargetFramework)' == 'net6.0'">
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="[21.3.1]" Condition="'$(TargetFramework)' == 'net8.0'">
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="[21.3.1]" Condition="'$(TargetFramework)' == 'net9.0'">
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

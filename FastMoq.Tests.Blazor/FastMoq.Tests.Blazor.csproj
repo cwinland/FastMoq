@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
+    <ProjectReference Include="..\FastMoq.Tests\FastMoq.Tests.csproj" />
   </ItemGroup>
 
 </Project>
