@@ -2,10 +2,19 @@
 
 Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework for mocking and auto injection of classes when testing.
 
-## More Documentation
+## 📚 Documentation
 
-[FAQs](https://github.com/cwinland/FastMoq/wiki/FAQs)
-[FastMoq API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)
+### Quick Links
+- **🚀 [Getting Started Guide](./docs/getting-started/README.md)** - Your first FastMoq test in 5 minutes
+- **👨‍🍳 [Cookbook](./docs/cookbook/README.md)** - Real-world patterns and recipes
+- **🏗️ [Sample Applications](./docs/samples/README.md)** - Complete examples with Azure integration
+- **📊 [Feature Comparison](./docs/feature-parity/README.md)** - FastMoq vs Moq/NSubstitute
+- **📈 [Performance Benchmarks](./docs/benchmarks/README.md)** - Productivity and performance metrics
+
+### Additional Resources
+- **📖 [Complete Documentation](./docs/README.md)** - All guides and references in one place
+- **❓ [FAQs](./FAQs.md)** - Frequently asked questions and troubleshooting
+- **🔗 [API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)** - Complete API reference
 
 ## Features
 
@@ -24,6 +33,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 - HttpClient and IFileSystem test helpers
 - DbContext support - SqlLite and mockable objects.
 - Supports Null method parameter testing.
+- **Comprehensive Documentation** - Complete guides, samples, and real-world patterns.
 
 ## Packages
 
