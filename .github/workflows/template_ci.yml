@@ -1,0 +1,64 @@
+name: CI Template
+
+on:
+  workflow_call:
+    inputs:
+      projects:
+        description: "Space-separated list of project paths to build/test"
+        required: true
+        type: string
+      frameworks:
+        description: "Space-separated list of target frameworks to build/test"
+        required: true
+        type: string
+      suppress_tfm_errors:
+        description: "Whether to suppress TFM support build errors"
+        required: false
+        default: "true"
+        type: string
+
+jobs:
+  codeql:
+    uses: ./.github/workflows/codeql.yml
+
+  test:
+    needs: codeql
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pre‑firewall environment setup
+        run: |
+          echo "Configuring environment before firewall restrictions..."
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org \
+            --configfile $(dotnet nuget locals global-packages --list | cut -d' ' -f2)/NuGet.Config || true
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ inputs.frameworks }}
+
+      - name: Install dependencies
+        run: |
+          for proj in ${{ inputs.projects }}; do
+            dotnet restore "$proj"
+          done
+
+      - name: Build and Test
+        run: |
+          for fw in ${{ inputs.frameworks }}; do
+            for proj in ${{ inputs.projects }}; do
+              echo "Building $proj for $fw..."
+              if [ "${{ inputs.suppress_tfm_errors }}" = "true" ]; then
+                dotnet build "$proj" --framework "$fw" -p:SuppressTfmSupportBuildErrors=true
+              else
+                dotnet build "$proj" --framework "$fw"
+              fi
+              echo "Testing $proj for $fw..."
+              dotnet test "$proj" --framework "$fw" --no-build
+            done
+          done

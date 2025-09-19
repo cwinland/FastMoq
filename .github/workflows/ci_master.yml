@@ -2,31 +2,20 @@ name: CI (master)
 
 on:
   push:
-    branches: ["master"]
-
-permissions:
-  contents: read
+    branches:
+      - master
+    paths:
+      - .github/workflows/ci_master.yml
+      - FastMoq/
+      - FastMoq.Core/
+      - FastMoq.Web/
+      - FastMoq.Tests/
+      - FastMoq.Tests.Web/
 
 jobs:
-  build-test:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: |
-            8.0.x
-            9.0.x
-
-      - name: Restore
-        run: dotnet restore FastMoq.sln
-      
-      - name: Build
-        run: dotnet build FastMoq.sln --no-restore --configuration Release
-      
-      - name: Test
-        run: dotnet test FastMoq.sln --no-build --configuration Release --verbosity normal
-        
+  call-template:
+    uses: ./.github/workflows/template_ci.yml
+    with:
+      projects: "FastMoq.Tests/FastMoq.Tests.csproj FastMoq.Tests.Web/FastMoq.Tests.Web.csproj"
+      frameworks: "8.0.x 9.0.x"
+      suppress_tfm_errors: "true"
