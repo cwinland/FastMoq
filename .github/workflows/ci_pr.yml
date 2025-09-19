@@ -17,5 +17,5 @@ jobs:
     uses: ./.github/workflows/template_ci.yml
     with:
       projects: "FastMoq.Tests/FastMoq.Tests.csproj FastMoq.Tests.Web/FastMoq.Tests.Web.csproj"
-      frameworks: "8.0.x 9.0.x"
+      frameworks: '["8.0.x","9.0.x"]'
       suppress_tfm_errors: "true"

@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       frameworks:
-        description: "Space-separated list of target frameworks to build/test"
+        description: "JSON array of SDK versions to build/test (e.g. [\"8.0.x\",\"9.0.x\"])"
         required: true
         type: string
       suppress_tfm_errors:
@@ -21,9 +21,13 @@ jobs:
   codeql:
     uses: ./.github/workflows/codeql.yml
 
-  test:
+  build-test:
     needs: codeql
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: ${{ fromJSON(inputs.frameworks) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -37,10 +41,10 @@ jobs:
           dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org \
             --configfile $(dotnet nuget locals global-packages --list | cut -d' ' -f2)/NuGet.Config || true
 
-      - name: Setup .NET SDKs
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ inputs.frameworks }}
+          dotnet-version: ${{ matrix.framework }}
 
       - name: Install dependencies
         run: |
@@ -48,17 +52,27 @@ jobs:
             dotnet restore "$proj"
           done
 
-      - name: Build and Test
+      - name: Build projects
+        env:
+          FW: ${{ matrix.framework }}
+          SUPPRESS: ${{ inputs.suppress_tfm_errors }}
         run: |
-          for fw in ${{ inputs.frameworks }}; do
-            for proj in ${{ inputs.projects }}; do
-              echo "Building $proj for $fw..."
-              if [ "${{ inputs.suppress_tfm_errors }}" = "true" ]; then
-                dotnet build "$proj" --framework "$fw" -p:SuppressTfmSupportBuildErrors=true
-              else
-                dotnet build "$proj" --framework "$fw"
-              fi
-              echo "Testing $proj for $fw..."
-              dotnet test "$proj" --framework "$fw" --no-build
-            done
+          tfm="net${FW%%.*}"
+          for proj in ${{ inputs.projects }}; do
+            echo "Building $proj for $tfm..."
+            if [ "$SUPPRESS" = "true" ]; then
+              dotnet build "$proj" --framework "$tfm" -p:SuppressTfmSupportBuildErrors=true
+            else
+              dotnet build "$proj" --framework "$tfm"
+            fi
+          done
+
+      - name: Test projects
+        env:
+          FW: ${{ matrix.framework }}
+        run: |
+          tfm="net${FW%%.*}"
+          for proj in ${{ inputs.projects }}; do
+            echo "Testing $proj for $tfm..."
+            dotnet test "$proj" --framework "$tfm" --no-build
           done
