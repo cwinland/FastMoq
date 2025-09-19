@@ -92,7 +92,7 @@ namespace FastMoq
         #region Properties
 
         /// <summary>
-        /// Gets the logging callback invoked whenever a mocked <see cref="ILogger"/> or <see cref="ILogger{TCategoryName}"/>
+        /// Gets the logging callback invoked whenever a mocked <see cref="ILogger"/> or <see cref="ILogger{TCategoryName}"/> logger
         /// created (or auto-injected) by this <see cref="Mocker"/> writes a log entry.
         /// </summary>
         /// <remarks>
