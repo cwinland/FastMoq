@@ -21,10 +21,23 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Configure environment before firewall restrictions
+      - name: Configure GitHub Actions environment
+        run: |
+          echo "Setting up environment before firewall restrictions..."
+          # Configure git for potential package operations
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
+          
+      # Configure NuGet sources with authentication before operations
+      - name: Configure NuGet sources
+        run: |
+          dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org --configfile $(dotnet nuget locals global-packages --list | cut -d' ' -f2)/NuGet.Config || true
           
       # Publish
       - name: Build FastMoq

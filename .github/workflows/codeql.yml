@@ -54,6 +54,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # Configure environment before firewall restrictions
+    - name: Configure GitHub Actions environment
+      run: |
+        echo "Setting up environment before firewall restrictions..."
+        # Configure git for potential operations
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3

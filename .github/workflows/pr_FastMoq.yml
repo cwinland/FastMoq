@@ -27,14 +27,29 @@ jobs:
       - uses: actions/checkout@v4
         with:
             fetch-depth: 0
+            
+      # Configure environment before firewall restrictions
+      - name: Configure GitHub Actions environment
+        run: |
+          echo "Setting up environment before firewall restrictions..."
+          # Configure git for potential package restoration
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          
       - name: Setup .NET 8.0
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+          
       - name: Setup .NET 9.0
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
+          
+      # Configure NuGet sources with authentication before package restore
+      - name: Configure NuGet sources
+        run: |
+          dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org --configfile $(dotnet nuget locals global-packages --list | cut -d' ' -f2)/NuGet.Config || true
       - name: Install dependencies
         run: dotnet restore FastMoq.Tests/FastMoq.Tests.csproj && dotnet restore FastMoq.Tests.Web/FastMoq.Tests.Web.csproj
       - name: Build .NET 8.0
