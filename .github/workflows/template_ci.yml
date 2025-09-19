@@ -22,7 +22,6 @@ jobs:
     uses: ./.github/workflows/codeql.yml
 
   build-test:
-    needs: codeql
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
