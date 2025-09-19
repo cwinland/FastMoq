@@ -24,26 +24,28 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
             fetch-depth: 0
-      - name: Setup .NET 6.0
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 6.0.x
       - name: Setup .NET 8.0
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
       - name: Setup .NET 9.0
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
       - name: Install dependencies
         run: dotnet restore FastMoq.Tests/FastMoq.Tests.csproj && dotnet restore FastMoq.Tests.Web/FastMoq.Tests.Web.csproj
-      - name: Build
-        run: dotnet build FastMoq.Tests/FastMoq.Tests.csproj && dotnet build FastMoq.Tests.Web/FastMoq.Tests.Web.csproj
-      - name: Test FastMoq.Tests
-        run: dotnet test FastMoq.Tests/FastMoq.Tests.csproj
-      - name: Test FastMoq.Tests.Web
-        run: dotnet test FastMoq.Tests.Web/FastMoq.Tests.Web.csproj
+      - name: Build .NET 8.0
+        run: dotnet build FastMoq.Tests/FastMoq.Tests.csproj --framework net8.0 -p:SuppressTfmSupportBuildErrors=true && dotnet build FastMoq.Tests.Web/FastMoq.Tests.Web.csproj --framework net8.0 -p:SuppressTfmSupportBuildErrors=true
+      - name: Build .NET 9.0  
+        run: dotnet build FastMoq.Tests/FastMoq.Tests.csproj --framework net9.0 -p:SuppressTfmSupportBuildErrors=true && dotnet build FastMoq.Tests.Web/FastMoq.Tests.Web.csproj --framework net9.0 -p:SuppressTfmSupportBuildErrors=true
+      - name: Test FastMoq.Tests .NET 8.0
+        run: dotnet test FastMoq.Tests/FastMoq.Tests.csproj --framework net8.0 --no-build
+      - name: Test FastMoq.Tests .NET 9.0
+        run: dotnet test FastMoq.Tests/FastMoq.Tests.csproj --framework net9.0 --no-build
+      - name: Test FastMoq.Tests.Web .NET 8.0
+        run: dotnet test FastMoq.Tests.Web/FastMoq.Tests.Web.csproj --framework net8.0 --no-build
+      - name: Test FastMoq.Tests.Web .NET 9.0
+        run: dotnet test FastMoq.Tests.Web/FastMoq.Tests.Web.csproj --framework net9.0 --no-build
