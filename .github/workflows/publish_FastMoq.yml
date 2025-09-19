@@ -1,45 +1,40 @@
 name: publish_FastMoq
+
 on:
   release:
     types: [published]
   push:
     branches:
-      - master # Release branch
-    paths:
-      - .github/workflows/publish_FastMoq.yml
+      - master  # Release branch
 
 jobs:
   test:
-    uses: ./.github/workflows/pr_FastMoq.yml
+    name: Run CI tests before publish
+    uses: ./.github/workflows/template_ci.yml
+    with:
+      projects: "FastMoq.Tests/FastMoq.Tests.csproj FastMoq.Tests.Web/FastMoq.Tests.Web.csproj"
+      frameworks: '["8.0.x","9.0.x"]'
+      suppress_tfm_errors: "true"
 
   publish:
     needs: test
-    name: build, pack & publish
+    name: Build, pack & publish to NuGet
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # Configure environment before firewall restrictions
-      - name: Configure GitHub Actions environment
-        run: |
-          echo "Setting up environment before firewall restrictions..."
-          # Configure git for potential package operations
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
-          
-      # Configure NuGet sources with authentication before operations
+
       - name: Configure NuGet sources
         run: |
-          dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org --configfile $(dotnet nuget locals global-packages --list | cut -d' ' -f2)/NuGet.Config || true
-          
-      # Publish
+          dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org \
+            --configfile $(dotnet nuget locals global-packages --list | cut -d' ' -f2)/NuGet.Config || true
+
       - name: Build FastMoq
         run: dotnet build FastMoq-Release.sln -c Release
 
@@ -50,21 +45,27 @@ jobs:
         id: validate
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
-          VERSION=${TAG#v} # Remove 'v' from the beginning of the tag
+          VERSION=${TAG#v}
           if [[ $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
             echo "VERSION=$VERSION" >> $GITHUB_ENV
           else
             echo "Error: Latest tag ($TAG) is not a valid SemVer version"
             exit 1
           fi
-          
-      - name: Creating a package
+
+      - name: Create NuGet package
         run: dotnet pack FastMoq-Release.sln --no-build -c Release -o . /p:PackageVersion=${{ env.VERSION }}
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FastMoq.${{ env.VERSION }}.nupkg
+          path: ./*.nupkg
 
       - name: Push to NuGet
         id: push
         run: |
-          OUTPUT=$(dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate)
+          OUTPUT=$(dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate)
           echo "$OUTPUT"
           if [[ $OUTPUT == *"Your package was pushed"* ]]; then
             echo "Push successful"
@@ -72,3 +73,9 @@ jobs:
             echo "Push failed"
             exit 1
           fi
+
+      - name: Publish summary
+        run: |
+          echo "## NuGet Publish" >> $GITHUB_STEP_SUMMARY
+          echo "Published version: $VERSION" >> $GITHUB_STEP_SUMMARY
+          echo "Package URL: https://www.nuget.org/packages/FastMoq/$VERSION" >> $GITHUB_STEP_SUMMARY
