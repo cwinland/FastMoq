@@ -82,8 +82,12 @@ jobs:
       - name: Summary of skipped projects
         if: always()
         run: |
-          echo "### Skipped Projects Summary" >> $GITHUB_STEP_SUMMARY
-          if [[ -s skipped.txt ]]; then
-            cat skipped.txt >> $GITHUB_STEP_SUMMARY
-          else
-            echo "No projects were skipped." >> $GITHUB_STEP_SUMMARY
+            {
+            echo "### Skipped Projects Summary"
+            if [[ -s skipped.txt ]]; then
+                cat skipped.txt
+            else
+                echo "No projects were skipped."
+            fi
+            } >> "$GITHUB_STEP_SUMMARY"
+
