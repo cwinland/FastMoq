@@ -46,13 +46,10 @@ jobs:
           dotnet-version: ${{ matrix.framework }}
 
       - name: Restore dependencies
-        env:
-          FW: ${{ matrix.framework }}
         run: |
-          tfm="net${FW%.*}"
           for proj in ${{ inputs.projects }}; do
-            echo "Restoring $proj for $tfm..."
-            dotnet restore "$proj" --framework "$tfm"
+            echo "Restoring $proj..."
+            dotnet restore "$proj"
           done
 
       - name: Build projects

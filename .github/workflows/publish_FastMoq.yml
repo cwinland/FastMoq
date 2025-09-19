@@ -3,9 +3,6 @@ name: publish_FastMoq
 on:
   release:
     types: [published]
-  push:
-    branches:
-      - master  # Release branch
 
 jobs:
   test:
@@ -35,9 +32,6 @@ jobs:
           dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org \
             --configfile $(dotnet nuget locals global-packages --list | cut -d' ' -f2)/NuGet.Config || true
 
-      - name: Build FastMoq
-        run: dotnet build FastMoq-Release.sln -c Release
-
       - name: Fetch all tags
         run: git fetch --tags
 
@@ -52,6 +46,17 @@ jobs:
             echo "Error: Latest tag ($TAG) is not a valid SemVer version"
             exit 1
           fi
+
+      - name: Check if version already published
+        run: |
+          EXISTING=$(dotnet nuget list package FastMoq --source https://api.nuget.org/v3/index.json | grep -E "FastMoq\s+$VERSION" || true)
+          if [ -n "$EXISTING" ]; then
+            echo "Version $VERSION already exists on NuGet. Skipping publish."
+            exit 0
+          fi
+
+      - name: Build FastMoq
+        run: dotnet build FastMoq-Release.sln -c Release
 
       - name: Create NuGet package
         run: dotnet pack FastMoq-Release.sln --no-build -c Release -o . /p:PackageVersion=${{ env.VERSION }}
