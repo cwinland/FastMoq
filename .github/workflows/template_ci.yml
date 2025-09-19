@@ -50,7 +50,7 @@ jobs:
         env:
           FW: ${{ matrix.framework }}
         run: |
-          tfm="net${FW%%.*}"
+          tfm="net${FW%.*}"
           for proj in ${{ inputs.projects }}; do
             echo "Restoring $proj for $tfm..."
             dotnet restore "$proj" --framework "$tfm"
@@ -61,7 +61,7 @@ jobs:
           FW: ${{ matrix.framework }}
           SUPPRESS: ${{ inputs.suppress_tfm_errors }}
         run: |
-          tfm="net${FW%%.*}"
+          tfm="net${FW%.*}"
           for proj in ${{ inputs.projects }}; do
             echo "Building $proj for $tfm..."
             if [ "$SUPPRESS" = "true" ]; then
@@ -75,7 +75,7 @@ jobs:
         env:
           FW: ${{ matrix.framework }}
         run: |
-          tfm="net${FW%%.*}"
+          tfm="net${FW%.*}"
           for proj in ${{ inputs.projects }}; do
             echo "Testing $proj for $tfm..."
             dotnet test "$proj" --framework "$tfm" --no-build
