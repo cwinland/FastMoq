@@ -91,7 +91,29 @@ namespace FastMoq
 
         #region Properties
 
+        /// <summary>
+        /// Gets the logging callback invoked whenever a mocked <see cref="ILogger"/> or <see cref="ILogger{TCategoryName}"/> logger
+        /// created (or auto-injected) by this <see cref="Mocker"/> writes a log entry.
+        /// </summary>
+        /// <remarks>
+        /// <para>The delegate parameters are: (1) <see cref="LogLevel"/>, (2) <see cref="EventId"/>, (3) the formatted message string.</para>
+        /// <para>Assign a custom callback by using a constructor overload that accepts an <see cref="Action{LogLevel, EventId, string}"/>.
+        /// This enables tests to capture, assert, or forward log messages without requiring Moq invocation inspection.</para>
+        /// <para>If the parameterless constructor is used, a no-op callback is assigned so the property is never <c>null</c>.</para>
+        /// <para>Only loggers resolved through this <see cref="Mocker"/> instance are wired; externally created loggers are not intercepted.</para>
+        /// <para>Invocation is synchronous on the producing thread. If you aggregate results across threads, ensure proper synchronization.</para>
+        /// </remarks>
+        /// <example>
+        /// <code><![CDATA[
+        /// var entries = new List<(LogLevel Level, EventId EventId, string Message)>();
+        /// var mocks = new Mocker((lvl, evt, msg) => entries.Add((lvl, evt, msg)));
+        /// var logger = mocks.GetObject<ILogger<MyService>>();
+        /// logger!.LogWarning("Processing {Id}", 42);
+        /// Assert.Contains(entries, e => e.Level == LogLevel.Warning && e.Message.Contains("42"));
+        /// ]]></code>
+        /// </example>
         public Action<LogLevel, EventId, string> LoggingCallback { get; }
+
         /// <summary>
         ///     Gets or sets the value to indicate if optional parameters should be mocked. If false, then parameters will be null.
         /// </summary>
@@ -152,13 +174,17 @@ namespace FastMoq
 
         /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:FastMoq.Mocker" /> class.
+        /// Initializes a new instance of the <see cref="T:FastMoq.Mocker" /> class with a default (no-op) logging callback.
         /// </summary>
+        /// <remarks>
+        /// Use this constructor when you do not need to capture or assert log output. The <see cref="LoggingCallback"/> is a no-op delegate.
+        /// </remarks>
         public Mocker() : this((_, _, _) => { }) { }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Mocker" /> class.
+        ///     Initializes a new instance of the <see cref="Mocker" /> class with a custom logging callback.
         /// </summary>
+        /// <param name="loggingCallback">Callback invoked for each log written via a mocked logger (see <see cref="LoggingCallback"/>).</param>
         public Mocker(Action<LogLevel, EventId, string> loggingCallback)
         {
             fileSystem = new();
@@ -169,14 +195,17 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Mocker" /> class with a given type map (mock dependency injection).
+        ///     Initializes a new instance of the <see cref="Mocker" /> class with a given type map (mock dependency injection) and a default logging callback.
         /// </summary>
+        /// <param name="typeMap">Seeded type-to-instance (or factory) map used during resolution.</param>
         /// <inheritdoc />
         public Mocker(Dictionary<Type, IInstanceModel> typeMap) : this() => this.typeMap = typeMap;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Mocker" /> class with a given type map (mock dependency injection).
+        ///     Initializes a new instance of the <see cref="Mocker" /> class with a given type map (mock dependency injection) and custom logging callback.
         /// </summary>
+        /// <param name="typeMap">Seeded type-to-instance (or factory) map used during resolution.</param>
+        /// <param name="loggingCallback">Callback invoked for each log written via a mocked logger (see <see cref="LoggingCallback"/>).</param>
         /// <inheritdoc />
         public Mocker(Dictionary<Type, IInstanceModel> typeMap, Action<LogLevel, EventId, string> loggingCallback) : this(loggingCallback) => this.typeMap = typeMap;
 

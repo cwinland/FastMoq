@@ -23,6 +23,8 @@ Testing ASP.NET Core controllers with dependency injection and various scenarios
 
 ### Basic Controller Test
 
+**Controller Example**
+
 ```csharp
 [ApiController]
 [Route("api/[controller]")]
@@ -65,6 +67,9 @@ public class UsersController : ControllerBase
         return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
     }
 }
+```
+
+**Test Example**
 
 ```csharp
 using FastMoq;
@@ -155,11 +160,216 @@ public class UsersControllerTests : MockerTestBase<UsersController>
 
 ### Testing Controller with Authorization
 
+FastMoq provides built-in **Identity Helper Extensions** that simplify controller authorization testing. These helpers eliminate the boilerplate code for setting up authenticated users, claims, and HTTP contexts.
+
+#### Using FastMoq Identity Helpers (Recommended)
+
+FastMoq includes `IdentityHelperExtensions.cs` with convenient methods for authorization testing:
+
+```csharp
+using FastMoq;
+using FastMoq.Extensions;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+
+public class UsersControllerAuthTests : MockerTestBase<UsersController>
+{
+    protected override Action<Mocker> SetupMocksAction => mocker =>
+    {
+        // Use FastMoq's identity helpers to create claims and principal
+        var userIdClaim = IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, "user123");
+        var roleClaim = IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, "User");
+        
+        var principal = IdentityHelperExtensions.CreatePrincipal(new[] { userIdClaim, roleClaim }, "TestAuth");
+        
+        // Set up HTTP context with the principal using FastMoq helper
+        var httpContext = Mocks.CreateHttpContext();
+        httpContext.SetUser(principal); // Extension method from FastMoq
+        
+        mocker.CreateInstance<UsersController>().ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+    };
+
+    [Fact]
+    public void GetCurrentUser_ShouldReturnUserFromClaims_WithBuiltInHelpers()
+    {
+        // Act
+        var userId = Component.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var isInRole = Component.HttpContext.User.IsInRole("User");
+
+        // Assert
+        userId.Should().Be("user123");
+        isInRole.Should().BeTrue();
+    }
+
+    [Fact]
+    public void AdminAction_ShouldAllowAccess_WithMultipleRoles()
+    {
+        // Arrange - Create multiple role claims using FastMoq helpers
+        var claims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, "admin123"),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, "Admin"),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, "User"),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, "Manager")
+        };
+        
+        var principal = IdentityHelperExtensions.CreatePrincipal(claims, "TestAuth");
+        Component.HttpContext.SetUser(principal);
+
+        // Act & Assert
+        Component.HttpContext.User.IsInRole("Admin").Should().BeTrue();
+        Component.HttpContext.User.IsInRole("Manager").Should().BeTrue();
+        Component.HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, "admin123").Should().BeTrue();
+    }
+
+    [Fact]
+    public void GetCurrentUser_ShouldReturnAnonymous_WhenNotAuthenticated()
+    {
+        // Arrange - Create unauthenticated principal
+        var principal = IdentityHelperExtensions.CreatePrincipal(Array.Empty<Claim>());
+        Component.HttpContext.SetUser(principal);
+
+        // Act & Assert
+        Component.HttpContext.User.Identity.IsAuthenticated.Should().BeFalse();
+    }
+}
+```
+
+#### Advanced Identity Helper Usage
+
+FastMoq's identity helpers support custom claims and complex authorization scenarios:
+
+```csharp
+public class UsersControllerAdvancedAuthTests : MockerTestBase<UsersController>
+{
+    [Fact]
+    public void GetUserProfile_ShouldIncludeCustomClaims()
+    {
+        // Arrange - Setup user with custom claims using FastMoq helpers
+        var claims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, "user123"),
+            IdentityHelperExtensions.CreateClaim("department", "Engineering", allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim("employee_id", "E12345", allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim("security_clearance", "Level2", allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, "Employee"),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, "Developer")
+        };
+        
+        var principal = IdentityHelperExtensions.CreatePrincipal(claims, "CustomAuth");
+        Component.HttpContext.SetUser(principal);
+
+        // Act
+        var department = Component.HttpContext.User.FindFirst("department")?.Value;
+        var employeeId = Component.HttpContext.User.FindFirst("employee_id")?.Value;
+
+        // Assert
+        department.Should().Be("Engineering");
+        employeeId.Should().Be("E12345");
+        Component.HttpContext.User.IsInRole("Developer").Should().BeTrue();
+    }
+
+    [Fact]
+    public void AuthorizeAction_ShouldValidateJwtClaims()
+    {
+        // Arrange - Setup JWT-style claims using FastMoq helpers
+        var jwtClaims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim("sub", "user123", allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim("iss", "https://auth.mycompany.com", allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim("aud", "myapp-api", allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim("exp", DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds().ToString(), allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, "ApiUser")
+        };
+
+        var principal = IdentityHelperExtensions.CreatePrincipal(jwtClaims, "JwtAuth");
+        Component.HttpContext.SetUser(principal);
+
+        // Act & Assert
+        Component.HttpContext.User.FindFirst("sub")?.Value.Should().Be("user123");
+        Component.HttpContext.User.FindFirst("iss")?.Value.Should().Be("https://auth.mycompany.com");
+        Component.HttpContext.User.IsInRole("ApiUser").Should().BeTrue();
+    }
+}
+```
+
+#### Setup Actions with Identity Helpers
+
+You can also use identity helpers in setup actions for consistent test configuration:
+
 ```csharp
 public class UsersControllerAuthTests : MockerTestBase<UsersController>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
+        // Use FastMoq identity helpers in setup
+        var defaultClaims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, "default-user"),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, "User")
+        };
+        
+        var principal = IdentityHelperExtensions.CreatePrincipal(defaultClaims, "DefaultAuth");
+        
+        // Set up controller with authenticated user using helper
+        var controller = mocker.CreateInstance<UsersController>();
+        var httpContext = Mocks.CreateHttpContext();
+        httpContext.SetUser(principal);
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+        
+        // Additional mock setup...
+        mocker.GetMock<IUserService>()
+            .Setup(x => x.GetCurrentUserAsync())
+            .ReturnsAsync(new UserDto { Id = 1, Name = "Default User" });
+    };
+
+    [Fact]
+    public void GetCurrentUser_ShouldUseDefaultSetup()
+    {
+        // Test automatically uses the user setup from SetupMocksAction
+        var user = Component.HttpContext.User;
+        user.Identity.IsAuthenticated.Should().BeTrue();
+        user.IsInRole("User").Should().BeTrue();
+    }
+    
+    [Fact] 
+    public void AdminAction_ShouldOverrideDefaultUser()
+    {
+        // Arrange - Override the default user setup for this specific test
+        var adminClaims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, "admin456"),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, "Admin")
+        };
+        
+        var adminPrincipal = IdentityHelperExtensions.CreatePrincipal(adminClaims, "AdminAuth");
+        Component.HttpContext.SetUser(adminPrincipal);
+
+        // Act & Assert
+        Component.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value.Should().Be("admin456");
+        Component.HttpContext.User.IsInRole("Admin").Should().BeTrue();
+        Component.HttpContext.User.IsInRole("User").Should().BeFalse(); // Previous setup is replaced
+    }
+}
+```
+
+#### Manual Setup vs FastMoq Helpers (Comparison)
+
+For comparison, here's how you would set up authorization manually vs using FastMoq helpers:
+
+```csharp
+// ❌ Manual approach (more verbose, error-prone)
+public class UsersControllerManualAuthTests : MockerTestBase<UsersController>
+{
+    protected override Action<Mocker> SetupMocksAction => mocker =>
+    {
+        // Manual approach - creating everything from scratch
         var httpContext = new DefaultHttpContext();
         httpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
         {
@@ -167,21 +377,56 @@ public class UsersControllerAuthTests : MockerTestBase<UsersController>
             new Claim(ClaimTypes.Role, "User")
         }, "mock"));
 
-        var controllerContext = new ControllerContext
+        mocker.CreateInstance<UsersController>().ControllerContext = new ControllerContext
         {
             HttpContext = httpContext
         };
-
-        mocker.CreateInstance<UsersController>().ControllerContext = controllerContext;
     };
+}
 
+// ✅ FastMoq helper approach (cleaner, safer)
+public class UsersControllerHelperAuthTests : MockerTestBase<UsersController>
+{
     [Fact]
-    public void GetCurrentUser_ShouldReturnUserFromClaims()
+    public void TestAction_WithFastMoqHelpers()
     {
-        // Test implementation using the authenticated context
+        // Arrange - Using FastMoq identity helpers
+        var claims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, "user123"),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, "User")
+        };
+        
+        var principal = IdentityHelperExtensions.CreatePrincipal(claims, "TestAuth");
+        Component.HttpContext.SetUser(principal);
+        
+        // Test implementation is cleaner and less error-prone...
+        Component.HttpContext.User.IsInRole("User").Should().BeTrue();
     }
 }
 ```
+
+#### Available Identity Helper Methods
+
+FastMoq provides these built-in identity helper methods from `IdentityHelperExtensions.cs`:
+
+| Method | Description | Example Usage |
+|--------|-------------|---------------|
+| `CreateClaim(type, value, properties, allowCustomType)` | Creates a validated claim | `IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, "user123")` |
+| `CreatePrincipal(claims, authenticationType)` | Creates a ClaimsPrincipal from claims | `IdentityHelperExtensions.CreatePrincipal(claims, "TestAuth")` |
+| `SetUser(context, principal)` | Sets user on HttpContext | `context.SetUser(principal)` |
+| `SetUser(context, identity)` | Sets user from ClaimsIdentity | `context.SetUser(identity)` |
+| `IsValidClaimType(type)` | Validates if claim type exists in ClaimTypes | `IdentityHelperExtensions.IsValidClaimType(ClaimTypes.Role)` |
+
+#### Key Benefits of FastMoq Identity Helpers
+
+- **Type Safety**: `CreateClaim` validates claim types against `ClaimTypes` constants
+- **Custom Claims**: Use `allowCustomType: true` for JWT or custom claim types
+- **Cleaner Code**: Eliminates manual `new Claim()` and `new ClaimsPrincipal()` construction
+- **Error Prevention**: Built-in validation prevents common claim setup mistakes
+- **Consistent API**: All helpers follow FastMoq's extension method patterns
+
+**Note**: These identity helpers are part of FastMoq's `IdentityHelperExtensions.cs` and provide type-safe, validated claim creation while significantly reducing boilerplate code for authorization testing.
 
 ---
 
@@ -545,7 +790,7 @@ public class WeatherService
     }
 
     public async Task<WeatherData> GetWeatherAsync(string city)
-    {
+    { 
         try
         {
             var url = $"weather?q={city}&appid={_options.Value.ApiKey}";
@@ -571,8 +816,82 @@ public class WeatherService
 
 ### Testing with FastMoq HttpClient Support
 
+FastMoq provides built-in **HTTP extension helpers** from `MockerHttpExtensions.cs` that simplify HTTP client testing. There are two main approaches:
+
+#### Quick Setup with CreateHttpClient (Best for Simple Scenarios)
+
 ```csharp
-public class WeatherServiceTests : MockerTestBase<WeatherService>
+using FastMoq;
+using FastMoq.Extensions;
+
+public class WeatherServiceQuickTests : MockerTestBase<WeatherService>
+{
+    protected override Action<Mocker> SetupMocksAction => mocker =>
+    {
+        // Setup options
+        var options = new WeatherApiOptions { ApiKey = "test-api-key" };
+        mocker.GetMock<IOptions<WeatherApiOptions>>()
+            .Setup(x => x.Value)
+            .Returns(options);
+        
+        // ✅ EASIEST - CreateHttpClient with defaults (auto-registers HttpClient)
+        var httpClient = mocker.CreateHttpClient(
+            clientName: "WeatherApiClient",
+            baseAddress: "https://api.openweathermap.org/data/2.5/",
+            statusCode: HttpStatusCode.OK,
+            stringContent: JsonSerializer.Serialize(new { temperature = 20.5, humidity = 65, description = "Partly cloudy" })
+        );
+        
+        // HttpClient is automatically available for dependency injection
+    };
+
+    [Fact]
+    public async Task GetWeatherAsync_ShouldReturnWeatherData_WithCreateHttpClient()
+    {
+        // Arrange
+        var city = "London";
+
+        // Act - Component automatically gets the configured HttpClient
+        var result = await Component.GetWeatherAsync(city);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Temperature.Should().Be(20.5);
+        result.Description.Should().Be("Partly cloudy");
+
+        // Verify HttpClient was used with correct base address
+        Mocks.GetMock<HttpMessageHandler>()
+            .Protected()
+            .Verify("SendAsync",
+                Times.Once(),
+                ItExpr.Is<HttpRequestMessage>(req => 
+                    req.RequestUri!.ToString().StartsWith("https://api.openweathermap.org/data/2.5/")
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            );
+    }
+
+    [Fact]
+    public async Task GetWeatherAsync_ShouldUseBuiltInHttpClient_WhenNoCustomSetup()
+    {
+        // Arrange - FastMoq provides default HttpClient with JSON response [{'id':1}]
+        var city = "Paris";
+
+        // Act - Uses Mocker's built-in HttpClient (http://localhost with default response)
+        var httpResponse = await Mocks.HttpClient.GetAsync($"weather?q={city}");
+
+        // Assert - Use FastMoq's GetStringContent helper
+        var content = await Mocks.GetStringContent(httpResponse.Content);
+        content.Should().Be("[{'id':1}]"); // Default response from CreateHttpClient
+        httpResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+}
+```
+
+#### Advanced Setup with SetupHttpMessage (Best for Complex Scenarios)
+
+```csharp
+public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
@@ -584,7 +903,7 @@ public class WeatherServiceTests : MockerTestBase<WeatherService>
     };
 
     [Fact]
-    public async Task GetWeatherAsync_ShouldReturnWeatherData_WhenApiReturnsSuccess()
+    public async Task GetWeatherAsync_ShouldReturnWeatherData_WithSetupHttpMessage()
     {
         // Arrange
         var city = "London";
@@ -597,11 +916,12 @@ public class WeatherServiceTests : MockerTestBase<WeatherService>
 
         var responseContent = JsonSerializer.Serialize(expectedWeatherData);
         
-        Mocks.SetupHttpGet("weather?q=London&appid=test-api-key")
-            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
-            });
+        // ✅ ADVANCED - SetupHttpMessage for fine-grained control
+        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(responseContent, Encoding.UTF8, "application/json"),
+            Headers = { { "X-API-Version", "1.0" } }
+        });
 
         // Act
         var result = await Component.GetWeatherAsync(city);
@@ -609,12 +929,11 @@ public class WeatherServiceTests : MockerTestBase<WeatherService>
         // Assert
         result.Should().BeEquivalentTo(expectedWeatherData);
         
+        // Verify logging
         Mocks.GetMock<ILogger<WeatherService>>()
-            .VerifyLogger(LogLevel.Information,
-            "Fetching weather for {City}", Times.Once());
+            .VerifyLogger(LogLevel.Information, "Fetching weather for {City}", Times.Once());
         Mocks.GetMock<ILogger<WeatherService>>()
-            .VerifyLogger(LogLevel.Information,
-            "Successfully retrieved weather for {City}", Times.Once());
+            .VerifyLogger(LogLevel.Information, "Successfully retrieved weather for {City}", Times.Once());
     }
 
     [Fact]
@@ -623,8 +942,11 @@ public class WeatherServiceTests : MockerTestBase<WeatherService>
         // Arrange
         var city = "InvalidCity";
         
-        Mocks.SetupHttpGet($"weather?q={city}&appid=test-api-key")
-            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound));
+        // Override setup for error scenario
+        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.NotFound)
+        {
+            Content = new StringContent("City not found", Encoding.UTF8, "text/plain")
+        });
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<WeatherServiceException>(() =>
@@ -637,88 +959,184 @@ public class WeatherServiceTests : MockerTestBase<WeatherService>
     }
 
     [Fact]
-    public async Task GetWeatherAsync_WithMultipleCities_ShouldCacheHttpClient()
+    public async Task GetWeatherAsync_ShouldExtractContent_UsingFastMoqHelpers()
     {
         // Arrange
-        var cities = new[] { "London", "Paris", "Berlin" };
-        var weatherData = new WeatherData { Temperature = 20 };
-        var responseContent = JsonSerializer.Serialize(weatherData);
-
-        foreach (var city in cities)
+        var city = "Tokyo";
+        var expectedJson = JsonSerializer.Serialize(new { temperature = 18, description = "Cloudy" });
+        
+        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.OK)
         {
-            Mocks.SetupHttpGet($"weather?q={city}&appid=test-api-key")
-                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
-                });
-        }
+            Content = new StringContent(expectedJson, Encoding.UTF8, "application/json")
+        });
 
         // Act
-        var results = new List<WeatherData>();
-        foreach (var city in cities)
-        {
-            results.Add(await Component.GetWeatherAsync(city));
-        }
-
-        // Assert
-        results.Should().HaveCount(3);
-        results.Should().AllBeEquivalentTo(weatherData);
+        var response = await Mocks.HttpClient.GetAsync($"weather?q={city}&appid=test-api-key");
         
-        // Verify HttpClient reuse
-        Mocks.HttpClient.Should().NotBeNull();
+        // Assert - Demonstrate FastMoq's GetStringContent helper
+        var content = await Mocks.GetStringContent(response.Content);
+        content.Should().Be(expectedJson);
     }
 }
 ```
 
 ### Advanced HTTP Testing Scenarios
 
+#### Combining CreateHttpClient with IHttpClientFactory
+
 ```csharp
-public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
+public class WeatherServiceFactoryTests : MockerTestBase<WeatherService>
+{
+    protected override Action<Mocker> SetupMocksAction => mocker =>
+    {
+        // Setup options
+        var options = new WeatherApiOptions { ApiKey = "test-api-key" };
+        mocker.GetMock<IOptions<WeatherApiOptions>>()
+            .Setup(x => x.Value)
+            .Returns(options);
+        
+        // ✅ CreateHttpClient automatically sets up IHttpClientFactory
+        mocker.CreateHttpClient(
+            clientName: "WeatherApiClient",
+            baseAddress: "https://api.openweathermap.org/data/2.5/",
+            statusCode: HttpStatusCode.OK,
+            stringContent: JsonSerializer.Serialize(new { temperature = 25, description = "Sunny" })
+        );
+        
+        // IHttpClientFactory is now available and configured
+    };
+
+    [Fact]
+    public async Task GetWeatherAsync_ShouldUseNamedHttpClient_WhenIHttpClientFactoryProvided()
+    {
+        // Arrange
+        var city = "Miami";
+        
+        // Act - Service can use named HttpClient from factory
+        var factory = Mocks.GetObject<IHttpClientFactory>();
+        var httpClient = factory!.CreateClient("WeatherApiClient");
+        
+        var response = await httpClient.GetAsync($"weather?q={city}&appid=test-api-key");
+        var content = await Mocks.GetStringContent(response.Content);
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        content.Should().Contain("temperature");
+        httpClient.BaseAddress.Should().Be("https://api.openweathermap.org/data/2.5/");
+    }
+}
+```
+
+#### Multiple HTTP Responses and Content Helpers
+
+```csharp
+public class WeatherServiceContentTests : MockerTestBase<WeatherService>
 {
     [Fact]
-    public async Task GetWeatherAsync_WithRetryPolicy_ShouldRetryOnFailure()
+    public async Task GetWeatherAsync_ShouldHandleDifferentContentTypes()
     {
         // Arrange
         var city = "London";
         var weatherData = new WeatherData { Temperature = 20 };
         var responseContent = JsonSerializer.Serialize(weatherData);
 
-        Mocks.SetupHttpGet($"weather?q={city}&appid=test-api-key")
-            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError)) // First call fails
-            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK) // Second call succeeds
-            {
-                Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
-            });
+        // Test JSON content
+        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
+        });
 
         // Act
         var result = await Component.GetWeatherAsync(city);
 
         // Assert
         result.Should().BeEquivalentTo(weatherData);
-        
-        // Verify retry happened
-        Mocks.VerifyHttpGet($"weather?q={city}&appid=test-api-key", Times.Exactly(2));
     }
 
     [Fact]
-    public async Task GetWeatherAsync_WithTimeout_ShouldThrowTimeoutException()
+    public async Task GetWeatherAsync_WithBinaryContent_ShouldUseContentHelpers()
+    {
+        // Arrange
+        var binaryData = Encoding.UTF8.GetBytes("Binary weather data");
+        
+        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new ByteArrayContent(binaryData)
+        });
+
+        // Act
+        var response = await Mocks.HttpClient.GetAsync("weather");
+        
+        // Assert - Use FastMoq's content helpers from MockerHttpExtensions
+        var contentBytes = await response.Content.GetContentBytesAsync();
+        var contentStream = await response.Content.GetContentStreamAsync();
+        
+        contentBytes.Should().BeEquivalentTo(binaryData);
+        contentStream.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task GetWeatherAsync_WithCustomSetup_ShouldAllowMultipleResponses()
     {
         // Arrange
         var city = "London";
-        
-        Mocks.SetupHttpGet($"weather?q={city}&appid=test-api-key")
-            .Returns(async () =>
-            {
-                await Task.Delay(TimeSpan.FromSeconds(30)); // Simulate timeout
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            });
+        var weatherData = new WeatherData { Temperature = 20 };
+        var responseContent = JsonSerializer.Serialize(weatherData);
 
-        // Act & Assert
-        await Assert.ThrowsAsync<TaskCanceledException>(() =>
-            Component.GetWeatherAsync(city));
+        // Setup sequence of responses using SetupHttpMessage
+        var callCount = 0;
+        Mocks.SetupHttpMessage(() =>
+        {
+            callCount++;
+            return callCount == 1 
+                ? new HttpResponseMessage(HttpStatusCode.InternalServerError) // First call fails
+                : new HttpResponseMessage(HttpStatusCode.OK) // Second call succeeds
+                {
+                    Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
+                };
+        });
+
+        // Act & Assert - This would need retry logic in the actual service
+        var firstResponse = await Mocks.HttpClient.GetAsync($"weather?q={city}");
+        firstResponse.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        
+        var secondResponse = await Mocks.HttpClient.GetAsync($"weather?q={city}");
+        secondResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        
+        var content = await Mocks.GetStringContent(secondResponse.Content);
+        content.Should().Be(responseContent);
     }
 }
 ```
+
+#### FastMoq HTTP Extensions Summary
+
+FastMoq provides several convenient methods for HTTP testing:
+
+| Method | Purpose | Best For |
+|--------|---------|----------|
+| `CreateHttpClient()` | Quick setup with defaults | Simple scenarios with standard responses |
+| `SetupHttpMessage()` | Fine-grained response control | Complex scenarios, custom headers, error cases |
+| `GetStringContent()` | Extract string from HttpContent | Reading response content in tests |
+| `GetContentBytesAsync()` | Extract bytes from HttpContent | Binary content testing |
+| `GetContentStreamAsync()` | Extract stream from HttpContent | Stream-based content testing |
+
+**Key Benefits:**
+
+- **Auto-Registration**: `CreateHttpClient` automatically registers `HttpClient` and `IHttpClientFactory`
+- **Default Values**: Provides sensible defaults (localhost, OK status, JSON response)
+- **Flexible Setup**: `SetupHttpMessage` allows custom response creation
+- **Content Helpers**: Built-in methods for content extraction
+- **Built-in HttpClient**: `Mocks.HttpClient` always available with default configuration
+
+**Pattern Recommendations:**
+
+- Use `CreateHttpClient` for simple test setups with consistent responses
+- Use `SetupHttpMessage` when you need different responses per test or custom headers
+- Combine both approaches: `CreateHttpClient` in setup, `SetupHttpMessage` for specific test cases
+- Always use `GetStringContent()` and other helpers instead of manual content reading
+
+---
 
 ---
 
@@ -1212,7 +1630,3 @@ public class LoggingAdvancedTests : MockerTestBase<OrderProcessingService>
     }
 }
 ```
-
-This cookbook provides comprehensive examples for common testing scenarios. Each recipe demonstrates FastMoq's capabilities while following best practices for unit testing. The patterns shown here can be adapted to your specific domain and requirements.
-
-Would you like me to continue with the remaining sections (Azure Services Testing, Fluent Validation Testing, etc.), or would you prefer to see the sample application next?

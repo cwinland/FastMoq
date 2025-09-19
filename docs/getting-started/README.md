@@ -35,15 +35,20 @@ Install-Package FastMoq
 
 ### Required Using Statements
 
-For all FastMoq tests, include these using statements:
+For all FastMoq tests, including these using statements is recommended:
 
 ```csharp
 using FastMoq;
 using FastMoq.Extensions;
-using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Moq;
-using Xunit;
+using Moq; // Currently based on Moq, but will be extensible in next major update.
+```
+
+For all FastMoq tests, these are optional and suggested, but they are not required for FastMoq:
+
+```csharp
+using Xunit; // Whatever your testing framework is
+using FluentAssertions; // Used in examples (free version)
 ```
 
 The `FastMoq.Extensions` namespace is particularly important as it provides logger verification helpers and other utility methods.
@@ -180,7 +185,7 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
 `MockerTestBase<T>` is the foundation of FastMoq testing. It automatically:
 
 1. **Creates your component**: The `Component` property contains an instance of your class under test
-2. **Manages dependencies**: All constructor parameters are automatically mocked
+2. **Manages dependencies**: All constructor parameters are automatically mocked (`MockOptional` indicates if optional parameters are mocked or will be default values)
 3. **Provides mock access**: Use `Mocks.GetMock<T>()` to configure mock behavior
 4. **Handles cleanup**: Mocks are properly disposed after each test
 
@@ -189,6 +194,7 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
 | Property/Method | Description |
 |----------------|-------------|
 | `Component` | The instance of your class under test |
+| `MockOptional` | Indicates if optional or nullable parameters should be mocked. This can affect if the constructor properties are created or remain the default value. |
 | `Mocks` | The `Mocker` instance that manages all mocks |
 | `Mocks.GetMock<T>()` | Gets the mock for interface T |
 | `Mocks.GetObject<T>()` | Gets the mocked object instance |
@@ -301,9 +307,9 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
 
 Now that you understand the basics, explore these advanced topics:
 
-- [Cookbook](../cookbook/README.md) - Common patterns and real-world scenarios
-- [Feature Parity](../feature-parity/README.md) - Compare FastMoq with other frameworks
-- [Sample Applications](../samples/README.md) - Complete examples with Azure integration
+- [Cookbook](../cookbook) - Common patterns and real-world scenarios
+- [Feature Parity](../feature-parity) - Compare FastMoq with other frameworks
+- [Sample Applications](../samples) - Complete examples with Azure integration
 
 ## Best Practices
 
