@@ -94,32 +94,31 @@ ecommerce-orders/
 
 ## FastMoq Testing Patterns Demonstrated
 
-### 1. API Controller Testing with Complex Dependencies
+### 1. API Controller Testing with Complex Dependencies (FastMoq Extensions)
 
 ```csharp
 public class OrdersControllerTests : MockerTestBase<OrdersController>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        // Setup Azure Service Bus mock
+        // Service Bus sender abstraction
         mocker.GetMock<IServiceBusClient>()
-            .Setup(x => x.CreateSender(It.IsAny<string>()))
-            .Returns(mocker.GetMock<ServiceBusSender>().Object);
+              .Setup(x => x.CreateSender(It.IsAny<string>()))
+              .Returns(mocker.GetMock<ServiceBusSender>().Object);
 
-        // Setup Azure Storage mock
+        // Blob container client chain
         mocker.GetMock<IBlobServiceClient>()
-            .Setup(x => x.GetBlobContainerClient(It.IsAny<string>()))
-            .Returns(mocker.GetMock<BlobContainerClient>().Object);
+              .Setup(x => x.GetBlobContainerClient(It.IsAny<string>()))
+              .Returns(mocker.GetMock<BlobContainerClient>().Object);
 
-        // Setup configuration
-        var config = new Dictionary<string, string>
-        {
-            ["ServiceBus:ConnectionString"] = "test-connection-string",
-            ["Storage:ConnectionString"] = "test-storage-connection"
-        };
-        
-        mocker.AddType<IConfiguration>(() => 
-            new ConfigurationBuilder().AddInMemoryCollection(config).Build());
+        // Config via AddType keeps it reusable in other tests
+        mocker.AddType<IConfiguration>(() => new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string,string>
+            {
+                ["ServiceBus:ConnectionString"] = "test-connection-string",
+                ["Storage:ConnectionString"] = "test-storage-connection"]
+            })
+            .Build());
     };
 
     [Fact]
@@ -192,9 +191,10 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         // Assert
         Mocks.GetMock<IOrderFulfillmentService>()
             .Verify(x => x.ProcessOrderAsync(orderMessage.OrderId), Times.Once);
-            
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Information,
-            "Successfully processed order {OrderId}", Times.Once());
+
+        // Prefer VerifyLogger extension on the logger mock (generic version)
+        Mocks.GetMock<ILogger<OrderProcessingService>>()
+            .VerifyLogger(LogLevel.Information, "Successfully processed order {OrderId}");
     }
 
     [Fact]
@@ -217,12 +217,13 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         messageArgs.DeadLetterMessageAsync(It.IsAny<string>(), It.IsAny<string>())
             .Should().HaveBeenCalled();
             
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Error, Times.Once());
+        Mocks.GetMock<ILogger<OrderProcessingService>>()
+            .VerifyLogger(LogLevel.Error);
     }
 }
 ```
 
-### 3. Azure Storage Integration Testing
+### 3. Azure Storage Integration Testing (Blob + FastMoq Patterns)
 
 ```csharp
 public class ReceiptServiceTests : MockerTestBase<ReceiptService>
@@ -284,7 +285,7 @@ public class ReceiptServiceTests : MockerTestBase<ReceiptService>
 }
 ```
 
-### 4. Entity Framework Core with Azure SQL
+### 4. Entity Framework Core with Azure SQL (DbContext Helpers)
 
 ```csharp
 public class OrderRepositoryTests : MockerTestBase<OrderRepository>
@@ -349,14 +350,20 @@ public class OrderRepositoryTests : MockerTestBase<OrderRepository>
 }
 ```
 
-### 5. Payment Service Integration
+### 5. Payment Service Integration (HttpClient Helpers)
 
 ```csharp
 public class PaymentServiceTests : MockerTestBase<PaymentService>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        // Setup HttpClient for payment gateway API
+        // Seed default HttpClient (base address + default success)
+        mocker.CreateHttpClient(
+            clientName: "PaymentApiClient",
+            baseAddress: "https://payments.local/",
+            statusCode: HttpStatusCode.OK,
+            stringContent: JsonSerializer.Serialize(new { api = "ok" }));
+
         var paymentResponse = new PaymentGatewayResponse
         {
             TransactionId = "tx_12345",
@@ -364,16 +371,15 @@ public class PaymentServiceTests : MockerTestBase<PaymentService>
             Amount = 99.99m
         };
 
-        mocker.SetupHttpPost("payments/charge")
-            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonSerializer.Serialize(paymentResponse))
-            });
+        // Customize POST per test scenario
+        mocker.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(JsonSerializer.Serialize(paymentResponse), Encoding.UTF8, "application/json")
+        });
 
-        // Setup Key Vault for API keys
         mocker.GetMock<IKeyVaultService>()
-            .Setup(x => x.GetSecretAsync("payment-gateway-api-key"))
-            .ReturnsAsync("test-api-key-12345");
+              .Setup(x => x.GetSecretAsync("payment-gateway-api-key"))
+              .ReturnsAsync("test-api-key-12345");
     };
 
     [Fact]
@@ -400,7 +406,11 @@ public class PaymentServiceTests : MockerTestBase<PaymentService>
         result.Amount.Should().Be(99.99m);
 
         // Verify API call was made with correct data
-        Mocks.VerifyHttpPost("payments/charge", Times.Once());
+        // Verify underlying handler received request (optional higher-fidelity check)
+        Mocks.GetMock<HttpMessageHandler>().Protected()
+            .Verify("SendAsync", Times.AtLeastOnce(),
+                ItExpr.Is<HttpRequestMessage>(r => r.Method == HttpMethod.Post && r.RequestUri!.ToString().Contains("payments/")),
+                ItExpr.IsAny<CancellationToken>());
         
         // Verify Key Vault was accessed
         Mocks.GetMock<IKeyVaultService>()
@@ -438,18 +448,69 @@ public class PaymentServiceTests : MockerTestBase<PaymentService>
 }
 ```
 
+### 6. Lightweight HTTP + Azure Function Style Test Utilities (Optional Scaffold)
+
+To emulate function-style request/response utilities without exposing proprietary code, you can add a small helper in `tests/Shared/TestHttp`:
+
+```csharp
+internal static class HttpTestUtils
+{
+    private static readonly JsonSerializerOptions JsonOpts = new(JsonSerializerDefaults.Web);
+
+    public static HttpRequestMessage CreateJsonRequest(HttpMethod method, string uri, object? body = null, IDictionary<string,string>? headers = null)
+    {
+        var req = new HttpRequestMessage(method, uri);
+        if (body != null)
+        {
+            var json = JsonSerializer.Serialize(body, JsonOpts);
+            req.Content = new StringContent(json, Encoding.UTF8, "application/json");
+        }
+        if (headers != null)
+            foreach (var kv in headers) req.Headers.TryAddWithoutValidation(kv.Key, kv.Value);
+        return req;
+    }
+
+    public static async Task<T?> ReadJsonAsync<T>(this HttpContent content) =>
+        JsonSerializer.Deserialize<T>(await content.ReadAsStringAsync(), JsonOpts);
+}
+```
+
+Then inside a test:
+
+```csharp
+var request = HttpTestUtils.CreateJsonRequest(HttpMethod.Post, "orders", new { customerId = 42 });
+// If your component wraps HttpClient usage, just call the method and assert.
+```
+
+For Azure Function style wrappers you could introduce minimal abstractions:
+```csharp
+internal sealed class TestFunctionHttpRequest
+{
+    public required HttpRequestMessage InnerRequest { get; init; }
+    public ClaimsPrincipal? User { get; init; }
+}
+```
+
+These can map to your function entry adapter without copying any proprietary patterns.
+
 ## Key Testing Benefits Demonstrated
 
+ 
 ### 1. Reduced Setup Complexity
+
 Traditional approach would require extensive mock setup for each dependency. FastMoq automatically handles:
+ 
 - Entity Framework DbContext mocking
 - HttpClient configuration
 - Logger setup
 - Configuration binding
 - Azure service client mocking
 
+ 
 ### 2. Real-World Scenario Coverage
+
 The sample demonstrates testing of:
+ 
 - Complex business workflows
 - External service integration
 - Asynchronous message processing
@@ -457,8 +518,11 @@ The sample demonstrates testing of:
 - Database transactions
 - Error handling and resilience
 
+ 
 ### 3. Maintainable Test Code
+
 FastMoq enables:
+ 
 - Consistent test structure across the application
 - Easy mock configuration and verification
 - Clear separation of test concerns
@@ -467,7 +531,8 @@ FastMoq enables:
 ## Running the Sample
 
 1. **Prerequisites Setup**
-   ```bash
+   
+    ```bash
    # Install dependencies
    dotnet restore
    
@@ -476,22 +541,26 @@ FastMoq enables:
    ```
 
 2. **Run Unit Tests**
-   ```bash
+   
+    ```bash
    dotnet test tests/ECommerce.Orders.Core.Tests
    ```
 
 3. **Run Integration Tests**
-   ```bash
+   
+    ```bash
    dotnet test tests/ECommerce.Orders.Integration
    ```
 
 4. **Run the API**
-   ```bash
+   
+    ```bash
    dotnet run --project src/ECommerce.Orders.Api
    ```
 
 5. **Test the API**
-   ```bash
+   
+    ```bash
    curl -X POST https://localhost:5001/api/orders \
      -H "Content-Type: application/json" \
      -d '{
@@ -505,6 +574,7 @@ FastMoq enables:
 ## Deployment
 
 The sample includes Azure deployment templates and GitHub Actions workflows for:
+ 
 - Azure App Service deployment
 - Azure SQL Database setup
 - Azure Service Bus configuration
@@ -516,6 +586,7 @@ See the [deployment guide](docs/deployment-guide.md) for detailed instructions.
 ## Learning Outcomes
 
 After exploring this sample, you'll understand:
+ 
 - How to structure tests for complex applications
 - Effective patterns for mocking Azure services
 - Testing asynchronous and background operations
@@ -527,4 +598,5 @@ After exploring this sample, you'll understand:
 
 - Explore the [Microservices Communication sample](../microservices/) for service-to-service patterns
 - Check out the [Blazor Web Application sample](../blazor-webapp/) for frontend testing
+ 
 - Review the [Background Processing sample](../background-services/) for more queue processing patterns

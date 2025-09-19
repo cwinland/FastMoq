@@ -4,7 +4,7 @@ Welcome to the comprehensive FastMoq documentation! This documentation is design
 
 ## 📚 Documentation Structure
 
-### 🚀 [Getting Started](./getting-started/README.md)
+### 🚀 [Getting Started](./getting-started)
 Perfect for developers new to FastMoq. Learn the basics and write your first test in minutes.
 
 - Installation and setup
@@ -13,7 +13,7 @@ Perfect for developers new to FastMoq. Learn the basics and write your first tes
 - Common patterns and best practices
 - Troubleshooting guide
 
-### 📊 [Feature Parity](./feature-parity/README.md)
+### 📊 [Feature Parity](./feature-parity)
 Comprehensive comparison of FastMoq with other popular mocking frameworks.
 
 - Side-by-side feature comparison
@@ -21,7 +21,7 @@ Comprehensive comparison of FastMoq with other popular mocking frameworks.
 - Performance and memory usage analysis
 - When to choose FastMoq vs alternatives
 
-### 👨‍🍳 [Cookbook](./cookbook/README.md)
+### 👨‍🍳 [Cookbook](./cookbook)
 Practical recipes for real-world testing scenarios.
 
 - API Controller testing
@@ -33,7 +33,7 @@ Practical recipes for real-world testing scenarios.
 - Azure Services integration
 - File system operations
 
-### 🏗️ [Sample Applications](./samples/README.md)
+### 🏗️ [Sample Applications](./samples)
 Complete, runnable examples demonstrating FastMoq in production-like scenarios.
 
 - **E-Commerce Order Processing** - Full Azure integration
@@ -41,7 +41,7 @@ Complete, runnable examples demonstrating FastMoq in production-like scenarios.
 - **Background Processing** - Queue and job processing
 - **Blazor Web Applications** - Full-stack testing
 
-### 📈 [Benchmarks](./benchmarks/README.md)
+### 📈 [Benchmarks](./benchmarks)
 Performance analysis and productivity improvements.
 
 - Execution speed comparisons
@@ -56,19 +56,19 @@ Performance analysis and productivity improvements.
 
 | Experience | Start Here | Next Steps |
 |------------|------------|------------|
-| **New to Mocking** | [Getting Started](./getting-started/README.md) | [Simple Cookbook Examples](./cookbook/README.md#api-controller-testing) |
-| **Coming from Moq** | [Feature Parity](./feature-parity/README.md) | [Migration Guide](./feature-parity/README.md#migration-guide) |
-| **Enterprise Teams** | [Sample Applications](./samples/README.md) | [Benchmarks](./benchmarks/README.md) |
+| **New to Mocking** | [Getting Started](./getting-started) | [Simple Cookbook Examples](./cookbook#api-controller-testing) |
+| **Coming from Moq** | [Feature Parity](./feature-parity) | [Migration Guide](./feature-parity#migration-guide) |
+| **Enterprise Teams** | [Sample Applications](./samples) | [Benchmarks](./benchmarks) |
 
 ### By Use Case
 
 | Use Case | Documentation | Sample Code |
 |----------|---------------|-------------|
-| **Web APIs** | [API Controller Testing](./cookbook/README.md#api-controller-testing) | [E-Commerce Sample](./samples/ecommerce-orders/) |
-| **Database Testing** | [EF Core Testing](./cookbook/README.md#entity-framework-core-testing) | [Repository Patterns](./samples/ecommerce-orders/) |
-| **Azure Integration** | [Azure Services](./cookbook/README.md#azure-services-testing) | [Complete Azure App](./samples/ecommerce-orders/) |
-| **Background Jobs** | [Background Services](./cookbook/README.md#background-services-testing) | [Queue Processing](./samples/background-services/) |
-| **Blazor Apps** | [Blazor Components](./cookbook/README.md#blazor-component-testing) | [Blazor Sample](./samples/blazor-webapp/) |
+| **Web APIs** | [API Controller Testing](./cookbook#api-controller-testing) | [E-Commerce Sample](./samples/ecommerce-orders/) |
+| **Database Testing** | [EF Core Testing](./cookbook#entity-framework-core-testing) | [Repository Patterns](./samples/ecommerce-orders/) |
+| **Azure Integration** | [Azure Services](./cookbook#azure-services-testing) | [Complete Azure App](./samples/ecommerce-orders/) |
+| **Background Jobs** | [Background Services](./cookbook#background-services-testing) | [Queue Processing](./samples/background-services/) |
+| **Blazor Apps** | [Blazor Components](./cookbook#blazor-component-testing) | [Blazor Sample](./samples/blazor-webapp/) |
 
 ## 🏆 Key Advantages
 
@@ -99,23 +99,23 @@ FastMoq is designed for **developer productivity** and **maintainable tests**:
 ## 📖 Learning Path
 
 ### 1. Foundation (30 minutes)
-1. Read [Getting Started](./getting-started/README.md)
-2. Try the [first test example](./getting-started/README.md#your-first-test)
-3. Understand [MockerTestBase](./getting-started/README.md#mockertestbase)
+1. Read [Getting Started](./getting-started)
+2. Try the [first test example](./getting-started#your-first-test)
+3. Understand [MockerTestBase](./getting-started#mockertestbase)
 
 ### 2. Practical Application (1 hour)
-1. Pick a relevant [cookbook recipe](./cookbook/README.md)
+1. Pick a relevant [cookbook recipe](./cookbook)
 2. Try it in your own project
-3. Explore [advanced setup options](./getting-started/README.md#advanced-setup-options)
+3. Explore [advanced setup options](./getting-started#advanced-setup-options)
 
 ### 3. Production Readiness (2-3 hours)
-1. Study a complete [sample application](./samples/README.md)
-2. Review [performance benchmarks](./benchmarks/README.md)
-3. Plan your [migration strategy](./feature-parity/README.md#migration-guide)
+1. Study a complete [sample application](./samples)
+2. Review [performance benchmarks](./benchmarks)
+3. Plan your [migration strategy](./feature-parity#migration-guide)
 
 ### 4. Mastery (Ongoing)
-1. Explore all [cookbook patterns](./cookbook/README.md)
-2. Adapt [sample applications](./samples/README.md) to your domain
+1. Explore all [cookbook patterns](./cookbook)
+2. Adapt [sample applications](./samples) to your domain
 3. Contribute back to the community
 
 ## 🤝 Community and Support
@@ -130,7 +130,7 @@ FastMoq is designed for **developer productivity** and **maintainable tests**:
 We welcome contributions! See our:
 - [Contributing Guide](../CONTRIBUTING.md)
 - [Code of Conduct](../CODE_OF_CONDUCT.md)
-- [Development Setup](./contributing/README.md)
+- [Development Setup](./contributing)
 
 ### Stay Updated
 - ⭐ **Star the repository** for updates
@@ -152,4 +152,4 @@ This documentation is for **FastMoq 3.0+**. For older versions:
 
 ---
 
-**Ready to get started?** Jump to [Getting Started](./getting-started/README.md) or pick a specific topic from the navigation above!
+**Ready to get started?** Jump to [Getting Started](./getting-started) or pick a specific topic from the navigation above!
