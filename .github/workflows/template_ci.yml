@@ -31,26 +31,59 @@ jobs:
 
       - run: dotnet --info
 
-      - name: Restore
-        run: |
-          for proj in ${{ inputs.projects }}; do
-            dotnet restore "$proj"
-          done
-
-      - name: Build
-        env:
-          FW: ${{ matrix.framework }}
-        run: |
-          tfm="net${FW%.*}"   # Bash trims .x or prerelease suffix
-          for proj in ${{ inputs.projects }}; do
-            dotnet build "$proj" --framework "$tfm"
-          done
-
-      - name: Test
+      - name: Restore (TFM-scoped)
         env:
           FW: ${{ matrix.framework }}
         run: |
           tfm="net${FW%.*}"
+          skipped=""
           for proj in ${{ inputs.projects }}; do
+            if [[ "$tfm" == "net9.0" ]] && grep -q "<TargetFramework.*net6.0" "$proj"; then
+              echo "Skipping restore for $proj on $tfm (contains net6.0)"
+              skipped="$skipped\n[RESTORE] $proj ($tfm)"
+              continue
+            fi
+            dotnet restore "$proj" --framework "$tfm"
+          done
+          echo -e "$skipped" > skipped.txt
+
+      - name: Build (TFM-scoped)
+        env:
+          FW: ${{ matrix.framework }}
+        run: |
+          tfm="net${FW%.*}"
+          skipped=""
+          for proj in ${{ inputs.projects }}; do
+            if [[ "$tfm" == "net9.0" ]] && grep -q "<TargetFramework.*net6.0" "$proj"; then
+              echo "Skipping build for $proj on $tfm"
+              skipped="$skipped\n[BUILD] $proj ($tfm)"
+              continue
+            fi
+            dotnet build "$proj" --framework "$tfm" --no-restore
+          done
+          echo -e "$skipped" >> skipped.txt
+
+      - name: Test (TFM-scoped)
+        env:
+          FW: ${{ matrix.framework }}
+        run: |
+          tfm="net${FW%.*}"
+          skipped=""
+          for proj in ${{ inputs.projects }}; do
+            if [[ "$tfm" == "net9.0" ]] && grep -q "<TargetFramework.*net6.0" "$proj"; then
+              echo "Skipping tests for $proj on $tfm"
+              skipped="$skipped\n[TEST] $proj ($tfm)"
+              continue
+            fi
             dotnet test "$proj" --framework "$tfm" --no-build
           done
+          echo -e "$skipped" >> skipped.txt
+
+      - name: Summary of skipped projects
+        if: always()
+        run: |
+          echo "### Skipped Projects Summary" >> $GITHUB_STEP_SUMMARY
+          if [[ -s skipped.txt ]]; then
+            cat skipped.txt >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No projects were skipped." >> $GITHUB_STEP_SUMMARY
