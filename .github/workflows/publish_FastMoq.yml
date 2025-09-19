@@ -5,38 +5,66 @@ on:
     types: [published]
 
 jobs:
+  # 1. Test matrix using FastMoq.sln
   test:
-    name: Run CI tests before publish
-    uses: ./.github/workflows/template_ci.yml
-    with:
-      projects: "FastMoq.Tests/FastMoq.Tests.csproj FastMoq.Tests.Web/FastMoq.Tests.Web.csproj"
-      frameworks: '["8.0.x","9.0.x"]'
-      suppress_tfm_errors: "true"
-
-  publish:
-    needs: test
-    name: Build, pack & publish to NuGet
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: ["8.0.x", "9.0.100-rc.*"] # Change 9.0.* after GA
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
         with:
-          fetch-depth: 0
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9.0.x
-
-      - name: Configure NuGet sources
+          dotnet-version: ${{ matrix.framework }}
+      - run: dotnet restore FastMoq.sln
+      - name: Build
+        env:
+          FW: ${{ matrix.framework }}
         run: |
-          dotnet nuget add source https://api.nuget.org/v3/index.json --name nuget.org \
-            --configfile $(dotnet nuget locals global-packages --list | cut -d' ' -f2)/NuGet.Config || true
+          tfm="net${FW%.*}"   # Bash trims .x or prerelease suffix
+          dotnet build FastMoq.sln --framework "$tfm"
+      - name: Test
+        env:
+          FW: ${{ matrix.framework }}
+        run: |
+          tfm="net${FW%.*}"
+          dotnet test FastMoq.sln --framework "$tfm" --no-build
 
+  # 2. Package job using FastMoq-Release.sln (all TFMs)
+  package:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          # Install all SDKs needed for all TFMs in FastMoq-Release.sln
+          # For .NET 9 before GA, use latest prerelease pattern (e.g. "9.0.100-rc.*"), then change to "9.0.x"
+          dotnet-version: |
+            6.0.x
+            8.0.x
+            9.0.100-rc.*
+      - run: dotnet restore FastMoq-Release.sln
+      - run: dotnet build FastMoq-Release.sln -c Release
+      - run: dotnet pack FastMoq-Release.sln -c Release -o ./artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FastMoq-nuget
+          path: ./artifacts/*.nupkg
+
+  # 3. Publish job — no rebuild, just push the tested package
+  publish:
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: FastMoq-nuget
+          path: .
       - name: Fetch all tags
         run: git fetch --tags
-
       - name: Validate and set version
-        id: validate
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
           VERSION=${TAG#v}
@@ -46,7 +74,6 @@ jobs:
             echo "Error: Latest tag ($TAG) is not a valid SemVer version"
             exit 1
           fi
-
       - name: Check if version already published
         run: |
           EXISTING=$(dotnet nuget list package FastMoq --source https://api.nuget.org/v3/index.json | grep -E "FastMoq\s+$VERSION" || true)
@@ -54,33 +81,5 @@ jobs:
             echo "Version $VERSION already exists on NuGet. Skipping publish."
             exit 0
           fi
-
-      - name: Build FastMoq
-        run: dotnet build FastMoq-Release.sln -c Release
-
-      - name: Create NuGet package
-        run: dotnet pack FastMoq-Release.sln --no-build -c Release -o . /p:PackageVersion=${{ env.VERSION }}
-
-      - name: Upload package artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: FastMoq.${{ env.VERSION }}.nupkg
-          path: ./*.nupkg
-
       - name: Push to NuGet
-        id: push
-        run: |
-          OUTPUT=$(dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate)
-          echo "$OUTPUT"
-          if [[ $OUTPUT == *"Your package was pushed"* ]]; then
-            echo "Push successful"
-          else
-            echo "Push failed"
-            exit 1
-          fi
-
-      - name: Publish summary
-        run: |
-          echo "## NuGet Publish" >> $GITHUB_STEP_SUMMARY
-          echo "Published version: $VERSION" >> $GITHUB_STEP_SUMMARY
-          echo "Package URL: https://www.nuget.org/packages/FastMoq/$VERSION" >> $GITHUB_STEP_SUMMARY
+        run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate
