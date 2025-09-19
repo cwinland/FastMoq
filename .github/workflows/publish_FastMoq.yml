@@ -4,82 +4,147 @@ on:
   release:
     types: [published]
 
-jobs:
-  # 1. Test matrix using FastMoq.sln
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        framework: ["8.0.x", "9.0.100-rc.*"] # Change 9.0.* after GA
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ matrix.framework }}
-      - run: dotnet restore FastMoq.sln
-      - name: Build
-        env:
-          FW: ${{ matrix.framework }}
-        run: |
-          tfm="net${FW%.*}"   # Bash trims .x or prerelease suffix
-          dotnet build FastMoq.sln --framework "$tfm"
-      - name: Test
-        env:
-          FW: ${{ matrix.framework }}
-        run: |
-          tfm="net${FW%.*}"
-          dotnet test FastMoq.sln --framework "$tfm" --no-build
+concurrency:
+  group: publish-${{ github.ref_name }}
+  cancel-in-progress: false
 
-  # 2. Package job using FastMoq-Release.sln (all TFMs)
-  package:
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  verify:
+    name: Verify release context
     runs-on: ubuntu-latest
-    needs: test
+    outputs:
+      version: ${{ steps.verify_tag.outputs.version }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ensure tag references master & extract version
+        id: verify_tag
+        run: |
+          set -euo pipefail
+          echo "Ref: $GITHUB_REF"
+          if [[ "$GITHUB_REF" != refs/tags/* ]]; then
+            echo "Not a tag ref (got $GITHUB_REF)" >&2; exit 1;
+          fi
+            TAG_NAME="${GITHUB_REF#refs/tags/}"
+          git fetch origin master --depth 1
+          TAG_COMMIT=$(git rev-list -n 1 "$TAG_NAME")
+          MASTER_COMMIT=$(git rev-list -n 1 origin/master)
+          if ! git merge-base --is-ancestor "$TAG_COMMIT" "$MASTER_COMMIT"; then
+            echo "Tag commit is not contained in master. Abort." >&2; exit 1;
+          fi
+          VERSION="$TAG_NAME"
+          if [[ $VERSION == v* ]]; then VERSION=${VERSION#v}; fi
+          if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
+            echo "Tag $TAG_NAME is not valid SemVer" >&2; exit 1;
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Validated tag $TAG_NAME (version $VERSION) is based on master."
+
+  tests:
+    name: Reusable test matrix (net8/net9)
+    needs: verify
+    uses: ./.github/workflows/template_ci.yml
+    with:
+      projects: "FastMoq.Tests/FastMoq.Tests.csproj FastMoq.Tests.Web/FastMoq.Tests.Web.csproj"
+      frameworks: '["8.0.x","9.0.x"]'
+
+  package:
+    name: Build & Pack (multi-TFM)
+    runs-on: ubuntu-latest
+    needs: [tests, verify]
+    env:
+      VERSION: ${{ needs.verify.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate changelog entry
+        run: |
+          if ! grep -Eq "^##?\s+v?${VERSION}\b" CHANGELOG.md 2>/dev/null; then
+            echo "CHANGELOG.md missing heading for version ${VERSION}" >&2; exit 1; fi
       - uses: actions/setup-dotnet@v4
         with:
-          # Install all SDKs needed for all TFMs in FastMoq-Release.sln
-          # For .NET 9 before GA, use latest prerelease pattern (e.g. "9.0.100-rc.*"), then change to "9.0.x"
           dotnet-version: |
             6.0.x
             8.0.x
-            9.0.100-rc.*
-      - run: dotnet restore FastMoq-Release.sln
-      - run: dotnet build FastMoq-Release.sln -c Release
-      - run: dotnet pack FastMoq-Release.sln -c Release -o ./artifacts
+            9.0.x
+          cache: true
+      - name: Restore
+        run: dotnet restore FastMoq-Release.sln
+      - name: Build (Release)
+        run: dotnet build FastMoq-Release.sln -c Release --no-restore
+      - name: Pack
+        run: |
+          if [[ -z "${VERSION:-}" ]]; then echo "VERSION not set" >&2; exit 1; fi
+          dotnet pack FastMoq-Release.sln -c Release -o ./artifacts --no-build /p:PackageVersion=$VERSION
+      - name: Verify embedded package version
+        run: |
+          PKG=$(ls artifacts/FastMoq.*.nupkg | head -n1)
+          unzip -p "$PKG" FastMoq.nuspec | grep -Eq "<version>${VERSION}</version>" || { echo "Package nuspec version mismatch" >&2; exit 1; }
+      - name: List packages
+        run: ls -1 artifacts
       - uses: actions/upload-artifact@v4
         with:
           name: FastMoq-nuget
           path: ./artifacts/*.nupkg
 
-  # 3. Publish job — no rebuild, just push the tested package
   publish:
+    name: Publish to NuGet
     runs-on: ubuntu-latest
-    needs: package
+    needs: [package, verify]
+    env:
+      VERSION: ${{ needs.verify.outputs.version }}
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: FastMoq-nuget
-          path: .
-      - name: Fetch all tags
-        run: git fetch --tags
-      - name: Validate and set version
+          path: artifacts
+      - name: Confirm version
         run: |
-          TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
-          VERSION=${TAG#v}
-          if [[ $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
-            echo "VERSION=$VERSION" >> $GITHUB_ENV
-          else
-            echo "Error: Latest tag ($TAG) is not a valid SemVer version"
-            exit 1
-          fi
+          if [[ -z "${VERSION:-}" ]]; then echo "VERSION not propagated" >&2; exit 1; fi
+          echo "Publishing version $VERSION"
       - name: Check if version already published
         run: |
-          EXISTING=$(dotnet nuget list package FastMoq --source https://api.nuget.org/v3/index.json | grep -E "FastMoq\s+$VERSION" || true)
-          if [ -n "$EXISTING" ]; then
-            echo "Version $VERSION already exists on NuGet. Skipping publish."
-            exit 0
-          fi
-      - name: Push to NuGet
-        run: dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+          set -euo pipefail
+          FOUND=$(curl -s https://api.nuget.org/v3-flatcontainer/fastmoq/index.json | jq -r '.versions[]' | grep -Fx "$VERSION" || true)
+          if [[ -n "$FOUND" ]]; then
+            echo "Version $VERSION already on NuGet – skipping push."; exit 0; fi
+      - name: Push packages
+        id: push
+        run: |
+          set -euo pipefail
+          OUTPUT=$(dotnet nuget push artifacts/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate 2>&1 || true)
+          echo "$OUTPUT"
+          STATUS=failed
+          if echo "$OUTPUT" | grep -q "Your package was pushed"; then STATUS=success; fi
+          if echo "$OUTPUT" | grep -qi "Skipping duplicate"; then STATUS=skipped; fi
+          echo "push-status=$STATUS" >> "$GITHUB_OUTPUT"
+          if [[ "$STATUS" == failed ]]; then
+            echo "Package push failed" >&2; exit 1; fi
+      - name: Generate SBOM (placeholder)
+        if: steps.push.outputs.push-status == 'success'
+        run: |
+          echo "(Optional) Generate SBOM here using syft or dotnet tool if desired." > sbom.txt
+          echo "SBOM generation placeholder for FastMoq $VERSION" >> sbom.txt
+      - name: Attest provenance (placeholder)
+        if: steps.push.outputs.push-status == 'success'
+        run: |
+          echo "(Optional) Supply chain attestation placeholder - integrate GitHub attest later." >> provenance.txt
+      - uses: actions/upload-artifact@v4
+        if: steps.push.outputs.push-status == 'success'
+        with:
+          name: provenance
+          path: |
+            sbom.txt
+            provenance.txt
+      - name: Summary
+        run: |
+          echo "### Publish Result" >> $GITHUB_STEP_SUMMARY
+          echo "Version: $VERSION" >> $GITHUB_STEP_SUMMARY
+          echo "Push Status: ${{ steps.push.outputs.push-status }}" >> $GITHUB_STEP_SUMMARY
