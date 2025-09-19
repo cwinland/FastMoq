@@ -2,7 +2,9 @@ using ECommerce.Orders.Core.Models;
 using ECommerce.Orders.Core.Services;
 using ECommerce.Orders.Core.Interfaces;
 using FastMoq;
+using FastMoq.Extensions;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -15,7 +17,7 @@ namespace ECommerce.Orders.Core.Tests;
 public class OrderServiceTests : MockerTestBase<OrderService>
 {
     [Fact]
-    public async Task CreateOrderAsync_WithValidItems_ShouldCreateOrderSuccessfully()
+    public async Task CreateOrderAsync_ShouldCreateOrderSuccessfully_WithValidItems()
     {
         // Arrange
         var customerId = 123;
@@ -57,7 +59,7 @@ public class OrderServiceTests : MockerTestBase<OrderService>
     }
 
     [Fact]
-    public async Task CreateOrderAsync_WhenInsufficientStock_ShouldThrowException()
+    public async Task CreateOrderAsync_ShouldThrowException_WhenInsufficientStock()
     {
         // Arrange
         var customerId = 123;

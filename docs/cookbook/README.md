@@ -66,10 +66,19 @@ public class UsersController : ControllerBase
     }
 }
 
+```csharp
+using FastMoq;
+using FastMoq.Extensions;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Xunit;
+
 public class UsersControllerTests : MockerTestBase<UsersController>
 {
     [Fact]
-    public async Task GetUser_WhenUserExists_ReturnsOkResult()
+    public async Task GetUser_ShouldReturnOkResult_WhenUserExists()
     {
         // Arrange
         var userId = 1;
@@ -88,7 +97,7 @@ public class UsersControllerTests : MockerTestBase<UsersController>
     }
 
     [Fact]
-    public async Task GetUser_WhenUserNotFound_ReturnsNotFound()
+    public async Task GetUser_ShouldReturnNotFound_WhenUserNotFound()
     {
         // Arrange
         Mocks.GetMock<IUserService>()
@@ -103,7 +112,7 @@ public class UsersControllerTests : MockerTestBase<UsersController>
     }
 
     [Fact]
-    public async Task GetUser_WhenServiceThrows_ReturnsInternalServerError()
+    public async Task GetUser_ShouldReturnInternalServerError_WhenServiceThrows()
     {
         // Arrange
         Mocks.GetMock<IUserService>()
@@ -118,11 +127,12 @@ public class UsersControllerTests : MockerTestBase<UsersController>
         statusResult.StatusCode.Should().Be(500);
         
         // Verify logging
-        Mocks.VerifyLogger<UsersController>(LogLevel.Error, Times.Once());
+        Mocks.GetMock<ILogger<UsersController>>()
+            .VerifyLogger(LogLevel.Error, Times.Once());
     }
 
     [Fact]
-    public async Task CreateUser_WithValidModel_ReturnsCreatedResult()
+    public async Task CreateUser_ShouldReturnCreatedResult_WithValidModel()
     {
         // Arrange
         var request = new CreateUserRequest { Name = "Jane Doe", Email = "jane@example.com" };
@@ -270,7 +280,8 @@ public class BlogServiceTests : MockerTestBase<BlogService>
         dbContext.Blogs.Should().Contain(result);
         
         // Verify logging
-        Mocks.VerifyLogger<BlogService>(LogLevel.Information, 
+        Mocks.GetMock<ILogger<BlogService>>()
+            .VerifyLogger(LogLevel.Information, 
             "Created blog {BlogId} with title {Title}", Times.Once());
     }
 
@@ -300,7 +311,7 @@ public class BlogServiceTests : MockerTestBase<BlogService>
     }
 
     [Fact]
-    public async Task CreateBlog_WhenDatabaseFails_ShouldThrowException()
+    public async Task CreateBlog_ShouldThrowException_WhenDatabaseFails()
     {
         // Arrange
         var dbContext = Mocks.GetRequiredObject<BlogContext>();
@@ -451,14 +462,16 @@ public class EmailProcessingServiceTests : MockerTestBase<EmailProcessingService
         Mocks.GetMock<IEmailSender>()
             .Verify(x => x.SendAsync(emailMessage), Times.Once);
             
-        Mocks.VerifyLogger<EmailProcessingService>(LogLevel.Information,
+        Mocks.GetMock<ILogger<EmailProcessingService>>()
+            .VerifyLogger(LogLevel.Information,
             "Processing email to {Recipient}", Times.Once());
-        Mocks.VerifyLogger<EmailProcessingService>(LogLevel.Information,
+        Mocks.GetMock<ILogger<EmailProcessingService>>()
+            .VerifyLogger(LogLevel.Information,
             "Email sent successfully to {Recipient}", Times.Once());
     }
 
     [Fact]
-    public async Task ExecuteAsync_WhenEmailSenderFails_ShouldLogErrorAndContinue()
+    public async Task ExecuteAsync_ShouldLogErrorAndContinue_WhenEmailSenderFails()
     {
         // Arrange
         var emailMessage = new EmailMessage { To = "test@example.com" };
@@ -479,11 +492,12 @@ public class EmailProcessingServiceTests : MockerTestBase<EmailProcessingService
         await executeTask;
 
         // Assert
-        Mocks.VerifyLogger<EmailProcessingService>(LogLevel.Error, Times.AtLeastOnce());
+        Mocks.GetMock<ILogger<EmailProcessingService>>()
+            .VerifyLogger(LogLevel.Error, Times.AtLeastOnce());
     }
 
     [Fact]
-    public async Task ExecuteAsync_WhenCancellationRequested_ShouldStopGracefully()
+    public async Task ExecuteAsync_ShouldStopGracefully_WhenCancellationRequested()
     {
         // Arrange
         var cancellationTokenSource = new CancellationTokenSource();
@@ -570,7 +584,7 @@ public class WeatherServiceTests : MockerTestBase<WeatherService>
     };
 
     [Fact]
-    public async Task GetWeatherAsync_WhenApiReturnsSuccess_ShouldReturnWeatherData()
+    public async Task GetWeatherAsync_ShouldReturnWeatherData_WhenApiReturnsSuccess()
     {
         // Arrange
         var city = "London";
@@ -595,14 +609,16 @@ public class WeatherServiceTests : MockerTestBase<WeatherService>
         // Assert
         result.Should().BeEquivalentTo(expectedWeatherData);
         
-        Mocks.VerifyLogger<WeatherService>(LogLevel.Information,
+        Mocks.GetMock<ILogger<WeatherService>>()
+            .VerifyLogger(LogLevel.Information,
             "Fetching weather for {City}", Times.Once());
-        Mocks.VerifyLogger<WeatherService>(LogLevel.Information,
+        Mocks.GetMock<ILogger<WeatherService>>()
+            .VerifyLogger(LogLevel.Information,
             "Successfully retrieved weather for {City}", Times.Once());
     }
 
     [Fact]
-    public async Task GetWeatherAsync_WhenApiReturnsError_ShouldThrowException()
+    public async Task GetWeatherAsync_ShouldThrowException_WhenApiReturnsError()
     {
         // Arrange
         var city = "InvalidCity";
@@ -616,7 +632,8 @@ public class WeatherServiceTests : MockerTestBase<WeatherService>
             
         exception.Message.Should().Contain(city);
         
-        Mocks.VerifyLogger<WeatherService>(LogLevel.Error, Times.Once());
+        Mocks.GetMock<ILogger<WeatherService>>()
+            .VerifyLogger(LogLevel.Error, Times.Once());
     }
 
     [Fact]
@@ -900,7 +917,24 @@ public class EmailServiceWithMonitorTests : MockerTestBase<EmailService>
 
 ## Logging Verification
 
-FastMoq provides powerful helpers for testing logging behavior.
+FastMoq provides powerful helpers for testing logging behavior through the `FastMoq.Extensions` namespace.
+
+### Proper Logger Verification Pattern
+
+Always use the `VerifyLogger` extension method on the mock logger:
+
+```csharp
+// ✅ CORRECT - Use extension method on mock
+Mocks.GetMock<ILogger<MyService>>()
+    .VerifyLogger(LogLevel.Information, "Processing complete", Times.Once());
+
+// ✅ CORRECT - With exception verification
+Mocks.GetMock<ILogger<MyService>>()
+    .VerifyLogger(LogLevel.Error, "Error occurred", exception, Times.Once());
+
+// ❌ INCORRECT - Old pattern (deprecated)
+Mocks.VerifyLogger<MyService>(LogLevel.Information, "Processing complete", Times.Once());
+```
 
 ### Service with Logging
 

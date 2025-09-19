@@ -33,6 +33,21 @@ Install-Package FastMoq
 <PackageReference Include="FastMoq" Version="3.0.0" />
 ```
 
+### Required Using Statements
+
+For all FastMoq tests, include these using statements:
+
+```csharp
+using FastMoq;
+using FastMoq.Extensions;
+using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Xunit;
+```
+
+The `FastMoq.Extensions` namespace is particularly important as it provides logger verification helpers and other utility methods.
+
 ## Your First Test
 
 Let's create a simple service and write a test for it using FastMoq.
@@ -102,14 +117,16 @@ Now let's create a test using FastMoq's `MockerTestBase<T>`:
 ```csharp
 // Tests/OrderServiceTests.cs
 using FastMoq;
+using FastMoq.Extensions;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
 public class OrderServiceTests : MockerTestBase<OrderService>
 {
     [Fact]
-    public async Task ProcessOrderAsync_WhenValidOrder_ShouldCompleteOrder()
+    public async Task ProcessOrderAsync_ShouldCompleteOrder_WhenValidOrder()
     {
         // Arrange
         var orderId = 123;
@@ -147,7 +164,7 @@ public class OrderServiceTests : MockerTestBase<OrderService>
     }
 
     [Fact]
-    public async Task ProcessOrderAsync_WhenInvalidCard_ShouldReturnFalse()
+    public async Task ProcessOrderAsync_ShouldReturnFalse_WhenInvalidCard()
     {
         // Arrange
         var orderId = 123;
@@ -304,12 +321,14 @@ Now that you understand the basics, explore these advanced topics:
 
 ## Best Practices
 
-1. **Use descriptive test names** that explain the scenario and expected outcome
+1. **Use descriptive test names** following the pattern `MethodName_ShouldExpectedBehavior_WhenCondition`
 2. **Follow AAA pattern** (Arrange, Act, Assert) for clarity
 3. **Keep tests focused** - test one behavior per test method
 4. **Use FluentAssertions** for more readable assertions
-5. **Verify important interactions** but avoid over-verification
-6. **Group related tests** in the same test class
+5. **Include proper using statements** - Always include `FastMoq.Extensions` for logger verification helpers
+6. **Verify important interactions** but avoid over-verification
+7. **Group related tests** in the same test class
+8. **Use proper logger verification** with `GetMock<ILogger<T>>().VerifyLogger()` pattern
 
 ## Troubleshooting
 
