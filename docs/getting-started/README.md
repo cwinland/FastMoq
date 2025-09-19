@@ -54,58 +54,50 @@ Let's create a simple service and write a test for it using FastMoq.
 
 ### 1. Create a Service to Test
 
-First, let's create a simple service that depends on an external interface:
+First, let's create a simple file processing service that depends on the `IFileSystem` interface:
 
 ```csharp
-// Services/OrderService.cs
-public interface IPaymentProcessor
+// Services/FileProcessorService.cs
+using System.IO.Abstractions;
+using Microsoft.Extensions.Logging;
+
+public interface IFileProcessorService
 {
-    Task<bool> ProcessPaymentAsync(decimal amount, string cardNumber);
-    bool ValidateCard(string cardNumber);
+    Task<string> ProcessFileAsync(string filePath);
+    bool ValidateFilePath(string filePath);
 }
 
-public interface IOrderRepository
+public class FileProcessorService : IFileProcessorService
 {
-    Task<Order> GetOrderAsync(int orderId);
-    Task SaveOrderAsync(Order order);
-}
+    private readonly IFileSystem _fileSystem;
+    private readonly ILogger<FileProcessorService> _logger;
 
-public class Order
-{
-    public int Id { get; set; }
-    public decimal Total { get; set; }
-    public string Status { get; set; } = "Pending";
-    public DateTime CreatedAt { get; set; }
-}
-
-public class OrderService
-{
-    private readonly IPaymentProcessor _paymentProcessor;
-    private readonly IOrderRepository _orderRepository;
-
-    public OrderService(IPaymentProcessor paymentProcessor, IOrderRepository orderRepository)
+    public FileProcessorService(IFileSystem fileSystem, ILogger<FileProcessorService> logger)
     {
-        _paymentProcessor = paymentProcessor ?? throw new ArgumentNullException(nameof(paymentProcessor));
-        _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
+        _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public async Task<bool> ProcessOrderAsync(int orderId, string cardNumber)
+    public async Task<string> ProcessFileAsync(string filePath)
     {
-        var order = await _orderRepository.GetOrderAsync(orderId);
-        if (order == null) return false;
-
-        if (!_paymentProcessor.ValidateCard(cardNumber))
-            return false;
-
-        var paymentResult = await _paymentProcessor.ProcessPaymentAsync(order.Total, cardNumber);
-        
-        if (paymentResult)
+        if (!ValidateFilePath(filePath))
         {
-            order.Status = "Completed";
-            await _orderRepository.SaveOrderAsync(order);
+            _logger.LogWarning("Invalid file path: {FilePath}", filePath);
+            return string.Empty;
         }
 
-        return paymentResult;
+        _logger.LogInformation("Processing file: {FilePath}", filePath);
+        
+        var content = await _fileSystem.File.ReadAllTextAsync(filePath);
+        var processedContent = content.ToUpperInvariant();
+        
+        _logger.LogInformation("File processed successfully: {FilePath}", filePath);
+        return processedContent;
+    }
+
+    public bool ValidateFilePath(string filePath)
+    {
+        return !string.IsNullOrWhiteSpace(filePath) && _fileSystem.File.Exists(filePath);
     }
 }
 ```
@@ -115,81 +107,69 @@ public class OrderService
 Now let's create a test using FastMoq's `MockerTestBase<T>`:
 
 ```csharp
-// Tests/OrderServiceTests.cs
+// Tests/FileProcessorServiceTests.cs
 using FastMoq;
 using FastMoq.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.IO.Abstractions;
 using Xunit;
 
-public class OrderServiceTests : MockerTestBase<OrderService>
+public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
 {
     [Fact]
-    public async Task ProcessOrderAsync_ShouldCompleteOrder_WhenValidOrder()
+    public async Task ProcessFileAsync_ShouldReturnProcessedContent_WhenValidFile()
     {
         // Arrange
-        var orderId = 123;
-        var cardNumber = "4111111111111111";
-        var order = new Order 
-        { 
-            Id = orderId, 
-            Total = 99.99m, 
-            Status = "Pending" 
-        };
+        var filePath = "test.txt";
+        var fileContent = "hello world";
+        var expectedResult = "HELLO WORLD";
 
-        // Setup mocks using the fluent API
-        Mocks.GetMock<IOrderRepository>()
-            .Setup(x => x.GetOrderAsync(orderId))
-            .ReturnsAsync(order);
-
-        Mocks.GetMock<IPaymentProcessor>()
-            .Setup(x => x.ValidateCard(cardNumber))
+        Mocks.GetMock<IFileSystem>()
+            .Setup(x => x.File.Exists(filePath))
             .Returns(true);
 
-        Mocks.GetMock<IPaymentProcessor>()
-            .Setup(x => x.ProcessPaymentAsync(order.Total, cardNumber))
-            .ReturnsAsync(true);
+        Mocks.GetMock<IFileSystem>()
+            .Setup(x => x.File.ReadAllTextAsync(filePath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(fileContent);
 
         // Act
-        var result = await Component.ProcessOrderAsync(orderId, cardNumber);
+        var result = await Component.ProcessFileAsync(filePath);
 
         // Assert
-        result.Should().BeTrue();
-        order.Status.Should().Be("Completed");
+        result.Should().Be(expectedResult);
         
         // Verify interactions
-        Mocks.GetMock<IOrderRepository>()
-            .Verify(x => x.SaveOrderAsync(order), Times.Once);
+        Mocks.GetMock<IFileSystem>()
+            .Verify(x => x.File.ReadAllTextAsync(filePath, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
-    public async Task ProcessOrderAsync_ShouldReturnFalse_WhenInvalidCard()
+    public async Task ProcessFileAsync_ShouldReturnEmpty_WhenInvalidFile()
     {
         // Arrange
-        var orderId = 123;
-        var cardNumber = "invalid-card";
-        var order = new Order { Id = orderId, Total = 99.99m };
+        var filePath = "nonexistent.txt";
 
-        Mocks.GetMock<IOrderRepository>()
-            .Setup(x => x.GetOrderAsync(orderId))
-            .ReturnsAsync(order);
-
-        Mocks.GetMock<IPaymentProcessor>()
-            .Setup(x => x.ValidateCard(cardNumber))
-            .Returns(false); // Invalid card
+        Mocks.GetMock<IFileSystem>()
+            .Setup(x => x.File.Exists(filePath))
+            .Returns(false);
 
         // Act
-        var result = await Component.ProcessOrderAsync(orderId, cardNumber);
+        var result = await Component.ProcessFileAsync(filePath);
 
         // Assert
-        result.Should().BeFalse();
-        order.Status.Should().Be("Pending"); // Status unchanged
+        result.Should().BeEmpty();
         
-        // Verify payment was never attempted
-        Mocks.GetMock<IPaymentProcessor>()
-            .Verify(x => x.ProcessPaymentAsync(It.IsAny<decimal>(), It.IsAny<string>()), Times.Never);
+        // Verify logging
+        Mocks.GetMock<ILogger<FileProcessorService>>()
+            .VerifyLogger(LogLevel.Warning, Times.Once());
+        
+        // Verify file was never read
+        Mocks.GetMock<IFileSystem>()
+            .Verify(x => x.File.ReadAllTextAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
     }
+}
 }
 ```
 
@@ -278,7 +258,7 @@ FastMoq provides helpers for testing constructor parameter validation:
 
 ```csharp
 [Fact]
-public void Constructor_ShouldThrow_WhenPaymentProcessorIsNull()
+public void Constructor_ShouldThrow_WhenFileSystemIsNull()
 {
     TestConstructorParameters((action, constructorName, parameterName) =>
     {
@@ -295,19 +275,25 @@ FastMoq works seamlessly with async methods:
 
 ```csharp
 [Fact]
-public async Task GetOrderAsync_ShouldReturnOrder()
+public async Task ProcessFileAsync_ShouldReturnProcessedContent()
 {
     // Arrange
-    var expectedOrder = new Order { Id = 1 };
-    Mocks.GetMock<IOrderRepository>()
-        .Setup(x => x.GetOrderAsync(1))
-        .ReturnsAsync(expectedOrder);
+    var filePath = "data.txt";
+    var expectedContent = "PROCESSED DATA";
+    
+    Mocks.GetMock<IFileSystem>()
+        .Setup(x => x.File.Exists(filePath))
+        .Returns(true);
+    
+    Mocks.GetMock<IFileSystem>()
+        .Setup(x => x.File.ReadAllTextAsync(filePath, It.IsAny<CancellationToken>()))
+        .ReturnsAsync("processed data");
 
     // Act
-    var result = await Component.GetOrderAsync(1);
+    var result = await Component.ProcessFileAsync(filePath);
 
     // Assert
-    result.Should().Be(expectedOrder);
+    result.Should().Be(expectedContent);
 }
 ```
 
