@@ -102,7 +102,8 @@ jobs:
             fi
             resultsDir="TestResults/${tfm}"
             mkdir -p "$resultsDir"
-            dotnet test "$proj" --framework "$tfm" --no-build --configuration Release \
+            # --no-restore added to avoid a second implicit restore that was failing with a missing lock file in CI
+            dotnet test "$proj" --framework "$tfm" --no-build --no-restore --configuration Release \
               --logger "trx;LogFileName=${tfm}-results.trx" \
               --collect "XPlat Code Coverage" \
               --results-directory "$resultsDir" || echo "Test failures captured for $proj ($tfm)"
