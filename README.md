@@ -5,14 +5,14 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 ## 📚 Documentation
 
 ### Quick Links
-- **🚀 [Getting Started Guide](./docs/getting-started/README.md)** - Your first FastMoq test in 5 minutes
-- **👨‍🍳 [Cookbook](./docs/cookbook/README.md)** - Real-world patterns and recipes
-- **🏗️ [Sample Applications](./docs/samples/README.md)** - Complete examples with Azure integration
-- **📊 [Feature Comparison](./docs/feature-parity/README.md)** - FastMoq vs Moq/NSubstitute
-- **📈 [Performance Benchmarks](./docs/benchmarks/README.md)** - Productivity and performance metrics
+- **🚀 [Getting Started Guide](./docs/getting-started)** - Your first FastMoq test in 5 minutes
+- **👨‍🍳 [Cookbook](./docs/cookbook)** - Real-world patterns and recipes
+- **🏗️ [Sample Applications](./docs/samples)** - Complete examples with Azure integration
+- **📊 [Feature Comparison](./docs/feature-parity)** - FastMoq vs Moq/NSubstitute
+- **📈 [Performance Benchmarks](./docs/benchmarks)** - Productivity and performance metrics
 
 ### Additional Resources
-- **📖 [Complete Documentation](./docs/README.md)** - All guides and references in one place
+- **📖 [Complete Documentation](./docs)** - All guides and references in one place
 - **❓ [FAQs](./FAQs.md)** - Frequently asked questions and troubleshooting
 - **🔗 [API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)** - Complete API reference
 
