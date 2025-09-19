@@ -1,0 +1,51 @@
+# GitHub Actions Configuration
+# This file configures network access and environment setup for GitHub Actions
+
+# Network allowlist URLs for GitHub Actions
+network:
+  allowed_urls:
+    # GitHub API and services
+    - "https://api.github.com"
+    - "https://github.com"
+    - "https://objects.githubusercontent.com"
+    - "https://github-releases.githubusercontent.com"
+    - "https://uploads.github.com"
+    
+    # .NET and NuGet services
+    - "https://api.nuget.org"
+    - "https://nuget.org"
+    - "https://download.microsoft.com"
+    - "https://dotnetcli.azureedge.net"
+    - "https://dotnetbuilds.azureedge.net"
+    
+    # Package managers and dependencies
+    - "https://registry.npmjs.org"
+    - "https://packages.microsoft.com"
+    - "https://pkgs.dev.azure.com"
+    
+    # CodeQL and security scanning
+    - "https://github.com/github/codeql-action"
+    - "https://codeload.github.com"
+
+# Environment setup steps
+environment:
+  setup_steps:
+    - name: "Configure Git"
+      description: "Set up Git configuration before firewall restrictions"
+    - name: "Configure NuGet"
+      description: "Set up NuGet sources and authentication"
+    - name: "Verify Network Access"
+      description: "Test connectivity to required services"
+
+# Runner configuration
+runner:
+  os: "ubuntu-latest"
+  timeout_minutes: 30
+  
+# Security settings
+security:
+  allow_external_actions: true
+  required_permissions:
+    - "contents: read"
+    - "packages: read"
+    - "security-events: write"
