@@ -94,7 +94,7 @@ ecommerce-orders/
 
 ## FastMoq Testing Patterns Demonstrated
 
-### 1. API Controller Testing with Complex Dependencies (FastMoq Extensions)
+### 1. API Controller Testing with Complex Dependencies
 
 ```csharp
 public class OrdersControllerTests : MockerTestBase<OrdersController>
