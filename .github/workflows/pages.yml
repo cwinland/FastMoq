@@ -1,8 +1,8 @@
-# Workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+# Deploy Jekyll site to GitHub Pages (current recommended versions)
+name: Deploy Jekyll with GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
+  # Runs on pushes to the default branch
   push:
     branches: ["master"]
     paths:
@@ -10,11 +10,12 @@ on:
       - README.md
       - CODE_OF_CONDUCT.md
       - license.txt
-      
-  # Allows you to run this workflow manually from the Actions tab
+      - .github/workflows/pages.yml  # Trigger when this workflow file changes
+
+  # Allows manual trigger from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Permissions for GITHUB_TOKEN
 permissions:
   contents: read
   pages: write
@@ -28,28 +29,31 @@ concurrency:
 jobs:
   # Build job
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Pin for stability; change to ubuntu-latest if you prefer
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Setup Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v4
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
 
   # Deployment job
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
