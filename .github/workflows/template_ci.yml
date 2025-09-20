@@ -49,7 +49,7 @@ jobs:
 
       - run: dotnet --info
 
-      - name: Restore (TFM-scoped)
+      - name: Restore (TFM-scoped, no lock mode)
         env:
           FW: ${{ matrix.framework }}
         run: |
@@ -67,7 +67,7 @@ jobs:
               continue
             fi
             # dotnet restore does not support --framework; use MSBuild property instead
-            dotnet restore "$proj" -p:TargetFramework="$tfm" --use-lock-file --locked-mode
+            dotnet restore "$proj" -p:TargetFramework="$tfm"
           done
 
       - name: Build (TFM-scoped)

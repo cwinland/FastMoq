@@ -62,23 +62,21 @@ jobs:
           9.0.x
           8.0.x
 
-    # Generate lock files for .NET so dependency submission (CodeQL) finds them
-    - name: Restore .NET (generate lock files)
+    - name: Restore .NET
       if: matrix.language == 'csharp'
       run: |
         set -euo pipefail
-        echo "Restoring .NET projects with lock file generation"
-        # Use solution if present; otherwise fall back to individual csproj files
+        echo "Restoring all .NET solutions/projects (no lock files)"
         if ls *.sln 1> /dev/null 2>&1; then
           for sln in *.sln; do
             echo "Restoring solution: $sln"
-            dotnet restore "$sln" --use-lock-file
+            dotnet restore "$sln"
           done
         else
           echo "No solution file found; restoring individual projects"
-          find . -name '*.csproj' -maxdepth 6 -print0 | xargs -0 -I{} dotnet restore {} --use-lock-file
+          find . -name '*.csproj' -maxdepth 6 -print0 | xargs -0 -I{} dotnet restore {}
         fi
-        echo "Lock files generated (packages.lock.json)"
+        echo "Restore complete"
 
     # Configure environment before firewall restrictions
     - name: Configure GitHub Actions environment
