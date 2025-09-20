@@ -4,13 +4,10 @@ on:
   push:
     branches:
       - master
-    paths:
-      - .github/workflows/ci_master.yml
-      - FastMoq/
-      - FastMoq.Core/
-      - FastMoq.Web/
-      - FastMoq.Tests/
-      - FastMoq.Tests.Web/
+
+concurrency:
+  group: master-ci
+  cancel-in-progress: true
 
 jobs:
   call-template:
