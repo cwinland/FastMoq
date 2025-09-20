@@ -1,15 +1,34 @@
 name: Publish Pages
 
+# Required permissions for GitHub Pages OIDC deployment token
+permissions:
+  contents: read      # to fetch the repository
+  pages: write        # to publish to Pages
+  id-token: write     # to request the OIDC token (fixes ACTIONS_ID_TOKEN_REQUEST_URL error)
+
 on:
+  push:
+    branches: [ master ]
+    paths:
+      - '.github/workflows/publish_pages.yml'
+  workflow_dispatch:
   workflow_run:
     workflows: ["CI (master)"]
     types:
       - completed
 
+# Ensure only one Pages deployment runs at a time
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
         with:
