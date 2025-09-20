@@ -22,32 +22,45 @@ jobs:
     outputs:
       code: ${{ steps.filter.outputs.code }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - id: filter
+        name: Detect code-impacting changes
         run: |
           set -euo pipefail
-          # Determine base SHA for PR or default branch
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE="${{ github.event.pull_request.base.sha }}"
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            if ! git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
+              echo "Fetching missing base commit $BASE_SHA"
+              git fetch origin "$BASE_SHA" --depth=1 || git fetch origin --depth=1000
+            fi
+            BASE="$BASE_SHA"
           else
-            # fetch master (default) for comparison
-            git fetch origin ${{ github.event.repository.default_branch }} --depth=1
-            BASE="origin/${{ github.event.repository.default_branch }}"
+            DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+            git fetch origin "$DEFAULT_BRANCH" --depth=1 || git fetch origin "$DEFAULT_BRANCH" --depth=1000
+            BASE="origin/$DEFAULT_BRANCH"
           fi
           echo "Base ref: $BASE"
-          # List changed files
-          CHANGED=$(git diff --name-only "$BASE" HEAD)
-          echo "Changed files:\n$CHANGED"
+          CHANGED=$(git diff --name-only "$BASE" HEAD || true)
+          if [ -z "$CHANGED" ]; then
+            echo "No diff vs base; treating as code change (safety)."
+            echo "code=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+            echo "Changed files:\n$CHANGED"
           code=false
           while IFS= read -r f; do
             [ -z "$f" ] && continue
             case "$f" in
-              docs/*|*.md|Help/*) ;; # ignore docs-only
-              *.cs|*.csproj|*.sln|FastMoq*.nuspec) code=true; break;;
-              *) ;; # other files ignored
+              docs/*|*.md|Help/*) ;;
+              *.cs|*.csproj|*.sln|FastMoq*.nuspec) code=true; break ;;
+              *) ;;
             esac
           done <<< "$CHANGED"
           echo "code=$code" >> $GITHUB_OUTPUT
+
   codeql:
     needs: changes
     if: needs.changes.outputs.code == 'true'
@@ -62,11 +75,13 @@ jobs:
       matrix:
         framework: ${{ fromJSON(inputs.frameworks) }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.framework }}
           cache: true
@@ -85,7 +100,6 @@ jobs:
       - name: Restore (TFM-scoped)
         env:
           FW: ${{ matrix.framework }}
-          STEP_NAME: RESTORE
         run: |
           set -euo pipefail
           FW_NOX="${FW%%.x}"
@@ -140,7 +154,6 @@ jobs:
             fi
             resultsDir="TestResults/${tfm}"
             mkdir -p "$resultsDir"
-            # --no-restore added to avoid a second implicit restore that was failing with a missing lock file in CI
             dotnet test "$proj" --framework "$tfm" --no-build --no-restore --configuration Release \
               --logger "trx;LogFileName=${tfm}-results.trx" \
               --collect "XPlat Code Coverage" \
@@ -160,12 +173,12 @@ jobs:
       - name: Summary of skipped projects
         if: always()
         run: |
-            {
+          {
             echo "### Skipped Projects Summary"
             if [[ -s skipped.txt ]]; then
-                cat skipped.txt
+              cat skipped.txt
             else
-                echo "No projects were skipped."
+              echo "No projects were skipped."
             fi
-            } >> "$GITHUB_STEP_SUMMARY"
+          } >> "$GITHUB_STEP_SUMMARY"
 
