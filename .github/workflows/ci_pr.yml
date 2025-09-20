@@ -4,13 +4,6 @@ on:
   pull_request:
     branches:
       - master
-    paths:
-      - .github/workflows/ci_pr.yml
-      - FastMoq/
-      - FastMoq.Core/
-      - FastMoq.Web/
-      - FastMoq.Tests/
-      - FastMoq.Tests.Web/
 
 jobs:
   call-template:
