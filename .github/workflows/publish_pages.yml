@@ -37,7 +37,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Guard: Validate site content exists
+      - name: "Guard: Validate site content exists"
         run: |
           set -euo pipefail
           if [ ! -d Help ]; then
