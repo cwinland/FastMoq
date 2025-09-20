@@ -110,7 +110,7 @@ jobs:
             dotnet test "$proj" --framework "$tfm" --no-build --no-restore --configuration Release \
               --logger "trx;LogFileName=${tfm}-results.trx" \
               --collect "XPlat Code Coverage" \
-              --results-directory "$resultsDir" || echo "Test failures captured for $proj ($tfm)"
+              --results-directory "$resultsDir"
           done
 
       - name: Upload test results
