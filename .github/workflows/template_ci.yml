@@ -176,8 +176,8 @@ jobs:
           total_covered=0
           total_valid=0
           for f in "${files[@]}"; do
-            covered=$(grep -oP 'lines-covered="\K[0-9]+' "$f" | head -n1 || echo 0)
-            valid=$(grep -oP 'lines-valid="\K[0-9]+' "$f" | head -n1 || echo 0)
+            covered=$(sed -n 's/.*lines-covered="\([0-9]\+\)".*/\1/p' "$f" | head -n1 || echo 0)
+            valid=$(sed -n 's/.*lines-valid="\([0-9]\+\)".*/\1/p' "$f" | head -n1 || echo 0)
             if [ -n "$covered" ] && [ -n "$valid" ]; then
               total_covered=$(( total_covered + covered ))
               total_valid=$(( total_valid + valid ))
