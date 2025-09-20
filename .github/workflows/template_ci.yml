@@ -141,15 +141,53 @@ jobs:
     if: always()
     steps:
       - name: Aggregate matrix result
+        id: aggregate
         run: |
           echo "Aggregating test matrix results..."
           result='${{ needs.build-test.result }}'
           echo "Matrix overall result: $result"
           if [ "$result" != "success" ]; then
-            echo "One or more test legs failed. See individual build-test jobs."
+            echo "Matrix failed. See individual build-test jobs." >> $GITHUB_STEP_SUMMARY
+            echo "matrix-status=$result" >> $GITHUB_OUTPUT
             exit 1
           fi
-          echo "All test legs passed." >> $GITHUB_STEP_SUMMARY
+          echo "matrix-status=$result" >> $GITHUB_OUTPUT
           echo "### Test Matrix Summary" >> $GITHUB_STEP_SUMMARY
           echo "All frameworks succeeded." >> $GITHUB_STEP_SUMMARY
+
+      - name: Download test artifacts
+        if: steps.aggregate.outputs.matrix-status == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: test-results-*
+          path: test-artifacts
+          merge-multiple: true
+
+      - name: Coverage summary
+        if: steps.aggregate.outputs.matrix-status == 'success'
+        run: |
+          set -euo pipefail
+          shopt -s globstar nullglob
+          files=(test-artifacts/**/coverage.cobertura.xml)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No coverage.cobertura.xml files found." >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+          total_covered=0
+          total_valid=0
+          for f in "${files[@]}"; do
+            covered=$(sed -n 's/.*lines-covered="\([0-9]\+\)".*/\1/p' "$f" | head -n1 || echo 0)
+            valid=$(sed -n 's/.*lines-valid="\([0-9]\+\)".*/\1/p' "$f" | head -n1 || echo 0)
+            if [ -n "$covered" ] && [ -n "$valid" ]; then
+              total_covered=$(( total_covered + covered ))
+              total_valid=$(( total_valid + valid ))
+            fi
+          done
+          echo "### Coverage" >> $GITHUB_STEP_SUMMARY
+          if [ "$total_valid" -gt 0 ]; then
+            pct=$(awk -v c="$total_covered" -v v="$total_valid" 'BEGIN { if (v>0) printf "%.2f", (c/v)*100; }')
+            echo "Combined line coverage: ${pct}% (${total_covered}/${total_valid})" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Unable to compute coverage (no valid line counts)." >> $GITHUB_STEP_SUMMARY
+          fi
 

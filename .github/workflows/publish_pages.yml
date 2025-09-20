@@ -1,19 +1,56 @@
 name: Publish Pages
 
+# Required permissions for GitHub Pages OIDC deployment token
+permissions:
+  contents: read      # to fetch the repository
+  pages: write        # to publish to Pages
+  id-token: write     # to request the OIDC token (fixes ACTIONS_ID_TOKEN_REQUEST_URL error)
+
 on:
+  push:
+    branches: [ master ]
+    paths:
+      - '.github/workflows/publish_pages.yml'
+      - 'Help/**'
+      - 'docs/**'
+  workflow_dispatch:
   workflow_run:
     workflows: ["CI (master)"]
     types:
       - completed
 
+# Ensure only one Pages deployment runs at a time
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # Run this job for all events except 'workflow_run', and only for successful 'workflow_run' events.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: "Guard: Validate site content exists"
+        run: |
+          set -euo pipefail
+          if [ ! -d Help ]; then
+            echo "Help directory missing; aborting publish." >&2
+            exit 1
+          fi
+          if [ ! -f Help/index.html ] && [ ! -f Help/Index.html ]; then
+            echo "No index.html/Index.html in Help; aborting publish." >&2
+            ls -al Help || true
+            exit 1
+          fi
+          echo "Help directory and index file found. Proceeding."
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
