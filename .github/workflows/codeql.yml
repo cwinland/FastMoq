@@ -41,7 +41,7 @@ jobs:
       matrix:
         include:
         - language: csharp
-          build-mode: none
+          build-mode: manual
         # CodeQL supports the following values keywords for 'language': 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
         # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
@@ -53,6 +53,31 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Setup .NET SDKs
+      if: matrix.language == 'csharp'
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          9.0.x
+          8.0.x
+
+    - name: Restore .NET (Release solution only)
+      if: matrix.language == 'csharp'
+      run: |
+        set -euo pipefail
+        # Use the release solution (excludes test projects) to avoid building test SDK under net6.0
+        if [ -f FastMoq-Release.sln ]; then
+          echo "Restoring FastMoq-Release.sln"
+          dotnet restore FastMoq-Release.sln
+        else
+          echo "FastMoq-Release.sln not found; falling back to all solution files"
+          for sln in *.sln; do
+            echo "Restoring solution: $sln"
+            dotnet restore "$sln"
+          done
+        fi
+        echo "Restore complete (release scope)"
 
     # Configure environment before firewall restrictions
     - name: Configure GitHub Actions environment
@@ -75,21 +100,17 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-    # If the analyze step fails for one of the languages you are analyzing with
-    # "We were unable to automatically build your code", modify the matrix above
-    # to set the build mode to "manual" for that language. Then modify this step
-    # to build your code.
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-    - if: matrix.build-mode == 'manual'
-      shell: bash
+    - name: Build (manual single TFM for CodeQL - release scope)
+      if: matrix.language == 'csharp' && matrix.build-mode == 'manual'
       run: |
-        echo 'If you are using a "manual" build mode for one or more of the' \
-          'languages you are analyzing, replace this with the commands to build' \
-          'your code, for example:'
-        echo '  make bootstrap'
-        echo '  make release'
-        exit 1
+        set -euo pipefail
+        echo "Manual build for CodeQL semantic extraction (net9.0) using release solution"
+        SLN=FastMoq-Release.sln
+        if [ ! -f "$SLN" ]; then
+          echo "Release solution not found; falling back to FastMoq.sln"
+          SLN=FastMoq.sln
+        fi
+        dotnet build "$SLN" -c Release -f net9.0 /p:UseSharedCompilation=false --no-restore
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3

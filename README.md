@@ -498,3 +498,4 @@ Add the following ```InternalsVisibleTo``` line to the AssemblyInfo file.
 ## [License - MIT](./License)
 
 [http://help.fastmoq.com](http://help.fastmoq.com/)
+

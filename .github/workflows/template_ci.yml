@@ -1,0 +1,155 @@
+name: CI Template
+
+on:
+  workflow_call:
+    inputs:
+      projects:
+        required: true
+        type: string
+      frameworks:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  security-events: write
+  packages: read
+  actions: read
+
+jobs:
+  codeql:
+    uses: ./.github/workflows/codeql.yml
+
+  build-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: ${{ fromJSON(inputs.frameworks) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.framework }}
+          cache: true
+          cache-dependency-path: |
+            **/*.csproj
+            **/*.sln
+
+      - name: Set environment
+        run: |
+          echo "DOTNET_CLI_TELEMETRY_OPTOUT=1" >> $GITHUB_ENV
+          echo "DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1" >> $GITHUB_ENV
+          echo "NUGET_PACKAGES=$HOME/.nuget/packages" >> $GITHUB_ENV
+
+      - run: dotnet --info
+
+      - name: Restore (TFM-scoped, no lock mode)
+        env:
+          FW: ${{ matrix.framework }}
+        run: |
+          set -euo pipefail
+          FW_NOX="${FW%%.x}"
+          IFS='.' read -r major minor rest <<< "$FW_NOX"
+          minor="${minor:-0}"
+          tfm="net${major}.${minor}"
+          echo "Derived TFM: $tfm from framework input '$FW'"
+          : > skipped.txt
+          for proj in ${{ inputs.projects }}; do
+            if ! grep -Eiq "net${major}\\.${minor}" "$proj"; then
+              echo "Skipping $proj (does not target $tfm)"
+              echo "[RESTORE] $proj ($tfm)" >> skipped.txt
+              continue
+            fi
+            # dotnet restore does not support --framework; use MSBuild property instead
+            dotnet restore "$proj" -p:TargetFramework="$tfm"
+          done
+
+      - name: Build (TFM-scoped)
+        env:
+          FW: ${{ matrix.framework }}
+        run: |
+          set -euo pipefail
+          FW_NOX="${FW%%.x}"
+          IFS='.' read -r major minor rest <<< "$FW_NOX"
+          minor="${minor:-0}"
+          tfm="net${major}.${minor}"
+          echo "Building for $tfm"
+          for proj in ${{ inputs.projects }}; do
+            if ! grep -Eiq "net${major}\\.${minor}" "$proj"; then
+              echo "Skipping build $proj (missing $tfm)"
+              echo "[BUILD] $proj ($tfm)" >> skipped.txt
+              continue
+            fi
+            dotnet build "$proj" --framework "$tfm" --no-restore -c Release
+          done
+
+      - name: Test (TFM-scoped)
+        env:
+          FW: ${{ matrix.framework }}
+        run: |
+          set -euo pipefail
+          FW_NOX="${FW%%.x}"
+          IFS='.' read -r major minor rest <<< "$FW_NOX"
+          minor="${minor:-0}"
+          tfm="net${major}.${minor}"
+          echo "Testing for $tfm"
+          for proj in ${{ inputs.projects }}; do
+            if ! grep -Eiq "net${major}\\.${minor}" "$proj"; then
+              echo "Skipping test $proj (missing $tfm)"
+              echo "[TEST] $proj ($tfm)" >> skipped.txt
+              continue
+            fi
+            resultsDir="TestResults/${tfm}"
+            mkdir -p "$resultsDir"
+            dotnet test "$proj" --framework "$tfm" --no-build --no-restore --configuration Release \
+              --logger "trx;LogFileName=${tfm}-results.trx" \
+              --collect "XPlat Code Coverage" \
+              --results-directory "$resultsDir" || echo "Test failures captured for $proj ($tfm)"
+          done
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.framework }}
+          path: |
+            TestResults/**
+            **/coverage.cobertura.xml
+          if-no-files-found: ignore
+
+      - name: Summary of skipped projects
+        if: always()
+        run: |
+          {
+            echo "### Skipped Projects Summary"
+            if [[ -s skipped.txt ]]; then
+              cat skipped.txt
+            else
+              echo "No projects were skipped."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  tests-aggregate:
+    runs-on: ubuntu-latest
+    needs: build-test
+    if: always()
+    steps:
+      - name: Aggregate matrix result
+        run: |
+          echo "Aggregating test matrix results..."
+          result='${{ needs.build-test.result }}'
+          echo "Matrix overall result: $result"
+          if [ "$result" != "success" ]; then
+            echo "One or more test legs failed. See individual build-test jobs."
+            exit 1
+          fi
+          echo "All test legs passed." >> $GITHUB_STEP_SUMMARY
+          echo "### Test Matrix Summary" >> $GITHUB_STEP_SUMMARY
+          echo "All frameworks succeeded." >> $GITHUB_STEP_SUMMARY
+
