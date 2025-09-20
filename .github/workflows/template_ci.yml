@@ -24,17 +24,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            code:
-              - '**/*.cs'
-              - '**/*.csproj'
-              - '**/*.sln'
-              - 'FastMoq*.nuspec'
-              - '!docs/**'
-              - '!**/*.md'
-              - '!Help/**'
+        run: |
+          set -euo pipefail
+          # Determine base SHA for PR or default branch
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+          else
+            # fetch master (default) for comparison
+            git fetch origin ${{ github.event.repository.default_branch }} --depth=1
+            BASE="origin/${{ github.event.repository.default_branch }}"
+          fi
+          echo "Base ref: $BASE"
+          # List changed files
+          CHANGED=$(git diff --name-only "$BASE" HEAD)
+          echo "Changed files:\n$CHANGED"
+          code=false
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            case "$f" in
+              docs/*|*.md|Help/*) ;; # ignore docs-only
+              *.cs|*.csproj|*.sln|FastMoq*.nuspec) code=true; break;;
+              *) ;; # other files ignored
+            esac
+          done <<< "$CHANGED"
+          echo "code=$code" >> $GITHUB_OUTPUT
   codeql:
     needs: changes
     if: needs.changes.outputs.code == 'true'
