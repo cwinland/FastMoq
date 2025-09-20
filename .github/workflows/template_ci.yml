@@ -135,3 +135,21 @@ jobs:
             fi
           } >> "$GITHUB_STEP_SUMMARY"
 
+  tests-aggregate:
+    runs-on: ubuntu-latest
+    needs: build-test
+    if: always()
+    steps:
+      - name: Aggregate matrix result
+        run: |
+          echo "Aggregating test matrix results..."
+          result='${{ needs.build-test.result }}'
+          echo "Matrix overall result: $result"
+          if [ "$result" != "success" ]; then
+            echo "One or more test legs failed. See individual build-test jobs."
+            exit 1
+          fi
+          echo "All test legs passed." >> $GITHUB_STEP_SUMMARY
+          echo "### Test Matrix Summary" >> $GITHUB_STEP_SUMMARY
+          echo "All frameworks succeeded." >> $GITHUB_STEP_SUMMARY
+
