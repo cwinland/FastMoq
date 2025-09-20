@@ -62,21 +62,22 @@ jobs:
           9.0.x
           8.0.x
 
-    - name: Restore .NET
+    - name: Restore .NET (Release solution only)
       if: matrix.language == 'csharp'
       run: |
         set -euo pipefail
-        echo "Restoring all .NET solutions/projects (no lock files)"
-        if ls *.sln 1> /dev/null 2>&1; then
+        # Use the release solution (excludes test projects) to avoid building test SDK under net6.0
+        if [ -f FastMoq-Release.sln ]; then
+          echo "Restoring FastMoq-Release.sln"
+          dotnet restore FastMoq-Release.sln
+        else
+          echo "FastMoq-Release.sln not found; falling back to all solution files"
           for sln in *.sln; do
             echo "Restoring solution: $sln"
             dotnet restore "$sln"
           done
-        else
-          echo "No solution file found; restoring individual projects"
-          find . -name '*.csproj' -maxdepth 6 -print0 | xargs -0 -I{} dotnet restore {}
         fi
-        echo "Restore complete"
+        echo "Restore complete (release scope)"
 
     # Configure environment before firewall restrictions
     - name: Configure GitHub Actions environment
@@ -99,13 +100,17 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-    - name: Build (manual single TFM for CodeQL)
+    - name: Build (manual single TFM for CodeQL - release scope)
       if: matrix.language == 'csharp' && matrix.build-mode == 'manual'
       run: |
         set -euo pipefail
-        echo "Manual build for CodeQL semantic extraction (net9.0)"
-        # Build only once for highest supported TFM to capture symbols
-        dotnet build FastMoq.sln -c Release -f net9.0 /p:UseSharedCompilation=false --no-restore
+        echo "Manual build for CodeQL semantic extraction (net9.0) using release solution"
+        SLN=FastMoq-Release.sln
+        if [ ! -f "$SLN" ]; then
+          echo "Release solution not found; falling back to FastMoq.sln"
+          SLN=FastMoq.sln
+        fi
+        dotnet build "$SLN" -c Release -f net9.0 /p:UseSharedCompilation=false --no-restore
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
