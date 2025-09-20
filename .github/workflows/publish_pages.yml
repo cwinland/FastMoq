@@ -7,27 +7,22 @@ permissions:
   id-token: write     # to request the OIDC token (fixes ACTIONS_ID_TOKEN_REQUEST_URL error)
 
 on:
-  push:
-    branches: [ master ]
-    paths:
-      - '.github/workflows/publish_pages.yml'
-      - 'Help/**'
-      - 'docs/**'
-  workflow_dispatch:
+  # Publish only after CI succeeds or when manually dispatched
   workflow_run:
     workflows: ["CI (master)"]
-    types:
-      - completed
+    types: [ completed ]
+  workflow_dispatch:
 
 # Ensure only one Pages deployment runs at a time
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
-    # Run this job for all events except 'workflow_run', and only for successful 'workflow_run' events.
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    # Only run for successful CI completion or manual dispatch
+    if: >-
+      ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:
@@ -63,3 +58,15 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Deployment summary
+        if: success()
+        run: |
+          {
+            echo "### Pages Deployment";
+            echo "Commit: $GITHUB_SHA";
+            echo "Actor: $GITHUB_ACTOR";
+            if [ -n "${{ steps.deployment.outputs.page_url }}" ]; then
+              echo "URL: ${{ steps.deployment.outputs.page_url }}";
+            fi;
+          } >> $GITHUB_STEP_SUMMARY
