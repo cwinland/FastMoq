@@ -17,10 +17,32 @@ permissions:
   actions: read
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            code:
+              - '**/*.cs'
+              - '**/*.csproj'
+              - '**/*.sln'
+              - 'FastMoq*.nuspec'
+              - '!docs/**'
+              - '!**/*.md'
+              - '!Help/**'
   codeql:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     uses: ./.github/workflows/codeql.yml
 
   build-test:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -35,6 +57,9 @@ jobs:
         with:
           dotnet-version: ${{ matrix.framework }}
           cache: true
+          cache-dependency-path: |
+            **/*.csproj
+            **/*.sln
 
       - name: Set environment
         run: |
@@ -62,7 +87,7 @@ jobs:
               echo "[RESTORE] $proj ($tfm)" >> skipped.txt
               continue
             fi
-            dotnet restore "$proj" --framework "$tfm"
+            dotnet restore "$proj" --framework "$tfm" --use-lock-file --locked-mode
           done
 
       - name: Build (TFM-scoped)
