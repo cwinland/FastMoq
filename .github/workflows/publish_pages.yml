@@ -26,6 +26,7 @@ concurrency:
 
 jobs:
   deploy:
+    # Run this job for all events except 'workflow_run', and only for successful 'workflow_run' events.
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
