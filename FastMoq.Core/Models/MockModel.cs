@@ -1,146 +1,168 @@
-﻿using Moq;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using FastMoq.Providers;
+using Moq; // legacy (to be removed in future)
+using FastMoq.Core.Providers.MoqProvider; // unified adapter path
 
 namespace FastMoq.Models
 {
     /// <summary>
-    ///     Contains Mock and Type information.
+    ///     Contains provider-agnostic mock and Type information.
     /// </summary>
-    /// <inheritdoc cref="IComparable{MockModel}" />
-    /// <inheritdoc cref="IComparable" />
-    /// <inheritdoc cref="IEquatable{MockModel}" />
-    /// <inheritdoc cref="IEqualityComparer{MockModel}" />
     public class MockModel : IComparable<MockModel>, IComparable, IEquatable<MockModel>, IEqualityComparer<MockModel>
     {
+        #region Fields / Backing
+        private Mock? _legacyMock; // lazy hydrated legacy mock
+        #endregion
+
         #region Properties
 
         /// <summary>
-        ///     Gets or sets the mock.
+        /// Legacy Moq mock surface. Will be removed in a future major version.
+        /// Prefer using <see cref="FastMock" /> / <see cref="Instance" />.
+        /// Lazily hydrated from the provider adapter when first accessed.
         /// </summary>
-        /// <value>The mock.</value>
-        public Mock Mock { get; set; }
+        [Obsolete("Use FastMock / Instance instead. This legacy Moq surface will be removed.")]
+        public Mock Mock
+        {
+            get
+            {
+                if (_legacyMock == null)
+                {
+                    // Attempt lazy hydration (provider-first path may not have set it yet)
+                    TryAssignLegacyMockFromAdapter();
+                    // If still null, legacy surface is not available for this provider.
+                    if (_legacyMock == null)
+                    {
+                        throw new NotSupportedException("Active mocking provider does not expose a legacy Moq.Mock instance.");
+                    }
+                }
+                return _legacyMock;
+            }
+            internal set
+            {
+                _legacyMock = value ?? throw new ArgumentNullException(nameof(value));
+                RefreshFastMockFromLegacy();
+            }
+        }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether [non public].
+        /// Provider-agnostic abstraction for the mock instance.
         /// </summary>
-        /// <value><c>true</c> if [non public]; otherwise, <c>false</c>.</value>
+        public IFastMock FastMock { get; internal set; }
+
+        /// <summary>
+        /// The mocked instance (object under test substitute) from the provider abstraction.
+        /// </summary>
+        public object Instance => FastMock.Instance;
+
+        /// <summary>
+        /// Indicates whether the mock was created allowing non-public constructors.
+        /// </summary>
         public bool NonPublic { get; set; }
 
         /// <summary>
-        ///     Gets or sets the type.
+        /// Mocked type (same as <see cref="FastMock.MockedType"/>).
         /// </summary>
-        /// <value>The type.</value>
         public virtual Type Type { get; }
 
         #endregion
 
+        #region Construction
+
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MockModel" /> class.
+        /// Provider-first constructor (preferred). Accepts an <see cref="IFastMock"/> created by a provider.
+        /// Attempts to hydrate the legacy Moq <see cref="Mock"/> property when the underlying provider is Moq.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="mock">The mock.</param>
-        /// <param name="nonPublic">if set to <c>true</c> [non public].</param>
-        /// <exception cref="System.ArgumentNullException">type</exception>
-        /// <exception cref="System.ArgumentNullException">mock</exception>
+        internal MockModel(IFastMock fastMock, bool nonPublic = false)
+        {
+            FastMock = fastMock ?? throw new ArgumentNullException(nameof(fastMock));
+            Type = fastMock.MockedType ?? throw new ArgumentNullException(nameof(fastMock.MockedType));
+            NonPublic = nonPublic;
+            // Legacy hydration deferred until first access to Mock (lazy) for performance / provider agnosticism.
+        }
+
+        /// <summary>
+        /// Legacy constructor used while migration is in progress.
+        /// Wraps provided Moq.Mock inside a unified <see cref="MoqMockAdapter"/>.
+        /// </summary>
         internal MockModel(Type type, Mock mock, bool nonPublic = false)
         {
             Type = type ?? throw new ArgumentNullException(nameof(type));
-            Mock = mock ?? throw new ArgumentNullException(nameof(mock));
+            _legacyMock = mock ?? throw new ArgumentNullException(nameof(mock));
             NonPublic = nonPublic;
+            FastMock = new MoqMockAdapter(mock); // unified adapter creation
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Refresh FastMock wrapper from current legacy Mock (used when the legacy mock instance is replaced).
+        /// </summary>
+        internal void RefreshFastMockFromLegacy()
+        {
+            if (_legacyMock != null)
+            {
+                FastMock = new MoqMockAdapter(_legacyMock);
+            }
+        }
+
+        /// <summary>
+        /// Attempts to populate the legacy <see cref="Mock"/> property from the provider adapter (Moq only).
+        /// </summary>
+        private void TryAssignLegacyMockFromAdapter()
+        {
+            if (_legacyMock != null) return;
+            try
+            {
+                // Common adapter property names.
+                var adapterType = FastMock.GetType();
+                var innerProp = adapterType.GetProperty("Inner", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance) ??
+                                 adapterType.GetProperty("InnerMock", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                if (innerProp?.GetValue(FastMock) is Mock m)
+                {
+                    _legacyMock = m; // hydrate legacy surface
+                }
+            }
+            catch
+            {
+                // Ignore – provider not Moq or structure changed.
+            }
+        }
+        #endregion
+
+        #region Equality / Comparison
         public override bool Equals(object? obj) => IsEqual(this, obj as MockModel);
 
-        /// <inheritdoc />
         [ExcludeFromCodeCoverage]
         public override int GetHashCode() => Type.GetHashCode();
 
-        /// <summary>
-        ///     Determines whether the specified x is equal.
-        /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// <returns><c>true</c> if the specified x is equal; otherwise, <c>false</c>.</returns>
-        public static bool IsEqual<T>(T? x, T? y) where T : MockModel =>
+        public static bool IsEqual<TModel>(TModel? x, TModel? y) where TModel : MockModel =>
+            ReferenceEquals(x, y) || (!IsOneNull(x, y) && IsMockTypeNameEqual(x, y));
 
-            // If both are null, or both are same instance, return true.
-            ReferenceEquals(x, y) ||
-
-            // If one is null, but not both, return false.
-            (!IsOneNull(x, y) &&
-
-             // Return true if the fields match:
-             IsMockTypeNameEqual(x, y));
-
-        /// <summary>
-        ///     Implements the == operator.
-        /// </summary>
-        /// <param name="a">a.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The result of the operator.</returns>
         [ExcludeFromCodeCoverage]
         public static bool operator ==(MockModel? a, MockModel? b) => IsEqual(a, b);
-
-        /// <summary>
-        ///     Implements the != operator.
-        /// </summary>
-        /// <param name="a">a.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The result of the operator.</returns>
         [ExcludeFromCodeCoverage]
         public static bool operator !=(MockModel? a, MockModel? b) => !(a == b);
 
-        /// <inheritdoc />
         public override string ToString() => Type.Name;
 
-        internal static bool IsMockTypeNameEqual<T>(T? x, T? y) where T : MockModel =>
+        internal static bool IsMockTypeNameEqual<TModel>(TModel? x, TModel? y) where TModel : MockModel =>
             x?.Type.Name.Equals(y?.Type.Name, StringComparison.OrdinalIgnoreCase) ?? false;
 
-        /// <summary>
-        ///     Determines whether [is one null] [the specified x].
-        /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// <returns><c>true</c> if [is one null] [the specified x]; otherwise, <c>false</c>.</returns>
+        internal static bool IsOneNull<TModel>(TModel? x, TModel? y) where TModel : MockModel => x as object is null || y as object is null;
+        #endregion
 
-        // Safe cast prevents from calling overloaded equality.
-        // ReSharper disable SafeCastIsUsedAsTypeCheck
-        internal static bool IsOneNull<T>(T? x, T? y) where T : MockModel => x as object is null || y as object is null;
-
-        #region IComparable
-
-        /// <inheritdoc />
+        #region IComparable / IEquatable / IEqualityComparer
         public virtual int CompareTo(object? obj) =>
             obj is MockModel mockModel ? CompareTo(mockModel) : throw new ArgumentException("Not a MockModel instance");
 
-        #endregion
-
-        #region IComparable<MockModel>
-
-        /// <inheritdoc />
         public int CompareTo(MockModel? other) => string.Compare(Type.FullName, other?.Type.FullName, StringComparison.OrdinalIgnoreCase);
 
-        #endregion
-
-        #region IEqualityComparer<MockModel>
-
-        /// <inheritdoc />
         [ExcludeFromCodeCoverage]
         public bool Equals(MockModel? x, MockModel? y) => IsEqual(x, y);
-
-        /// <inheritdoc />
         [ExcludeFromCodeCoverage]
         public int GetHashCode(MockModel obj) => GetHashCode();
-
-        #endregion
-
-        #region IEquatable<MockModel>
-
-        /// <inheritdoc />
         [ExcludeFromCodeCoverage]
         public bool Equals(MockModel? other) => IsEqual(this, other);
-
         #endregion
     }
 }

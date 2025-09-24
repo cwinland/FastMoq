@@ -1,95 +1,64 @@
-﻿using Moq;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using FastMoq.Providers;
+using Moq; // legacy while migrating
 
 namespace FastMoq.Models
 {
     /// <summary>
-    ///     Class MockModel.
-    ///     Implements the <see cref="MockModel" />
+    ///     Generic mock model wrapper (provider-first, Moq legacy compatible).
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <seealso cref="MockModel" />
-    /// <inheritdoc cref="MockModel" />
     public class MockModel<T> : MockModel, IComparable<MockModel<T>>, IEquatable<MockModel<T>>, IEqualityComparer<MockModel<T>> where T : class
     {
         #region Properties
-
-        /// <summary>
-        ///     Gets or sets the mock.
-        /// </summary>
-        /// <value>The mock.</value>
+        [Obsolete("Use TypedFastMock / Instance instead. Will be removed in a future major version.")]
         public new Mock<T> Mock
         {
-            get => (Mock<T>) base.Mock;
-            set => base.Mock = value;
+            get => (Mock<T>)base.Mock;
+            internal set
+            {
+                base.Mock = value;
+                // Re-hydrate adapter from legacy mock
+                RefreshFastMockFromLegacy();
+            }
         }
 
-        /// <inheritdoc />
+        public IFastMock<T> TypedFastMock => (IFastMock<T>)FastMock;
         public override Type Type => typeof(T);
-
+        public new T Instance => TypedFastMock.Instance;
         #endregion
 
-        /// <inheritdoc />
+        #region Construction
+        internal MockModel(IFastMock<T> fastMock, bool nonPublic = false) : base(fastMock, nonPublic) { }
         internal MockModel(Mock mock) : base(typeof(T), mock) { }
+        internal MockModel(MockModel baseModel) : base(baseModel.FastMock, baseModel.NonPublic) { }
+        #endregion
 
-        /// <inheritdoc />
-        internal MockModel(MockModel mockModel) : base(mockModel.Type, mockModel.Mock) { }
-
-        /// <inheritdoc />
+        #region Comparison / Equality
         public override int CompareTo(object? obj) =>
-            obj is MockModel<T> mockModel ? CompareTo(mockModel) : throw new ArgumentException($"Not a MockModel<{typeof(T)}> instance");
+            obj is MockModel<T> mockModel ? CompareTo(mockModel) : throw new ArgumentException($"Not a MockModel<{typeof(T).Name}> instance");
 
-        /// <inheritdoc />
         public override bool Equals(object? obj) => IsEqual(this, obj as MockModel<T>);
 
-        /// <inheritdoc />
         [ExcludeFromCodeCoverage]
         public override int GetHashCode() => base.GetHashCode();
 
-        /// <summary>
-        ///     Implements the == operator.
-        /// </summary>
-        /// <param name="a">a.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The result of the operator.</returns>
         [ExcludeFromCodeCoverage]
-        public static bool operator ==(MockModel<T> a, MockModel<T> b) => IsEqual(a, b);
-
-        /// <summary>
-        ///     Implements the != operator.
-        /// </summary>
-        /// <param name="a">a.</param>
-        /// <param name="b">The b.</param>
-        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(MockModel<T>? a, MockModel<T>? b) => IsEqual(a, b);
         [ExcludeFromCodeCoverage]
-        public static bool operator !=(MockModel<T> a, MockModel<T> b) => !IsEqual(a, b);
+        public static bool operator !=(MockModel<T>? a, MockModel<T>? b) => !IsEqual(a, b);
 
-        #region IComparable<MockModel<T>>
-
-        /// <inheritdoc />
         [ExcludeFromCodeCoverage]
         public int CompareTo(MockModel<T>? other) => base.CompareTo(other);
 
-        #endregion
-
-        #region IEqualityComparer<MockModel<T>>
-
-        /// <inheritdoc />
         [ExcludeFromCodeCoverage]
         public bool Equals(MockModel<T>? x, MockModel<T>? y) => IsEqual(x, y);
 
-        /// <inheritdoc />
         [ExcludeFromCodeCoverage]
         public int GetHashCode(MockModel<T> obj) => base.GetHashCode(obj);
 
-        #endregion
-
-        #region IEquatable<MockModel<T>>
-
-        /// <inheritdoc />
         [ExcludeFromCodeCoverage]
         public bool Equals(MockModel<T>? other) => IsEqual(this, other);
-
         #endregion
     }
 }

@@ -376,6 +376,14 @@
           "Castle.Core": "5.1.1"
         }
       },
+      "NSubstitute": {
+        "type": "Transitive",
+        "resolved": "5.1.0",
+        "contentHash": "ZCqOP3Kpp2ea7QcLyjMU4wzE+0wmrMN35PQMsdPOHYc2IrvjmusG9hICOiqiOTPKN0gJon6wyCn6ZuGHdNs9hQ==",
+        "dependencies": {
+          "Castle.Core": "5.1.1"
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3": {
         "type": "Transitive",
         "resolved": "2.1.6",
@@ -473,6 +481,7 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Sqlite": "[8.*, )",
           "Moq": "[4.18.4, 4.18.4]",
+          "NSubstitute": "[5.1.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, 21.3.1]",
           "xunit.abstractions": "[2.0.3, )"
         }
@@ -870,6 +879,14 @@
           "Castle.Core": "5.1.1"
         }
       },
+      "NSubstitute": {
+        "type": "Transitive",
+        "resolved": "5.1.0",
+        "contentHash": "ZCqOP3Kpp2ea7QcLyjMU4wzE+0wmrMN35PQMsdPOHYc2IrvjmusG9hICOiqiOTPKN0gJon6wyCn6ZuGHdNs9hQ==",
+        "dependencies": {
+          "Castle.Core": "5.1.1"
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3": {
         "type": "Transitive",
         "resolved": "2.1.10",
@@ -948,6 +965,7 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Sqlite": "[9.*, )",
           "Moq": "[4.18.4, 4.18.4]",
+          "NSubstitute": "[5.1.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, 21.3.1]",
           "xunit.abstractions": "[2.0.3, )"
         }

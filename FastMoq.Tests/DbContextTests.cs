@@ -11,7 +11,8 @@ namespace FastMoq.Tests
         [Fact]
         public void GetDbContext_WithOptions()
         {
-            var mockDbContext = Mocks.GetDbContext(options => new MyDbContext((DbContextOptions<MyDbContext>)options));
+            // Specify generic type explicitly so compiler can infer lambda types correctly under new signature.
+            var mockDbContext = Mocks.GetDbContext<MyDbContext>(options => new MyDbContext(options));
             mockDbContext.Certificates.Should().HaveCount(0);
             mockDbContext.MyDbSetData.Should().HaveCount(0);
             mockDbContext.MyDbSetData2.Should().HaveCount(0);

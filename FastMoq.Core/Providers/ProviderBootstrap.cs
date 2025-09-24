@@ -1,6 +1,7 @@
+using System.Threading;
 using System.Runtime.CompilerServices;
-using FastMoq.Core.Providers.MoqProvider;
-using FastMoq.Core.Providers.Reflection;
+using FastMoq.Providers.MoqProvider; // updated namespace
+using FastMoq.Providers.ReflectionProvider; // updated namespace
 using FastMoq.Providers;
 
 [assembly: InternalsVisibleTo("FastMoq.Tests")]
@@ -15,10 +16,9 @@ namespace FastMoq.Core.Providers
         public static void Ensure()
         {
             if (Interlocked.Exchange(ref _initialized, 1) == 1) return;
-            // Register reflection provider first (non-default) then Moq provider as default.
-            MockingProviderRegistry.Register("reflection", new ReflectionMockingProvider(), setAsDefault: false);
-            IMockingProvider provider = new MoqMockingProvider();
-            MockingProviderRegistry.Register("moq", provider, setAsDefault: true);
+            // Register providers (registry static ctor also registers these; this is a safety net for early access scenarios)
+            MockingProviderRegistry.Register("reflection", ReflectionMockingProvider.Instance, setAsDefault: false);
+            MockingProviderRegistry.Register("moq", MoqMockingProvider.Instance, setAsDefault: true);
         }
     }
 }

@@ -13,22 +13,16 @@ namespace FastMoq.Extensions
         /// <summary>
         ///     Creates the HTTP client using a mock IHttpClientFactory.
         /// </summary>
-        /// <param name="mocker">The mocker.</param>
-        /// <param name="clientName">Name of the client.</param>
-        /// <param name="baseAddress">The base address.</param>
-        /// <param name="statusCode">The status code.</param>
-        /// <param name="stringContent">Content of the string.</param>
-        /// <returns>HttpClient object.</returns>
-        /// <exception cref="System.ApplicationException">Unable to create IHttpClientFactory.</exception>
         public static HttpClient CreateHttpClient(this Mocker mocker, string clientName = "FastMoqHttpClient", string baseAddress = "http://localhost",
             HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1}]")
         {
             var setupHttpFactory = false;
-
             var baseUri = new Uri(baseAddress);
 
+            // Ensure handler mock exists (idempotent due to CreateMock changes / GetMock usage)
             if (!mocker.Contains<HttpMessageHandler>())
             {
+                mocker.GetMock<HttpMessageHandler>(); // create or fetch
                 mocker.SetupHttpMessage(() => new HttpResponseMessage
                     {
                         StatusCode = statusCode,
@@ -72,7 +66,7 @@ namespace FastMoq.Extensions
         {
             request ??= ItExpr.IsAny<HttpRequestMessage>();
             cancellationToken ??= ItExpr.IsAny<CancellationToken>();
-
+            mocker.GetMock<HttpMessageHandler>(); // ensure exists
             mocker.SetupMessageProtectedAsync<HttpMessageHandler, HttpResponseMessage>("SendAsync", messageFunc, request, cancellationToken);
         }
 
@@ -149,7 +143,7 @@ namespace FastMoq.Extensions
         /// </summary>
         /// <param name="content">The content.</param>
         /// <returns>System.IO.Stream.</returns>
-        public static async Task<Stream> GetContentStreamAsync (this HttpContent content) =>
+        public static async Task<Stream> GetContentStreamAsync(this HttpContent content) =>
             content is ByteArrayContent data ? await data.ReadAsStreamAsync() : Stream.Null;
     }
 }

@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
+using FastMoq.Providers.MoqProvider;
+using FastMoq.Core.Providers.NSubstituteProvider; // added
+using FastMoq.Providers.ReflectionProvider; // added reflection provider
 
 namespace FastMoq.Providers
 {
@@ -12,6 +15,16 @@ namespace FastMoq.Providers
         private static readonly ConcurrentDictionary<string, IMockingProvider> _providers = new(StringComparer.OrdinalIgnoreCase);
         private static IMockingProvider? _default;
         private static readonly AsyncLocal<IMockingProvider?> _current = new();
+
+        static MockingProviderRegistry()
+        {
+            // Auto-register Moq provider as default if consumer did not register any provider yet.
+            Register("moq", MoqMockingProvider.Instance, setAsDefault: true);
+            // Register NSubstitute (not default) for validation / optional use.
+            Register("nsubstitute", NSubstituteMockingProvider.Instance, setAsDefault: false);
+            // Register reflection fallback provider (lowest priority, not default)
+            Register("reflection", ReflectionMockingProvider.Instance, setAsDefault: false);
+        }
 
         public static void Register(string name, IMockingProvider provider, bool setAsDefault = false)
         {

@@ -8,7 +8,6 @@ namespace FastMoq.Providers
     public interface IMockingProviderCapabilities
     {
         bool SupportsCallBase { get; }
-        bool SupportsStrict { get; }
         bool SupportsSetupAllProperties { get; }
         bool SupportsProtectedMembers { get; }
         bool SupportsInvocationTracking { get; }

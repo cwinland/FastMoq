@@ -8,6 +8,7 @@ namespace FastMoq.Providers
     public sealed record MockCreationOptions(
         bool Strict = false,
         bool CallBase = true,
-        object?[]? ConstructorArgs = null
+        object?[]? ConstructorArgs = null,
+        bool AllowNonPublic = false // NEW: permit provider to use non-public (e.g. protected) ctors when available
     );
 }
