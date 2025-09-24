@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "Xunit"
-    ]
+    ],
+    "sarif-viewer.connectToGithubCodeScanning": "off"
 }
