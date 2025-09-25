@@ -26,7 +26,7 @@ It wraps and extends mocking providers (currently Moq, with planned provider‑a
 ## 🧩 Coding Guidelines for Copilot
 When generating code:
 1. **Provider‑agnostic first**  
-   - Use `IMockingProvider` methods for verification and mock creation.
+   - Use `IMockingProvider` methods for mock creation, setup, verification, etc.
    - Only use Moq APIs inside `MoqProvider` or Moq‑specific test code.
 2. **Reuse shared helpers**  
    - For component creation, always call `MockerConstructionHelper.CreateInstance`.
@@ -45,6 +45,18 @@ When generating code:
 6. **Document new APIs**  
    - Add XML doc comments for public methods.
    - Include usage examples in Milestone docs.
+7. **Static Analysis (Sonar) Compliance**  
+   - Honor the rules in the "Static Analysis Rules" section below (S121, S122, S6608) when generating or refactoring code.
+
+## 🔐 Static Analysis Rules (Sonar)
+Apply these consistently in generated code (and prefer refactoring existing code toward them when touched):
+- S121: Always use curly braces for control structures (`if/else`, `for`, `foreach`, `while`, `do`, `using`, `lock`, `switch` sections). No single-line implicit blocks.
+- S122: One statement per line. Avoid multiple statements separated by semicolons on the same line. Keep declarations and executable statements clearly separated for readability.
+- S6608: Prefer modern, clear C# constructs (pattern matching / expression forms) when it improves readability and safety, without sacrificing clarity. Do not apply micro-optimizations that reduce clarity. (If applicability is ambiguous, prefer the most readable form and add a brief comment if deviating.)
+
+Notes:
+- Do not introduce breaking changes solely to satisfy these rules. Apply them opportunistically or in newly generated code.
+- If a rule conflicts with existing public API shape or widely-used patterns in the repository, prefer backward compatibility and add a TODO comment.
 
 ## 🚫 Avoid
 - Hard‑coding Moq calls in shared/core code.
@@ -258,7 +270,7 @@ public void SaveEntity_ShouldCallRepository_WithCorrectParameters()
     var entity = new TestEntity { Id = 123 };
 
     // Act
-    Mocks.CallMethod(Component.SaveEntity, entity);
+    Component.SaveEntity(entity);
 
     // Assert
     Mocks.GetMock<IRepository>()

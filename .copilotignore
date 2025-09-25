@@ -46,3 +46,25 @@ packages.lock.json
 Help/
 docs/benchmarks/
 *.GhostDoc.xml
+
+# Additional IDE files
+.idea/
+*.sln.docstates
+*.sln.cache
+*.csproj.user
+
+# Documentation and design files
+docs/architecture/
+docs/diagrams/
+*.vsdx
+*.drawio
+*.md.backup
+*.sln.GhostDoc.xml
+
+# Blazor test assets
+FastMoq.Tests.Blazor/wwwroot/
+
+# Copilot-specific files
+.copilot/
+copilot.log
+copilot_suggestions/
