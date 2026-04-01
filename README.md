@@ -14,7 +14,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 ### Additional Resources
 - **📖 [Complete Documentation](./docs)** - All guides and references in one place
 - **❓ [FAQs](./FAQs.md)** - Frequently asked questions and troubleshooting
-- **🔗 [API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)** - Complete API reference
+- **🔗 [API Documentation](http://help.fastmoq.com/)** - Complete API reference
 
 ## Features
 
