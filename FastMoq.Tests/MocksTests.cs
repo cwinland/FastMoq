@@ -126,6 +126,16 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetFastMock_ShouldReturnProviderFirstMock()
+        {
+            var fastMock = Mocks.GetFastMock<IFileSystemInfo>();
+
+            fastMock.MockedType.Should().Be(typeof(IFileSystemInfo));
+            fastMock.NativeMock.Should().BeOfType<Mock<IFileSystemInfo>>();
+            fastMock.Instance.Should().BeSameAs(Mocks.GetObject<IFileSystemInfo>());
+        }
+
+        [Fact]
         public void GetMockModel_NativeMock_ShouldMatchCurrentProviderObject()
         {
             Mocks.GetMock<IFileSystem>();
@@ -233,12 +243,49 @@ namespace FastMoq.Tests
             new Action(() => Mocks.CreateInstance<TestClassMany>()).Should().Throw<AmbiguousImplementationException>();
             new Action(() => Mocks.CreateInstanceNonPublic<TestClassOne>().Should().NotBeNull()).Should().Throw<AmbiguousImplementationException>();
 
-            Mocks.Strict = true;
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
             // No Constructor.
             new Action(() => Mocks.CreateInstance<IFileSystem>(false).Should().NotBeNull()).Should().Throw<NotImplementedException>();
 
             // Valid Constructor.
             new Action(() => Mocks.CreateInstance<IFileSystem>(true).Should().NotBeNull()).Should().NotThrow();
+        }
+
+        [Fact]
+        public void Strict_ShouldOnlyToggleFailOnUnconfigured()
+        {
+            Mocks.Behavior = MockBehaviorOptions.LenientPreset.Clone().Disable(MockFeatures.AutoInjectDependencies);
+
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+
+            Mocks.Behavior.Has(MockFeatures.FailOnUnconfigured).Should().BeTrue();
+            Mocks.Behavior.Has(MockFeatures.AutoInjectDependencies).Should().BeFalse();
+            Mocks.Behavior.Has(MockFeatures.AutoSetupProperties).Should().BeTrue();
+            Mocks.Behavior.Has(MockFeatures.LoggerCallback).Should().BeTrue();
+
+            Mocks.Behavior.Disable(MockFeatures.FailOnUnconfigured);
+
+            Mocks.Behavior.Has(MockFeatures.FailOnUnconfigured).Should().BeFalse();
+            Mocks.Behavior.Has(MockFeatures.AutoInjectDependencies).Should().BeFalse();
+            Mocks.Behavior.Has(MockFeatures.AutoSetupProperties).Should().BeTrue();
+        }
+
+        [Fact]
+        public void UseStrictPreset_ShouldApplyStrictPreset()
+        {
+            Mocks.UseStrictPreset();
+
+            Mocks.Behavior.Enabled.Should().Be(MockBehaviorOptions.StrictPreset.Enabled);
+        }
+
+        [Fact]
+        public void UseLenientPreset_ShouldApplyLenientPreset()
+        {
+            Mocks.UseStrictPreset();
+
+            Mocks.UseLenientPreset();
+
+            Mocks.Behavior.Enabled.Should().Be(MockBehaviorOptions.LenientPreset.Enabled);
         }
 
         [Fact]
@@ -473,7 +520,7 @@ namespace FastMoq.Tests
             Mocks.fileSystem.FileSystem.Should().NotBeNull();
             typeof(IFileSystem).IsAssignableFrom(Mocks.fileSystem.FileSystem.GetType()).Should().BeTrue();
             Mocks.GetObject<IFileSystem>().Should().Be(Mocks.fileSystem.FileSystem);
-            Mocks.Strict = true;
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
             Mocks.GetObject<IFileSystem>().Should().NotBe(Mocks.fileSystem.FileSystem);
         }
 
@@ -481,7 +528,7 @@ namespace FastMoq.Tests
         public void AddKnownType_ShouldOverrideBuiltInDirectInstance()
         {
             var customFileSystem = new MockFileSystem().FileSystem;
-            Mocks.Strict = true;
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
 
             Mocks.AddKnownType<IFileSystem>(directInstanceFactory: (_, _) => customFileSystem);
 
@@ -503,12 +550,9 @@ namespace FastMoq.Tests
                         typedMock.SetupMockProperty(x => x.Configured!, "configured");
                     }
                 },
-                applyObjectDefaults: (_, obj) =>
+                applyObjectDefaults: (_, contract) =>
                 {
-                    if (obj is IKnownTypeContract contract)
-                    {
-                        contract.Applied = "applied";
-                    }
+                    contract.Applied = "applied";
                 },
                 includeDerivedTypes: true);
 
@@ -1016,7 +1060,7 @@ namespace FastMoq.Tests
             Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestInt", true, 2).Should().Be(2);
             Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true, 2).Should().Be(2);
 
-            Mocks.Strict = true;
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
             Action a = () => Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
             a.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Specified argument was out of the range of valid values.*");
         }
@@ -1332,6 +1376,7 @@ namespace FastMoq.Tests
         [Fact]
         public void AddType_ShouldHaveValues3_WhenMockOptional()
         {
+#pragma warning disable CS0618 // Intentional compatibility coverage for deprecated context-based AddType overload.
             Mocks.AddType((a,b) =>
             {
                 if (b is ParameterInfo info)
@@ -1356,11 +1401,13 @@ namespace FastMoq.Tests
             obj.TenantId.Should().NotBeNull();
             obj.TenantId.Should().NotBeEmpty();
             obj.TenantId2.Should().NotBeEmpty();
+#pragma warning restore CS0618
         }
 
         [Fact]
         public void AddType_ShouldHaveValues3_WhenNotMockOptional()
         {
+#pragma warning disable CS0618 // Intentional compatibility coverage for deprecated context-based AddType overload.
             Mocks.AddType((a, b) =>
             {
                 if (b is ParameterInfo info)
@@ -1384,6 +1431,7 @@ namespace FastMoq.Tests
             obj.TenantId.Should().NotBeNull();
             obj.TenantId.Should().NotBeEmpty();
             obj.TenantId2.Should().NotBeEmpty();
+#pragma warning restore CS0618
         }
 
         private static void LogException(Exception ex, ILogger log, string customMessage = "", [CallerMemberName] string caller = "")
@@ -1428,8 +1476,8 @@ namespace FastMoq.Tests
 
         private static void SetupAction(Mocker mocks)
         {
-            mocks.Initialize<IDirectory>(mock => mock.SetupAllProperties());
-            mocks.Initialize<IFileInfo>(mock => mock.SetupAllProperties());
+            mocks.GetMock<IDirectory>().SetupAllProperties();
+            mocks.GetMock<IFileInfo>().SetupAllProperties();
         }
     }
 }

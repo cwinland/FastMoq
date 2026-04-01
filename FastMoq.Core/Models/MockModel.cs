@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using FastMoq.Providers;
-using Moq; // legacy (to be removed in future)
 using FastMoq.Providers.MoqProvider; // unified adapter path
+using Moq; // legacy (to be removed in future)
 
 namespace FastMoq.Models
 {
@@ -12,7 +12,7 @@ namespace FastMoq.Models
     public class MockModel : IComparable<MockModel>, IComparable, IEquatable<MockModel>, IEqualityComparer<MockModel>
     {
         #region Fields / Backing
-        private Mock? _legacyMock; // lazy hydrated legacy mock
+        private Mock? legacyMock; // lazy hydrated legacy mock
         #endregion
 
         #region Properties
@@ -62,7 +62,7 @@ namespace FastMoq.Models
         public bool NonPublic { get; set; }
 
         /// <summary>
-        /// Mocked type (same as <see cref="FastMock.MockedType"/>).
+        /// Mocked type exposed by the current <see cref="IFastMock"/> instance.
         /// </summary>
         public virtual Type Type { get; }
 
@@ -89,7 +89,7 @@ namespace FastMoq.Models
         internal MockModel(Type type, Mock mock, bool nonPublic = false)
         {
             Type = type ?? throw new ArgumentNullException(nameof(type));
-            _legacyMock = mock ?? throw new ArgumentNullException(nameof(mock));
+            legacyMock = mock ?? throw new ArgumentNullException(nameof(mock));
             NonPublic = nonPublic;
             FastMock = new MoqMockAdapter(mock); // unified adapter creation
         }
@@ -99,26 +99,26 @@ namespace FastMoq.Models
         /// </summary>
         internal void RefreshFastMockFromLegacy()
         {
-            if (_legacyMock != null)
+            if (legacyMock != null)
             {
-                FastMock = new MoqMockAdapter(_legacyMock);
+                FastMock = new MoqMockAdapter(legacyMock);
             }
         }
 
         internal void SetLegacyMock(Mock mock)
         {
-            _legacyMock = mock ?? throw new ArgumentNullException(nameof(mock));
+            legacyMock = mock ?? throw new ArgumentNullException(nameof(mock));
             RefreshFastMockFromLegacy();
         }
 
         internal bool TryGetLegacyMock([NotNullWhen(true)] out Mock? mock)
         {
-            if (_legacyMock == null)
+            if (legacyMock == null)
             {
                 TryAssignLegacyMockFromAdapter();
             }
 
-            mock = _legacyMock;
+            mock = legacyMock;
             return mock != null;
         }
 
@@ -127,11 +127,14 @@ namespace FastMoq.Models
         /// </summary>
         private void TryAssignLegacyMockFromAdapter()
         {
-            if (_legacyMock != null) return;
+            if (legacyMock != null)
+            {
+                return;
+            }
 
             if (FastMock.NativeMock is Mock nativeMock)
             {
-                _legacyMock = nativeMock;
+                legacyMock = nativeMock;
                 return;
             }
 
@@ -143,7 +146,7 @@ namespace FastMoq.Models
                                  adapterType.GetProperty("InnerMock", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
                 if (innerProp?.GetValue(FastMock) is Mock m)
                 {
-                    _legacyMock = m; // hydrate legacy surface
+                    legacyMock = m; // hydrate legacy surface
                 }
             }
             catch

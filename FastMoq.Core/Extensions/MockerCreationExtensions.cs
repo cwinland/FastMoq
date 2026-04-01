@@ -135,7 +135,10 @@ namespace FastMoq.Extensions
             var newType = isDbContext ? typeof(DbContextMock<>).MakeGenericType(type) : typeof(Mock<>).MakeGenericType(type);
 
             // Execute new Mock with Loose Behavior and arguments from constructor, if applicable.
-            var parameters = new List<object?> { mocker.Strict ? MockBehavior.Strict : MockBehavior.Loose };
+            var parameters = new List<object?>
+            {
+                mocker.Behavior.Has(MockFeatures.FailOnUnconfigured) ? MockBehavior.Strict : MockBehavior.Loose,
+            };
             parameterList ??= new List<object>();
             parameterList.ForEach(parameters.Add);
 

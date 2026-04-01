@@ -5,16 +5,21 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 ## 📚 Documentation
 
 ### Quick Links
+
 - **🚀 [Getting Started Guide](./docs/getting-started)** - Your first FastMoq test in 5 minutes
 - **🧪 [Testing Guide](./docs/getting-started/testing-guide.md)** - Repo-native guidance for `GetMock<T>()`, `AddType(...)`, `DbContext`, `IFileSystem`, and known types
 - **👨‍🍳 [Cookbook](./docs/cookbook)** - Real-world patterns and recipes
 - **🏗️ [Sample Applications](./docs/samples)** - Complete examples with Azure integration
+- **🧪 [Executable Testing Examples](./docs/samples/testing-examples.md)** - Repo-backed service examples using the current FastMoq API direction
 - **📊 [Feature Comparison](./docs/feature-parity)** - FastMoq vs Moq/NSubstitute
 - **📈 [Performance Benchmarks](./docs/benchmarks)** - Productivity and performance metrics
 
 ### Additional Resources
+
 - **📖 [Complete Documentation](./docs)** - All guides and references in one place
 - **🗺️ [Roadmap Notes](./docs/roadmap)** - Current provider-era direction and deferred backlog items
+- **🆕 [What's New Since 3.0.0](./docs/whats-new)** - Unreleased repository changes since the last public package
+- **🔄 [Migration Guide](./docs/migration)** - Practical old-to-new guidance from `3.0.0` to the current repo direction
 - **❓ [FAQs](./FAQs.md)** - Frequently asked questions and troubleshooting
 - **🔗 [API Documentation](http://help.fastmoq.com/)** - Complete API reference
 
@@ -66,41 +71,61 @@ public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHe
 
 - [Examples and documentation of MockerTestBase](http://help.fastmoq.com/Help/html/T-FastMoq.MockerTestBase-1.htm)
 - [Examples and documentation of MockerBlazorTestBase](http://help.fastmoq.com/Help/html/T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm)
+- [Executable testing examples in this repo](./docs/samples/testing-examples.md)
 
-### Basic example of the base class creating the Car class and auto mocking ICarService
+### Real-world example: order processing service
 
 ```cs
-public class CarTest : MockerTestBase<Car> {
-     [Fact]
-     public void TestCar() {
-         Component.Color.Should().Be(Color.Green);
-         Component.CarService.Should().NotBeNull();
-     }
-}
-
-public class Car {
-     public Color Color { get; set; } = Color.Green;
-     public ICarService CarService { get; }
-     public Car(ICarService carService) => CarService = carService;
-}
-
-public interface ICarService
+public class OrderProcessingServiceExamples : MockerTestBase<OrderProcessingService>
 {
-     Color Color { get; set; }
-     ICarService CarService { get; }
-     bool StartCar();
+    [Fact]
+    public async Task PlaceOrderAsync_ShouldPersistAndLog_WhenReservationAndPaymentSucceed()
+    {
+        var request = new OrderRequest
+        {
+            CustomerId = "cust-42",
+            Sku = "SKU-RED-CHAIR",
+            Quantity = 2,
+            TotalAmount = 149.90m,
+        };
+
+        Mocks.GetMock<IInventoryGateway>()
+            .Setup(x => x.ReserveAsync(request.Sku, request.Quantity, CancellationToken.None))
+            .ReturnsAsync(true);
+
+        Mocks.GetMock<IPaymentGateway>()
+            .Setup(x => x.ChargeAsync(request.CustomerId, request.TotalAmount, CancellationToken.None))
+            .ReturnsAsync("pay_12345");
+
+        var result = await Component.PlaceOrderAsync(request, CancellationToken.None);
+
+        result.Success.Should().BeTrue();
+        Mocks.GetMock<IOrderRepository>()
+            .Verify(x => x.SaveAsync(It.IsAny<OrderRecord>(), CancellationToken.None), Times.Once);
+        Mocks.GetMock<ILogger<OrderProcessingService>>()
+            .VerifyLogger(LogLevel.Information, "Placed order", 1);
+    }
 }
 ```
 
-### Example of how to set up for mocks that require specific functionality
+### Real-world example: fluent scenario style
 
 ```cs
-public class CarTest : MockerTestBase<Car> {
-     public CarTest() : base(mocks => {
-             mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
-     }
-}
+Mocks.Scenario(Component)
+    .With((mocks, service) =>
+    {
+        mocks.GetMock<IInvoiceRepository>()
+            .Setup(x => x.GetPastDueAsync(now, CancellationToken.None))
+            .ReturnsAsync(invoices);
+    })
+    .When(async (mocks, service) => reminderCount = await service.SendRemindersAsync(now, CancellationToken.None))
+    .Then((mocks, service) => reminderCount.Should().Be(2))
+    .Verify<IInvoiceRepository>(x => x.GetPastDueAsync(now, CancellationToken.None), TimesSpec.Once)
+    .Verify<IEmailGateway>(x => x.SendReminderAsync("ap@contoso.test", 125m, CancellationToken.None), TimesSpec.Once)
+    .Execute();
 ```
+
+For more current repo-backed examples, see [Executable Testing Examples](./docs/samples/testing-examples.md) and [Migration Guide: 3.0.0 To Current Repo](./docs/migration/README.md).
 
 ### Auto Injection
 

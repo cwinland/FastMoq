@@ -51,6 +51,18 @@ Non-Moq providers may eventually gain richer convenience layers, but that should
 
 Several Moq-oriented compatibility members remain intentionally available. Removing or reshaping them is deferred to a future major-version cleanup once provider migration guidance is ready.
 
+### `MockOptional` replacement
+
+`MockOptional` is still available, but it is a coarse global switch and does not feel like the right long-term API shape.
+
+The likely direction is to replace or reduce it in favor of clearer, more explicit creation/resolution controls rather than a broad process-style toggle.
+
+Future work should evaluate:
+
+- whether optional-parameter behavior belongs on instance-creation options instead of the ambient `Mocker`
+- whether the remaining `MockOptional` scenarios are better expressed through explicit setup
+- whether the member should eventually move to compatibility-only status in the next major-version cleanup
+
 ## Documentation Follow-Ups
 
 Documentation now covers the testing decision points and known-type behavior, but more sample updates are still desirable later:

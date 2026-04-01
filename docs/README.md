@@ -5,16 +5,19 @@ Welcome to the comprehensive FastMoq documentation! This documentation is design
 ## 📚 Documentation Structure
 
 ### 🚀 [Getting Started](./getting-started)
+
 Perfect for developers new to FastMoq. Learn the basics and write your first test in minutes.
 
 - Installation and setup
 - Your first FastMoq test
 - [Repo-native testing guide](./getting-started/testing-guide.md)
+- [Executable testing examples](./samples/testing-examples.md)
 - Understanding the architecture
 - Common patterns and best practices
 - Troubleshooting guide
 
 ### 📊 [Feature Parity](./feature-parity)
+
 Comprehensive comparison of FastMoq with other popular mocking frameworks.
 
 - Side-by-side feature comparison
@@ -23,6 +26,7 @@ Comprehensive comparison of FastMoq with other popular mocking frameworks.
 - When to choose FastMoq vs alternatives
 
 ### 👨‍🍳 [Cookbook](./cookbook)
+
 Practical recipes for real-world testing scenarios.
 
 - API Controller testing
@@ -35,14 +39,17 @@ Practical recipes for real-world testing scenarios.
 - File system operations
 
 ### 🏗️ [Sample Applications](./samples)
+
 Complete, runnable examples demonstrating FastMoq in production-like scenarios.
 
 - **E-Commerce Order Processing** - Full Azure integration
 - **Microservices Communication** - Service-to-service patterns
 - **Background Processing** - Queue and job processing
 - **Blazor Web Applications** - Full-stack testing
+- **Executable Testing Examples** - Smaller repo-local service tests that track current FastMoq guidance
 
 ### 📈 [Benchmarks](./benchmarks)
+
 Performance analysis and productivity improvements.
 
 - Execution speed comparisons
@@ -52,14 +59,23 @@ Performance analysis and productivity improvements.
 - ROI calculations
 
 ### 🗺️ [Roadmap Notes](./roadmap)
+
 Current provider-era direction, active architectural work, and intentionally deferred items.
+
+### 🆕 [What's New Since 3.0.0](./whats-new)
+
+Unreleased repository changes after the May 12, 2025 `3.0.0` release baseline.
+
+### 🔄 [Migration Guide](./migration)
+
+Practical guidance for moving from the `3.0.0` public release toward the repository's current provider-era patterns.
 
 ## 🎯 Quick Navigation
 
 ### By Experience Level
 
 | Experience | Start Here | Next Steps |
-|------------|------------|------------|
+| ---------- | ---------- | ---------- |
 | **New to Mocking** | [Getting Started](./getting-started) | [Simple Cookbook Examples](./cookbook#api-controller-testing) |
 | **Coming from Moq** | [Feature Parity](./feature-parity) | [Migration Guide](./feature-parity#migration-guide) |
 | **Enterprise Teams** | [Sample Applications](./samples) | [Benchmarks](./benchmarks) |
@@ -67,7 +83,7 @@ Current provider-era direction, active architectural work, and intentionally def
 ### By Use Case
 
 | Use Case | Documentation | Sample Code |
-|----------|---------------|-------------|
+| -------- | ------------- | ----------- |
 | **Web APIs** | [API Controller Testing](./cookbook#api-controller-testing) | [E-Commerce Sample](./samples/ecommerce-orders/) |
 | **Database Testing** | [EF Core Testing](./cookbook#entity-framework-core-testing) | [Repository Patterns](./samples/ecommerce-orders/) |
 | **Azure Integration** | [Azure Services](./cookbook#azure-services-testing) | [Complete Azure App](./samples/ecommerce-orders/) |
@@ -79,22 +95,26 @@ Current provider-era direction, active architectural work, and intentionally def
 FastMoq is designed for **developer productivity** and **maintainable tests**:
 
 ### 📝 Less Code, More Testing
+
 - **70% reduction** in test setup code
 - **Automatic dependency injection** eliminates boilerplate
 - **Fluent API** for readable test scenarios
 
 ### ⚡ Better Performance
+
 - **50% faster** test execution
 - **60% less** memory usage
 - **Better scalability** for large test suites
 
 ### 🎛️ Modern .NET Patterns
+
 - **Built-in support** for EF Core, HttpClient, IFileSystem
 - **Azure services** integration
 - **Configuration and Options** patterns
 - **Blazor and Web** testing
 
 ### 🔧 Enterprise Ready
+
 - **Comprehensive logging** verification
 - **Advanced scenarios** support
 - **Team productivity** improvements
@@ -103,21 +123,25 @@ FastMoq is designed for **developer productivity** and **maintainable tests**:
 ## 📖 Learning Path
 
 ### 1. Foundation (30 minutes)
+
 1. Read [Getting Started](./getting-started)
 2. Try the [first test example](./getting-started#your-first-test)
 3. Understand [MockerTestBase](./getting-started#mockertestbase)
 
 ### 2. Practical Application (1 hour)
+
 1. Pick a relevant [cookbook recipe](./cookbook)
 2. Try it in your own project
 3. Explore [advanced setup options](./getting-started#advanced-setup-options)
 
 ### 3. Production Readiness (2-3 hours)
+
 1. Study a complete [sample application](./samples)
 2. Review [performance benchmarks](./benchmarks)
 3. Plan your [migration strategy](./feature-parity#migration-guide)
 
 ### 4. Mastery (Ongoing)
+
 1. Explore all [cookbook patterns](./cookbook)
 2. Adapt [sample applications](./samples) to your domain
 3. Contribute back to the community
@@ -125,18 +149,22 @@ FastMoq is designed for **developer productivity** and **maintainable tests**:
 ## 🤝 Community and Support
 
 ### Getting Help
+
 - **Documentation**: You're here! Start with the most relevant section above
 - **Issues**: [GitHub Issues](https://github.com/cwinland/FastMoq/issues) for bugs and feature requests
 - **Discussions**: [GitHub Discussions](https://github.com/cwinland/FastMoq/discussions) for questions and community help
 - **API Reference**: [Complete API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)
 
 ### Contributing
+
 We welcome contributions! See our:
+
 - [Contributing Guide](../CONTRIBUTING.md)
 - [Code of Conduct](../CODE_OF_CONDUCT.md)
 - [Development Setup](./contributing)
 
 ### Stay Updated
+
 - ⭐ **Star the repository** for updates
 - 📋 **Watch releases** for new versions
 - 🐦 **Follow discussions** for community insights
@@ -151,6 +179,7 @@ We welcome contributions! See our:
 ## 🏷️ Version Information
 
 This documentation is for **FastMoq 3.0+**. For older versions:
+
 - [Version 2.x Documentation](./legacy/v2/)
 - [Migration from 2.x to 3.x](./migration/v2-to-v3.md)
 

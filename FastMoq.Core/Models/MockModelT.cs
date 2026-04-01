@@ -30,7 +30,15 @@ namespace FastMoq.Models
 
         #region Construction
         internal MockModel(IFastMock<T> fastMock, bool nonPublic = false) : base(fastMock, nonPublic) { }
-        internal MockModel(Mock mock) : base(typeof(T), mock) { }
+        internal MockModel(Mock mock) : base(typeof(T), mock)
+        {
+            if (mock is not Mock<T> typedMock)
+            {
+                throw new ArgumentException($"Expected a Mock<{typeof(T).Name}> instance.", nameof(mock));
+            }
+
+            FastMock = new Providers.MoqProvider.MoqMockAdapter<T>(typedMock);
+        }
         internal MockModel(MockModel baseModel) : base(baseModel.FastMock, baseModel.NonPublic) { }
         #endregion
 

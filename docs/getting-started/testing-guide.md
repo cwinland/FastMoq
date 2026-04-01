@@ -37,7 +37,7 @@ var repoMock = Mocks.GetMock<IOrderRepository>();
 repoMock.Setup(x => x.Load(123)).Returns(order);
 ```
 
-### Use `AddType(...)` when
+### When `AddType(...)` is the right tool
 
 - You need a specific implementation rather than a default mock.
 - You need to control constructor arguments or non-public construction.
@@ -132,6 +132,86 @@ Use `AddKnownType(...)` when a framework-style type needs special handling that 
 
 Custom registrations are scoped to the current `Mocker` instance. They do not mutate global process state.
 
+## `AddKnownType(...)` vs `AddType(...)`
+
+These APIs are related, but they are not interchangeable.
+
+They can look similar in the simplest case because both can end with "FastMoq returns this object." The important difference is where they plug in:
+
+- `AddType(...)` changes the normal type map for one dependency.
+- `AddKnownType(...)` extends FastMoq's special handling pipeline for a category of framework-heavy types.
+
+### Use `AddType(...)` when
+
+- You want to replace FastMoq's normal resolution for a type.
+- You want a specific concrete implementation, factory result, or fixed instance.
+- The problem is "what object should be returned for this abstraction?"
+
+```csharp
+Mocks.AddType<IClock>(_ => new FakeClock(DateTimeOffset.Parse("2026-04-01T12:00:00Z")));
+```
+
+Another `AddType(...)` example that should stay on the normal type-map path:
+
+```csharp
+Mocks.AddType<IPaymentGateway, FakePaymentGateway>(_ => new FakePaymentGateway("test-terminal"));
+```
+
+These are `AddType(...)` examples because:
+
+- `IClock` and `IPaymentGateway` are ordinary application dependencies.
+- You are swapping one dependency for a specific implementation.
+- There is no special FastMoq framework lifecycle or post-processing involved.
+
+### When `AddKnownType(...)` is the right tool
+
+- The type is framework-heavy and needs special creation or post-processing behavior.
+- The problem is not only "what object should be returned?" but also "how should FastMoq handle this type whenever it is resolved?"
+- You want to plug into direct-instance resolution, managed-instance resolution, mock configuration, or object defaults.
+
+```csharp
+Mocks.AddKnownType<IFileSystem>(
+    directInstanceFactory: (_, _) => new MockFileSystem().FileSystem,
+    includeDerivedTypes: true);
+```
+
+Examples that are specific to `AddKnownType(...)` and do not fit ordinary `AddType(...)` usage:
+
+```csharp
+Mocks.AddKnownType<IHttpContextAccessor>(
+    applyObjectDefaults: (_, accessor) =>
+    {
+        accessor.HttpContext!.TraceIdentifier = "integration-test";
+    },
+    includeDerivedTypes: true);
+```
+
+```csharp
+Mocks.AddKnownType<HttpContext>(
+    configureMock: (_, _, fastMock) =>
+    {
+        var nativeMock = (Mock<HttpContext>)fastMock.NativeMock;
+        nativeMock.Setup(x => x.TraceIdentifier).Returns("trace-123");
+    });
+```
+
+These are `AddKnownType(...)` examples because:
+
+- They are not just returning an object.
+- They modify mock setup or post-creation defaults inside FastMoq's known-type pipeline.
+- They apply to framework-style types where FastMoq already has built-in behavior.
+
+### Quick decision rule
+
+If you are overriding one dependency in a test, use `AddType(...)`.
+
+If you are extending FastMoq's built-in handling for a framework-style type such as `IFileSystem`, `HttpClient`, `DbContext`, or `HttpContext`, use `AddKnownType(...)`.
+
+If the two APIs still look similar, ask this question:
+
+- "Am I replacing one dependency?" -> `AddType(...)`
+- "Am I teaching FastMoq how to treat this kind of framework-heavy type?" -> `AddKnownType(...)`
+
 ### Example: override a built-in direct instance
 
 ```csharp
@@ -145,12 +225,9 @@ Mocks.AddKnownType<IFileSystem>(
 
 ```csharp
 Mocks.AddKnownType<IHttpContextAccessor>(
-    applyObjectDefaults: (_, obj) =>
+    applyObjectDefaults: (_, accessor) =>
     {
-        if (obj is IHttpContextAccessor accessor)
-        {
-            accessor.HttpContext!.TraceIdentifier = "integration-test";
-        }
+        accessor.HttpContext!.TraceIdentifier = "integration-test";
     },
     includeDerivedTypes: true);
 ```
@@ -170,6 +247,48 @@ FastMoq is moving toward a provider-based architecture. The stable guidance for 
 3. Assume Moq compatibility is currently strongest, but new extension points should avoid hard-coding Moq assumptions unless the scenario is explicitly Moq-only.
 
 If you need the underlying provider object for a tracked mock, use `GetNativeMock(...)` or `MockModel.NativeMock`.
+
+You can also retrieve the provider-first abstraction directly:
+
+```csharp
+var fastMock = Mocks.GetFastMock<IOrderRepository>();
+var providerObject = fastMock.NativeMock;
+```
+
+## `Strict` vs Presets
+
+`Strict` is now best understood as a compatibility alias for `MockFeatures.FailOnUnconfigured`.
+
+That means:
+
+```csharp
+Mocks.Strict = true;
+```
+
+turns on fail-on-unconfigured behavior, but it does not replace the rest of the current `Behavior` flags.
+
+If you want to switch the whole behavior profile, use the explicit helpers instead:
+
+```csharp
+Mocks.UseStrictPreset();
+Mocks.UseLenientPreset();
+```
+
+Use the preset helpers when you want a complete behavior profile. Use `Strict` only when you mean the fail-on-unconfigured compatibility behavior.
+
+## Executable Examples In This Repo
+
+The best current examples are in `FastMoq.TestingExample`.
+
+Start there if you want repo-backed samples for:
+
+- multi-dependency service workflows
+- built-in `IFileSystem` behavior
+- logger verification
+- fluent `Scenario(...)` usage
+- provider-first verification with `TimesSpec`
+
+See [Executable Testing Examples](../samples/testing-examples.md).
 
 ## Recommended Test Flow
 

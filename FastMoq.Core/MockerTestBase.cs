@@ -159,7 +159,7 @@ namespace FastMoq
         {
             foreach (var customMock in CustomMocks)
             {
-                Mocks.AddMock(customMock.Mock, customMock.Type, true);
+                Mocks.AddFastMock(customMock.FastMock, customMock.Type, true, customMock.NonPublic);
             }
 
             SetupMocksAction?.Invoke(Mocks);

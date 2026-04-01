@@ -42,5 +42,21 @@ namespace FastMoq
             AddFastMock(fast, typeof(T), overwrite: false, nonPublic: false);
             return fast;
         }
+
+        /// <summary>
+        /// Gets or creates the provider-first mock for <typeparamref name="T"/>.
+        /// Prefer this over legacy Moq-based retrieval when provider-specific setup is not required.
+        /// </summary>
+        public IFastMock<T> GetFastMock<T>(params object?[] args) where T : class => GetFastMock<T>(nonPublic: false, args);
+
+        /// <summary>
+        /// Gets or creates the provider-first mock for a runtime type.
+        /// Prefer this over legacy Moq-based retrieval when provider-specific setup is not required.
+        /// </summary>
+        public IFastMock GetFastMock(Type type, params object?[] args)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+            return GetOrCreateFastMock(type, false, args);
+        }
     }
 }

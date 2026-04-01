@@ -8,6 +8,10 @@ FastMoq is designed to eliminate the boilerplate code typically required when se
 
 For the repo-native testing conventions and framework-specific guidance used by this codebase, see the [FastMoq Testing Guide](./testing-guide.md).
 
+If you want examples that run directly in this repository instead of static snippets only, see [Executable Testing Examples](../samples/testing-examples.md).
+
+If you are updating older FastMoq usage from the last public `3.0.0` release, see [Migration Guide: 3.0.0 To Current Repo](../migration/README.md).
+
 ### Key Benefits
 
 - **Automatic Mock Creation**: No need to manually declare and setup mocks
@@ -21,19 +25,24 @@ For the repo-native testing conventions and framework-specific guidance used by 
 Install FastMoq using your preferred package manager:
 
 ### .NET CLI
+
 ```bash
 dotnet add package FastMoq
 ```
 
 ### Package Manager Console
+
 ```powershell
 Install-Package FastMoq
 ```
 
 ### PackageReference
+
 ```xml
 <PackageReference Include="FastMoq" Version="3.0.0" />
 ```
+
+> Note: `3.0.0` is the current public package. Some docs in this repository describe unreleased provider-era work that is planned for the next major release line. See [What's New Since 3.0.0](../whats-new/README.md).
 
 ### Required Using Statements
 
@@ -177,26 +186,25 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
             .Verify(x => x.File.ReadAllTextAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 }
-}
 ```
 
 ## Understanding the FastMoq Architecture
 
-### MockerTestBase<T>
+### `MockerTestBase<T>`
 
 `MockerTestBase<T>` is the foundation of FastMoq testing. It automatically:
 
 1. **Creates your component**: The `Component` property contains an instance of your class under test
-2. **Manages dependencies**: All constructor parameters are automatically mocked (`MockOptional` indicates if optional parameters are mocked or will be default values)
+2. **Manages dependencies**: Constructor parameters are resolved automatically using FastMoq's current type-map, known-type, and auto-mock rules
 3. **Provides mock access**: Use `Mocks.GetMock<T>()` to configure mock behavior
 4. **Handles cleanup**: Mocks are properly disposed after each test
 
 ### Key Properties and Methods
 
 | Property/Method | Description |
-|----------------|-------------|
+| --------------- | ----------- |
 | `Component` | The instance of your class under test |
-| `MockOptional` | Indicates if optional or nullable parameters should be mocked. This can affect if the constructor properties are created or remain the default value. |
+| `MockOptional` | Legacy global toggle that affects whether optional or nullable parameters are auto-mocked. Prefer explicit setup or creation options for new code when possible. |
 | `Mocks` | The `Mocker` instance that manages all mocks |
 | `Mocks.GetMock<T>()` | Gets the mock for interface T |
 | `Mocks.GetObject<T>()` | Gets the mocked object instance |
@@ -225,9 +233,6 @@ public class OrderServiceTests : MockerTestBase<OrderService>
         mocker.GetMock<IPaymentProcessor>()
             .Setup(x => x.ValidateCard(It.IsAny<string>()))
             .Returns(true);
-        
-        // Set global options
-        mocker.MockOptional = true; // Mock optional parameters
     };
 
     [Fact]

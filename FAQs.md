@@ -218,6 +218,13 @@ Methods:
 
 ## What are some settings Mocker providers to alter the way Mocker works?
 
+- `Strict` is a backward-compatible alias for fail-on-unconfigured behavior.
+- `Behavior` is the full feature-flag model that controls FastMoq runtime behavior.
+- `UseStrictPreset()` applies the predefined strict profile.
+- `UseLenientPreset()` applies the predefined lenient profile.
+
+If you only want the old "fail when not configured" behavior, use `Strict = true` or enable `MockFeatures.FailOnUnconfigured` directly. If you want the full strict preset, use `UseStrictPreset()`.
+
 - ```InnerMockResolution``` indicates that the Mock should attempt to resolve child mocks and injections. Default is True.
 - ```MockOptional``` allows mocks to be injected into optional or nullable parameters. Default is False.
 - ```Strict``` alters the way that FastMoq uses HttpClient and FileSystems. Strict prevents using the internal versions and pure mocks are used. Default is False.

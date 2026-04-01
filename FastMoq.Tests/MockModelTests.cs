@@ -52,12 +52,14 @@ namespace FastMoq.Tests
             Component.Type.Should().Be(typeof(IFileSystem));
             Component.NativeMock.Should().BeOfType(typeof(Mock<IFileSystem>));
             mockModel.NativeMock.Should().BeOfType(typeof(Mock<IFileSystem>));
+#pragma warning disable CS0618 // Intentional legacy compatibility coverage.
             var mockModel2 = new MockModel<IFileSystem>(new Mock<IFileSystem>())
             {
                 Mock = mockModel.Mock,
             };
 
             mockModel2.Mock.Should().BeEquivalentTo(mockModel.Mock);
+#pragma warning restore CS0618
             mockModel2.Should().BeEquivalentTo(mockModel);
         }
 

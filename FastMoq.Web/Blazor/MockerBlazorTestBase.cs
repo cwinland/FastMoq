@@ -64,7 +64,7 @@ namespace FastMoq.Web.Blazor
     /// protected override Action<Mocker> SetupComponent => mocker =>
     /// {
     ///     mocker.GetMock<IFile>().Setup(f => f.Exists(It.IsAny<string>())).Returns(true);                     // Add setup to mock.
-    ///     mocker.Initialize<IDirectory>(mock => mock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true)); // Clears existing mocks and set new mock.
+    ///     mocker.GetMock<IDirectory>().Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
     ///     mocker.GetMock<IDirectory>().Setup(d=>d.Exists("C:\\testfile.txt")).Returns(false);                 // add setup to existing mock.
     /// };
     /// ]]></code>

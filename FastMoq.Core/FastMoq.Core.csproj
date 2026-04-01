@@ -54,7 +54,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.*" Condition="'$(TargetFramework)' == 'net9.0'">
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="NSubstitute" Version="5.1.0" />
+    <PackageReference Include="NSubstitute" Version="5.3.0" />
+    <PackageReference Include="System.Memory" Version="4.6.3" />
+    <PackageReference Include="System.Text.Json" Version="10.0.5" />
     <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="[21.3.1]" Condition="'$(TargetFramework)' == 'net8.0'">
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>
@@ -65,12 +67,12 @@
     <!-- PHASE 1: Moq still referenced; will be removed once provider split complete -->
     <PackageReference Include="Moq" Version="[4.18.4]" />
 
-    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.13.2">
+    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.14.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="6.0.4">
+    <PackageReference Include="coverlet.collector" Version="8.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; buildtransitive</IncludeAssets>
       <ExcludeAssets>analyzers</ExcludeAssets>

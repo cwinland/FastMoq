@@ -9,6 +9,18 @@ This directory contains complete sample applications demonstrating FastMoq's cap
 3. **[Background Processing](./background-services/)** - Queue processing and background jobs
 4. **[Blazor Web Application](./blazor-webapp/)** - Full-stack Blazor application with testing
 
+## Repo-local executable examples
+
+If you want smaller service-focused examples that compile and run directly in this repository, start with [Executable Testing Examples](./testing-examples.md).
+
+Those examples are backed by the `FastMoq.TestingExample` project and currently show:
+
+- `MockerTestBase<TComponent>` in realistic service tests
+- built-in `IFileSystem` behavior with `MockFileSystem`
+- `VerifyLogger(...)` assertions
+- fluent `Scenario(...).With(...).When(...).Then(...).Verify(...)` usage
+- provider-first verification with `TimesSpec`
+
 ## Common Patterns Demonstrated
 
 - **Azure Service Bus** integration and testing
@@ -91,7 +103,7 @@ The current samples are intentionally minimal. Consider extending locally with:
 ## Quick Reference: Which Helper to Choose?
 
 | Goal | Helper | Notes |
-|------|--------|-------|
+| ---- | ------ | ----- |
 | Fast default HttpClient | `CreateHttpClient()` | Registers handler + factory if missing |
 | Custom per‑test response | `SetupHttpMessage()` | Use multiple calls for sequential responses |
 | Mock EF Core context | `GetMockDbContext<T>()` | Auto sets up DbSets; seed data before use |
@@ -131,6 +143,12 @@ Choose a sample based on your use case and follow the individual README files fo
 cd docs/samples/ecommerce-orders
 dotnet restore
 dotnet test
+```
+
+For the smaller executable examples instead:
+
+```bash
+dotnet test .\FastMoq.TestingExample\FastMoq.TestingExample.csproj
 ```
 
 ## Learning Objectives
