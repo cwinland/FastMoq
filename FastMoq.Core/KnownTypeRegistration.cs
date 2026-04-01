@@ -1,5 +1,5 @@
 using System;
-using Moq;
+using FastMoq.Providers;
 
 namespace FastMoq
 {
@@ -41,8 +41,9 @@ namespace FastMoq
 
         /// <summary>
         /// Optional callback to configure a provider mock after it has been created.
+        /// Use <see cref="IFastMock.NativeMock"/> when provider-specific behavior is required.
         /// </summary>
-        public Action<Mocker, Type, Mock>? ConfigureMock { get; init; }
+        public Action<Mocker, Type, IFastMock>? ConfigureMock { get; init; }
 
         /// <summary>
         /// Optional callback to apply post-creation defaults to resolved objects.

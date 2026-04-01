@@ -500,7 +500,7 @@ namespace FastMoq.Tests
                 {
                     configureCalled = true;
 
-                    if (mock is Mock<IKnownTypeContract> typedMock)
+                    if (mock.NativeMock is Mock<IKnownTypeContract> typedMock)
                     {
                         typedMock.SetupMockProperty(x => x.Configured!, "configured");
                     }

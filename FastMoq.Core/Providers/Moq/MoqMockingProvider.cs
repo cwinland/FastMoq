@@ -109,7 +109,26 @@ namespace FastMoq.Providers.MoqProvider
 
         public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string> callback)
         {
-            // No-op for now (callback integration handled elsewhere).
+            var underlying = TryGetUnderlyingMock(mock);
+            if (underlying == null)
+            {
+                return;
+            }
+
+            var mockedType = mock.MockedType;
+            if (!typeof(ILogger).IsAssignableFrom(mockedType))
+            {
+                return;
+            }
+
+            var method = typeof(Mocker).GetMethod("SetupLoggerCallback", BindingFlags.NonPublic | BindingFlags.Static);
+            if (method == null)
+            {
+                return;
+            }
+
+            var genericMethod = method.MakeGenericMethod(mockedType);
+            genericMethod.Invoke(null, new object[] { underlying, callback });
         }
 
         public object? TryGetLegacy(IFastMock mock) => TryGetUnderlyingMock(mock);

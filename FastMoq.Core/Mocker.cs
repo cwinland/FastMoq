@@ -199,7 +199,7 @@ namespace FastMoq
         public Mocker AddKnownType<TKnown>(
             Func<Mocker, Type, object?>? directInstanceFactory = null,
             Func<Mocker, Type, object?>? managedInstanceFactory = null,
-            Action<Mocker, Type, Mock>? configureMock = null,
+            Action<Mocker, Type, IFastMock>? configureMock = null,
             Action<Mocker, object>? applyObjectDefaults = null,
             bool includeDerivedTypes = false,
             bool replace = false)
@@ -631,6 +631,7 @@ namespace FastMoq
             var options = new MockCreationOptions(strict, CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
             var fast = provider.CreateMock(type, options);
             AddFastMock(fast, type, nonPublic: nonPublic);
+            SetupFastMock(type, fast);
             return fast;
         }
 
@@ -647,7 +648,6 @@ namespace FastMoq
             {
                 // Attach the legacy Moq surface to the existing model after FastMock registration.
                 AddMock(legacy, type, overwrite: true, nonPublic: nonPublic);
-                SetupMock(type, legacy); // retain legacy setup behavior
             }
             return mockCollection;
         }
@@ -684,10 +684,10 @@ namespace FastMoq
             var callBase = Behavior.Has(MockFeatures.CallBase) && provider.Capabilities.SupportsCallBase && !type.IsInterface;
             var options = new MockCreationOptions(strict, CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
             var fast = provider.CreateMock(type, options);
+            SetupFastMock(type, fast);
             var legacy = TryGetLegacyMock(fast);
             if (legacy != null)
             {
-                SetupMock(type, legacy);
                 legacy.RaiseIfNull();
                 return legacy;
             }
@@ -825,28 +825,41 @@ namespace FastMoq
 
         internal void SetupMock(Type type, Mock oMock)
         {
+            SetupFastMock(type, new FastMoq.Providers.MoqProvider.MoqMockAdapter(oMock));
+        }
+
+        internal void SetupFastMock(Type type, IFastMock fastMock)
+        {
+            ArgumentNullException.ThrowIfNull(fastMock);
+
             var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
+            var provider = MockingProviderRegistry.Default;
             if (!strict)
             {
-                if (Behavior.Has(MockFeatures.AutoSetupProperties) && oMock.Setups.Count == 0)
+                if (Behavior.Has(MockFeatures.AutoSetupProperties))
                 {
-                    TrySetupAllProperties(oMock);
+                    provider.ConfigureProperties(fastMock, strict);
                 }
-                if (InnerMockResolution && Behavior.Has(MockFeatures.AutoInjectDependencies)) AddProperties(type, oMock.Object);
+
+                if (InnerMockResolution && Behavior.Has(MockFeatures.AutoInjectDependencies))
+                {
+                    AddProperties(type, fastMock.Instance);
+                }
+
                 if (Behavior.Has(MockFeatures.LoggerCallback) && type.IsAssignableTo(typeof(ILogger)))
                 {
-                    try { if (oMock is Mock<ILogger> logger) SetupLoggerCallback(logger, LoggingCallback); } catch { }
+                    provider.ConfigureLogger(fastMock, LoggingCallback);
                 }
             }
 
-            KnownTypeRegistry.ConfigureMock(this, type, oMock);
+            KnownTypeRegistry.ConfigureMock(this, type, fastMock);
 
             if (Behavior.Has(MockFeatures.AutoInjectDependencies))
             {
-                AddInjections(oMock.Object, GetTypeModel(type).InstanceType);
+                AddInjections(fastMock.Instance, GetTypeModel(type).InstanceType);
             }
 
-            KnownTypeRegistry.ApplyObjectDefaults(this, oMock.Object);
+            KnownTypeRegistry.ApplyObjectDefaults(this, fastMock.Instance);
         }
 
         private static void TrySetupAllProperties(Mock mock)

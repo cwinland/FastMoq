@@ -4,6 +4,7 @@ using System.IO.Abstractions;
 using System.Net.Http;
 using System.Security.Claims;
 using FastMoq.Extensions;
+using FastMoq.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -67,7 +68,7 @@ namespace FastMoq
             return false;
         }
 
-        internal static void ConfigureMock(Mocker mocker, Type type, Mock mock)
+        internal static void ConfigureMock(Mocker mocker, Type type, IFastMock mock)
         {
             foreach (var registration in GetPostProcessingRegistrations(mocker))
             {
@@ -135,9 +136,9 @@ namespace FastMoq
             return mock.Object;
         }
 
-        private static void ConfigureBuiltInHttpContextMock(Mocker mocker, Type type, Mock mock)
+        private static void ConfigureBuiltInHttpContextMock(Mocker mocker, Type type, IFastMock mock)
         {
-            if (type == typeof(HttpContext) && mock is Mock<HttpContext> httpContextMock)
+            if (type == typeof(HttpContext) && mock.NativeMock is Mock<HttpContext> httpContextMock)
             {
                 httpContextMock.SetupMockProperty(x => x.Session!, mocker.GetObject<ISession>()!);
                 httpContextMock.SetupMockProperty(x => x.Items, new Dictionary<object, object?>());
@@ -145,15 +146,15 @@ namespace FastMoq
             }
         }
 
-        private static void ConfigureBuiltInHttpContextAccessorMock(Mocker mocker, Type _, Mock mock)
+        private static void ConfigureBuiltInHttpContextAccessorMock(Mocker mocker, Type _, IFastMock mock)
         {
-            if (mock is Mock<IHttpContextAccessor> accessorMock)
+            if (mock.NativeMock is Mock<IHttpContextAccessor> accessorMock)
             {
                 accessorMock.SetupMockProperty(x => x.HttpContext!, mocker.GetObject<HttpContext>()!);
                 return;
             }
 
-            if (mock is Mock<HttpContextAccessor> accessorClassMock)
+            if (mock.NativeMock is Mock<HttpContextAccessor> accessorClassMock)
             {
                 accessorClassMock.SetupMockProperty(x => x.HttpContext!, mocker.GetObject<HttpContext>()!);
             }
