@@ -156,6 +156,7 @@ namespace FastMoq.Providers.ReflectionProvider
             }
             public Type MockedType => typeof(T);
             public T Instance { get; }
+            public object NativeMock => Instance;
             object IFastMock.Instance => Instance!;
             public void Reset() { }
             public void Track(MethodInfo method, object?[] args, object? returnValue) => _tracker(method, args, returnValue);

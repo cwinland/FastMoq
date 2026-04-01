@@ -9,6 +9,7 @@ namespace FastMoq.Providers
     {
         Type MockedType { get; }
         object Instance { get; }
+        object NativeMock { get; }
         void Reset();
     }
 

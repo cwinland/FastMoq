@@ -8,6 +8,7 @@ namespace FastMoq.Providers.MoqProvider
     {
         public Type MockedType { get; }
         public object Instance => _mock.Object;
+        public object NativeMock => _mock;
         protected readonly Mock _mock;
         internal Mock InnerMock => _mock;
         public MoqFastMock(Mock mock)

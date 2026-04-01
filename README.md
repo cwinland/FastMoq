@@ -6,6 +6,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 
 ### Quick Links
 - **🚀 [Getting Started Guide](./docs/getting-started)** - Your first FastMoq test in 5 minutes
+- **🧪 [Testing Guide](./docs/getting-started/testing-guide.md)** - Repo-native guidance for `GetMock<T>()`, `AddType(...)`, `DbContext`, `IFileSystem`, and known types
 - **👨‍🍳 [Cookbook](./docs/cookbook)** - Real-world patterns and recipes
 - **🏗️ [Sample Applications](./docs/samples)** - Complete examples with Azure integration
 - **📊 [Feature Comparison](./docs/feature-parity)** - FastMoq vs Moq/NSubstitute
@@ -13,6 +14,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 
 ### Additional Resources
 - **📖 [Complete Documentation](./docs)** - All guides and references in one place
+- **🗺️ [Roadmap Notes](./docs/roadmap)** - Current provider-era direction and deferred backlog items
 - **❓ [FAQs](./FAQs.md)** - Frequently asked questions and troubleshooting
 - **🔗 [API Documentation](http://help.fastmoq.com/)** - Complete API reference
 

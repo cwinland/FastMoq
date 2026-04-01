@@ -2,6 +2,7 @@ using FastMoq.Extensions;
 using FastMoq.Models;
 using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
@@ -115,6 +116,25 @@ namespace FastMoq.Tests
 
             Action b = () => Mocks.AddMock(new Mock<IFileSystem>(), null);
             b.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void GetNativeMock_ShouldReturnProviderNativeObject()
+        {
+            var nativeMock = Mocks.GetNativeMock<IFileSystemInfo>();
+
+            nativeMock.Should().BeOfType<Mock<IFileSystemInfo>>();
+            nativeMock.Should().BeSameAs(Mocks.GetMock<IFileSystemInfo>());
+        }
+
+        [Fact]
+        public void GetMockModel_NativeMock_ShouldMatchCurrentProviderObject()
+        {
+            Mocks.GetMock<IFileSystem>();
+            var mockModel = Mocks.GetMockModel<IFileSystem>();
+
+            mockModel.NativeMock.Should().BeOfType<Mock<IFileSystem>>();
+            mockModel.NativeMock.Should().BeSameAs(mockModel.Mock);
         }
 
         [Fact]
@@ -267,6 +287,34 @@ namespace FastMoq.Tests
             Mocks.CreateInstanceByType<TestClassMany>(new Type[] { typeof(int), typeof(string) }).Should().NotBeNull();
             Action a = () => Mocks.CreateInstance<TestClassMany>(new Type[] { typeof(string), typeof(string) }).Should().NotBeNull();
             a.Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
+        public void CreateInstance_WithOptions_ShouldReplaceSplitEntryPoints()
+        {
+            var byDefault = Mocks.CreateInstance<TestClassNormal>(new InstanceCreationOptions());
+            byDefault.Should().NotBeNull();
+
+            var byNonPublic = Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
+            {
+                AllowNonPublicConstructors = true,
+                UsePredefinedFileSystem = false,
+            }, new FileSystem());
+
+            byNonPublic.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInstance_WithConstructorParameterTypes_ShouldMatchCreateInstanceByType()
+        {
+            var instance = Mocks.CreateInstance<TestClassMany>(new InstanceCreationOptions
+            {
+                AllowNonPublicConstructors = true,
+                UsePredefinedFileSystem = false,
+                ConstructorParameterTypes = new[] { typeof(int), typeof(string) },
+            });
+
+            instance.Should().NotBeNull();
         }
 
         [Fact]
@@ -432,10 +480,80 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void AddKnownType_ShouldOverrideBuiltInDirectInstance()
+        {
+            var customFileSystem = new MockFileSystem().FileSystem;
+            Mocks.Strict = true;
+
+            Mocks.AddKnownType<IFileSystem>(directInstanceFactory: (_, _) => customFileSystem);
+
+            Mocks.GetObject<IFileSystem>().Should().BeSameAs(customFileSystem);
+        }
+
+        [Fact]
+        public void AddKnownType_ShouldConfigureMockAndApplyObjectDefaults()
+        {
+            var configureCalled = false;
+
+            Mocks.AddKnownType<IKnownTypeContract>(
+                configureMock: (_, _, mock) =>
+                {
+                    configureCalled = true;
+
+                    if (mock is Mock<IKnownTypeContract> typedMock)
+                    {
+                        typedMock.SetupMockProperty(x => x.Configured!, "configured");
+                    }
+                },
+                applyObjectDefaults: (_, obj) =>
+                {
+                    if (obj is IKnownTypeContract contract)
+                    {
+                        contract.Applied = "applied";
+                    }
+                },
+                includeDerivedTypes: true);
+
+            var instance = Mocks.GetObject<IKnownTypeContract>();
+
+            configureCalled.Should().BeTrue();
+            instance.Applied.Should().Be("applied");
+        }
+
+        [Fact]
+        public void AddKnownType_ShouldSupportDerivedManagedInstanceResolution()
+        {
+            var expected = new KnownTypeManagedDbContext();
+
+            Mocks.AddKnownType<DbContext>(
+                managedInstanceFactory: (_, requestedType) =>
+                    requestedType == typeof(KnownTypeManagedDbContext) ? expected : null,
+                includeDerivedTypes: true);
+
+            var instance = Mocks.CreateInstance<KnownTypeManagedDbContext>(new InstanceCreationOptions
+            {
+                UsePredefinedFileSystem = false,
+                AllowNonPublicConstructors = true,
+            });
+
+            instance.Should().BeSameAs(expected);
+        }
+
+        [Fact]
         public void FindConstructor_Exact()
         {
             var m = Mocks.FindConstructor(typeof(TestClassMany), false, 4, "");
             m.Should().NotBeNull();
+        }
+
+        public interface IKnownTypeContract
+        {
+            string Applied { get; set; }
+            string Configured { get; set; }
+        }
+
+        public class KnownTypeManagedDbContext : DbContext
+        {
         }
 
         [Fact]

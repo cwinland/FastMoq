@@ -32,6 +32,7 @@ namespace FastMoq
         public readonly MockFileSystem fileSystem;
         protected internal readonly List<Type> creatingTypeList = new();
         protected internal readonly List<MockModel> mockCollection = new();
+        private readonly List<KnownTypeRegistration> knownTypeRegistrations = new();
         internal Dictionary<Type, IInstanceModel> typeMap = new();
         private readonly ObservableExceptionLog _exceptionLog = new();
         public ConstructorHistory ConstructorHistory { get; } = new();
@@ -72,6 +73,8 @@ namespace FastMoq
         #endregion
 
         #region Type Mapping
+        internal IReadOnlyList<KnownTypeRegistration> KnownTypeRegistrations => knownTypeRegistrations;
+
         public Mocker AddType(Type tInterface, Type tClass, Func<Mocker, object>? createFunc = null, bool replace = false, params object?[]? args)
         {
             ArgumentNullException.ThrowIfNull(tInterface);
@@ -162,6 +165,53 @@ namespace FastMoq
             AddType(typeof(IFileSystemInfo), typeof(FileSystemInfoBase));
             AddType(typeof(IFileSystemWatcherFactory), typeof(MockFileSystemWatcherFactory));
             AddType(typeof(IPath), typeof(PathBase));
+        }
+
+        /// <summary>
+        /// Adds a custom known-type registration for this <see cref="Mocker"/> instance.
+        /// This is the extensibility point for framework-like types that need special resolution or setup behavior.
+        /// </summary>
+        public Mocker AddKnownType(KnownTypeRegistration registration, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(registration);
+
+            var existing = knownTypeRegistrations.Where(x => x.ServiceType == registration.ServiceType).ToList();
+            if (existing.Count > 0)
+            {
+                if (!replace)
+                {
+                    registration.ServiceType.ThrowAlreadyExists();
+                }
+
+                foreach (var item in existing)
+                {
+                    knownTypeRegistrations.Remove(item);
+                }
+            }
+
+            knownTypeRegistrations.Add(registration);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a typed custom known-type registration for this <see cref="Mocker"/> instance.
+        /// </summary>
+        public Mocker AddKnownType<TKnown>(
+            Func<Mocker, Type, object?>? directInstanceFactory = null,
+            Func<Mocker, Type, object?>? managedInstanceFactory = null,
+            Action<Mocker, Type, Mock>? configureMock = null,
+            Action<Mocker, object>? applyObjectDefaults = null,
+            bool includeDerivedTypes = false,
+            bool replace = false)
+        {
+            return AddKnownType(new KnownTypeRegistration(typeof(TKnown))
+            {
+                IncludeDerivedTypes = includeDerivedTypes,
+                DirectInstanceFactory = directInstanceFactory,
+                ManagedInstanceFactory = managedInstanceFactory,
+                ConfigureMock = configureMock,
+                ApplyObjectDefaults = applyObjectDefaults,
+            }, replace);
         }
         #endregion
 
@@ -335,34 +385,44 @@ namespace FastMoq
         #region Constructor Resolution / Instance Creation
         public T? CreateInstance<T>(params object?[] args) where T : class => CreateInstance<T>(true, args);
 
+        /// <summary>
+        /// Creates an instance of <typeparamref name="T"/> using a single options object instead of separate public/non-public entry points.
+        /// </summary>
+        public T? CreateInstance<T>(InstanceCreationOptions options, params object?[] args) where T : class =>
+            CreateInstanceCore<T>(options ?? throw new ArgumentNullException(nameof(options)), args);
+
         public T? CreateInstance<T>(bool usePredefinedFileSystem, params object?[] args) where T : class =>
-            CreateInstanceCore<T>(nonPublic: false, usePredefinedFileSystem: usePredefinedFileSystem, args);
+            CreateInstanceCore<T>(new InstanceCreationOptions
+            {
+                UsePredefinedFileSystem = usePredefinedFileSystem,
+                AllowNonPublicConstructors = false,
+            }, args);
 
         public T? CreateInstanceNonPublic<T>(params object?[] args) where T : class =>
-            CreateInstanceCore<T>(nonPublic: true, usePredefinedFileSystem: false, args);
+            CreateInstanceCore<T>(new InstanceCreationOptions
+            {
+                UsePredefinedFileSystem = false,
+                AllowNonPublicConstructors = true,
+            }, args);
 
         public T? CreateInstanceByType<T>(params Type?[] parameterTypes) where T : class
         {
-            var model = GetTypeModel(typeof(T));
-            var targetType = model.InstanceType ?? typeof(T);
-
-            // If the resolved type is still an interface, fall back to mock/object creation.
-            if (targetType.IsInterface)
+            return CreateInstanceCore<T>(new InstanceCreationOptions
             {
-                return GetObject<T>();
-            }
-
-            var ctor = this.FindConstructorByType(targetType, nonPublic: true, parameterTypes);
-            var instance = this.CreateInstanceInternal(targetType, ctor, Array.Empty<object?>());
-            return instance as T;
+                UsePredefinedFileSystem = false,
+                AllowNonPublicConstructors = true,
+                ConstructorParameterTypes = parameterTypes,
+            }, Array.Empty<object?>());
         }
 
         /// <summary>
         /// Centralized creation logic used by all public CreateInstance* methods.
         /// </summary>
-        private T? CreateInstanceCore<T>(bool nonPublic, bool usePredefinedFileSystem, object?[] args) where T : class
+        private T? CreateInstanceCore<T>(InstanceCreationOptions options, object?[] args) where T : class
         {
-            if (usePredefinedFileSystem && fileSystem is T fs)
+            ArgumentNullException.ThrowIfNull(options);
+
+            if (options.UsePredefinedFileSystem && fileSystem is T fs)
             {
                 return fs;
             }
@@ -392,7 +452,13 @@ namespace FastMoq
                 return GetObject<T>();
             }
 
-            var ctorModel = GetConstructorByArgs(args, targetType, nonPublic);
+            if (options.ConstructorParameterTypes != null)
+            {
+                var constructor = FindConstructorByType(targetType, options.AllowNonPublicConstructors, options.ConstructorParameterTypes);
+                return CreateInstanceInternal(targetType, constructor, args) as T;
+            }
+
+            var ctorModel = GetConstructorByArgs(args, targetType, options.AllowNonPublicConstructors);
             var created = CreateInstanceInternal(targetType, ctorModel.ConstructorInfo, ctorModel.ParameterList);
             return created as T;
         }
@@ -670,13 +736,11 @@ namespace FastMoq
             => new MockModel<T>(AddMock((Mock)mock, typeof(T), overwrite, nonPublic));
         private static Mock? TryGetLegacyMock(IFastMock fastMock)
         {
-            const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-            var t = fastMock.GetType();
-            foreach (var name in new[] { "Inner", "InnerMock" })
+            if (fastMock.NativeMock is Mock nativeMock)
             {
-                var p = t.GetProperty(name, flags);
-                if (p?.GetValue(fastMock) is Mock m) return m;
+                return nativeMock;
             }
+
             return null;
         }
         #endregion
@@ -707,6 +771,27 @@ namespace FastMoq
             return mock;
         }
         public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>)GetRequiredMock(typeof(T));
+        public object GetNativeMock(Type type)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+
+            type = CleanType(type);
+            if (!Contains(type))
+            {
+                CreateMock(type, false);
+            }
+
+            return GetMockModel(type).NativeMock;
+        }
+        public object GetNativeMock<T>(params object?[] args) where T : class
+        {
+            if (!Contains<T>())
+            {
+                CreateMock(typeof(T), false, args ?? Array.Empty<object?>());
+            }
+
+            return GetMockModel(typeof(T)).NativeMock;
+        }
         public MockModel<T> GetMockModel<T>() where T : class => new(GetMockModel(typeof(T)));
         public int GetMockModelIndexOf(Type type, bool throwIfMissing = true)
         {

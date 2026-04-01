@@ -157,6 +157,7 @@ namespace FastMoq.Core.Providers.NSubstituteProvider
             public NSubFastMock(T instance) => Instance = instance;
             public Type MockedType => typeof(T);
             public T Instance { get; }
+            public object NativeMock => Instance;
             object IFastMock.Instance => Instance!;
             public void Reset()
             {

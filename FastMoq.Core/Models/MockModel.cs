@@ -57,6 +57,12 @@ namespace FastMoq.Models
         public object Instance => FastMock.Instance;
 
         /// <summary>
+        /// Native provider object used to arrange or inspect behavior with the active mocking library.
+        /// For Moq this is a <see cref="Mock"/>; for providers like NSubstitute or Reflection this is typically the provider-native instance.
+        /// </summary>
+        public object NativeMock => FastMock.NativeMock;
+
+        /// <summary>
         /// Indicates whether the mock was created allowing non-public constructors.
         /// </summary>
         public bool NonPublic { get; set; }
@@ -111,6 +117,13 @@ namespace FastMoq.Models
         private void TryAssignLegacyMockFromAdapter()
         {
             if (_legacyMock != null) return;
+
+            if (FastMock.NativeMock is Mock nativeMock)
+            {
+                _legacyMock = nativeMock;
+                return;
+            }
+
             try
             {
                 // Common adapter property names.

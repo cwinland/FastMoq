@@ -6,6 +6,8 @@ Welcome to FastMoq! This guide will walk you through setting up FastMoq and writ
 
 FastMoq is designed to eliminate the boilerplate code typically required when setting up mocks in unit tests. It automatically creates and injects mock objects, allowing you to focus on writing test logic rather than managing mock setup.
 
+For the repo-native testing conventions and framework-specific guidance used by this codebase, see the [FastMoq Testing Guide](./testing-guide.md).
+
 ### Key Benefits
 
 - **Automatic Mock Creation**: No need to manually declare and setup mocks

@@ -28,10 +28,10 @@ namespace FastMoq.Core.Providers
         public T Instance => _fast.Instance;
 
         /// <summary>
-        /// Underlying provider-specific mock (e.g., Moq.Mock&lt;T&gt;) when available; null otherwise.
-        /// Used for migration from v1 direct Moq usage.
+        /// Underlying provider-specific object used for native mocking-library interaction.
+        /// For Moq this is typically a Moq.Mock&lt;T&gt;; for providers like NSubstitute this is the substitute instance itself.
         /// </summary>
-        public object? NativeMock => _native ??= _provider.TryGetLegacy(_fast);
+        public object? NativeMock => _native ??= _fast.NativeMock;
 
         /// <summary>
         /// Executes provider verification for the supplied expression.

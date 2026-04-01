@@ -9,6 +9,7 @@ Perfect for developers new to FastMoq. Learn the basics and write your first tes
 
 - Installation and setup
 - Your first FastMoq test
+- [Repo-native testing guide](./getting-started/testing-guide.md)
 - Understanding the architecture
 - Common patterns and best practices
 - Troubleshooting guide
@@ -49,6 +50,9 @@ Performance analysis and productivity improvements.
 - Developer productivity metrics
 - Real-world impact studies
 - ROI calculations
+
+### 🗺️ [Roadmap Notes](./roadmap)
+Current provider-era direction, active architectural work, and intentionally deferred items.
 
 ## 🎯 Quick Navigation
 

@@ -60,5 +60,14 @@ namespace FastMoq.Tests
             mockModel2.Mock.Should().BeEquivalentTo(mockModel.Mock);
             mockModel2.Should().BeEquivalentTo(mockModel);
         }
+
+        [Fact]
+        public void NativeMock_ShouldExposeProviderNativeObject()
+        {
+            var nativeMock = Component.NativeMock;
+
+            nativeMock.Should().BeOfType<Mock<IFileSystem>>();
+            nativeMock.Should().BeSameAs(Component.Mock);
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace FastMoq.Providers.MoqProvider
         public MoqMockAdapter(global::Moq.Mock<T> inner) => Inner = inner ?? throw new ArgumentNullException(nameof(inner));
         public Type MockedType => typeof(T);
         public T Instance => Inner.Object;
+        public object NativeMock => Inner;
         object global::FastMoq.Providers.IFastMock.Instance => Instance!;
         // Moq version in use does not expose a Reset API. Intentionally a no-op.
         public void Reset() { /* no-op */ }
@@ -19,6 +20,7 @@ namespace FastMoq.Providers.MoqProvider
         public MoqMockAdapter(global::Moq.Mock inner) => Inner = inner ?? throw new ArgumentNullException(nameof(inner));
         public Type MockedType => Inner.Object.GetType();
         public object Instance => Inner.Object;
+        public object NativeMock => Inner;
         // Moq version in use does not expose a Reset API. Intentionally a no-op.
         public void Reset() { /* no-op */ }
     }
