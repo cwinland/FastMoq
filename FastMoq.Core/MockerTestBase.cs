@@ -145,7 +145,7 @@ namespace FastMoq
         /// CreateComponent allows creating the component when desired, instead of in the base class constructor.
         /// <code><![CDATA[
         /// public void Test() {
-        ///     Mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
+        ///     Mocks.GetMock<ICarService>().Setup(x => x.StartCar).Returns(true);
         ///     CreateComponent();
         /// }
         /// ]]></code></example>

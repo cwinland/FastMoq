@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,6 @@ using FastMoq.Extensions;
 using FastMoq.Models;
 using FastMoq.Providers;
 using FastMoq.Core.Providers;
-using FastMoq.Core.Providers.MoqProvider; // ensure unified adapter
 using System.Runtime; // For AmbiguousImplementationException per refactor
 
 namespace FastMoq
@@ -90,7 +90,16 @@ namespace FastMoq
         }
         public Mocker AddType<T>(T value, bool replace = false)
         {
-            if (replace && typeMap.ContainsKey(typeof(T))) typeMap.Remove(typeof(T));
+            if (typeMap.ContainsKey(typeof(T)))
+            {
+                if (!replace)
+                {
+                    typeof(T).ThrowAlreadyExists();
+                }
+
+                typeMap.Remove(typeof(T));
+            }
+
             typeMap[typeof(T)] = new InstanceModel<T>(_ => value);
             return this;
         }
@@ -102,7 +111,17 @@ namespace FastMoq
         public Mocker AddType(Func<Mocker, object?, object?> createFunc, bool replace = false, params object?[]? args)
         {
             ArgumentNullException.ThrowIfNull(createFunc);
-            if (replace && typeMap.ContainsKey(typeof(string))) typeMap.Remove(typeof(string));
+
+            if (typeMap.ContainsKey(typeof(string)))
+            {
+                if (!replace)
+                {
+                    typeof(string).ThrowAlreadyExists();
+                }
+
+                typeMap.Remove(typeof(string));
+            }
+
             typeMap[typeof(string)] = new InstanceModel(typeof(string), typeof(string), (Func<Mocker, object, object>)((m, ctx) => createFunc(m, ctx)!), args?.ToList() ?? new List<object?>());
             return this;
         }
@@ -116,12 +135,20 @@ namespace FastMoq
                     : $"{tClass.Name} cannot be an interface. Provide a concrete implementation.");
             }
             if (!tInterface.IsAssignableFrom(tClass)) throw new ArgumentException($"{tClass.Name} is not assignable to {tInterface.Name}.");
-            if (replace) typeMap.Remove(tInterface);
+
+            if (typeMap.ContainsKey(tInterface))
+            {
+                if (!replace)
+                {
+                    tInterface.ThrowAlreadyExists();
+                }
+
+                typeMap.Remove(tInterface);
+            }
         }
 
         public void AddFileSystemAbstractionMapping()
         {
-            return;
             AddType(typeof(IDirectory), typeof(DirectoryBase));
             AddType(typeof(IDirectoryInfo), typeof(DirectoryInfoBase));
             AddType(typeof(IDirectoryInfoFactory), typeof(MockDirectoryInfoFactory));
@@ -142,51 +169,19 @@ namespace FastMoq
         internal IInstanceModel GetTypeFromInterface<T>() where T : class => new InstanceModel(typeof(T), GetTypeFromInterface(typeof(T)));
         internal Type GetTypeFromInterface(Type type)
         {
-            if (!type.IsInterface) return type;
-            var possibles = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => !a.IsDynamic) // exclude dynamic (reflection emit) assemblies
-                .SelectMany(a =>
-                {
-                    try { return a.GetTypes(); } catch { return Array.Empty<Type>(); }
-                })
-                .Where(t => type.IsAssignableFrom(t)
-                            && !t.IsInterface
-                            && !t.IsAbstract
-                            && !t.Assembly.IsDynamic
-                            && !IsProxyLike(t))
-                .ToList();
-            switch (possibles.Count)
+            if (!type.IsInterface)
             {
-                case 0:
-                    return type; // fallback to interface for provider mock
-                case 1:
-                    return possibles[0];
-                default:
-                    // Heuristic 1: prefer class whose name matches interface name without leading 'I'
-                    var trimmed = type.Name.StartsWith("I") ? type.Name[1..] : type.Name;
-                    var nameMatch = possibles.Where(p => string.Equals(p.Name, trimmed, StringComparison.Ordinal)).ToList();
-                    if (nameMatch.Count == 1) return nameMatch[0];
-
-                    // Heuristic 2: if all candidates are from System.IO.Abstractions (file system) keep interface (avoid ambiguity for wrappers like IDirectory)
-                    if (possibles.All(p => (p.Namespace ?? string.Empty).StartsWith("System.IO.Abstractions", StringComparison.Ordinal)))
-                    {
-                        return type; // let provider generate a mock. Avoid throwing.
-                    }
-
-                    // Still ambiguous – throw
-                    throw new AmbiguousImplementationException($"Multiple implementations found for {type.Name}.");
+                return type;
             }
+
+            if (type == typeof(ILogger) || (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ILogger<>)))
+            {
+                return type;
+            }
+
+            return TestClassExtensions.GetTypeFromInterface(this, type);
         }
 
-        private static bool IsProxyLike(Type t)
-        {
-            var name = t.FullName ?? string.Empty;
-            // Heuristics: skip common proxy / dynamic patterns (Moq, DispatchProxy, our reflection proxies, Castle, etc.)
-            return name.Contains("Proxy", StringComparison.OrdinalIgnoreCase)
-                   || name.Contains("DispatchProxy", StringComparison.OrdinalIgnoreCase)
-                   || name.Contains("Castle.Proxies", StringComparison.OrdinalIgnoreCase)
-                   || name.StartsWith("FastMoq.ReflectionProxy.");
-        }
         internal IInstanceModel GetTypeModel(Type type) => typeMap.TryGetValue(type, out var model) && model is not null ? model : new InstanceModel(type, GetTypeFromInterface(type));
         internal static Type CleanType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Mock<>) ? type.GetGenericArguments()[0] : type;
         #endregion
@@ -194,10 +189,12 @@ namespace FastMoq
         #region Injection / Object Creation
         internal object? GetParameter(ParameterInfo parameter)
         {
+            ArgumentNullException.ThrowIfNull(parameter);
+
             var pt = parameter.ParameterType;
             if (!typeMap.ContainsKey(pt) && !pt.IsClass && !pt.IsInterface) return pt.GetDefaultValue();
             var m = GetTypeModel(pt);
-            return m.CreateFunc != null ? m.CreateFunc.Invoke(this, pt) : (!pt.IsSealed ? GetObject(pt) : pt.GetDefaultValue());
+            return m.CreateFunc != null ? m.CreateFunc.Invoke(this, parameter) : (!pt.IsSealed ? GetObject(pt) : pt.GetDefaultValue());
         }
 
         public T AddInjections<T>(T obj, Type? referenceType = null) where T : class?
@@ -217,18 +214,21 @@ namespace FastMoq
 
         public object? GetObject(Type type, Action<object?>? initAction = null)
         {
+            ArgumentNullException.ThrowIfNull(type);
+
             type = CleanType(type);
             var m = GetTypeModel(type);
             if (m.CreateFunc != null)
             {
                 return AddInjections(m.CreateFunc.Invoke(this, m.InstanceType), m.InstanceType);
             }
-            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
-            if (!strict)
+            if (KnownTypeRegistry.TryGetDirectInstance(this, type, out var knownInstance))
             {
-                if (!Contains<IFileSystem>() && type.IsEquivalentTo(typeof(IFileSystem))) return fileSystem;
-                if (!Contains<HttpClient>() && type.IsEquivalentTo(typeof(HttpClient))) return HttpClient;
+                initAction?.Invoke(knownInstance);
+                return knownInstance;
             }
+
+            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             if ((type.IsClass || type.IsInterface) && !type.IsSealed)
             {
                 var fast = GetOrCreateFastMock(type);
@@ -250,6 +250,9 @@ namespace FastMoq
                 {
                     AddInjections(obj, GetTypeModel(type).InstanceType);
                 }
+
+                KnownTypeRegistry.ApplyObjectDefaults(this, obj);
+
                 initAction?.Invoke(obj);
                 return obj;
             }
@@ -259,6 +262,8 @@ namespace FastMoq
         }
         public object? GetObject(ParameterInfo info)
         {
+            ArgumentNullException.ThrowIfNull(info);
+
             try
             {
                 return (!MockOptional && info.IsOptional) switch
@@ -267,6 +272,11 @@ namespace FastMoq
                     true => null,
                     _ => GetParameter(info)
                 };
+            }
+            catch (Exception ex) when (ex is FileNotFoundException or AmbiguousImplementationException)
+            {
+                ExceptionLog.Add(ex.Message);
+                throw;
             }
             catch (Exception ex)
             {
@@ -278,12 +288,14 @@ namespace FastMoq
         public T? GetObject<T>(Action<T?> init) where T : class => GetObject(typeof(T), o => init((T?)o)) as T;
         public T? GetObject<T>(object?[] args) where T : class
         {
-            // Legacy helper: create instance using provided args (constructor style) similar to CreateInstance but via GetObject semantics in tests.
-            if (args == null) return GetObject<T>();
-            var type = typeof(T);
-            var ctor = FindConstructor(type, false, args);
-            var instance = CreateInstanceInternal(type, ctor.ConstructorInfo, ctor.ParameterList) as T;
-            return instance;
+            if (args == null)
+            {
+                return GetObject<T>();
+            }
+
+            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
+            var constructor = FindConstructor(type.InstanceType, true, args);
+            return CreateInstanceInternal<T>(constructor.ConstructorInfo, args);
         }
 
         public object? AddProperties(Type type, object? obj, params KeyValuePair<string, object>[] data)
@@ -322,27 +334,124 @@ namespace FastMoq
 
         #region Constructor Resolution / Instance Creation
         public T? CreateInstance<T>(params object?[] args) where T : class => CreateInstance<T>(true, args);
-        public T? CreateInstance<T>(bool usePredefinedFileSystem, params object?[] args) where T : class
+
+        public T? CreateInstance<T>(bool usePredefinedFileSystem, params object?[] args) where T : class =>
+            CreateInstanceCore<T>(nonPublic: false, usePredefinedFileSystem: usePredefinedFileSystem, args);
+
+        public T? CreateInstanceNonPublic<T>(params object?[] args) where T : class =>
+            CreateInstanceCore<T>(nonPublic: true, usePredefinedFileSystem: false, args);
+
+        public T? CreateInstanceByType<T>(params Type?[] parameterTypes) where T : class
         {
-            if (usePredefinedFileSystem && fileSystem is T fs) return fs;
-            var tType = typeof(T);
-            var model = GetTypeModel(tType);
-            if (model.CreateFunc != null) return (T?)model.CreateFunc.Invoke(this, model.InstanceType);
-            var ctorModel = GetTypeConstructor(tType, false, args);
-            return CreateInstanceInternal<T>(ctorModel.ConstructorInfo, ctorModel.ParameterList);
+            var model = GetTypeModel(typeof(T));
+            var targetType = model.InstanceType ?? typeof(T);
+
+            // If the resolved type is still an interface, fall back to mock/object creation.
+            if (targetType.IsInterface)
+            {
+                return GetObject<T>();
+            }
+
+            var ctor = this.FindConstructorByType(targetType, nonPublic: true, parameterTypes);
+            var instance = this.CreateInstanceInternal(targetType, ctor, Array.Empty<object?>());
+            return instance as T;
         }
-        public T? CreateInstanceNonPublic<T>(params object?[] args) where T : class
+
+        /// <summary>
+        /// Centralized creation logic used by all public CreateInstance* methods.
+        /// </summary>
+        private T? CreateInstanceCore<T>(bool nonPublic, bool usePredefinedFileSystem, object?[] args) where T : class
         {
-            var tType = typeof(T);
-            var ctorModel = GetTypeConstructor(tType, true, args);
-            return CreateInstanceInternal<T>(ctorModel.ConstructorInfo, ctorModel.ParameterList);
+            if (usePredefinedFileSystem && fileSystem is T fs)
+            {
+                return fs;
+            }
+
+            var requestedType = typeof(T);
+            var model = GetTypeModel(requestedType);
+
+            if (TryGetExistingObject(requestedType, model, out T? instance))
+            {
+                return instance;
+            }
+
+            if (model.Arguments.Count > 0 && args.Length == 0)
+            {
+                args = model.Arguments.ToArray();
+            }
+
+            var targetType = model.InstanceType ?? requestedType;
+
+            if (targetType.IsInterface)
+            {
+                if (Behavior.Has(MockFeatures.FailOnUnconfigured))
+                {
+                    throw new NotImplementedException("Unable to find the constructor.");
+                }
+
+                return GetObject<T>();
+            }
+
+            var ctorModel = GetConstructorByArgs(args, targetType, nonPublic);
+            var created = CreateInstanceInternal(targetType, ctorModel.ConstructorInfo, ctorModel.ParameterList);
+            return created as T;
         }
-        public T? CreateInstanceByType<T>(params Type?[] args) where T : class
+
+        private ConstructorModel GetConstructorByArgs(object?[] args, Type instanceType, bool nonPublic)
         {
-            var tType = typeof(T);
-            var ctor = FindConstructorByType(tType, true, args);
-            return (T?)ctor.Invoke(new object?[args.Length]);
+            return args.Length > 0
+                ? FindConstructor(instanceType, nonPublic, args)
+                : FindConstructor(false, instanceType, nonPublic);
         }
+
+        private bool TryGetExistingObject<T>(Type requestedType, IInstanceModel typeInstanceModel, out T? instance) where T : class
+        {
+            instance = default;
+
+            if (creatingTypeList.Contains(requestedType))
+            {
+                return false;
+            }
+
+            if (TryGetModelInstance(typeInstanceModel, requestedType, out var modelInstance))
+            {
+                instance = modelInstance as T;
+                return true;
+            }
+
+            if (KnownTypeRegistry.TryGetManagedInstance(this, requestedType, out var managedInstance))
+            {
+                instance = managedInstance as T;
+                return instance != null;
+            }
+
+            return false;
+        }
+
+        private bool TryGetModelInstance(IInstanceModel typeInstanceModel, Type requestedType, out object? instance)
+        {
+            instance = null;
+
+            if (typeInstanceModel.CreateFunc == null)
+            {
+                return false;
+            }
+
+            creatingTypeList.Add(requestedType);
+            try
+            {
+                ConstructorHistory.AddOrUpdate(requestedType, typeInstanceModel);
+                instance = typeInstanceModel.CreateFunc.Invoke(this, requestedType);
+                return true;
+            }
+            finally
+            {
+                creatingTypeList.Remove(requestedType);
+            }
+        }
+        #endregion
+
+        #region Constructor Resolution (internal helpers restored)
         internal ConstructorModel GetTypeConstructor(Type type, bool nonPublic, object?[] args)
         {
             var constructor = new ConstructorModel(null, args);
@@ -350,7 +459,9 @@ namespace FastMoq
             {
                 if (!type.IsInterface)
                 {
-                    constructor = args.Length > 0 || nonPublic ? FindConstructor(type, nonPublic, args) : FindConstructor(true, type, nonPublic);
+                    constructor = args.Length > 0 || nonPublic
+                        ? FindConstructor(type, nonPublic, args)
+                        : FindConstructor(bestGuess: true, type, nonPublic);
                 }
             }
             catch (Exception ex) { ExceptionLog.Add(ex.Message); }
@@ -373,22 +484,31 @@ namespace FastMoq
         {
             var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             var all = GetConstructors(type, nonPublic, args);
-            var filtered = all.Where(x => x.ParameterList.Select(z => z?.GetType()).SequenceEqual(args.Select(a => a?.GetType()))).ToList();
+            var filtered = all.Where(x => type.IsValidConstructor(x.ConstructorInfo!, args)).ToList();
             if (!filtered.Any())
             {
                 if (!nonPublic && !strict) return FindConstructor(type, true, args);
                 throw new NotImplementedException("Unable to find the constructor.");
             }
-            return filtered.First();
+            return filtered.FirstOrDefault(x => x.ParameterList.Length == args.Length) ?? filtered[0];
         }
         internal ConstructorModel FindConstructor(bool bestGuess, Type type, bool nonPublic, List<ConstructorInfo>? excludeList = null)
         {
             var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             excludeList ??= new();
             var ctors = GetConstructors(type, nonPublic).Where(c => excludeList.TrueForAll(e => e != c.ConstructorInfo)).ToList();
-            if (!bestGuess && ctors.Count(x => x.ParameterList.Length > 0) > 1) throw new AmbiguousImplementationException("Multiple parameterized constructors exist.");
-            if (!(ctors.Count > 0) && !nonPublic && !strict) return FindConstructor(bestGuess, type, true, excludeList);
-            return ctors.LastOrDefault() ?? throw new NotImplementedException("Unable to find the constructor.");
+            if (!bestGuess && ctors.Count(x => x.ParameterList.Length > 0) > 1)
+            {
+                throw this.GetAmbiguousConstructorImplementationException(type);
+            }
+
+            if (!(ctors.Count > 0) && !nonPublic && !strict)
+            {
+                return FindConstructor(bestGuess, type, true, excludeList);
+            }
+
+            var validCtors = this.GetTestedConstructors(type, ctors);
+            return validCtors.LastOrDefault() ?? throw new NotImplementedException("Unable to find the constructor.");
         }
         public bool HasParameterlessConstructor(Type type, bool nonPublic = false) => GetConstructors(type, nonPublic).Any(x => x.ParameterList.Length == 0);
         internal List<ConstructorModel> GetConstructors(Type type, bool nonPublic, params object?[] values)
@@ -437,7 +557,7 @@ namespace FastMoq
             object?[] ctorArgs = Array.Empty<object?>();
             if (type.IsClass && !type.IsAbstract)
             {
-                var constructor = GetTypeConstructor(type, nonPublic, args);
+                var constructor = this.GetTypeConstructor(type, nonPublic, args);
                 ctorArgs = constructor.ParameterList ?? Array.Empty<object?>();
             }
             var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
@@ -459,8 +579,8 @@ namespace FastMoq
             var legacy = TryGetLegacyMock(fast);
             if (legacy != null)
             {
-                // Assign without overwriting existing FastMock implementation.
-                AddMock(legacy, type, overwrite: false, nonPublic: nonPublic);
+                // Attach the legacy Moq surface to the existing model after FastMock registration.
+                AddMock(legacy, type, overwrite: true, nonPublic: nonPublic);
                 SetupMock(type, legacy); // retain legacy setup behavior
             }
             return mockCollection;
@@ -469,21 +589,43 @@ namespace FastMoq
 
         public Mock<T> CreateMockInstance<T>(bool nonPublic = false, params object?[] args) where T : class
         {
-            // Legacy convenience returning Moq.Mock<T>. Uses provider-first path internally.
-            CreateMock(typeof(T), nonPublic, args);
-            var model = GetMockModel(typeof(T));
-            var legacy = TryGetLegacyMock(model.FastMock);
-            if (legacy is Mock<T> typed) return typed;
+            var legacy = CreateMockInstance(typeof(T), nonPublic, args);
+            if (legacy is Mock<T> typed)
+            {
+                return typed;
+            }
+
             throw new NotSupportedException($"Active provider '{MockingProviderRegistry.Default.GetType().Name}' does not expose Moq legacy surface for {typeof(T).Name}.");
         }
 
         public Mock CreateMockInstance(Type type, bool nonPublic = false, params object?[] args)
         {
-            // Legacy non-generic convenience.
-            CreateMock(type, nonPublic, args);
-            var model = GetMockModel(type);
-            var legacy = TryGetLegacyMock(model.FastMock);
-            if (legacy != null) return legacy;
+            if (type == null || (!type.IsClass && !type.IsInterface))
+            {
+                throw new ArgumentException("Type must be a class or interface.", nameof(type));
+            }
+
+            var provider = MockingProviderRegistry.Default;
+            object?[] ctorArgs = Array.Empty<object?>();
+
+            if (type.IsClass && !type.IsAbstract)
+            {
+                var constructor = GetTypeConstructor(type, nonPublic, args);
+                ctorArgs = constructor.ParameterList ?? Array.Empty<object?>();
+            }
+
+            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
+            var callBase = Behavior.Has(MockFeatures.CallBase) && provider.Capabilities.SupportsCallBase && !type.IsInterface;
+            var options = new MockCreationOptions(strict, CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
+            var fast = provider.CreateMock(type, options);
+            var legacy = TryGetLegacyMock(fast);
+            if (legacy != null)
+            {
+                SetupMock(type, legacy);
+                legacy.RaiseIfNull();
+                return legacy;
+            }
+
             throw new NotSupportedException($"Active provider '{MockingProviderRegistry.Default.GetType().Name}' does not expose Moq legacy surface for {type.Name}.");
         }
 
@@ -512,9 +654,7 @@ namespace FastMoq
             if (Contains(type))
             {
                 var mm = GetMockModel(type);
-                // Determine if an existing distinct legacy mock is already associated.
-                var existingLegacy = TryGetLegacyMock(mm.FastMock); // avoids triggering Mock property hydration/exception
-                if (!overwrite && existingLegacy != null && !ReferenceEquals(existingLegacy, mock) && mm.Type == type)
+                if (!overwrite)
                 {
                     type.ThrowAlreadyExists();
                 }
@@ -545,7 +685,7 @@ namespace FastMoq
         public Mock GetMock(Type type, params object?[]? args)
         {
             type = CleanType(type);
-            if (!Contains(type)) CreateMock(type, args?.Length > 0, args ?? Array.Empty<object?>());
+            if (!Contains(type)) CreateMock(type, false, args ?? Array.Empty<object?>());
             return GetRequiredMock(type);
         }
         public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>)GetMock(typeof(T), args);
@@ -555,13 +695,39 @@ namespace FastMoq
             action?.Invoke(m);
             return m;
         }
-        public Mock GetRequiredMock(Type type) => mockCollection.First(x => x.Type == type).Mock;
+        public Mock GetRequiredMock(Type type)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+
+            var mock = (!type.IsClass && !type.IsInterface)
+                ? throw new ArgumentException("Type must be a class.", nameof(type))
+                : mockCollection.First(x => x.Type == type).Mock;
+
+            mock.RaiseIfNull();
+            return mock;
+        }
         public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>)GetRequiredMock(typeof(T));
         public MockModel<T> GetMockModel<T>() where T : class => new(GetMockModel(typeof(T)));
         public int GetMockModelIndexOf(Type type, bool throwIfMissing = true)
         {
             var idx = mockCollection.FindIndex(m => m.Type == type);
-            if (idx < 0 && throwIfMissing) throw new ArgumentException($"Mock of type {type} not found.");
+            if (idx >= 0)
+            {
+                return idx;
+            }
+
+            if (!throwIfMissing)
+            {
+                throw new NotImplementedException("Unable to find the constructor.");
+            }
+
+            GetMock(type);
+            idx = mockCollection.FindIndex(m => m.Type == type);
+            if (idx < 0)
+            {
+                throw new NotImplementedException("Unable to find the constructor.");
+            }
+
             return idx;
         }
         public bool RemoveMock(Mock mock)
@@ -587,10 +753,15 @@ namespace FastMoq
                     try { if (oMock is Mock<ILogger> logger) SetupLoggerCallback(logger, LoggingCallback); } catch { }
                 }
             }
+
+            KnownTypeRegistry.ConfigureMock(this, type, oMock);
+
             if (Behavior.Has(MockFeatures.AutoInjectDependencies))
             {
                 AddInjections(oMock.Object, GetTypeModel(type).InstanceType);
             }
+
+            KnownTypeRegistry.ApplyObjectDefaults(this, oMock.Object);
         }
 
         private static void TrySetupAllProperties(Mock mock)
@@ -679,24 +850,46 @@ namespace FastMoq
         }
         public object?[] GetArgData<T>() where T : class
         {
-            var ctor = typeof(T).GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
-            return ctor == null ? Array.Empty<object?>() : ctor.GetParameters().Select(p => GetObject(p)).ToArray();
+            var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
+            var constructor = FindConstructor(false, type.InstanceType, true);
+            return constructor.ConstructorInfo == null
+                ? Array.Empty<object?>()
+                : constructor.ConstructorInfo.GetParameters().Select(GetParameter).ToArray();
         }
 
         public object? InvokeMethod(object? instance, string methodName, bool nonPublic = false, params object?[] args)
         {
             if (instance == null) throw new ArgumentNullException(nameof(instance));
             var flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | (nonPublic ? BindingFlags.NonPublic : 0);
-            var method = instance.GetType().GetMethod(methodName, flags) ?? throw new MissingMethodException(instance.GetType().FullName, methodName);
-            return method.Invoke(instance, args);
+            var method = instance.GetType().GetMethod(methodName, flags);
+            if (method == null)
+            {
+                if (!nonPublic && !Strict)
+                {
+                    return InvokeMethod(instance, methodName, true, args);
+                }
+
+                throw new ArgumentOutOfRangeException(nameof(methodName));
+            }
+
+            return method.Invoke(instance, flags, null, args.Any() ? args.ToArray() : GetMethodArgData(method), null);
         }
         public object? InvokeMethod<T>(object? instance, string methodName, bool nonPublic = false, params object?[] args)
         {
-            var type = typeof(T);
+            var type = typeof(T).IsInterface ? GetTypeFromInterface(typeof(T)) : typeof(T);
             var flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | (nonPublic ? BindingFlags.NonPublic : 0);
-            var method = type.GetMethod(methodName, flags) ?? throw new MissingMethodException(type.FullName, methodName);
-            return method.Invoke(instance, args);
+            var method = type.GetMethod(methodName, flags);
+            if (method == null)
+            {
+                if (!nonPublic && !Strict)
+                {
+                    return InvokeMethod<T>(instance, methodName, true, args);
+                }
+
+                throw new ArgumentOutOfRangeException(nameof(methodName));
+            }
+
+            return method.Invoke(instance, flags, null, args.Any() ? args.ToArray() : GetMethodArgData(method), null);
         }
         public object? InvokeMethod<T>(string methodName, bool nonPublic = false, params object?[] args) => InvokeMethod<T>(null, methodName, nonPublic, args);
 
@@ -718,7 +911,7 @@ namespace FastMoq
                     list.Add(null);
                     continue;
                 }
-                list.Add(GetObject(p));
+                list.Add(GetParameter(p));
             }
             return list.ToArray();
         }
@@ -726,8 +919,15 @@ namespace FastMoq
         {
             if (del == null) throw new ArgumentNullException(nameof(del));
             var invocationArgs = BuildInvocationArgs(del, args);
-            var result = del.DynamicInvoke(invocationArgs);
-            return (TReturn)result!;
+            try
+            {
+                var result = del.DynamicInvoke(invocationArgs);
+                return (TReturn)result!;
+            }
+            catch (TargetInvocationException ex) when (ex.InnerException is { } inner)
+            {
+                throw inner;
+            }
         }
         public void CallMethod(Delegate del, params object?[] args) => CallMethod<object?>(del, args);
         public TReturn CallMethod<TReturn>(Func<TReturn> func, params object?[] args) => CallMethod<TReturn>((Delegate)func, args);
@@ -747,6 +947,7 @@ namespace FastMoq
             return (TReturn)result;
         }
 
+        [Obsolete("Use GetMock<T>() and configure the returned mock directly. Initialize<T>() is a compatibility wrapper and may be removed in a future major version.")]
         public void Initialize<T>(Action<Mock<T>> init) where T : class
         {
             var m = GetMock<T>();
@@ -755,17 +956,50 @@ namespace FastMoq
 
         public async Task<string> GetStringContent(HttpContent? content) => content == null ? string.Empty : await content.ReadAsStringAsync().ConfigureAwait(false);
 
-        public Mock<TContext> GetMockDbContext<TContext>() where TContext : DbContext => GetMock<TContext>();
-        public Mock<DbContext> GetMockDbContext(Type dbContextType)
+        public DbContextMock<TContext> GetMockDbContext<TContext>() where TContext : DbContext
         {
-            var m = typeof(Mocker).GetMethod(nameof(GetMockDbContext), BindingFlags.Public | BindingFlags.Instance)!.MakeGenericMethod(dbContextType);
-            return (Mock<DbContext>)m.Invoke(this, null)!;
+            if (Contains<TContext>())
+            {
+                return (DbContextMock<TContext>)GetMock<TContext>();
+            }
+
+            if (DbConnection.State != System.Data.ConnectionState.Open)
+            {
+                DbConnection.Open();
+            }
+
+            var options = new DbContextOptionsBuilder<TContext>()
+                .UseSqlite(DbConnection)
+                .Options;
+
+            AddType<DbContextOptions<TContext>>(_ => options, replace: true);
+
+            var mock = new DbContextMock<TContext>(Behavior.Has(MockFeatures.FailOnUnconfigured) ? MockBehavior.Strict : MockBehavior.Default, options);
+            AddMock(mock, overwrite: true, nonPublic: true);
+            SetupMock(typeof(TContext), mock);
+            return mock.SetupDbSets(this);
         }
+        public Mock GetMockDbContext(Type dbContextType) =>
+            dbContextType.CallGenericMethod(this) as Mock ??
+            throw new InvalidOperationException("Unable to get MockDb. Try GetDbContext to use internal database.");
+
         public TContext GetDbContext<TContext>(Func<DbContextOptions<TContext>, TContext>? factory = null) where TContext : DbContext
         {
-            var builder = new DbContextOptionsBuilder<TContext>().UseSqlite(DbConnection);
-            var options = builder.Options;
-            return factory != null ? factory(options) : GetObject<TContext>() ?? (TContext)Activator.CreateInstance(typeof(TContext), options)!;
+            DbConnection = new SqliteConnection("DataSource=:memory:");
+            DbConnection.Open();
+
+            var options = new DbContextOptionsBuilder<TContext>()
+                .UseSqlite(DbConnection)
+                .Options;
+
+            var context = factory != null
+                ? factory(options)
+                : (TContext)Activator.CreateInstance(typeof(TContext), options)!;
+
+            context.Database.EnsureCreated();
+            context.SaveChanges();
+
+            return context;
         }
         public T GetRequiredObject<T>() where T : class => GetObject<T>() ?? throw new InvalidOperationException($"Unable to resolve object of type {typeof(T).Name}.");
         #endregion

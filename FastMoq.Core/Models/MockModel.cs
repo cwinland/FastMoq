@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using FastMoq.Providers;
 using Moq; // legacy (to be removed in future)
-using FastMoq.Core.Providers.MoqProvider; // unified adapter path
+using FastMoq.Providers.MoqProvider; // unified adapter path
 
 namespace FastMoq.Models
 {

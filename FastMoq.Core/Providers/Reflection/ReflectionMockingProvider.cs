@@ -22,7 +22,6 @@ namespace FastMoq.Providers.ReflectionProvider
 
         public IMockingProviderCapabilities Capabilities => this;
         public bool SupportsCallBase => false;
-        public bool SupportsStrict => false;
         public bool SupportsSetupAllProperties => false;
         public bool SupportsProtectedMembers => false;
         public bool SupportsInvocationTracking => true;

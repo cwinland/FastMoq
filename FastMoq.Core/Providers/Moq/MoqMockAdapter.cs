@@ -1,6 +1,6 @@
 using System;
 
-namespace FastMoq.Core.Providers.MoqProvider
+namespace FastMoq.Providers.MoqProvider
 {
     internal sealed class MoqMockAdapter<T> : global::FastMoq.Providers.IFastMock<T> where T : class
     {
