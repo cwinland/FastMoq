@@ -27,22 +27,16 @@ namespace FastMoq.Models
         {
             get
             {
-                if (_legacyMock == null)
+                if (!TryGetLegacyMock(out var legacyMock))
                 {
-                    // Attempt lazy hydration (provider-first path may not have set it yet)
-                    TryAssignLegacyMockFromAdapter();
-                    // If still null, legacy surface is not available for this provider.
-                    if (_legacyMock == null)
-                    {
-                        throw new NotSupportedException("Active mocking provider does not expose a legacy Moq.Mock instance.");
-                    }
+                    throw new NotSupportedException("Active mocking provider does not expose a legacy Moq.Mock instance.");
                 }
-                return _legacyMock;
+
+                return legacyMock;
             }
             internal set
             {
-                _legacyMock = value ?? throw new ArgumentNullException(nameof(value));
-                RefreshFastMockFromLegacy();
+                SetLegacyMock(value);
             }
         }
 
@@ -109,6 +103,23 @@ namespace FastMoq.Models
             {
                 FastMock = new MoqMockAdapter(_legacyMock);
             }
+        }
+
+        internal void SetLegacyMock(Mock mock)
+        {
+            _legacyMock = mock ?? throw new ArgumentNullException(nameof(mock));
+            RefreshFastMockFromLegacy();
+        }
+
+        internal bool TryGetLegacyMock([NotNullWhen(true)] out Mock? mock)
+        {
+            if (_legacyMock == null)
+            {
+                TryAssignLegacyMockFromAdapter();
+            }
+
+            mock = _legacyMock;
+            return mock != null;
         }
 
         /// <summary>

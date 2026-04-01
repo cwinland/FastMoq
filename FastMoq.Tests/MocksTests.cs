@@ -72,8 +72,8 @@ namespace FastMoq.Tests
 
             MockModel<IFileSystemInfo> mockResult = Mocks.AddMock(mock, false);
             MockModel<IFileSystemInfo> mockModel = Mocks.GetMockModel<IFileSystemInfo>();
-            mockResult.Mock.Should().Be(mockModel.Mock);
-            mockModel.Mock.Name.Should().Be("First");
+            mockResult.NativeMock.Should().BeSameAs(mockModel.NativeMock);
+            mockModel.NativeMock.Should().BeSameAs(mock);
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace FastMoq.Tests
                 Name = "First",
             };
 
-            Mocks.AddMock(mock, false).Mock.Should().Be(mock);
+            Mocks.AddMock(mock, false).NativeMock.Should().BeSameAs(mock);
 
             Action a = () => Mocks.AddMock(mock, false);
             a.Should().Throw<ArgumentException>();
@@ -98,14 +98,12 @@ namespace FastMoq.Tests
                 Name = "First",
             };
 
-            Mock<IFileSystemInfo> mock1 = Mocks.AddMock(mock, false).Mock;
-            mock1.Should().Be(mock);
-            mock1.Name.Should().Be("First");
+            var mock1 = Mocks.AddMock(mock, false).NativeMock;
+            mock1.Should().BeSameAs(mock);
 
             mock.Name = "test";
-            Mock<IFileSystemInfo> mock2 = Mocks.AddMock(mock, true).Mock;
-            mock2.Should().Be(mock);
-            mock2.Name.Should().Be("test");
+            var mock2 = Mocks.AddMock(mock, true).NativeMock;
+            mock2.Should().BeSameAs(mock);
         }
 
         [Fact]
@@ -134,7 +132,7 @@ namespace FastMoq.Tests
             var mockModel = Mocks.GetMockModel<IFileSystem>();
 
             mockModel.NativeMock.Should().BeOfType<Mock<IFileSystem>>();
-            mockModel.NativeMock.Should().BeSameAs(mockModel.Mock);
+            mockModel.NativeMock.Should().BeSameAs(Mocks.GetNativeMock<IFileSystem>());
         }
 
         [Fact]

@@ -703,9 +703,9 @@ namespace FastMoq
                 var existing = GetMockModel(type);
                 existing.FastMock = fastMock;
                 var legacyExisting = TryGetLegacyMock(fastMock);
-                if (legacyExisting != null && existing.Mock == null)
+                if (legacyExisting != null && !existing.TryGetLegacyMock(out _))
                 {
-                    existing.Mock = legacyExisting;
+                    existing.SetLegacyMock(legacyExisting);
                 }
                 return existing;
             }
@@ -725,7 +725,7 @@ namespace FastMoq
                     type.ThrowAlreadyExists();
                 }
                 // Assign (setter refreshes adapter)
-                mm.Mock = mock;
+                mm.SetLegacyMock(mock);
                 return mm;
             }
             // No existing model – create using adapter wrapper.
@@ -763,9 +763,16 @@ namespace FastMoq
         {
             ArgumentNullException.ThrowIfNull(type);
 
-            var mock = (!type.IsClass && !type.IsInterface)
-                ? throw new ArgumentException("Type must be a class.", nameof(type))
-                : mockCollection.First(x => x.Type == type).Mock;
+            if (!type.IsClass && !type.IsInterface)
+            {
+                throw new ArgumentException("Type must be a class.", nameof(type));
+            }
+
+            var model = mockCollection.First(x => x.Type == type);
+            if (!model.TryGetLegacyMock(out var mock))
+            {
+                throw new NotSupportedException($"Active provider '{MockingProviderRegistry.Default.GetType().Name}' does not expose a legacy Moq.Mock instance for {type.Name}.");
+            }
 
             mock.RaiseIfNull();
             return mock;
@@ -817,7 +824,7 @@ namespace FastMoq
         }
         public bool RemoveMock(Mock mock)
         {
-            var model = mockCollection.FirstOrDefault(m => m.Mock == mock);
+            var model = mockCollection.FirstOrDefault(m => m.TryGetLegacyMock(out var legacyMock) && legacyMock == mock);
             if (model == null) return false;
             mockCollection.Remove(model);
             return true;
