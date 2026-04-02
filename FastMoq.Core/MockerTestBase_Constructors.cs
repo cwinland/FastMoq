@@ -76,9 +76,6 @@ namespace FastMoq
             SetupMocksAction = setupMocksAction;
             CreateComponentAction = createComponentAction ?? DefaultCreateAction;
             CreatedComponentAction = createdComponentAction;
-#if NET6_0
-            Mocks.AddFileSystemAbstractionMapping();
-#endif
             Component = GetComponent();
         }
 

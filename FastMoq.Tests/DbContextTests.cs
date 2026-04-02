@@ -9,26 +9,49 @@ namespace FastMoq.Tests
     public class DbContextTests : MockerTestBase<MyDbContext>
     {
         [Fact]
-        public void GetDbContext_WithOptions()
+        public void GetObject_DbContext_ShouldReturnBuiltInMockObject_WhenNoProvidedRegistrationExists()
         {
-            // Specify generic type explicitly so compiler can infer lambda types correctly under new signature.
-            var mockDbContext = Mocks.GetDbContext<MyDbContext>(options => new MyDbContext(options));
-            mockDbContext.Certificates.Should().HaveCount(0);
-            mockDbContext.MyDbSetData.Should().HaveCount(0);
-            mockDbContext.MyDbSetData2.Should().HaveCount(0);
+            var dbContext = Mocks.GetObject<MyDbContext>();
+
+            dbContext.Should().NotBeNull();
+            Mocks.Contains<MyDbContext>().Should().BeTrue();
+            Mocks.GetMockDbContext<MyDbContext>().Object.Should().BeSameAs(dbContext);
         }
 
         [Fact]
-        public void GetDbContext_WithoutOptions()
+        public void GetObject_DbContext_ShouldReturnTrackedMockObject_WhenTrackedMockAlreadyExists()
         {
-            var mockDbContext = Mocks.GetDbContext<MyDbContext>();
-            mockDbContext.Certificates.Should().HaveCount(0);
-            mockDbContext.MyDbSetData.Should().HaveCount(0);
-            mockDbContext.MyDbSetData2.Should().HaveCount(0);
+            var trackedMock = Mocks.GetMockDbContext<MyDbContext>();
+
+            var dbContext = Mocks.GetObject<MyDbContext>();
+
+            dbContext.Should().BeSameAs(trackedMock.Object);
         }
 
         [Fact]
-        public void GetMockDbContext_SameAs_Component()
+        public void GetObject_DbContext_ShouldReturnCustomManagedInstance_BeforeTrackedAndBuiltIn()
+        {
+            var expected = new CustomManagedDbContext(
+                new DbContextOptionsBuilder<CustomManagedDbContext>()
+                    .UseInMemoryDatabase($"FastMoq_{nameof(CustomManagedDbContext)}_{System.Guid.NewGuid():N}")
+                    .Options);
+
+            Mocks.AddKnownType<DbContext>(
+                managedInstanceFactory: (_, requestedType) =>
+                    requestedType == typeof(CustomManagedDbContext) ? expected : null,
+                includeDerivedTypes: true);
+
+            var trackedMock = Mocks.GetMockDbContext<CustomManagedDbContext>();
+            trackedMock.Should().NotBeNull();
+
+            var dbContext = Mocks.GetObject<CustomManagedDbContext>();
+
+            dbContext.Should().BeSameAs(expected);
+            dbContext.Should().NotBeSameAs(trackedMock.Object);
+        }
+
+        [Fact]
+        public void GetMockDbContext_ShouldReturnSameInstanceAsComponent()
         {
             var mockDbContext = Mocks.GetMockDbContext(typeof(MyDbContext));
             mockDbContext.Object.Should().BeSameAs(Component);
@@ -39,7 +62,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void TestComponent_SetAdd()
+        public void Component_DbSetOperations_ShouldTrackAddedEntitiesAcrossNamedSets()
         {
             Component.MyDbUpdateMethod();
             Component.Set<MockDataModel>().Add(new() { Name="test1" }); // This brings back the second one because it was set twice and last one wins.
@@ -49,7 +72,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void TestDbContext()
+        public void GetMockDbContext_ShouldSupportDbSetOperationsOnTrackedMock()
         {
             var mockDbContext = Mocks.GetMockDbContext<MyDbContext>();
 
@@ -61,7 +84,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void TestCustomProp()
+        public void Component_ShouldPersistCustomPropertyChangesOnDbContextMock()
         {
             Component.CustomProp.Should().BeFalse();
             Component.MyDbUpdateMethod();
@@ -69,7 +92,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void TestSetByName()
+        public void SetByName_ShouldResolveConfiguredDbSetProperties()
         {
             Component.Set<MockDataModel>("MyDbSetData").Should().BeSameAs(Component.MyDbSetData);
             Component.Set<MockDataModel>("MyDbSetData2").Should().BeSameAs(Component.MyDbSetData2);
@@ -80,7 +103,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public async Task TestAsync_AddAsync()
+        public async Task DbSet_AddAsync_ShouldAppendEntityToTrackedSet()
         {
             var dbSet = Component.Set<MockDataModel>("MyDbSetData");
 
@@ -90,7 +113,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public async Task TestAsync_GetAllToList()
+        public async Task QueryableDbSet_ShouldEnumerateToList()
         {
             var dbSet = Component.Set<MockDataModel>("MyDbSetData");
             dbSet.Add(new MockDataModel());
@@ -101,7 +124,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public async Task TestAsync_GetAllToListAsync()
+        public async Task AsyncEnumerableDbSet_ShouldEnumerateToListAsync()
         {
             var dbSet = Component.Set<MockDataModel>("MyDbSetData");
             dbSet.Add(new MockDataModel());
@@ -157,6 +180,17 @@ namespace FastMoq.Tests
 
         public bool MyDbUpdateMethod() => CustomProp = true;
         protected MyDbContext()
+        {
+        }
+    }
+
+    public class CustomManagedDbContext : DbContext
+    {
+        public CustomManagedDbContext(DbContextOptions<CustomManagedDbContext> options) : base(options)
+        {
+        }
+
+        protected CustomManagedDbContext()
         {
         }
     }

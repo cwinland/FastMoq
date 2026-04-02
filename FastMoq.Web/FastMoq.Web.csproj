@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
-    <DebugType>embedded</DebugType>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Winland, $(AssemblyName)</Authors>
     <Company>$(Authors)</Company>
@@ -20,10 +19,6 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IsPackable>true</IsPackable>
     <DebugType>portable</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn)</GenerateNuspecDependsOn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -47,17 +42,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" Condition="'$(TargetFramework)' == 'net9.0'" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" Condition="'$(TargetFramework)' == 'net8.0'" />
-
-    <PackageReference Include="bunit" Version="1.38.5" Condition="'$(TargetFramework)' == 'net8.0'" />
-    <PackageReference Include="bunit" Version="1.38.5" Condition="'$(TargetFramework)' == 'net9.0'" />
-    
-    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.14.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
-      <ExcludeAssets>analyzers</ExcludeAssets>
-    </PackageReference>    
+    <PackageReference Include="System.Configuration.ConfigurationManager" />
+    <PackageReference Include="bunit" />
   </ItemGroup>
 
   <ItemGroup>

@@ -66,7 +66,7 @@ jobs:
       if: matrix.language == 'csharp'
       run: |
         set -euo pipefail
-        # Use the release solution (excludes test projects) to avoid building test SDK under net6.0
+        # Use the release solution (excludes test projects) for cleaner builds
         if [ -f FastMoq-Release.sln ]; then
           echo "Restoring FastMoq-Release.sln"
           dotnet restore FastMoq-Release.sln

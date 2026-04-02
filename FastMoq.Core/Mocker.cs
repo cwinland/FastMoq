@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.Common;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -25,6 +23,35 @@ namespace FastMoq
     /// <summary>
     /// Core mock coordinator (provider-based creation integrated).
     /// </summary>
+    /// <remarks>
+    /// <h3>Resolution Hierarchy (v4)</h3>
+    /// FastMoq uses consistent resolution hierarchies across different APIs:
+    /// 
+    /// <h4>GetObject&lt;T&gt;() - Dependency Injection (Property/Field/Constructor)</h4>
+    /// <list type="number">
+    ///   <item><description>Custom registration via AddType&lt;T&gt;() or AddKnownType&lt;T&gt;()</description></item>
+    ///   <item><description>Built-in known instances (e.g., IFileSystem returns in-memory file system)</description></item>
+    ///   <item><description>Tracked mocks via GetOrCreateFastMock (get-or-create paradigm)</description></item>
+    ///   <item><description>Default value (null or type default)</description></item>
+    /// </list>
+    /// <para>GetObject respects all custom configurations and auto-creates mocks when needed.</para>
+    /// 
+    /// <h4>GetMock&lt;T&gt;() / GetFastMock&lt;T&gt;() - Test Setup (Mock-Only Path)</h4>
+    /// <list type="number">
+    ///   <item><description>Tracked mocks only (get-or-create tracked mock, no custom registrations applied)</description></item>
+    ///   <item><description>Mocks are preconfigured via SetupFastMock (e.g., IFileSystem delegates to built-in)</description></item>
+    /// </list>
+    /// <para>GetMock/GetFastMock always return mocks for test setup, bypassing custom AddType registrations. 
+    /// This is intentional: AddType is for runtime instances, while GetMock is for test mocks.
+    /// For setup values, use AddMock() or component constructor parameters instead.</para>
+    /// 
+    /// <h4>GetParameter() - Constructor Parameter Resolution</h4>
+    /// <list type="number">
+    ///   <item><description>Custom type mapping (AddType&lt;TInterface, TImpl&gt;())</description></item>
+    ///   <item><description>Falls back to GetObject for all other resolution</description></item>
+    /// </list>
+    /// <para>Constructor parameters follow the same hierarchy as GetObject after type mapping.</para>
+    /// </remarks>
     public partial class Mocker
     {
         public const string SETUP_ALL_PROPERTIES_METHOD_NAME = "SetupAllProperties";
@@ -54,7 +81,6 @@ namespace FastMoq
                 ? OptionalParameterResolutionMode.ResolveViaMocker
                 : OptionalParameterResolutionMode.UseDefaultOrNull;
         }
-        public DbConnection DbConnection { get; internal set; } = new SqliteConnection("DataSource=:memory:");
         public ObservableExceptionLog ExceptionLog => exceptionLog;
         public HttpClient HttpClient { get; }
         public bool InnerMockResolution { get; set; } = true;
@@ -347,38 +373,79 @@ namespace FastMoq
                 return knownInstance;
             }
 
+            if (KnownTypeRegistry.TryGetCustomManagedInstance(this, type, out var customManagedInstance))
+            {
+                initAction?.Invoke(customManagedInstance);
+                return customManagedInstance;
+            }
+
             var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             if ((type.IsClass || type.IsInterface) && !type.IsSealed)
             {
-                var fast = GetOrCreateFastMock(type);
-                var provider = MockingProviderRegistry.Default;
-                if (Behavior.Has(MockFeatures.AutoSetupProperties))
+                if (Contains(type))
                 {
-                    provider.ConfigureProperties(fast, strict);
-                }
-                if (Behavior.Has(MockFeatures.LoggerCallback))
-                {
-                    var mockedType = fast.MockedType;
-                    if (typeof(ILogger).IsAssignableFrom(mockedType))
-                    {
-                        try { provider.ConfigureLogger(fast, LoggingCallback); } catch { }
-                    }
-                }
-                var obj = fast.Instance;
-                if (Behavior.Has(MockFeatures.AutoInjectDependencies))
-                {
-                    AddInjections(obj, GetTypeModel(type).InstanceType);
+                    return ResolveTrackedMockObject(type, initAction, strict);
                 }
 
-                KnownTypeRegistry.ApplyObjectDefaults(this, obj);
+                if (KnownTypeRegistry.TryGetBuiltInManagedInstance(this, type, out var builtInManagedInstance))
+                {
+                    initAction?.Invoke(builtInManagedInstance);
+                    return builtInManagedInstance;
+                }
 
-                initAction?.Invoke(obj);
-                return obj;
+                return ResolveTrackedMockObject(type, initAction, strict);
             }
             var def = type.GetDefaultValue();
             initAction?.Invoke(def);
             return def;
         }
+
+        private object? ResolveTrackedMockObject(Type type, Action<object?>? initAction, bool strict)
+        {
+            var fast = GetOrCreateFastMock(type);
+            var provider = MockingProviderRegistry.Default;
+            if (Behavior.Has(MockFeatures.AutoSetupProperties))
+            {
+                provider.ConfigureProperties(fast, strict);
+                ReapplyTrackedMockConfiguration(type, fast);
+            }
+            if (Behavior.Has(MockFeatures.LoggerCallback))
+            {
+                var mockedType = fast.MockedType;
+                if (typeof(ILogger).IsAssignableFrom(mockedType))
+                {
+                    try { provider.ConfigureLogger(fast, LoggingCallback); } catch { }
+                }
+            }
+            var obj = fast.Instance;
+            if (Behavior.Has(MockFeatures.AutoInjectDependencies))
+            {
+                AddInjections(obj, GetTypeModel(type).InstanceType);
+            }
+
+            KnownTypeRegistry.ApplyObjectDefaults(this, obj);
+
+            initAction?.Invoke(obj);
+            return obj;
+        }
+
+        private void ReapplyTrackedMockConfiguration(Type type, IFastMock fastMock)
+        {
+            KnownTypeRegistry.ConfigureMock(this, type, fastMock);
+
+            if (!type.IsAssignableTo(typeof(DbContext)))
+            {
+                return;
+            }
+
+            if (TryGetLegacyMock(fastMock) is not Mock legacyMock)
+            {
+                return;
+            }
+
+            legacyMock.GetType().GetMethod("SetupDbSets")?.Invoke(legacyMock, [this]);
+        }
+
         public object? GetObject(ParameterInfo info)
         {
             ArgumentNullException.ThrowIfNull(info);
@@ -817,6 +884,20 @@ namespace FastMoq
 
             throw new NotSupportedException($"Active provider '{MockingProviderRegistry.Default.GetType().Name}' does not expose Moq legacy surface for {type.Name}.");
         }
+
+        /// <summary>
+        /// Creates a detached mock instance that is not added to the tracked mock collection.
+        /// Useful when the same interface is needed multiple times without constructor injection override.
+        /// </summary>
+        public Mock<T> CreateDetachedMock<T>(bool nonPublic = false, params object?[] args) where T : class =>
+            CreateMockInstance<T>(nonPublic, args);
+
+        /// <summary>
+        /// Creates a detached mock instance that is not added to the tracked mock collection.
+        /// Useful when the same interface is needed multiple times without constructor injection override.
+        /// </summary>
+        public Mock CreateDetachedMock(Type type, bool nonPublic = false, params object?[] args) =>
+            CreateMockInstance(type, nonPublic, args);
 
         internal MockModel AddFastMock(IFastMock fastMock, Type type, bool overwrite = false, bool nonPublic = false)
         {
@@ -1336,13 +1417,8 @@ namespace FastMoq
                 return (DbContextMock<TContext>)GetMock<TContext>();
             }
 
-            if (DbConnection.State != System.Data.ConnectionState.Open)
-            {
-                DbConnection.Open();
-            }
-
             var options = new DbContextOptionsBuilder<TContext>()
-                .UseSqlite(DbConnection)
+                .UseInMemoryDatabase($"FastMoq_{typeof(TContext).FullName}_{Guid.NewGuid():N}")
                 .Options;
 
             AddType<DbContextOptions<TContext>>(_ => options, replace: true);
@@ -1354,26 +1430,7 @@ namespace FastMoq
         }
         public Mock GetMockDbContext(Type dbContextType) =>
             dbContextType.CallGenericMethod(this) as Mock ??
-            throw new InvalidOperationException("Unable to get MockDb. Try GetDbContext to use internal database.");
-
-        public TContext GetDbContext<TContext>(Func<DbContextOptions<TContext>, TContext>? factory = null) where TContext : DbContext
-        {
-            DbConnection = new SqliteConnection("DataSource=:memory:");
-            DbConnection.Open();
-
-            var options = new DbContextOptionsBuilder<TContext>()
-                .UseSqlite(DbConnection)
-                .Options;
-
-            var context = factory != null
-                ? factory(options)
-                : (TContext)Activator.CreateInstance(typeof(TContext), options)!;
-
-            context.Database.EnsureCreated();
-            context.SaveChanges();
-
-            return context;
-        }
+            throw new InvalidOperationException("Unable to get MockDb context.");
         public T GetRequiredObject<T>() where T : class => GetObject<T>() ?? throw new InvalidOperationException($"Unable to resolve object of type {typeof(T).Name}.");
         #endregion
     }

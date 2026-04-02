@@ -252,6 +252,90 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateDetachedMock_ShouldCreateMultipleDifferentInstances()
+        {
+            // Arrange & Act
+            var detachedMock1 = Mocks.CreateDetachedMock<IFileInfo>();
+            var detachedMock2 = Mocks.CreateDetachedMock<IFileInfo>();
+
+            // Assert - detached mocks should be different instances
+            detachedMock1.Should().NotBeSameAs(detachedMock2);
+
+            // Assert - detached mocks should both be valid Mock types
+            detachedMock1.Should().BeOfType<Mock<IFileInfo>>();
+            detachedMock2.Should().BeOfType<Mock<IFileInfo>>();
+        }
+
+        [Fact]
+        public void CreateDetachedMock_UsingNonGeneric_ShouldWork()
+        {
+            // Arrange & Act
+            var detachedMock = Mocks.CreateDetachedMock(typeof(IFileInfo));
+
+            // Assert
+            detachedMock.Should().NotBeNull();
+            detachedMock.Should().BeOfType<Mock<IFileInfo>>();
+        }
+
+        [Fact]
+        public void GetObject_IFileSystem_ShouldReturnBuiltInWhenNoTrackedMock()
+        {
+            // Arrange & Act
+            var fileSystem = Mocks.GetObject<IFileSystem>();
+
+            // Assert - should return a non-null IFileSystem instance (MockFileSystem from FastMoq)
+            fileSystem.Should().NotBeNull();
+            fileSystem.Should().BeAssignableTo<IFileSystem>();
+            Mocks.Contains<IFileSystem>().Should().BeFalse();
+        }
+
+        [Fact]
+        public void GetObject_IFileSystem_ShouldReturnTrackedMockWhenExists()
+        {
+            // Arrange
+            var trackedMock = Mocks.GetMock<IFileSystem>();
+
+            // Act
+            var result = Mocks.GetObject<IFileSystem>();
+
+            // Assert - should return the tracked mock, not the built-in
+            result.Should().BeSameAs(trackedMock.Object);
+            Mocks.Contains<IFileSystem>().Should().BeTrue();
+        }
+
+        [Fact]
+        public void GetObject_IFileSystem_ShouldUseCustomRegistration()
+        {
+            // Arrange
+            var customFileSystem = new Mock<IFileSystem>();
+            Mocks.AddKnownType<IFileSystem>(
+                directInstanceFactory: (mocker, type) => customFileSystem.Object);
+
+            // Act
+            var result = Mocks.GetObject<IFileSystem>();
+
+            // Assert - should use custom registration
+            result.Should().BeSameAs(customFileSystem.Object);
+        }
+
+        [Fact]
+        public void GetMock_IFileSystem_ShouldCreatePreconfiguredMock()
+        {
+            // Arrange & Act
+            var fileSystemMock = Mocks.GetMock<IFileSystem>();
+            var fileSystemObject = fileSystemMock.Object;
+
+            // Assert - mock should be set up with delegated properties
+            fileSystemObject.File.Should().NotBeNull();
+            fileSystemObject.Directory.Should().NotBeNull();
+            fileSystemObject.Path.Should().NotBeNull();
+            fileSystemObject.FileInfo.Should().NotBeNull();
+            fileSystemObject.FileStream.Should().NotBeNull();
+            fileSystemObject.DriveInfo.Should().NotBeNull();
+            fileSystemObject.DirectoryInfo.Should().NotBeNull();
+        }
+
+        [Fact]
         public void Strict_ShouldOnlyToggleFailOnUnconfigured()
         {
             Mocks.Behavior = MockBehaviorOptions.LenientPreset.Clone().Disable(MockFeatures.AutoInjectDependencies);

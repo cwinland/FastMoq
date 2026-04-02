@@ -38,7 +38,7 @@ Web.Config
 *.DotSettings
 packages.lock.json
 
-# Ignore NuGet packaging artifacts (but keep .nuspec metadata)
+# Ignore NuGet packaging artifacts
 *.nupkg
 *.snupkg
 

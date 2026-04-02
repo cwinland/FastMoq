@@ -209,7 +209,6 @@ Properties:
 
 - ```fileSystem``` gets an internal ```MockFileSystem``` for IFileSystem injections.
 - ```HttpClient``` gets the client used for injections.
-- ```DbConnection``` gets the connection used for DbContext injections.
 
 Methods:
 
@@ -218,7 +217,7 @@ Methods:
 - ```GetObject``` gets the object of the Mock used in the tested component.
 - ```CreateInstance``` creates an instance of a public Type without the need of specifying the injected parameters.
 - ```CreateInstanceNonPublic``` creates an instance of a Type without the need of specifying the injected parameters.
-- ```GetDbContext``` gets the DbContext used in the tested component.
+- ```GetMockDbContext``` gets the mocked DbContext used in the tested component.
 - ```GetFileSystem```gets the file system used in the tested component.
 - ```GetHttpHandlerSetup``` assists in setting up HttpClient calls.
 - ```GetMockDbContext``` gets a Mock DbContext.

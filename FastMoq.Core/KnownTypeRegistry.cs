@@ -18,6 +18,7 @@ namespace FastMoq
             new KnownTypeRegistration(typeof(IFileSystem))
             {
                 DirectInstanceFactory = TryGetBuiltInFileSystem,
+                ConfigureMock = ConfigureBuiltInFileSystemMock,
             },
             new KnownTypeRegistration(typeof(HttpClient))
             {
@@ -57,6 +58,34 @@ namespace FastMoq
         internal static bool TryGetManagedInstance(Mocker mocker, Type requestedType, out object? instance)
         {
             foreach (var registration in GetInstanceRegistrations(mocker))
+            {
+                if (registration.Matches(requestedType) && registration.TryCreateManagedInstance(mocker, requestedType, out instance))
+                {
+                    return true;
+                }
+            }
+
+            instance = null;
+            return false;
+        }
+
+        internal static bool TryGetCustomManagedInstance(Mocker mocker, Type requestedType, out object? instance)
+        {
+            foreach (var registration in mocker.KnownTypeRegistrations)
+            {
+                if (registration.Matches(requestedType) && registration.TryCreateManagedInstance(mocker, requestedType, out instance))
+                {
+                    return true;
+                }
+            }
+
+            instance = null;
+            return false;
+        }
+
+        internal static bool TryGetBuiltInManagedInstance(Mocker mocker, Type requestedType, out object? instance)
+        {
+            foreach (var registration in BuiltInRegistrations)
             {
                 if (registration.Matches(requestedType) && registration.TryCreateManagedInstance(mocker, requestedType, out instance))
                 {
@@ -132,6 +161,11 @@ namespace FastMoq
 
         private static object? TryGetBuiltInDbContext(Mocker mocker, Type requestedType)
         {
+            if (mocker.Contains(requestedType))
+            {
+                return null;
+            }
+
             var mock = mocker.GetMockDbContext(requestedType);
             return mock.Object;
         }
@@ -171,6 +205,28 @@ namespace FastMoq
             {
                 accessor.HttpContext = mocker.GetObject<HttpContext>();
             }
+        }
+
+        private static void ConfigureBuiltInFileSystemMock(Mocker mocker, Type type, IFastMock mock)
+        {
+            if (type != typeof(IFileSystem))
+            {
+                return;
+            }
+
+            if (mock.NativeMock is not Mock<IFileSystem> fileSystemMock)
+            {
+                return;
+            }
+
+            var fileSystem = mocker.fileSystem;
+            fileSystemMock.SetupMockProperty(x => x.File, fileSystem.File);
+            fileSystemMock.SetupMockProperty(x => x.Directory, fileSystem.Directory);
+            fileSystemMock.SetupMockProperty(x => x.Path, fileSystem.Path);
+            fileSystemMock.SetupMockProperty(x => x.FileInfo, fileSystem.FileInfo);
+            fileSystemMock.SetupMockProperty(x => x.FileStream, fileSystem.FileStream);
+            fileSystemMock.SetupMockProperty(x => x.DriveInfo, fileSystem.DriveInfo);
+            fileSystemMock.SetupMockProperty(x => x.DirectoryInfo, fileSystem.DirectoryInfo);
         }
     }
 }

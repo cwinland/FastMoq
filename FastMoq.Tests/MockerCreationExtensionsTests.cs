@@ -11,13 +11,8 @@ namespace FastMoq.Tests
         private Mocker Mocks { get; } = new Mocker();
 
         [Fact]
-        public void CreateMock_IActionContextAccessor_ShouldCreateMock()
+        public void CreateMockInternal_ShouldCreateSupportedFrameworkMocks()
         {
-            var o = Mocks.CreateMockInternal<IActionContextAccessor>();
-            o.Should().NotBeNull();
-            o.Should().BeOfType<Mock<IActionContextAccessor>>();
-            o.Object.Should().NotBeNull();
-
             var p = Mocks.CreateMockInternal<IActionInvokerFactory>();
             p.Should().NotBeNull();
             p.Should().BeOfType<Mock<IActionInvokerFactory>>();
@@ -40,24 +35,24 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void SetupMockPropertyByPropertyInfo()
+        public void SetupMockProperty_ShouldAssignValue_WhenUsingPropertyInfo()
         {
             var mock = Mocks.GetMock<IFormFile>();
             mock.SetupMockProperty(typeof(IFormFile).GetProperty("Headers"), new HeaderDictionary());
         }
 
         [Fact]
-        public void SetupMockPropertyByName()
+        public void SetupMockProperty_ShouldAssignValue_WhenUsingPropertyName()
         {
             var mock = Mocks.GetMock<IFormFile>();
             mock.SetupMockProperty("Headers", new HeaderDictionary());
         }
 
         [Fact]
-        public void SetupMockPropertyByExpression()
+        public void SetupMockProperty_ShouldAssignValue_WhenUsingPropertyExpression()
         {
             var mock = Mocks.GetMock<IFormFile>();
-            mock.SetupMockProperty(x=>x.Headers, new HeaderDictionary());
+            mock.SetupMockProperty(x => x.Headers, new HeaderDictionary());
         }
     }
 }

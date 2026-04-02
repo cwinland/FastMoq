@@ -25,10 +25,10 @@ namespace FastMoq
     /// }
     ///  </code>
     ///     When needing to set up mocks before the component is created, use the <see cref="get_SetupMocksAction"/> property or the base class constructor.
-    ///     This example shows creating a database context and adding it to the Type Map for resolution during creation of objects.
+    ///     This example shows pre-creating a database context mock before the component is created.
     ///     <code>
     /// <![CDATA[protected override Action<Mocker>]]> SetupMocksAction => mocker =>
-    ///     mocker.AddType(_ => <![CDATA[mocker.GetMockDbContext<ApplicationDbContext>().Object);]]>
+    ///     <![CDATA[mocker.GetMockDbContext<ApplicationDbContext>();]]>
     ///  </code>
     /// </example>
     /// <typeparam name="TComponent">The type of the t component.</typeparam>

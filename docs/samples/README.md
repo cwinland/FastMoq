@@ -47,7 +47,7 @@ The sample test projects intentionally showcase FastMoq extension helpers so you
 ### Entity Framework Core
 
 - `GetMockDbContext<TContext>()` to obtain a mock context with DbSets auto‑prepared.
-- Add the real in‑memory variant via `AddType` if you want a lightweight functional test using SQLite in memory.
+- Add a custom variant via `AddType` if you want to pin a specific test-time implementation.
 
 ### Logging Verification
 
@@ -56,7 +56,7 @@ The sample test projects intentionally showcase FastMoq extension helpers so you
 ### Constructor & Dependency Injection
 
 - `CreateInstance<T>()` / typed overloads pick the correct constructor and auto‑inject mocks.
-- `AddType<TAbstraction>(factory)` to pin specific concrete/instance values (e.g., seeded `DbConnection`, `Uri`, or options).
+- `AddType<TAbstraction>(factory)` to pin specific concrete/instance values (e.g., seeded `Uri` or options).
 
 ### Azure Service Patterns
 
