@@ -289,10 +289,12 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateClassWithInjectParameters()
+        public void CreateClassWithInjectParameters_WhenOptionalResolutionResolvesViaMocker()
         {
-            Mocks.MockOptional = true;
-            var m = Mocks.CreateInstance<TestClassParameters>();
+            var m = Mocks.CreateInstance<TestClassParameters>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+            });
             m.Should().NotBeNull();
             m.anotherFileSystem.Should().NotBeNull();
             m.anotherFileSystem2.Should().NotBeNull();
@@ -306,6 +308,36 @@ namespace FastMoq.Tests
 
             Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
             (Mocks.CreateInstance<ITestClassOne>() as TestClassOne).FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInstance_ShouldResolveOptionalParameters_WhenExplicitOptionsRequestMocking()
+        {
+            var service = Mocks.CreateInstance<OptionalParameterService>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+            });
+
+            service.Should().NotBeNull();
+            service.Logger.Should().NotBeNull();
+            service.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInstance_ShouldPreferExplicitOptionalResolution_OverLegacyMockOptional()
+        {
+#pragma warning disable CS0618 // Compatibility coverage for MockOptional bridge.
+            Mocks.MockOptional = true;
+#pragma warning restore CS0618
+
+            var service = Mocks.CreateInstance<OptionalParameterService>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.UseDefaultOrNull,
+            });
+
+            service.Should().NotBeNull();
+            service.Logger.Should().BeNull();
+            service.FileSystem.Should().BeNull();
         }
 
         [Fact]
@@ -1066,6 +1098,86 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CallMethod_ShouldResolveOptionalParameters_WhenExplicitOptionsRequestMocking()
+        {
+            var probe = Mocks.CallMethod<OptionalParameterProbe>(new InvocationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+            }, (Func<ILogger?, IFileSystem?, OptionalParameterProbe>)CreateOptionalParameterProbe);
+
+            probe.Logger.Should().NotBeNull();
+            probe.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CallMethod_ShouldPreferExplicitOptionalResolution_OverLegacyMockOptional()
+        {
+#pragma warning disable CS0618 // Compatibility coverage for MockOptional bridge.
+            Mocks.MockOptional = true;
+#pragma warning restore CS0618
+
+            var probe = Mocks.CallMethod<OptionalParameterProbe>(new InvocationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.UseDefaultOrNull,
+            }, (Func<ILogger?, IFileSystem?, OptionalParameterProbe>)CreateOptionalParameterProbe);
+
+            probe.Logger.Should().BeNull();
+            probe.FileSystem.Should().BeNull();
+        }
+
+        [Fact]
+        public void InvokeMethod_ShouldResolveOptionalParameters_WhenExplicitOptionsRequestMocking()
+        {
+            var target = new OptionalInvokeTarget();
+
+            var probe = Mocks.InvokeMethod(new InvocationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+            }, target, nameof(OptionalInvokeTarget.CreateProbe)) as OptionalParameterProbe;
+
+            probe.Should().NotBeNull();
+            probe!.Logger.Should().NotBeNull();
+            probe.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void InvokeMethod_ShouldPreferExplicitOptionalResolution_OverLegacyMockOptional()
+        {
+            var target = new OptionalInvokeTarget();
+
+#pragma warning disable CS0618 // Compatibility coverage for MockOptional bridge.
+            Mocks.MockOptional = true;
+#pragma warning restore CS0618
+
+            var probe = Mocks.InvokeMethod(new InvocationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.UseDefaultOrNull,
+            }, target, nameof(OptionalInvokeTarget.CreateProbe)) as OptionalParameterProbe;
+
+            probe.Should().NotBeNull();
+            probe!.Logger.Should().BeNull();
+            probe.FileSystem.Should().BeNull();
+        }
+
+        [Fact]
+        public void MockerTestBase_ShouldUseComponentCreationOptions_ForOptionalParameters()
+        {
+            using var testBase = new OptionalParameterServiceConfiguredTestBase();
+
+            testBase.Sut.Logger.Should().NotBeNull();
+            testBase.Sut.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void MockerTestBase_ShouldHonorLegacyMockOptional_InSetupAction()
+        {
+            using var testBase = new OptionalParameterServiceLegacyMockOptionalTestBase();
+
+            testBase.Sut.Logger.Should().NotBeNull();
+            testBase.Sut.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
         public void TestCreateInstanceWithMap()
         {
             Mocks.CreateInstance<ITestClassOne>().Should().NotBeNull();
@@ -1374,7 +1486,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void AddType_ShouldHaveValues3_WhenMockOptional()
+        public void AddType_ShouldHaveValues3_WhenOptionalResolutionResolvesViaMocker()
         {
 #pragma warning disable CS0618 // Intentional compatibility coverage for deprecated context-based AddType overload.
             Mocks.AddType((a,b) =>
@@ -1393,7 +1505,7 @@ namespace FastMoq.Tests
             });
             Mocks.AddType(Guid.NewGuid() as Guid?);
             Mocks.AddType(Guid.NewGuid());
-            Mocks.MockOptional = true;
+            Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
             var mock = Mocks.GetMock<SubscriptionData>();
             var obj = mock.Object;
             obj.DisplayName.Should().Be("Test1");
@@ -1405,7 +1517,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void AddType_ShouldHaveValues3_WhenNotMockOptional()
+        public void AddType_ShouldHaveValues3_WhenOptionalResolutionUsesDefaults()
         {
 #pragma warning disable CS0618 // Intentional compatibility coverage for deprecated context-based AddType overload.
             Mocks.AddType((a, b) =>
@@ -1479,5 +1591,68 @@ namespace FastMoq.Tests
             mocks.GetMock<IDirectory>().SetupAllProperties();
             mocks.GetMock<IFileInfo>().SetupAllProperties();
         }
+
+        private static OptionalParameterProbe CreateOptionalParameterProbe(ILogger? logger = null, IFileSystem? fileSystem = null)
+        {
+            return new OptionalParameterProbe(logger, fileSystem);
+        }
+    }
+
+    internal sealed class OptionalParameterService
+    {
+        internal OptionalParameterService(ILogger? logger = null, IFileSystem? fileSystem = null)
+        {
+            Logger = logger;
+            FileSystem = fileSystem;
+        }
+
+        internal ILogger? Logger { get; }
+
+        internal IFileSystem? FileSystem { get; }
+    }
+
+    internal sealed class OptionalParameterProbe
+    {
+        internal OptionalParameterProbe(ILogger? logger, IFileSystem? fileSystem)
+        {
+            Logger = logger;
+            FileSystem = fileSystem;
+        }
+
+        internal ILogger? Logger { get; }
+
+        internal IFileSystem? FileSystem { get; }
+    }
+
+    internal sealed class OptionalInvokeTarget
+    {
+        internal OptionalParameterProbe CreateProbe(ILogger? logger = null, IFileSystem? fileSystem = null)
+        {
+            return new OptionalParameterProbe(logger, fileSystem);
+        }
+    }
+
+    internal sealed class OptionalParameterServiceConfiguredTestBase : MockerTestBase<OptionalParameterService>
+    {
+        protected override InstanceCreationOptions ComponentCreationOptions => new()
+        {
+            OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+        };
+
+        internal OptionalParameterService Sut => Component;
+    }
+
+    internal sealed class OptionalParameterServiceLegacyMockOptionalTestBase : MockerTestBase<OptionalParameterService>
+    {
+        internal OptionalParameterServiceLegacyMockOptionalTestBase() : base(mocker =>
+        {
+#pragma warning disable CS0618 // Compatibility coverage for MockOptional bridge.
+            mocker.MockOptional = true;
+#pragma warning restore CS0618
+        })
+        {
+        }
+
+        internal OptionalParameterService Sut => Component;
     }
 }

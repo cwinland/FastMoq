@@ -25,5 +25,11 @@ namespace FastMoq
         /// When supplied, constructor lookup uses these types instead of inferring from argument values.
         /// </summary>
         public Type?[]? ConstructorParameterTypes { get; set; }
+
+        /// <summary>
+        /// Controls how optional constructor parameters are resolved when FastMoq supplies missing arguments.
+        /// Default preserves legacy behavior by using declared defaults or null.
+        /// </summary>
+        public OptionalParameterResolutionMode OptionalParameterResolution { get; set; } = OptionalParameterResolutionMode.UseDefaultOrNull;
     }
 }

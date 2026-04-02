@@ -53,15 +53,17 @@ Several Moq-oriented compatibility members remain intentionally available. Remov
 
 ### `MockOptional` replacement
 
-`MockOptional` is still available, but it is a coarse global switch and does not feel like the right long-term API shape.
+The first replacement pass is now in place.
 
-The likely direction is to replace or reduce it in favor of clearer, more explicit creation/resolution controls rather than a broad process-style toggle.
+`MockOptional` is obsolete and retained only as a compatibility alias. The runtime now prefers explicit optional-parameter controls through `InstanceCreationOptions`, `InvocationOptions`, and `MockerTestBase<TComponent>.ComponentCreationOptions`.
+
+The remaining cleanup direction is to continue reducing older `MockOptional` examples and eventually remove the alias in a future major version.
 
 Future work should evaluate:
 
-- whether optional-parameter behavior belongs on instance-creation options instead of the ambient `Mocker`
-- whether the remaining `MockOptional` scenarios are better expressed through explicit setup
-- whether the member should eventually move to compatibility-only status in the next major-version cleanup
+- whether any remaining compatibility-only `MockOptional` examples should be rewritten immediately
+- whether more helper APIs should expose the explicit options model directly
+- whether the alias should be removed in the next major-version cleanup
 
 ## Documentation Follow-Ups
 

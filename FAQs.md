@@ -67,12 +67,12 @@ Placement of the code that sets up the mock depends on the scope of the mock and
 
 ### FastMoq Locations and Scopes
 
-| **Location**         | **Scope**                                                                                                                | **Can Use Instance Data** | **Pros / Cons**                                                                                                                     |
-|----------------------|--------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| Test Constructor     | All test methods *(available for all class test methods, but after the test component is created)*         | Yes                       | Used for default setup that either doesn't change or changes for only specific tests. |
-| Test Method          | Current test method | Yes                       | Use for test-specific setup. |
-| SetupMocksAction**   | Test component constructor, Test class constructor, and all test methods                | Yes                       | Use for class component setup needed for constructor. The setup can change based on a class variable or property. [Example](#option-2-override-setupmocksaction)                 |
-| Base Constructor**   | Test component constructor, Test class constructor, and all test methods                | No                        | Use for class component setup; the code does not need to change based on a variable or property of the class. [Example](#option-1-base-class-constructor) |
+| **Location** | **Scope** | **Can Use Instance Data** | **Pros / Cons** |
+| --- | --- | --- | --- |
+| Test Constructor | All test methods *(available for all class test methods, but after the test component is created)* | Yes | Used for default setup that either doesn't change or changes for only specific tests. |
+| Test Method | Current test method | Yes | Use for test-specific setup. |
+| SetupMocksAction** | Test component constructor, test class constructor, and all test methods | Yes | Use for class component setup needed for constructor. The setup can change based on a class variable or property. [Example](#option-2-override-setupmocksaction) |
+| Base Constructor** | Test component constructor, test class constructor, and all test methods | No | Use for class component setup; the code does not need to change based on a variable or property of the class. [Example](#option-1-base-class-constructor) |
 
 **Note:** The global methods MUST be used if the data is required for the parameters of the component or used in the constructor's code.
 
@@ -89,9 +89,18 @@ public class MyService
 }
 ```
 
-If the constructor has an optional or nullable parameter, FastMoq assumes that the parameter should stay null or the default.
+If the constructor has an optional or nullable parameter, FastMoq assumes that the parameter should stay null or the declared default unless you opt into optional-parameter resolution.
 
-In this example, someService will be mocked and someOtherService will be null. In order to mock optional parameters, specify ```c# Mocker.MockOptional = true;```. If the constructor is run when the MockOptional is set to true, then all services should have mocks.
+In this example, someService will be mocked and someOtherService will be null by default. For new code, prefer explicit creation options:
+
+```c#
+var service = mocker.CreateInstance<MyService>(new InstanceCreationOptions
+{
+    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+});
+```
+
+`Mocker.MockOptional = true` still works, but it is now obsolete and retained only as a compatibility alias over the same behavior.
 
 ## The Mocks exist, but they are not setup while running in the constructor?
 
@@ -104,7 +113,7 @@ This example shows putting mocker setup in the constructor. The code must be sta
 ```c#
     public class TestMyService : MockerTestBase<MyService> {
         public TestMyService() : base(setupMocksAction: m => { 
-            m.MockOptional = true;
+            m.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
             
             m.GetMock<IProfileRepo>().Setup(x => x.GetProfileAsync(It.IsAny<string>()))
                 .ReturnsAsync(() => [new ProfileEntity { ProfileType = "test" }]);
@@ -142,7 +151,7 @@ This example shows putting mocker setup in the SetupMocksAction property. The co
 ```c#
 protected override Action<Mocker> SetupMocksAction => m =>
 {
-    m.MockOptional = true;
+    m.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
     
     m.GetMock<IProfileRepo>().Setup(x => x.GetProfileAsync(It.IsAny<string>()))
         .ReturnsAsync(() => [new ProfileEntity { ProfileType = "test" }]);
@@ -226,7 +235,8 @@ Methods:
 If you only want the old "fail when not configured" behavior, use `Strict = true` or enable `MockFeatures.FailOnUnconfigured` directly. If you want the full strict preset, use `UseStrictPreset()`.
 
 - ```InnerMockResolution``` indicates that the Mock should attempt to resolve child mocks and injections. Default is True.
-- ```MockOptional``` allows mocks to be injected into optional or nullable parameters. Default is False.
+- ```OptionalParameterResolution``` controls whether optional or nullable parameters use declared defaults or are resolved through FastMoq. Default is `UseDefaultOrNull`.
+- ```MockOptional``` is obsolete and remains only as a compatibility alias for `OptionalParameterResolution == ResolveViaMocker`.
 - ```Strict``` alters the way that FastMoq uses HttpClient and FileSystems. Strict prevents using the internal versions and pure mocks are used. Default is False.
 
 ## Where can I find more documentation and support for FastMoq?

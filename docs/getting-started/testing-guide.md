@@ -73,6 +73,60 @@ var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
 
 Use the older methods when preserving existing tests or public API compatibility matters. Internally, FastMoq now routes those calls through the same options-based construction path.
 
+## Optional Constructor And Method Parameters
+
+FastMoq now has an explicit option for optional-parameter behavior.
+
+Default behavior:
+
+- optional parameters use their declared default value when one exists
+- otherwise FastMoq passes `null`
+
+If you want FastMoq to resolve optional parameters through the normal mock/object pipeline, opt in explicitly.
+
+### Constructor creation
+
+```csharp
+var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
+{
+    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+});
+```
+
+### `MockerTestBase<TComponent>`
+
+For SUT creation through `MockerTestBase<TComponent>`, override `ComponentCreationOptions`:
+
+```csharp
+protected override InstanceCreationOptions ComponentCreationOptions => new()
+{
+    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+};
+```
+
+### Delegate or reflected invocation
+
+Use `InvocationOptions` when calling helpers that fill omitted method parameters:
+
+```csharp
+var result = Mocks.CallMethod<MyResult>(new InvocationOptions
+{
+    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+}, (Func<IMyDependency?, MyResult>)CreateResult);
+```
+
+```csharp
+var result = Mocks.InvokeMethod(
+    new InvocationOptions
+    {
+        OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+    },
+    target,
+    nameof(TargetType.Run));
+```
+
+`MockOptional` is now obsolete and should be treated only as a compatibility alias for `OptionalParameterResolutionMode.ResolveViaMocker`.
+
 ## Built-In Known Types
 
 FastMoq includes built-in handling for a small set of framework-heavy types.

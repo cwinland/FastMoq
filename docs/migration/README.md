@@ -156,6 +156,47 @@ Why:
 - the implementation now routes through a unified options-based model
 - the options object communicates intent more clearly than the older split overloads
 
+### Obsolete `MockOptional`
+
+Old pattern:
+
+```csharp
+Mocks.MockOptional = true;
+```
+
+Current guidance for constructor creation:
+
+```csharp
+var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
+{
+    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+});
+```
+
+Current guidance for method or delegate invocation:
+
+```csharp
+var result = Mocks.CallMethod<MyResult>(new InvocationOptions
+{
+    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+}, (Func<IMyDependency?, MyResult>)CreateResult);
+```
+
+Current guidance for `MockerTestBase<TComponent>`:
+
+```csharp
+protected override InstanceCreationOptions ComponentCreationOptions => new()
+{
+    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+};
+```
+
+Why:
+
+- explicit options are clearer than an ambient toggle
+- constructor creation and invocation now share the same policy model
+- `MockOptional` is obsolete and remains available only as a compatibility alias
+
 ### Provider-first access
 
 Older tests often assumed `Moq.Mock` was the only meaningful tracked artifact.
@@ -206,9 +247,10 @@ Use it when the test reads better as arrange/act/assert phases rather than as on
 
 1. Replace `Initialize<T>(...)` usage with `GetMock<T>()` setup where possible.
 2. Audit `Strict` usage and decide whether each case means fail-on-unconfigured only or a full strict preset.
-3. Separate `GetMock<T>()` scenarios from `AddType(...)` scenarios so the test intent is obvious.
-4. Adopt provider-first surfaces only where they add value; do not rewrite stable tests without a reason.
-5. Use the repo's executable examples as the reference for new tests.
+3. Replace new `MockOptional` usage with explicit `InstanceCreationOptions`, `InvocationOptions`, or `ComponentCreationOptions` overrides.
+4. Separate `GetMock<T>()` scenarios from `AddType(...)` scenarios so the test intent is obvious.
+5. Adopt provider-first surfaces only where they add value; do not rewrite stable tests without a reason.
+6. Use the repo's executable examples as the reference for new tests.
 
 ## Best source of examples
 

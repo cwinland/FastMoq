@@ -204,7 +204,7 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
 | Property/Method | Description |
 | --------------- | ----------- |
 | `Component` | The instance of your class under test |
-| `MockOptional` | Legacy global toggle that affects whether optional or nullable parameters are auto-mocked. Prefer explicit setup or creation options for new code when possible. |
+| `MockOptional` | Obsolete compatibility alias for `OptionalParameterResolution`. Prefer explicit `InstanceCreationOptions` or `InvocationOptions` in new code. |
 | `Mocks` | The `Mocker` instance that manages all mocks |
 | `Mocks.GetMock<T>()` | Gets the mock for interface T |
 | `Mocks.GetObject<T>()` | Gets the mocked object instance |
@@ -336,8 +336,8 @@ Now that you understand the basics, explore these advanced topics:
 **Problem**: `System.MethodAccessException` when mocking DbContext
 **Solution**: Add `[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]` to your AssemblyInfo.cs
 
-**Problem**: Mock not being created for interface
-**Solution**: Ensure the interface is public and the parameter isn't optional (unless `MockOptional = true`)
+**Problem**: Mock not being created for optional interface parameter
+**Solution**: Prefer explicit options such as `new InstanceCreationOptions { OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker }` when creating the SUT. `MockOptional = true` is obsolete and only retained as a compatibility alias.
 
 **Problem**: Component constructor throws exception
 **Solution**: Use `SetupMocksAction` or base constructor to configure required mocks before component creation

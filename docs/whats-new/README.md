@@ -60,6 +60,29 @@ var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
 });
 ```
 
+Optional constructor behavior now has an explicit setting in the same model:
+
+```csharp
+var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
+{
+    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+});
+```
+
+`MockerTestBase<TComponent>` also gained a `ComponentCreationOptions` hook so test bases can opt into the same behavior without relying on the legacy global toggle.
+
+### Explicit optional-parameter resolution
+
+`MockOptional` is now obsolete and retained only as a compatibility alias rather than a primary API.
+
+New repo-era guidance is:
+
+- use `InstanceCreationOptions.OptionalParameterResolution` for SUT creation
+- use `InvocationOptions.OptionalParameterResolution` for `CallMethod(...)` and `InvokeMethod(...)`
+- use `ComponentCreationOptions` when the SUT is created by `MockerTestBase<TComponent>`
+
+This brings constructor creation and helper invocation onto the same policy model instead of having different hidden rules for optional parameters.
+
 ### Known-type extensibility
 
 Current repo work adds a per-`Mocker` registration path through `AddKnownType(...)` so tests can override or extend behavior for framework-heavy types like `IFileSystem`, `HttpClient`, `DbContext`, and `HttpContext` patterns.
