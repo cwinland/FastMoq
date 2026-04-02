@@ -24,6 +24,10 @@ namespace FastMoq
             {
                 DirectInstanceFactory = TryGetBuiltInHttpClient,
             },
+            new KnownTypeRegistration(typeof(Uri))
+            {
+                DirectInstanceFactory = TryGetBuiltInUri,
+            },
             new KnownTypeRegistration(typeof(DbContext))
             {
                 IncludeDerivedTypes = true,
@@ -157,6 +161,21 @@ namespace FastMoq
             return !mocker.Contains<HttpClient>() && type.IsEquivalentTo(typeof(HttpClient))
                 ? mocker.HttpClient
                 : null;
+        }
+
+        private static object? TryGetBuiltInUri(Mocker mocker, Type type)
+        {
+            if (mocker.Behavior.Has(MockFeatures.FailOnUnconfigured))
+            {
+                return null;
+            }
+
+            if (!type.IsEquivalentTo(typeof(Uri)))
+            {
+                return null;
+            }
+
+            return mocker.Uri;
         }
 
         private static object? TryGetBuiltInDbContext(Mocker mocker, Type requestedType)

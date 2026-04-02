@@ -83,6 +83,7 @@ namespace FastMoq
         }
         public ObservableExceptionLog ExceptionLog => exceptionLog;
         public HttpClient HttpClient { get; }
+        public Uri Uri { get; }
         public bool InnerMockResolution { get; set; } = true;
 
         /// <summary>
@@ -129,6 +130,7 @@ namespace FastMoq
             ProviderBootstrap.Ensure();
             fileSystem = new MockFileSystem();
             HttpClient = this.CreateHttpClient();
+            Uri = HttpClient.BaseAddress ?? new Uri("http://localhost");
             LoggingCallback = loggingCallback;
         }
         public Mocker(Dictionary<Type, IInstanceModel> map) : this() => typeMap = map;

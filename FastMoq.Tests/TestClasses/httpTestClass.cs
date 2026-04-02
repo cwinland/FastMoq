@@ -14,7 +14,12 @@ namespace FastMoq.Tests.TestClasses
     public class HttpTestClass
     {
         internal HttpClient http;
+        internal Uri uri;
 
-        public HttpTestClass(HttpClient httpClient) => http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        public HttpTestClass(HttpClient httpClient, Uri serviceUri)
+        {
+            http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            uri = serviceUri ?? throw new ArgumentNullException(nameof(serviceUri));
+        }
     }
 }

@@ -20,18 +20,19 @@ namespace FastMoq.Tests
     public class HttpTests : MockerTestBase<HttpTestClass>
     {
         [Fact]
-        public void Create()
+        public void Component_ShouldInjectBuiltInHttpClientAndUri_WhenNoExplicitRegistrationExists()
         {
-            // Check Component
             Component.Should().NotBeNull();
             Component.http.Should().NotBeNull();
+            Component.http.Should().BeSameAs(Mocks.HttpClient);
+            Component.uri.Should().BeSameAs(Mocks.Uri);
         }
 
         [Fact]
-        public void CreateUri()
+        public void GetObject_Uri_ShouldPreferExplicitRegistration_WhenProvided()
         {
             Mocks.AddType<Uri, Uri>(_ => new Uri("http://localhost"));
-            var m = Mocks.GetObject<Uri>().ToString().Should().Be("http://localhost/");
+            Mocks.GetObject<Uri>().ToString().Should().Be("http://localhost/");
 
             // Adding same type will throw an error.
             new Action(() => Mocks.AddType<Uri, Uri>(_ => new Uri("http://localhost2/test"))).Should().Throw<ArgumentException>();
@@ -39,11 +40,44 @@ namespace FastMoq.Tests
             // Adding same type with replace = true, will replace.
             Mocks.AddType<Uri, Uri>(_ => new Uri("http://localhost2/test/"), true);
             Mocks.GetObject<Uri>().ToString().Should().Be("http://localhost2/test/");
-
         }
 
         [Fact]
-        public async Task CreateWithBuiltInHttpClient()
+        public void GetObject_HttpClient_ShouldPreferExplicitRegistration_OverBuiltIn()
+        {
+            using var expected = new HttpClient
+            {
+                BaseAddress = new Uri("http://custom.fastmoq/")
+            };
+
+            Mocks.AddType(expected, replace: true);
+
+            Mocks.GetObject<HttpClient>().Should().BeSameAs(expected);
+        }
+
+        [Fact]
+        public void GetObject_HttpClient_ShouldPreferTrackedMock_OverBuiltIn()
+        {
+            var trackedMock = Mocks.GetMock<HttpClient>();
+            trackedMock.Object.BaseAddress = new Uri("http://tracked.fastmoq/");
+
+            var httpClient = Mocks.GetObject<HttpClient>();
+
+            httpClient.Should().BeSameAs(trackedMock.Object);
+        }
+
+        [Fact]
+        public void GetObject_Uri_ShouldUseResolvedHttpClientBaseAddress_WhenNoExplicitRegistrationExists()
+        {
+            var uri = Mocks.GetObject<Uri>();
+            var uri2 = Mocks.GetObject<Uri>();
+
+            uri.Should().BeSameAs(Mocks.Uri);
+            uri2.Should().BeSameAs(uri);
+        }
+
+        [Fact]
+        public async Task BuiltInHttpClient_ShouldUseMockedHandler_WhenNoExplicitRegistrationExists()
         {
             // Execute Http request.
             var result = await Component.http.GetAsync(new Uri("api/test", UriKind.Relative));
@@ -65,7 +99,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public async Task CreateWithCustomHttpClient()
+        public async Task SetupHttpMessage_ShouldOverrideBuiltInHandlerResponse()
         {
             Mocks.SetupHttpMessage(() => new HttpResponseMessage
                 {
@@ -94,7 +128,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public async Task CreateWithMocks()
+        public async Task TrackedHttpMessageHandlerMock_ShouldDriveHttpClientRequests()
         {
             // Add mocks / setup
             Mock<HttpMessageHandler> handler = Mocks.GetMock<HttpMessageHandler>();
