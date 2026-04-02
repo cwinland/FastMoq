@@ -22,8 +22,14 @@ namespace FastMoq.Extensions
         /// <param name="mocker">The mocker.</param>
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
-        public static T? CreateInstance<T, TParam1>(this Mocker mocker, Dictionary<Type, object?> data) where T : class => mocker.CreateInstanceInternal<T>(
-            model => mocker.FindConstructorByType(model.InstanceType, true, typeof(TParam1)), data
+        public static T? CreateInstance<T, TParam1>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstance<T, TParam1>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = mocker.OptionalParameterResolution,
+            }, data);
+
+        public static T? CreateInstance<T, TParam1>(this Mocker mocker, InstanceCreationOptions options, Dictionary<Type, object?> data) where T : class => mocker.CreateInstanceInternal<T>(
+            model => mocker.FindConstructorByType(model.InstanceType, true, typeof(TParam1)), options, data
         );
 
         /// <summary>
@@ -35,8 +41,15 @@ namespace FastMoq.Extensions
         /// <param name="mocker">The mocker.</param>
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
-        public static T? CreateInstance<T, TParam1, TParam2>(this Mocker mocker, Dictionary<Type, object?> data) where T : class => mocker.CreateInstanceInternal<T>(
+        public static T? CreateInstance<T, TParam1, TParam2>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstance<T, TParam1, TParam2>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = mocker.OptionalParameterResolution,
+            }, data);
+
+        public static T? CreateInstance<T, TParam1, TParam2>(this Mocker mocker, InstanceCreationOptions options, Dictionary<Type, object?> data) where T : class => mocker.CreateInstanceInternal<T>(
             model => mocker.FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2)),
+            options,
             data
         );
 
@@ -51,8 +64,15 @@ namespace FastMoq.Extensions
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
         public static T? CreateInstance<T, TParam1, TParam2, TParam3>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstance<T, TParam1, TParam2, TParam3>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = mocker.OptionalParameterResolution,
+            }, data);
+
+        public static T? CreateInstance<T, TParam1, TParam2, TParam3>(this Mocker mocker, InstanceCreationOptions options, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
                 model => mocker.FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3)),
+                options,
                 data
             );
 
@@ -68,6 +88,12 @@ namespace FastMoq.Extensions
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
         public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = mocker.OptionalParameterResolution,
+            }, data);
+
+        public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(this Mocker mocker, InstanceCreationOptions options, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
                 model => mocker.FindConstructorByType(model.InstanceType,
                     true,
@@ -76,6 +102,7 @@ namespace FastMoq.Extensions
                     typeof(TParam3),
                     typeof(TParam4)
                 ),
+                options,
                 data
             );
 
@@ -92,6 +119,12 @@ namespace FastMoq.Extensions
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
         public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = mocker.OptionalParameterResolution,
+            }, data);
+
+        public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(this Mocker mocker, InstanceCreationOptions options, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
                 model => mocker.FindConstructorByType(model.InstanceType,
                     true,
@@ -101,6 +134,7 @@ namespace FastMoq.Extensions
                     typeof(TParam4),
                     typeof(TParam5)
                 ),
+                options,
                 data
             );
 
@@ -234,7 +268,13 @@ namespace FastMoq.Extensions
         /// <param name="constructorFunc">The constructor function.</param>
         /// <param name="data">The arguments.</param>
         /// <returns>T.</returns>
-        internal static T? CreateInstanceInternal<T>(this Mocker mocker, Func<IInstanceModel, ConstructorInfo> constructorFunc, Dictionary<Type, object?>? data) where T : class
+        internal static T? CreateInstanceInternal<T>(this Mocker mocker, Func<IInstanceModel, ConstructorInfo> constructorFunc, Dictionary<Type, object?>? data) where T : class =>
+            mocker.CreateInstanceInternal<T>(constructorFunc, new InstanceCreationOptions
+            {
+                OptionalParameterResolution = mocker.OptionalParameterResolution,
+            }, data);
+
+        internal static T? CreateInstanceInternal<T>(this Mocker mocker, Func<IInstanceModel, ConstructorInfo> constructorFunc, InstanceCreationOptions? options, Dictionary<Type, object?>? data) where T : class
         {
             var type = typeof(T).IsInterface ? mocker.GetTypeFromInterface<T>() : new InstanceModel<T>();
 
@@ -246,7 +286,7 @@ namespace FastMoq.Extensions
             data ??= new();
             var constructor = constructorFunc(type);
 
-            var args = mocker.GetArgData(constructor, data);
+            var args = mocker.GetArgData(constructor, options, data);
 
             return mocker.CreateInstanceInternal<T>(constructor, args);
         }
@@ -291,7 +331,7 @@ namespace FastMoq.Extensions
                 for (var i = args.Length; i < paramList.Count; i++)
                 {
                     var p = paramList[i];
-                    newArgs.Add(p.IsOptional ? null : mocker.GetParameter(p));
+                    newArgs.Add(mocker.ResolveParameter(p, mocker.OptionalParameterResolution));
                 }
             }
 

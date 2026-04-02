@@ -303,7 +303,7 @@ namespace FastMoq
             return m.CreateFunc != null ? m.CreateFunc.Invoke(this, parameter) : (!pt.IsSealed ? GetObject(pt) : pt.GetDefaultValue());
         }
 
-        private object? ResolveParameter(ParameterInfo parameter, OptionalParameterResolutionMode optionalParameterResolution)
+        internal object? ResolveParameter(ParameterInfo parameter, OptionalParameterResolutionMode optionalParameterResolution)
         {
             ArgumentNullException.ThrowIfNull(parameter);
 
@@ -1148,11 +1148,24 @@ namespace FastMoq
         }
         public object?[] GetArgData<T>() where T : class
         {
+            return GetArgData<T>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolution,
+            });
+        }
+
+        public object?[] GetArgData<T>(InstanceCreationOptions? options) where T : class
+        {
+            options ??= new InstanceCreationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolution,
+            };
+
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
-            var constructor = FindConstructor(false, type.InstanceType, true);
+            var constructor = FindConstructor(false, type.InstanceType, true, options.OptionalParameterResolution);
             return constructor.ConstructorInfo == null
                 ? Array.Empty<object?>()
-                : constructor.ConstructorInfo.GetParameters().Select(GetParameter).ToArray();
+                : constructor.ConstructorInfo.GetParameters().Select(p => ResolveParameter(p, options.OptionalParameterResolution)).ToArray();
         }
 
         private object?[] BuildInvocationArgs(ParameterInfo[] parameters, InvocationOptions? options, object?[] provided)

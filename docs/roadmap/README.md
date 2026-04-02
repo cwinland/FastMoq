@@ -57,13 +57,13 @@ The first replacement pass is now in place.
 
 `MockOptional` is obsolete and retained only as a compatibility alias. The runtime now prefers explicit optional-parameter controls through `InstanceCreationOptions`, `InvocationOptions`, and `MockerTestBase<TComponent>.ComponentCreationOptions`.
 
-The remaining cleanup direction is to continue reducing older `MockOptional` examples and eventually remove the alias in a future major version.
+The remaining cleanup direction is to continue reducing older `MockOptional` examples and remove the alias in `v5`, after `v4` ships with the explicit migration path.
 
 Future work should evaluate:
 
 - whether any remaining compatibility-only `MockOptional` examples should be rewritten immediately
 - whether more helper APIs should expose the explicit options model directly
-- whether the alias should be removed in the next major-version cleanup
+- whether any `v4` release notes need stronger migration guidance before the planned `v5` removal
 
 ## Documentation Follow-Ups
 

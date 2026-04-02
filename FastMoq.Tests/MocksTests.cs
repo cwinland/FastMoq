@@ -893,7 +893,10 @@ namespace FastMoq.Tests
         public void CreateObjectWithCustomData()
         {
             // Get argument data or create your own array
-            var args = Component.GetArgData<TestClassParameters>();
+            var args = Component.GetArgData<TestClassParameters>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+            });
 
             // Set custom values
             args[0] = 34;
@@ -930,10 +933,44 @@ namespace FastMoq.Tests
             test2.Fs.Should().BeNull();
             test2.F.Should().NotBeNull();
 
-            args = Component.GetArgData<TestClassParameters>();
+            args = Component.GetArgData<TestClassParameters>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+            });
             Component.GetObject<TestClassParameters>(args);
             Component.CreateInstance<TestClassParameters>();
             Component.CreateInstance<TestClassParameters>(args);
+        }
+
+        [Fact]
+        public void GetArgData_ShouldRespectOptionalParameterResolution()
+        {
+            var defaultArgs = Component.GetArgData<OptionalParameterService>();
+            defaultArgs[0].Should().BeNull();
+            defaultArgs[1].Should().BeNull();
+
+            var resolvedArgs = Component.GetArgData<OptionalParameterService>(new InstanceCreationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+            });
+
+            resolvedArgs[0].Should().NotBeNull();
+            resolvedArgs[1].Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInstanceByTypedParameterMap_ShouldRespectExplicitOptionalParameterResolution()
+        {
+            var service = Component.CreateInstance<OptionalParameterService, ILogger, IFileSystem>(
+                new InstanceCreationOptions
+                {
+                    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+                },
+                new Dictionary<Type, object?>());
+
+            service.Should().NotBeNull();
+            service!.Logger.Should().NotBeNull();
+            service.FileSystem.Should().NotBeNull();
         }
 
         [Fact]
