@@ -205,4 +205,40 @@ namespace FastMoq.TestingExample
             return invoices.Count;
         }
     }
+
+    public sealed class OptionalDependencyReportService
+    {
+        public OptionalDependencyReportService(
+            ILogger<OptionalDependencyReportService>? logger = null,
+            IFileSystem? fileSystem = null)
+        {
+            Logger = logger;
+            FileSystem = fileSystem;
+        }
+
+        public ILogger<OptionalDependencyReportService>? Logger { get; }
+
+        public IFileSystem? FileSystem { get; }
+    }
+
+    public sealed class OptionalDependencyProbe
+    {
+        public OptionalDependencyProbe(ILogger? logger, IFileSystem? fileSystem)
+        {
+            Logger = logger;
+            FileSystem = fileSystem;
+        }
+
+        public ILogger? Logger { get; }
+
+        public IFileSystem? FileSystem { get; }
+    }
+
+    public sealed class OptionalDependencyProbeFactory
+    {
+        public OptionalDependencyProbe Create(ILogger? logger = null, IFileSystem? fileSystem = null)
+        {
+            return new OptionalDependencyProbe(logger, fileSystem);
+        }
+    }
 }

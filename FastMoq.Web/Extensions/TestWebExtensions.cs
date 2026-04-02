@@ -13,6 +13,14 @@ namespace FastMoq.Web.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="result">The result.</param>
         /// <returns>T.</returns>
-        public static T GetObjectResultContent<T>(this ActionResult<T> result) => (T) ((ObjectResult) result.Result).Value;
+        public static T GetObjectResultContent<T>(this ActionResult<T> result)
+        {
+            if (result.Result is ObjectResult { Value: T value })
+            {
+                return value;
+            }
+
+            return result.Value!;
+        }
     }
 }

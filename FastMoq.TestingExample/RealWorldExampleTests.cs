@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Threading;
 using System.Threading.Tasks;
@@ -151,6 +152,37 @@ namespace FastMoq.TestingExample
 
             Mocks.GetMock<ILogger<InvoiceReminderService>>()
                 .VerifyLogger(LogLevel.Information, "Sent 2 invoice reminders", 1);
+        }
+    }
+
+    public class OptionalParameterResolutionExamples : MockerTestBase<OptionalDependencyReportService>
+    {
+        protected override InstanceCreationOptions ComponentCreationOptions => new()
+        {
+            OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+        };
+
+        [Fact]
+        public void ComponentCreationOptions_ShouldResolveOptionalConstructorDependencies()
+        {
+            Component.Logger.Should().NotBeNull();
+            Component.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CallMethod_ShouldResolveOptionalMethodDependencies_WhenInvocationOptionsRequestIt()
+        {
+            var factory = new OptionalDependencyProbeFactory();
+
+            var probe = Mocks.CallMethod<OptionalDependencyProbe>(
+                new InvocationOptions
+                {
+                    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+                },
+                (Func<ILogger?, IFileSystem?, OptionalDependencyProbe>)factory.Create);
+
+            probe.Logger.Should().NotBeNull();
+            probe.FileSystem.Should().NotBeNull();
         }
     }
 }

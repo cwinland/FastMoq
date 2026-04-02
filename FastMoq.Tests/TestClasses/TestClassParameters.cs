@@ -20,7 +20,7 @@ namespace FastMoq.Tests.TestClasses
     internal class TestClassParameters
     {
         internal readonly IFileSystem fileSystem;
-        internal readonly ILogger logger;
+        internal readonly ILogger? logger;
 
         [Inject] internal IFileSystem anotherFileSystem;
 
