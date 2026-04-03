@@ -61,6 +61,8 @@ namespace FastMoq
         protected internal readonly List<Type> creatingTypeList = new();
         protected internal readonly List<MockModel> mockCollection = new();
         private readonly List<KnownTypeRegistration> knownTypeRegistrations = new();
+        private readonly Dictionary<ServiceRegistrationKey, MockModel> keyedMockCollection = new();
+        private readonly Dictionary<ServiceRegistrationKey, IInstanceModel> keyedTypeMap = new();
         internal Dictionary<Type, IInstanceModel> typeMap = new();
         private readonly ObservableExceptionLog exceptionLog = new();
         public ConstructorHistory ConstructorHistory { get; } = new();
@@ -179,6 +181,61 @@ namespace FastMoq
             where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), createFunc is null ? null : new Func<Mocker, object>(m => createFunc(m)!), replace, args);
         public Mocker AddType<T>(Func<Mocker, T>? createFunc = null, bool replace = false, params object?[]? args) where T : class => AddType<T, T>(createFunc, replace, args);
 
+        /// <summary>
+        /// Adds a keyed type registration for this <see cref="Mocker"/> instance.
+        /// </summary>
+        public Mocker AddKeyedType(Type tInterface, object serviceKey, Type tClass, Func<Mocker, object>? createFunc = null, bool replace = false, params object?[]? args)
+        {
+            ArgumentNullException.ThrowIfNull(serviceKey);
+            ArgumentNullException.ThrowIfNull(tInterface);
+            ArgumentNullException.ThrowIfNull(tClass);
+
+            ValidateAndReplaceKeyedType(tInterface, tClass, serviceKey, replace);
+            keyedTypeMap[CreateServiceRegistrationKey(tInterface, serviceKey)] = new InstanceModel(tInterface, tClass, createFunc, args?.ToList() ?? new List<object?>());
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a keyed concrete value for this <see cref="Mocker"/> instance.
+        /// </summary>
+        public Mocker AddKeyedType<T>(object serviceKey, T value, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            var registrationKey = CreateServiceRegistrationKey(typeof(T), serviceKey);
+            if (keyedTypeMap.ContainsKey(registrationKey))
+            {
+                if (!replace)
+                {
+                    typeof(T).ThrowAlreadyExists();
+                }
+
+                keyedTypeMap.Remove(registrationKey);
+            }
+
+            keyedTypeMap[registrationKey] = new InstanceModel(typeof(T), typeof(T), _ => value!, new List<object?>());
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a keyed interface-to-concrete registration for this <see cref="Mocker"/> instance.
+        /// </summary>
+        public Mocker AddKeyedType<TInterface, TClass>(object serviceKey, bool replace = false, params object?[]? args)
+            where TInterface : class where TClass : class => AddKeyedType(typeof(TInterface), serviceKey, typeof(TClass), (Func<Mocker, object>?)null, replace, args);
+
+        /// <summary>
+        /// Adds a keyed interface-to-concrete registration with factory for this <see cref="Mocker"/> instance.
+        /// </summary>
+        public Mocker AddKeyedType<TInterface, TClass>(object serviceKey, Func<Mocker, TClass>? createFunc, bool replace = false, params object?[]? args)
+            where TInterface : class where TClass : class =>
+            AddKeyedType(typeof(TInterface), serviceKey, typeof(TClass), createFunc is null ? null : new Func<Mocker, object>(m => createFunc(m)!), replace, args);
+
+        /// <summary>
+        /// Adds a keyed concrete registration with factory for this <see cref="Mocker"/> instance.
+        /// </summary>
+        public Mocker AddKeyedType<T>(object serviceKey, Func<Mocker, T>? createFunc = null, bool replace = false, params object?[]? args) where T : class =>
+            AddKeyedType<T, T>(serviceKey, createFunc, replace, args);
+
         [Obsolete("Use AddType<string>(...) or AddType(value) for ordinary type mapping. Use AddKnownType(...) for framework-style special handling. This context-driven string AddType overload is retained for compatibility only.")]
         public Mocker AddType(Func<Mocker, object?, object?> createFunc, bool replace = false, params object?[]? args)
         {
@@ -219,6 +276,32 @@ namespace FastMoq
                 }
 
                 typeMap.Remove(tInterface);
+            }
+        }
+
+        private void ValidateAndReplaceKeyedType(Type tInterface, Type tClass, object serviceKey, bool replace)
+        {
+            if (tClass.IsInterface)
+            {
+                throw new ArgumentException(tInterface.Name.Equals(tClass.Name)
+                    ? $"{nameof(AddKeyedType)} does not support mapping an interface to itself."
+                    : $"{tClass.Name} cannot be an interface. Provide a concrete implementation.");
+            }
+
+            if (!tInterface.IsAssignableFrom(tClass))
+            {
+                throw new ArgumentException($"{tClass.Name} is not assignable to {tInterface.Name}.");
+            }
+
+            var registrationKey = CreateServiceRegistrationKey(tInterface, serviceKey);
+            if (keyedTypeMap.ContainsKey(registrationKey))
+            {
+                if (!replace)
+                {
+                    tInterface.ThrowAlreadyExists();
+                }
+
+                keyedTypeMap.Remove(registrationKey);
             }
         }
 
@@ -313,13 +396,33 @@ namespace FastMoq
         }
 
         internal IInstanceModel GetTypeModel(Type type) => typeMap.TryGetValue(type, out var model) && model is not null ? model : new InstanceModel(type, GetTypeFromInterface(type));
+        internal IInstanceModel GetKeyedTypeModel(Type type, object serviceKey)
+        {
+            var registrationKey = CreateServiceRegistrationKey(type, serviceKey);
+            return keyedTypeMap.TryGetValue(registrationKey, out var model) && model is not null
+                ? model
+                : new InstanceModel(type, GetTypeFromInterface(type));
+        }
+
+        internal bool HasKeyedTypeModel(Type type, object serviceKey) => keyedTypeMap.ContainsKey(CreateServiceRegistrationKey(type, serviceKey));
         internal static Type CleanType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Mock<>) ? type.GetGenericArguments()[0] : type;
+        private static ServiceRegistrationKey CreateServiceRegistrationKey(Type type, object serviceKey)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+            ArgumentNullException.ThrowIfNull(serviceKey);
+            return new ServiceRegistrationKey(CleanType(type), serviceKey);
+        }
         #endregion
 
         #region Injection / Object Creation
         internal object? GetParameter(ParameterInfo parameter)
         {
             ArgumentNullException.ThrowIfNull(parameter);
+
+            if (TryGetServiceKey(parameter, out var serviceKey))
+            {
+                return GetKeyedParameter(parameter, serviceKey!);
+            }
 
             var pt = parameter.ParameterType;
             if (!typeMap.ContainsKey(pt) && !pt.IsClass && !pt.IsInterface)
@@ -329,6 +432,21 @@ namespace FastMoq
 
             var m = GetTypeModel(pt);
             return m.CreateFunc != null ? m.CreateFunc.Invoke(this, parameter) : (!pt.IsSealed ? GetObject(pt) : pt.GetDefaultValue());
+        }
+
+        internal object? GetKeyedParameter(ParameterInfo parameter, object serviceKey)
+        {
+            ArgumentNullException.ThrowIfNull(parameter);
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            var parameterType = parameter.ParameterType;
+            if (!HasKeyedTypeModel(parameterType, serviceKey) && !parameterType.IsClass && !parameterType.IsInterface)
+            {
+                return parameterType.GetDefaultValue();
+            }
+
+            var resolved = GetKeyedObject(parameterType, serviceKey);
+            return resolved ?? parameterType.GetDefaultValue();
         }
 
         internal object? ResolveParameter(ParameterInfo parameter, OptionalParameterResolutionMode optionalParameterResolution)
@@ -402,9 +520,37 @@ namespace FastMoq
             return def;
         }
 
-        private object? ResolveTrackedMockObject(Type type, Action<object?>? initAction, bool strict)
+        /// <summary>
+        /// Resolves a keyed object for the specified service type.
+        /// </summary>
+        public object? GetKeyedObject(Type type, object serviceKey, Action<object?>? initAction = null)
         {
-            var fast = GetOrCreateFastMock(type);
+            ArgumentNullException.ThrowIfNull(type);
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            type = CleanType(type);
+            var m = GetKeyedTypeModel(type, serviceKey);
+            if (m.CreateFunc != null)
+            {
+                var created = AddInjections(m.CreateFunc.Invoke(this, m.InstanceType), m.InstanceType);
+                initAction?.Invoke(created);
+                return created;
+            }
+
+            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
+            if ((type.IsClass || type.IsInterface) && !type.IsSealed)
+            {
+                return ResolveTrackedMockObject(type, initAction, strict, serviceKey);
+            }
+
+            var def = type.GetDefaultValue();
+            initAction?.Invoke(def);
+            return def;
+        }
+
+        private object? ResolveTrackedMockObject(Type type, Action<object?>? initAction, bool strict, object? serviceKey = null)
+        {
+            var fast = serviceKey == null ? GetOrCreateFastMock(type) : GetOrCreateFastMock(type, serviceKey);
             var provider = MockingProviderRegistry.Default;
             if (Behavior.Has(MockFeatures.AutoSetupProperties))
             {
@@ -469,6 +615,8 @@ namespace FastMoq
         }
         public T? GetObject<T>() where T : class => GetObject(typeof(T)) as T;
         public T? GetObject<T>(Action<T?> init) where T : class => GetObject(typeof(T), o => init((T?)o)) as T;
+        public T? GetKeyedObject<T>(object serviceKey) where T : class => GetKeyedObject(typeof(T), serviceKey) as T;
+        public T? GetKeyedObject<T>(object serviceKey, Action<T?> init) where T : class => GetKeyedObject(typeof(T), serviceKey, o => init((T?)o)) as T;
         public T? GetObject<T>(object?[] args) where T : class
         {
             if (args == null)
@@ -479,6 +627,27 @@ namespace FastMoq
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
             var constructor = FindConstructor(type.InstanceType, true, args);
             return CreateInstanceInternal<T>(constructor.ConstructorInfo, args);
+        }
+
+        private static bool TryGetServiceKey(ParameterInfo parameter, out object? serviceKey)
+        {
+            ArgumentNullException.ThrowIfNull(parameter);
+
+            foreach (var attribute in parameter.GetCustomAttributes(false))
+            {
+                var attributeType = attribute.GetType();
+                if (!string.Equals(attributeType.FullName, "Microsoft.Extensions.DependencyInjection.FromKeyedServicesAttribute", StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                serviceKey = attributeType.GetProperty("Key")?.GetValue(attribute)
+                    ?? attributeType.GetProperty("ServiceKey")?.GetValue(attribute);
+                return serviceKey != null;
+            }
+
+            serviceKey = null;
+            return false;
         }
 
         public object? AddProperties(Type type, object? obj, params KeyValuePair<string, object>[] data)
@@ -966,10 +1135,32 @@ namespace FastMoq
 
             return GetRequiredMock(type);
         }
+        /// <summary>
+        /// Gets or creates a keyed tracked mock for the specified type.
+        /// </summary>
+        public Mock GetKeyedMock(Type type, object serviceKey, params object?[]? args)
+        {
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            type = CleanType(type);
+            if (!Contains(type, serviceKey))
+            {
+                CreateKeyedMock(type, serviceKey, false, args ?? Array.Empty<object?>());
+            }
+
+            return GetRequiredKeyedMock(type, serviceKey);
+        }
         public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>)GetMock(typeof(T), args);
+        public Mock<T> GetKeyedMock<T>(object serviceKey, params object?[] args) where T : class => (Mock<T>)GetKeyedMock(typeof(T), serviceKey, args);
         public Mock<T> GetMock<T>(Action<Mock<T>> action, params object?[] args) where T : class
         {
             var m = GetMock<T>(args);
+            action?.Invoke(m);
+            return m;
+        }
+        public Mock<T> GetKeyedMock<T>(object serviceKey, Action<Mock<T>> action, params object?[] args) where T : class
+        {
+            var m = GetKeyedMock<T>(serviceKey, args);
             action?.Invoke(m);
             return m;
         }
@@ -991,7 +1182,22 @@ namespace FastMoq
             mock.RaiseIfNull();
             return mock;
         }
+        public Mock GetRequiredKeyedMock(Type type, object serviceKey)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            var model = keyedMockCollection[CreateServiceRegistrationKey(type, serviceKey)];
+            if (!model.TryGetLegacyMock(out var mock))
+            {
+                throw new NotSupportedException($"Active provider '{MockingProviderRegistry.Default.GetType().Name}' does not expose a legacy Moq.Mock instance for {type.Name}.");
+            }
+
+            mock.RaiseIfNull();
+            return mock;
+        }
         public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>)GetRequiredMock(typeof(T));
+        public Mock<T> GetRequiredKeyedMock<T>(object serviceKey) where T : class => (Mock<T>)GetRequiredKeyedMock(typeof(T), serviceKey);
         public object GetNativeMock(Type type)
         {
             ArgumentNullException.ThrowIfNull(type);
@@ -1128,6 +1334,18 @@ namespace FastMoq
 
             return GetMockModel(type).FastMock;
         }
+        internal IFastMock GetOrCreateFastMock(Type type, object serviceKey, bool nonPublic = false, params object?[] args)
+        {
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            type = CleanType(type);
+            if (!Contains(type, serviceKey))
+            {
+                CreateKeyedMock(type, serviceKey, nonPublic, args);
+            }
+
+            return keyedMockCollection[CreateServiceRegistrationKey(type, serviceKey)].FastMock;
+        }
         internal IFastMock<T> GetFastMock<T>(bool nonPublic = false, params object?[] args) where T : class
         {
             var model = GetMockModelFast(typeof(T), nonPublic, args);
@@ -1156,9 +1374,58 @@ namespace FastMoq
             return GetMockModel(type);
         }
 
+        internal MockModel GetKeyedMockModelFast(Type type, object serviceKey, bool nonPublic = false, params object?[] args)
+        {
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            type = CleanType(type);
+            if (!Contains(type, serviceKey))
+            {
+                CreateKeyedMock(type, serviceKey, nonPublic, args);
+            }
+
+            return keyedMockCollection[CreateServiceRegistrationKey(type, serviceKey)];
+        }
+
         internal bool Contains(Type type) => mockCollection.Any(m => m.Type == type);
+        internal bool Contains(Type type, object serviceKey)
+        {
+            ArgumentNullException.ThrowIfNull(serviceKey);
+            return keyedMockCollection.ContainsKey(CreateServiceRegistrationKey(type, serviceKey));
+        }
         internal bool Contains<T>() => Contains(typeof(T));
         internal MockModel GetMockModel(Type type, Mock? mock = null, bool autoCreate = true) => mockCollection.First(m => m.Type == type);
+
+        private MockModel CreateKeyedMock(Type type, object serviceKey, bool nonPublic = false, params object?[] args)
+        {
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            type = CleanType(type);
+            var registrationKey = CreateServiceRegistrationKey(type, serviceKey);
+            if (keyedMockCollection.TryGetValue(registrationKey, out var existing))
+            {
+                return existing;
+            }
+
+            var provider = MockingProviderRegistry.Default;
+            object?[] ctorArgs = Array.Empty<object?>();
+
+            if (type.IsClass && !type.IsAbstract)
+            {
+                var constructor = GetTypeConstructor(type, nonPublic, args);
+                ctorArgs = constructor.ParameterList ?? Array.Empty<object?>();
+            }
+
+            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
+            var callBase = Behavior.Has(MockFeatures.CallBase) && provider.Capabilities.SupportsCallBase && !type.IsInterface;
+            var options = new MockCreationOptions(strict, CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
+            var fast = provider.CreateMock(type, options);
+            SetupFastMock(type, fast);
+
+            var model = new MockModel(fast, nonPublic);
+            keyedMockCollection[registrationKey] = model;
+            return model;
+        }
         #endregion
 
         #region Legacy Helper Methods (Batch C)
