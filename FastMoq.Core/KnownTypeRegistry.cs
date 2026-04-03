@@ -141,7 +141,7 @@ namespace FastMoq
 
         private static object? TryGetBuiltInFileSystem(Mocker mocker, Type type)
         {
-            if (mocker.Behavior.Has(MockFeatures.FailOnUnconfigured))
+            if ((mocker.Policy.EnabledBuiltInTypeResolutions & BuiltInTypeResolutionFlags.FileSystem) == 0)
             {
                 return null;
             }
@@ -153,7 +153,7 @@ namespace FastMoq
 
         private static object? TryGetBuiltInHttpClient(Mocker mocker, Type type)
         {
-            if (mocker.Behavior.Has(MockFeatures.FailOnUnconfigured))
+            if ((mocker.Policy.EnabledBuiltInTypeResolutions & BuiltInTypeResolutionFlags.HttpClient) == 0)
             {
                 return null;
             }
@@ -165,7 +165,7 @@ namespace FastMoq
 
         private static object? TryGetBuiltInUri(Mocker mocker, Type type)
         {
-            if (mocker.Behavior.Has(MockFeatures.FailOnUnconfigured))
+            if ((mocker.Policy.EnabledBuiltInTypeResolutions & BuiltInTypeResolutionFlags.Uri) == 0)
             {
                 return null;
             }
@@ -180,6 +180,11 @@ namespace FastMoq
 
         private static object? TryGetBuiltInDbContext(Mocker mocker, Type requestedType)
         {
+            if ((mocker.Policy.EnabledBuiltInTypeResolutions & BuiltInTypeResolutionFlags.DbContext) == 0)
+            {
+                return null;
+            }
+
             if (mocker.Contains(requestedType))
             {
                 return null;

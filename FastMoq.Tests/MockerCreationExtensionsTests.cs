@@ -1,6 +1,7 @@
 ﻿using FastMoq.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Moq;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 
@@ -32,6 +33,16 @@ namespace FastMoq.Tests
             rObj.Items.Should().NotBeNull();
             rObj.User.Should().NotBeNull();
             rObj.Response.Should().BeNull();
+        }
+
+        [Fact]
+        public void CreateMockInternal_ShouldUseDefaultStrictMockCreationPolicy()
+        {
+            Mocks.Policy.DefaultStrictMockCreation = true;
+
+            var mock = Mocks.CreateMockInternal<IFormFile>();
+
+            mock.Behavior.Should().Be(MockBehavior.Strict);
         }
 
         [Fact]

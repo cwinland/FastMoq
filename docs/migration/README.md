@@ -73,12 +73,13 @@ Why:
 - `Strict` is now treated as a compatibility alias for `MockFeatures.FailOnUnconfigured`.
 - Full-profile behavior changes belong to `Behavior` or the preset helpers.
 - If older tests meant "use the full strict profile," they should move to `UseStrictPreset()` explicitly.
+- New repo-era code should treat `FailOnUnconfigured` narrowly: it controls mock strictness, not every older strict-era fallback and built-in resolution rule.
 
 Breaking-change note:
 
 - `Strict` no longer implies the entire old strict profile by itself
 - `UseStrictPreset()` is now the clearer replacement when the broader strict behavior profile is intended
-- `Strict` still affects fail-on-unconfigured behavior and some non-public fallback rules, so this is a narrowing rather than a full removal of old semantics
+- `Strict` still exists to stamp compatibility defaults onto the current policy surface, so this is a narrowing rather than a full removal of old semantics
 
 - strict `IFileSystem` no longer guarantees a raw or empty mock in the current repo
 - tracked `IFileSystem` mocks may still expose built-in members such as `File`, `Directory`, and `Path`
@@ -192,6 +193,12 @@ var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
 });
 ```
 
+The default constructor-fallback policy is now also explicit at the `Mocker` level:
+
+```csharp
+Mocks.Policy.DefaultFallbackToNonPublicConstructors = false;
+```
+
 ### Obsolete `MockOptional`
 
 Old pattern:
@@ -225,6 +232,48 @@ var result = Mocks.InvokeMethod(new InvocationOptions
 {
     FallbackToNonPublicMethods = false,
 }, target, "Run");
+```
+
+The default reflected-method fallback policy is also configurable on the `Mocker` instance:
+
+```csharp
+Mocks.Policy.DefaultFallbackToNonPublicMethods = false;
+```
+
+Built-in framework helpers are now separately controllable through flags:
+
+```csharp
+Mocks.Policy.EnabledBuiltInTypeResolutions =
+    BuiltInTypeResolutionFlags.FileSystem |
+    BuiltInTypeResolutionFlags.DbContext;
+```
+
+That policy controls whether built-in direct or managed resolution is available for:
+
+- `IFileSystem`
+- `HttpClient`
+- `Uri`
+- `DbContext`
+
+This keeps known-type behavior separate from `FailOnUnconfigured` so the option means what it says.
+
+Provider-backed mock creation also has a `Mocker`-level default policy:
+
+```csharp
+Mocks.Policy.DefaultStrictMockCreation = true;
+```
+
+Use that when you want new provider-backed mocks to be created as strict without relying on the broader compatibility bundle.
+
+`GetMockDbContext<TContext>()` remains a deliberate exception and stays on the supported DbContext helper behavior rather than adopting strict creation by default.
+
+For `MockerTestBase<TComponent>`, the same defaults can be applied before component creation through the policy hook:
+
+```csharp
+protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy =>
+{
+    policy.DefaultStrictMockCreation = true;
+};
 ```
 
 Current guidance for `MockerTestBase<TComponent>`:

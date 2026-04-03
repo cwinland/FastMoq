@@ -349,6 +349,73 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetObject_IFileSystem_ShouldAllowExplicitBuiltInOverride_WhenStrictCompatibilityDefaultsAreEnabled()
+        {
+            Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.StrictCompatibilityDefaults;
+            Mocks.Policy.EnabledBuiltInTypeResolutions |= BuiltInTypeResolutionFlags.FileSystem;
+
+            var fileSystem = Mocks.GetObject<IFileSystem>();
+
+            fileSystem.Should().BeSameAs(Mocks.fileSystem);
+        }
+
+        [Fact]
+        public void FailOnUnconfigured_ShouldNotChangeDefaultMethodFallback_WhenEnabledDirectly()
+        {
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+
+            var result = Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
+
+            result.Should().BeNull();
+            Mocks.Policy.DefaultFallbackToNonPublicMethods.Should().BeTrue();
+        }
+
+        [Fact]
+#pragma warning disable CS0618
+        public void Strict_ShouldApplyCompatibilityDefaults()
+        {
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.All;
+            Mocks.Policy.DefaultFallbackToNonPublicConstructors = true;
+            Mocks.Policy.DefaultFallbackToNonPublicMethods = true;
+            Mocks.Policy.DefaultStrictMockCreation = false;
+
+            Mocks.Strict = true;
+
+            Mocks.Policy.EnabledBuiltInTypeResolutions.Should().Be(BuiltInTypeResolutionFlags.StrictCompatibilityDefaults);
+            Mocks.Policy.DefaultFallbackToNonPublicConstructors.Should().BeFalse();
+            Mocks.Policy.DefaultFallbackToNonPublicMethods.Should().BeFalse();
+            Mocks.Policy.DefaultStrictMockCreation.Should().BeTrue();
+        }
+#pragma warning restore CS0618
+
+        [Fact]
+        public void DefaultStrictMockCreation_ShouldOverrideFailOnUnconfigured_WhenDisabledExplicitly()
+        {
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+            Mocks.Policy.DefaultStrictMockCreation = false;
+
+            var mock = Mocks.CreateDetachedMock<ITestClassOne>();
+
+            mock.Behavior.Should().Be(MockBehavior.Loose);
+        }
+
+        [Fact]
+        public void AutoSetupProperties_ShouldRemainAvailable_WhenDefaultStrictMockCreationIsEnabled()
+        {
+            Mocks.Policy.DefaultStrictMockCreation = true;
+            Mocks.Behavior.Enable(MockFeatures.AutoSetupProperties);
+            Mocks.Behavior.Disable(MockFeatures.AutoInjectDependencies);
+
+            var mock = Mocks.CreateDetachedMock<ITestClassOne>();
+            var fileSystem = new MockFileSystem();
+
+            mock.Object.FileSystem = fileSystem;
+
+            mock.Object.FileSystem.Should().BeSameAs(fileSystem);
+        }
+
+        [Fact]
         public void Strict_ShouldOnlyToggleFailOnUnconfigured()
         {
             Mocks.Behavior = MockBehaviorOptions.LenientPreset.Clone().Disable(MockFeatures.AutoInjectDependencies);
@@ -676,6 +743,8 @@ namespace FastMoq.Tests
             typeof(IFileSystem).IsAssignableFrom(Mocks.fileSystem.FileSystem.GetType()).Should().BeTrue();
             Mocks.GetObject<IFileSystem>().Should().Be(Mocks.fileSystem.FileSystem);
             Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+            Mocks.GetObject<IFileSystem>().Should().Be(Mocks.fileSystem.FileSystem);
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.StrictCompatibilityDefaults;
             Mocks.GetObject<IFileSystem>().Should().NotBe(Mocks.fileSystem.FileSystem);
         }
 
@@ -1253,8 +1322,22 @@ namespace FastMoq.Tests
             Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true, 2).Should().Be(2);
 
             Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+            Mocks.Policy.DefaultFallbackToNonPublicMethods = false;
+
             Action a = () => Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
             a.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Specified argument was out of the range of valid values.*");
+        }
+
+        [Fact]
+        public void MockerTestBase_ComponentCreationOptions_ShouldBeSeparate_FromDirectCreateInstanceDefaults()
+        {
+            using var testBase = new NonPublicComponentCreationTestBase();
+
+            testBase.Sut.Should().NotBeNull();
+
+            var act = () => testBase.TestMocks.CreateInstance<TestClassOne>(false, new FileSystem().File);
+
+            act.Should().Throw<NotImplementedException>();
         }
 
         [Fact]
@@ -1838,5 +1921,22 @@ namespace FastMoq.Tests
         }
 
         internal OptionalParameterService Sut => Component;
+    }
+
+    internal sealed class NonPublicComponentCreationTestBase : MockerTestBase<SubscriptionData>
+    {
+        protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy =>
+        {
+            policy.DefaultFallbackToNonPublicConstructors = false;
+        };
+
+        protected override InstanceCreationOptions ComponentCreationOptions => new()
+        {
+            AllowNonPublicConstructors = true,
+            FallbackToNonPublicConstructors = true,
+        };
+
+        internal SubscriptionData Sut => Component;
+        internal Mocker TestMocks => Mocks;
     }
 }

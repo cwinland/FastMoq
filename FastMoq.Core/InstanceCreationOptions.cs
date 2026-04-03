@@ -22,8 +22,8 @@ namespace FastMoq
 
         /// <summary>
         /// Controls whether FastMoq may fall back from a public-constructor search to a non-public-constructor search.
-        /// When not set, FastMoq preserves the legacy behavior tied to <c>Strict</c> / <c>FailOnUnconfigured</c>.
-        /// Set this explicitly in new code when constructor fallback should be controlled independently of that compatibility behavior.
+        /// When not set, FastMoq uses the current <see cref="MockerPolicyOptions.DefaultFallbackToNonPublicConstructors"/> policy.
+        /// Compatibility helpers such as <c>Strict</c> and preset methods can update that default policy.
         /// </summary>
         public bool? FallbackToNonPublicConstructors { get; set; }
 

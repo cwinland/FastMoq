@@ -91,6 +91,8 @@ Method invocation now also has an explicit `InvocationOptions.FallbackToNonPubli
 
 Current repo work adds a per-`Mocker` registration path through `AddKnownType(...)` so tests can override or extend behavior for framework-heavy types like `IFileSystem`, `HttpClient`, `DbContext`, and `HttpContext` patterns.
 
+Built-in known-type resolution is now also explicitly controllable through `BuiltInTypeResolutionFlags`, instead of remaining implicitly tied to `FailOnUnconfigured`.
+
 ### Behavior model cleanup
 
 `Strict` no longer acts like a hidden preset switch.
@@ -100,12 +102,26 @@ Current semantics:
 - `Strict` is a backward-compatible alias for `MockFeatures.FailOnUnconfigured`
 - `Behavior` is the full feature-flag surface
 - `UseStrictPreset()` and `UseLenientPreset()` control the broader preset profiles
+- built-in type resolution and non-public fallback defaults now live on explicit `Mocker` policy properties
 
 Breaking-change note:
 
 - `Strict` should no longer be treated as the single switch for the whole strict behavior profile
 - code that depended on the old monolithic interpretation should move to `UseStrictPreset()` when the broader preset is actually intended
-- `Strict` still affects fail-on-unconfigured behavior and some non-public fallback rules, so it is narrower than the preset, not removed entirely
+- `FailOnUnconfigured` is now narrower by design: it controls mock strictness, while compatibility defaults are carried by `Strict` / preset application or explicit policy settings
+
+New explicit policy surfaces include:
+
+- `Mocker.Policy.EnabledBuiltInTypeResolutions`
+- `Mocker.Policy.DefaultFallbackToNonPublicConstructors`
+- `Mocker.Policy.DefaultFallbackToNonPublicMethods`
+- `Mocker.Policy.DefaultStrictMockCreation`
+- `InstanceCreationOptions.FallbackToNonPublicConstructors`
+- `InvocationOptions.FallbackToNonPublicMethods`
+
+`MockerTestBase<TComponent>` also now exposes a policy hook so those defaults can be set before component creation without instantiating a separate `Mocker`.
+
+`GetMockDbContext<TContext>()` remains intentionally excluded from the strict-mock creation override because the EF-oriented helper must stay on its supported creation path.
 
 ### Breaking change: strict `IFileSystem` mock enrichment
 

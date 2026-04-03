@@ -118,7 +118,7 @@ namespace FastMoq.Core.Providers.NSubstituteProvider
             }
         }
 
-        public void ConfigureProperties(IFastMock mock, bool strict) { }
+        public void ConfigureProperties(IFastMock mock) { }
         public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string> callback) { }
         public object? TryGetLegacy(IFastMock mock) => null;
 

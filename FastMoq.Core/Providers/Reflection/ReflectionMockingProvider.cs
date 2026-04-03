@@ -56,7 +56,7 @@ namespace FastMoq.Providers.ReflectionProvider
         #region Configuration (no-ops)
         public void SetupAllProperties(IFastMock mock) { }
         public void SetCallBase(IFastMock mock, bool value) { }
-        public void ConfigureProperties(IFastMock mock, bool strict) { }
+        public void ConfigureProperties(IFastMock mock) { }
         public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string> callback) { }
         #endregion
 

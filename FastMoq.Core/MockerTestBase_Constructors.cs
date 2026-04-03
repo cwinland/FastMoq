@@ -72,6 +72,7 @@ namespace FastMoq
             Action<TComponent> createdComponentAction)
         {
             Mocks = new Mocker(LoggingCallback);
+            ConfigureMockerPolicy?.Invoke(Mocks.Policy);
 
             SetupMocksAction = setupMocksAction;
             CreateComponentAction = createComponentAction ?? DefaultCreateAction;

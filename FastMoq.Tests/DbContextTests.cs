@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -29,15 +31,38 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetObject_DbContext_ShouldRemainBuiltInManagedInstance_WhenFailOnUnconfiguredIsEnabled()
+        public void GetObject_DbContext_ShouldRemainBuiltInManagedInstance_WhenStrictCompatibilityDefaultsAreEnabled()
         {
             Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.StrictCompatibilityDefaults;
 
             var dbContext = Mocks.GetObject<MyDbContext>();
 
             dbContext.Should().NotBeNull();
             Mocks.Contains<MyDbContext>().Should().BeTrue();
             Mocks.GetMockDbContext<MyDbContext>().Object.Should().BeSameAs(dbContext);
+        }
+
+        [Fact]
+        public void GetObject_DbContext_ShouldAllowDisablingBuiltInManagedResolution_Explicitly()
+        {
+            Mocks.Policy.EnabledBuiltInTypeResolutions &= ~BuiltInTypeResolutionFlags.DbContext;
+
+            var dbContext = Mocks.GetObject<MyDbContext>();
+
+            dbContext.Should().NotBeNull();
+            Mocks.Contains<MyDbContext>().Should().BeTrue();
+            Mocks.GetMock<MyDbContext>().Object.Should().BeSameAs(dbContext);
+        }
+
+        [Fact]
+        public void GetMockDbContext_ShouldRemainUsable_WhenDefaultStrictMockCreationIsEnabled()
+        {
+            using var fixture = new StrictMockCreationDbContextFixture();
+
+            var mockDbContext = fixture.TestMocks.GetMockDbContext<MyDbContext>();
+
+            mockDbContext.Behavior.Should().Be(MockBehavior.Default);
         }
 
         [Fact]
@@ -205,5 +230,15 @@ namespace FastMoq.Tests
         protected CustomManagedDbContext()
         {
         }
+    }
+
+    internal sealed class StrictMockCreationDbContextFixture : MockerTestBase<MyDbContext>
+    {
+        public Mocker TestMocks => Mocks;
+
+        protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy =>
+        {
+            policy.DefaultStrictMockCreation = true;
+        };
     }
 }

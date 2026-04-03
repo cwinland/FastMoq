@@ -80,6 +80,11 @@ namespace FastMoq
         protected virtual Action<TComponent>? CreatedComponentAction { get; }
 
         /// <summary>
+        ///     Allows a test base to configure grouped <see cref="Mocker"/> policy defaults before the component is created.
+        /// </summary>
+        protected virtual Action<MockerPolicyOptions>? ConfigureMockerPolicy { get; }
+
+        /// <summary>
         ///     Gets the <see cref="Mocker" />.
         /// </summary>
         /// <value>The mocks.</value>

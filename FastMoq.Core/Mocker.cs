@@ -69,6 +69,39 @@ namespace FastMoq
 
         public Action<LogLevel, EventId, string> LoggingCallback { get; }
         public OptionalParameterResolutionMode OptionalParameterResolution { get; set; } = OptionalParameterResolutionMode.UseDefaultOrNull;
+        public MockerPolicyOptions Policy { get; } = new();
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use Policy.EnabledBuiltInTypeResolutions instead.")]
+        public BuiltInTypeResolutionFlags EnabledBuiltInTypeResolutions
+        {
+            get => Policy.EnabledBuiltInTypeResolutions;
+            set => Policy.EnabledBuiltInTypeResolutions = value;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use Policy.DefaultFallbackToNonPublicConstructors instead.")]
+        public bool DefaultFallbackToNonPublicConstructors
+        {
+            get => Policy.DefaultFallbackToNonPublicConstructors;
+            set => Policy.DefaultFallbackToNonPublicConstructors = value;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use Policy.DefaultFallbackToNonPublicMethods instead.")]
+        public bool DefaultFallbackToNonPublicMethods
+        {
+            get => Policy.DefaultFallbackToNonPublicMethods;
+            set => Policy.DefaultFallbackToNonPublicMethods = value;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use Policy.DefaultStrictMockCreation instead.")]
+        public bool? DefaultStrictMockCreation
+        {
+            get => Policy.DefaultStrictMockCreation;
+            set => Policy.DefaultStrictMockCreation = value;
+        }
 
         /// <summary>
         /// Obsolete compatibility alias for <see cref="OptionalParameterResolution"/>.
@@ -110,6 +143,8 @@ namespace FastMoq
                 {
                     Behavior.Disable(MockFeatures.FailOnUnconfigured);
                 }
+
+                ApplyCompatibilityDefaults(value);
             }
         }
 
@@ -117,13 +152,21 @@ namespace FastMoq
         /// Applies the predefined strict behavior preset.
         /// This is broader than <see cref="Strict"/>, which is retained for backward compatibility.
         /// </summary>
-        public void UseStrictPreset() => Behavior = MockBehaviorOptions.StrictPreset.Clone();
+        public void UseStrictPreset()
+        {
+            Behavior = MockBehaviorOptions.StrictPreset.Clone();
+            ApplyCompatibilityDefaults(strictCompatibility: true);
+        }
 
         /// <summary>
         /// Applies the predefined lenient behavior preset.
         /// This is broader than disabling <see cref="MockFeatures.FailOnUnconfigured"/> alone.
         /// </summary>
-        public void UseLenientPreset() => Behavior = MockBehaviorOptions.LenientPreset.Clone();
+        public void UseLenientPreset()
+        {
+            Behavior = MockBehaviorOptions.LenientPreset.Clone();
+            ApplyCompatibilityDefaults(strictCompatibility: false);
+        }
 
         #region Ctors
         public Mocker() : this((_, _, _) => { }) { }
@@ -141,6 +184,19 @@ namespace FastMoq
 
         #region Type Mapping
         internal IReadOnlyList<KnownTypeRegistration> KnownTypeRegistrations => knownTypeRegistrations;
+
+        private void ApplyCompatibilityDefaults(bool strictCompatibility)
+        {
+            Policy.EnabledBuiltInTypeResolutions = strictCompatibility
+                ? BuiltInTypeResolutionFlags.StrictCompatibilityDefaults
+                : BuiltInTypeResolutionFlags.LenientDefaults;
+
+            Policy.DefaultFallbackToNonPublicConstructors = !strictCompatibility;
+            Policy.DefaultFallbackToNonPublicMethods = !strictCompatibility;
+            Policy.DefaultStrictMockCreation = strictCompatibility;
+        }
+
+        internal bool ShouldCreateStrictMocks() => Policy.DefaultStrictMockCreation ?? Behavior.Has(MockFeatures.FailOnUnconfigured);
 
         public Mocker AddType(Type tInterface, Type tClass, Func<Mocker, object>? createFunc = null, bool replace = false, params object?[]? args)
         {
@@ -499,12 +555,11 @@ namespace FastMoq
                 return customManagedInstance;
             }
 
-            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             if ((type.IsClass || type.IsInterface) && !type.IsSealed)
             {
                 if (Contains(type))
                 {
-                    return ResolveTrackedMockObject(type, initAction, strict);
+                    return ResolveTrackedMockObject(type, initAction);
                 }
 
                 if (KnownTypeRegistry.TryGetBuiltInManagedInstance(this, type, out var builtInManagedInstance))
@@ -513,7 +568,7 @@ namespace FastMoq
                     return builtInManagedInstance;
                 }
 
-                return ResolveTrackedMockObject(type, initAction, strict);
+                return ResolveTrackedMockObject(type, initAction);
             }
             var def = type.GetDefaultValue();
             initAction?.Invoke(def);
@@ -537,10 +592,9 @@ namespace FastMoq
                 return created;
             }
 
-            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             if ((type.IsClass || type.IsInterface) && !type.IsSealed)
             {
-                return ResolveTrackedMockObject(type, initAction, strict, serviceKey);
+                return ResolveTrackedMockObject(type, initAction, serviceKey);
             }
 
             var def = type.GetDefaultValue();
@@ -548,13 +602,13 @@ namespace FastMoq
             return def;
         }
 
-        private object? ResolveTrackedMockObject(Type type, Action<object?>? initAction, bool strict, object? serviceKey = null)
+        private object? ResolveTrackedMockObject(Type type, Action<object?>? initAction, object? serviceKey = null)
         {
             var fast = serviceKey == null ? GetOrCreateFastMock(type) : GetOrCreateFastMock(type, serviceKey);
             var provider = MockingProviderRegistry.Default;
             if (Behavior.Has(MockFeatures.AutoSetupProperties))
             {
-                provider.ConfigureProperties(fast, strict);
+                provider.ConfigureProperties(fast);
                 ReapplyTrackedMockConfiguration(type, fast);
             }
             if (Behavior.Has(MockFeatures.LoggerCallback))
@@ -740,7 +794,7 @@ namespace FastMoq
             {
                 UsePredefinedFileSystem = usePredefinedFileSystem,
                 AllowNonPublicConstructors = allowNonPublicConstructors,
-                FallbackToNonPublicConstructors = !Behavior.Has(MockFeatures.FailOnUnconfigured),
+                FallbackToNonPublicConstructors = Policy.DefaultFallbackToNonPublicConstructors,
                 OptionalParameterResolution = OptionalParameterResolution,
             };
         }
@@ -795,7 +849,7 @@ namespace FastMoq
 
         private bool ShouldFallbackToNonPublicConstructors(InstanceCreationOptions options)
         {
-            return options.FallbackToNonPublicConstructors ?? !Behavior.Has(MockFeatures.FailOnUnconfigured);
+            return options.FallbackToNonPublicConstructors ?? Policy.DefaultFallbackToNonPublicConstructors;
         }
 
         private ConstructorModel GetConstructorByArgs(object?[] args, Type instanceType, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution)
@@ -1041,9 +1095,8 @@ namespace FastMoq
                 var constructor = this.GetTypeConstructor(type, nonPublic, args);
                 ctorArgs = constructor.ParameterList ?? Array.Empty<object?>();
             }
-            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             var callBase = Behavior.Has(MockFeatures.CallBase) && provider.Capabilities.SupportsCallBase && !type.IsInterface;
-            var options = new MockCreationOptions(strict, CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
+            var options = new MockCreationOptions(ShouldCreateStrictMocks(), CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
             var fast = provider.CreateMock(type, options);
             AddFastMock(fast, type, nonPublic: nonPublic);
             SetupFastMock(type, fast);
@@ -1099,9 +1152,8 @@ namespace FastMoq
                 ctorArgs = constructor.ParameterList ?? Array.Empty<object?>();
             }
 
-            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             var callBase = Behavior.Has(MockFeatures.CallBase) && provider.Capabilities.SupportsCallBase && !type.IsInterface;
-            var options = new MockCreationOptions(strict, CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
+            var options = new MockCreationOptions(ShouldCreateStrictMocks(), CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
             var fast = provider.CreateMock(type, options);
             SetupFastMock(type, fast);
             var legacy = TryGetLegacyMock(fast);
@@ -1284,24 +1336,20 @@ namespace FastMoq
         {
             ArgumentNullException.ThrowIfNull(fastMock);
 
-            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             var provider = MockingProviderRegistry.Default;
-            if (!strict)
+            if (Behavior.Has(MockFeatures.AutoSetupProperties))
             {
-                if (Behavior.Has(MockFeatures.AutoSetupProperties))
-                {
-                    provider.ConfigureProperties(fastMock, strict);
-                }
+                provider.ConfigureProperties(fastMock);
+            }
 
-                if (InnerMockResolution && Behavior.Has(MockFeatures.AutoInjectDependencies))
-                {
-                    AddProperties(type, fastMock.Instance);
-                }
+            if (InnerMockResolution && Behavior.Has(MockFeatures.AutoInjectDependencies))
+            {
+                AddProperties(type, fastMock.Instance);
+            }
 
-                if (Behavior.Has(MockFeatures.LoggerCallback) && type.IsAssignableTo(typeof(ILogger)))
-                {
-                    provider.ConfigureLogger(fastMock, LoggingCallback);
-                }
+            if (Behavior.Has(MockFeatures.LoggerCallback) && type.IsAssignableTo(typeof(ILogger)))
+            {
+                provider.ConfigureLogger(fastMock, LoggingCallback);
             }
 
             KnownTypeRegistry.ConfigureMock(this, type, fastMock);
@@ -1456,9 +1504,8 @@ namespace FastMoq
                 ctorArgs = constructor.ParameterList ?? Array.Empty<object?>();
             }
 
-            var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             var callBase = Behavior.Has(MockFeatures.CallBase) && provider.Capabilities.SupportsCallBase && !type.IsInterface;
-            var options = new MockCreationOptions(strict, CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
+            var options = new MockCreationOptions(ShouldCreateStrictMocks(), CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
             var fast = provider.CreateMock(type, options);
             SetupFastMock(type, fast);
 
@@ -1603,7 +1650,7 @@ namespace FastMoq
             options ??= new InvocationOptions
             {
                 OptionalParameterResolution = OptionalParameterResolution,
-                FallbackToNonPublicMethods = !Behavior.Has(MockFeatures.FailOnUnconfigured),
+                FallbackToNonPublicMethods = Policy.DefaultFallbackToNonPublicMethods,
             };
 
             var flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | (nonPublic ? BindingFlags.NonPublic : 0);
@@ -1631,7 +1678,7 @@ namespace FastMoq
             options ??= new InvocationOptions
             {
                 OptionalParameterResolution = OptionalParameterResolution,
-                FallbackToNonPublicMethods = !Behavior.Has(MockFeatures.FailOnUnconfigured),
+                FallbackToNonPublicMethods = Policy.DefaultFallbackToNonPublicMethods,
             };
 
             var type = typeof(T).IsInterface ? GetTypeFromInterface(typeof(T)) : typeof(T);
@@ -1652,7 +1699,7 @@ namespace FastMoq
 
         private bool ShouldFallbackToNonPublicMethods(InvocationOptions options)
         {
-            return options.FallbackToNonPublicMethods ?? !Behavior.Has(MockFeatures.FailOnUnconfigured);
+            return options.FallbackToNonPublicMethods ?? Policy.DefaultFallbackToNonPublicMethods;
         }
         public object? InvokeMethod<T>(string methodName, bool nonPublic = false, params object?[] args) =>
             InvokeMethod<T>((object?)null, methodName, nonPublic, args);
@@ -1737,7 +1784,8 @@ namespace FastMoq
 
             AddType<DbContextOptions<TContext>>(_ => options, replace: true);
 
-            var mock = new DbContextMock<TContext>(Behavior.Has(MockFeatures.FailOnUnconfigured) ? MockBehavior.Strict : MockBehavior.Default, options);
+            // DbContext helper creation remains on the supported EF-friendly default behavior.
+            var mock = new DbContextMock<TContext>(MockBehavior.Default, options);
             AddMock(mock, overwrite: true, nonPublic: true);
             SetupMock(typeof(TContext), mock);
             return mock.SetupDbSets(this);

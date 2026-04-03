@@ -171,7 +171,7 @@ namespace FastMoq.Extensions
             // Execute new Mock with Loose Behavior and arguments from constructor, if applicable.
             var parameters = new List<object?>
             {
-                mocker.Behavior.Has(MockFeatures.FailOnUnconfigured) ? MockBehavior.Strict : MockBehavior.Loose,
+                mocker.ShouldCreateStrictMocks() ? MockBehavior.Strict : MockBehavior.Loose,
             };
             parameterList ??= new List<object>();
             parameterList.ForEach(parameters.Add);

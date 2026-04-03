@@ -23,9 +23,9 @@ namespace FastMoq.Providers
         // v2 provider-first enhancement hooks
         /// <summary>
         /// Allows provider to perform property initialization / automatic setup after creation.
-        /// Implementations should NO-OP when not supported or when strict mode is enabled (caller passes the flag).
+        /// Implementations should NO-OP when not supported.
         /// </summary>
-        void ConfigureProperties(IFastMock mock, bool strict);
+        void ConfigureProperties(IFastMock mock);
 
         /// <summary>
         /// Allows provider to attach a logger callback (when underlying type implements ILogger / ILogger&lt;T&gt;).

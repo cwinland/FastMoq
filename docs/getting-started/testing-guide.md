@@ -80,6 +80,12 @@ var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
 });
 ```
 
+If you want to change the default constructor-fallback policy for the whole `Mocker` instance, use:
+
+```csharp
+Mocks.Policy.DefaultFallbackToNonPublicConstructors = false;
+```
+
 Use the older methods when preserving existing tests or public API compatibility matters. Internally, FastMoq now routes those calls through the same options-based construction path.
 
 ## Optional Constructor And Method Parameters
@@ -146,11 +152,50 @@ var result = Mocks.InvokeMethod(
     nameof(TargetType.Run));
 ```
 
+If you want to change the default reflected-method fallback policy for the whole `Mocker` instance, use:
+
+```csharp
+Mocks.Policy.DefaultFallbackToNonPublicMethods = false;
+```
+
 `MockOptional` is now obsolete and should be treated only as a compatibility alias for `OptionalParameterResolutionMode.ResolveViaMocker`.
 
 ## Built-In Known Types
 
 FastMoq includes built-in handling for a small set of framework-heavy types.
+
+That built-in resolution policy is now explicit. `FailOnUnconfigured` no longer silently changes which built-ins are available by itself.
+
+Use `EnabledBuiltInTypeResolutions` when you want to override the built-in defaults for a `Mocker` instance:
+
+```csharp
+Mocks.Policy.EnabledBuiltInTypeResolutions =
+    BuiltInTypeResolutionFlags.FileSystem |
+    BuiltInTypeResolutionFlags.HttpClient |
+    BuiltInTypeResolutionFlags.Uri |
+    BuiltInTypeResolutionFlags.DbContext;
+```
+
+`Strict` compatibility still stamps the older strict-era defaults onto that policy surface, but new code can now control those pieces independently.
+
+## Mock Creation Defaults
+
+For provider-backed mock creation, use the `Mocker`-level default when you want new mocks to be created as strict or loose without depending on the broader compatibility bundle:
+
+```csharp
+Mocks.Policy.DefaultStrictMockCreation = true;
+```
+
+This affects provider-backed and legacy mock creation helpers. It does not apply to `GetMockDbContext<TContext>()`, which remains on the supported DbContext helper behavior.
+
+If you are using `MockerTestBase<TComponent>`, apply the same defaults before component creation with:
+
+```csharp
+protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy =>
+{
+    policy.DefaultStrictMockCreation = true;
+};
+```
 
 ### `IFileSystem`
 

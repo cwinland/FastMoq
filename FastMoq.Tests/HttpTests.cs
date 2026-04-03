@@ -67,15 +67,50 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetObject_HttpClient_ShouldNotUseBuiltIn_WhenFailOnUnconfiguredIsEnabled()
+        public void GetObject_HttpClient_ShouldKeepBuiltIn_WhenOnlyFailOnUnconfiguredIsEnabled()
         {
             Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+
+            var httpClient = Mocks.GetObject<HttpClient>();
+
+            httpClient.Should().BeSameAs(Mocks.HttpClient);
+        }
+
+        [Fact]
+        public void GetObject_HttpClient_ShouldNotUseBuiltIn_WhenStrictCompatibilityDefaultsAreEnabled()
+        {
+            Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.StrictCompatibilityDefaults;
 
             var httpClient = Mocks.GetObject<HttpClient>();
 
             httpClient.Should().NotBeNull();
             httpClient.Should().NotBeSameAs(Mocks.HttpClient);
             httpClient!.BaseAddress.Should().BeNull();
+        }
+
+        [Fact]
+        public void GetObject_HttpClient_ShouldAllowExplicitBuiltInOverride_WhenStrictCompatibilityDefaultsAreEnabled()
+        {
+            Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.StrictCompatibilityDefaults;
+            Mocks.Policy.EnabledBuiltInTypeResolutions |= BuiltInTypeResolutionFlags.HttpClient;
+
+            var httpClient = Mocks.GetObject<HttpClient>();
+
+            httpClient.Should().BeSameAs(Mocks.HttpClient);
+        }
+
+        [Fact]
+        public void GetObject_Uri_ShouldAllowExplicitBuiltInOverride_WhenStrictCompatibilityDefaultsAreEnabled()
+        {
+            Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.StrictCompatibilityDefaults;
+            Mocks.Policy.EnabledBuiltInTypeResolutions |= BuiltInTypeResolutionFlags.Uri;
+
+            var uri = Mocks.GetObject<Uri>();
+
+            uri.Should().BeSameAs(Mocks.Uri);
         }
 
         [Fact]

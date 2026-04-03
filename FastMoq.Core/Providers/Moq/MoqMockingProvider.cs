@@ -26,7 +26,6 @@ namespace FastMoq.Providers.MoqProvider
                 ? new Mock<T>(behavior, options.ConstructorArgs)
                 : new Mock<T>(behavior);
             if (options.CallBase) mock.CallBase = true;
-            if (Capabilities.SupportsSetupAllProperties && !options.Strict) mock.SetupAllProperties();
             return new MoqFastMockGeneric<T>(mock);
         }
 
@@ -40,10 +39,6 @@ namespace FastMoq.Providers.MoqProvider
                 : new object?[] { behavior };
             var mock = (Mock)Activator.CreateInstance(generic, args)!;
             if (options.CallBase) mock.CallBase = true;
-            if (Capabilities.SupportsSetupAllProperties && !options.Strict)
-            {
-                mock.GetType().GetMethod("SetupAllProperties")?.Invoke(mock, null);
-            }
             return new MoqFastMock(mock);
         }
 
@@ -100,9 +95,8 @@ namespace FastMoq.Providers.MoqProvider
             }
         }
 
-        public void ConfigureProperties(IFastMock mock, bool strict)
+        public void ConfigureProperties(IFastMock mock)
         {
-            if (strict) return; // decision made by behavior flags outside capability property
             if (!Capabilities.SupportsSetupAllProperties) return;
             SetupAllProperties(mock);
         }

@@ -12,8 +12,8 @@ namespace FastMoq
 
         /// <summary>
         /// Controls whether FastMoq may fall back from a public-method search to a non-public-method search.
-        /// When not set, FastMoq preserves the legacy behavior tied to <c>Strict</c> / <c>FailOnUnconfigured</c>.
-        /// Set this explicitly in new code when method fallback should be controlled independently of that compatibility behavior.
+        /// When not set, FastMoq uses the current <see cref="MockerPolicyOptions.DefaultFallbackToNonPublicMethods"/> policy.
+        /// Compatibility helpers such as <c>Strict</c> and preset methods can update that default policy.
         /// </summary>
         public bool? FallbackToNonPublicMethods { get; set; }
     }
