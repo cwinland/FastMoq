@@ -6,7 +6,6 @@ using System.Security.Claims;
 using FastMoq.Extensions;
 using FastMoq.Providers;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace FastMoq
@@ -27,11 +26,6 @@ namespace FastMoq
             new KnownTypeRegistration(typeof(Uri))
             {
                 DirectInstanceFactory = TryGetBuiltInUri,
-            },
-            new KnownTypeRegistration(typeof(DbContext))
-            {
-                IncludeDerivedTypes = true,
-                ManagedInstanceFactory = TryGetBuiltInDbContext,
             },
             new KnownTypeRegistration(typeof(HttpContext))
             {
@@ -67,6 +61,11 @@ namespace FastMoq
                 {
                     return true;
                 }
+            }
+
+            if (TryGetBuiltInDbContext(mocker, requestedType, out instance))
+            {
+                return true;
             }
 
             instance = null;
@@ -178,20 +177,15 @@ namespace FastMoq
             return mocker.Uri;
         }
 
-        private static object? TryGetBuiltInDbContext(Mocker mocker, Type requestedType)
+        private static bool TryGetBuiltInDbContext(Mocker mocker, Type requestedType, out object? instance)
         {
+            instance = null;
             if ((mocker.Policy.EnabledBuiltInTypeResolutions & BuiltInTypeResolutionFlags.DbContext) == 0)
             {
-                return null;
+                return false;
             }
 
-            if (mocker.Contains(requestedType))
-            {
-                return null;
-            }
-
-            var mock = mocker.GetMockDbContext(requestedType);
-            return mock.Object;
+            return DatabaseSupportBridge.TryCreateManagedInstance(mocker, requestedType, out instance);
         }
 
         private static void ConfigureBuiltInHttpContextMock(Mocker mocker, Type type, IFastMock mock)

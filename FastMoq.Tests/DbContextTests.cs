@@ -31,6 +31,63 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetDbContextHandle_ShouldDefaultToMockedSetMode()
+        {
+            var handle = Mocks.GetDbContextHandle<MyDbContext>();
+
+            handle.Mode.Should().Be(DbContextTestMode.MockedSets);
+            handle.Mock.Should().NotBeNull();
+            handle.Context.Should().BeSameAs(handle.Mock!.Object);
+
+            var secondHandle = Mocks.GetDbContextHandle<MyDbContext>();
+            secondHandle.Should().BeSameAs(handle);
+        }
+
+        [Fact]
+        public void GetDbContextHandle_ShouldCreateRealInMemoryContext_WhenRequested()
+        {
+            var mocker = new Mocker();
+
+            var handle = mocker.GetDbContextHandle<RealModeDbContext>(new DbContextHandleOptions<RealModeDbContext>
+            {
+                Mode = DbContextTestMode.RealInMemory,
+            });
+
+            handle.Mode.Should().Be(DbContextTestMode.RealInMemory);
+            handle.Mock.Should().BeNull();
+            handle.Context.Items.Add(new RealModeEntity { Id = 5 });
+            handle.Context.SaveChanges();
+
+            var resolved = mocker.GetObject<RealModeDbContext>();
+            resolved.Should().BeSameAs(handle.Context);
+            resolved!.Items.Should().ContainSingle(x => x.Id == 5);
+
+            var secondHandle = mocker.GetDbContextHandle<RealModeDbContext>(new DbContextHandleOptions<RealModeDbContext>
+            {
+                Mode = DbContextTestMode.RealInMemory,
+            });
+
+            secondHandle.Should().BeSameAs(handle);
+        }
+
+        [Fact]
+        public void GetDbContextHandle_ShouldThrow_WhenDifferentModeAlreadyTracked()
+        {
+            var mocker = new Mocker();
+
+            mocker.GetDbContextHandle<RealModeDbContext>(new DbContextHandleOptions<RealModeDbContext>
+            {
+                Mode = DbContextTestMode.RealInMemory,
+            });
+
+            var action = () => mocker.GetDbContextHandle<RealModeDbContext>();
+
+            action.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*already tracked in RealInMemory mode*");
+        }
+
+        [Fact]
         public void GetObject_DbContext_ShouldRemainBuiltInManagedInstance_WhenStrictCompatibilityDefaultsAreEnabled()
         {
             Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
@@ -230,6 +287,20 @@ namespace FastMoq.Tests
         protected CustomManagedDbContext()
         {
         }
+    }
+
+    public class RealModeDbContext : DbContext
+    {
+        public RealModeDbContext(DbContextOptions<RealModeDbContext> options) : base(options)
+        {
+        }
+
+        public DbSet<RealModeEntity> Items { get; set; }
+    }
+
+    public class RealModeEntity
+    {
+        public int Id { get; set; }
     }
 
     internal sealed class StrictMockCreationDbContextFixture : MockerTestBase<MyDbContext>

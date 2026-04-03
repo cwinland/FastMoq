@@ -1,4 +1,4 @@
-﻿using FastMoq.Extensions;
+using FastMoq.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Linq.Expressions;
@@ -16,8 +16,6 @@ namespace FastMoq.Models
     /// <seealso cref="Mock{TEntity}" />
     public class DbContextMock<TEntity> : Mock<TEntity>, IDbContextMock<TEntity> where TEntity : DbContext
     {
-        #region Properties
-
         /// <inheritdoc />
         public override bool CallBase { get; set; } = true;
 
@@ -25,10 +23,7 @@ namespace FastMoq.Models
             .Where(x => (x.GetGetMethod()?.IsVirtual ?? false) &&
                         x.CanRead &&
                         x.PropertyType.IsGenericType &&
-                        x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>)
-            );
-
-        #endregion
+                        x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
 
         /// <inheritdoc />
         public DbContextMock() : this(MockBehavior.Default) { }
@@ -50,38 +45,35 @@ namespace FastMoq.Models
         {
             var genericType = typeof(DbSetMock<>).MakeGenericType(x.GenericTypeArguments[0]);
             var value = Activator.CreateInstance(genericType) as Mock ?? throw new InvalidOperationException("Cannot create Mock.");
-            mocks.AddMock(value, genericType, true, x.IsNotPublic);
+            var addMockMethod = typeof(Mocker).GetMethods()
+                .Single(method =>
+                    method.Name == nameof(Mocker.AddMock) &&
+                    method.IsGenericMethodDefinition &&
+                    method.GetGenericArguments().Length == 1 &&
+                    method.GetParameters().Length == 3);
+
+            addMockMethod.MakeGenericMethod(x).Invoke(mocks, [value, true, x.IsNotPublic]);
             var obj = value.Object;
 
-            var dbSetMock = (IDbSetMock) value;
-
-            // Setup List methods.
+            var dbSetMock = (IDbSetMock)value;
             dbSetMock.SetupMockMethods();
 
             return obj;
         }
 
-        #region IDbContextMock
-
         /// <inheritdoc />
-        /// <param name="propertyInfo">The property information.</param>
-        /// <exception cref="System.MissingMethodException">Unable to get Set method.</exception>
-        /// <exception cref="InvalidOperationException">Unable to get Set method.</exception>
         public void SetupDbContextSetMethods(PropertyInfo propertyInfo)
         {
             ArgumentNullException.ThrowIfNull(propertyInfo);
 
             var setType = propertyInfo.PropertyType;
-
-            // Create a Func<T> at runtime
             var funcType = typeof(Func<>).MakeGenericType(setType);
 
-            var propValueDelegate = Delegate.CreateDelegate(funcType,
+            var propValueDelegate = Delegate.CreateDelegate(
+                funcType,
                 Object,
-                propertyInfo.GetGetMethod() ?? throw new MissingMethodException("Unable to get Set method.")
-            );
+                propertyInfo.GetGetMethod() ?? throw new MissingMethodException("Unable to get Set method."));
 
-            // if the PropertyType is a DbSet, get the entity out of the DbSet.
             if (setType.IsGenericType && setType.GetGenericTypeDefinition() == typeof(DbSet<>))
             {
                 setType = setType.GetGenericArguments()[0];
@@ -108,58 +100,45 @@ namespace FastMoq.Models
         }
 
         /// <inheritdoc />
-        /// <exception cref="System.MissingMethodException">Unable to get Set method.</exception>
-        /// <exception cref="System.InvalidOperationException">Unable to Get Setup.</exception>
         public void SetupSetMethod(Type setType, Delegate propValueDelegate, Type[]? types = null, object?[]? parameters = null)
         {
             types ??= [];
             parameters ??= [];
 
-            // Create an expression that represents x => x.Set<setType>(It.IsAny<string>())
             var parameter = Expression.Parameter(typeof(TEntity), "x");
-
-            // Get Set method for given parameter type. Either the one without parameters or the string parameter.
             var method = typeof(TEntity).GetMethod("Set", types) ?? throw new MissingMethodException("Unable to get Set method.");
             var genericMethod = method.MakeGenericMethod(setType);
             var args = new List<Expression>();
-            types.ForEach(x => args.Add(Expression.Call(typeof(It), "IsAny", [x])));
+            foreach (var type in types)
+            {
+                args.Add(Expression.Call(typeof(It), "IsAny", [type]));
+            }
 
-            // Setup parameters
             parameters.RaiseIfNull();
             types.RaiseIfNull();
 
             for (var i = 0; i < parameters.Length && i < types.Length; i++)
             {
-                // Replace IsAny with specified parameter.
                 args[i] = Expression.Constant(parameters[i]);
             }
 
             var body = Expression.Call(parameter, genericMethod, args.ToArray());
             var expression = Expression.Lambda<Func<TEntity, object>>(body, parameter);
 
-            // Use the expression to set up the mockDbContext
             var setup = new FastMoqNonVoidSetupPhrase<TEntity>(Setup(expression) ?? throw new InvalidOperationException("Unable to Get Setup."));
             setup.Returns(propValueDelegate, setType);
         }
 
-        #endregion
-
-        #region IDbContextMock<TEntity>
-
         /// <inheritdoc />
         public DbContextMock<TEntity> SetupDbSets(Mocker mocks)
         {
-            // Go through the DbSets and attempt to map each property and the set methods to their properties.
-            DbSets.ForEach(x =>
-                {
-                    var value = GetValue(x.PropertyType, mocks) ?? throw new InvalidOperationException($"Unable to create Dbset for {x.Name}");
-                    SetupDbSetProperties(x, value);
-                }
-            );
+            foreach (var dbSet in DbSets)
+            {
+                var value = GetValue(dbSet.PropertyType, mocks) ?? throw new InvalidOperationException($"Unable to create Dbset for {dbSet.Name}");
+                SetupDbSetProperties(dbSet, value);
+            }
 
             return this;
         }
-
-        #endregion
     }
 }

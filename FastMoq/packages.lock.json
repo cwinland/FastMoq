@@ -51,7 +51,6 @@
           "Microsoft.Extensions.Localization.Abstractions": "9.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
-          "System.Text.Json": "9.0.0",
           "bunit.core": "1.38.5"
         }
       },
@@ -337,11 +336,6 @@
         "resolved": "9.0.2",
         "contentHash": "+z9JWtU9di45tW/w6zpuJms4SnAAqKY2Usmmxs7MpOhxWoIeR2pKl1vEkaFbEx52ZfrMFcZXsFe+8WERMozzGg=="
       },
-      "System.Text.Json": {
-        "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "js7+qAu/9mQvnhA4EfGMZNEzXtJCDxgkgj8ohuxq/Qxv+R56G+ljefhiJHOxTNiw54q8vmABCWUwkMulNdlZ4A=="
-      },
       "TestableIO.System.IO.Abstractions": {
         "type": "Transitive",
         "resolved": "21.3.1",
@@ -358,11 +352,18 @@
       "fastmoq.core": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.InMemory": "[10.*, )",
           "Moq": "[4.18.4, )",
           "NSubstitute": "[5.3.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, )",
           "xunit.abstractions": "[2.0.3, )"
+        }
+      },
+      "fastmoq.database": {
+        "type": "Project",
+        "dependencies": {
+          "FastMoq.Core": "[1.0.0, )",
+          "Microsoft.EntityFrameworkCore.InMemory": "[10.*, )",
+          "Moq": "[4.18.4, )"
         }
       },
       "fastmoq.web": {
@@ -798,11 +799,18 @@
       "fastmoq.core": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.InMemory": "[8.*, )",
           "Moq": "[4.18.4, )",
           "NSubstitute": "[5.3.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, )",
           "xunit.abstractions": "[2.0.3, )"
+        }
+      },
+      "fastmoq.database": {
+        "type": "Project",
+        "dependencies": {
+          "FastMoq.Core": "[1.0.0, )",
+          "Microsoft.EntityFrameworkCore.InMemory": "[8.*, )",
+          "Moq": "[4.18.4, )"
         }
       },
       "fastmoq.web": {
@@ -918,7 +926,6 @@
           "Microsoft.Extensions.Localization.Abstractions": "9.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
-          "System.Text.Json": "9.0.0",
           "bunit.core": "1.38.5"
         }
       },
@@ -1204,11 +1211,6 @@
         "resolved": "9.0.2",
         "contentHash": "+z9JWtU9di45tW/w6zpuJms4SnAAqKY2Usmmxs7MpOhxWoIeR2pKl1vEkaFbEx52ZfrMFcZXsFe+8WERMozzGg=="
       },
-      "System.Text.Json": {
-        "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "js7+qAu/9mQvnhA4EfGMZNEzXtJCDxgkgj8ohuxq/Qxv+R56G+ljefhiJHOxTNiw54q8vmABCWUwkMulNdlZ4A=="
-      },
       "TestableIO.System.IO.Abstractions": {
         "type": "Transitive",
         "resolved": "21.3.1",
@@ -1225,11 +1227,18 @@
       "fastmoq.core": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.InMemory": "[9.*, )",
           "Moq": "[4.18.4, )",
           "NSubstitute": "[5.3.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, )",
           "xunit.abstractions": "[2.0.3, )"
+        }
+      },
+      "fastmoq.database": {
+        "type": "Project",
+        "dependencies": {
+          "FastMoq.Core": "[1.0.0, )",
+          "Microsoft.EntityFrameworkCore.InMemory": "[9.*, )",
+          "Moq": "[4.18.4, )"
         }
       },
       "fastmoq.web": {

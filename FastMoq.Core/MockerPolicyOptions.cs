@@ -15,8 +15,8 @@ namespace FastMoq
         /// <summary>
         /// Controls the default strict-vs-loose behavior for provider-backed mock creation paths.
         /// When not set, FastMoq falls back to <see cref="MockFeatures.FailOnUnconfigured"/>.
-        /// This applies to provider-backed and legacy mock creation helpers, but not to <see cref="Mocker.GetMockDbContext{TContext}()"/>,
-        /// which stays on the supported DbContext helper behavior.
+        /// This applies to provider-backed and legacy mock creation helpers, but not to the optional database helper package's
+        /// DbContext-specific mock creation path, which stays on the supported DbContext helper behavior.
         /// </summary>
         public bool? DefaultStrictMockCreation { get; set; }
     }

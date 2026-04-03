@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.IO.Abstractions;
@@ -635,7 +634,7 @@ namespace FastMoq
         {
             KnownTypeRegistry.ConfigureMock(this, type, fastMock);
 
-            if (!type.IsAssignableTo(typeof(DbContext)))
+            if (!DatabaseSupportBridge.IsEntityFrameworkDbContextType(type))
             {
                 return;
             }
@@ -1088,13 +1087,24 @@ namespace FastMoq
                 return GetMockModel(type).FastMock; // reuse existing
             }
 
-            var provider = MockingProviderRegistry.Default;
             object?[] ctorArgs = Array.Empty<object?>();
             if (type.IsClass && !type.IsAbstract)
             {
                 var constructor = this.GetTypeConstructor(type, nonPublic, args);
                 ctorArgs = constructor.ParameterList ?? Array.Empty<object?>();
             }
+
+            var isEntityFrameworkDbContextType = DatabaseSupportBridge.IsEntityFrameworkDbContextType(type);
+            if (isEntityFrameworkDbContextType &&
+                DatabaseSupportBridge.TryCreateLegacyDbContextMock(type, ShouldCreateStrictMocks() ? MockBehavior.Strict : MockBehavior.Loose, ctorArgs, out var legacyDbContextMock))
+            {
+                ArgumentNullException.ThrowIfNull(legacyDbContextMock);
+                var model = AddMock(legacyDbContextMock, type, nonPublic: nonPublic);
+                SetupMock(type, legacyDbContextMock);
+                return model.FastMock;
+            }
+
+            var provider = MockingProviderRegistry.Default;
             var callBase = Behavior.Has(MockFeatures.CallBase) && provider.Capabilities.SupportsCallBase && !type.IsInterface;
             var options = new MockCreationOptions(ShouldCreateStrictMocks(), CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
             var fast = provider.CreateMock(type, options);
@@ -1481,6 +1491,7 @@ namespace FastMoq
             ArgumentNullException.ThrowIfNull(serviceKey);
             return keyedMockCollection.ContainsKey(CreateServiceRegistrationKey(type, serviceKey));
         }
+        internal bool HasTypeRegistration(Type type) => typeMap.ContainsKey(type);
         internal bool Contains<T>() => Contains(typeof(T));
         internal MockModel GetMockModel(Type type, Mock? mock = null, bool autoCreate = true) => mockCollection.First(m => m.Type == type);
 
@@ -1771,28 +1782,6 @@ namespace FastMoq
 
         public async Task<string> GetStringContent(HttpContent? content) => content == null ? string.Empty : await content.ReadAsStringAsync().ConfigureAwait(false);
 
-        public DbContextMock<TContext> GetMockDbContext<TContext>() where TContext : DbContext
-        {
-            if (Contains<TContext>())
-            {
-                return (DbContextMock<TContext>)GetMock<TContext>();
-            }
-
-            var options = new DbContextOptionsBuilder<TContext>()
-                .UseInMemoryDatabase($"FastMoq_{typeof(TContext).FullName}_{Guid.NewGuid():N}")
-                .Options;
-
-            AddType<DbContextOptions<TContext>>(_ => options, replace: true);
-
-            // DbContext helper creation remains on the supported EF-friendly default behavior.
-            var mock = new DbContextMock<TContext>(MockBehavior.Default, options);
-            AddMock(mock, overwrite: true, nonPublic: true);
-            SetupMock(typeof(TContext), mock);
-            return mock.SetupDbSets(this);
-        }
-        public Mock GetMockDbContext(Type dbContextType) =>
-            dbContextType.CallGenericMethod(this) as Mock ??
-            throw new InvalidOperationException("Unable to get MockDb context.");
         public T GetRequiredObject<T>() where T : class => GetObject<T>() ?? throw new InvalidOperationException($"Unable to resolve object of type {typeof(T).Name}.");
         #endregion
     }

@@ -30,6 +30,14 @@ Install FastMoq using your preferred package manager:
 dotnet add package FastMoq
 ```
 
+If you prefer the split packages instead of the aggregate package:
+
+```bash
+dotnet add package FastMoq.Core
+dotnet add package FastMoq.Database
+dotnet add package FastMoq.Web
+```
+
 ### Package Manager Console
 
 ```powershell
@@ -42,7 +50,19 @@ Install-Package FastMoq
 <PackageReference Include="FastMoq" Version="3.0.0" />
 ```
 
+Split-package example:
+
+```xml
+<PackageReference Include="FastMoq.Core" Version="3.0.0" />
+<PackageReference Include="FastMoq.Database" Version="3.0.0" />
+<PackageReference Include="FastMoq.Web" Version="3.0.0" />
+```
+
 > Note: `3.0.0` is the current public package. Some docs in this repository describe unreleased provider-era work that is planned for the next major release line. See [What's New Since 3.0.0](../whats-new/README.md).
+
+> Note: in the current repository, `GetMockDbContext<TContext>()` keeps the same `FastMoq` namespace call shape, but direct `FastMoq.Core` consumers should add `FastMoq.Database` for EF-specific helpers. Direct web-helper consumers should add `FastMoq.Web`.
+
+At the moment, the DbContext helper path is still Moq-based under the hood. The package boundary is in place, but provider-neutral DbContext support is still future work.
 
 ### Required Using Statements
 

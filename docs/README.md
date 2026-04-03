@@ -94,6 +94,8 @@ Practical guidance for moving from the `3.0.0` public release toward the reposit
 | **Background Jobs** | [Background Services](./cookbook#background-services-testing) | [Queue Processing](./samples/background-services/) |
 | **Blazor Apps** | [Blazor Components](./cookbook#blazor-component-testing) | [Blazor Sample](./samples/blazor-webapp/) |
 
+Package note: `FastMoq` is the aggregate package. `FastMoq.Core` is intentionally lighter, EF-specific helpers live in `FastMoq.Database`, and web helpers live in `FastMoq.Web` while the primary calls stay in the `FastMoq` namespace.
+
 ## 🏆 Key Advantages
 
 FastMoq is designed for **developer productivity** and **maintainable tests**:
@@ -182,7 +184,7 @@ We welcome contributions! See our:
 
 ## 🏷️ Version Information
 
-This documentation is for **FastMoq 3.0+**. For older versions:
+This documentation tracks the current repository direction after **FastMoq 3.0.0**. For older versions:
 
 - [Version 2.x Documentation](./legacy/v2/)
 - [Migration from 2.x to 3.x](./migration/v2-to-v3.md)

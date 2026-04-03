@@ -21,6 +21,7 @@ If you are moving older FastMoq usage forward, the main changes are:
 3. Treat `Strict` as compatibility-only. Use `Behavior` or preset helpers when you mean broader behavior changes.
 4. Prefer the newer provider-first retrieval and verification surfaces when you do not specifically need raw Moq APIs.
 5. Use the executable examples in `FastMoq.TestingExample` as the best repo-backed reference for current patterns.
+6. Treat DbContext helpers as an optional database-package concern when consuming `FastMoq.Core` directly.
 
 ## Old to new guidance
 
@@ -123,6 +124,22 @@ Mocks.GetMock<IEmailGateway>()
     .Setup(x => x.SendAsync(It.IsAny<string>()))
     .Returns(Task.CompletedTask);
 ```
+
+### `DbContext` package boundary
+
+In `3.0.0`, core directly carried the EF packages and the Moq-based `DbContextMock<TContext>` implementation.
+
+Current repository direction:
+
+- `GetMockDbContext<TContext>()` still lives in the `FastMoq` namespace for the main call site.
+- `FastMoq.Core` is being kept lighter and no longer owns the EF package references.
+- `FastMoq.Database` now owns the EF-specific helper implementation.
+
+Practical guidance:
+
+- if you install `FastMoq`, keep using `GetMockDbContext<TContext>()` as before
+- if you install `FastMoq.Core` directly, also install `FastMoq.Database`
+- do not assume the DbContext helper is provider-neutral yet; today it still uses the moved Moq-based implementation
 
 ### `AddKnownType(...)` vs `AddType(...)`
 

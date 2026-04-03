@@ -40,6 +40,19 @@ namespace FastMoq.Tests.Web
         }
 
         [Fact]
+        public void CreateControllerContext_ShouldReuseProvidedHttpContext()
+        {
+            var mocker = new Mocker();
+            var httpContext = mocker.CreateHttpContext("Admin").SetRequestHeader("X-Test", "value");
+
+            var controllerContext = mocker.CreateControllerContext(httpContext);
+
+            controllerContext.HttpContext.Should().BeSameAs(httpContext);
+            controllerContext.HttpContext.Request.Headers["X-Test"].ToString().Should().Be("value");
+            controllerContext.HttpContext.User.IsInRole("Admin").Should().BeTrue();
+        }
+
+        [Fact]
         public void CreateHttpContext_ShouldStampClaimsPrincipal_OnHttpContext()
         {
             var mocker = new Mocker();

@@ -226,6 +226,10 @@ FastMoq has a built-in `HttpClient` helper path. Use the existing HTTP setup hel
 
 Use `GetMockDbContext<TContext>()` as the default entry point.
 
+If you consume the aggregate `FastMoq` package, the database helpers remain available with the same API shape. If you consume `FastMoq.Core` directly, install `FastMoq.Database` for EF-specific helpers.
+
+When you need to choose between pure mock behavior and a real EF in-memory context, use `GetDbContextHandle<TContext>(...)` with `DbContextHandleOptions<TContext>`. The default mode remains `MockedSets`, and `GetMockDbContext<TContext>()` is now the convenience wrapper over that default.
+
 ```csharp
 protected override Action<Mocker> SetupMocksAction => mocker =>
 {
@@ -241,6 +245,17 @@ Recommended pattern:
 3. Seed test data through the resolved context object before calling the system under test.
 
 This is the supported path for EF Core tests in this repo. It keeps DbSet setup and context creation aligned with the framework's existing helper behavior.
+
+Real in-memory example:
+
+```csharp
+var handle = mocker.GetDbContextHandle<ApplicationDbContext>(new DbContextHandleOptions<ApplicationDbContext>
+{
+    Mode = DbContextTestMode.RealInMemory,
+});
+
+handle.Context.Database.EnsureCreated();
+```
 
 ### `HttpContext` and `IHttpContextAccessor`
 
@@ -267,14 +282,14 @@ public class OrdersControllerTests : MockerTestBase<OrdersController>
             .SetQueryParameter("includeInactive", "true");
 
         mocker.AddHttpContextAccessor(httpContext);
+        mocker.AddHttpContext(httpContext);
     };
 
     [Fact]
     public async Task Get_ShouldReturnOrders_WhenRequestIsValid()
     {
-        Component.ControllerContext = Mocks.CreateControllerContext("Admin");
-        Component.ControllerContext.HttpContext.SetRequestHeader("X-Correlation-Id", "corr-123");
-        Component.ControllerContext.HttpContext.SetQueryParameter("includeInactive", "true");
+        var requestContext = Mocks.GetObject<HttpContext>();
+        Component.ControllerContext = Mocks.CreateControllerContext(requestContext);
 
         Mocks.GetMock<IOrderService>()
             .Setup(x => x.GetOrdersAsync(true, It.IsAny<CancellationToken>()))
@@ -297,6 +312,39 @@ Practical rules:
 3. Use `SetRequestHeader(...)`, `SetRequestHeaders(...)`, `SetQueryString(...)`, `SetQueryParameter(...)`, or `SetQueryParameters(...)` to make request intent obvious in the test.
 4. Use `CreateControllerContext(...)` when the controller itself reads from `ControllerContext.HttpContext.User`.
 5. Use `GetOkObjectResult()`, `GetBadRequestObjectResult()`, `GetConflictObjectResult()`, and `GetObjectResultContent<T>()` to keep result assertions short.
+
+## Accessor And Middleware Testing
+
+The same helper surface works for middleware and `IHttpContextAccessor`-driven services.
+
+```csharp
+using FastMoq.Web.Extensions;
+using Microsoft.AspNetCore.Http;
+
+public class RequestContextReaderTests : MockerTestBase<RequestContextReader>
+{
+    protected override Action<Mocker>? SetupMocksAction => mocker =>
+    {
+        var httpContext = mocker
+            .CreateHttpContext("Admin")
+            .SetRequestHeader("X-Correlation-Id", "corr-456")
+            .SetQueryParameter("tenant", "contoso");
+
+        mocker.AddHttpContextAccessor(httpContext);
+    };
+
+    [Fact]
+    public void Read_ShouldReturnHeaderAndQueryValues()
+    {
+        var result = Component.Read();
+
+        result.CorrelationId.Should().Be("corr-456");
+        result.Tenant.Should().Be("contoso");
+    }
+}
+```
+
+Use this pattern when the system under test reads directly from `IHttpContextAccessor`, middleware `InvokeAsync(HttpContext)`, or request headers/query collections without needing MVC controller infrastructure.
 
 ## Extending Known Types
 

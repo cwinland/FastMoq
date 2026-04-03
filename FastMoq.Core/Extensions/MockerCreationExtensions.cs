@@ -1,6 +1,5 @@
 ﻿using FastMoq.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -165,9 +164,6 @@ namespace FastMoq.Extensions
                 ? BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.CreateInstance
                 : BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance;
 
-            var isDbContext = type.IsAssignableTo(typeof(DbContext));
-            var newType = isDbContext ? typeof(DbContextMock<>).MakeGenericType(type) : typeof(Mock<>).MakeGenericType(type);
-
             // Execute new Mock with Loose Behavior and arguments from constructor, if applicable.
             var parameters = new List<object?>
             {
@@ -176,14 +172,25 @@ namespace FastMoq.Extensions
             parameterList ??= new List<object>();
             parameterList.ForEach(parameters.Add);
 
-            var instance = Activator.CreateInstance(newType,
-                               flags,
-                               null,
-                               parameters.ToArray(),
-                               null,
-                               null
-                           ) as Mock ??
-                           throw CannotCreateMock(type);
+            Mock? instance = null;
+            var isEntityFrameworkDbContextType = DatabaseSupportBridge.IsEntityFrameworkDbContextType(type);
+            if (!isEntityFrameworkDbContextType ||
+                !DatabaseSupportBridge.TryCreateLegacyDbContextMock(type, (MockBehavior)parameters[0]!, parameterList, out instance))
+            {
+                var newType = typeof(Mock<>).MakeGenericType(type);
+                instance = Activator.CreateInstance(newType,
+                                   flags,
+                                   null,
+                                   parameters.ToArray(),
+                                   null,
+                                   null
+                               ) as Mock;
+            }
+
+            if (instance == null)
+            {
+                throw CannotCreateMock(type);
+            }
 
             if (setupMock)
             {

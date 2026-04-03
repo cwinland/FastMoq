@@ -93,6 +93,38 @@ Current repo work adds a per-`Mocker` registration path through `AddKnownType(..
 
 Built-in known-type resolution is now also explicitly controllable through `BuiltInTypeResolutionFlags`, instead of remaining implicitly tied to `FailOnUnconfigured`.
 
+### Database package boundary
+
+The repository now separates EF-specific helpers from the lighter core package.
+
+What changed:
+
+- `FastMoq.Core` no longer carries the EF-specific package references and helper model types.
+- `FastMoq.Database` now owns the `DbContextMock<TContext>` implementation and related DbSet async-query helpers.
+- the main `GetMockDbContext<TContext>()` call shape remains in the `FastMoq` namespace so aggregate-package consumers keep the same primary API surface.
+
+What did not change yet:
+
+- the DbContext helper path still relies on the existing Moq-based implementation
+- provider-neutral DbContext behavior is not finished yet
+- core currently uses a small runtime bridge so built-in DbContext resolution can stay optional without taking a compile-time EF dependency
+
+The intended user-facing direction is not to split DbContext behavior by separate top-level helper methods again. The better direction is one primary DbContext helper surface with explicit mode or option selection so tests can choose between:
+
+- pure mock-oriented behavior for mocked DbSet and query interactions
+- real EF-backed behavior for in-memory provider scenarios
+
+That distinction exists conceptually today, but the API still needs to make it explicit.
+
+Longer term, this likely needs a small EF-specific abstraction instead of treating DbContext support as just another plain provider mock. DbContext has extra behavior beyond generic mock creation:
+
+- DbSet property wiring
+- async query support
+- named set behavior
+- real provider-backed context creation when mock-only behavior is not enough
+
+That EF abstraction is the more realistic path for separating pure mocks from real EF behavior without forcing the split through package choice alone.
+
 ### Behavior model cleanup
 
 `Strict` no longer acts like a hidden preset switch.

@@ -39,15 +39,28 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 - Use Mocks without managing fields and properties. Mocks are managed by the Mocker framework. No need to keep track of Mocks. Just use them!
 - Create instances of Mocks with non public constructors.
 - HttpClient and IFileSystem test helpers
-- DbContext support - SqlLite and mockable objects.
+- DbContext support through the optional `FastMoq.Database` package, with the primary calls staying in the `FastMoq` namespace.
 - Supports Null method parameter testing.
 - **Comprehensive Documentation** - Complete guides, samples, and real-world patterns.
 
 ## Packages
 
-- FastMoq - Combines FastMoq.Core and FastMoq.Web.
-- FastMoq.Core - Original FastMoq testing Mocker.
-- FastMoq.Web - New Blazor and Web support.
+- FastMoq - Aggregate package that combines FastMoq.Core, FastMoq.Database, and FastMoq.Web.
+- FastMoq.Core - Core testing Mocker and provider-era resolution pipeline.
+- FastMoq.Database - Entity Framework and DbContext-focused helpers.
+- FastMoq.Web - Blazor and Web support.
+
+Typical split-package install:
+
+```bash
+dotnet add package FastMoq.Core
+dotnet add package FastMoq.Database
+dotnet add package FastMoq.Web
+```
+
+`GetMockDbContext<TContext>()` keeps the same main call shape in the `FastMoq` namespace. If you install `FastMoq`, the EF helpers are included. If you install `FastMoq.Core` directly, add `FastMoq.Database` for DbContext support.
+
+The current DbContext helper path is still backed by the existing Moq-based `DbContextMock<TContext>` implementation. The package split makes core lighter, but DbContext is not provider-neutral yet.
 
 ## Targets
 
@@ -181,6 +194,10 @@ m.AddType<IAzResourceService, AzResourceService>(() => new AzResourceService("te
 ```
 
 ### DbContext Mocking
+
+If you consume `FastMoq.Core` directly, add `FastMoq.Database` before using the DbContext helpers. If you consume the aggregate `FastMoq` package, the DbContext helpers are already included.
+
+`GetMockDbContext<TContext>()` remains the default pure-mock entry point. For explicit mode selection between mocked DbSets and a real EF in-memory context, use `GetDbContextHandle<TContext>(new DbContextHandleOptions<TContext> { ... })`.
 
 Create Your DbContext. *The DbContext can either have virtual DbSet(s) or an interface. In this example, we use virtual DbSets.*
 

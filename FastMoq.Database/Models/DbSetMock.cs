@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace FastMoq.Models
@@ -9,18 +9,11 @@ namespace FastMoq.Models
     /// </summary>
     /// <typeparam name="TEntity">The type of the t entity.</typeparam>
     /// <inheritdoc cref="Mock{TEntity}" />
-    /// />
     /// <inheritdoc cref="IDbSetMock" />
     /// <seealso cref="Mock{TEntity}" />
     public class DbSetMock<TEntity> : Mock<DbSet<TEntity>>, IDbSetMock where TEntity : class
     {
-        #region Fields
-
         private readonly List<TEntity> store = [];
-
-        #endregion
-
-        #region Properties
 
         private Mock<IAsyncEnumerable<TEntity>> AsyncMock =>
             As<IAsyncEnumerable<TEntity>>() ?? throw new InvalidOperationException("Unable to get Async Enumerable.");
@@ -28,16 +21,13 @@ namespace FastMoq.Models
         private Mock<IQueryable<TEntity>> QueryableMock =>
             As<IQueryable<TEntity>>() ?? throw new InvalidOperationException("Unable to get IQueryable.");
 
-        #endregion
-
         /// <inheritdoc />
         public DbSetMock() : this(new List<TEntity>()) { }
 
         /// <inheritdoc />
         public DbSetMock(IList<TEntity> initialData)
         {
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-            if (initialData != null && initialData.Count > 0)
+            if (initialData.Count > 0)
             {
                 store.AddRange(initialData);
             }
@@ -52,8 +42,6 @@ namespace FastMoq.Models
             AsyncMock.Setup(m => m.GetAsyncEnumerator(It.IsAny<CancellationToken>()))
                 .Returns(new MockAsyncEnumerator<TEntity>(data.GetEnumerator()));
         }
-
-        #region IDbSetMock
 
         /// <inheritdoc />
         public virtual void SetupAsyncListMethods()
@@ -96,7 +84,5 @@ namespace FastMoq.Models
             SetupAsyncListMethods();
             SetupListMethods();
         }
-
-        #endregion
     }
 }

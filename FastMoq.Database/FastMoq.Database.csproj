@@ -1,30 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
-    <DebugType>portable</DebugType>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Winland, $(AssemblyName)</Authors>
     <Company>$(Authors)</Company>
-    <Copyright>Copyright(c) 2023 Christopher Winland</Copyright>
+    <Copyright>Copyright(c) 2026 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
-    <Description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing. (Transitioning to provider architecture)</Description>
+    <Description>Entity Framework and database-focused helpers for FastMoq.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>Easy;fast;injection;inject;mock;extension;Moq;framework;mocking;class;provider</PackageTags>
+    <PackageTags>FastMoq;EntityFramework;DbContext;mocking;testing</PackageTags>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IsPackable>true</IsPackable>
-    <NoWarn>1701;1702;S1309;S4018;S2436</NoWarn>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <PropertyGroup>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <RootNamespace>FastMoq</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,17 +38,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" VersionOverride="8.*" Condition="'$(TargetFramework)' == 'net8.0'">
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" VersionOverride="9.*" Condition="'$(TargetFramework)' == 'net9.0'">
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" VersionOverride="10.*" Condition="'$(TargetFramework)' == 'net10.0'">
+      <ExcludeAssets>analyzers</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Moq" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NSubstitute" />
-    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers">
-      <ExcludeAssets>analyzers</ExcludeAssets>
-    </PackageReference>
-
-    <!-- PHASE 1: Moq still referenced; will be removed once provider split complete -->
-    <PackageReference Include="Moq" />
-    <PackageReference Include="xunit.abstractions" />
+    <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
   </ItemGroup>
 </Project>

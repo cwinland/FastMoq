@@ -29,6 +29,30 @@ Areas still in motion:
 - Keeping provider-native interactions available without forcing all providers to emulate Moq.
 - Preserving compatibility where it is useful while keeping the long-term API shape provider-neutral.
 
+### DbContext mode split
+
+The current DbContext experience still blurs two different testing needs:
+
+- pure mock-style DbContext and DbSet behavior
+- real EF-backed behavior using an in-memory provider or similar store
+
+The intended direction is to separate those concerns by method options or call modes rather than by forcing users onto different top-level APIs.
+
+Current preferred design direction:
+
+- keep one primary DbContext helper surface so older call sites remain recognizable
+- add explicit mode selection for mock-oriented versus real-provider-oriented behavior
+- avoid making "real EF" the implicit path when the user only wants pure mocks
+- keep package boundaries as an implementation detail, not the main user-facing distinction
+
+This likely points to a small EF-specific abstraction layer that can model:
+
+- mocked DbSet and async-query behavior
+- real provider-backed DbContext creation
+- shared setup hooks and defaults without hard-coding Moq semantics into all future modes
+
+The earlier `GetDbContext(...)` split is not the preferred long-term surface. The better direction is a unified DbContext helper with explicit options.
+
 ## Deferred Work
 
 These items are intentionally deferred until the provider boundary is more settled.
@@ -72,6 +96,7 @@ Documentation now covers the testing decision points and known-type behavior, bu
 - Provider-native examples once additional provider work lands.
 - Focused migration notes for older Moq-heavy test suites.
 - Expanded web samples if broader web support moves out of the deferred bucket.
+- DbContext guidance once mock-mode versus real-mode options are finalized.
 
 ## Decision Rules
 

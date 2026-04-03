@@ -41,6 +41,20 @@ namespace FastMoq.Web.Extensions
         }
 
         /// <summary>
+        /// Creates a <see cref="ControllerContext"/> from an existing <see cref="HttpContext"/>.
+        /// </summary>
+        public static ControllerContext CreateControllerContext(this Mocker mocker, HttpContext httpContext)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(httpContext);
+
+            return new ControllerContext
+            {
+                HttpContext = httpContext,
+            };
+        }
+
+        /// <summary>
         /// Creates an <see cref="HttpContext"/> with an authenticated test user.
         /// </summary>
         public static HttpContext CreateHttpContext(this Mocker mocker, params string[] roleNames)
