@@ -84,20 +84,20 @@ namespace FastMoq.TestingExample
         [Fact]
         public async Task ImportAsync_ShouldUseBuiltInFileSystemAndPersistParsedRows()
         {
-            const string filePath = @"c:\imports\customers.csv";
-            const string csv = "customerId,email,segment\nC-100,ada@example.test,VIP\nC-200,grace@example.test,Standard";
+            const string FILE_PATH = @"c:\imports\customers.csv";
+            const string CSV = "customerId,email,segment\nC-100,ada@example.test,VIP\nC-200,grace@example.test,Standard";
             var parsedRows = new List<CustomerImportRow>
             {
                 new() { CustomerId = "C-100", EmailAddress = "ada@example.test", Segment = "VIP" },
                 new() { CustomerId = "C-200", EmailAddress = "grace@example.test", Segment = "Standard" },
             };
 
-            Mocks.fileSystem.AddFile(filePath, new MockFileData(csv));
+            Mocks.fileSystem.AddFile(FILE_PATH, new MockFileData(CSV));
             Mocks.GetMock<ICustomerCsvParser>()
-                .Setup(x => x.Parse(csv))
+                .Setup(x => x.Parse(CSV))
                 .Returns(parsedRows);
 
-            var importedCount = await Component.ImportAsync(filePath, CancellationToken.None);
+            var importedCount = await Component.ImportAsync(FILE_PATH, CancellationToken.None);
 
             importedCount.Should().Be(2);
             Mocks.GetMock<ICustomerRepository>()
@@ -109,9 +109,9 @@ namespace FastMoq.TestingExample
         [Fact]
         public async Task ImportAsync_ShouldReturnZeroAndLogWarning_WhenFileDoesNotExist()
         {
-            const string filePath = @"c:\imports\missing.csv";
+            const string FILE_PATH = @"c:\imports\missing.csv";
 
-            var importedCount = await Component.ImportAsync(filePath, CancellationToken.None);
+            var importedCount = await Component.ImportAsync(FILE_PATH, CancellationToken.None);
 
             importedCount.Should().Be(0);
             Mocks.GetMock<ICustomerCsvParser>()
@@ -136,15 +136,15 @@ namespace FastMoq.TestingExample
             };
             var reminderCount = 0;
 
-            Mocks.Scenario(Component)
-                .With((mocks, service) =>
+            Scenario
+                .With(() =>
                 {
-                    mocks.GetMock<IInvoiceRepository>()
+                    Mocks.GetMock<IInvoiceRepository>()
                         .Setup(x => x.GetPastDueAsync(now, CancellationToken.None))
                         .ReturnsAsync(invoices);
                 })
-                .When(async (mocks, service) => reminderCount = await service.SendRemindersAsync(now, CancellationToken.None))
-                .Then((mocks, service) => reminderCount.Should().Be(2))
+                .When(async () => reminderCount = await Component.SendRemindersAsync(now, CancellationToken.None))
+                .Then(() => reminderCount.Should().Be(2))
                 .Verify<IInvoiceRepository>(x => x.GetPastDueAsync(now, CancellationToken.None), TimesSpec.Once)
                 .Verify<IEmailGateway>(x => x.SendReminderAsync("ap@contoso.test", 125m, CancellationToken.None), TimesSpec.Once)
                 .Verify<IEmailGateway>(x => x.SendReminderAsync("finance@fabrikam.test", 310m, CancellationToken.None), TimesSpec.Once)
@@ -152,6 +152,40 @@ namespace FastMoq.TestingExample
 
             Mocks.GetMock<ILogger<InvoiceReminderService>>()
                 .VerifyLogger(LogLevel.Information, "Sent 2 invoice reminders", 1);
+        }
+
+        [Fact]
+        public void SendRemindersAsync_ShouldSurfaceDependencyException_InFluentScenario()
+        {
+            var now = new DateTime(2026, 4, 1, 12, 0, 0, DateTimeKind.Utc);
+            var invoices = new List<PastDueInvoice>
+            {
+                new() { InvoiceNumber = "INV-ERR-1001", RecipientEmail = "ap@contoso.test", AmountDue = 125m },
+            };
+            var afterFailureAssertionRan = false;
+
+            Scenario
+                .With(() =>
+                {
+                    Mocks.GetMock<IInvoiceRepository>()
+                        .Setup(x => x.GetPastDueAsync(now, CancellationToken.None))
+                        .ReturnsAsync(invoices);
+                    Mocks.GetMock<IEmailGateway>()
+                        .Setup(x => x.SendReminderAsync("ap@contoso.test", 125m, CancellationToken.None))
+                        .ThrowsAsync(new InvalidOperationException("SMTP unavailable"));
+                })
+                .WhenThrows<InvalidOperationException>(() => Component.SendRemindersAsync(now, CancellationToken.None))
+                .Then(() => afterFailureAssertionRan = true)
+                .Execute();
+
+            afterFailureAssertionRan.Should().BeTrue();
+
+            Mocks.GetMock<IInvoiceRepository>()
+                .Verify(x => x.GetPastDueAsync(now, CancellationToken.None), Times.Once);
+            Mocks.GetMock<IEmailGateway>()
+                .Verify(x => x.SendReminderAsync("ap@contoso.test", 125m, CancellationToken.None), Times.Once);
+            Mocks.GetMock<ILogger<InvoiceReminderService>>()
+                .VerifyLogger(LogLevel.Information, "Sent 1 invoice reminders", 0);
         }
     }
 

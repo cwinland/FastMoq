@@ -18,7 +18,7 @@ Those examples are backed by the `FastMoq.TestingExample` project and currently 
 - `MockerTestBase<TComponent>` in realistic service tests
 - built-in `IFileSystem` behavior with `MockFileSystem`
 - `VerifyLogger(...)` assertions
-- fluent `Scenario(...).With(...).When(...).Then(...).Verify(...)` usage
+- fluent `Scenario.With(...).When(...).Then(...).Verify(...)` usage inside `MockerTestBase<TComponent>`
 - provider-first verification with `TimesSpec`
 
 ## Common Patterns Demonstrated

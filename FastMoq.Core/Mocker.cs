@@ -728,6 +728,7 @@ namespace FastMoq
             {
                 UsePredefinedFileSystem = options.UsePredefinedFileSystem,
                 AllowNonPublicConstructors = options.AllowNonPublicConstructors,
+                FallbackToNonPublicConstructors = options.FallbackToNonPublicConstructors,
                 ConstructorParameterTypes = parameterTypes,
                 OptionalParameterResolution = options.OptionalParameterResolution,
             }, Array.Empty<object?>());
@@ -739,6 +740,7 @@ namespace FastMoq
             {
                 UsePredefinedFileSystem = usePredefinedFileSystem,
                 AllowNonPublicConstructors = allowNonPublicConstructors,
+                FallbackToNonPublicConstructors = !Behavior.Has(MockFeatures.FailOnUnconfigured),
                 OptionalParameterResolution = OptionalParameterResolution,
             };
         }
@@ -782,20 +784,25 @@ namespace FastMoq
 
             if (options.ConstructorParameterTypes != null)
             {
-                var constructor = FindConstructorByType(targetType, options.AllowNonPublicConstructors, options.ConstructorParameterTypes);
+                var constructor = FindConstructorByType(targetType, options.AllowNonPublicConstructors, ShouldFallbackToNonPublicConstructors(options), options.ConstructorParameterTypes);
                 return CreateInstanceInternal(targetType, constructor, options.OptionalParameterResolution, args) as T;
             }
 
-            var ctorModel = GetConstructorByArgs(args, targetType, options.AllowNonPublicConstructors, options.OptionalParameterResolution);
+            var ctorModel = GetConstructorByArgs(args, targetType, options.AllowNonPublicConstructors, ShouldFallbackToNonPublicConstructors(options), options.OptionalParameterResolution);
             var created = CreateInstanceInternal(targetType, ctorModel.ConstructorInfo, options.OptionalParameterResolution, ctorModel.ParameterList);
             return created as T;
         }
 
-        private ConstructorModel GetConstructorByArgs(object?[] args, Type instanceType, bool nonPublic, OptionalParameterResolutionMode optionalParameterResolution)
+        private bool ShouldFallbackToNonPublicConstructors(InstanceCreationOptions options)
+        {
+            return options.FallbackToNonPublicConstructors ?? !Behavior.Has(MockFeatures.FailOnUnconfigured);
+        }
+
+        private ConstructorModel GetConstructorByArgs(object?[] args, Type instanceType, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution)
         {
             return args.Length > 0
-                ? FindConstructor(instanceType, nonPublic, optionalParameterResolution, args)
-                : FindConstructor(false, instanceType, nonPublic, optionalParameterResolution);
+                ? FindConstructor(instanceType, nonPublic, fallbackToNonPublicConstructors, optionalParameterResolution, args)
+                : FindConstructor(false, instanceType, nonPublic, fallbackToNonPublicConstructors, optionalParameterResolution);
         }
 
         private bool TryGetExistingObject<T>(Type requestedType, IInstanceModel typeInstanceModel, out T? instance) where T : class
@@ -885,6 +892,22 @@ namespace FastMoq
 
             return ctors[0];
         }
+
+        private ConstructorInfo FindConstructorByType(Type type, bool nonPublic, bool fallbackToNonPublicConstructors, params Type?[] args)
+        {
+            var ctors = GetConstructorsByType(nonPublic, type, args);
+            if (ctors.Count == 0 && !nonPublic && fallbackToNonPublicConstructors)
+            {
+                return FindConstructorByType(type, true, fallbackToNonPublicConstructors, args);
+            }
+
+            if (ctors.Count == 0)
+            {
+                throw new NotImplementedException("Unable to find the constructor.");
+            }
+
+            return ctors[0];
+        }
         internal ConstructorModel FindConstructor(Type type, bool nonPublic, params object?[] args) =>
             FindConstructor(type, nonPublic, OptionalParameterResolution, args);
 
@@ -904,6 +927,23 @@ namespace FastMoq
             }
             return filtered.FirstOrDefault(x => x.ParameterList.Length == args.Length) ?? filtered[0];
         }
+
+        private ConstructorModel FindConstructor(Type type, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution, params object?[] args)
+        {
+            var all = GetConstructors(type, nonPublic, optionalParameterResolution, args);
+            var filtered = all.Where(x => type.IsValidConstructor(x.ConstructorInfo!, args)).ToList();
+            if (!filtered.Any())
+            {
+                if (!nonPublic && fallbackToNonPublicConstructors)
+                {
+                    return FindConstructor(type, true, fallbackToNonPublicConstructors, optionalParameterResolution, args);
+                }
+
+                throw new NotImplementedException("Unable to find the constructor.");
+            }
+
+            return filtered.FirstOrDefault(x => x.ParameterList.Length == args.Length) ?? filtered[0];
+        }
         internal ConstructorModel FindConstructor(bool bestGuess, Type type, bool nonPublic, List<ConstructorInfo>? excludeList = null) =>
             FindConstructor(bestGuess, type, nonPublic, OptionalParameterResolution, excludeList);
 
@@ -920,6 +960,24 @@ namespace FastMoq
             if (!(ctors.Count > 0) && !nonPublic && !strict)
             {
                 return FindConstructor(bestGuess, type, true, optionalParameterResolution, excludeList);
+            }
+
+            var validCtors = this.GetTestedConstructors(type, ctors);
+            return validCtors.LastOrDefault() ?? throw new NotImplementedException("Unable to find the constructor.");
+        }
+
+        private ConstructorModel FindConstructor(bool bestGuess, Type type, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution, List<ConstructorInfo>? excludeList = null)
+        {
+            excludeList ??= new();
+            var ctors = GetConstructors(type, nonPublic, optionalParameterResolution).Where(c => excludeList.TrueForAll(e => e != c.ConstructorInfo)).ToList();
+            if (!bestGuess && ctors.Count(x => x.ParameterList.Length > 0) > 1)
+            {
+                throw this.GetAmbiguousConstructorImplementationException(type);
+            }
+
+            if (!(ctors.Count > 0) && !nonPublic && fallbackToNonPublicConstructors)
+            {
+                return FindConstructor(bestGuess, type, true, fallbackToNonPublicConstructors, optionalParameterResolution, excludeList);
             }
 
             var validCtors = this.GetTestedConstructors(type, ctors);
@@ -1545,14 +1603,14 @@ namespace FastMoq
             options ??= new InvocationOptions
             {
                 OptionalParameterResolution = OptionalParameterResolution,
+                FallbackToNonPublicMethods = !Behavior.Has(MockFeatures.FailOnUnconfigured),
             };
 
             var flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | (nonPublic ? BindingFlags.NonPublic : 0);
             var method = instance.GetType().GetMethod(methodName, flags);
-            var failOnUnconfigured = Behavior.Has(MockFeatures.FailOnUnconfigured);
             if (method == null)
             {
-                if (!nonPublic && !failOnUnconfigured)
+                if (!nonPublic && ShouldFallbackToNonPublicMethods(options))
                 {
                     return InvokeMethod(options, instance, methodName, true, args);
                 }
@@ -1573,15 +1631,15 @@ namespace FastMoq
             options ??= new InvocationOptions
             {
                 OptionalParameterResolution = OptionalParameterResolution,
+                FallbackToNonPublicMethods = !Behavior.Has(MockFeatures.FailOnUnconfigured),
             };
 
             var type = typeof(T).IsInterface ? GetTypeFromInterface(typeof(T)) : typeof(T);
             var flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | (nonPublic ? BindingFlags.NonPublic : 0);
             var method = type.GetMethod(methodName, flags);
-            var failOnUnconfigured = Behavior.Has(MockFeatures.FailOnUnconfigured);
             if (method == null)
             {
-                if (!nonPublic && !failOnUnconfigured)
+                if (!nonPublic && ShouldFallbackToNonPublicMethods(options))
                 {
                     return InvokeMethod<T>(options, instance, methodName, true, args);
                 }
@@ -1590,6 +1648,11 @@ namespace FastMoq
             }
 
             return method.Invoke(instance, flags, null, BuildInvocationArgs(method.GetParameters(), options, args), null);
+        }
+
+        private bool ShouldFallbackToNonPublicMethods(InvocationOptions options)
+        {
+            return options.FallbackToNonPublicMethods ?? !Behavior.Has(MockFeatures.FailOnUnconfigured);
         }
         public object? InvokeMethod<T>(string methodName, bool nonPublic = false, params object?[] args) =>
             InvokeMethod<T>((object?)null, methodName, nonPublic, args);

@@ -23,7 +23,7 @@ They demonstrate:
 - `Mocks.GetMock<T>()` for arrange and verify flows
 - built-in `IFileSystem` behavior via the predefined `MockFileSystem`
 - `VerifyLogger(...)` for structured logging assertions
-- `Scenario(...).With(...).When(...).Then(...).Verify(...)` for the fluent scenario style
+- `Scenario.With(...).When(...).Then(...).Verify(...)` for the fluent scenario style inside `MockerTestBase<TComponent>`
 - provider-first verification through `TimesSpec`
 
 ## Example 1: Order Processing Workflow
@@ -103,25 +103,40 @@ public class CustomerImportServiceExamples : MockerTestBase<CustomerImportServic
 The invoice-reminder example demonstrates the scenario-builder API and provider-first verification.
 
 ```csharp
-Mocks.Scenario(Component)
-    .With((mocks, service) =>
+Scenario
+    .With(() =>
     {
-        mocks.GetMock<IInvoiceRepository>()
+        Mocks.GetMock<IInvoiceRepository>()
             .Setup(x => x.GetPastDueAsync(now, CancellationToken.None))
             .ReturnsAsync(invoices);
     })
-    .When(async (mocks, service) => reminderCount = await service.SendRemindersAsync(now, CancellationToken.None))
-    .Then((mocks, service) => reminderCount.Should().Be(2))
+    .When(async () => reminderCount = await Component.SendRemindersAsync(now, CancellationToken.None))
+    .Then(() => reminderCount.Should().Be(2))
     .Verify<IInvoiceRepository>(x => x.GetPastDueAsync(now, CancellationToken.None), TimesSpec.Once)
     .Verify<IEmailGateway>(x => x.SendReminderAsync("ap@contoso.test", 125m, CancellationToken.None), TimesSpec.Once)
     .Execute();
+```
+
+For failure-path scenarios, prefer one of these two patterns:
+
+```csharp
+Scenario
+    .WhenThrows<InvalidOperationException>(() => Component.SendRemindersAsync(now, CancellationToken.None))
+    .Then(() => auditTrail.Should().ContainSingle())
+    .Execute();
+```
+
+```csharp
+var exception = await Scenario
+    .When(() => Component.SendRemindersAsync(now, CancellationToken.None))
+    .ExecuteThrowsAsync<InvalidOperationException>();
 ```
 
 ## Which example to start with
 
 1. Start with the order-processing example for the most typical service-test pattern.
 2. Read the customer-import example for built-in helper behavior like `IFileSystem`.
-3. Read the invoice-reminder example for `Scenario(...)` and `TimesSpec`.
+3. Read the invoice-reminder example for `Scenario`, `TimesSpec`, `WhenThrows`, and `ExecuteThrows`.
 
 ## Important note about current docs vs public package
 

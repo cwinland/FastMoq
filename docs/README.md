@@ -66,6 +66,10 @@ Current provider-era direction, active architectural work, and intentionally def
 
 Unreleased repository changes after the May 12, 2025 `3.0.0` release baseline.
 
+### ⚠️ [Breaking Changes](./breaking-changes)
+
+Intentional breaking changes in the current unreleased major-version line, with migration notes for changed behavior.
+
 ### 🔄 [Migration Guide](./migration)
 
 Practical guidance for moving from the `3.0.0` public release toward the repository's current provider-era patterns.

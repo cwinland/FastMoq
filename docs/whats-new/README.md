@@ -71,6 +71,8 @@ var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
 
 `MockerTestBase<TComponent>` also gained a `ComponentCreationOptions` hook so test bases can opt into the same behavior without relying on the legacy global toggle.
 
+New repo-era code can also control non-public constructor fallback explicitly through `InstanceCreationOptions.FallbackToNonPublicConstructors` instead of relying on `Strict` compatibility semantics.
+
 ### Explicit optional-parameter resolution
 
 `MockOptional` is now obsolete and retained only as a compatibility alias rather than a primary API.
@@ -82,6 +84,8 @@ New repo-era guidance is:
 - use `ComponentCreationOptions` when the SUT is created by `MockerTestBase<TComponent>`
 
 This brings constructor creation and helper invocation onto the same policy model instead of having different hidden rules for optional parameters.
+
+Method invocation now also has an explicit `InvocationOptions.FallbackToNonPublicMethods` setting for reflected method fallback, parallel to the constructor-side option model.
 
 ### Known-type extensibility
 
@@ -97,13 +101,35 @@ Current semantics:
 - `Behavior` is the full feature-flag surface
 - `UseStrictPreset()` and `UseLenientPreset()` control the broader preset profiles
 
+Breaking-change note:
+
+- `Strict` should no longer be treated as the single switch for the whole strict behavior profile
+- code that depended on the old monolithic interpretation should move to `UseStrictPreset()` when the broader preset is actually intended
+- `Strict` still affects fail-on-unconfigured behavior and some non-public fallback rules, so it is narrower than the preset, not removed entirely
+
+### Breaking change: strict `IFileSystem` mock enrichment
+
+Current repo behavior keeps tracked `IFileSystem` mocks preconfigured against FastMoq's built-in in-memory file system even when `Strict` or `MockFeatures.FailOnUnconfigured` is enabled.
+
+This is a breaking change from the `3.0.0` expectation that strict `IFileSystem` behaved like a raw Moq mock without built-in `MockFileSystem` defaults.
+
+If older tests asserted null members such as `Directory` on strict `IFileSystem`, they now need to override those members explicitly.
+
+This note is currently specific to `IFileSystem`. Adjacent built-ins such as `HttpClient` and `DbContext` do not use the same breaking path.
+
+For the dedicated compatibility note, see [Breaking Changes](../breaking-changes/README.md).
+
 ### Scenario builder and provider-first verification
 
 The repository now includes a minimal fluent scenario builder:
 
-- `Scenario(...).With(...).When(...).Then(...).Verify(...)`
+- `Scenario.With(...).When(...).Then(...).Verify(...)` inside `MockerTestBase<TComponent>`
+- `WhenThrows<TException>(...)` for expected-failure act steps that still continue to `Then(...)`
+- `ExecuteThrows<TException>()` and `ExecuteThrowsAsync<TException>()` for cases where the thrown exception is the primary assertion target
 
 Verification also has a portable times model through `TimesSpec`.
+
+Inside `MockerTestBase<TComponent>`, the preferred repo-era pattern is now the `Scenario` property plus parameterless `With` / `When` / `Then` overloads when `Component` is already in scope.
 
 ### Improved docs and executable examples
 
@@ -117,7 +143,7 @@ New examples cover:
 
 - order processing with repository, inventory, payment, and logging
 - customer import using the predefined `MockFileSystem`
-- invoice reminders using the fluent `Scenario(...)` API and `TimesSpec`
+- invoice reminders using the fluent `Scenario` API, `TimesSpec`, `WhenThrows`, and `ExecuteThrows`
 
 For those examples, see [Executable Testing Examples](../samples/testing-examples.md).
 

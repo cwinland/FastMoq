@@ -356,15 +356,21 @@ FastMoq includes sensible defaults for common .NET types:
 [Fact]
 public void TestComplexScenario()
 {
-    Mocks.Initialize<IEmailService>(mock => mock
-        .Setup(x => x.SendAsync(It.IsAny<string>(), It.IsAny<string>()))
-        .ReturnsAsync(true)
-    );
-    
-    var result = Component.ProcessWithNotification("test@email.com");
-    result.Should().BeTrue();
+    Scenario
+        .With(() =>
+        {
+            Mocks.GetMock<IEmailService>()
+                .Setup(x => x.SendAsync("test@email.com", It.IsAny<string>()))
+                .ReturnsAsync(true);
+        })
+        .When(() => Component.ProcessWithNotification("test@email.com"))
+        .Then(() => Component.LastResult.Should().BeTrue())
+        .Execute();
 }
 ```
+
+Use `WhenThrows<TException>(...)` when the act step is expected to throw and post-failure assertions still need to run.
+Use `ExecuteThrows<TException>()` when the exception itself is the primary assertion target.
 
 ### 3. Automatic Cleanup and Disposal
 FastMoq automatically handles:

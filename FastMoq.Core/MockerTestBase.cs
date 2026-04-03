@@ -85,6 +85,11 @@ namespace FastMoq
         /// <value>The mocks.</value>
         protected Mocker Mocks { get; }
 
+        /// <summary>
+        /// Gets a fluent scenario builder for the current component.
+        /// </summary>
+        protected ScenarioBuilder<TComponent> Scenario => Mocks.Scenario(Component);
+
         #endregion
 
         /// <summary>

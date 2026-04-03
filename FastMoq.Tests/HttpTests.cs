@@ -67,6 +67,18 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetObject_HttpClient_ShouldNotUseBuiltIn_WhenFailOnUnconfiguredIsEnabled()
+        {
+            Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+
+            var httpClient = Mocks.GetObject<HttpClient>();
+
+            httpClient.Should().NotBeNull();
+            httpClient.Should().NotBeSameAs(Mocks.HttpClient);
+            httpClient!.BaseAddress.Should().BeNull();
+        }
+
+        [Fact]
         public void GetObject_Uri_ShouldUseResolvedHttpClientBaseAddress_WhenNoExplicitRegistrationExists()
         {
             var uri = Mocks.GetObject<Uri>();

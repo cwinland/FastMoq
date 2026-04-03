@@ -71,6 +71,15 @@ var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
 });
 ```
 
+If non-public constructor fallback should be controlled explicitly instead of flowing from `Strict`, set it on the options object:
+
+```csharp
+var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
+{
+    FallbackToNonPublicConstructors = false,
+});
+```
+
 Use the older methods when preserving existing tests or public API compatibility matters. Internally, FastMoq now routes those calls through the same options-based construction path.
 
 ## Optional Constructor And Method Parameters
@@ -120,6 +129,18 @@ var result = Mocks.InvokeMethod(
     new InvocationOptions
     {
         OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+    },
+    target,
+    nameof(TargetType.Run));
+```
+
+If reflected method fallback should be controlled explicitly, use:
+
+```csharp
+var result = Mocks.InvokeMethod(
+    new InvocationOptions
+    {
+        FallbackToNonPublicMethods = false,
     },
     target,
     nameof(TargetType.Run));
@@ -321,6 +342,8 @@ Mocks.Strict = true;
 
 turns on fail-on-unconfigured behavior, but it does not replace the rest of the current `Behavior` flags.
 
+It also still influences some compatibility-era fallback rules, such as whether FastMoq falls back to non-public constructors or methods when public resolution fails.
+
 If you want to switch the whole behavior profile, use the explicit helpers instead:
 
 ```csharp
@@ -329,6 +352,18 @@ Mocks.UseLenientPreset();
 ```
 
 Use the preset helpers when you want a complete behavior profile. Use `Strict` only when you mean the fail-on-unconfigured compatibility behavior.
+
+Breaking-change note:
+
+- In `3.0.0`, `Strict` was often treated as a broader all-in-one switch.
+- In the current repo, `UseStrictPreset()` is the explicit way to request the broader strict profile.
+- `Strict` remains available, but it should now be read as the narrower compatibility path rather than the full profile selector.
+
+Separate compatibility note for known types:
+
+- strict tracked `IFileSystem` mocks can still expose built-in members such as `Directory`
+- strict `HttpClient` does not use the same breaking path
+- `DbContext` is not part of that `IFileSystem` break
 
 ## Executable Examples In This Repo
 
@@ -339,7 +374,7 @@ Start there if you want repo-backed samples for:
 - multi-dependency service workflows
 - built-in `IFileSystem` behavior
 - logger verification
-- fluent `Scenario(...)` usage
+- fluent `Scenario` usage with parameterless arrange/act/assert overloads
 - provider-first verification with `TimesSpec`
 
 See [Executable Testing Examples](../samples/testing-examples.md).

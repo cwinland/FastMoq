@@ -336,6 +336,19 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetMock_IFileSystem_ShouldRemainPreconfigured_WhenFailOnUnconfiguredIsEnabled()
+        {
+            Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+
+            var fileSystemMock = Mocks.GetMock<IFileSystem>();
+            var fileSystemObject = fileSystemMock.Object;
+
+            fileSystemObject.File.Should().NotBeNull();
+            fileSystemObject.Directory.Should().NotBeNull();
+            fileSystemObject.Path.Should().NotBeNull();
+        }
+
+        [Fact]
         public void Strict_ShouldOnlyToggleFailOnUnconfigured()
         {
             Mocks.Behavior = MockBehaviorOptions.LenientPreset.Clone().Disable(MockFeatures.AutoInjectDependencies);
@@ -476,6 +489,32 @@ namespace FastMoq.Tests
             });
 
             instance.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInstance_WithOptions_ShouldAllowExplicitNonPublicFallback_WhenFailOnUnconfiguredIsEnabled()
+        {
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+
+            var instance = Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
+            {
+                UsePredefinedFileSystem = false,
+                FallbackToNonPublicConstructors = true,
+            }, new FileSystem().File);
+
+            instance.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInstance_WithOptions_ShouldAllowDisablingNonPublicFallback_IndependentlyOfFailOnUnconfigured()
+        {
+            var act = () => Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
+            {
+                UsePredefinedFileSystem = false,
+                FallbackToNonPublicConstructors = false,
+            }, new FileSystem().File);
+
+            act.Should().Throw<NotImplementedException>();
         }
 
         [Fact]
@@ -1278,6 +1317,30 @@ namespace FastMoq.Tests
             probe.Should().NotBeNull();
             probe!.Logger.Should().BeNull();
             probe.FileSystem.Should().BeNull();
+        }
+
+        [Fact]
+        public void InvokeMethod_ShouldAllowExplicitNonPublicFallback_WhenFailOnUnconfiguredIsEnabled()
+        {
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+
+            var act = () => Mocks.InvokeMethod(new InvocationOptions
+            {
+                FallbackToNonPublicMethods = true,
+            }, Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
+
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void InvokeMethod_ShouldAllowDisablingNonPublicFallback_IndependentlyOfFailOnUnconfigured()
+        {
+            var act = () => Mocks.InvokeMethod(new InvocationOptions
+            {
+                FallbackToNonPublicMethods = false,
+            }, Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
+
+            act.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [Fact]

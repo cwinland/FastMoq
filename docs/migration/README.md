@@ -72,6 +72,33 @@ Why:
 
 - `Strict` is now treated as a compatibility alias for `MockFeatures.FailOnUnconfigured`.
 - Full-profile behavior changes belong to `Behavior` or the preset helpers.
+- If older tests meant "use the full strict profile," they should move to `UseStrictPreset()` explicitly.
+
+Breaking-change note:
+
+- `Strict` no longer implies the entire old strict profile by itself
+- `UseStrictPreset()` is now the clearer replacement when the broader strict behavior profile is intended
+- `Strict` still affects fail-on-unconfigured behavior and some non-public fallback rules, so this is a narrowing rather than a full removal of old semantics
+
+- strict `IFileSystem` no longer guarantees a raw or empty mock in the current repo
+- tracked `IFileSystem` mocks may still expose built-in members such as `File`, `Directory`, and `Path`
+- if an older test relied on null members, configure them explicitly on `GetMock<IFileSystem>()`
+- this compatibility note is specific to `IFileSystem`; it is not a blanket statement that all built-in types ignore strict-mode behavior
+
+Example:
+
+```csharp
+Mocks.UseStrictPreset();
+```
+
+```csharp
+Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+Mocks.GetMock<IFileSystem>()
+    .Setup(x => x.Directory)
+    .Returns((IDirectory)null!);
+```
+
+For the dedicated compatibility summary, see [Breaking Changes](../breaking-changes/README.md).
 
 ### `GetMock<T>()` vs `AddType(...)`
 
@@ -156,6 +183,15 @@ Why:
 - the implementation now routes through a unified options-based model
 - the options object communicates intent more clearly than the older split overloads
 
+If you want to decouple non-public constructor fallback from `Strict`, use the explicit option:
+
+```csharp
+var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
+{
+    FallbackToNonPublicConstructors = true,
+});
+```
+
 ### Obsolete `MockOptional`
 
 Old pattern:
@@ -180,6 +216,15 @@ var result = Mocks.CallMethod<MyResult>(new InvocationOptions
 {
     OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
 }, (Func<IMyDependency?, MyResult>)CreateResult);
+```
+
+If reflected method fallback should be controlled independently of `Strict`, set it explicitly:
+
+```csharp
+var result = Mocks.InvokeMethod(new InvocationOptions
+{
+    FallbackToNonPublicMethods = false,
+}, target, "Run");
 ```
 
 Current guidance for `MockerTestBase<TComponent>`:
@@ -234,14 +279,17 @@ Why:
 This is new repo-era surface rather than a `3.0.0` migration requirement, but it is now worth adopting for readable workflow-style tests:
 
 ```csharp
-Mocks.Scenario(Component)
-    .With((mocks, service) => { /* arrange */ })
-    .When((mocks, service) => { /* act */ })
-    .Then((mocks, service) => { /* assert */ })
+Scenario
+    .With(() => { /* arrange */ })
+    .When(() => Component.Process())
+    .Then(() => { /* assert */ })
     .Execute();
 ```
 
 Use it when the test reads better as arrange/act/assert phases rather than as one large method body.
+Inside `MockerTestBase<TComponent>`, prefer `Scenario` plus the parameterless `With` / `When` / `Then` overloads when `Component` is already available.
+Use `WhenThrows<TException>(...)` when the act step is expected to fail but you still want trailing `Then(...)` assertions to run.
+Use `ExecuteThrows<TException>()` or `ExecuteThrowsAsync<TException>()` when you want the thrown exception object back for direct inspection.
 
 ## Recommended migration order
 

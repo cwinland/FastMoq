@@ -19,6 +19,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 - **📖 [Complete Documentation](./docs)** - All guides and references in one place
 - **🗺️ [Roadmap Notes](./docs/roadmap)** - Current provider-era direction and deferred backlog items
 - **🆕 [What's New Since 3.0.0](./docs/whats-new)** - Unreleased repository changes since the last public package
+- **⚠️ [Breaking Changes](./docs/breaking-changes)** - Intentional v4 behavior changes relative to the `3.0.0` public release
 - **🔄 [Migration Guide](./docs/migration)** - Practical old-to-new guidance from `3.0.0` to the current repo direction
 - **❓ [FAQs](./FAQs.md)** - Frequently asked questions and troubleshooting
 - **🔗 [API Documentation](http://help.fastmoq.com/)** - Complete API reference
@@ -111,19 +112,21 @@ public class OrderProcessingServiceExamples : MockerTestBase<OrderProcessingServ
 ### Real-world example: fluent scenario style
 
 ```cs
-Mocks.Scenario(Component)
-    .With((mocks, service) =>
+Scenario
+    .With(() =>
     {
-        mocks.GetMock<IInvoiceRepository>()
+        Mocks.GetMock<IInvoiceRepository>()
             .Setup(x => x.GetPastDueAsync(now, CancellationToken.None))
             .ReturnsAsync(invoices);
     })
-    .When(async (mocks, service) => reminderCount = await service.SendRemindersAsync(now, CancellationToken.None))
-    .Then((mocks, service) => reminderCount.Should().Be(2))
+    .When(async () => reminderCount = await Component.SendRemindersAsync(now, CancellationToken.None))
+    .Then(() => reminderCount.Should().Be(2))
     .Verify<IInvoiceRepository>(x => x.GetPastDueAsync(now, CancellationToken.None), TimesSpec.Once)
     .Verify<IEmailGateway>(x => x.SendReminderAsync("ap@contoso.test", 125m, CancellationToken.None), TimesSpec.Once)
     .Execute();
 ```
+
+For expected-failure scenarios, use `WhenThrows<TException>(...)` when `Then(...)` assertions should still run, or `ExecuteThrows<TException>()` when the exception object itself is the main assertion target.
 
 For more current repo-backed examples, see [Executable Testing Examples](./docs/samples/testing-examples.md) and [Migration Guide: 3.0.0 To Current Repo](./docs/migration/README.md).
 

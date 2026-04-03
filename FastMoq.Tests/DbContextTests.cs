@@ -29,6 +29,18 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetObject_DbContext_ShouldRemainBuiltInManagedInstance_WhenFailOnUnconfiguredIsEnabled()
+        {
+            Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+
+            var dbContext = Mocks.GetObject<MyDbContext>();
+
+            dbContext.Should().NotBeNull();
+            Mocks.Contains<MyDbContext>().Should().BeTrue();
+            Mocks.GetMockDbContext<MyDbContext>().Object.Should().BeSameAs(dbContext);
+        }
+
+        [Fact]
         public void GetObject_DbContext_ShouldReturnCustomManagedInstance_BeforeTrackedAndBuiltIn()
         {
             var expected = new CustomManagedDbContext(

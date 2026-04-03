@@ -21,6 +21,13 @@ namespace FastMoq
         public bool AllowNonPublicConstructors { get; set; }
 
         /// <summary>
+        /// Controls whether FastMoq may fall back from a public-constructor search to a non-public-constructor search.
+        /// When not set, FastMoq preserves the legacy behavior tied to <c>Strict</c> / <c>FailOnUnconfigured</c>.
+        /// Set this explicitly in new code when constructor fallback should be controlled independently of that compatibility behavior.
+        /// </summary>
+        public bool? FallbackToNonPublicConstructors { get; set; }
+
+        /// <summary>
         /// Optional explicit constructor signature used to select a constructor by parameter types.
         /// When supplied, constructor lookup uses these types instead of inferring from argument values.
         /// </summary>
