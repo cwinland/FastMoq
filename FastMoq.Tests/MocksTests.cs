@@ -240,7 +240,7 @@ namespace FastMoq.Tests
         public void CreateBest_Should_ThrowAmbiguous()
         {
             Mocks.CreateInstance<TestClassMany>().Should().NotBeNull();
-            new Action(() => Mocks.CreateInstanceNonPublic<TestClassOne>().Should().NotBeNull()).Should().NotThrow();
+            new Action(() => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback).Should().NotBeNull()).Should().NotThrow();
             new Action(() => Mocks.CreateInstance<SameArityPublicConstructors>()).Should().Throw<AmbiguousImplementationException>();
 
             Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
@@ -475,10 +475,9 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateClassWithInjectParameters_WhenOptionalResolutionResolvesViaMocker()
         {
-            var m = Mocks.CreateInstance<TestClassParameters>(new InstanceCreationOptions
-            {
-                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-            });
+            Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+            var m = Mocks.CreateInstance<TestClassParameters>();
             m.Should().NotBeNull();
             m.anotherFileSystem.Should().NotBeNull();
             m.anotherFileSystem2.Should().NotBeNull();
@@ -495,12 +494,11 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateInstance_ShouldResolveOptionalParameters_WhenExplicitOptionsRequestMocking()
+        public void CreateInstance_ShouldResolveOptionalParameters_WhenMockerRequestsMocking()
         {
-            var service = Mocks.CreateInstance<OptionalParameterService>(new InstanceCreationOptions
-            {
-                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-            });
+            Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+            var service = Mocks.CreateInstance<OptionalParameterService>();
 
             service.Should().NotBeNull();
             service.Logger.Should().NotBeNull();
@@ -508,16 +506,15 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateInstance_ShouldPreferExplicitOptionalResolution_OverLegacyMockOptional()
+        public void CreateInstance_ShouldPreferOptionalParameterResolution_OverLegacyMockOptional()
         {
 #pragma warning disable CS0618 // Compatibility coverage for MockOptional bridge.
             Mocks.MockOptional = true;
 #pragma warning restore CS0618
 
-            var service = Mocks.CreateInstance<OptionalParameterService>(new InstanceCreationOptions
-            {
-                OptionalParameterResolution = OptionalParameterResolutionMode.UseDefaultOrNull,
-            });
+            Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.UseDefaultOrNull;
+
+            var service = Mocks.CreateInstance<OptionalParameterService>();
 
             service.Should().NotBeNull();
             service.Logger.Should().BeNull();
@@ -534,9 +531,9 @@ namespace FastMoq.Tests
             Action a = () => Mocks.CreateInstance<TestClassMany>("4", "str").Should().NotBeNull();
             a.Should().Throw<NotImplementedException>();
             IFile file = new FileWrapper(new FileSystem());
-            Mocks.CreateInstanceNonPublic<TestClassOne>(file).Should().NotBeNull();
-            Mocks.CreateInstanceNonPublic<TestClassOne>(new FileSystem()).Should().NotBeNull();
-            Action b = () => Mocks.CreateInstanceNonPublic<TestClassOne>("4", "str").Should().NotBeNull();
+            Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, file).Should().NotBeNull();
+            Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, new FileSystem()).Should().NotBeNull();
+            Action b = () => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, "4", "str").Should().NotBeNull();
             b.Should().Throw<NotImplementedException>();
         }
 
@@ -551,51 +548,41 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void CreateInstance_WithOptions_ShouldReplaceSplitEntryPoints()
+        public void CreateInstance_ShouldExposeFlagsBasedConstructorOverrides()
         {
-            var byDefault = Mocks.CreateInstance<TestClassNormal>(new InstanceCreationOptions());
+            var byDefault = Mocks.CreateInstance<TestClassNormal>();
             byDefault.Should().NotBeNull();
 
-            var byNonPublic = Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
-            {
-                FallbackToNonPublicConstructors = true,
-            }, new FileSystem());
+            var byNonPublic = Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, new FileSystem().File);
 
             byNonPublic.Should().NotBeNull();
+
+            var act = () => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.PublicConstructorsOnly, new FileSystem().File);
+            act.Should().Throw<NotImplementedException>();
         }
 
         [Fact]
-        public void CreateInstance_WithConstructorParameterTypes_ShouldMatchCreateInstanceByType()
+        public void CreateInstanceByType_ShouldMatchTypedConstructorSelection()
         {
-            var instance = Mocks.CreateInstance<TestClassMany>(new InstanceCreationOptions
-            {
-                FallbackToNonPublicConstructors = true,
-                ConstructorParameterTypes = new[] { typeof(int), typeof(string) },
-            });
+            var instance = Mocks.CreateInstanceByType<TestClassMany>(InstanceCreationFlags.AllowNonPublicConstructorFallback, typeof(int), typeof(string));
 
             instance.Should().NotBeNull();
         }
 
         [Fact]
-        public void CreateInstance_WithOptions_ShouldAllowExplicitNonPublicFallback_WhenFailOnUnconfiguredIsEnabled()
+        public void CreateInstance_ShouldAllowExplicitNonPublicFallbackOverride_WhenPolicyDisablesFallback()
         {
-            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+            Mocks.Policy.DefaultFallbackToNonPublicConstructors = false;
 
-            var instance = Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
-            {
-                FallbackToNonPublicConstructors = true,
-            }, new FileSystem().File);
+            var instance = Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, new FileSystem().File);
 
             instance.Should().NotBeNull();
         }
 
         [Fact]
-        public void CreateInstance_WithOptions_ShouldAllowDisablingNonPublicFallback_IndependentlyOfFailOnUnconfigured()
+        public void CreateInstance_ShouldAllowExplicitPublicOnlyOverride_WhenPolicyAllowsFallback()
         {
-            var act = () => Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
-            {
-                FallbackToNonPublicConstructors = false,
-            }, new FileSystem().File);
+            var act = () => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.PublicConstructorsOnly, new FileSystem().File);
 
             act.Should().Throw<NotImplementedException>();
         }
@@ -812,9 +799,7 @@ namespace FastMoq.Tests
                     requestedType == typeof(KnownTypeManagedDbContext) ? expected : null,
                 includeDerivedTypes: true);
 
-            var instance = Mocks.CreateInstance<KnownTypeManagedDbContext>(new InstanceCreationOptions
-            {
-            });
+            var instance = Mocks.CreateInstance<KnownTypeManagedDbContext>();
 
             instance.Should().BeSameAs(expected);
         }
@@ -1099,10 +1084,7 @@ namespace FastMoq.Tests
         public void CreateObjectWithCustomData()
         {
             // Get argument data or create your own array
-            var args = Component.GetArgData<TestClassParameters>(new InstanceCreationOptions
-            {
-                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-            });
+            var args = Component.GetArgData<TestClassParameters>(OptionalParameterResolutionMode.ResolveViaMocker);
 
             // Set custom values
             args[0] = 34;
@@ -1139,10 +1121,7 @@ namespace FastMoq.Tests
             test2.Fs.Should().BeNull();
             test2.F.Should().NotBeNull();
 
-            args = Component.GetArgData<TestClassParameters>(new InstanceCreationOptions
-            {
-                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-            });
+            args = Component.GetArgData<TestClassParameters>(OptionalParameterResolutionMode.ResolveViaMocker);
             Component.GetObject<TestClassParameters>(args);
             Component.CreateInstance<TestClassParameters>();
             Component.CreateInstance<TestClassParameters>(args);
@@ -1155,10 +1134,7 @@ namespace FastMoq.Tests
             defaultArgs[0].Should().BeNull();
             defaultArgs[1].Should().BeNull();
 
-            var resolvedArgs = Component.GetArgData<OptionalParameterService>(new InstanceCreationOptions
-            {
-                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-            });
+            var resolvedArgs = Component.GetArgData<OptionalParameterService>(OptionalParameterResolutionMode.ResolveViaMocker);
 
             resolvedArgs[0].Should().NotBeNull();
             resolvedArgs[1].Should().NotBeNull();
@@ -1167,12 +1143,9 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateInstanceByTypedParameterMap_ShouldRespectExplicitOptionalParameterResolution()
         {
-            var service = Component.CreateInstance<OptionalParameterService, ILogger, IFileSystem>(
-                new InstanceCreationOptions
-                {
-                    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-                },
-                new Dictionary<Type, object?>());
+            Component.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+            var service = Component.CreateInstance<OptionalParameterService, ILogger, IFileSystem>(new Dictionary<Type, object?>());
 
             service.Should().NotBeNull();
             service!.Logger.Should().NotBeNull();
@@ -1343,15 +1316,13 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void MockerTestBase_ComponentCreationOptions_ShouldBeSeparate_FromDirectCreateInstanceDefaults()
+        public void MockerTestBase_ComponentConstructionOverrides_ShouldBeSeparate_FromDirectCreateInstanceDefaults()
         {
             using var testBase = new NonPublicComponentCreationTestBase();
 
             testBase.Sut.Should().NotBeNull();
 
-            var act = () => testBase.TestMocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
-            {
-            }, new FileSystem().File);
+            var act = () => testBase.TestMocks.CreateInstance<TestClassOne>(new FileSystem().File);
 
             act.Should().Throw<NotImplementedException>();
         }
@@ -1443,7 +1414,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void MockerTestBase_ShouldUseComponentCreationOptions_ForOptionalParameters()
+        public void MockerTestBase_ShouldUseComponentCreationFlags_ForOptionalParameters()
         {
             using var testBase = new OptionalParameterServiceConfiguredTestBase();
 
@@ -1917,10 +1888,7 @@ namespace FastMoq.Tests
 
     internal sealed class OptionalParameterServiceConfiguredTestBase : MockerTestBase<OptionalParameterService>
     {
-        protected override InstanceCreationOptions ComponentCreationOptions => new()
-        {
-            OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-        };
+        protected override InstanceCreationFlags ComponentCreationFlags => InstanceCreationFlags.ResolveOptionalParametersViaMocker;
 
         internal OptionalParameterService Sut => Component;
     }
@@ -1946,10 +1914,7 @@ namespace FastMoq.Tests
             policy.DefaultFallbackToNonPublicConstructors = false;
         };
 
-        protected override InstanceCreationOptions ComponentCreationOptions => new()
-        {
-            FallbackToNonPublicConstructors = true,
-        };
+        protected override InstanceCreationFlags ComponentCreationFlags => InstanceCreationFlags.AllowNonPublicConstructorFallback;
 
         internal SubscriptionData Sut => Component;
         internal Mocker TestMocks => Mocks;

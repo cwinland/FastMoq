@@ -183,31 +183,26 @@ For framework helpers like `IFileSystem`, `HttpClient`, `DbContext`, and `HttpCo
 The older entry points still exist:
 
 - `CreateInstance<T>(...)`
-- `CreateInstanceNonPublic<T>(...)`
 - `CreateInstanceByType<T>(...)`
 
 Current guidance for new code:
 
 ```csharp
-var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
-{
-    FallbackToNonPublicConstructors = true,
-    ConstructorParameterTypes = new[] { typeof(int), typeof(string) },
-});
+var component = Mocks.CreateInstanceByType<MyComponent>(
+    InstanceCreationFlags.AllowNonPublicConstructorFallback,
+    typeof(int),
+    typeof(string));
 ```
 
 Why:
 
-- the implementation now routes through a unified options-based model
-- the options object communicates intent more clearly than the older split overloads
+- the implementation now uses a single flags-based override model
+- the call site communicates whether constructor fallback is using policy, public-only, or explicitly allowed
 
-If you want to decouple non-public constructor fallback from `Strict`, use the explicit option:
+If you want to decouple constructor fallback from global policy, use an explicit flag:
 
 ```csharp
-var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
-{
-    FallbackToNonPublicConstructors = true,
-});
+var component = Mocks.CreateInstance<MyComponent>(InstanceCreationFlags.AllowNonPublicConstructorFallback);
 ```
 
 The default constructor-fallback policy is now also explicit at the `Mocker` level:
@@ -227,10 +222,9 @@ Mocks.MockOptional = true;
 Current guidance for constructor creation:
 
 ```csharp
-var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
-{
-    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-});
+Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+var component = Mocks.CreateInstance<MyComponent>();
 ```
 
 Current guidance for method or delegate invocation:
@@ -296,15 +290,13 @@ protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy 
 Current guidance for `MockerTestBase<TComponent>`:
 
 ```csharp
-protected override InstanceCreationOptions ComponentCreationOptions => new()
-{
-    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-};
+protected override InstanceCreationFlags ComponentCreationFlags
+    => InstanceCreationFlags.ResolveOptionalParametersViaMocker;
 ```
 
 Why:
 
-- explicit options are clearer than an ambient toggle
+- focused component-construction overrides are clearer than an ambient toggle
 - constructor creation and invocation now share the same policy model
 - `MockOptional` is obsolete and remains available only as a compatibility alias
 
@@ -361,7 +353,7 @@ Use `ExecuteThrows<TException>()` or `ExecuteThrowsAsync<TException>()` when you
 
 1. Replace `Initialize<T>(...)` usage with `GetMock<T>()` setup where possible.
 2. Audit `Strict` usage and decide whether each case means fail-on-unconfigured only or a full strict preset.
-3. Replace new `MockOptional` usage with explicit `InstanceCreationOptions`, `InvocationOptions`, or `ComponentCreationOptions` overrides.
+3. Replace new `MockOptional` usage with explicit `OptionalParameterResolution`, `InvocationOptions`, or `MockerTestBase<TComponent>` component-construction overrides.
 4. Separate `GetMock<T>()` scenarios from `AddType(...)` scenarios so the test intent is obvious.
 5. Adopt provider-first surfaces only where they add value; do not rewrite stable tests without a reason.
 6. Use the repo's executable examples as the reference for new tests.

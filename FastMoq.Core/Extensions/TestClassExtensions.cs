@@ -697,23 +697,15 @@ namespace FastMoq.Extensions
         /// <param name="data">The data.</param>
         /// <returns>object?[] of the argument data.</returns>
         internal static object?[] GetArgData(this Mocker mocker, MethodBase? method, Dictionary<Type, object?>? data) =>
-            mocker.GetArgData(method, new InstanceCreationOptions
-            {
-                OptionalParameterResolution = mocker.OptionalParameterResolution,
-            }, data);
+            mocker.GetArgData(method, mocker.OptionalParameterResolution, data);
 
-        internal static object?[] GetArgData(this Mocker mocker, MethodBase? method, InstanceCreationOptions? options, Dictionary<Type, object?>? data)
+        internal static object?[] GetArgData(this Mocker mocker, MethodBase? method, OptionalParameterResolutionMode optionalParameterResolution, Dictionary<Type, object?>? data)
         {
-            options ??= new InstanceCreationOptions
-            {
-                OptionalParameterResolution = mocker.OptionalParameterResolution,
-            };
-
             var args = new List<object?>();
 
             method?.GetParameters().ToList().ForEach(p => args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
                     ? data.First(x => x.Key == p.ParameterType).Value
-                    : mocker.ResolveParameter(p, options.OptionalParameterResolution)
+                    : mocker.ResolveParameter(p, optionalParameterResolution)
                 )
             );
 

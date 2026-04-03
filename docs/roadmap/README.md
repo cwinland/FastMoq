@@ -13,7 +13,7 @@ FastMoq is moving toward a provider-based architecture where:
 ## Recently Completed Foundation
 
 - Native provider objects are now surfaced through tracked mocks.
-- Instance creation has an options-based API that unifies the older split entry points.
+- Instance creation now uses focused APIs with policy-driven defaults plus explicit public-only and constructor-fallback entry points.
 - Known framework-style types now have a per-`Mocker` extension point through `AddKnownType(...)`.
 - A repo-native testing guide now documents the current recommended patterns.
 
@@ -79,7 +79,7 @@ Several Moq-oriented compatibility members remain intentionally available. Remov
 
 The first replacement pass is now in place.
 
-`MockOptional` is obsolete and retained only as a compatibility alias. The runtime now prefers explicit optional-parameter controls through `InstanceCreationOptions`, `InvocationOptions`, and `MockerTestBase<TComponent>.ComponentCreationOptions`.
+`MockOptional` is obsolete and retained only as a compatibility alias. The runtime now prefers explicit optional-parameter controls through `Mocker.OptionalParameterResolution`, `InvocationOptions`, and focused `MockerTestBase<TComponent>` component-construction overrides.
 
 The remaining cleanup direction is to continue reducing older `MockOptional` examples and remove the alias in `v5`, after `v4` ships with the explicit migration path.
 

@@ -46,32 +46,26 @@ Key surfaces include:
 - `GetOrCreateMock<T>()`
 - `GetOrCreateMock(Type, ...)`
 
-### Unified instance creation
+### Focused instance creation
 
-The old split among `CreateInstance(...)`, `CreateInstanceNonPublic(...)`, and `CreateInstanceByType(...)` is now backed by a shared options-based model.
+The repo-era options bag has been removed in favor of focused creation APIs.
 
 Newer code can use:
 
 ```csharp
-var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
-{
-    FallbackToNonPublicConstructors = true,
-    ConstructorParameterTypes = new[] { typeof(int), typeof(string) },
-});
+var component = Mocks.CreateInstanceByType<MyComponent>(
+	InstanceCreationFlags.AllowNonPublicConstructorFallback,
+	typeof(int),
+	typeof(string));
 ```
 
-Optional constructor behavior now has an explicit setting in the same model:
+Constructor visibility is now expressed directly by `InstanceCreationFlags`:
 
-```csharp
-var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
-{
-    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-});
-```
+- `CreateInstance<T>(...)` follows `Mocks.Policy.DefaultFallbackToNonPublicConstructors`
+- `CreateInstance<T>(InstanceCreationFlags.PublicConstructorsOnly, ...)` restricts selection to public constructors
+- `CreateInstance<T>(InstanceCreationFlags.AllowNonPublicConstructorFallback, ...)` explicitly allows fallback to non-public constructors
 
-`MockerTestBase<TComponent>` also gained a `ComponentCreationOptions` hook so test bases can opt into the same behavior without relying on the legacy global toggle.
-
-New repo-era code can also control non-public constructor fallback explicitly through `InstanceCreationOptions.FallbackToNonPublicConstructors` instead of relying on `Strict` compatibility semantics.
+`MockerTestBase<TComponent>` now exposes focused component-construction hooks instead of a shared options object.
 
 ### Explicit optional-parameter resolution
 
@@ -79,13 +73,13 @@ New repo-era code can also control non-public constructor fallback explicitly th
 
 New repo-era guidance is:
 
-- use `InstanceCreationOptions.OptionalParameterResolution` for SUT creation
+- set `Mocks.OptionalParameterResolution` for SUT creation defaults
 - use `InvocationOptions.OptionalParameterResolution` for `CallMethod(...)` and `InvokeMethod(...)`
-- use `ComponentCreationOptions` when the SUT is created by `MockerTestBase<TComponent>`
+- use `ComponentCreationFlags` when the SUT is created by `MockerTestBase<TComponent>`
 
 This brings constructor creation and helper invocation onto the same policy model instead of having different hidden rules for optional parameters.
 
-Method invocation now also has an explicit `InvocationOptions.FallbackToNonPublicMethods` setting for reflected method fallback, parallel to the constructor-side option model.
+Method invocation now also has an explicit `InvocationOptions.FallbackToNonPublicMethods` setting for reflected method fallback.
 
 ### Known-type extensibility
 
@@ -148,7 +142,6 @@ New explicit policy surfaces include:
 - `Mocker.Policy.DefaultFallbackToNonPublicConstructors`
 - `Mocker.Policy.DefaultFallbackToNonPublicMethods`
 - `Mocker.Policy.DefaultStrictMockCreation`
-- `InstanceCreationOptions.FallbackToNonPublicConstructors`
 - `InvocationOptions.FallbackToNonPublicMethods`
 
 `MockerTestBase<TComponent>` also now exposes a policy hook so those defaults can be set before component creation without instantiating a separate `Mocker`.

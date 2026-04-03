@@ -57,26 +57,21 @@ If the dependency is still conceptually a mock, prefer `GetMock<T>()`. If you ar
 FastMoq still supports the older entry points:
 
 - `CreateInstance<T>(...)`
-- `CreateInstanceNonPublic<T>(...)`
 - `CreateInstanceByType<T>(...)`
 
-For new code, prefer the unified options-based overload:
+For new code, prefer the flags-based constructor overloads when you need an explicit override:
 
 ```csharp
-var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
-{
-    FallbackToNonPublicConstructors = true,
-    ConstructorParameterTypes = new[] { typeof(int), typeof(string) },
-});
+var component = Mocks.CreateInstanceByType<MyComponent>(
+    InstanceCreationFlags.AllowNonPublicConstructorFallback,
+    typeof(int),
+    typeof(string));
 ```
 
-If non-public constructor fallback should be controlled explicitly instead of flowing from `Strict`, set it on the options object:
+If constructor selection should be restricted to public constructors, use the explicit flag:
 
 ```csharp
-var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
-{
-    FallbackToNonPublicConstructors = false,
-});
+var component = Mocks.CreateInstance<MyComponent>(InstanceCreationFlags.PublicConstructorsOnly);
 ```
 
 If you want to change the default constructor-fallback policy for the whole `Mocker` instance, use:
@@ -85,7 +80,7 @@ If you want to change the default constructor-fallback policy for the whole `Moc
 Mocks.Policy.DefaultFallbackToNonPublicConstructors = false;
 ```
 
-Use the older methods when preserving existing tests or public API compatibility matters. Internally, FastMoq now routes those calls through the same options-based construction path.
+Use the older methods when preserving existing tests or public API compatibility matters. Internally, FastMoq now routes constructor creation through the same shared resolution rules.
 
 ## Optional Constructor And Method Parameters
 
@@ -101,21 +96,18 @@ If you want FastMoq to resolve optional parameters through the normal mock/objec
 ### Constructor creation
 
 ```csharp
-var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
-{
-    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-});
+Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+var component = Mocks.CreateInstance<MyComponent>();
 ```
 
 ### `MockerTestBase<TComponent>`
 
-For SUT creation through `MockerTestBase<TComponent>`, override `ComponentCreationOptions`:
+For SUT creation through `MockerTestBase<TComponent>`, override `ComponentCreationFlags`:
 
 ```csharp
-protected override InstanceCreationOptions ComponentCreationOptions => new()
-{
-    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-};
+protected override InstanceCreationFlags ComponentCreationFlags
+    => InstanceCreationFlags.ResolveOptionalParametersViaMocker;
 ```
 
 ### Delegate or reflected invocation
@@ -537,7 +529,7 @@ For most tests in this repo, this order is the least surprising:
 
 - Do not use `AddType(...)` as a general replacement for `GetMock<T>()`.
 - Do not bypass `GetMockDbContext<TContext>()` unless FastMoq's EF Core support is the thing you are explicitly testing around.
-- Do not assume `CreateInstanceByType(...)` is the best API for new code. It remains for compatibility, but the options-based overload is clearer.
+- Do not assume `CreateInstanceByType(...)` alone is the best API for new code. Use `InstanceCreationFlags` when you need to express constructor-selection intent explicitly.
 - Do not make known-type extensions global. Keep them scoped to the `Mocker` used by the test.
 
 ## See Also

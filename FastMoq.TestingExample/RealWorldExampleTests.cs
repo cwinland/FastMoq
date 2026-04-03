@@ -191,13 +191,10 @@ namespace FastMoq.TestingExample
 
     public class OptionalParameterResolutionExamples : MockerTestBase<OptionalDependencyReportService>
     {
-        protected override InstanceCreationOptions ComponentCreationOptions => new()
-        {
-            OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-        };
+        protected override InstanceCreationFlags ComponentCreationFlags => InstanceCreationFlags.ResolveOptionalParametersViaMocker;
 
         [Fact]
-        public void ComponentCreationOptions_ShouldResolveOptionalConstructorDependencies()
+        public void ComponentCreationFlags_ShouldResolveOptionalConstructorDependencies()
         {
             Component.Logger.Should().NotBeNull();
             Component.FileSystem.Should().NotBeNull();

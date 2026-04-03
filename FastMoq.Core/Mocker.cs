@@ -56,6 +56,11 @@ namespace FastMoq
         public const string SETUP_ALL_PROPERTIES_METHOD_NAME = "SetupAllProperties";
         public const string SETUP = "Setup";
 
+        private readonly record struct InstanceConstructionRequest(
+            bool? PublicOnly,
+            Type?[]? ConstructorParameterTypes,
+            OptionalParameterResolutionMode OptionalParameterResolution);
+
         public readonly MockFileSystem fileSystem;
         protected internal readonly List<Type> creatingTypeList = new();
         protected internal readonly List<MockModel> mockCollection = new();
@@ -104,10 +109,10 @@ namespace FastMoq
 
         /// <summary>
         /// Obsolete compatibility alias for <see cref="OptionalParameterResolution"/>.
-        /// Prefer explicit <see cref="InstanceCreationOptions"/> or <see cref="InvocationOptions"/> in new code.
+        /// Prefer <see cref="OptionalParameterResolution"/>, <see cref="InvocationOptions"/>, or focused component-construction overrides in new code.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("MockOptional is obsolete and kept only for compatibility. Use OptionalParameterResolution, InstanceCreationOptions, InvocationOptions, or ComponentCreationOptions instead.")]
+        [Obsolete("MockOptional is obsolete and kept only for compatibility. Use OptionalParameterResolution, InvocationOptions, or focused component-construction overrides instead.")]
         public bool MockOptional
         {
             get => OptionalParameterResolution == OptionalParameterResolutionMode.ResolveViaMocker;
@@ -754,58 +759,130 @@ namespace FastMoq
 
         #region Constructor Resolution / Instance Creation
         public T? CreateInstance<T>(params object?[] args) where T : class =>
-            CreateInstance<T>(CreateDefaultInstanceCreationOptions(), args);
+            CreateInstance<T>(InstanceCreationFlags.None, args);
 
         /// <summary>
-        /// Creates an instance of <typeparamref name="T"/> using a single options object instead of separate public/non-public entry points.
+        /// Creates an instance of <typeparamref name="T"/> using the supplied per-call construction flags.
         /// </summary>
-        public T? CreateInstance<T>(InstanceCreationOptions options, params object?[] args) where T : class =>
-            CreateInstanceCore<T>(options ?? throw new ArgumentNullException(nameof(options)), args);
+        public T? CreateInstance<T>(InstanceCreationFlags flags, params object?[] args) where T : class =>
+            CreateInstanceCore<T>(CreateInstanceConstructionRequest(flags, constructorParameterTypes: null), args);
 
         /// <summary>
         /// Legacy compatibility overload retained for source compatibility.
         /// File-system resolution now follows <see cref="Policy"/> instead of a per-call flag.
         /// </summary>
-        [Obsolete("Use CreateInstance<T>(InstanceCreationOptions, ...). File-system resolution now follows Policy.EnabledBuiltInTypeResolutions.")]
-        public T? CreateInstance<T>(bool usePredefinedFileSystem, params object?[] args) where T : class =>
-            CreateInstanceCore<T>(CreateDefaultInstanceCreationOptions(), args);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Ignored. Use CreateInstance<T>() to follow Policy.EnabledBuiltInTypeResolutions and Policy.DefaultFallbackToNonPublicConstructors.")]
+        public IFileSystem? CreateInstance<T>(bool usePredefinedFileSystem) where T : class, IFileSystem =>
+            CreateInstance<T>(usePredefinedFileSystem, Array.Empty<object?>());
 
+        /// <summary>
+        /// Legacy compatibility overload retained for source compatibility.
+        /// File-system resolution now follows <see cref="Policy"/> instead of a per-call flag.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Ignored. Use CreateInstance<T>() to follow Policy.EnabledBuiltInTypeResolutions and Policy.DefaultFallbackToNonPublicConstructors.")]
+        public T? CreateInstance<T>(bool usePredefinedFileSystem, params object?[] args) where T : class =>
+            CreateInstance<T>(args);
+
+        /// <summary>
+        /// Legacy compatibility alias retained for source compatibility.
+        /// Use <see cref="CreateInstance{T}(InstanceCreationFlags, object?[])"/> with <see cref="InstanceCreationFlags.AllowNonPublicConstructorFallback"/>.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use CreateInstance<T>(InstanceCreationFlags.AllowNonPublicConstructorFallback, ...) for the legacy non-public behavior, or CreateInstance<T>() to follow the current policy defaults.")]
         public T? CreateInstanceNonPublic<T>(params object?[] args) where T : class =>
-            CreateInstanceCore<T>(CreateDefaultInstanceCreationOptions(fallbackToNonPublicConstructors: true), args);
+            CreateInstance<T>(InstanceCreationFlags.AllowNonPublicConstructorFallback, args);
+
+        /// <summary>
+        /// Legacy compatibility alias retained for source compatibility.
+        /// Public and non-public constructor selection now follows the shared constructor-resolution rules.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use CreateInstance<T>(InstanceCreationFlags.AllowNonPublicConstructorFallback, ...) where possible. This Type-based compatibility overload remains only for older callers.")]
+        public object? CreateInstanceNonPublic(Type type, params object?[] args)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+
+            var constructor = GetConstructorByArgs(args, type, true, fallbackToNonPublicConstructors: true, OptionalParameterResolution);
+            return CreateInstanceInternal(type, constructor.ConstructorInfo, OptionalParameterResolution, constructor.ParameterList);
+        }
+
+        internal T? CreateInstance<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution, params object?[] args) where T : class =>
+            CreateInstanceCore<T>(CreateInstanceConstructionRequest(publicOnly, null, optionalParameterResolution), args);
 
         public T? CreateInstanceByType<T>(params Type?[] parameterTypes) where T : class
         {
-            return CreateInstanceByType<T>(CreateDefaultInstanceCreationOptions(fallbackToNonPublicConstructors: true), parameterTypes);
+            return CreateInstanceByType<T>(InstanceCreationFlags.None, parameterTypes);
         }
 
-        public T? CreateInstanceByType<T>(InstanceCreationOptions options, params Type?[] parameterTypes) where T : class
-        {
-            ArgumentNullException.ThrowIfNull(options);
+        public T? CreateInstanceByType<T>(InstanceCreationFlags flags, params Type?[] parameterTypes) where T : class =>
+            CreateInstanceCore<T>(CreateInstanceConstructionRequest(flags, parameterTypes), Array.Empty<object?>());
 
-            return CreateInstanceCore<T>(new InstanceCreationOptions
-            {
-                FallbackToNonPublicConstructors = options.FallbackToNonPublicConstructors,
-                ConstructorParameterTypes = parameterTypes,
-                OptionalParameterResolution = options.OptionalParameterResolution,
-            }, Array.Empty<object?>());
+        internal T? CreateInstanceByType<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution, params Type?[] parameterTypes) where T : class =>
+            CreateInstanceCore<T>(CreateInstanceConstructionRequest(publicOnly, parameterTypes, optionalParameterResolution), Array.Empty<object?>());
+
+        private InstanceConstructionRequest CreateInstanceConstructionRequest(InstanceCreationFlags flags, Type?[]? constructorParameterTypes)
+        {
+            var publicOnly = ResolvePublicOnlyOverride(flags);
+            var optionalParameterResolution = ResolveOptionalParameterResolution(flags);
+            return CreateInstanceConstructionRequest(publicOnly, constructorParameterTypes, optionalParameterResolution);
         }
 
-        private InstanceCreationOptions CreateDefaultInstanceCreationOptions(bool? fallbackToNonPublicConstructors = null)
+        private InstanceConstructionRequest CreateInstanceConstructionRequest(bool? publicOnly, Type?[]? constructorParameterTypes, OptionalParameterResolutionMode optionalParameterResolution) =>
+            new(publicOnly, constructorParameterTypes, optionalParameterResolution);
+
+        private static bool? ResolvePublicOnlyOverride(InstanceCreationFlags flags)
         {
-            return new InstanceCreationOptions
+            var publicOnly = flags.HasFlag(InstanceCreationFlags.PublicConstructorsOnly);
+            var allowNonPublicFallback = flags.HasFlag(InstanceCreationFlags.AllowNonPublicConstructorFallback);
+
+            if (publicOnly && allowNonPublicFallback)
             {
-                FallbackToNonPublicConstructors = fallbackToNonPublicConstructors,
-                OptionalParameterResolution = OptionalParameterResolution,
-            };
+                throw new ArgumentException("InstanceCreationFlags cannot combine PublicConstructorsOnly with AllowNonPublicConstructorFallback.", nameof(flags));
+            }
+
+            if (publicOnly)
+            {
+                return true;
+            }
+
+            if (allowNonPublicFallback)
+            {
+                return false;
+            }
+
+            return null;
+        }
+
+        private OptionalParameterResolutionMode ResolveOptionalParameterResolution(InstanceCreationFlags flags)
+        {
+            var resolveViaMocker = flags.HasFlag(InstanceCreationFlags.ResolveOptionalParametersViaMocker);
+            var useDefaultOrNull = flags.HasFlag(InstanceCreationFlags.UseDefaultOrNullOptionalParameters);
+
+            if (resolveViaMocker && useDefaultOrNull)
+            {
+                throw new ArgumentException("InstanceCreationFlags cannot combine ResolveOptionalParametersViaMocker with UseDefaultOrNullOptionalParameters.", nameof(flags));
+            }
+
+            if (resolveViaMocker)
+            {
+                return OptionalParameterResolutionMode.ResolveViaMocker;
+            }
+
+            if (useDefaultOrNull)
+            {
+                return OptionalParameterResolutionMode.UseDefaultOrNull;
+            }
+
+            return OptionalParameterResolution;
         }
 
         /// <summary>
         /// Centralized creation logic used by all public CreateInstance* methods.
         /// </summary>
-        private T? CreateInstanceCore<T>(InstanceCreationOptions options, object?[] args) where T : class
+        private T? CreateInstanceCore<T>(InstanceConstructionRequest request, object?[] args) where T : class
         {
-            ArgumentNullException.ThrowIfNull(options);
-
             var requestedType = typeof(T);
             var model = GetTypeModel(requestedType);
 
@@ -831,20 +908,25 @@ namespace FastMoq
                 return GetObject<T>();
             }
 
-            if (options.ConstructorParameterTypes != null)
+            if (request.ConstructorParameterTypes != null)
             {
-                var constructor = FindConstructorByType(targetType, false, ShouldFallbackToNonPublicConstructors(options), options.ConstructorParameterTypes);
-                return CreateInstanceInternal(targetType, constructor, options.OptionalParameterResolution, args) as T;
+                var constructor = FindConstructorByType(targetType, false, ShouldFallbackToNonPublicConstructors(request.PublicOnly), request.ConstructorParameterTypes);
+                return CreateInstanceInternal(targetType, constructor, request.OptionalParameterResolution, args) as T;
             }
 
-            var ctorModel = GetConstructorByArgs(args, targetType, false, ShouldFallbackToNonPublicConstructors(options), options.OptionalParameterResolution);
-            var created = CreateInstanceInternal(targetType, ctorModel.ConstructorInfo, options.OptionalParameterResolution, ctorModel.ParameterList);
+            var ctorModel = GetConstructorByArgs(args, targetType, false, ShouldFallbackToNonPublicConstructors(request.PublicOnly), request.OptionalParameterResolution);
+            var created = CreateInstanceInternal(targetType, ctorModel.ConstructorInfo, request.OptionalParameterResolution, ctorModel.ParameterList);
             return created as T;
         }
 
-        private bool ShouldFallbackToNonPublicConstructors(InstanceCreationOptions options)
+        private bool ShouldFallbackToNonPublicConstructors(bool? publicOnly)
         {
-            return options.FallbackToNonPublicConstructors ?? Policy.DefaultFallbackToNonPublicConstructors;
+            return publicOnly switch
+            {
+                true => false,
+                false => true,
+                _ => Policy.DefaultFallbackToNonPublicConstructors,
+            };
         }
 
         internal bool ShouldAllowNonPublicConstructorsForMockRequest(bool? allowNonPublicConstructors)
@@ -946,6 +1028,9 @@ namespace FastMoq
 
             return ctors[0];
         }
+
+        internal ConstructorInfo FindConstructorByType(Type type, bool? publicOnly, params Type?[] args) =>
+            FindConstructorByType(type, false, ShouldFallbackToNonPublicConstructors(publicOnly), args);
 
         private ConstructorInfo FindConstructorByType(Type type, bool nonPublic, bool fallbackToNonPublicConstructors, params Type?[] args)
         {
@@ -1624,24 +1709,26 @@ namespace FastMoq
         }
         public object?[] GetArgData<T>() where T : class
         {
-            return GetArgData<T>(new InstanceCreationOptions
-            {
-                OptionalParameterResolution = OptionalParameterResolution,
-            });
+            return GetArgData<T>(InstanceCreationFlags.None);
         }
 
-        public object?[] GetArgData<T>(InstanceCreationOptions? options) where T : class
-        {
-            options ??= new InstanceCreationOptions
-            {
-                OptionalParameterResolution = OptionalParameterResolution,
-            };
+        public object?[] GetArgData<T>(OptionalParameterResolutionMode optionalParameterResolution) where T : class =>
+            GetArgData<T>(publicOnly: null, optionalParameterResolution);
 
+        public object?[] GetArgData<T>(InstanceCreationFlags flags) where T : class
+        {
+            var publicOnly = ResolvePublicOnlyOverride(flags);
+            var optionalParameterResolution = ResolveOptionalParameterResolution(flags);
+            return GetArgData<T>(publicOnly, optionalParameterResolution);
+        }
+
+        internal object?[] GetArgData<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution) where T : class
+        {
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
-            var constructor = FindPreferredConstructor(type.InstanceType, true, options.OptionalParameterResolution);
+            var constructor = FindPreferredConstructor(type.InstanceType, false, ShouldFallbackToNonPublicConstructors(publicOnly), optionalParameterResolution);
             return constructor.ConstructorInfo == null
                 ? Array.Empty<object?>()
-                : constructor.ConstructorInfo.GetParameters().Select(p => ResolveParameter(p, options.OptionalParameterResolution)).ToArray();
+                : constructor.ConstructorInfo.GetParameters().Select(p => ResolveParameter(p, optionalParameterResolution)).ToArray();
         }
 
         private object?[] BuildInvocationArgs(ParameterInfo[] parameters, InvocationOptions? options, object?[] provided)

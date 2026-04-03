@@ -34,7 +34,7 @@ namespace FastMoq
         public Func<Mocker, Type, object?>? DirectInstanceFactory { get; init; }
 
         /// <summary>
-        /// Optional factory for managed instance resolution in <see cref="Mocker.CreateInstance{T}(InstanceCreationOptions, object?[])"/>.
+        /// Optional factory for managed instance resolution during <see cref="Mocker.CreateInstance{T}(object?[])"/>.
         /// Return <c>null</c> to indicate that the registration did not resolve the requested type.
         /// </summary>
         public Func<Mocker, Type, object?>? ManagedInstanceFactory { get; init; }

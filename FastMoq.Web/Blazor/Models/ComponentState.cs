@@ -124,7 +124,7 @@ namespace FastMoq.Web.Blazor.Models
         {
             var d1 = typeof(TestRenderer).GetRuntimeMethods().First(x => x.Name.StartsWith("GetOrCreateRenderedComponent"));
             var makeMe = d1.MakeGenericMethod(type);
-            var d = new Mocker().CreateInstanceNonPublic<RenderTreeFrameDictionary>();
+            var d = new Mocker().CreateInstance<RenderTreeFrameDictionary>(InstanceCreationFlags.AllowNonPublicConstructorFallback);
             var args = new object?[] { d, ComponentId, Component };
             return (IRenderedComponentBase<ComponentBase>?)makeMe.Invoke(renderer, args);
         }

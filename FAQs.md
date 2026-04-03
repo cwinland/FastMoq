@@ -91,13 +91,12 @@ public class MyService
 
 If the constructor has an optional or nullable parameter, FastMoq assumes that the parameter should stay null or the declared default unless you opt into optional-parameter resolution.
 
-In this example, someService will be mocked and someOtherService will be null by default. For new code, prefer explicit creation options:
+In this example, someService will be mocked and someOtherService will be null by default. For new code, prefer explicit optional-parameter resolution on the mocker:
 
 ```c#
-var service = mocker.CreateInstance<MyService>(new InstanceCreationOptions
-{
-    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-});
+mocker.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+var service = mocker.CreateInstance<MyService>();
 ```
 
 `Mocker.MockOptional = true` still works, but it is now obsolete and retained only as a compatibility alias over the same behavior.
@@ -216,7 +215,7 @@ Methods:
 - ```GetMock``` gets the Mock used in the tested component.
 - ```GetObject``` gets the object of the Mock used in the tested component.
 - ```CreateInstance``` creates an instance of a public Type without the need of specifying the injected parameters.
-- ```CreateInstanceNonPublic``` creates an instance of a Type without the need of specifying the injected parameters.
+- ```CreateInstance``` also accepts ```InstanceCreationFlags``` when constructor fallback or optional-parameter behavior should be overridden explicitly.
 - ```GetMockDbContext``` gets the mocked DbContext used in the tested component.
 - ```GetFileSystem```gets the file system used in the tested component.
 - ```GetHttpHandlerSetup``` assists in setting up HttpClient calls.

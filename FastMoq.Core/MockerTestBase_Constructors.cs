@@ -9,18 +9,10 @@ namespace FastMoq
 
         internal static Action<object> DefaultAction => _ => { };
 
-        protected virtual InstanceCreationOptions ComponentCreationOptions => CreateDefaultComponentCreationOptions();
+        protected virtual InstanceCreationFlags ComponentCreationFlags => InstanceCreationFlags.None;
 
         private Func<Mocker, TComponent> DefaultCreateAction =>
-            _ => Component = Mocks.CreateInstance<TComponent>(ComponentCreationOptions) ?? throw CannotCreateComponentException;
-
-        private InstanceCreationOptions CreateDefaultComponentCreationOptions()
-        {
-            return new InstanceCreationOptions
-            {
-                OptionalParameterResolution = Mocks.OptionalParameterResolution,
-            };
-        }
+            _ => Component = Mocks.CreateInstance<TComponent>(ComponentCreationFlags) ?? throw CannotCreateComponentException;
 
         #endregion
 
