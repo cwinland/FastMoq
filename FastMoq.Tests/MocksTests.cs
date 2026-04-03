@@ -1,5 +1,7 @@
 using FastMoq.Extensions;
 using FastMoq.Models;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
 using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +44,7 @@ namespace FastMoq.Tests
         }
 
         /// <inheritdoc />
-        public override void LoggingCallback(LogLevel logLevel, EventId eventId, string message) =>
+        public override void LoggingCallback(LogLevel logLevel, EventId eventId, string message, Exception? exception) =>
             output.WriteLine($"{logLevel} {eventId} {message}");
 
         [Fact]
@@ -1653,6 +1655,39 @@ namespace FastMoq.Tests
             mLogger.Invocations.Clear();
             mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
             mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
+        }
+
+        [Fact]
+        public void VerifyLogged_ShouldPass_WhenMatchesCapturedILoggerEntries()
+        {
+            var logger = Mocks.GetObject<ILogger<NullLogger>>();
+
+            logger.LogInformation("test");
+            logger.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
+
+            Mocks.VerifyLogged(LogLevel.Information, "test", 1);
+            Mocks.VerifyLogged(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1, 1);
+        }
+
+        [Fact]
+        public void VerifyLogged_ShouldThrow_WhenCapturedILoggerEntriesDoNotMatch()
+        {
+            var logger = Mocks.GetObject<ILogger<NullLogger>>();
+            logger.LogInformation("test");
+
+            Assert.Throws<InvalidOperationException>(() => Mocks.VerifyLogged(LogLevel.Information, "other", 1));
+            Assert.Throws<InvalidOperationException>(() => Mocks.VerifyLogged(LogLevel.Information, "test", 2));
+        }
+
+        [Fact]
+        public void VerifyLogged_ShouldThrowNotSupported_WhenActiveProviderDoesNotSupportLoggerCapture()
+        {
+            using var _ = MockingProviderRegistry.Push(NSubstituteMockingProvider.Instance);
+            var mocker = new Mocker();
+
+            var exception = Assert.Throws<NotSupportedException>(() => mocker.VerifyLogged(LogLevel.Information, "test", 1));
+
+            exception.Message.Should().Contain(nameof(NSubstituteMockingProvider));
         }
 
         [Fact]

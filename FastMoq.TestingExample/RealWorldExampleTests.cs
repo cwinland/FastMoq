@@ -47,8 +47,7 @@ namespace FastMoq.TestingExample
                         order.PaymentReference == "pay_12345"),
                     CancellationToken.None),
                     Times.Once);
-            Mocks.GetMock<ILogger<OrderProcessingService>>()
-                .VerifyLogger(LogLevel.Information, "Placed order", 1);
+            Mocks.VerifyLogged(LogLevel.Information, "Placed order", 1);
         }
 
         [Fact]
@@ -74,8 +73,7 @@ namespace FastMoq.TestingExample
                 .Verify(x => x.ChargeAsync(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<CancellationToken>()), Times.Never);
             Mocks.GetMock<IOrderRepository>()
                 .Verify(x => x.SaveAsync(It.IsAny<OrderRecord>(), It.IsAny<CancellationToken>()), Times.Never);
-            Mocks.GetMock<ILogger<OrderProcessingService>>()
-                .VerifyLogger(LogLevel.Warning, "Inventory reservation failed", 1);
+            Mocks.VerifyLogged(LogLevel.Warning, "Inventory reservation failed", 1);
         }
     }
 
@@ -102,8 +100,7 @@ namespace FastMoq.TestingExample
             importedCount.Should().Be(2);
             Mocks.GetMock<ICustomerRepository>()
                 .Verify(x => x.UpsertAsync(parsedRows, CancellationToken.None), Times.Once);
-            Mocks.GetMock<ILogger<CustomerImportService>>()
-                .VerifyLogger(LogLevel.Information, "Imported 2 customers", 1);
+            Mocks.VerifyLogged(LogLevel.Information, "Imported 2 customers", 1);
         }
 
         [Fact]
@@ -118,8 +115,7 @@ namespace FastMoq.TestingExample
                 .Verify(x => x.Parse(It.IsAny<string>()), Times.Never);
             Mocks.GetMock<ICustomerRepository>()
                 .Verify(x => x.UpsertAsync(It.IsAny<IReadOnlyList<CustomerImportRow>>(), It.IsAny<CancellationToken>()), Times.Never);
-            Mocks.GetMock<ILogger<CustomerImportService>>()
-                .VerifyLogger(LogLevel.Warning, "Import file was not found", 1);
+            Mocks.VerifyLogged(LogLevel.Warning, "Import file was not found", 1);
         }
     }
 
@@ -150,8 +146,7 @@ namespace FastMoq.TestingExample
                 .Verify<IEmailGateway>(x => x.SendReminderAsync("finance@fabrikam.test", 310m, CancellationToken.None), TimesSpec.Once)
                 .Execute();
 
-            Mocks.GetMock<ILogger<InvoiceReminderService>>()
-                .VerifyLogger(LogLevel.Information, "Sent 2 invoice reminders", 1);
+            Mocks.VerifyLogged(LogLevel.Information, "Sent 2 invoice reminders", 1);
         }
 
         [Fact]
@@ -184,8 +179,7 @@ namespace FastMoq.TestingExample
                 .Verify(x => x.GetPastDueAsync(now, CancellationToken.None), Times.Once);
             Mocks.GetMock<IEmailGateway>()
                 .Verify(x => x.SendReminderAsync("ap@contoso.test", 125m, CancellationToken.None), Times.Once);
-            Mocks.GetMock<ILogger<InvoiceReminderService>>()
-                .VerifyLogger(LogLevel.Information, "Sent 1 invoice reminders", 0);
+            Mocks.VerifyLogged(LogLevel.Information, "Sent 1 invoice reminders", 0);
         }
     }
 

@@ -1,5 +1,3 @@
-using System;
-
 namespace FastMoq.Providers
 {
     /// <summary>
@@ -11,5 +9,6 @@ namespace FastMoq.Providers
         bool SupportsSetupAllProperties { get; }
         bool SupportsProtectedMembers { get; }
         bool SupportsInvocationTracking { get; }
+        bool SupportsLoggerCapture { get; }
     }
 }

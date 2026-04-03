@@ -25,6 +25,7 @@ namespace FastMoq.Providers.ReflectionProvider
         public bool SupportsSetupAllProperties => false;
         public bool SupportsProtectedMembers => false;
         public bool SupportsInvocationTracking => true;
+        public bool SupportsLoggerCapture => false;
 
         // Target instance -> invocation records
         private static readonly ConcurrentDictionary<object, List<InvocationRecord>> _invocations = new();
@@ -57,7 +58,7 @@ namespace FastMoq.Providers.ReflectionProvider
         public void SetupAllProperties(IFastMock mock) { }
         public void SetCallBase(IFastMock mock, bool value) { }
         public void ConfigureProperties(IFastMock mock) { }
-        public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string> callback) { }
+        public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback) { }
         #endregion
 
         #region Verification

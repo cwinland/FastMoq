@@ -17,7 +17,7 @@ Those examples are backed by the `FastMoq.TestingExample` project and currently 
 
 - `MockerTestBase<TComponent>` in realistic service tests
 - built-in `IFileSystem` behavior with `MockFileSystem`
-- `VerifyLogger(...)` assertions
+- `VerifyLogged(...)` assertions
 - fluent `Scenario.With(...).When(...).Then(...).Verify(...)` usage inside `MockerTestBase<TComponent>`
 - provider-first verification with `TimesSpec`
 
@@ -51,7 +51,8 @@ The sample test projects intentionally showcase FastMoq extension helpers so you
 
 ### Logging Verification
 
-- Use `Mocks.GetMock<ILogger<T>>() .VerifyLogger(LogLevel.Information, "Message")` instead of direct invocation inspection.
+- Prefer `Mocks.VerifyLogged(LogLevel.Information, "Message")` for provider-safe logger assertions.
+- Use `GetMock<ILogger<T>>().VerifyLogger(...)` only as a Moq compatibility API during the v4 transition.
 
 ### Constructor & Dependency Injection
 
@@ -75,15 +76,14 @@ If you adapt these samples for Azure Functions HTTP triggers, use patterns simil
 4. Assert:
    - Outbound calls (verify `SendAsync`)
    - Response status & body (deserialize or use content helpers)
-   - Logs via `VerifyLogger`
+   - Logs via `VerifyLogged`
 
 Recommended layering:
 
 ```csharp
 var request = TestUtils.CreateHttpRequest(jsonBody, queryParams);
 var result = await Component.RunAsync(request, CancellationToken.None);
-Mocks.GetMock<ILogger<MyFunction>>()
-   .VerifyLogger(LogLevel.Information, "Processed event");
+Mocks.VerifyLogged(LogLevel.Information, "Processed event");
 ```
 
 While FastMoq does not ship Azure Functions request/response shims directly, it complements such utilities by supplying:
@@ -108,7 +108,7 @@ The current samples are intentionally minimal. Consider extending locally with:
 | Custom per‑test response | `SetupHttpMessage()` | Use multiple calls for sequential responses |
 | Mock EF Core context | `GetMockDbContext<T>()` | Auto sets up DbSets; seed data before use |
 | Replace concrete dependency | `AddType<T>()` | Pin deterministic instances (e.g., clock) |
-| Verify log message | `VerifyLogger(...)` | Works on `ILogger` or `ILogger<T>` mocks |
+| Verify log message | `VerifyLogged(...)` | Provider-safe assertion over captured `ILogger` entries |
 | Extract HTTP content | `GetStringContent` | Use for string assertions |
 
 > Tip: Prefer the extension helpers first; drop down to raw Moq setup only for edge cases.

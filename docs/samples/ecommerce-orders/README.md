@@ -192,9 +192,8 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         Mocks.GetMock<IOrderFulfillmentService>()
             .Verify(x => x.ProcessOrderAsync(orderMessage.OrderId), Times.Once);
 
-        // Prefer VerifyLogger extension on the logger mock (generic version)
-        Mocks.GetMock<ILogger<OrderProcessingService>>()
-            .VerifyLogger(LogLevel.Information, "Successfully processed order {OrderId}");
+        // Prefer provider-safe logger verification through captured entries
+        Mocks.VerifyLogged(LogLevel.Information, "Successfully processed order", 1);
     }
 
     [Fact]
@@ -217,8 +216,7 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         messageArgs.DeadLetterMessageAsync(It.IsAny<string>(), It.IsAny<string>())
             .Should().HaveBeenCalled();
             
-        Mocks.GetMock<ILogger<OrderProcessingService>>()
-            .VerifyLogger(LogLevel.Error);
+        Mocks.VerifyLogged(LogLevel.Error, "Processing failed", 1);
     }
 }
 ```

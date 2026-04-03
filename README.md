@@ -116,11 +116,12 @@ public class OrderProcessingServiceExamples : MockerTestBase<OrderProcessingServ
         result.Success.Should().BeTrue();
         Mocks.GetMock<IOrderRepository>()
             .Verify(x => x.SaveAsync(It.IsAny<OrderRecord>(), CancellationToken.None), Times.Once);
-        Mocks.GetMock<ILogger<OrderProcessingService>>()
-            .VerifyLogger(LogLevel.Information, "Placed order", 1);
+        Mocks.VerifyLogged(LogLevel.Information, "Placed order", 1);
     }
 }
 ```
+
+    `Mocks.VerifyLogged(...)` is the provider-safe logger assertion API. It verifies captured `ILogger` entries through the active provider contract instead of depending on a provider-specific mock surface. `VerifyLogger(...)` remains available only as a Moq compatibility helper during the v4 transition.
 
 ### Real-world example: fluent scenario style
 

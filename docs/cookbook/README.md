@@ -132,8 +132,7 @@ public class UsersControllerTests : MockerTestBase<UsersController>
         statusResult.StatusCode.Should().Be(500);
         
         // Verify logging
-        Mocks.GetMock<ILogger<UsersController>>()
-            .VerifyLogger(LogLevel.Error, Times.Once());
+        Mocks.VerifyLogged(LogLevel.Error, "Database error", 1);
     }
 
     [Fact]
@@ -525,9 +524,8 @@ public class BlogServiceTests : MockerTestBase<BlogService>
         dbContext.Blogs.Should().Contain(result);
         
         // Verify logging
-        Mocks.GetMock<ILogger<BlogService>>()
-            .VerifyLogger(LogLevel.Information, 
-            "Created blog {BlogId} with title {Title}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Created blog", 1);
     }
 
     [Fact]
@@ -707,12 +705,10 @@ public class EmailProcessingServiceTests : MockerTestBase<EmailProcessingService
         Mocks.GetMock<IEmailSender>()
             .Verify(x => x.SendAsync(emailMessage), Times.Once);
             
-        Mocks.GetMock<ILogger<EmailProcessingService>>()
-            .VerifyLogger(LogLevel.Information,
-            "Processing email to {Recipient}", Times.Once());
-        Mocks.GetMock<ILogger<EmailProcessingService>>()
-            .VerifyLogger(LogLevel.Information,
-            "Email sent successfully to {Recipient}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Processing email", 1);
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Email sent successfully", 1);
     }
 
     [Fact]
@@ -737,8 +733,7 @@ public class EmailProcessingServiceTests : MockerTestBase<EmailProcessingService
         await executeTask;
 
         // Assert
-        Mocks.GetMock<ILogger<EmailProcessingService>>()
-            .VerifyLogger(LogLevel.Error, Times.AtLeastOnce());
+        Mocks.VerifyLogged(LogLevel.Error, "SMTP error", 1);
     }
 
     [Fact]
@@ -930,10 +925,8 @@ public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
         result.Should().BeEquivalentTo(expectedWeatherData);
         
         // Verify logging
-        Mocks.GetMock<ILogger<WeatherService>>()
-            .VerifyLogger(LogLevel.Information, "Fetching weather for {City}", Times.Once());
-        Mocks.GetMock<ILogger<WeatherService>>()
-            .VerifyLogger(LogLevel.Information, "Successfully retrieved weather for {City}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information, "Fetching weather", 1);
+        Mocks.VerifyLogged(LogLevel.Information, "Successfully retrieved weather", 1);
     }
 
     [Fact]
@@ -954,8 +947,7 @@ public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
             
         exception.Message.Should().Contain(city);
         
-        Mocks.GetMock<ILogger<WeatherService>>()
-            .VerifyLogger(LogLevel.Error, Times.Once());
+        Mocks.VerifyLogged(LogLevel.Error, "City not found", 1);
     }
 
     [Fact]
@@ -1247,10 +1239,10 @@ public class EmailServiceTests : MockerTestBase<EmailService>
         // Assert
         result.Should().BeTrue();
         
-        Mocks.VerifyLogger<EmailService>(LogLevel.Information,
-            "Sending email to {Recipient} via {SmtpHost}:{SmtpPort}", Times.Once());
-        Mocks.VerifyLogger<EmailService>(LogLevel.Information,
-            "Email sent successfully to {Recipient}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Sending email", 1);
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Email sent successfully", 1);
     }
 
     [Fact]
@@ -1267,7 +1259,7 @@ public class EmailServiceTests : MockerTestBase<EmailService>
 
         // Assert
         result.Should().BeFalse();
-        Mocks.VerifyLogger<EmailService>(LogLevel.Error, "SMTP host not configured", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Error, "SMTP host not configured", 1);
     }
 
     [Fact]
@@ -1324,9 +1316,8 @@ public class EmailServiceWithMonitorTests : MockerTestBase<EmailService>
         await Component.SendEmailAsync("test@example.com", "Subject", "Body");
 
         // Assert
-        Mocks.VerifyLogger<EmailService>(LogLevel.Information,
-            "Sending email to {Recipient} via {SmtpHost}:{SmtpPort}",
-            Times.Exactly(2));
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Sending email", 2);
     }
 }
 ```
@@ -1339,20 +1330,21 @@ FastMoq provides powerful helpers for testing logging behavior through the `Fast
 
 ### Proper Logger Verification Pattern
 
-Always use the `VerifyLogger` extension method on the mock logger:
+Prefer the provider-safe `VerifyLogged` helper on `Mocks`:
 
 ```csharp
-// ✅ CORRECT - Use extension method on mock
-Mocks.GetMock<ILogger<MyService>>()
-    .VerifyLogger(LogLevel.Information, "Processing complete", Times.Once());
+// ✅ CORRECT - Provider-safe assertion through captured ILogger entries
+Mocks.VerifyLogged(LogLevel.Information, "Processing complete", 1);
 
 // ✅ CORRECT - With exception verification
-Mocks.GetMock<ILogger<MyService>>()
-    .VerifyLogger(LogLevel.Error, "Error occurred", exception, Times.Once());
+Mocks.VerifyLogged(LogLevel.Error, "Error occurred", exception, times: 1);
 
-// ❌ INCORRECT - Old pattern (deprecated)
-Mocks.VerifyLogger<MyService>(LogLevel.Information, "Processing complete", Times.Once());
+// ⚠️ COMPATIBILITY ONLY - Moq-specific legacy helper
+Mocks.GetMock<ILogger<MyService>>()
+    .VerifyLogger(LogLevel.Information, "Processing complete", 1);
 ```
+
+`VerifyLogged(...)` is provider-safe because the active provider is responsible for wiring `ILogger` capture through `IMockingProvider.ConfigureLogger(...)`, while FastMoq core owns the assertion semantics. Providers that cannot capture logger callbacks advertise that through capabilities and FastMoq fails fast instead of silently giving a false negative.
 
 ### Service with Logging
 
@@ -1441,17 +1433,17 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         result.IsSuccess.Should().BeTrue();
 
         // Verify logging sequence
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Information,
-            "Starting order processing for order {OrderId}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Starting order processing for order", 1);
         
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Debug,
-            "Order {OrderId} retrieved: {OrderTotal:C}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Debug,
+            "retrieved", 1);
             
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Information,
-            "Order {OrderId} processed successfully", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information,
+            "processed successfully", 1);
 
         // Verify no error logging
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Error, Times.Never());
+        Mocks.VerifyLogged(LogLevel.Error, "Unexpected error", 0);
     }
 
     [Fact]
@@ -1470,8 +1462,8 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         // Assert
         result.IsNotFound.Should().BeTrue();
         
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Warning,
-            "Order {OrderId} not found", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Warning,
+            "not found", 1);
     }
 
     [Fact]
@@ -1500,8 +1492,8 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         // Assert
         result.IsPaymentFailed.Should().BeTrue();
         
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Error,
-            "Payment failed for order {OrderId}: {ErrorMessage}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Error,
+            "Payment failed for order", 1);
     }
 
     [Fact]
@@ -1521,9 +1513,10 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
 
         thrownException.Should().Be(expectedException);
         
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Error,
-            "Unexpected error processing order {OrderId}", 
-            expectedException, Times.Once());
+        Mocks.VerifyLogged(LogLevel.Error,
+            "Unexpected error processing order",
+            expectedException,
+            times: 1);
     }
 
     [Fact]
@@ -1626,7 +1619,7 @@ public class LoggingAdvancedTests : MockerTestBase<OrderProcessingService>
         // Assert
         stopwatch.ElapsedMilliseconds.Should().BeLessThan(5000); // Performance assertion
         
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Information, Times.Exactly(200)); // 2 info logs per order
+        Mocks.VerifyLogged(LogLevel.Information, "order", 200); // 2 info logs per order
     }
 }
 ```

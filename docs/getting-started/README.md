@@ -198,8 +198,7 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
         result.Should().BeEmpty();
         
         // Verify logging
-        Mocks.GetMock<ILogger<FileProcessorService>>()
-            .VerifyLogger(LogLevel.Warning, Times.Once());
+        Mocks.VerifyLogged(LogLevel.Warning, "not found", 1);
         
         // Verify file was never read
         Mocks.GetMock<IFileSystem>()
@@ -347,7 +346,13 @@ Now that you understand the basics, explore these advanced topics:
 5. **Include proper using statements** - Always include `FastMoq.Extensions` for logger verification helpers
 6. **Verify important interactions** but avoid over-verification
 7. **Group related tests** in the same test class
-8. **Use proper logger verification** with `GetMock<ILogger<T>>().VerifyLogger()` pattern
+8. **Use provider-safe logger verification** with `Mocks.VerifyLogged(...)`
+
+### Logger verification guidance
+
+Prefer `Mocks.VerifyLogged(...)` for new code. It is provider-safe because FastMoq captures `ILogger` callbacks through the active `IMockingProvider` and verifies the captured entries in core.
+
+Use `GetMock<ILogger<T>>().VerifyLogger(...)` only when you intentionally want Moq-specific behavior. That API is now a compatibility shim and is planned to leave core in v5.
 
 ## Troubleshooting
 

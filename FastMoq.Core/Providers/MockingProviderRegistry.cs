@@ -2,8 +2,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using FastMoq.Providers.MoqProvider;
-using FastMoq.Core.Providers.NSubstituteProvider; // added
-using FastMoq.Providers.ReflectionProvider; // added reflection provider
+using FastMoq.Providers.NSubstituteProvider;
+using FastMoq.Providers.ReflectionProvider;
 
 namespace FastMoq.Providers
 {

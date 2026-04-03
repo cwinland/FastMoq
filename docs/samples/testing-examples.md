@@ -22,7 +22,7 @@ They demonstrate:
 - `MockerTestBase<TComponent>` for normal component creation and dependency auto-injection
 - `Mocks.GetMock<T>()` for arrange and verify flows
 - built-in `IFileSystem` behavior via the predefined `MockFileSystem`
-- `VerifyLogger(...)` for structured logging assertions
+- `VerifyLogged(...)` for provider-safe structured logging assertions
 - `Scenario.With(...).When(...).Then(...).Verify(...)` for the fluent scenario style inside `MockerTestBase<TComponent>`
 - provider-first verification through `TimesSpec`
 
@@ -62,8 +62,7 @@ public class OrderProcessingServiceExamples : MockerTestBase<OrderProcessingServ
         result.Success.Should().BeTrue();
         Mocks.GetMock<IOrderRepository>()
             .Verify(x => x.SaveAsync(It.IsAny<OrderRecord>(), CancellationToken.None), Times.Once);
-        Mocks.GetMock<ILogger<OrderProcessingService>>()
-            .VerifyLogger(LogLevel.Information, "Placed order", 1);
+        Mocks.VerifyLogged(LogLevel.Information, "Placed order", 1);
     }
 }
 ```

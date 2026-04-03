@@ -349,11 +349,15 @@
           "TestableIO.System.IO.Abstractions": "21.3.1"
         }
       },
+      "fastmoq.abstractions": {
+        "type": "Project"
+      },
       "fastmoq.core": {
         "type": "Project",
         "dependencies": {
-          "Moq": "[4.18.4, )",
-          "NSubstitute": "[5.3.0, )",
+          "FastMoq.Abstractions": "[1.0.0, )",
+          "FastMoq.Provider.Moq": "[1.0.0, )",
+          "FastMoq.Provider.NSubstitute": "[1.0.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, )",
           "xunit.abstractions": "[2.0.3, )"
         }
@@ -364,6 +368,20 @@
           "FastMoq.Core": "[1.0.0, )",
           "Microsoft.EntityFrameworkCore.InMemory": "[10.*, )",
           "Moq": "[4.18.4, )"
+        }
+      },
+      "fastmoq.provider.moq": {
+        "type": "Project",
+        "dependencies": {
+          "FastMoq.Abstractions": "[1.0.0, )",
+          "Moq": "[4.18.4, )"
+        }
+      },
+      "fastmoq.provider.nsubstitute": {
+        "type": "Project",
+        "dependencies": {
+          "FastMoq.Abstractions": "[1.0.0, )",
+          "NSubstitute": "[5.3.0, )"
         }
       },
       "fastmoq.web": {
@@ -796,11 +814,15 @@
           "TestableIO.System.IO.Abstractions": "21.3.1"
         }
       },
+      "fastmoq.abstractions": {
+        "type": "Project"
+      },
       "fastmoq.core": {
         "type": "Project",
         "dependencies": {
-          "Moq": "[4.18.4, )",
-          "NSubstitute": "[5.3.0, )",
+          "FastMoq.Abstractions": "[1.0.0, )",
+          "FastMoq.Provider.Moq": "[1.0.0, )",
+          "FastMoq.Provider.NSubstitute": "[1.0.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, )",
           "xunit.abstractions": "[2.0.3, )"
         }
@@ -811,6 +833,20 @@
           "FastMoq.Core": "[1.0.0, )",
           "Microsoft.EntityFrameworkCore.InMemory": "[8.*, )",
           "Moq": "[4.18.4, )"
+        }
+      },
+      "fastmoq.provider.moq": {
+        "type": "Project",
+        "dependencies": {
+          "FastMoq.Abstractions": "[1.0.0, )",
+          "Moq": "[4.18.4, )"
+        }
+      },
+      "fastmoq.provider.nsubstitute": {
+        "type": "Project",
+        "dependencies": {
+          "FastMoq.Abstractions": "[1.0.0, )",
+          "NSubstitute": "[5.3.0, )"
         }
       },
       "fastmoq.web": {
@@ -1224,11 +1260,15 @@
           "TestableIO.System.IO.Abstractions": "21.3.1"
         }
       },
+      "fastmoq.abstractions": {
+        "type": "Project"
+      },
       "fastmoq.core": {
         "type": "Project",
         "dependencies": {
-          "Moq": "[4.18.4, )",
-          "NSubstitute": "[5.3.0, )",
+          "FastMoq.Abstractions": "[1.0.0, )",
+          "FastMoq.Provider.Moq": "[1.0.0, )",
+          "FastMoq.Provider.NSubstitute": "[1.0.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, )",
           "xunit.abstractions": "[2.0.3, )"
         }
@@ -1239,6 +1279,20 @@
           "FastMoq.Core": "[1.0.0, )",
           "Microsoft.EntityFrameworkCore.InMemory": "[9.*, )",
           "Moq": "[4.18.4, )"
+        }
+      },
+      "fastmoq.provider.moq": {
+        "type": "Project",
+        "dependencies": {
+          "FastMoq.Abstractions": "[1.0.0, )",
+          "Moq": "[4.18.4, )"
+        }
+      },
+      "fastmoq.provider.nsubstitute": {
+        "type": "Project",
+        "dependencies": {
+          "FastMoq.Abstractions": "[1.0.0, )",
+          "NSubstitute": "[5.3.0, )"
         }
       },
       "fastmoq.web": {

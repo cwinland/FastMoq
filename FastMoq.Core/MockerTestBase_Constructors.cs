@@ -72,7 +72,7 @@ namespace FastMoq
             Component = GetComponent();
         }
 
-        public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message)
+        public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message, Exception? exception)
         {
             Console.WriteLine($"LogLevel: {logLevel}, EventId: {eventId}, Message: {message}");
         }

@@ -69,9 +69,11 @@ namespace FastMoq
         private readonly Dictionary<ServiceRegistrationKey, IInstanceModel> keyedTypeMap = new();
         internal Dictionary<Type, IInstanceModel> typeMap = new();
         private readonly ObservableExceptionLog exceptionLog = new();
+        private readonly ObservableLogEntries logEntries = new();
+        private readonly Action<LogLevel, EventId, string, Exception?> externalLoggingCallback;
         public ConstructorHistory ConstructorHistory { get; } = new();
 
-        public Action<LogLevel, EventId, string> LoggingCallback { get; }
+        public Action<LogLevel, EventId, string, Exception?> LoggingCallback { get; }
         public OptionalParameterResolutionMode OptionalParameterResolution { get; set; } = OptionalParameterResolutionMode.UseDefaultOrNull;
         public MockerPolicyOptions Policy { get; } = new();
 
@@ -121,6 +123,7 @@ namespace FastMoq
                 : OptionalParameterResolutionMode.UseDefaultOrNull;
         }
         public ObservableExceptionLog ExceptionLog => exceptionLog;
+        public ObservableLogEntries LogEntries => logEntries;
         public HttpClient HttpClient { get; }
         public Uri Uri { get; }
         public bool InnerMockResolution { get; set; } = true;
@@ -173,18 +176,25 @@ namespace FastMoq
         }
 
         #region Ctors
-        public Mocker() : this((_, _, _) => { }) { }
-        public Mocker(Action<LogLevel, EventId, string> loggingCallback)
+        public Mocker() : this((_, _, _, _) => { }) { }
+        public Mocker(Action<LogLevel, EventId, string, Exception?> loggingCallback)
         {
             ProviderBootstrap.Ensure();
             fileSystem = new MockFileSystem();
             HttpClient = this.CreateHttpClient();
             Uri = HttpClient.BaseAddress ?? new Uri("http://localhost");
-            LoggingCallback = loggingCallback;
+            externalLoggingCallback = loggingCallback;
+            LoggingCallback = CaptureLogEntry;
         }
         public Mocker(Dictionary<Type, IInstanceModel> map) : this() => typeMap = map;
-        public Mocker(Dictionary<Type, IInstanceModel> map, Action<LogLevel, EventId, string> loggingCallback) : this(loggingCallback) => typeMap = map;
+        public Mocker(Dictionary<Type, IInstanceModel> map, Action<LogLevel, EventId, string, Exception?> loggingCallback) : this(loggingCallback) => typeMap = map;
         #endregion
+
+        private void CaptureLogEntry(LogLevel logLevel, EventId eventId, string message, Exception? exception)
+        {
+            logEntries.Add(new LogEntry(logLevel, eventId, message, exception));
+            externalLoggingCallback(logLevel, eventId, message, exception);
+        }
 
         #region Type Mapping
         internal IReadOnlyList<KnownTypeRegistration> KnownTypeRegistrations => knownTypeRegistrations;
@@ -618,9 +628,9 @@ namespace FastMoq
             if (Behavior.Has(MockFeatures.LoggerCallback))
             {
                 var mockedType = fast.MockedType;
-                if (typeof(ILogger).IsAssignableFrom(mockedType))
+                if (provider.Capabilities.SupportsLoggerCapture && typeof(ILogger).IsAssignableFrom(mockedType))
                 {
-                    try { provider.ConfigureLogger(fast, LoggingCallback); } catch { }
+                    provider.ConfigureLogger(fast, LoggingCallback);
                 }
             }
             var obj = fast.Instance;
@@ -1468,7 +1478,7 @@ namespace FastMoq
                 AddProperties(type, fastMock.Instance);
             }
 
-            if (Behavior.Has(MockFeatures.LoggerCallback) && type.IsAssignableTo(typeof(ILogger)))
+            if (Behavior.Has(MockFeatures.LoggerCallback) && provider.Capabilities.SupportsLoggerCapture && type.IsAssignableTo(typeof(ILogger)))
             {
                 provider.ConfigureLogger(fastMock, LoggingCallback);
             }
@@ -1506,10 +1516,10 @@ namespace FastMoq
             catch { }
         }
 
-        internal static void SetupLoggerCallback<TLogger>(Mock<TLogger> logger, Action<LogLevel, EventId, string> callback) where TLogger : class, ILogger
+        internal static void SetupLoggerCallback<TLogger>(Mock<TLogger> logger, Action<LogLevel, EventId, string, Exception?> callback) where TLogger : class, ILogger
         {
             logger.Setup(x => x.Log(It.IsAny<LogLevel>(), It.IsAny<EventId>(), It.IsAny<It.IsAnyType>(), It.IsAny<Exception>(), (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()))
-                  .Callback((LogLevel level, EventId evt, object state, Exception? ex, object formatter) => callback(level, evt, state?.ToString() ?? string.Empty));
+                  .Callback((LogLevel level, EventId evt, object state, Exception? ex, object formatter) => callback(level, evt, state?.ToString() ?? string.Empty, ex));
         }
         #endregion
 

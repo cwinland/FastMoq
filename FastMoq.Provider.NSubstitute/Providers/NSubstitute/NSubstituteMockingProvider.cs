@@ -7,22 +7,24 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.Core;
 
-namespace FastMoq.Core.Providers.NSubstituteProvider
+namespace FastMoq.Providers.NSubstituteProvider
 {
-    // Expanded NSubstitute adapter implementation with TimesSpec + basic call tracking
-    internal sealed class NSubstituteMockingProvider : IMockingProvider, IMockingProviderCapabilities
+    public sealed class NSubstituteMockingProvider : IMockingProvider, IMockingProviderCapabilities
     {
-        public static readonly NSubstituteMockingProvider Instance = new();
-        private NSubstituteMockingProvider() { }
-        public IMockingProviderCapabilities Capabilities => this;
+        private static readonly ConcurrentDictionary<object, ConcurrentBag<ICall>> VerifiedCalls = new();
 
+        public static readonly NSubstituteMockingProvider Instance = new();
+
+        private NSubstituteMockingProvider()
+        {
+        }
+
+        public IMockingProviderCapabilities Capabilities => this;
         public bool SupportsCallBase => false;
         public bool SupportsSetupAllProperties => false;
         public bool SupportsProtectedMembers => false;
         public bool SupportsInvocationTracking => true;
-
-        // Tracks calls that have been verified so VerifyNoOtherCalls can detect extras.
-        private static readonly ConcurrentDictionary<object, ConcurrentBag<ICall>> _verifiedCalls = new();
+        public bool SupportsLoggerCapture => false;
 
         public IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class
         {
@@ -34,26 +36,37 @@ namespace FastMoq.Core.Providers.NSubstituteProvider
             }
             else
             {
-                // Use non-generic overload (works for classes with virtual members); constructor args honored when possible.
                 substitute = (T)Substitute.For(new[] { typeof(T) }, options.ConstructorArgs ?? Array.Empty<object?>());
             }
+
             return new NSubFastMock<T>(substitute);
         }
 
         public IFastMock CreateMock(Type type, MockCreationOptions? options = null)
         {
+            ArgumentNullException.ThrowIfNull(type);
+
             options ??= new();
-            object substitute = Substitute.For(new[] { type }, options.ConstructorArgs ?? Array.Empty<object?>());
+            var substitute = Substitute.For(new[] { type }, options.ConstructorArgs ?? Array.Empty<object?>());
             var wrapper = typeof(NSubFastMock<>).MakeGenericType(type);
             return (IFastMock)Activator.CreateInstance(wrapper, substitute)!;
         }
 
-        public void SetupAllProperties(IFastMock mock) { }
-        public void SetCallBase(IFastMock mock, bool value) { }
+        public void SetupAllProperties(IFastMock mock)
+        {
+        }
+
+        public void SetCallBase(IFastMock mock, bool value)
+        {
+        }
 
         public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
         {
-            if (expression is null) return;
+            if (expression is null)
+            {
+                return;
+            }
+
             times ??= default;
             var target = mock.Instance;
 
@@ -62,6 +75,7 @@ namespace FastMoq.Core.Providers.NSubstituteProvider
                 ExecuteWithWrapper(target.DidNotReceive, expression);
                 return;
             }
+
             if (times.Value.Exactly is int exactly)
             {
                 ExecuteWithWrapper(() => target.Received(exactly), expression);
@@ -77,29 +91,40 @@ namespace FastMoq.Core.Providers.NSubstituteProvider
                 return;
             }
 
-            var received = target.ReceivedCalls().Where(c => c.GetMethodInfo() == method && c.GetArguments().Length == argCount).ToList();
+            var received = target.ReceivedCalls().Where(call => call.GetMethodInfo() == method && call.GetArguments().Length == argCount).ToList();
             if (times.Value.AtLeast is int atLeast)
             {
                 if (received.Count < atLeast)
+                {
                     throw new InvalidOperationException($"Expected at least {atLeast} call(s) to {method.Name} but found {received.Count}.");
+                }
+
                 ExecuteWithWrapper(target.Received, expression);
                 MarkSpecificCallsVerified(target, received);
                 return;
             }
+
             if (times.Value.AtMost is int atMost)
             {
                 if (received.Count > atMost)
+                {
                     throw new InvalidOperationException($"Expected at most {atMost} call(s) to {method.Name} but found {received.Count}.");
+                }
+
                 if (received.Count > 0)
                 {
                     ExecuteWithWrapper(target.Received, expression);
                     MarkSpecificCallsVerified(target, received);
                 }
+
                 return;
             }
 
             if (!received.Any())
+            {
                 throw new InvalidOperationException($"Expected at least one call to {method.Name} but found none.");
+            }
+
             ExecuteWithWrapper(target.Received, expression);
             MarkSpecificCallsVerified(target, received);
         }
@@ -108,65 +133,104 @@ namespace FastMoq.Core.Providers.NSubstituteProvider
         {
             var target = mock.Instance;
             var all = target.ReceivedCalls().ToList();
-            if (!_verifiedCalls.TryGetValue(target, out var verifiedBag)) return;
+            if (!VerifiedCalls.TryGetValue(target, out var verifiedBag))
+            {
+                return;
+            }
+
             var verified = verifiedBag.ToList();
             var extras = all.Except(verified).ToList();
             if (extras.Count > 0)
             {
-                var summary = string.Join(", ", extras.Select(c => c.GetMethodInfo().Name));
+                var summary = string.Join(", ", extras.Select(call => call.GetMethodInfo().Name));
                 throw new InvalidOperationException($"Unexpected additional calls detected: {summary}");
             }
         }
 
-        public void ConfigureProperties(IFastMock mock) { }
-        public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string> callback) { }
-        public object? TryGetLegacy(IFastMock mock) => null;
-
-        private static void ExecuteWithWrapper<T>(Func<T> wrapperFactory, Expression<Action<T>> expr) where T : class
+        public void ConfigureProperties(IFastMock mock)
         {
-            var wrapper = wrapperFactory();
-            expr.Compile()(wrapper);
         }
 
-        private static (System.Reflection.MethodInfo? method, int argCount) ExtractMethodMeta<T>(Expression<Action<T>> expr)
+        public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback)
         {
-            if (expr.Body is MethodCallExpression mce) return (mce.Method, mce.Arguments.Count);
+        }
+
+        public object? TryGetLegacy(IFastMock mock) => null;
+
+        private static void ExecuteWithWrapper<T>(Func<T> wrapperFactory, Expression<Action<T>> expression) where T : class
+        {
+            var wrapper = wrapperFactory();
+            expression.Compile()(wrapper);
+        }
+
+        private static (System.Reflection.MethodInfo? method, int argCount) ExtractMethodMeta<T>(Expression<Action<T>> expression)
+        {
+            if (expression.Body is System.Linq.Expressions.MethodCallExpression methodCallExpression)
+            {
+                return (methodCallExpression.Method, methodCallExpression.Arguments.Count);
+            }
+
             return (null, 0);
         }
 
-        private static void MarkCallsVerified<T>(T target, Expression<Action<T>> expr, int expected) where T : class
+        private static void MarkCallsVerified<T>(T target, Expression<Action<T>> expression, int expected) where T : class
         {
-            var (method, argCount) = ExtractMethodMeta(expr);
-            if (method == null) return;
-            var calls = target.ReceivedCalls().Where(c => c.GetMethodInfo() == method && c.GetArguments().Length == argCount).Take(expected).ToList();
-            if (!calls.Any()) return;
-            var bag = _verifiedCalls.GetOrAdd(target, _ => new ConcurrentBag<ICall>());
-            foreach (var c in calls) bag.Add(c);
+            var (method, argCount) = ExtractMethodMeta(expression);
+            if (method == null)
+            {
+                return;
+            }
+
+            var calls = target.ReceivedCalls().Where(call => call.GetMethodInfo() == method && call.GetArguments().Length == argCount).Take(expected).ToList();
+            if (!calls.Any())
+            {
+                return;
+            }
+
+            var bag = VerifiedCalls.GetOrAdd(target, _ => new ConcurrentBag<ICall>());
+            foreach (var call in calls)
+            {
+                bag.Add(call);
+            }
         }
 
         private static void MarkSpecificCallsVerified<T>(T target, System.Collections.Generic.IEnumerable<ICall> calls) where T : class
         {
-            var list = calls.ToList();
-            if (!list.Any()) return;
-            var bag = _verifiedCalls.GetOrAdd(target, _ => new ConcurrentBag<ICall>());
-            foreach (var c in list) bag.Add(c);
+            var callList = calls.ToList();
+            if (!callList.Any())
+            {
+                return;
+            }
+
+            var bag = VerifiedCalls.GetOrAdd(target, _ => new ConcurrentBag<ICall>());
+            foreach (var call in callList)
+            {
+                bag.Add(call);
+            }
         }
 
         private sealed class NSubFastMock<T> : IFastMock<T> where T : class
         {
-            public NSubFastMock(T instance) => Instance = instance;
+            public NSubFastMock(T instance)
+            {
+                Instance = instance;
+            }
+
             public Type MockedType => typeof(T);
             public T Instance { get; }
             public object NativeMock => Instance;
             object IFastMock.Instance => Instance!;
+
             public void Reset()
             {
                 try
                 {
                     Instance.ClearReceivedCalls();
-                    _verifiedCalls.TryRemove(Instance, out _);
+                    VerifiedCalls.TryRemove(Instance, out _);
                 }
-                catch { }
+                catch
+                {
+                }
             }
         }
     }
