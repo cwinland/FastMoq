@@ -19,7 +19,7 @@ Those examples are backed by the `FastMoq.TestingExample` project and currently 
 - built-in `IFileSystem` behavior with `MockFileSystem`
 - `VerifyLogged(...)` assertions
 - fluent `Scenario.With(...).When(...).Then(...).Verify(...)` usage inside `MockerTestBase<TComponent>`
-- provider-first verification with `TimesSpec`
+- provider-first verification with `TimesSpec.Once`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, `TimesSpec.AtMost(...)`, and `TimesSpec.Never()`
 
 ## Common Patterns Demonstrated
 
@@ -52,7 +52,7 @@ The sample test projects intentionally showcase FastMoq extension helpers so you
 ### Logging Verification
 
 - Prefer `Mocks.VerifyLogged(LogLevel.Information, "Message")` for provider-safe logger assertions.
-- Use `GetMock<ILogger<T>>().VerifyLogger(...)` only as a Moq compatibility API during the v4 transition.
+- Use `GetMock<ILogger<T>>().VerifyLogger(...)` only when you intentionally want the legacy Moq-specific compatibility API during the v4 transition.
 
 ### Constructor & Dependency Injection
 

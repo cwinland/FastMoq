@@ -94,25 +94,25 @@ namespace FastMoq.Providers.MoqProvider
                 return;
             }
 
-            if (times?.Exactly is int exactly)
+            if (times?.Mode == TimesSpecMode.Exactly)
             {
-                moqMock.Verify(expression, Times.Exactly(exactly));
+                moqMock.Verify(expression, Times.Exactly(times.Value.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.")));
                 return;
             }
 
-            if (times?.AtLeast is int atLeast)
+            if (times?.Mode == TimesSpecMode.AtLeast)
             {
-                moqMock.Verify(expression, Times.AtLeast(atLeast));
+                moqMock.Verify(expression, Times.AtLeast(times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.")));
                 return;
             }
 
-            if (times?.AtMost is int atMost)
+            if (times?.Mode == TimesSpecMode.AtMost)
             {
-                moqMock.Verify(expression, Times.AtMost(atMost));
+                moqMock.Verify(expression, Times.AtMost(times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.")));
                 return;
             }
 
-            if (times?.Never == true)
+            if (times?.Mode == TimesSpecMode.Never)
             {
                 moqMock.Verify(expression, Times.Never());
                 return;

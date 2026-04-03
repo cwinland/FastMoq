@@ -10,10 +10,6 @@ This cookbook contains practical recipes for common testing scenarios using Fast
 4. [HttpClient and External API Testing](#httpclient-and-external-api-testing)
 5. [Configuration and Options Testing](#configuration-and-options-testing)
 6. [Logging Verification](#logging-verification)
-7. [Azure Services Testing](#azure-services-testing)
-8. [Fluent Validation Testing](#fluent-validation-testing)
-9. [Event-Driven Architecture Testing](#event-driven-architecture-testing)
-10. [File System Operations](#file-system-operations)
 
 ---
 
@@ -23,7 +19,7 @@ Testing ASP.NET Core controllers with dependency injection and various scenarios
 
 ### Basic Controller Test
 
-**Controller Example**
+#### Controller Example
 
 ```csharp
 [ApiController]
@@ -69,7 +65,7 @@ public class UsersController : ControllerBase
 }
 ```
 
-**Test Example**
+#### Test Example
 
 ```csharp
 using FastMoq;
@@ -410,7 +406,7 @@ public class UsersControllerHelperAuthTests : MockerTestBase<UsersController>
 FastMoq provides these built-in identity helper methods from `IdentityHelperExtensions.cs`:
 
 | Method | Description | Example Usage |
-|--------|-------------|---------------|
+| ------ | ----------- | ------------- |
 | `CreateClaim(type, value, properties, allowCustomType)` | Creates a validated claim | `IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, "user123")` |
 | `CreatePrincipal(claims, authenticationType)` | Creates a ClaimsPrincipal from claims | `IdentityHelperExtensions.CreatePrincipal(claims, "TestAuth")` |
 | `SetUser(context, principal)` | Sets user on HttpContext | `context.SetUser(principal)` |
@@ -1106,7 +1102,7 @@ public class WeatherServiceContentTests : MockerTestBase<WeatherService>
 FastMoq provides several convenient methods for HTTP testing:
 
 | Method | Purpose | Best For |
-|--------|---------|----------|
+| ------ | ------- | -------- |
 | `CreateHttpClient()` | Quick setup with defaults | Simple scenarios with standard responses |
 | `SetupHttpMessage()` | Fine-grained response control | Complex scenarios, custom headers, error cases |
 | `GetStringContent()` | Extract string from HttpContent | Reading response content in tests |
@@ -1340,6 +1336,7 @@ Mocks.VerifyLogged(LogLevel.Information, "Processing complete", 1);
 Mocks.VerifyLogged(LogLevel.Error, "Error occurred", exception, times: 1);
 
 // ⚠️ COMPATIBILITY ONLY - Moq-specific legacy helper
+// Use only when you intentionally want the legacy Moq-specific surface.
 Mocks.GetMock<ILogger<MyService>>()
     .VerifyLogger(LogLevel.Information, "Processing complete", 1);
 ```

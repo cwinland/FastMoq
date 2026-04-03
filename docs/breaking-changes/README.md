@@ -92,6 +92,21 @@ This breaking change is currently specific to strict `IFileSystem` mock enrichme
 
 In other words, the repo did not broadly change every built-in type to ignore strict-mode behavior. The compatibility break identified here is the tracked `IFileSystem` mock path.
 
+## Historical package-line change summary
+
+The root README previously carried this older package-line summary. It is kept here so compatibility notes live in one place.
+
+- `3.0` => .NET 9 added; `FindBestMatch` updated; component creation changes; logging callbacks and helpers updated
+- `2.28` => .NET 7 removed from support
+- `2.25` => some methods moved to extensions that are no longer on `MockerTestBase` or `Mocker`; extra `CreateInstance<T>` methods removed
+- `2.23.200` => .NET 8 support added
+- `2.23.x` => .NET Core 5 support removed
+- `2.22.1215` => .NET Core 3.1 removed from `FastMoq.Core`; .NET Core 5 deprecated; package supporting .NET Core 5.0 moved from `FastMoq` to `FastMoq.Core`
+- `1.22.810` => setters removed from `MockerTestBase` virtual methods `SetupMocksAction`, `CreateComponentAction`, and `CreatedComponentAction`
+- `1.22.810` => package dependencies updated
+- `1.22.728` => `Initialize` resets the mock if it already exists unless the `reset` parameter is set to `false`
+- `1.22.604` => `Mocks` renamed to `Mocker`; `TestBase` renamed to `MockerTestBase`
+
 ## Related docs
 
 - [What's New Since 3.0.0](../whats-new/README.md)

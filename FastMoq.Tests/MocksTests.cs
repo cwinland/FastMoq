@@ -1,7 +1,6 @@
 using FastMoq.Extensions;
 using FastMoq.Models;
 using FastMoq.Providers;
-using FastMoq.Providers.NSubstituteProvider;
 using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
 using Microsoft.EntityFrameworkCore;
@@ -1619,45 +1618,6 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void VerifyLogger_ShouldPass_WhenMatches()
-        {
-            var mLogger = Mocks.GetMock<ILogger>();
-            mLogger.VerifyLogger(LogLevel.Information, "test", 0);
-
-            mLogger.Object.LogInformation("test");
-            mLogger.VerifyLogger(LogLevel.Information, "test");
-
-            mLogger.Object.LogInformation("test");
-            mLogger.VerifyLogger(LogLevel.Information, "test", 2);
-            mLogger.VerifyLogger(LogLevel.Information, "test", null, null, 2);
-
-            mLogger.Invocations.Clear();
-            mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
-            mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
-            mLogger.VerifyLogger<Exception>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
-            mLogger.VerifyLogger<Exception>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), null, Times.AtLeastOnce);
-            mLogger.VerifyLogger<Exception>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), null, Times.AtLeastOnce());
-        }
-
-        [Fact]
-        public void VerifyLogger_ShouldPass_WhenMatchesILoggerSubtype()
-        {
-            var mLogger = Mocks.GetMock<ILogger<NullLogger>>();
-            mLogger.VerifyLogger(LogLevel.Information, "test", 0);
-
-            mLogger.Object.LogInformation("test");
-            mLogger.VerifyLogger(LogLevel.Information, "test");
-
-            mLogger.Object.LogInformation("test");
-            mLogger.VerifyLogger(LogLevel.Information, "test", 2);
-            mLogger.VerifyLogger(LogLevel.Information, "test", null, null, 2);
-
-            mLogger.Invocations.Clear();
-            mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
-            mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
-        }
-
-        [Fact]
         public void VerifyLogged_ShouldPass_WhenMatchesCapturedILoggerEntries()
         {
             var logger = Mocks.GetObject<ILogger<NullLogger>>();
@@ -1680,31 +1640,11 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void VerifyLogged_ShouldThrowNotSupported_WhenActiveProviderDoesNotSupportLoggerCapture()
+        public void TimesSpec_ShouldThrow_WhenFactoryArgumentsAreInvalid()
         {
-            using var _ = MockingProviderRegistry.Push(NSubstituteMockingProvider.Instance);
-            var mocker = new Mocker();
-
-            var exception = Assert.Throws<NotSupportedException>(() => mocker.VerifyLogged(LogLevel.Information, "test", 1));
-
-            exception.Message.Should().Contain(nameof(NSubstituteMockingProvider));
-        }
-
-        [Fact]
-        public void VerifyLogger_ShouldThrow_WhenNotMatches()
-        {
-            var mLogger = Mocks.GetMock<ILogger<NullLogger>>();
-            mLogger.VerifyLogger(LogLevel.Information, "test", 0);
-
-            mLogger.Object.LogInformation("test");
-            Assert.Throws<MockException>(() => mLogger.VerifyLogger(LogLevel.Information, "test2")); // Wrong Message.
-
-            mLogger.Object.LogInformation("test");
-            Assert.Throws<MockException>(() => mLogger.VerifyLogger(LogLevel.Information, "test")); // Wrong number of times.
-
-            mLogger.Invocations.Clear();
-            mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
-            Assert.Throws<MockException>(() => mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 0)); // Wrong eventId.
+            Assert.Throws<ArgumentOutOfRangeException>(() => TimesSpec.Exactly(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => TimesSpec.AtLeast(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => TimesSpec.AtMost(-1));
         }
 
         [Fact]

@@ -13,27 +13,14 @@ namespace FastMoq.Providers
             }
 
             var value = spec.Value;
-            if (value.Never)
+            return value.Mode switch
             {
-                return Times.Never();
-            }
-
-            if (value.Exactly.HasValue)
-            {
-                return Times.Exactly(value.Exactly.Value);
-            }
-
-            if (value.AtLeast.HasValue)
-            {
-                return Times.AtLeast(value.AtLeast.Value);
-            }
-
-            if (value.AtMost.HasValue)
-            {
-                return Times.AtMost(value.AtMost.Value);
-            }
-
-            return Times.AtLeastOnce();
+                TimesSpecMode.Never => Times.Never(),
+                TimesSpecMode.Exactly => Times.Exactly(value.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.")),
+                TimesSpecMode.AtLeast => Times.AtLeast(value.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.")),
+                TimesSpecMode.AtMost => Times.AtMost(value.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.")),
+                _ => Times.AtLeastOnce(),
+            };
         }
     }
 }

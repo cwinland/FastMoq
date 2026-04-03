@@ -54,9 +54,9 @@ Newer code can use:
 
 ```csharp
 var component = Mocks.CreateInstanceByType<MyComponent>(
-	InstanceCreationFlags.AllowNonPublicConstructorFallback,
-	typeof(int),
-	typeof(string));
+    InstanceCreationFlags.AllowNonPublicConstructorFallback,
+    typeof(int),
+    typeof(string));
 ```
 
 Constructor visibility is now expressed directly by `InstanceCreationFlags`:
@@ -168,7 +168,7 @@ The repository now includes a minimal fluent scenario builder:
 - `WhenThrows<TException>(...)` for expected-failure act steps that still continue to `Then(...)`
 - `ExecuteThrows<TException>()` and `ExecuteThrowsAsync<TException>()` for cases where the thrown exception is the primary assertion target
 
-Verification also has a portable times model through `TimesSpec`.
+Verification also has a portable times model through `TimesSpec`, including `TimesSpec.Once`, `TimesSpec.Exactly(count)`, `TimesSpec.AtLeast(count)`, `TimesSpec.AtMost(count)`, and `TimesSpec.Never()`.
 
 Inside `MockerTestBase<TComponent>`, the preferred repo-era pattern is now the `Scenario` property plus parameterless `With` / `When` / `Then` overloads when `Component` is already in scope.
 

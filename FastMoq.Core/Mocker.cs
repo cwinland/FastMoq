@@ -620,7 +620,7 @@ namespace FastMoq
         {
             var fast = serviceKey == null ? GetOrCreateFastMock(type) : GetOrCreateFastMock(type, serviceKey);
             var provider = MockingProviderRegistry.Default;
-            if (Behavior.Has(MockFeatures.AutoSetupProperties))
+            if (Behavior.Has(MockFeatures.AutoSetupProperties) && provider.Capabilities.SupportsSetupAllProperties)
             {
                 provider.ConfigureProperties(fast);
                 ReapplyTrackedMockConfiguration(type, fast);
@@ -1468,7 +1468,7 @@ namespace FastMoq
             ArgumentNullException.ThrowIfNull(fastMock);
 
             var provider = MockingProviderRegistry.Default;
-            if (Behavior.Has(MockFeatures.AutoSetupProperties))
+            if (Behavior.Has(MockFeatures.AutoSetupProperties) && provider.Capabilities.SupportsSetupAllProperties)
             {
                 provider.ConfigureProperties(fastMock);
             }

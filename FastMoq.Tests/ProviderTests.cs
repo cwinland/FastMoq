@@ -1,10 +1,16 @@
 using System;
 using System.IO.Abstractions;
 using System.Net.Http;
+using FastMoq.Extensions;
 using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using FastMoq.Providers.NSubstituteProvider;
+using FastMoq.Providers.ReflectionProvider;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace FastMoq.Tests
@@ -54,6 +60,107 @@ namespace FastMoq.Tests
 
             mocker.Verify<IProviderDependency>(x => x.Run("alpha"), TimesSpec.Once);
             mocker.VerifyNoOtherCalls<IProviderDependency>();
+        }
+
+        [Theory]
+        [InlineData("moq", true)]
+        [InlineData("nsubstitute", true)]
+        [InlineData("reflection", false)]
+        public void LoggerCaptureCapability_ShouldMatchProviderBehavior(string providerName, bool supportsLoggerCapture)
+        {
+            using var providerScope = PushProvider(providerName);
+
+            MockingProviderRegistry.Default.Capabilities.SupportsLoggerCapture.Should().Be(supportsLoggerCapture);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        public void VerifyLogged_ShouldWork_ForProvidersThatSupportLoggerCapture(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var logger = mocker.GetObject<ILogger<NullLogger>>();
+
+            logger.Should().NotBeNull();
+            logger!.LogInformation("provider info");
+            logger.LogError(12, new InvalidOperationException("provider boom"), "provider error");
+
+            mocker.VerifyLogged(LogLevel.Information, "provider info", 1);
+            mocker.VerifyLogged(LogLevel.Error, "provider error", new InvalidOperationException("provider boom"), 12, 1);
+        }
+
+        [Fact]
+        public void VerifyLogged_ShouldFailFast_ForProviderWithoutLoggerCapture()
+        {
+            using var providerScope = PushProvider("reflection");
+            var mocker = new Mocker();
+
+            var action = () => mocker.VerifyLogged(LogLevel.Information, "provider info", 1);
+
+            action.Should().Throw<NotSupportedException>()
+                .WithMessage("*ReflectionMockingProvider*");
+        }
+
+        [Fact]
+        public void FrameworkCalls_ShouldSkipUnsupportedProviderCapabilities()
+        {
+            using var providerScope = PushProvider("reflection");
+            var mocker = new Mocker();
+
+            var dependency = mocker.GetObject<IProviderDependency>();
+            var consumer = mocker.CreateInstance<ProviderConsumer>();
+
+            dependency.Should().NotBeNull();
+            consumer.Should().NotBeNull();
+            consumer!.Dependency.Should().BeSameAs(dependency);
+        }
+
+        [Fact]
+        public void DirectUnsupportedProviderCalls_ShouldThrow_ForNSubstitute()
+        {
+            var provider = NSubstituteMockingProvider.Instance;
+            var mock = provider.CreateMock<ILogger>();
+
+            provider.Capabilities.SupportsSetupAllProperties.Should().BeFalse();
+            provider.Capabilities.SupportsCallBase.Should().BeFalse();
+
+            Action configureProperties = () => provider.ConfigureProperties(mock);
+            Action setCallBase = () => provider.SetCallBase(mock, true);
+
+            configureProperties.Should().Throw<NotSupportedException>();
+            setCallBase.Should().Throw<NotSupportedException>();
+        }
+
+        [Fact]
+        public void DirectUnsupportedProviderCalls_ShouldThrow_ForReflection()
+        {
+            var provider = ReflectionMockingProvider.Instance;
+            var mock = provider.CreateMock<ILogger>();
+
+            provider.Capabilities.SupportsSetupAllProperties.Should().BeFalse();
+            provider.Capabilities.SupportsLoggerCapture.Should().BeFalse();
+
+            Action configureProperties = () => provider.ConfigureProperties(mock);
+            Action configureLogger = () => provider.ConfigureLogger(mock, (_, _, _, _) => { });
+
+            configureProperties.Should().Throw<NotSupportedException>();
+            configureLogger.Should().Throw<NotSupportedException>();
+        }
+
+        [Fact]
+        public void DirectSupportedProviderCalls_ShouldSucceed_ForMoq()
+        {
+            var provider = MoqMockingProvider.Instance;
+            var mock = provider.CreateMock<ILogger>();
+
+            Action configureProperties = () => provider.ConfigureProperties(mock);
+            Action configureLogger = () => provider.ConfigureLogger(mock, (_, _, _, _) => { });
+            Action setCallBase = () => provider.SetCallBase(mock, false);
+
+            configureProperties.Should().NotThrow();
+            configureLogger.Should().NotThrow();
+            setCallBase.Should().NotThrow();
         }
 
         [Theory]

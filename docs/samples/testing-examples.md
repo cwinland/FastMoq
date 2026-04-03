@@ -24,7 +24,7 @@ They demonstrate:
 - built-in `IFileSystem` behavior via the predefined `MockFileSystem`
 - `VerifyLogged(...)` for provider-safe structured logging assertions
 - `Scenario.With(...).When(...).Then(...).Verify(...)` for the fluent scenario style inside `MockerTestBase<TComponent>`
-- provider-first verification through `TimesSpec`
+- provider-first verification through `TimesSpec.Once`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, `TimesSpec.AtMost(...)`, and `TimesSpec.Never()`
 
 ## Example 1: Order Processing Workflow
 
@@ -116,6 +116,8 @@ Scenario
     .Execute();
 ```
 
+`TimesSpec` supports `TimesSpec.Once`, `TimesSpec.Exactly(count)`, `TimesSpec.AtLeast(count)`, `TimesSpec.AtMost(count)`, and `TimesSpec.Never()` for provider-safe interaction verification.
+
 For failure-path scenarios, prefer one of these two patterns:
 
 ```csharp
@@ -135,7 +137,7 @@ var exception = await Scenario
 
 1. Start with the order-processing example for the most typical service-test pattern.
 2. Read the customer-import example for built-in helper behavior like `IFileSystem`.
-3. Read the invoice-reminder example for `Scenario`, `TimesSpec`, `WhenThrows`, and `ExecuteThrows`.
+3. Read the invoice-reminder example for `Scenario`, `TimesSpec.Once`, `WhenThrows`, and `ExecuteThrows`.
 
 ## Important note about current docs vs public package
 

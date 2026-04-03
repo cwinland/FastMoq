@@ -59,7 +59,6 @@ Split-package example:
 ```
 
 > Note: `3.0.0` is the current public package. Some docs in this repository describe unreleased provider-era work that is planned for the next major release line. See [What's New Since 3.0.0](../whats-new/README.md).
-
 > Note: in the current repository, `GetMockDbContext<TContext>()` keeps the same `FastMoq` namespace call shape, but direct `FastMoq.Core` consumers should add `FastMoq.Database` for EF-specific helpers. Direct web-helper consumers should add `FastMoq.Web`.
 
 At the moment, the DbContext helper path is still Moq-based under the hood. The package boundary is in place, but provider-neutral DbContext support is still future work.
@@ -352,7 +351,7 @@ Now that you understand the basics, explore these advanced topics:
 
 Prefer `Mocks.VerifyLogged(...)` for new code. It is provider-safe because FastMoq captures `ILogger` callbacks through the active `IMockingProvider` and verifies the captured entries in core.
 
-Use `GetMock<ILogger<T>>().VerifyLogger(...)` only when you intentionally want Moq-specific behavior. That API is now a compatibility shim and is planned to leave core in v5.
+Use `GetMock<ILogger<T>>().VerifyLogger(...)` only when you intentionally want the legacy Moq-specific behavior. That API is a compatibility shim and is planned to leave core in v5.
 
 ## Troubleshooting
 

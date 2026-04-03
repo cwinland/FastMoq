@@ -54,11 +54,11 @@ namespace FastMoq.Providers.ReflectionProvider
         private IFastMock CreateGeneric<T>(MockCreationOptions? options) where T : class => CreateMock<T>(options);
         #endregion
 
-        #region Configuration (no-ops)
-        public void SetupAllProperties(IFastMock mock) { }
-        public void SetCallBase(IFastMock mock, bool value) { }
-        public void ConfigureProperties(IFastMock mock) { }
-        public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback) { }
+        #region Configuration (unsupported direct calls)
+        public void SetupAllProperties(IFastMock mock) => throw CreateUnsupportedFeatureException(nameof(SupportsSetupAllProperties));
+        public void SetCallBase(IFastMock mock, bool value) => throw CreateUnsupportedFeatureException(nameof(SupportsCallBase));
+        public void ConfigureProperties(IFastMock mock) => throw CreateUnsupportedFeatureException(nameof(SupportsSetupAllProperties));
+        public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback) => throw CreateUnsupportedFeatureException(nameof(SupportsLoggerCapture));
         #endregion
 
         #region Verification
@@ -72,25 +72,28 @@ namespace FastMoq.Providers.ReflectionProvider
                 .ToList();
 
             times ??= default;
-            if (times.Value.Never)
+            if (times.Value.Mode == TimesSpecMode.Never)
             {
                 if (records.Count > 0) throw new InvalidOperationException($"Expected no calls to {mce.Method.Name} but found {records.Count}.");
                 return;
             }
-            if (times.Value.Exactly is int e)
+            if (times.Value.Mode == TimesSpecMode.Exactly)
             {
+                var e = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.");
                 if (records.Count != e) throw new InvalidOperationException($"Expected exactly {e} call(s) to {mce.Method.Name} but found {records.Count}.");
                 MarkVerified(records);
                 return;
             }
-            if (times.Value.AtLeast is int al)
+            if (times.Value.Mode == TimesSpecMode.AtLeast)
             {
+                var al = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.");
                 if (records.Count < al) throw new InvalidOperationException($"Expected at least {al} call(s) to {mce.Method.Name} but found {records.Count}.");
                 MarkVerified(records);
                 return;
             }
-            if (times.Value.AtMost is int am)
+            if (times.Value.Mode == TimesSpecMode.AtMost)
             {
+                var am = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.");
                 if (records.Count > am) throw new InvalidOperationException($"Expected at most {am} call(s) to {mce.Method.Name} but found {records.Count}.");
                 MarkVerified(records);
                 return;
@@ -189,5 +192,8 @@ namespace FastMoq.Providers.ReflectionProvider
             }
             catch { return null; }
         }
+
+        private static NotSupportedException CreateUnsupportedFeatureException(string capabilityName) =>
+            new($"Provider '{nameof(ReflectionMockingProvider)}' does not support '{capabilityName}'. Guard with '{nameof(IMockingProviderCapabilities)}' before calling provider-specific capability methods.");
     }
 }

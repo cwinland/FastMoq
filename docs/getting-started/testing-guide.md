@@ -511,7 +511,7 @@ Start there if you want repo-backed samples for:
 - built-in `IFileSystem` behavior
 - logger verification
 - fluent `Scenario` usage with parameterless arrange/act/assert overloads
-- provider-first verification with `TimesSpec`
+- provider-first verification with `TimesSpec.Once`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, `TimesSpec.AtMost(...)`, and `TimesSpec.Never()`
 
 See [Executable Testing Examples](../samples/testing-examples.md).
 

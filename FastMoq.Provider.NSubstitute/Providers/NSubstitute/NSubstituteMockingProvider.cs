@@ -12,6 +12,7 @@ namespace FastMoq.Providers.NSubstituteProvider
     public sealed class NSubstituteMockingProvider : IMockingProvider, IMockingProviderCapabilities
     {
         private static readonly ConcurrentDictionary<object, ConcurrentBag<ICall>> VerifiedCalls = new();
+        private static readonly ConcurrentDictionary<object, byte> ConfiguredLoggers = new();
 
         public static readonly NSubstituteMockingProvider Instance = new();
 
@@ -24,7 +25,7 @@ namespace FastMoq.Providers.NSubstituteProvider
         public bool SupportsSetupAllProperties => false;
         public bool SupportsProtectedMembers => false;
         public bool SupportsInvocationTracking => true;
-        public bool SupportsLoggerCapture => false;
+        public bool SupportsLoggerCapture => true;
 
         public IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class
         {
@@ -54,10 +55,12 @@ namespace FastMoq.Providers.NSubstituteProvider
 
         public void SetupAllProperties(IFastMock mock)
         {
+            throw CreateUnsupportedFeatureException(nameof(SupportsSetupAllProperties));
         }
 
         public void SetCallBase(IFastMock mock, bool value)
         {
+            throw CreateUnsupportedFeatureException(nameof(SupportsCallBase));
         }
 
         public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
@@ -70,14 +73,15 @@ namespace FastMoq.Providers.NSubstituteProvider
             times ??= default;
             var target = mock.Instance;
 
-            if (times.Value.Never)
+            if (times.Value.Mode == TimesSpecMode.Never)
             {
                 ExecuteWithWrapper(target.DidNotReceive, expression);
                 return;
             }
 
-            if (times.Value.Exactly is int exactly)
+            if (times.Value.Mode == TimesSpecMode.Exactly)
             {
+                var exactly = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.");
                 ExecuteWithWrapper(() => target.Received(exactly), expression);
                 MarkCallsVerified(target, expression, exactly);
                 return;
@@ -92,8 +96,9 @@ namespace FastMoq.Providers.NSubstituteProvider
             }
 
             var received = target.ReceivedCalls().Where(call => call.GetMethodInfo() == method && call.GetArguments().Length == argCount).ToList();
-            if (times.Value.AtLeast is int atLeast)
+            if (times.Value.Mode == TimesSpecMode.AtLeast)
             {
+                var atLeast = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.");
                 if (received.Count < atLeast)
                 {
                     throw new InvalidOperationException($"Expected at least {atLeast} call(s) to {method.Name} but found {received.Count}.");
@@ -104,8 +109,9 @@ namespace FastMoq.Providers.NSubstituteProvider
                 return;
             }
 
-            if (times.Value.AtMost is int atMost)
+            if (times.Value.Mode == TimesSpecMode.AtMost)
             {
+                var atMost = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.");
                 if (received.Count > atMost)
                 {
                     throw new InvalidOperationException($"Expected at most {atMost} call(s) to {method.Name} but found {received.Count}.");
@@ -149,10 +155,20 @@ namespace FastMoq.Providers.NSubstituteProvider
 
         public void ConfigureProperties(IFastMock mock)
         {
+            throw CreateUnsupportedFeatureException(nameof(SupportsSetupAllProperties));
         }
 
         public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback)
         {
+            ArgumentNullException.ThrowIfNull(mock);
+            ArgumentNullException.ThrowIfNull(callback);
+
+            if (!ConfiguredLoggers.TryAdd(mock.Instance, 0))
+            {
+                return;
+            }
+
+            SetupLoggerCallback(mock.Instance, callback);
         }
 
         public object? TryGetLegacy(IFastMock mock) => null;
@@ -209,6 +225,30 @@ namespace FastMoq.Providers.NSubstituteProvider
             }
         }
 
+        private static void SetupLoggerCallback(object instance, Action<LogLevel, EventId, string, Exception?> callback)
+        {
+            if (instance is not ILogger logger)
+            {
+                throw new InvalidOperationException($"Expected an ILogger-compatible substitute but received '{instance.GetType().Name}'.");
+            }
+
+            logger
+                .WhenForAnyArgs(x => x.Log<object>(default, default, default!, default!, default!))
+                .Do(callInfo =>
+                {
+                    var logLevel = callInfo.ArgAt<LogLevel>(0);
+                    var eventId = callInfo.ArgAt<EventId>(1);
+                    var state = callInfo.Args()[2];
+                    var exception = callInfo.Args()[3] as Exception;
+                    var formatter = callInfo.Args()[4] as Delegate;
+                    var message = formatter?.DynamicInvoke(state, exception)?.ToString() ?? state?.ToString() ?? string.Empty;
+                    callback(logLevel, eventId, message, exception);
+                });
+        }
+
+        private static NotSupportedException CreateUnsupportedFeatureException(string capabilityName) =>
+            new($"Provider '{nameof(NSubstituteMockingProvider)}' does not support '{capabilityName}'. Guard with '{nameof(IMockingProviderCapabilities)}' before calling provider-specific capability methods.");
+
         private sealed class NSubFastMock<T> : IFastMock<T> where T : class
         {
             public NSubFastMock(T instance)
@@ -227,6 +267,7 @@ namespace FastMoq.Providers.NSubstituteProvider
                 {
                     Instance.ClearReceivedCalls();
                     VerifiedCalls.TryRemove(Instance, out _);
+                    ConfiguredLoggers.TryRemove(Instance, out _);
                 }
                 catch
                 {

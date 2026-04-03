@@ -121,7 +121,7 @@ public class OrderProcessingServiceExamples : MockerTestBase<OrderProcessingServ
 }
 ```
 
-    `Mocks.VerifyLogged(...)` is the provider-safe logger assertion API. It verifies captured `ILogger` entries through the active provider contract instead of depending on a provider-specific mock surface. `VerifyLogger(...)` remains available only as a Moq compatibility helper during the v4 transition.
+`Mocks.VerifyLogged(...)` is the provider-safe logger assertion API. It verifies captured `ILogger` entries through the active provider contract instead of depending on a provider-specific mock surface. `VerifyLogger(...)` remains available only as a Moq compatibility helper during the v4 transition.
 
 ### Real-world example: fluent scenario style
 
@@ -139,6 +139,8 @@ Scenario
     .Verify<IEmailGateway>(x => x.SendReminderAsync("ap@contoso.test", 125m, CancellationToken.None), TimesSpec.Once)
     .Execute();
 ```
+
+`TimesSpec` supports `TimesSpec.Once`, `TimesSpec.Exactly(count)`, `TimesSpec.AtLeast(count)`, `TimesSpec.AtMost(count)`, and `TimesSpec.Never()`.
 
 For expected-failure scenarios, use `WhenThrows<TException>(...)` when `Then(...)` assertions should still run, or `ExecuteThrows<TException>()` when the exception object itself is the main assertion target.
 
@@ -532,18 +534,8 @@ Add the following ```InternalsVisibleTo``` line to the AssemblyInfo file.
 
 ## Breaking Change(s)
 
-- 3.0 => .NET 9 Added; Update FindBestMatch; Component Creation; Logging Callbacks and helpers;
-- 2.28 => .NET 7 Removed from support.
-- 2.25 => Some methods moved to extensions that are no longer in the MockerTestBase or Mocker. Removed extra CreateInstance&lt;T&gt; methods.
-- 2.23.200 => Support .NET 8
-- 2.23.x    => Removed support for .NET Core 5.
-- 2.22.1215 => Removed support for .NET Core 3.1 in FastMoq.Core. Deprecated .NET Core 5 and moved package supporting .NET Core 5.0 from FastMoq to FastMoq.Core.
-- 1.22.810 => Removed setters on the MockerTestBase virtual methods: SetupMocksAction, CreateComponentAction, CreatedComponentAction
-- 1.22.810 => Update Package Dependencies
-- 1.22.728 => Initialize method will reset the mock, if it already exists. This is overridable by settings the reset parameter to false.
-- 1.22.604 => Renamed Mocks to Mocker, Renamed TestBase to MockerTestBase.
+For current repo-era breaking changes and the older package-line change summary that used to live here, see [Breaking Changes](./docs/breaking-changes/README.md).
 
 ## [License - MIT](./License)
 
 [http://help.fastmoq.com](http://help.fastmoq.com/)
-
