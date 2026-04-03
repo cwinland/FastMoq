@@ -191,7 +191,7 @@ Current guidance for new code:
 ```csharp
 var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
 {
-    AllowNonPublicConstructors = true,
+    FallbackToNonPublicConstructors = true,
     ConstructorParameterTypes = new[] { typeof(int), typeof(string) },
 });
 ```

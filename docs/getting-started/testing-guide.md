@@ -65,8 +65,7 @@ For new code, prefer the unified options-based overload:
 ```csharp
 var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
 {
-    UseBuiltInFileSystemInstance = false,
-    AllowNonPublicConstructors = true,
+    FallbackToNonPublicConstructors = true,
     ConstructorParameterTypes = new[] { typeof(int), typeof(string) },
 });
 ```

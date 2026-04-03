@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 
 namespace FastMoq
 {
@@ -9,25 +10,19 @@ namespace FastMoq
     public sealed class InstanceCreationOptions
     {
         /// <summary>
-        /// When true, returns FastMoq's built-in <c>IFileSystem</c> instance when the requested type resolves to <c>IFileSystem</c>.
-        /// Default is true to preserve the existing CreateInstance behavior.
+        /// Obsolete compatibility flag retained for source compatibility.
+        /// File-system resolution now follows <see cref="Mocker.Policy"/> and <see cref="MockerPolicyOptions.EnabledBuiltInTypeResolutions"/>.
         /// </summary>
-        public bool UseBuiltInFileSystemInstance { get; set; } = true;
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Ignored. File-system resolution now follows Mocker.Policy.EnabledBuiltInTypeResolutions.")]
+        public bool UsePredefinedFileSystem { get; set; }
 
         /// <summary>
-        /// Obsolete compatibility alias for <see cref="UseBuiltInFileSystemInstance"/>.
+        /// Obsolete compatibility flag retained for source compatibility.
+        /// Constructor selection now follows the normal public-first pattern and uses <see cref="FallbackToNonPublicConstructors"/> to permit non-public fallback.
         /// </summary>
-        [Obsolete("Use UseBuiltInFileSystemInstance instead.")]
-        public bool UsePredefinedFileSystem
-        {
-            get => UseBuiltInFileSystemInstance;
-            set => UseBuiltInFileSystemInstance = value;
-        }
-
-        /// <summary>
-        /// When true, constructor resolution may consider non-public constructors.
-        /// Default is false to preserve the existing CreateInstance behavior.
-        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Ignored for CreateInstance. Constructor selection is public-first and uses FallbackToNonPublicConstructors for non-public fallback.")]
         public bool AllowNonPublicConstructors { get; set; }
 
         /// <summary>

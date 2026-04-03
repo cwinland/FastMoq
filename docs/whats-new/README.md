@@ -55,7 +55,7 @@ Newer code can use:
 ```csharp
 var component = Mocks.CreateInstance<MyComponent>(new InstanceCreationOptions
 {
-    AllowNonPublicConstructors = true,
+    FallbackToNonPublicConstructors = true,
     ConstructorParameterTypes = new[] { typeof(int), typeof(string) },
 });
 ```

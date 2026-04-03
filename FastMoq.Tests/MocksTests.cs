@@ -233,7 +233,7 @@ namespace FastMoq.Tests
             Mocks.CreateInstance<TestClassOne>().Should().NotBeNull();
 
             Mocks.CreateInstance<TestClassNormal>().Should().NotBeNull();
-            Mocks.CreateInstance<IFileSystem>(true).Should().NotBeNull();
+            Mocks.CreateInstance<IFileSystem>().Should().NotBeNull();
         }
 
         [Fact]
@@ -244,11 +244,14 @@ namespace FastMoq.Tests
             new Action(() => Mocks.CreateInstance<SameArityPublicConstructors>()).Should().Throw<AmbiguousImplementationException>();
 
             Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+            Mocks.Policy.EnabledBuiltInTypeResolutions &= ~BuiltInTypeResolutionFlags.FileSystem;
             // No Constructor.
-            new Action(() => Mocks.CreateInstance<IFileSystem>(false).Should().NotBeNull()).Should().Throw<NotImplementedException>();
+            new Action(() => Mocks.CreateInstance<IFileSystem>().Should().NotBeNull()).Should().Throw<NotImplementedException>();
 
-            // Valid Constructor.
-            new Action(() => Mocks.CreateInstance<IFileSystem>(true).Should().NotBeNull()).Should().NotThrow();
+            // Built-in file-system resolution resumes on the normal lenient path.
+            Mocks.Policy.EnabledBuiltInTypeResolutions |= BuiltInTypeResolutionFlags.FileSystem;
+            Mocks.Behavior.Disable(MockFeatures.FailOnUnconfigured);
+            new Action(() => Mocks.CreateInstance<IFileSystem>().Should().NotBeNull()).Should().NotThrow();
         }
 
         [Fact]
@@ -526,7 +529,7 @@ namespace FastMoq.Tests
         {
             Mocks.CreateInstance<TestClassMany>(4).Should().NotBeNull();
             Mocks.CreateInstance<TestClassMany>("str").Should().NotBeNull();
-            Mocks.CreateInstance<TestClassMany>(true, 4, "str").Should().NotBeNull();
+            Mocks.CreateInstance<TestClassMany>(4, "str").Should().NotBeNull();
 
             Action a = () => Mocks.CreateInstance<TestClassMany>("4", "str").Should().NotBeNull();
             a.Should().Throw<NotImplementedException>();
@@ -555,8 +558,7 @@ namespace FastMoq.Tests
 
             var byNonPublic = Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
             {
-                AllowNonPublicConstructors = true,
-                UseBuiltInFileSystemInstance = false,
+                FallbackToNonPublicConstructors = true,
             }, new FileSystem());
 
             byNonPublic.Should().NotBeNull();
@@ -567,8 +569,7 @@ namespace FastMoq.Tests
         {
             var instance = Mocks.CreateInstance<TestClassMany>(new InstanceCreationOptions
             {
-                AllowNonPublicConstructors = true,
-                UseBuiltInFileSystemInstance = false,
+                FallbackToNonPublicConstructors = true,
                 ConstructorParameterTypes = new[] { typeof(int), typeof(string) },
             });
 
@@ -582,7 +583,6 @@ namespace FastMoq.Tests
 
             var instance = Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
             {
-                UseBuiltInFileSystemInstance = false,
                 FallbackToNonPublicConstructors = true,
             }, new FileSystem().File);
 
@@ -594,7 +594,6 @@ namespace FastMoq.Tests
         {
             var act = () => Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
             {
-                UseBuiltInFileSystemInstance = false,
                 FallbackToNonPublicConstructors = false,
             }, new FileSystem().File);
 
@@ -815,8 +814,6 @@ namespace FastMoq.Tests
 
             var instance = Mocks.CreateInstance<KnownTypeManagedDbContext>(new InstanceCreationOptions
             {
-                UseBuiltInFileSystemInstance = false,
-                AllowNonPublicConstructors = true,
             });
 
             instance.Should().BeSameAs(expected);
@@ -1352,7 +1349,9 @@ namespace FastMoq.Tests
 
             testBase.Sut.Should().NotBeNull();
 
-            var act = () => testBase.TestMocks.CreateInstance<TestClassOne>(false, new FileSystem().File);
+            var act = () => testBase.TestMocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
+            {
+            }, new FileSystem().File);
 
             act.Should().Throw<NotImplementedException>();
         }
@@ -1949,7 +1948,6 @@ namespace FastMoq.Tests
 
         protected override InstanceCreationOptions ComponentCreationOptions => new()
         {
-            AllowNonPublicConstructors = true,
             FallbackToNonPublicConstructors = true,
         };
 
