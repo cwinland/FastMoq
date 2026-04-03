@@ -20,13 +20,15 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetKeyedMock_ShouldReturnSameTrackedMock_ForRepeatedKey()
+        public void GetOrCreateMock_ShouldReturnSameTrackedMock_ForRepeatedKey()
         {
             var mocker = new Mocker();
+            var alphaOptions = new MockRequestOptions { ServiceKey = "alpha" };
+            var betaOptions = new MockRequestOptions { ServiceKey = "beta" };
 
-            var first = mocker.GetKeyedMock<IKeyedDependency>("alpha");
-            var second = mocker.GetKeyedMock<IKeyedDependency>("alpha");
-            var other = mocker.GetKeyedMock<IKeyedDependency>("beta");
+            var first = mocker.GetOrCreateMock<IKeyedDependency>(alphaOptions);
+            var second = mocker.GetOrCreateMock<IKeyedDependency>(alphaOptions);
+            var other = mocker.GetOrCreateMock<IKeyedDependency>(betaOptions);
 
             second.Should().BeSameAs(first);
             other.Should().NotBeSameAs(first);
@@ -38,7 +40,10 @@ namespace FastMoq.Tests
             var mocker = new Mocker();
             var primaryUri = new Uri("http://primary.fastmoq/");
             var secondaryUri = new Uri("http://secondary.fastmoq/");
-            var keyedMock = mocker.GetKeyedMock<IKeyedDependency>("dep");
+            var keyedMock = mocker.GetOrCreateMock<IKeyedDependency>(new MockRequestOptions
+            {
+                ServiceKey = "dep",
+            });
 
             mocker.AddKeyedType<Uri>("primary", _ => primaryUri);
             mocker.AddKeyedType<Uri>("secondary", _ => secondaryUri);
@@ -48,7 +53,7 @@ namespace FastMoq.Tests
             instance.Should().NotBeNull();
             instance!.PrimaryUri.Should().BeSameAs(primaryUri);
             instance.SecondaryUri.Should().BeSameAs(secondaryUri);
-            instance.Dependency.Should().BeSameAs(keyedMock.Object);
+            instance.Dependency.Should().BeSameAs(keyedMock.Instance);
             instance.DefaultHttpClient.Should().BeSameAs(mocker.HttpClient);
             instance.DefaultUri.Should().BeSameAs(mocker.Uri);
         }

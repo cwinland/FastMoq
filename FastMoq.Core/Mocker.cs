@@ -36,12 +36,12 @@ namespace FastMoq
     /// </list>
     /// <para>GetObject respects all custom configurations and auto-creates mocks when needed.</para>
     /// 
-    /// <h4>GetMock&lt;T&gt;() / GetFastMock&lt;T&gt;() - Test Setup (Mock-Only Path)</h4>
+    /// <h4>GetMock&lt;T&gt;() / GetOrCreateMock&lt;T&gt;() - Test Setup (Mock-Only Path)</h4>
     /// <list type="number">
     ///   <item><description>Tracked mocks only (get-or-create tracked mock, no custom registrations applied)</description></item>
     ///   <item><description>Mocks are preconfigured via SetupFastMock (e.g., IFileSystem delegates to built-in)</description></item>
     /// </list>
-    /// <para>GetMock/GetFastMock always return mocks for test setup, bypassing custom AddType registrations. 
+    /// <para>GetMock/GetOrCreateMock always return tracked mocks for test setup, bypassing custom AddType registrations. 
     /// This is intentional: AddType is for runtime instances, while GetMock is for test mocks.
     /// For setup values, use AddMock() or component constructor parameters instead.</para>
     /// 
@@ -1135,32 +1135,10 @@ namespace FastMoq
 
             return GetRequiredMock(type);
         }
-        /// <summary>
-        /// Gets or creates a keyed tracked mock for the specified type.
-        /// </summary>
-        public Mock GetKeyedMock(Type type, object serviceKey, params object?[]? args)
-        {
-            ArgumentNullException.ThrowIfNull(serviceKey);
-
-            type = CleanType(type);
-            if (!Contains(type, serviceKey))
-            {
-                CreateKeyedMock(type, serviceKey, false, args ?? Array.Empty<object?>());
-            }
-
-            return GetRequiredKeyedMock(type, serviceKey);
-        }
         public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>)GetMock(typeof(T), args);
-        public Mock<T> GetKeyedMock<T>(object serviceKey, params object?[] args) where T : class => (Mock<T>)GetKeyedMock(typeof(T), serviceKey, args);
         public Mock<T> GetMock<T>(Action<Mock<T>> action, params object?[] args) where T : class
         {
             var m = GetMock<T>(args);
-            action?.Invoke(m);
-            return m;
-        }
-        public Mock<T> GetKeyedMock<T>(object serviceKey, Action<Mock<T>> action, params object?[] args) where T : class
-        {
-            var m = GetKeyedMock<T>(serviceKey, args);
             action?.Invoke(m);
             return m;
         }
@@ -1182,22 +1160,7 @@ namespace FastMoq
             mock.RaiseIfNull();
             return mock;
         }
-        public Mock GetRequiredKeyedMock(Type type, object serviceKey)
-        {
-            ArgumentNullException.ThrowIfNull(type);
-            ArgumentNullException.ThrowIfNull(serviceKey);
-
-            var model = keyedMockCollection[CreateServiceRegistrationKey(type, serviceKey)];
-            if (!model.TryGetLegacyMock(out var mock))
-            {
-                throw new NotSupportedException($"Active provider '{MockingProviderRegistry.Default.GetType().Name}' does not expose a legacy Moq.Mock instance for {type.Name}.");
-            }
-
-            mock.RaiseIfNull();
-            return mock;
-        }
         public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>)GetRequiredMock(typeof(T));
-        public Mock<T> GetRequiredKeyedMock<T>(object serviceKey) where T : class => (Mock<T>)GetRequiredKeyedMock(typeof(T), serviceKey);
         public object GetNativeMock(Type type)
         {
             ArgumentNullException.ThrowIfNull(type);
@@ -1324,6 +1287,18 @@ namespace FastMoq
         #endregion
 
         #region FastMock helpers / collection helpers
+        internal IFastMock GetOrCreateFastMock(Type type, MockRequestOptions? options)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+
+            options ??= new MockRequestOptions();
+            var args = options.ConstructorArgs ?? Array.Empty<object?>();
+
+            return options.ServiceKey == null
+                ? GetOrCreateFastMock(type, options.AllowNonPublicConstructors, args)
+                : GetOrCreateFastMock(type, options.ServiceKey, options.AllowNonPublicConstructors, args);
+        }
+
         internal IFastMock GetOrCreateFastMock(Type type, bool nonPublic = false, params object?[] args)
         {
             type = CleanType(type);
@@ -1346,9 +1321,15 @@ namespace FastMoq
 
             return keyedMockCollection[CreateServiceRegistrationKey(type, serviceKey)].FastMock;
         }
-        internal IFastMock<T> GetFastMock<T>(bool nonPublic = false, params object?[] args) where T : class
+        internal IFastMock<T> GetOrCreateTypedFastMock<T>(MockRequestOptions? options = null) where T : class
         {
-            var model = GetMockModelFast(typeof(T), nonPublic, args);
+            options ??= new MockRequestOptions();
+            var args = options.ConstructorArgs ?? Array.Empty<object?>();
+
+            MockModel model = options.ServiceKey == null
+                ? GetMockModelFast(typeof(T), options.AllowNonPublicConstructors, args)
+                : GetKeyedMockModelFast(typeof(T), options.ServiceKey, options.AllowNonPublicConstructors, args);
+
             if (model.FastMock is IFastMock<T> typedFastMock)
             {
                 return typedFastMock;
@@ -1363,6 +1344,7 @@ namespace FastMoq
 
             throw new NotSupportedException($"Stored mock for {typeof(T).Name} is not available as a typed provider-first mock.");
         }
+
         internal MockModel GetMockModelFast(Type type, bool nonPublic = false, params object?[] args)
         {
             type = CleanType(type);

@@ -204,7 +204,7 @@ Older tests often assumed `Moq.Mock` was the only meaningful tracked artifact.
 Current guidance:
 
 ```csharp
-var fastMock = Mocks.GetFastMock<IOrderRepository>();
+var fastMock = Mocks.GetOrCreateMock<IOrderRepository>();
 var providerObject = fastMock.NativeMock;
 ```
 

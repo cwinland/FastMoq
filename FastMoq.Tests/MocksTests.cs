@@ -126,9 +126,9 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetFastMock_ShouldReturnProviderFirstMock()
+        public void GetOrCreateMock_ShouldReturnProviderFirstMock()
         {
-            var fastMock = Mocks.GetFastMock<IFileSystemInfo>();
+            var fastMock = Mocks.GetOrCreateMock<IFileSystemInfo>();
 
             fastMock.MockedType.Should().Be(typeof(IFileSystemInfo));
             fastMock.NativeMock.Should().BeOfType<Mock<IFileSystemInfo>>();

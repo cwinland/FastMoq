@@ -8,6 +8,23 @@ namespace FastMoq
     public partial class Mocker
     {
         /// <summary>
+        /// Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.
+        /// </summary>
+        public IFastMock<T> GetOrCreateMock<T>(MockRequestOptions? options = null) where T : class
+        {
+            return GetOrCreateTypedFastMock<T>(options);
+        }
+
+        /// <summary>
+        /// Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.
+        /// </summary>
+        public IFastMock GetOrCreateMock(Type type, MockRequestOptions? options = null)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+            return GetOrCreateFastMock(type, options);
+        }
+
+        /// <summary>
         /// Provider-first verification helper (provider agnostic).
         /// </summary>
         public void Verify<T>(Expression<Action<T>> expression, TimesSpec? times = null) where T : class
@@ -43,20 +60,5 @@ namespace FastMoq
             return fast;
         }
 
-        /// <summary>
-        /// Gets or creates the provider-first mock for <typeparamref name="T"/>.
-        /// Prefer this over legacy Moq-based retrieval when provider-specific setup is not required.
-        /// </summary>
-        public IFastMock<T> GetFastMock<T>(params object?[] args) where T : class => GetFastMock<T>(nonPublic: false, args);
-
-        /// <summary>
-        /// Gets or creates the provider-first mock for a runtime type.
-        /// Prefer this over legacy Moq-based retrieval when provider-specific setup is not required.
-        /// </summary>
-        public IFastMock GetFastMock(Type type, params object?[] args)
-        {
-            ArgumentNullException.ThrowIfNull(type);
-            return GetOrCreateFastMock(type, false, args);
-        }
     }
 }

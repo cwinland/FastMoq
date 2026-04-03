@@ -305,7 +305,7 @@ If you need the underlying provider object for a tracked mock, use `GetNativeMoc
 You can also retrieve the provider-first abstraction directly:
 
 ```csharp
-var fastMock = Mocks.GetFastMock<IOrderRepository>();
+var fastMock = Mocks.GetOrCreateMock<IOrderRepository>();
 var providerObject = fastMock.NativeMock;
 ```
 

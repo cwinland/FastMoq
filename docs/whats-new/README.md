@@ -43,8 +43,8 @@ Key surfaces include:
 
 - `MockModel.NativeMock`
 - `GetNativeMock(...)`
-- `GetFastMock<T>()`
-- `GetFastMock(Type, ...)`
+- `GetOrCreateMock<T>()`
+- `GetOrCreateMock(Type, ...)`
 
 ### Unified instance creation
 
