@@ -9,10 +9,20 @@ namespace FastMoq
     public sealed class InstanceCreationOptions
     {
         /// <summary>
-        /// When true, returns the predefined file system instance when the requested type resolves to <c>IFileSystem</c>.
+        /// When true, returns FastMoq's built-in <c>IFileSystem</c> instance when the requested type resolves to <c>IFileSystem</c>.
         /// Default is true to preserve the existing CreateInstance behavior.
         /// </summary>
-        public bool UsePredefinedFileSystem { get; set; } = true;
+        public bool UseBuiltInFileSystemInstance { get; set; } = true;
+
+        /// <summary>
+        /// Obsolete compatibility alias for <see cref="UseBuiltInFileSystemInstance"/>.
+        /// </summary>
+        [Obsolete("Use UseBuiltInFileSystemInstance instead.")]
+        public bool UsePredefinedFileSystem
+        {
+            get => UseBuiltInFileSystemInstance;
+            set => UseBuiltInFileSystemInstance = value;
+        }
 
         /// <summary>
         /// When true, constructor resolution may consider non-public constructors.

@@ -556,7 +556,7 @@ namespace FastMoq.Tests
             var byNonPublic = Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
             {
                 AllowNonPublicConstructors = true,
-                UsePredefinedFileSystem = false,
+                UseBuiltInFileSystemInstance = false,
             }, new FileSystem());
 
             byNonPublic.Should().NotBeNull();
@@ -568,7 +568,7 @@ namespace FastMoq.Tests
             var instance = Mocks.CreateInstance<TestClassMany>(new InstanceCreationOptions
             {
                 AllowNonPublicConstructors = true,
-                UsePredefinedFileSystem = false,
+                UseBuiltInFileSystemInstance = false,
                 ConstructorParameterTypes = new[] { typeof(int), typeof(string) },
             });
 
@@ -582,7 +582,7 @@ namespace FastMoq.Tests
 
             var instance = Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
             {
-                UsePredefinedFileSystem = false,
+                UseBuiltInFileSystemInstance = false,
                 FallbackToNonPublicConstructors = true,
             }, new FileSystem().File);
 
@@ -594,7 +594,7 @@ namespace FastMoq.Tests
         {
             var act = () => Mocks.CreateInstance<TestClassOne>(new InstanceCreationOptions
             {
-                UsePredefinedFileSystem = false,
+                UseBuiltInFileSystemInstance = false,
                 FallbackToNonPublicConstructors = false,
             }, new FileSystem().File);
 
@@ -815,7 +815,7 @@ namespace FastMoq.Tests
 
             var instance = Mocks.CreateInstance<KnownTypeManagedDbContext>(new InstanceCreationOptions
             {
-                UsePredefinedFileSystem = false,
+                UseBuiltInFileSystemInstance = false,
                 AllowNonPublicConstructors = true,
             });
 

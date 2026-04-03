@@ -754,7 +754,7 @@ namespace FastMoq
 
         #region Constructor Resolution / Instance Creation
         public T? CreateInstance<T>(params object?[] args) where T : class =>
-            CreateInstance<T>(CreateDefaultInstanceCreationOptions(usePredefinedFileSystem: true, allowNonPublicConstructors: false), args);
+            CreateInstance<T>(CreateDefaultInstanceCreationOptions(useBuiltInFileSystemInstance: true, allowNonPublicConstructors: false), args);
 
         /// <summary>
         /// Creates an instance of <typeparamref name="T"/> using a single options object instead of separate public/non-public entry points.
@@ -766,11 +766,11 @@ namespace FastMoq
             CreateInstanceCore<T>(CreateDefaultInstanceCreationOptions(usePredefinedFileSystem, allowNonPublicConstructors: false), args);
 
         public T? CreateInstanceNonPublic<T>(params object?[] args) where T : class =>
-            CreateInstanceCore<T>(CreateDefaultInstanceCreationOptions(usePredefinedFileSystem: false, allowNonPublicConstructors: true), args);
+            CreateInstanceCore<T>(CreateDefaultInstanceCreationOptions(useBuiltInFileSystemInstance: false, allowNonPublicConstructors: true), args);
 
         public T? CreateInstanceByType<T>(params Type?[] parameterTypes) where T : class
         {
-            return CreateInstanceByType<T>(CreateDefaultInstanceCreationOptions(usePredefinedFileSystem: false, allowNonPublicConstructors: true), parameterTypes);
+            return CreateInstanceByType<T>(CreateDefaultInstanceCreationOptions(useBuiltInFileSystemInstance: false, allowNonPublicConstructors: true), parameterTypes);
         }
 
         public T? CreateInstanceByType<T>(InstanceCreationOptions options, params Type?[] parameterTypes) where T : class
@@ -779,7 +779,7 @@ namespace FastMoq
 
             return CreateInstanceCore<T>(new InstanceCreationOptions
             {
-                UsePredefinedFileSystem = options.UsePredefinedFileSystem,
+                UseBuiltInFileSystemInstance = options.UseBuiltInFileSystemInstance,
                 AllowNonPublicConstructors = options.AllowNonPublicConstructors,
                 FallbackToNonPublicConstructors = options.FallbackToNonPublicConstructors,
                 ConstructorParameterTypes = parameterTypes,
@@ -787,11 +787,11 @@ namespace FastMoq
             }, Array.Empty<object?>());
         }
 
-        private InstanceCreationOptions CreateDefaultInstanceCreationOptions(bool usePredefinedFileSystem, bool allowNonPublicConstructors)
+        private InstanceCreationOptions CreateDefaultInstanceCreationOptions(bool useBuiltInFileSystemInstance, bool allowNonPublicConstructors)
         {
             return new InstanceCreationOptions
             {
-                UsePredefinedFileSystem = usePredefinedFileSystem,
+                UseBuiltInFileSystemInstance = useBuiltInFileSystemInstance,
                 AllowNonPublicConstructors = allowNonPublicConstructors,
                 FallbackToNonPublicConstructors = Policy.DefaultFallbackToNonPublicConstructors,
                 OptionalParameterResolution = OptionalParameterResolution,
@@ -805,7 +805,7 @@ namespace FastMoq
         {
             ArgumentNullException.ThrowIfNull(options);
 
-            if (options.UsePredefinedFileSystem && fileSystem is T fs)
+            if (options.UseBuiltInFileSystemInstance && fileSystem is T fs)
             {
                 return fs;
             }
