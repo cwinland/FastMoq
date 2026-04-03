@@ -2,6 +2,8 @@
 using Moq.Protected;
 using System.Linq.Expressions;
 using System.Net;
+using System.Net.Http;
+using FastMoq.Providers;
 
 namespace FastMoq.Extensions
 {
@@ -18,6 +20,13 @@ namespace FastMoq.Extensions
         {
             var setupHttpFactory = false;
             var baseUri = new Uri(baseAddress);
+
+            if (!UsesLegacyProtectedHttpMocks())
+            {
+                EnsureProviderNeutralHttpDependencies(mocker, baseUri, statusCode, stringContent);
+                return mocker.GetObject<IHttpClientFactory>()?.CreateClient(clientName)
+                    ?? throw new ApplicationException("Unable to create IHttpClientFactory.");
+            }
 
             // Ensure handler mock exists (idempotent due to CreateMock changes / GetMock usage)
             if (!mocker.Contains<HttpMessageHandler>())
@@ -64,6 +73,12 @@ namespace FastMoq.Extensions
         /// <param name="cancellationToken">The cancellation token.</param>
         public static void SetupHttpMessage(this Mocker mocker, Func<HttpResponseMessage> messageFunc, Expression? request = null, Expression? cancellationToken = null)
         {
+            if (!UsesLegacyProtectedHttpMocks())
+            {
+                SetProviderNeutralHandlerResponse(mocker, messageFunc);
+                return;
+            }
+
             request ??= ItExpr.IsAny<HttpRequestMessage>();
             cancellationToken ??= ItExpr.IsAny<CancellationToken>();
             mocker.GetMock<HttpMessageHandler>(); // ensure exists
@@ -145,5 +160,72 @@ namespace FastMoq.Extensions
         /// <returns>System.IO.Stream.</returns>
         public static async Task<Stream> GetContentStreamAsync(this HttpContent content) =>
             content is ByteArrayContent data ? await data.ReadAsStreamAsync() : Stream.Null;
+
+        private static bool UsesLegacyProtectedHttpMocks()
+        {
+            return MockingProviderRegistry.Default.Capabilities.SupportsProtectedMembers;
+        }
+
+        private static void EnsureProviderNeutralHttpDependencies(Mocker mocker, Uri baseUri, HttpStatusCode statusCode, string stringContent)
+        {
+            if (!mocker.Contains<HttpMessageHandler>() && !mocker.typeMap.ContainsKey(typeof(HttpMessageHandler)))
+            {
+                var handler = new ConfigurableHttpMessageHandler(() => CreateResponse(statusCode, stringContent));
+                mocker.AddType<HttpMessageHandler>(_ => handler, replace: true);
+            }
+
+            if (!mocker.Contains<IHttpClientFactory>() && !mocker.typeMap.ContainsKey(typeof(IHttpClientFactory)))
+            {
+                var factory = new ConfigurableHttpClientFactory(() => mocker.CreateHttpClientInternal(baseUri));
+                mocker.AddType<IHttpClientFactory>(factory, replace: true);
+            }
+        }
+
+        private static void SetProviderNeutralHandlerResponse(Mocker mocker, Func<HttpResponseMessage> messageFunc)
+        {
+            if (mocker.Contains<HttpMessageHandler>())
+            {
+                throw new NotSupportedException("SetupHttpMessage requires Moq protected-member support when a tracked HttpMessageHandler mock is already in use.");
+            }
+
+            if (mocker.typeMap.TryGetValue(typeof(HttpMessageHandler), out _)
+                && mocker.GetObject<HttpMessageHandler>() is ConfigurableHttpMessageHandler existingHandler)
+            {
+                existingHandler.Update(messageFunc);
+                return;
+            }
+
+            var handler = new ConfigurableHttpMessageHandler(messageFunc);
+            mocker.AddType<HttpMessageHandler>(_ => handler, replace: true);
+        }
+
+        private static HttpResponseMessage CreateResponse(HttpStatusCode statusCode, string stringContent)
+        {
+            return new HttpResponseMessage
+            {
+                StatusCode = statusCode,
+                Content = new StringContent(stringContent),
+            };
+        }
+
+        private sealed class ConfigurableHttpClientFactory(Func<HttpClient> clientFactory) : IHttpClientFactory
+        {
+            public HttpClient CreateClient(string name) => clientFactory();
+        }
+
+        private sealed class ConfigurableHttpMessageHandler(Func<HttpResponseMessage> responseFactory) : HttpMessageHandler
+        {
+            private Func<HttpResponseMessage> _responseFactory = responseFactory;
+
+            internal void Update(Func<HttpResponseMessage> responseFactory)
+            {
+                _responseFactory = responseFactory ?? throw new ArgumentNullException(nameof(responseFactory));
+            }
+
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                return Task.FromResult(_responseFactory());
+            }
+        }
     }
 }

@@ -162,7 +162,7 @@ namespace FastMoq.Providers.ReflectionProvider
             public void Track(MethodInfo method, object?[] args, object? returnValue) => _tracker(method, args, returnValue);
         }
 
-        private sealed class TrackingDispatchProxy : DispatchProxy
+        private class TrackingDispatchProxy : DispatchProxy
         {
             private Action<MethodInfo, object?[], object?> _onInvoke = default!;
             internal void Initialize(Action<MethodInfo, object?[], object?> onInvoke) => _onInvoke = onInvoke;
