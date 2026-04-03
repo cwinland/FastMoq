@@ -246,6 +246,58 @@ This is the supported path for EF Core tests in this repo. It keeps DbSet setup 
 
 FastMoq applies built-in setup for `HttpContext`, `IHttpContextAccessor`, and `HttpContextAccessor` so common web tests have a usable context object without repetitive setup.
 
+When you want explicit test setup for headers, query strings, or authenticated users, use the `FastMoq.Web.Extensions` helpers instead of wiring those pieces by hand.
+
+## Controller Testing
+
+For controller and request-driven tests, prefer building the request shape explicitly with the web helpers.
+
+```csharp
+using FastMoq.Web.Extensions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+public class OrdersControllerTests : MockerTestBase<OrdersController>
+{
+    protected override Action<Mocker>? SetupMocksAction => mocker =>
+    {
+        var httpContext = mocker
+            .CreateHttpContext("Admin")
+            .SetRequestHeader("X-Correlation-Id", "corr-123")
+            .SetQueryParameter("includeInactive", "true");
+
+        mocker.AddHttpContextAccessor(httpContext);
+    };
+
+    [Fact]
+    public async Task Get_ShouldReturnOrders_WhenRequestIsValid()
+    {
+        Component.ControllerContext = Mocks.CreateControllerContext("Admin");
+        Component.ControllerContext.HttpContext.SetRequestHeader("X-Correlation-Id", "corr-123");
+        Component.ControllerContext.HttpContext.SetQueryParameter("includeInactive", "true");
+
+        Mocks.GetMock<IOrderService>()
+            .Setup(x => x.GetOrdersAsync(true, It.IsAny<CancellationToken>()))
+            .ReturnsAsync([new OrderDto { Id = 42 }]);
+
+        var result = await Component.Get();
+
+        result.GetOkObjectResult()
+            .Value
+            .Should()
+            .NotBeNull();
+    }
+}
+```
+
+Practical rules:
+
+1. Use `CreateHttpContext(...)` when you need a reusable request object for middleware or accessors.
+2. Use `AddHttpContext(...)` or `AddHttpContextAccessor(...)` when the system under test resolves those types from DI.
+3. Use `SetRequestHeader(...)`, `SetRequestHeaders(...)`, `SetQueryString(...)`, `SetQueryParameter(...)`, or `SetQueryParameters(...)` to make request intent obvious in the test.
+4. Use `CreateControllerContext(...)` when the controller itself reads from `ControllerContext.HttpContext.User`.
+5. Use `GetOkObjectResult()`, `GetBadRequestObjectResult()`, `GetConflictObjectResult()`, and `GetObjectResultContent<T>()` to keep result assertions short.
+
 ## Extending Known Types
 
 Use `AddKnownType(...)` when a framework-style type needs special handling that does not belong in the normal type map.
