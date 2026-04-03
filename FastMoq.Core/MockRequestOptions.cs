@@ -12,8 +12,9 @@ namespace FastMoq
 
         /// <summary>
         /// Indicates whether non-public constructors may be used when creating a concrete mock.
+        /// When not set, FastMoq uses the current mock-request default for the active <see cref="Mocker"/>.
         /// </summary>
-        public bool AllowNonPublicConstructors { get; set; }
+        public bool? AllowNonPublicConstructors { get; set; }
 
         /// <summary>
         /// Optional constructor arguments for concrete mock creation.

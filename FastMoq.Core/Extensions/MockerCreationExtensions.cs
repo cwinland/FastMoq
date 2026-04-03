@@ -240,10 +240,9 @@ namespace FastMoq.Extensions
                 if (!type.IsInterface)
                 {
                     // Find the best constructor and build the parameters.
-                    constructor = args.Length > 0 ||
-                                  nonPublic
-                        ? mocker.FindConstructor(type, true, args)
-                        : mocker.FindConstructor(true, type, nonPublic);
+                    constructor = args.Length > 0
+                        ? mocker.FindConstructor(type, nonPublic, args)
+                        : mocker.FindPreferredConstructor(type, nonPublic);
                 }
             }
             catch (Exception ex)

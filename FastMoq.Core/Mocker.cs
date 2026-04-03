@@ -851,11 +851,16 @@ namespace FastMoq
             return options.FallbackToNonPublicConstructors ?? Policy.DefaultFallbackToNonPublicConstructors;
         }
 
+        internal bool ShouldAllowNonPublicConstructorsForMockRequest(bool? allowNonPublicConstructors)
+        {
+            return allowNonPublicConstructors ?? !ShouldCreateStrictMocks();
+        }
+
         private ConstructorModel GetConstructorByArgs(object?[] args, Type instanceType, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution)
         {
             return args.Length > 0
                 ? FindConstructor(instanceType, nonPublic, fallbackToNonPublicConstructors, optionalParameterResolution, args)
-                : FindConstructor(false, instanceType, nonPublic, fallbackToNonPublicConstructors, optionalParameterResolution);
+                : FindPreferredConstructor(instanceType, nonPublic, fallbackToNonPublicConstructors, optionalParameterResolution);
         }
 
         private bool TryGetExistingObject<T>(Type requestedType, IInstanceModel typeInstanceModel, out T? instance) where T : class
@@ -918,7 +923,7 @@ namespace FastMoq
                 {
                     constructor = args.Length > 0 || nonPublic
                         ? FindConstructor(type, nonPublic, optionalParameterResolution, args)
-                        : FindConstructor(bestGuess: true, type, nonPublic, optionalParameterResolution);
+                        : FindPreferredConstructor(type, nonPublic, optionalParameterResolution);
                 }
             }
             catch (Exception ex) { ExceptionLog.Add(ex.Message); }
@@ -966,6 +971,11 @@ namespace FastMoq
 
         internal ConstructorModel FindConstructor(Type type, bool nonPublic, OptionalParameterResolutionMode optionalParameterResolution, params object?[] args)
         {
+            if (args.Length == 0)
+            {
+                return FindPreferredConstructor(type, nonPublic, optionalParameterResolution);
+            }
+
             var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
             var all = GetConstructors(type, nonPublic, optionalParameterResolution, args);
             var filtered = all.Where(x => type.IsValidConstructor(x.ConstructorInfo!, args)).ToList();
@@ -983,6 +993,11 @@ namespace FastMoq
 
         private ConstructorModel FindConstructor(Type type, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution, params object?[] args)
         {
+            if (args.Length == 0)
+            {
+                return FindPreferredConstructor(type, nonPublic, fallbackToNonPublicConstructors, optionalParameterResolution);
+            }
+
             var all = GetConstructors(type, nonPublic, optionalParameterResolution, args);
             var filtered = all.Where(x => type.IsValidConstructor(x.ConstructorInfo!, args)).ToList();
             if (!filtered.Any())
@@ -997,44 +1012,59 @@ namespace FastMoq
 
             return filtered.FirstOrDefault(x => x.ParameterList.Length == args.Length) ?? filtered[0];
         }
-        internal ConstructorModel FindConstructor(bool bestGuess, Type type, bool nonPublic, List<ConstructorInfo>? excludeList = null) =>
-            FindConstructor(bestGuess, type, nonPublic, OptionalParameterResolution, excludeList);
+        internal ConstructorModel FindPreferredConstructor(Type type, bool nonPublic, List<ConstructorInfo>? excludeList = null) =>
+            FindPreferredConstructor(type, nonPublic, OptionalParameterResolution, excludeList);
 
-        internal ConstructorModel FindConstructor(bool bestGuess, Type type, bool nonPublic, OptionalParameterResolutionMode optionalParameterResolution, List<ConstructorInfo>? excludeList = null)
+        internal ConstructorModel FindPreferredConstructor(Type type, bool nonPublic, OptionalParameterResolutionMode optionalParameterResolution, List<ConstructorInfo>? excludeList = null)
         {
             var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
-            excludeList ??= new();
-            var ctors = GetConstructors(type, nonPublic, optionalParameterResolution).Where(c => excludeList.TrueForAll(e => e != c.ConstructorInfo)).ToList();
-            if (!bestGuess && ctors.Count(x => x.ParameterList.Length > 0) > 1)
-            {
-                throw this.GetAmbiguousConstructorImplementationException(type);
-            }
-
-            if (!(ctors.Count > 0) && !nonPublic && !strict)
-            {
-                return FindConstructor(bestGuess, type, true, optionalParameterResolution, excludeList);
-            }
-
-            var validCtors = this.GetTestedConstructors(type, ctors);
-            return validCtors.LastOrDefault() ?? throw new NotImplementedException("Unable to find the constructor.");
+            return FindPreferredConstructor(type, nonPublic, !strict, optionalParameterResolution, excludeList);
         }
 
-        private ConstructorModel FindConstructor(bool bestGuess, Type type, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution, List<ConstructorInfo>? excludeList = null)
+        private ConstructorModel FindPreferredConstructor(Type type, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution, List<ConstructorInfo>? excludeList = null)
         {
             excludeList ??= new();
-            var ctors = GetConstructors(type, nonPublic, optionalParameterResolution).Where(c => excludeList.TrueForAll(e => e != c.ConstructorInfo)).ToList();
-            if (!bestGuess && ctors.Count(x => x.ParameterList.Length > 0) > 1)
+
+            var publicConstructors = GetConstructors(type, false, optionalParameterResolution)
+                .Where(c => excludeList.TrueForAll(e => e != c.ConstructorInfo))
+                .ToList();
+
+            var preferredPublicConstructor = SelectPreferredConstructor(type, this.GetTestedConstructors(type, publicConstructors));
+            if (preferredPublicConstructor != null)
+            {
+                return preferredPublicConstructor;
+            }
+
+            if (!nonPublic && fallbackToNonPublicConstructors)
+            {
+                return FindPreferredConstructor(type, true, false, optionalParameterResolution, excludeList);
+            }
+
+            var nonPublicConstructors = GetConstructors(type, true, optionalParameterResolution)
+                .Where(c => excludeList.TrueForAll(e => e != c.ConstructorInfo))
+                .Where(c => c.ConstructorInfo?.IsPublic == false)
+                .ToList();
+
+            return SelectPreferredConstructor(type, this.GetTestedConstructors(type, nonPublicConstructors))
+                ?? throw new NotImplementedException("Unable to find the constructor.");
+        }
+
+        private ConstructorModel? SelectPreferredConstructor(Type type, List<ConstructorModel>? constructors)
+        {
+            constructors ??= [];
+            if (constructors.Count == 0)
+            {
+                return null;
+            }
+
+            var largestArity = constructors.Max(c => c.ParameterList.Length);
+            var bestMatches = constructors.Where(c => c.ParameterList.Length == largestArity).ToList();
+            if (bestMatches.Count > 1)
             {
                 throw this.GetAmbiguousConstructorImplementationException(type);
             }
 
-            if (!(ctors.Count > 0) && !nonPublic && fallbackToNonPublicConstructors)
-            {
-                return FindConstructor(bestGuess, type, true, fallbackToNonPublicConstructors, optionalParameterResolution, excludeList);
-            }
-
-            var validCtors = this.GetTestedConstructors(type, ctors);
-            return validCtors.LastOrDefault() ?? throw new NotImplementedException("Unable to find the constructor.");
+            return bestMatches[0];
         }
         public bool HasParameterlessConstructor(Type type, bool nonPublic = false) => GetConstructors(type, nonPublic).Any(x => x.ParameterList.Length == 0);
         internal List<ConstructorModel> GetConstructors(Type type, bool nonPublic, params object?[] values) =>
@@ -1409,10 +1439,11 @@ namespace FastMoq
 
             options ??= new MockRequestOptions();
             var args = options.ConstructorArgs ?? Array.Empty<object?>();
+            var allowNonPublicConstructors = ShouldAllowNonPublicConstructorsForMockRequest(options.AllowNonPublicConstructors);
 
             return options.ServiceKey == null
-                ? GetOrCreateFastMock(type, options.AllowNonPublicConstructors, args)
-                : GetOrCreateFastMock(type, options.ServiceKey, options.AllowNonPublicConstructors, args);
+                ? GetOrCreateFastMock(type, allowNonPublicConstructors, args)
+                : GetOrCreateFastMock(type, options.ServiceKey, allowNonPublicConstructors, args);
         }
 
         internal IFastMock GetOrCreateFastMock(Type type, bool nonPublic = false, params object?[] args)
@@ -1441,10 +1472,11 @@ namespace FastMoq
         {
             options ??= new MockRequestOptions();
             var args = options.ConstructorArgs ?? Array.Empty<object?>();
+            var allowNonPublicConstructors = ShouldAllowNonPublicConstructorsForMockRequest(options.AllowNonPublicConstructors);
 
             MockModel model = options.ServiceKey == null
-                ? GetMockModelFast(typeof(T), options.AllowNonPublicConstructors, args)
-                : GetKeyedMockModelFast(typeof(T), options.ServiceKey, options.AllowNonPublicConstructors, args);
+                ? GetMockModelFast(typeof(T), allowNonPublicConstructors, args)
+                : GetKeyedMockModelFast(typeof(T), options.ServiceKey, allowNonPublicConstructors, args);
 
             if (model.FastMock is IFastMock<T> typedFastMock)
             {
@@ -1610,7 +1642,7 @@ namespace FastMoq
             };
 
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
-            var constructor = FindConstructor(false, type.InstanceType, true, options.OptionalParameterResolution);
+            var constructor = FindPreferredConstructor(type.InstanceType, true, options.OptionalParameterResolution);
             return constructor.ConstructorInfo == null
                 ? Array.Empty<object?>()
                 : constructor.ConstructorInfo.GetParameters().Select(p => ResolveParameter(p, options.OptionalParameterResolution)).ToArray();

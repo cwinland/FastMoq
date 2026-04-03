@@ -239,9 +239,9 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateBest_Should_ThrowAmbiguous()
         {
-            // Ambiguous constructors.
-            new Action(() => Mocks.CreateInstance<TestClassMany>()).Should().Throw<AmbiguousImplementationException>();
-            new Action(() => Mocks.CreateInstanceNonPublic<TestClassOne>().Should().NotBeNull()).Should().Throw<AmbiguousImplementationException>();
+            Mocks.CreateInstance<TestClassMany>().Should().NotBeNull();
+            new Action(() => Mocks.CreateInstanceNonPublic<TestClassOne>().Should().NotBeNull()).Should().NotThrow();
+            new Action(() => Mocks.CreateInstance<SameArityPublicConstructors>()).Should().Throw<AmbiguousImplementationException>();
 
             Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
             // No Constructor.
@@ -249,6 +249,23 @@ namespace FastMoq.Tests
 
             // Valid Constructor.
             new Action(() => Mocks.CreateInstance<IFileSystem>(true).Should().NotBeNull()).Should().NotThrow();
+        }
+
+        [Fact]
+        public void GetOrCreateMock_ShouldAllowNonPublicConstructorsByDefault_WhenLenient()
+        {
+            var fastMock = Mocks.GetOrCreateMock<NonPublicOnlyMockTarget>();
+
+            fastMock.Should().NotBeNull();
+            fastMock.Instance.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetOrCreateMock_ShouldDisableNonPublicConstructorsByDefault_WhenStrict()
+        {
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+
+            Mocks.ShouldAllowNonPublicConstructorsForMockRequest(null).Should().BeFalse();
         }
 
         [Fact]
@@ -1829,7 +1846,7 @@ namespace FastMoq.Tests
 
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)
         {
-            var constructor = Mocks.FindConstructor(true, typeof(TestClassNormal), nonPublic);
+            var constructor = Mocks.FindPreferredConstructor(typeof(TestClassNormal), nonPublic);
             var isValid = typeof(IFileSystem).IsValidConstructor(constructor.ConstructorInfo, data);
             isValid.Should().Be(expected);
         }
@@ -1938,5 +1955,25 @@ namespace FastMoq.Tests
 
         internal SubscriptionData Sut => Component;
         internal Mocker TestMocks => Mocks;
+    }
+
+    internal sealed class SameArityPublicConstructors
+    {
+        public SameArityPublicConstructors(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+        }
+
+        public SameArityPublicConstructors(IFile file)
+        {
+            ArgumentNullException.ThrowIfNull(file);
+        }
+    }
+
+    public class NonPublicOnlyMockTarget
+    {
+        protected NonPublicOnlyMockTarget()
+        {
+        }
     }
 }
