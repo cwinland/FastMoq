@@ -1,0 +1,41 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "FastMoq.Abstractions/FastMoq.Abstractions.csproj",
+            "FastMoq.Core/FastMoq.Core.csproj",
+            "FastMoq.Database/FastMoq.Database.csproj",
+            "FastMoq.Provider.Moq/FastMoq.Provider.Moq.csproj",
+            "FastMoq.Provider.NSubstitute/FastMoq.Provider.NSubstitute.csproj",
+            "FastMoq.Web/FastMoq.Web.csproj",
+            "FastMoq/FastMoq.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "properties": {
+        "TargetFramework": "net8.0"
+      }
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml",
+          "docs/api/**.md"
+        ]
+      }
+    ],
+    "dest": "Help",
+    "template": [
+      "default"
+    ],
+    "globalMetadata": {
+      "_appName": "FastMoq API Reference",
+      "_enableSearch": true
+    }
+  }
+}

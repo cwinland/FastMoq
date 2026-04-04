@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using FastMoq.Providers.MoqProvider;
-using FastMoq.Providers.NSubstituteProvider;
 using FastMoq.Providers.ReflectionProvider;
 
 namespace FastMoq.Providers
@@ -18,12 +19,10 @@ namespace FastMoq.Providers
 
         static MockingProviderRegistry()
         {
-            // Auto-register Moq provider as default if consumer did not register any provider yet.
-            Register("moq", MoqMockingProvider.Instance, setAsDefault: true);
-            // Register NSubstitute (not default) for validation / optional use.
-            Register("nsubstitute", NSubstituteMockingProvider.Instance, setAsDefault: false);
-            // Register reflection fallback provider (lowest priority, not default)
-            Register("reflection", ReflectionMockingProvider.Instance, setAsDefault: false);
+            // Auto-register reflection as the provider-neutral default.
+            Register("reflection", ReflectionMockingProvider.Instance, setAsDefault: true);
+            // Moq remains bundled in v4 for compatibility, but is no longer the default.
+            Register("moq", MoqMockingProvider.Instance, setAsDefault: false);
         }
 
         public static void Register(string name, IMockingProvider provider, bool setAsDefault = false)
@@ -39,7 +38,21 @@ namespace FastMoq.Providers
 
         public static bool TryGet(string name, out IMockingProvider provider) => _providers.TryGetValue(name, out provider!);
 
+        public static IReadOnlyCollection<string> RegisteredProviderNames => _providers.Keys.OrderBy(name => name, StringComparer.OrdinalIgnoreCase).ToArray();
+
         public static IMockingProvider Default => _current.Value ?? _default ?? throw new InvalidOperationException("No mocking provider registered. Register one via MockingProviderRegistry.Register().");
+
+        public static void SetDefault(string name)
+        {
+            ArgumentNullException.ThrowIfNull(name);
+
+            if (!TryGet(name, out var provider))
+            {
+                throw new InvalidOperationException($"Unable to find provider '{name}'. Registered providers: {string.Join(", ", RegisteredProviderNames)}.");
+            }
+
+            _default = provider;
+        }
 
         /// <summary>
         /// Push a provider for the current async context returning a disposable that restores the previous value.
@@ -49,6 +62,18 @@ namespace FastMoq.Providers
             var prior = _current.Value;
             _current.Value = provider;
             return new PopDisposable(prior);
+        }
+
+        public static IDisposable Push(string name)
+        {
+            ArgumentNullException.ThrowIfNull(name);
+
+            if (!TryGet(name, out var provider))
+            {
+                throw new InvalidOperationException($"Unable to find provider '{name}'. Registered providers: {string.Join(", ", RegisteredProviderNames)}.");
+            }
+
+            return Push(provider);
         }
 
         public static void Clear()

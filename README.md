@@ -1,6 +1,6 @@
 # [FastMoq](http://help.fastmoq.com/)
 
-Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework for mocking and auto injection of classes when testing.
+FastMoq is a .NET testing framework for auto-mocking, dependency injection, and test-focused object creation. In v4, it supports a provider-first architecture with a bundled reflection default and optional Moq compatibility when you need it.
 
 ## 📚 Documentation
 
@@ -8,6 +8,7 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 
 - **🚀 [Getting Started Guide](./docs/getting-started)** - Your first FastMoq test in 5 minutes
 - **🧪 [Testing Guide](./docs/getting-started/testing-guide.md)** - Repo-native guidance for `GetMock<T>()`, `AddType(...)`, `DbContext`, `IFileSystem`, and known types
+- **🔌 [Provider Selection Guide](./docs/getting-started/provider-selection.md)** - How to register, select, and bootstrap providers for a test assembly
 - **👨‍🍳 [Cookbook](./docs/cookbook)** - Real-world patterns and recipes
 - **🏗️ [Sample Applications](./docs/samples)** - Complete examples with Azure integration
 - **🧪 [Executable Testing Examples](./docs/samples/testing-examples.md)** - Repo-backed service examples using the current FastMoq API direction
@@ -17,12 +18,12 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 ### Additional Resources
 
 - **📖 [Complete Documentation](./docs)** - All guides and references in one place
-- **🗺️ [Roadmap Notes](./docs/roadmap)** - Current provider-era direction and deferred backlog items
-- **🆕 [What's New Since 3.0.0](./docs/whats-new)** - Unreleased repository changes since the last public package
+- **🗺️ [Roadmap Notes](./docs/roadmap)** - Current provider-first direction and deferred backlog items
+- **🆕 [What's New Since 3.0.0](./docs/whats-new)** - Summary of the v4 release line relative to the last public `3.0.0` package
 - **⚠️ [Breaking Changes](./docs/breaking-changes)** - Intentional v4 behavior changes relative to the `3.0.0` public release
 - **🔄 [Migration Guide](./docs/migration)** - Practical old-to-new guidance from `3.0.0` to the current repo direction
 - **❓ [FAQs](./FAQs.md)** - Frequently asked questions and troubleshooting
-- **🔗 [API Documentation](http://help.fastmoq.com/)** - Complete API reference
+- **🔗 [API Documentation](https://help.fastmoq.com/)** - Generated HTML API reference
 
 ## Features
 
@@ -46,9 +47,11 @@ Easy and fast extension of the [Moq](https://github.com/Moq) mocking framework f
 ## Packages
 
 - FastMoq - Aggregate package that combines FastMoq.Core, FastMoq.Database, and FastMoq.Web.
-- FastMoq.Core - Core testing Mocker and provider-era resolution pipeline.
+- FastMoq.Core - Core testing Mocker and provider-first resolution pipeline.
 - FastMoq.Database - Entity Framework and DbContext-focused helpers.
 - FastMoq.Web - Blazor and Web support.
+
+In the current v4 layout, `FastMoq.Core` bundles the internal `reflection` provider and the bundled `moq` compatibility provider. The default provider is `reflection`. Additional providers such as `nsubstitute` can be added explicitly.
 
 Typical split-package install:
 
@@ -60,13 +63,26 @@ dotnet add package FastMoq.Web
 
 `GetMockDbContext<TContext>()` keeps the same main call shape in the `FastMoq` namespace. If you install `FastMoq`, the EF helpers are included. If you install `FastMoq.Core` directly, add `FastMoq.Database` for DbContext support.
 
-The current DbContext helper path is still backed by the existing Moq-based `DbContextMock<TContext>` implementation. The package split makes core lighter, but DbContext is not provider-neutral yet.
+`GetMockDbContext<TContext>()` remains the default mocked-sets entry point. For explicit mode selection between mocked DbSets and a real EF in-memory context, use `GetDbContextHandle<TContext>(new DbContextHandleOptions<TContext> { ... })`.
+
+The mocked-sets path is still backed by the existing Moq-based `DbContextMock<TContext>` implementation, while the real-context path is exposed through `DbContextTestMode.RealInMemory`.
+
+If you are upgrading an older suite that still uses `GetMock<T>()`, direct `Mock<T>` access, or `VerifyLogger(...)`, select Moq explicitly for that test assembly. If you are writing new or actively refactoring tests, prefer provider-neutral APIs such as `GetOrCreateMock(...)`, `Verify(...)`, and `VerifyLogged(...)`.
+
+Provider selection example:
+
+```csharp
+MockingProviderRegistry.Register("moq", MoqMockingProvider.Instance, setAsDefault: true);
+var mocker = new Mocker();
+```
+
+For a temporary override in a specific async scope, use `MockingProviderRegistry.Push("providerName")`. For detailed setup guidance, see [Provider Selection Guide](./docs/getting-started/provider-selection.md).
 
 ## Targets
 
 - .NET 9
 - .NET 8
-- .NET 6
+- .NET 10
 
 ## Most used classes in the FastMoq namespace
 
@@ -83,8 +99,7 @@ public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHe
 
 ## Examples
 
-- [Examples and documentation of MockerTestBase](http://help.fastmoq.com/Help/html/T-FastMoq.MockerTestBase-1.htm)
-- [Examples and documentation of MockerBlazorTestBase](http://help.fastmoq.com/Help/html/T-FastMoq.Web.Blazor.MockerBlazorTestBase-1.htm)
+- [API reference landing page](./docs/api/index.md)
 - [Executable testing examples in this repo](./docs/samples/testing-examples.md)
 
 ### Real-world example: order processing service
@@ -526,7 +541,7 @@ Add the following ```InternalsVisibleTo``` line to the AssemblyInfo file.
 
 ## Additional Documentation
 
-[FastMoq API Documentation](https://cwinland.github.io/FastMoq/Help/html/N-FastMoq.htm)
+[FastMoq API Documentation](https://help.fastmoq.com/)
 
 ## Full Change Log
 
@@ -538,4 +553,4 @@ For current repo-era breaking changes and the older package-line change summary 
 
 ## [License - MIT](./License)
 
-[http://help.fastmoq.com](http://help.fastmoq.com/)
+[https://help.fastmoq.com/](https://help.fastmoq.com/)

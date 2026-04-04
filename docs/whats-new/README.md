@@ -1,6 +1,6 @@
 # What's New Since 3.0.0
 
-This page tracks the unreleased work in the repository since the last public FastMoq release.
+This page summarizes the changes in the current v4 release line relative to the last public FastMoq release.
 
 ## Release baseline
 
@@ -8,19 +8,17 @@ This page tracks the unreleased work in the repository since the last public Fas
 - Release date: May 12, 2025
 - Release baseline commit: `4035d0d`
 
-This document describes the repository delta after that release. It is not a claim that these changes are already available on NuGet.
+This document describes the release delta after that baseline.
 
 ## Release status
 
-The current repository work is best treated as the next major-version line.
+The current repository work became the v4 release line.
 
-At the time of writing:
+At a high level:
 
-- the public package is still `3.0.0`
-- the repository contains provider-era architecture and API changes beyond that release
-- this work is not planned for release until additional features land and the .NET 6 support decision is settled
-
-In practice, this is shaping more like a `4.x` release than a small `3.0.x` follow-up.
+- `3.0.0` is the last public baseline before the provider-first architecture
+- v4 introduces explicit provider selection, a bundled reflection default, and clearer migration paths for Moq compatibility
+- this document focuses on what changed, while the migration guide explains how to move existing tests forward
 
 ## Major changes since 3.0.0
 
@@ -48,7 +46,7 @@ Key surfaces include:
 
 ### Focused instance creation
 
-The repo-era options bag has been removed in favor of focused creation APIs.
+The older options bag has been removed in favor of focused creation APIs.
 
 Newer code can use:
 
@@ -71,7 +69,7 @@ Constructor visibility is now expressed directly by `InstanceCreationFlags`:
 
 `MockOptional` is now obsolete and retained only as a compatibility alias rather than a primary API.
 
-New repo-era guidance is:
+Current guidance is:
 
 - set `Mocks.OptionalParameterResolution` for SUT creation defaults
 - use `InvocationOptions.OptionalParameterResolution` for `CallMethod(...)` and `InvokeMethod(...)`
@@ -99,8 +97,8 @@ What changed:
 
 What did not change yet:
 
-- the DbContext helper path still relies on the existing Moq-based implementation
-- provider-neutral DbContext behavior is not finished yet
+- the mocked-sets helper path still relies on the existing Moq-based implementation moved into `FastMoq.Database`
+- the real in-memory path is now explicitly available through `GetDbContextHandle<TContext>(...)` and `DbContextTestMode.RealInMemory`
 - core currently uses a small runtime bridge so built-in DbContext resolution can stay optional without taking a compile-time EF dependency
 
 The intended user-facing direction is not to split DbContext behavior by separate top-level helper methods again. The better direction is one primary DbContext helper surface with explicit mode or option selection so tests can choose between:
@@ -108,7 +106,7 @@ The intended user-facing direction is not to split DbContext behavior by separat
 - pure mock-oriented behavior for mocked DbSet and query interactions
 - real EF-backed behavior for in-memory provider scenarios
 
-That distinction exists conceptually today, but the API still needs to make it explicit.
+That distinction is now explicit in the public helper surface, while the mocked-sets internals remain intentionally Moq-based for the v4 transition.
 
 Longer term, this likely needs a small EF-specific abstraction instead of treating DbContext support as just another plain provider mock. DbContext has extra behavior beyond generic mock creation:
 
@@ -170,7 +168,9 @@ The repository now includes a minimal fluent scenario builder:
 
 Verification also has a portable times model through `TimesSpec`, including `TimesSpec.Once`, `TimesSpec.Exactly(count)`, `TimesSpec.AtLeast(count)`, `TimesSpec.AtMost(count)`, and `TimesSpec.Never()`.
 
-Inside `MockerTestBase<TComponent>`, the preferred repo-era pattern is now the `Scenario` property plus parameterless `With` / `When` / `Then` overloads when `Component` is already in scope.
+Inside `MockerTestBase<TComponent>`, the preferred current pattern is the `Scenario` property plus parameterless `With` / `When` / `Then` overloads when `Component` is already in scope.
+
+Provider selection is also explicit through `MockingProviderRegistry`, with the v4 transition packages currently auto-registering `reflection` as default plus the bundled `moq` compatibility provider. Optional providers such as `nsubstitute` can be installed and registered explicitly.
 
 ### Improved docs and executable examples
 
@@ -205,6 +205,6 @@ For the maintainer backlog view, see [Roadmap Notes](../roadmap/README.md).
 
 If you are consuming the public NuGet package today, treat `3.0.0` as the released contract.
 
-If you are working in this repository, use the current repo-native docs and executable examples as the source of truth for ongoing provider-era behavior.
+If you are working in this repository, use the current repo-native docs and executable examples as the source of truth for ongoing v4 behavior.
 
 For old-to-new API guidance, see [Migration Guide: 3.0.0 To Current Repo](../migration/README.md).

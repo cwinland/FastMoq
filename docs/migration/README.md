@@ -10,18 +10,118 @@ It is intentionally practical. The goal is not to list every internal refactor, 
 - Release date: May 12, 2025
 - Baseline commit: `4035d0d`
 
-This is migration guidance for the repository's current unreleased direction. It is not a claim that all of this is already available in the published NuGet package.
+This is migration guidance for the current v4 release line. Some references point to repository-backed examples and current documentation structure, but the migration behavior described here is intended to match the published v4 package surface.
 
 ## Migration summary
 
-If you are moving older FastMoq usage forward, the main changes are:
+If you are moving tests forward from the public `3.0.0` package or from pre-v4 FastMoq assumptions, the main changes are:
 
-1. Prefer `GetMock<T>()` for normal dependency setup instead of older reset-oriented patterns.
+1. Prefer provider-neutral APIs for new migration work, while using the bundled Moq compatibility APIs only where they still reduce migration cost.
 2. Treat `AddType(...)` as an explicit type-resolution override, not as a general substitute for mocks.
 3. Treat `Strict` as compatibility-only. Use `Behavior` or preset helpers when you mean broader behavior changes.
 4. Prefer the newer provider-first retrieval and verification surfaces when you do not specifically need raw Moq APIs.
 5. Use the executable examples in `FastMoq.TestingExample` as the best repo-backed reference for current patterns.
 6. Treat DbContext helpers as an optional database-package concern when consuming `FastMoq.Core` directly.
+
+In this guide, "previous FastMoq versions" means tests and helpers written against the public `3.0.0` package or against pre-v4 assumptions, especially code that assumes:
+
+- Moq is the implicit default surface
+- `Strict` is a broader profile switch
+- compatibility APIs such as `Initialize<T>(...)`, `VerifyLogger(...)`, or `MockOptional` are still the normal path
+
+## Choose a migration path
+
+If you are taking over an existing suite, there are two valid v4 paths.
+
+### Option 1: Stabilize first
+
+Use this when the immediate goal is to get the upgraded suite passing with minimal churn.
+
+Typical approach:
+
+1. Upgrade to v4.
+2. Run the test suite without rewriting test code.
+3. If legacy Moq-shaped tests fail, select `moq` explicitly for the test assembly.
+4. Keep existing `GetMock<T>()`, `VerifyLogger(...)`, and other compatibility surfaces where they are already working.
+5. Defer broader provider-neutral cleanup until the suite is stable.
+
+Pros:
+
+- lowest short-term risk
+- fastest path to a green test suite after upgrade
+- easiest option for maintainers inheriting unfamiliar tests
+
+Cons:
+
+- leaves more Moq-specific coupling in place
+- does less to prepare the suite for the long-term provider-neutral direction
+- can make later modernization feel like a second migration pass
+
+### Option 2: Modernize while you touch tests
+
+Use this when you are already editing tests and want to move them toward the current preferred FastMoq shape.
+
+Typical approach:
+
+1. Upgrade to v4.
+2. Stabilize only the areas that still require Moq compatibility.
+3. For touched tests, replace legacy patterns with provider-neutral APIs where practical.
+4. Move logger assertions toward `VerifyLogged(...)`.
+5. Use `AddType(...)`, `GetOrCreateMock(...)`, provider-safe `Verify(...)`, and `TimesSpec.*` where they fit the test intent.
+
+Pros:
+
+- aligns new work with the current provider-neutral direction
+- reduces future migration pressure
+- makes provider assumptions more explicit at the test level
+
+Cons:
+
+- higher short-term change volume
+- requires more FastMoq familiarity up front
+- some legacy tests still need Moq compatibility because not every setup flow has a fully provider-neutral replacement yet
+
+Recommended default for takeover work:
+
+- choose stabilize-first if you inherited the suite and need confidence quickly
+- choose modernize-while-touched once the suite is green and you are editing tests for real feature work
+
+## Provider selection first
+
+The current v4 repository behavior differs from `3.0.0` in one important way:
+
+- `FastMoq.Core` now bundles both `reflection` and `moq`
+- `reflection` is the default provider if you do nothing
+- tests carried forward from previous FastMoq versions that rely on `GetMock<T>()`, direct `Mock<T>` access, `Protected()`, or `VerifyLogger(...)` should select `moq` explicitly for the test assembly
+
+Recommended assembly bootstrap for tests that still need Moq compatibility during the v4 transition:
+
+```csharp
+using System.Runtime.CompilerServices;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+namespace MyTests;
+
+public static class TestAssemblyProviderBootstrap
+{
+    [ModuleInitializer]
+    public static void Initialize()
+    {
+        MockingProviderRegistry.Register("moq", MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+```
+
+Migration guidance for v4:
+
+- prefer provider-neutral surfaces such as `GetOrCreateMock(...)` and `VerifyLogged(...)` for new or actively refactored tests
+- keep using Moq compatibility APIs where they materially reduce migration churn
+- isolate Moq-specific usage behind an assembly-level provider selection so the tests that still depend on it are explicit
+
+This keeps existing suites stable for v4 while steering new code toward the provider-neutral shape that will carry forward cleanly.
+
+If you are following the stabilize-first path, the most important action is explicit Moq selection for the test assembly. If you are following the modernization path, treat explicit Moq selection as a narrow compatibility tool rather than the long-term destination.
 
 ## Old to new guidance
 
@@ -45,7 +145,44 @@ Mocks.GetMock<IOrderRepository>()
 Why:
 
 - `Initialize<T>(...)` is now a compatibility wrapper, not the recommended setup entry point.
-- `GetMock<T>()` better reflects the actual intent for the normal auto-mock path.
+- `GetMock<T>()` remains a supported compatibility path when the assembly is explicitly using the bundled Moq compatibility provider.
+
+If you are already refactoring the test and do not specifically need a raw `Moq.Mock<T>`, prefer moving toward provider-neutral retrieval and verification instead of expanding direct `GetMock<T>()` usage further.
+
+There is not yet a single provider-neutral drop-in replacement for `Initialize<T>(...)`, because `Initialize<T>(...)` wraps a Moq `Setup(...)` callback.
+
+Practical rule:
+
+- use `GetMock<T>()` when the test still depends on Moq `Setup(...)`, `Protected()`, or direct `Mock<T>` access during the v4 transition
+- use `GetOrCreateMock(...)`, `Verify(...)`, and `VerifyLogged(...)` when the test can move forward without Moq-specific setup semantics
+- use `AddType(...)` when the cleaner provider-neutral move is to supply a fake, stub, factory, or fixed instance rather than configure a mocking-library setup chain
+
+Provider-neutral replacement depends on what the old `Initialize<T>(...)` callback was doing:
+
+- if the old code mainly existed to verify later calls, start from `GetOrCreateMock<T>()` and provider-neutral verification
+- if the old code mainly existed to supply behavior, prefer `AddType(...)` with a fake, stub, or fixed instance when practical
+- if the old code still needs Moq `Setup(...)` semantics, keep it on `GetMock<T>()` for the v4 transition and isolate that test area behind explicit Moq selection
+
+### `VerifyLogger(...)` vs `VerifyLogged(...)`
+
+Old Moq-oriented pattern:
+
+```csharp
+Mocks.GetMock<ILogger<MyComponent>>()
+    .VerifyLogger(LogLevel.Information, "Processing started");
+```
+
+Current guidance:
+
+```csharp
+Mocks.VerifyLogged(LogLevel.Information, "Processing started");
+```
+
+Why:
+
+- `VerifyLogged(...)` is the provider-safe logging assertion surface.
+- `VerifyLogger(...)` remains a Moq compatibility API.
+- existing logger assertions carried forward from previous FastMoq versions can stay on `VerifyLogger(...)` if the assembly explicitly selects `moq`, but new or touched tests should prefer `VerifyLogged(...)`.
 
 ### `Strict`
 
@@ -84,7 +221,7 @@ Breaking-change note:
 
 - strict `IFileSystem` no longer guarantees a raw or empty mock in the current repo
 - tracked `IFileSystem` mocks may still expose built-in members such as `File`, `Directory`, and `Path`
-- if an older test relied on null members, configure them explicitly on `GetMock<IFileSystem>()`
+- if a test carried forward from previous FastMoq versions relied on null members, configure them explicitly on `GetMock<IFileSystem>()`
 - this compatibility note is specific to `IFileSystem`; it is not a blanket statement that all built-in types ignore strict-mode behavior
 
 Example:
@@ -101,6 +238,8 @@ Mocks.GetMock<IFileSystem>()
 ```
 
 For the dedicated compatibility summary, see [Breaking Changes](../breaking-changes/README.md).
+
+For the fuller current-model explanation of `Strict`, `FailOnUnconfigured`, and the preset helpers, see [Testing Guide: Strict vs Presets](../getting-started/testing-guide.md#strict-vs-presets).
 
 ### `GetMock<T>()` vs `AddType(...)`
 
@@ -139,11 +278,23 @@ Practical guidance:
 
 - if you install `FastMoq`, keep using `GetMockDbContext<TContext>()` as before
 - if you install `FastMoq.Core` directly, also install `FastMoq.Database`
-- do not assume the DbContext helper is provider-neutral yet; today it still uses the moved Moq-based implementation
+- use `GetDbContextHandle<TContext>(...)` when you need to choose explicitly between mocked sets and a real in-memory EF context
+- do not assume the mocked-sets helper is provider-neutral yet; today that path still uses the moved Moq-based implementation
+
+Current repo behavior now makes the mode split explicit:
+
+```csharp
+var handle = mocker.GetDbContextHandle<ApplicationDbContext>(new DbContextHandleOptions<ApplicationDbContext>
+{
+    Mode = DbContextTestMode.RealInMemory,
+});
+
+var dbContext = handle.Context;
+```
 
 ### `AddKnownType(...)` vs `AddType(...)`
 
-This distinction matters more in the current repo than it did in older FastMoq usage.
+This distinction matters more in the current v4 release line than it did in previous FastMoq versions.
 
 Use `AddType(...)` when you are overriding normal resolution for a dependency:
 
@@ -302,7 +453,7 @@ Why:
 
 ### Provider-first access
 
-Older tests often assumed `Moq.Mock` was the only meaningful tracked artifact.
+Tests carried forward from previous FastMoq versions often assumed `Moq.Mock` was the only meaningful tracked artifact.
 
 Current guidance:
 
@@ -351,12 +502,22 @@ Use `ExecuteThrows<TException>()` or `ExecuteThrowsAsync<TException>()` when you
 
 ## Recommended migration order
 
-1. Replace `Initialize<T>(...)` usage with `GetMock<T>()` setup where possible.
-2. Audit `Strict` usage and decide whether each case means fail-on-unconfigured only or a full strict preset.
-3. Replace new `MockOptional` usage with explicit `OptionalParameterResolution`, `InvocationOptions`, or `MockerTestBase<TComponent>` component-construction overrides.
-4. Separate `GetMock<T>()` scenarios from `AddType(...)` scenarios so the test intent is obvious.
-5. Adopt provider-first surfaces only where they add value; do not rewrite stable tests without a reason.
-6. Use the repo's executable examples as the reference for new tests.
+### Stabilize-first order
+
+1. Upgrade to v4 and run the suite unchanged.
+2. If legacy Moq-shaped tests fail, select `moq` explicitly for the test assembly.
+3. Audit `Strict` usage and decide whether each case means fail-on-unconfigured only or a full strict preset. Use [Testing Guide: Strict vs Presets](../getting-started/testing-guide.md#strict-vs-presets) when the replacement is unclear.
+4. Replace new `MockOptional` usage with explicit `OptionalParameterResolution`, `InvocationOptions`, or `MockerTestBase<TComponent>` component-construction overrides. See [Obsolete `MockOptional`](#obsolete-mockoptional) and [Testing Guide: Optional parameter resolution](../getting-started/testing-guide.md#optional-parameter-resolution) when the right replacement is unclear.
+5. Stop once the suite is stable unless you are already touching tests for other work.
+
+### Modernize-while-touched order
+
+1. Start by moving touched tests toward the provider-neutral APIs where practical. As part of that, replace `Initialize<T>(...)` case by case with `AddType(...)`, `GetOrCreateMock(...)`, `Verify(...)`, and `VerifyLogged(...)` where they fit the test intent, and keep `GetMock<T>()` only when the test still needs Moq-specific `Setup(...)` semantics in v4.
+2. Decide which test areas still need explicit `moq` selection for compatibility and which ones can move directly to provider-neutral surfaces under the default `reflection` provider.
+3. Separate `GetMock<T>()` scenarios from `AddType(...)` scenarios so the test intent is obvious. See [`GetMock<T>()` vs `AddType(...)`](#getmockt-vs-addtype) when the replacement boundary is unclear.
+4. Migrate logger assertions toward `VerifyLogged(...)` unless the test intentionally stays on the Moq compatibility surface. See [`VerifyLogger(...)` vs `VerifyLogged(...)`](#verifylogger-vs-verifylogged) and [Executable Testing Examples](../samples/testing-examples.md) for current assertion patterns.
+5. Adopt provider-first surfaces where they make the test clearer, such as `GetOrCreateMock(...)`, provider-safe `Verify(...)`, and `TimesSpec.*` verification. Do not rewrite stable tests without a reason. See [Provider-first access](#provider-first-access) and [Executable Testing Examples](../samples/testing-examples.md).
+6. Use the repo's executable examples as the reference for new tests, starting with [Executable Testing Examples](../samples/testing-examples.md) and the `FastMoq.TestingExample/RealWorldExampleTests.cs` source.
 
 ## Best source of examples
 

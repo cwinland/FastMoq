@@ -1,6 +1,6 @@
 # FastMoq Roadmap Notes
 
-This document captures the current provider-era direction for FastMoq. It is not a marketing roadmap. It is a working backlog note for contributors and maintainers.
+This document captures the current provider-first direction for FastMoq. It is not a marketing roadmap. It is a working backlog note for contributors and maintainers.
 
 ## Current Direction
 
@@ -16,6 +16,7 @@ FastMoq is moving toward a provider-based architecture where:
 - Instance creation now uses focused APIs with policy-driven defaults plus explicit public-only and constructor-fallback entry points.
 - Known framework-style types now have a per-`Mocker` extension point through `AddKnownType(...)`.
 - A repo-native testing guide now documents the current recommended patterns.
+- DbContext helpers now expose explicit mocked-sets versus real in-memory modes through `GetDbContextHandle(...)` and `DbContextTestMode`.
 
 ## Active Work
 
@@ -29,29 +30,18 @@ Areas still in motion:
 - Keeping provider-native interactions available without forcing all providers to emulate Moq.
 - Preserving compatibility where it is useful while keeping the long-term API shape provider-neutral.
 
-### DbContext mode split
+### Release hardening and packaging
 
-The current DbContext experience still blurs two different testing needs:
+The main remaining release-facing work is no longer about inventing large new features. It is about freezing the transition contract cleanly for the next major line.
 
-- pure mock-style DbContext and DbSet behavior
-- real EF-backed behavior using an in-memory provider or similar store
+Current release-hardening focus:
 
-The intended direction is to separate those concerns by method options or call modes rather than by forcing users onto different top-level APIs.
+- Finalize the packaging and provider-selection story for the built-in Moq, NSubstitute, and reflection providers.
+- Keep the remaining Moq compatibility shims explicit so they do not look like provider-neutral core behavior.
+- Tighten migration notes for obsolete or compatibility-only surfaces that will move in `v5`.
+- Validate docs and executable examples against the release candidate behavior.
 
-Current preferred design direction:
-
-- keep one primary DbContext helper surface so older call sites remain recognizable
-- add explicit mode selection for mock-oriented versus real-provider-oriented behavior
-- avoid making "real EF" the implicit path when the user only wants pure mocks
-- keep package boundaries as an implementation detail, not the main user-facing distinction
-
-This likely points to a small EF-specific abstraction layer that can model:
-
-- mocked DbSet and async-query behavior
-- real provider-backed DbContext creation
-- shared setup hooks and defaults without hard-coding Moq semantics into all future modes
-
-The earlier `GetDbContext(...)` split is not the preferred long-term surface. The better direction is a unified DbContext helper with explicit options.
+The DbContext mode split itself is now in place. The remaining work there is release hardening, test coverage, and documentation accuracy rather than surface design.
 
 ## Deferred Work
 
@@ -96,7 +86,7 @@ Documentation now covers the testing decision points and known-type behavior, bu
 - Provider-native examples once additional provider work lands.
 - Focused migration notes for older Moq-heavy test suites.
 - Expanded web samples if broader web support moves out of the deferred bucket.
-- DbContext guidance once mock-mode versus real-mode options are finalized.
+- Additional DbContext examples now that mock-mode versus real-mode options are explicit.
 
 ## Decision Rules
 

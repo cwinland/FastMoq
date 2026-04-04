@@ -1,10 +1,10 @@
 # Breaking Changes
 
-This page tracks intentional breaking changes in the current unreleased repository line relative to the last public `3.0.0` package.
+This page tracks intentional v4 breaking changes relative to the last public `3.0.0` package.
 
 - Public release baseline: `3.0.0`
 - Release date: May 12, 2025
-- This document describes repo behavior that is intended for the next major version line.
+- This document describes the changed behavior in the current v4 release line.
 
 ## Current breaking changes
 
@@ -17,7 +17,7 @@ In the current repo, `Strict` is primarily a compatibility property layered over
 What changed:
 
 - `Strict = true` should no longer be treated as shorthand for the whole current strict behavior profile.
-- If you want the broader repo-era strict preset, use `UseStrictPreset()`.
+- If you want the broader current strict preset, use `UseStrictPreset()`.
 - If you only want fail-on-unconfigured compatibility behavior, `Strict` still works for that path.
 
 What did not disappear:
@@ -31,7 +31,7 @@ Migration guidance:
 // Compatibility-style strict behavior
 Mocks.Strict = true;
 
-// Full repo-era strict preset
+// Full current strict preset
 Mocks.UseStrictPreset();
 ```
 
@@ -53,7 +53,7 @@ Why this changed:
 
 - The repo now treats known framework-heavy types as useful built-ins by default.
 - Tracked mocks are preconfigured through the known-type pipeline so they behave consistently with the built-in in-memory file system model.
-- This keeps the provider-era model simpler than having a separate strict-only `IFileSystem` branch.
+- This keeps the provider-first model simpler than having a separate strict-only `IFileSystem` branch.
 
 Previous expectation:
 

@@ -17,6 +17,11 @@ namespace FastMoq.Tests
 {
     public class ProviderTests
     {
+        static ProviderTests()
+        {
+            MockingProviderRegistry.Register("nsubstitute", NSubstituteMockingProvider.Instance, setAsDefault: false);
+        }
+
         public static TheoryData<string> ProviderNames => new()
         {
             "moq",
@@ -161,6 +166,23 @@ namespace FastMoq.Tests
             configureProperties.Should().NotThrow();
             configureLogger.Should().NotThrow();
             setCallBase.Should().NotThrow();
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void Push_ShouldResolveRegisteredProviderByName(string providerName)
+        {
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+
+            MockingProviderRegistry.Default.Should().BeSameAs(GetProvider(providerName));
+        }
+
+        [Fact]
+        public void RegisteredProviderNames_ShouldIncludeBuiltInProviders()
+        {
+            MockingProviderRegistry.RegisteredProviderNames.Should().Contain(["moq", "reflection", "nsubstitute"]);
         }
 
         [Theory]
@@ -334,12 +356,17 @@ namespace FastMoq.Tests
 
         private static IDisposable PushProvider(string providerName)
         {
+            return MockingProviderRegistry.Push(providerName);
+        }
+
+        private static IMockingProvider GetProvider(string providerName)
+        {
             if (!MockingProviderRegistry.TryGet(providerName, out var provider))
             {
                 throw new InvalidOperationException($"Unable to find provider '{providerName}'.");
             }
 
-            return MockingProviderRegistry.Push(provider);
+            return provider;
         }
 
         public interface IProviderDependency

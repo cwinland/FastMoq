@@ -1,16 +1,18 @@
 # Getting Started with FastMoq
 
-Welcome to FastMoq! This guide will walk you through setting up FastMoq and writing your first test. FastMoq is a powerful extension of the Moq framework that simplifies mocking and provides automatic dependency injection for your .NET tests.
+Welcome to FastMoq. This guide walks through setup and a first test using the current v4 release line. FastMoq helps you create tests with automatic dependency injection, mock tracking, and test-focused object creation without forcing you to wire every dependency by hand.
 
 ## What is FastMoq?
 
-FastMoq is designed to eliminate the boilerplate code typically required when setting up mocks in unit tests. It automatically creates and injects mock objects, allowing you to focus on writing test logic rather than managing mock setup.
+FastMoq is designed to reduce the boilerplate usually required when setting up unit tests. It automatically creates and injects test doubles, lets you override only the parts that matter, and supports both provider-neutral test patterns and Moq compatibility for migration scenarios.
 
 For the repo-native testing conventions and framework-specific guidance used by this codebase, see the [FastMoq Testing Guide](./testing-guide.md).
 
 If you want examples that run directly in this repository instead of static snippets only, see [Executable Testing Examples](../samples/testing-examples.md).
 
 If you are updating older FastMoq usage from the last public `3.0.0` release, see [Migration Guide: 3.0.0 To Current Repo](../migration/README.md).
+
+If you need to choose or bootstrap a provider explicitly, see the [Provider Selection Guide](./provider-selection.md).
 
 ### Key Benefits
 
@@ -47,31 +49,33 @@ Install-Package FastMoq
 ### PackageReference
 
 ```xml
-<PackageReference Include="FastMoq" Version="3.0.0" />
+<PackageReference Include="FastMoq" Version="4.*" />
 ```
 
 Split-package example:
 
 ```xml
-<PackageReference Include="FastMoq.Core" Version="3.0.0" />
-<PackageReference Include="FastMoq.Database" Version="3.0.0" />
-<PackageReference Include="FastMoq.Web" Version="3.0.0" />
+<PackageReference Include="FastMoq.Core" Version="4.*" />
+<PackageReference Include="FastMoq.Database" Version="4.*" />
+<PackageReference Include="FastMoq.Web" Version="4.*" />
 ```
 
-> Note: `3.0.0` is the current public package. Some docs in this repository describe unreleased provider-era work that is planned for the next major release line. See [What's New Since 3.0.0](../whats-new/README.md).
+> Note: this guide targets the current v4 release line. For the release delta relative to the last public `3.0.0` package, see [What's New Since 3.0.0](../whats-new/README.md).
 > Note: in the current repository, `GetMockDbContext<TContext>()` keeps the same `FastMoq` namespace call shape, but direct `FastMoq.Core` consumers should add `FastMoq.Database` for EF-specific helpers. Direct web-helper consumers should add `FastMoq.Web`.
 
-At the moment, the DbContext helper path is still Moq-based under the hood. The package boundary is in place, but provider-neutral DbContext support is still future work.
+In the current v4 transition layout, `FastMoq.Core` bundles the built-in `moq` provider and the internal `reflection` fallback. The default provider is `reflection`. Optional providers such as `nsubstitute` can be added explicitly and registered with `MockingProviderRegistry`.
+
+The DbContext helper path now exposes explicit modes through `GetDbContextHandle<TContext>(...)`. `GetMockDbContext<TContext>()` remains the mocked-sets convenience entry point, and `DbContextTestMode.RealInMemory` is the real EF-backed option. The mocked-sets implementation still uses the existing moved Moq-based `DbContextMock<TContext>` path internally.
 
 ### Required Using Statements
 
-For all FastMoq tests, including these using statements is recommended:
+For most FastMoq tests, these using statements are a good starting point:
 
 ```csharp
 using FastMoq;
 using FastMoq.Extensions;
 using Microsoft.Extensions.Logging;
-using Moq; // Currently based on Moq, but will be extensible in next major update.
+using Moq; // Only needed when you intentionally use Moq-specific compatibility APIs.
 ```
 
 For all FastMoq tests, these are optional and suggested, but they are not required for FastMoq:
@@ -81,7 +85,7 @@ using Xunit; // Whatever your testing framework is
 using FluentAssertions; // Used in examples (free version)
 ```
 
-The `FastMoq.Extensions` namespace is particularly important as it provides logger verification helpers and other utility methods.
+`FastMoq.Extensions` is especially useful because it contains logger verification helpers and other testing utilities.
 
 ## Your First Test
 

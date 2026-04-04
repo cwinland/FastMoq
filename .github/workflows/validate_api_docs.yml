@@ -1,0 +1,63 @@
+name: Validate API Docs
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.config/dotnet-tools.json'
+      - '.github/workflows/validate_api_docs.yml'
+      - 'docfx.json'
+      - 'docs/api/**'
+      - 'FastMoq.Abstractions/**'
+      - 'FastMoq.Core/**'
+      - 'FastMoq.Database/**'
+      - 'FastMoq.Provider.Moq/**'
+      - 'FastMoq.Provider.NSubstitute/**'
+      - 'FastMoq.Web/**'
+      - 'FastMoq/**'
+  workflow_dispatch:
+
+concurrency:
+  group: api-docs-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-docfx:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore local tools
+        run: |
+          dotnet tool restore
+
+      - name: Generate API documentation
+        run: |
+          dotnet tool run docfx docfx.json
+
+      - name: Validate generated site output
+        run: |
+          set -euo pipefail
+          if [ ! -f Help/index.html ]; then
+            echo "DocFX build did not produce Help/index.html" >&2
+            ls -al Help || true
+            exit 1
+          fi
+
+      - name: Upload generated docs artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-docs-site
+          path: Help
+          if-no-files-found: error

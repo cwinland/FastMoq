@@ -1,13 +1,11 @@
 # FastMoq Sample Applications
 
-This directory contains complete sample applications demonstrating FastMoq's capabilities in real-world scenarios, particularly focusing on modern .NET and Azure integration patterns.
+This directory contains the sample documentation and executable examples that currently exist in this repository.
 
-## Sample Applications
+## Available samples in this repository
 
-1. **[E-Commerce Order Processing](./ecommerce-orders/)** - Complete order processing system with Azure integration
-2. **[Microservices Communication](./microservices/)** - Service-to-service communication patterns
-3. **[Background Processing](./background-services/)** - Queue processing and background jobs
-4. **[Blazor Web Application](./blazor-webapp/)** - Full-stack Blazor application with testing
+1. **[E-Commerce Order Processing](./ecommerce-orders/)** - Full sample documentation for an order-processing workflow
+2. **[Executable Testing Examples](./testing-examples.md)** - Smaller repo-local service examples backed by the `FastMoq.TestingExample` project
 
 ## Repo-local executable examples
 
@@ -21,7 +19,7 @@ Those examples are backed by the `FastMoq.TestingExample` project and currently 
 - fluent `Scenario.With(...).When(...).Then(...).Verify(...)` usage inside `MockerTestBase<TComponent>`
 - provider-first verification with `TimesSpec.Once`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, `TimesSpec.AtMost(...)`, and `TimesSpec.Never()`
 
-## Common Patterns Demonstrated
+## Common patterns demonstrated
 
 - **Azure Service Bus** integration and testing
 - **Azure Blob Storage** operations
@@ -66,7 +64,7 @@ Even when not running in Azure, the samples demonstrate how you would substitute
 - Wrap Azure SDK clients with interfaces in your application layer and mock those interfaces in tests.
 - Use consistent naming for senders/processors so verification (e.g., Service Bus send) is easy.
 
-## Azure Function Style Testing (Guidance)
+## Azure Function style testing guidance
 
 If you adapt these samples for Azure Functions HTTP triggers, use patterns similar to (conceptually) `MockedHttpRequestData` and `MockedHttpResponseData` helpers (as seen in other internal solution test utilities):
 
@@ -92,9 +90,13 @@ While FastMoq does not ship Azure Functions request/response shims directly, it 
 - Consistent `HttpClient` mocking for downstream REST calls.
 - Simplified DI graph creation so only function inputs need explicit arrangement.
 
-## Sample Enhancement Ideas
+## Notes about repository scope
 
-The current samples are intentionally minimal. Consider extending locally with:
+Some sample categories mentioned elsewhere in the documentation are future sample directions rather than folders that currently exist in this repository. Use this page and the linked directories above as the source of truth for what is available today.
+
+## Sample enhancement ideas
+
+The current samples are intentionally focused. Consider extending locally with:
 
 - Adding a payment gateway client abstraction and testing retry/backoff logic via `SetupHttpMessage` sequences.
 - Adding blob metadata assertions using a mocked `BlobClient`.
@@ -113,17 +115,9 @@ The current samples are intentionally minimal. Consider extending locally with:
 
 > Tip: Prefer the extension helpers first; drop down to raw Moq setup only for edge cases.
 
-## Getting Started
+## Getting started
 
-Each sample application includes:
-
-- Complete source code
-- Comprehensive test suite using FastMoq
-- Docker configuration for local development
-- README with setup instructions
-- Azure deployment templates
-
-Choose a sample based on your use case and follow the individual README files for setup instructions.
+Start with [Executable Testing Examples](./testing-examples.md) if you want the quickest path to real, runnable tests in this repository. Use [E-Commerce Order Processing](./ecommerce-orders/) when you want a larger sample walkthrough.
 
 ## Prerequisites
 

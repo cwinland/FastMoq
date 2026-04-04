@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
     <ProjectReference Include="..\FastMoq.Database\FastMoq.Database.csproj" />
+    <ProjectReference Include="..\FastMoq.Provider.NSubstitute\FastMoq.Provider.NSubstitute.csproj" />
   </ItemGroup>
 
 </Project>

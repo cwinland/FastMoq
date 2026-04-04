@@ -2,6 +2,8 @@
 
 This cookbook contains practical recipes for common testing scenarios using FastMoq. Each recipe includes complete, runnable examples that you can adapt to your specific needs.
 
+Most recipes here focus on common test shapes and readability first. Some examples still use `GetMock<T>()` because that remains a useful v4 compatibility path. When you are writing new tests or actively modernizing existing ones, prefer provider-neutral APIs such as `GetOrCreateMock(...)`, provider-safe `Verify(...)`, and `Mocks.VerifyLogged(...)` where they fit the test intent.
+
 ## Table of Contents
 
 1. [API Controller Testing](#api-controller-testing)

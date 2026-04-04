@@ -11,7 +11,7 @@
     <Company>$(Authors)</Company>
     <Copyright>Copyright(c) 2023 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
-    <Description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing. (Transitioning to provider architecture)</Description>
+    <Description>Core FastMoq runtime for automatic test double creation, constructor injection, and provider-neutral testing helpers. Uses reflection by default in v4, includes Moq compatibility, and supports additional providers when added explicitly.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -53,6 +53,5 @@
   <ItemGroup>
     <ProjectReference Include="..\FastMoq.Abstractions\FastMoq.Abstractions.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.Moq\FastMoq.Provider.Moq.csproj" />
-    <ProjectReference Include="..\FastMoq.Provider.NSubstitute\FastMoq.Provider.NSubstitute.csproj" />
   </ItemGroup>
 </Project>

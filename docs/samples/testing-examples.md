@@ -15,7 +15,7 @@ The source of truth for these examples is the test project itself:
 
 ## What these examples cover
 
-The current executable examples are designed to exercise the provider-era FastMoq surface rather than only legacy Moq-style entry points.
+The current executable examples are designed to exercise the provider-first FastMoq surface rather than only legacy Moq-style entry points.
 
 They demonstrate:
 
@@ -139,8 +139,6 @@ var exception = await Scenario
 2. Read the customer-import example for built-in helper behavior like `IFileSystem`.
 3. Read the invoice-reminder example for `Scenario`, `TimesSpec.Once`, `WhenThrows`, and `ExecuteThrows`.
 
-## Important note about current docs vs public package
+## Release note
 
-The current public NuGet package is `3.0.0` from May 12, 2025. Some examples documented here reflect current repository behavior that is intended for the next major release line rather than the already-published package.
-
-For the release delta summary, see [What's New Since 3.0.0](../whats-new/README.md).
+These examples are intended to match the current v4 release line. For the release delta relative to the last public `3.0.0` package, see [What's New Since 3.0.0](../whats-new/README.md).
