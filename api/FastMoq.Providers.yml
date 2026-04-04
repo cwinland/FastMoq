@@ -1,0 +1,119 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Providers
+  commentId: N:FastMoq.Providers
+  id: FastMoq.Providers
+  children:
+  - FastMoq.Providers.IFastMock
+  - FastMoq.Providers.IFastMock`1
+  - FastMoq.Providers.IMockingProvider
+  - FastMoq.Providers.IMockingProviderCapabilities
+  - FastMoq.Providers.MockCreationOptions
+  - FastMoq.Providers.MockingProviderRegistry
+  - FastMoq.Providers.TimesSpec
+  - FastMoq.Providers.TimesSpecMode
+  langs:
+  - csharp
+  - vb
+  name: FastMoq.Providers
+  nameWithType: FastMoq.Providers
+  fullName: FastMoq.Providers
+  type: Namespace
+  assemblies:
+  - FastMoq.Abstractions
+references:
+- uid: FastMoq.Providers.IFastMock
+  commentId: T:FastMoq.Providers.IFastMock
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IFastMock.html
+  name: IFastMock
+  nameWithType: IFastMock
+  fullName: FastMoq.Providers.IFastMock
+- uid: FastMoq.Providers.IFastMock`1
+  commentId: T:FastMoq.Providers.IFastMock`1
+  href: FastMoq.Providers.IFastMock-1.html
+  name: IFastMock<T>
+  nameWithType: IFastMock<T>
+  fullName: FastMoq.Providers.IFastMock<T>
+  nameWithType.vb: IFastMock(Of T)
+  fullName.vb: FastMoq.Providers.IFastMock(Of T)
+  name.vb: IFastMock(Of T)
+  spec.csharp:
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Providers.IMockingProvider
+  commentId: T:FastMoq.Providers.IMockingProvider
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IMockingProvider.html
+  name: IMockingProvider
+  nameWithType: IMockingProvider
+  fullName: FastMoq.Providers.IMockingProvider
+- uid: FastMoq.Providers.IMockingProviderCapabilities
+  commentId: T:FastMoq.Providers.IMockingProviderCapabilities
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IMockingProviderCapabilities.html
+  name: IMockingProviderCapabilities
+  nameWithType: IMockingProviderCapabilities
+  fullName: FastMoq.Providers.IMockingProviderCapabilities
+- uid: FastMoq.Providers.MockCreationOptions
+  commentId: T:FastMoq.Providers.MockCreationOptions
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.MockCreationOptions.html
+  name: MockCreationOptions
+  nameWithType: MockCreationOptions
+  fullName: FastMoq.Providers.MockCreationOptions
+- uid: FastMoq.Providers.TimesSpecMode
+  commentId: T:FastMoq.Providers.TimesSpecMode
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.TimesSpecMode.html
+  name: TimesSpecMode
+  nameWithType: TimesSpecMode
+  fullName: FastMoq.Providers.TimesSpecMode
+- uid: FastMoq.Providers.TimesSpec
+  commentId: T:FastMoq.Providers.TimesSpec
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.TimesSpec.html
+  name: TimesSpec
+  nameWithType: TimesSpec
+  fullName: FastMoq.Providers.TimesSpec
+- uid: FastMoq.Providers.MockingProviderRegistry
+  commentId: T:FastMoq.Providers.MockingProviderRegistry
+  href: FastMoq.Providers.MockingProviderRegistry.html
+  name: MockingProviderRegistry
+  nameWithType: MockingProviderRegistry
+  fullName: FastMoq.Providers.MockingProviderRegistry
+- uid: FastMoq.Providers
+  commentId: N:FastMoq.Providers
+  href: FastMoq.html
+  name: FastMoq.Providers
+  nameWithType: FastMoq.Providers
+  fullName: FastMoq.Providers
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html

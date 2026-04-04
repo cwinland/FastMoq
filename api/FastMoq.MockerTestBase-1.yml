@@ -1,0 +1,4519 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.MockerTestBase`1
+  commentId: T:FastMoq.MockerTestBase`1
+  id: MockerTestBase`1
+  parent: FastMoq
+  children:
+  - FastMoq.MockerTestBase`1.#ctor
+  - FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker})
+  - FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Action{`0})
+  - FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Action{`0},System.Type[])
+  - FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0})
+  - FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0},System.Action{`0})
+  - FastMoq.MockerTestBase`1.#ctor(System.Action{`0})
+  - FastMoq.MockerTestBase`1.#ctor(System.Boolean)
+  - FastMoq.MockerTestBase`1.#ctor(System.Func{FastMoq.Mocker,`0})
+  - FastMoq.MockerTestBase`1.#ctor(System.Func{FastMoq.Mocker,`0},System.Action{`0})
+  - FastMoq.MockerTestBase`1.#ctor(System.Type[])
+  - FastMoq.MockerTestBase`1.Component
+  - FastMoq.MockerTestBase`1.ComponentCreationFlags
+  - FastMoq.MockerTestBase`1.ConfigureMockerPolicy
+  - FastMoq.MockerTestBase`1.CreateComponent
+  - FastMoq.MockerTestBase`1.CreateComponentAction
+  - FastMoq.MockerTestBase`1.CreatedComponentAction
+  - FastMoq.MockerTestBase`1.CustomMocks
+  - FastMoq.MockerTestBase`1.Dispose
+  - FastMoq.MockerTestBase`1.Dispose(System.Boolean)
+  - FastMoq.MockerTestBase`1.GetConstructor
+  - FastMoq.MockerTestBase`1.LoggingCallback(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception)
+  - FastMoq.MockerTestBase`1.Mocks
+  - FastMoq.MockerTestBase`1.Scenario
+  - FastMoq.MockerTestBase`1.SetupMocksAction
+  - FastMoq.MockerTestBase`1.TestAllConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object},System.Reflection.BindingFlags)
+  - FastMoq.MockerTestBase`1.TestConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+  - FastMoq.MockerTestBase`1.TestConstructorParameters(System.Reflection.ConstructorInfo,System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+  - FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0})
+  - FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0},System.TimeSpan)
+  - FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0},System.TimeSpan,System.TimeSpan)
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase<TComponent>
+  nameWithType: MockerTestBase<TComponent>
+  fullName: FastMoq.MockerTestBase<TComponent>
+  type: Class
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: MockerTestBase
+    path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
+    startLine: 5
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: >-
+    Mock Test Base with Automatic Mocking using <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref>.
+
+    This class contains the <xref href="FastMoq.MockerTestBase%601.Mocks" data-throw-if-not-resolved="false"></xref> property to create and track all Mocks from creation of the component.
+  example:
+  - "    Test example of the base class creating the Car class and auto mocking ICarService.\r\n    Start by creating the test class that inherits <xref href=\"FastMoq.MockerTestBase%601\" data-throw-if-not-resolved=\"false\"></xref>. The object that is passed is the concrete class being tested.\r\n    Use <xref href=\"FastMoq.MockerTestBase%601.Component\" data-throw-if-not-resolved=\"false\"></xref> Property to access the test object.\r\n\r\n    <pre><code class=\"lang-csharp\">public class CarTest : MockerTestBase<Car> {\r\n     public void TestCar() {\r\n         Component.CarService.Should().NotBeNull();\r\n     }</code></pre>\r\n\r\nICarService is automatically injected into the Car object when created by the base class.\r\n\r\n<pre><code class=\"lang-csharp\">public partial class Car {\r\n     public Car(ICarService carService) =&gt; CarService = carService;\r\n}</code></pre>\r\n\r\n    When needing to set up mocks before the component is created, use the <xref href=\"FastMoq.MockerTestBase%601.get_SetupMocksAction\" data-throw-if-not-resolved=\"false\"></xref> property or the base class constructor.\r\n    This example shows pre-creating a database context mock before the component is created.\r\n\r\n    <pre><code class=\"lang-csharp\">protected override Action<Mocker> SetupMocksAction => mocker =>\r\n    mocker.GetMockDbContext<ApplicationDbContext>();</code></pre>"
+  syntax:
+    content: 'public abstract class MockerTestBase<TComponent> : IDisposable where TComponent : class'
+    typeParameters:
+    - id: TComponent
+      description: The type of the t component.
+    content.vb: Public MustInherit Class MockerTestBase(Of TComponent As Class) Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.MockerTestBase{{TComponent}})
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.MockerTestBase{{TComponent}},{TValue}}})
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.MockerTestBase{{TComponent}},{TValue}}})
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(System.String,System.Object,System.Object[])
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetMethod``1(System.String)
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(System.String,System.Object)
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(System.String,System.Object)
+  - FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(System.String,System.Object)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+  nameWithType.vb: MockerTestBase(Of TComponent)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent)
+  name.vb: MockerTestBase(Of TComponent)
+- uid: FastMoq.MockerTestBase`1.Component
+  commentId: P:FastMoq.MockerTestBase`1.Component
+  id: Component
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: Component
+  nameWithType: MockerTestBase<TComponent>.Component
+  fullName: FastMoq.MockerTestBase<TComponent>.Component
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Component
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 51
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets or sets the component under test.
+  example: []
+  syntax:
+    content: protected TComponent Component { get; set; }
+    parameters: []
+    return:
+      type: '{TComponent}'
+      description: The service.
+    content.vb: Protected Property Component As TComponent
+  overload: FastMoq.MockerTestBase`1.Component*
+  nameWithType.vb: MockerTestBase(Of TComponent).Component
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Component
+- uid: FastMoq.MockerTestBase`1.CustomMocks
+  commentId: P:FastMoq.MockerTestBase`1.CustomMocks
+  id: CustomMocks
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: CustomMocks
+  nameWithType: MockerTestBase<TComponent>.CustomMocks
+  fullName: FastMoq.MockerTestBase<TComponent>.CustomMocks
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CustomMocks
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 61
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets or sets the custom mocks. These are added whenever the component is created.
+  example: []
+  syntax:
+    content: protected IEnumerable<MockModel> CustomMocks { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{FastMoq.Models.MockModel}
+      description: The custom mocks.
+    content.vb: Protected Property CustomMocks As IEnumerable(Of MockModel)
+  overload: FastMoq.MockerTestBase`1.CustomMocks*
+  nameWithType.vb: MockerTestBase(Of TComponent).CustomMocks
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CustomMocks
+- uid: FastMoq.MockerTestBase`1.CreateComponentAction
+  commentId: P:FastMoq.MockerTestBase`1.CreateComponentAction
+  id: CreateComponentAction
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: CreateComponentAction
+  nameWithType: MockerTestBase<TComponent>.CreateComponentAction
+  fullName: FastMoq.MockerTestBase<TComponent>.CreateComponentAction
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateComponentAction
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 67
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets or sets the creation component action. This action is run whenever the component is created.
+  example: []
+  syntax:
+    content: protected virtual Func<Mocker, TComponent> CreateComponentAction { get; }
+    parameters: []
+    return:
+      type: System.Func{FastMoq.Mocker,{TComponent}}
+      description: The action to override the component creation.
+    content.vb: Protected Overridable ReadOnly Property CreateComponentAction As Func(Of Mocker, TComponent)
+  overload: FastMoq.MockerTestBase`1.CreateComponentAction*
+  nameWithType.vb: MockerTestBase(Of TComponent).CreateComponentAction
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CreateComponentAction
+- uid: FastMoq.MockerTestBase`1.SetupMocksAction
+  commentId: P:FastMoq.MockerTestBase`1.SetupMocksAction
+  id: SetupMocksAction
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: SetupMocksAction
+  nameWithType: MockerTestBase<TComponent>.SetupMocksAction
+  fullName: FastMoq.MockerTestBase<TComponent>.SetupMocksAction
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupMocksAction
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 73
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets or sets the setup mocks action. This action is run before the component is created.
+  example: []
+  syntax:
+    content: protected virtual Action<Mocker>? SetupMocksAction { get; }
+    parameters: []
+    return:
+      type: System.Action{FastMoq.Mocker}
+      description: The setup mocks action.
+    content.vb: Protected Overridable ReadOnly Property SetupMocksAction As Action(Of Mocker)
+  overload: FastMoq.MockerTestBase`1.SetupMocksAction*
+  nameWithType.vb: MockerTestBase(Of TComponent).SetupMocksAction
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).SetupMocksAction
+- uid: FastMoq.MockerTestBase`1.CreatedComponentAction
+  commentId: P:FastMoq.MockerTestBase`1.CreatedComponentAction
+  id: CreatedComponentAction
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: CreatedComponentAction
+  nameWithType: MockerTestBase<TComponent>.CreatedComponentAction
+  fullName: FastMoq.MockerTestBase<TComponent>.CreatedComponentAction
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreatedComponentAction
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 79
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets or sets the created component action. This action is run after the component is created.
+  example: []
+  syntax:
+    content: protected virtual Action<TComponent>? CreatedComponentAction { get; }
+    parameters: []
+    return:
+      type: System.Action{{TComponent}}
+      description: The created component action.
+    content.vb: Protected Overridable ReadOnly Property CreatedComponentAction As Action(Of TComponent)
+  overload: FastMoq.MockerTestBase`1.CreatedComponentAction*
+  nameWithType.vb: MockerTestBase(Of TComponent).CreatedComponentAction
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CreatedComponentAction
+- uid: FastMoq.MockerTestBase`1.ConfigureMockerPolicy
+  commentId: P:FastMoq.MockerTestBase`1.ConfigureMockerPolicy
+  id: ConfigureMockerPolicy
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: ConfigureMockerPolicy
+  nameWithType: MockerTestBase<TComponent>.ConfigureMockerPolicy
+  fullName: FastMoq.MockerTestBase<TComponent>.ConfigureMockerPolicy
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ConfigureMockerPolicy
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 84
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Allows a test base to configure grouped <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> policy defaults before the component is created.
+  example: []
+  syntax:
+    content: protected virtual Action<MockerPolicyOptions>? ConfigureMockerPolicy { get; }
+    parameters: []
+    return:
+      type: System.Action{FastMoq.MockerPolicyOptions}
+    content.vb: Protected Overridable ReadOnly Property ConfigureMockerPolicy As Action(Of MockerPolicyOptions)
+  overload: FastMoq.MockerTestBase`1.ConfigureMockerPolicy*
+  nameWithType.vb: MockerTestBase(Of TComponent).ConfigureMockerPolicy
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).ConfigureMockerPolicy
+- uid: FastMoq.MockerTestBase`1.Mocks
+  commentId: P:FastMoq.MockerTestBase`1.Mocks
+  id: Mocks
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: Mocks
+  nameWithType: MockerTestBase<TComponent>.Mocks
+  fullName: FastMoq.MockerTestBase<TComponent>.Mocks
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Mocks
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 90
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets the <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: protected Mocker Mocks { get; }
+    parameters: []
+    return:
+      type: FastMoq.Mocker
+      description: The mocks.
+    content.vb: Protected ReadOnly Property Mocks As Mocker
+  overload: FastMoq.MockerTestBase`1.Mocks*
+  nameWithType.vb: MockerTestBase(Of TComponent).Mocks
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Mocks
+- uid: FastMoq.MockerTestBase`1.Scenario
+  commentId: P:FastMoq.MockerTestBase`1.Scenario
+  id: Scenario
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: Scenario
+  nameWithType: MockerTestBase<TComponent>.Scenario
+  fullName: FastMoq.MockerTestBase<TComponent>.Scenario
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Scenario
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 95
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets a fluent scenario builder for the current component.
+  example: []
+  syntax:
+    content: protected ScenarioBuilder<TComponent> Scenario { get; }
+    parameters: []
+    return:
+      type: FastMoq.ScenarioBuilder{{TComponent}}
+    content.vb: Protected ReadOnly Property Scenario As ScenarioBuilder(Of TComponent)
+  overload: FastMoq.MockerTestBase`1.Scenario*
+  nameWithType.vb: MockerTestBase(Of TComponent).Scenario
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Scenario
+- uid: FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0},System.TimeSpan,System.TimeSpan)
+  commentId: M:FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0},System.TimeSpan,System.TimeSpan)
+  id: WaitFor``1(System.Func{``0},System.TimeSpan,System.TimeSpan)
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: WaitFor<T>(Func<T>, TimeSpan, TimeSpan)
+  nameWithType: MockerTestBase<TComponent>.WaitFor<T>(Func<T>, TimeSpan, TimeSpan)
+  fullName: FastMoq.MockerTestBase<TComponent>.WaitFor<T>(System.Func<T>, System.TimeSpan, System.TimeSpan)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WaitFor
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 109
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Waits for an action.
+  example: []
+  syntax:
+    content: public static T WaitFor<T>(Func<T> logic, TimeSpan timespan, TimeSpan waitBetweenChecks)
+    parameters:
+    - id: logic
+      type: System.Func{{T}}
+      description: The action.
+    - id: timespan
+      type: System.TimeSpan
+      description: The maximum time to wait.
+    - id: waitBetweenChecks
+      type: System.TimeSpan
+      description: Time between each check.
+    typeParameters:
+    - id: T
+      description: Logic of T.
+    return:
+      type: '{T}'
+      description: T.
+    content.vb: Public Shared Function WaitFor(Of T)(logic As Func(Of T), timespan As TimeSpan, waitBetweenChecks As TimeSpan) As T
+  overload: FastMoq.MockerTestBase`1.WaitFor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: logic
+  - type: System.ApplicationException
+    commentId: T:System.ApplicationException
+    description: Timeout waiting for condition
+  nameWithType.vb: MockerTestBase(Of TComponent).WaitFor(Of T)(Func(Of T), TimeSpan, TimeSpan)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).WaitFor(Of T)(System.Func(Of T), System.TimeSpan, System.TimeSpan)
+  name.vb: WaitFor(Of T)(Func(Of T), TimeSpan, TimeSpan)
+- uid: FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0})
+  commentId: M:FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0})
+  id: WaitFor``1(System.Func{``0})
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: WaitFor<T>(Func<T>)
+  nameWithType: MockerTestBase<TComponent>.WaitFor<T>(Func<T>)
+  fullName: FastMoq.MockerTestBase<TComponent>.WaitFor<T>(System.Func<T>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WaitFor
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 137
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Waits for an action.
+  example: []
+  syntax:
+    content: public static T WaitFor<T>(Func<T> logic)
+    parameters:
+    - id: logic
+      type: System.Func{{T}}
+      description: The action.
+    typeParameters:
+    - id: T
+      description: ''
+    return:
+      type: '{T}'
+      description: T.
+    content.vb: Public Shared Function WaitFor(Of T)(logic As Func(Of T)) As T
+  overload: FastMoq.MockerTestBase`1.WaitFor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: logic
+  nameWithType.vb: MockerTestBase(Of TComponent).WaitFor(Of T)(Func(Of T))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).WaitFor(Of T)(System.Func(Of T))
+  name.vb: WaitFor(Of T)(Func(Of T))
+- uid: FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0},System.TimeSpan)
+  commentId: M:FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0},System.TimeSpan)
+  id: WaitFor``1(System.Func{``0},System.TimeSpan)
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: WaitFor<T>(Func<T>, TimeSpan)
+  nameWithType: MockerTestBase<TComponent>.WaitFor<T>(Func<T>, TimeSpan)
+  fullName: FastMoq.MockerTestBase<TComponent>.WaitFor<T>(System.Func<T>, System.TimeSpan)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WaitFor
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 147
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Waits for an action.
+  example: []
+  syntax:
+    content: public static T WaitFor<T>(Func<T> logic, TimeSpan timespan)
+    parameters:
+    - id: logic
+      type: System.Func{{T}}
+      description: The action.
+    - id: timespan
+      type: System.TimeSpan
+      description: The timespan, defaults to 4 seconds.
+    typeParameters:
+    - id: T
+      description: ''
+    return:
+      type: '{T}'
+      description: T.
+    content.vb: Public Shared Function WaitFor(Of T)(logic As Func(Of T), timespan As TimeSpan) As T
+  overload: FastMoq.MockerTestBase`1.WaitFor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: logic
+  nameWithType.vb: MockerTestBase(Of TComponent).WaitFor(Of T)(Func(Of T), TimeSpan)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).WaitFor(Of T)(System.Func(Of T), System.TimeSpan)
+  name.vb: WaitFor(Of T)(Func(Of T), TimeSpan)
+- uid: FastMoq.MockerTestBase`1.CreateComponent
+  commentId: M:FastMoq.MockerTestBase`1.CreateComponent
+  id: CreateComponent
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: CreateComponent()
+  nameWithType: MockerTestBase<TComponent>.CreateComponent()
+  fullName: FastMoq.MockerTestBase<TComponent>.CreateComponent()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateComponent
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 161
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: "    Sets the <xref href=\"FastMoq.MockerTestBase%601.Component\" data-throw-if-not-resolved=\"false\"></xref> property with a new instance while maintaining the constructor setup and any\r\nother changes."
+  example:
+  - >-
+    CreateComponent allows creating the component when desired, instead of in the base class constructor.
+
+
+    <pre><code class="lang-csharp">public void Test() {
+        Mocks.GetMock&lt;ICarService&gt;().Setup(x =&gt; x.StartCar).Returns(true);
+        CreateComponent();
+    }</code></pre>
+  syntax:
+    content: protected void CreateComponent()
+    content.vb: Protected Sub CreateComponent()
+  overload: FastMoq.MockerTestBase`1.CreateComponent*
+  nameWithType.vb: MockerTestBase(Of TComponent).CreateComponent()
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CreateComponent()
+- uid: FastMoq.MockerTestBase`1.Dispose(System.Boolean)
+  commentId: M:FastMoq.MockerTestBase`1.Dispose(System.Boolean)
+  id: Dispose(System.Boolean)
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: Dispose(bool)
+  nameWithType: MockerTestBase<TComponent>.Dispose(bool)
+  fullName: FastMoq.MockerTestBase<TComponent>.Dispose(bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Dispose
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 188
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Releases unmanaged and - optionally - managed resources.
+  example: []
+  syntax:
+    content: protected virtual void Dispose(bool disposing)
+    parameters:
+    - id: disposing
+      type: System.Boolean
+      description: >-
+        <code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only
+            unmanaged resources.
+    content.vb: Protected Overridable Sub Dispose(disposing As Boolean)
+  overload: FastMoq.MockerTestBase`1.Dispose*
+  nameWithType.vb: MockerTestBase(Of TComponent).Dispose(Boolean)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Dispose(Boolean)
+  name.vb: Dispose(Boolean)
+- uid: FastMoq.MockerTestBase`1.Dispose
+  commentId: M:FastMoq.MockerTestBase`1.Dispose
+  id: Dispose
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: MockerTestBase<TComponent>.Dispose()
+  fullName: FastMoq.MockerTestBase<TComponent>.Dispose()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Dispose
+    path: FastMoq.Core/MockerTestBase.cs
+    startLine: 206
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: FastMoq.MockerTestBase`1.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+  nameWithType.vb: MockerTestBase(Of TComponent).Dispose()
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Dispose()
+- uid: FastMoq.MockerTestBase`1.ComponentCreationFlags
+  commentId: P:FastMoq.MockerTestBase`1.ComponentCreationFlags
+  id: ComponentCreationFlags
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: ComponentCreationFlags
+  nameWithType: MockerTestBase<TComponent>.ComponentCreationFlags
+  fullName: FastMoq.MockerTestBase<TComponent>.ComponentCreationFlags
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ComponentCreationFlags
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 11
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  syntax:
+    content: protected virtual InstanceCreationFlags ComponentCreationFlags { get; }
+    parameters: []
+    return:
+      type: FastMoq.InstanceCreationFlags
+    content.vb: Protected Overridable ReadOnly Property ComponentCreationFlags As InstanceCreationFlags
+  overload: FastMoq.MockerTestBase`1.ComponentCreationFlags*
+  nameWithType.vb: MockerTestBase(Of TComponent).ComponentCreationFlags
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).ComponentCreationFlags
+- uid: FastMoq.MockerTestBase`1.#ctor
+  commentId: M:FastMoq.MockerTestBase`1.#ctor
+  id: '#ctor'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase()
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase()
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase()
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 22
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Initializes a new instance of the <xref href="System.Object" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: protected MockerTestBase()
+    content.vb: Protected Sub New()
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New()
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New()
+  name.vb: New()
+- uid: FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker})
+  commentId: M:FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker})
+  id: '#ctor(System.Action{FastMoq.Mocker})'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase(Action<Mocker>)
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase(Action<Mocker>)
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase(System.Action<FastMoq.Mocker>)
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 25
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  example: []
+  syntax:
+    content: protected MockerTestBase(Action<Mocker> setupMocksAction)
+    parameters:
+    - id: setupMocksAction
+      type: System.Action{FastMoq.Mocker}
+    content.vb: Protected Sub New(setupMocksAction As Action(Of Mocker))
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New(Action(Of Mocker))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New(System.Action(Of FastMoq.Mocker))
+  name.vb: New(Action(Of Mocker))
+- uid: FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0})
+  commentId: M:FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0})
+  id: '#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0})'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase(Action<Mocker>, Func<Mocker, TComponent>)
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase(Action<Mocker>, Func<Mocker, TComponent>)
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase(System.Action<FastMoq.Mocker>, System.Func<FastMoq.Mocker, TComponent>)
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 28
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  example: []
+  syntax:
+    content: protected MockerTestBase(Action<Mocker> setupMocksAction, Func<Mocker, TComponent> createComponentAction)
+    parameters:
+    - id: setupMocksAction
+      type: System.Action{FastMoq.Mocker}
+    - id: createComponentAction
+      type: System.Func{FastMoq.Mocker,{TComponent}}
+    content.vb: Protected Sub New(setupMocksAction As Action(Of Mocker), createComponentAction As Func(Of Mocker, TComponent))
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New(Action(Of Mocker), Func(Of Mocker, TComponent))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New(System.Action(Of FastMoq.Mocker), System.Func(Of FastMoq.Mocker, TComponent))
+  name.vb: New(Action(Of Mocker), Func(Of Mocker, TComponent))
+- uid: FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Action{`0})
+  commentId: M:FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Action{`0})
+  id: '#ctor(System.Action{FastMoq.Mocker},System.Action{`0})'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase(Action<Mocker>, Action<TComponent>)
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase(Action<Mocker>, Action<TComponent>)
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase(System.Action<FastMoq.Mocker>, System.Action<TComponent>)
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 32
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  example: []
+  syntax:
+    content: protected MockerTestBase(Action<Mocker> setupMocksAction, Action<TComponent> createdComponentAction)
+    parameters:
+    - id: setupMocksAction
+      type: System.Action{FastMoq.Mocker}
+    - id: createdComponentAction
+      type: System.Action{{TComponent}}
+    content.vb: Protected Sub New(setupMocksAction As Action(Of Mocker), createdComponentAction As Action(Of TComponent))
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New(Action(Of Mocker), Action(Of TComponent))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New(System.Action(Of FastMoq.Mocker), System.Action(Of TComponent))
+  name.vb: New(Action(Of Mocker), Action(Of TComponent))
+- uid: FastMoq.MockerTestBase`1.#ctor(System.Func{FastMoq.Mocker,`0})
+  commentId: M:FastMoq.MockerTestBase`1.#ctor(System.Func{FastMoq.Mocker,`0})
+  id: '#ctor(System.Func{FastMoq.Mocker,`0})'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase(Func<Mocker, TComponent>)
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase(Func<Mocker, TComponent>)
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase(System.Func<FastMoq.Mocker, TComponent>)
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 36
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  example: []
+  syntax:
+    content: protected MockerTestBase(Func<Mocker, TComponent> createComponentAction)
+    parameters:
+    - id: createComponentAction
+      type: System.Func{FastMoq.Mocker,{TComponent}}
+    content.vb: Protected Sub New(createComponentAction As Func(Of Mocker, TComponent))
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New(Func(Of Mocker, TComponent))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New(System.Func(Of FastMoq.Mocker, TComponent))
+  name.vb: New(Func(Of Mocker, TComponent))
+- uid: FastMoq.MockerTestBase`1.#ctor(System.Func{FastMoq.Mocker,`0},System.Action{`0})
+  commentId: M:FastMoq.MockerTestBase`1.#ctor(System.Func{FastMoq.Mocker,`0},System.Action{`0})
+  id: '#ctor(System.Func{FastMoq.Mocker,`0},System.Action{`0})'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase(Func<Mocker, TComponent>, Action<TComponent>)
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase(Func<Mocker, TComponent>, Action<TComponent>)
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase(System.Func<FastMoq.Mocker, TComponent>, System.Action<TComponent>)
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 40
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  example: []
+  syntax:
+    content: protected MockerTestBase(Func<Mocker, TComponent> createComponentAction, Action<TComponent> createdComponentAction)
+    parameters:
+    - id: createComponentAction
+      type: System.Func{FastMoq.Mocker,{TComponent}}
+    - id: createdComponentAction
+      type: System.Action{{TComponent}}
+    content.vb: Protected Sub New(createComponentAction As Func(Of Mocker, TComponent), createdComponentAction As Action(Of TComponent))
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New(Func(Of Mocker, TComponent), Action(Of TComponent))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New(System.Func(Of FastMoq.Mocker, TComponent), System.Action(Of TComponent))
+  name.vb: New(Func(Of Mocker, TComponent), Action(Of TComponent))
+- uid: FastMoq.MockerTestBase`1.#ctor(System.Action{`0})
+  commentId: M:FastMoq.MockerTestBase`1.#ctor(System.Action{`0})
+  id: '#ctor(System.Action{`0})'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase(Action<TComponent>)
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase(Action<TComponent>)
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase(System.Action<TComponent>)
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 45
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  example: []
+  syntax:
+    content: protected MockerTestBase(Action<TComponent> createdComponentAction)
+    parameters:
+    - id: createdComponentAction
+      type: System.Action{{TComponent}}
+    content.vb: Protected Sub New(createdComponentAction As Action(Of TComponent))
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New(Action(Of TComponent))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New(System.Action(Of TComponent))
+  name.vb: New(Action(Of TComponent))
+- uid: FastMoq.MockerTestBase`1.#ctor(System.Boolean)
+  commentId: M:FastMoq.MockerTestBase`1.#ctor(System.Boolean)
+  id: '#ctor(System.Boolean)'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase(bool)
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase(bool)
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase(bool)
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 53
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: >-
+    Create instance and setting mock resolution. Mock resolution is on by default.
+
+    When it is off, it may not be able to fill in properties or other injections of components.
+  example: []
+  syntax:
+    content: protected MockerTestBase(bool innerMockResolution)
+    parameters:
+    - id: innerMockResolution
+      type: System.Boolean
+    content.vb: Protected Sub New(innerMockResolution As Boolean)
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New(Boolean)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New(Boolean)
+  name.vb: New(Boolean)
+- uid: FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0},System.Action{`0})
+  commentId: M:FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0},System.Action{`0})
+  id: '#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0},System.Action{`0})'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase(Action<Mocker>, Func<Mocker, TComponent>?, Action<TComponent>)
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase(Action<Mocker>, Func<Mocker, TComponent>?, Action<TComponent>)
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase(System.Action<FastMoq.Mocker>, System.Func<FastMoq.Mocker, TComponent>?, System.Action<TComponent>)
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 61
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Initializes a new instance of the <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: protected MockerTestBase(Action<Mocker> setupMocksAction, Func<Mocker, TComponent>? createComponentAction, Action<TComponent> createdComponentAction)
+    parameters:
+    - id: setupMocksAction
+      type: System.Action{FastMoq.Mocker}
+      description: The action to set up the mocks before component creation.
+    - id: createComponentAction
+      type: System.Func{FastMoq.Mocker,{TComponent}}
+      description: The action to override component creation.
+    - id: createdComponentAction
+      type: System.Action{{TComponent}}
+      description: The action to do after the component is created.
+    content.vb: Protected Sub New(setupMocksAction As Action(Of Mocker), createComponentAction As Func(Of Mocker, TComponent), createdComponentAction As Action(Of TComponent))
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New(Action(Of Mocker), Func(Of Mocker, TComponent), Action(Of TComponent))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New(System.Action(Of FastMoq.Mocker), System.Func(Of FastMoq.Mocker, TComponent), System.Action(Of TComponent))
+  name.vb: New(Action(Of Mocker), Func(Of Mocker, TComponent), Action(Of TComponent))
+- uid: FastMoq.MockerTestBase`1.LoggingCallback(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception)
+  commentId: M:FastMoq.MockerTestBase`1.LoggingCallback(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception)
+  id: LoggingCallback(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception)
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: LoggingCallback(LogLevel, EventId, string, Exception?)
+  nameWithType: MockerTestBase<TComponent>.LoggingCallback(LogLevel, EventId, string, Exception?)
+  fullName: FastMoq.MockerTestBase<TComponent>.LoggingCallback(Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: LoggingCallback
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 74
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  syntax:
+    content: public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message, Exception? exception)
+    parameters:
+    - id: logLevel
+      type: Microsoft.Extensions.Logging.LogLevel
+    - id: eventId
+      type: Microsoft.Extensions.Logging.EventId
+    - id: message
+      type: System.String
+    - id: exception
+      type: System.Exception
+    content.vb: Public Overridable Sub LoggingCallback(logLevel As LogLevel, eventId As EventId, message As String, exception As Exception)
+  overload: FastMoq.MockerTestBase`1.LoggingCallback*
+  nameWithType.vb: MockerTestBase(Of TComponent).LoggingCallback(LogLevel, EventId, String, Exception)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).LoggingCallback(Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception)
+  name.vb: LoggingCallback(LogLevel, EventId, String, Exception)
+- uid: FastMoq.MockerTestBase`1.#ctor(System.Type[])
+  commentId: M:FastMoq.MockerTestBase`1.#ctor(System.Type[])
+  id: '#ctor(System.Type[])'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase(params Type[])
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase(params Type[])
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase(params System.Type[])
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 81
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Create instance using the component constructor that matches the type parameters.
+  example: []
+  syntax:
+    content: protected MockerTestBase(params Type[] createArgumentTypes)
+    parameters:
+    - id: createArgumentTypes
+      type: System.Type[]
+    content.vb: Protected Sub New(ParamArray createArgumentTypes As Type())
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New(ParamArray Type())
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New(ParamArray System.Type())
+  name.vb: New(ParamArray Type())
+- uid: FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Action{`0},System.Type[])
+  commentId: M:FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Action{`0},System.Type[])
+  id: '#ctor(System.Action{FastMoq.Mocker},System.Action{`0},System.Type[])'
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: MockerTestBase(Action<Mocker>, Action<TComponent>, params Type[])
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase(Action<Mocker>, Action<TComponent>, params Type[])
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase(System.Action<FastMoq.Mocker>, System.Action<TComponent>, params System.Type[])
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 91
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Initializes a new instance of the <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: protected MockerTestBase(Action<Mocker> setupMocksAction, Action<TComponent> createdComponentAction, params Type[] createArgumentTypes)
+    parameters:
+    - id: setupMocksAction
+      type: System.Action{FastMoq.Mocker}
+      description: The setup mocks action.
+    - id: createdComponentAction
+      type: System.Action{{TComponent}}
+      description: The created component action.
+    - id: createArgumentTypes
+      type: System.Type[]
+      description: Create component using constructor with matching types.
+    content.vb: Protected Sub New(setupMocksAction As Action(Of Mocker), createdComponentAction As Action(Of TComponent), ParamArray createArgumentTypes As Type())
+  overload: FastMoq.MockerTestBase`1.#ctor*
+  nameWithType.vb: MockerTestBase(Of TComponent).New(Action(Of Mocker), Action(Of TComponent), ParamArray Type())
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New(System.Action(Of FastMoq.Mocker), System.Action(Of TComponent), ParamArray System.Type())
+  name.vb: New(Action(Of Mocker), Action(Of TComponent), ParamArray Type())
+- uid: FastMoq.MockerTestBase`1.GetConstructor
+  commentId: M:FastMoq.MockerTestBase`1.GetConstructor
+  id: GetConstructor
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: GetConstructor()
+  nameWithType: MockerTestBase<TComponent>.GetConstructor()
+  fullName: FastMoq.MockerTestBase<TComponent>.GetConstructor()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: GetConstructor
+    path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
+    startLine: 12
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets the constructor.
+  example: []
+  syntax:
+    content: protected ConstructorInfo GetConstructor()
+    return:
+      type: System.Reflection.ConstructorInfo
+      description: ConstructorInfo of the constructor.
+    content.vb: Protected Function GetConstructor() As ConstructorInfo
+  overload: FastMoq.MockerTestBase`1.GetConstructor*
+  exceptions:
+  - type: System.TypeAccessException
+    commentId: T:System.TypeAccessException
+    description: Error finding the constructor used to create the component.
+  nameWithType.vb: MockerTestBase(Of TComponent).GetConstructor()
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).GetConstructor()
+- uid: FastMoq.MockerTestBase`1.TestAllConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object},System.Reflection.BindingFlags)
+  commentId: M:FastMoq.MockerTestBase`1.TestAllConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object},System.Reflection.BindingFlags)
+  id: TestAllConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object},System.Reflection.BindingFlags)
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: TestAllConstructorParameters(Action<Action, string, string>, Func<ParameterInfo, object?>?, Func<ParameterInfo, object?>?, BindingFlags)
+  nameWithType: MockerTestBase<TComponent>.TestAllConstructorParameters(Action<Action, string, string>, Func<ParameterInfo, object?>?, Func<ParameterInfo, object?>?, BindingFlags)
+  fullName: FastMoq.MockerTestBase<TComponent>.TestAllConstructorParameters(System.Action<System.Action, string, string>, System.Func<System.Reflection.ParameterInfo, object?>?, System.Func<System.Reflection.ParameterInfo, object?>?, System.Reflection.BindingFlags)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: TestAllConstructorParameters
+    path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
+    startLine: 22
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Tests all constructor parameters.
+  example: []
+  syntax:
+    content: protected void TestAllConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public)
+    parameters:
+    - id: createAction
+      type: System.Action{System.Action,System.String,System.String}
+      description: The action used for each parameter of each constructor.
+    - id: defaultValue
+      type: System.Func{System.Reflection.ParameterInfo,System.Object}
+      description: The default value used when testing the parameter.
+    - id: validValue
+      type: System.Func{System.Reflection.ParameterInfo,System.Object}
+      description: The valid value used when not testing the parameter.
+    - id: bindingFlags
+      type: System.Reflection.BindingFlags
+      description: The binding flags.
+    content.vb: Protected Sub TestAllConstructorParameters(createAction As Action(Of Action, String, String), defaultValue As Func(Of ParameterInfo, Object) = Nothing, validValue As Func(Of ParameterInfo, Object) = Nothing, bindingFlags As BindingFlags = BindingFlags.Instance Or BindingFlags.Public)
+  overload: FastMoq.MockerTestBase`1.TestAllConstructorParameters*
+  nameWithType.vb: MockerTestBase(Of TComponent).TestAllConstructorParameters(Action(Of Action, String, String), Func(Of ParameterInfo, Object), Func(Of ParameterInfo, Object), BindingFlags)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).TestAllConstructorParameters(System.Action(Of System.Action, String, String), System.Func(Of System.Reflection.ParameterInfo, Object), System.Func(Of System.Reflection.ParameterInfo, Object), System.Reflection.BindingFlags)
+  name.vb: TestAllConstructorParameters(Action(Of Action, String, String), Func(Of ParameterInfo, Object), Func(Of ParameterInfo, Object), BindingFlags)
+- uid: FastMoq.MockerTestBase`1.TestConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+  commentId: M:FastMoq.MockerTestBase`1.TestConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+  id: TestConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: TestConstructorParameters(Action<Action, string, string>, Func<ParameterInfo, object?>?, Func<ParameterInfo, object?>?)
+  nameWithType: MockerTestBase<TComponent>.TestConstructorParameters(Action<Action, string, string>, Func<ParameterInfo, object?>?, Func<ParameterInfo, object?>?)
+  fullName: FastMoq.MockerTestBase<TComponent>.TestConstructorParameters(System.Action<System.Action, string, string>, System.Func<System.Reflection.ParameterInfo, object?>?, System.Func<System.Reflection.ParameterInfo, object?>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: TestConstructorParameters
+    path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
+    startLine: 83
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Tests the constructor parameters.
+  example:
+  - >-
+    CreateComponent allows creating the component when desired, instead of in the base class constructor.
+
+
+    <pre><code class="lang-csharp">[Fact]
+
+    public void Service_NullArgChecks() =&gt; TestConstructorParameters((action, constructorName, parameterName) =&gt;
+
+    {
+        output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
+
+        action
+            .Should()
+            .Throw&lt;ArgumentNullException&gt;()
+            .WithMessage($"*{parameterName}*");
+    });
+
+
+    [Fact]
+
+    public void Service_NullArgChecks() =&gt; TestConstructorParameters((action, constructorName, parameterName) =&gt;
+        {
+            output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
+
+            action
+                .Should()
+                .Throw&lt;ArgumentNullException&gt;()
+                .WithMessage($"*{parameterName}*");
+        },
+        info =&gt;
+        {
+            return info switch
+            {
+                { ParameterType: { Name: "string" }} =&gt; string.Empty,
+                { ParameterType: { Name: "int" }} =&gt; -1,
+                _ =&gt; default,
+            };
+        },
+        info =&gt;
+        {
+            return info switch
+            {
+                { ParameterType: { Name: "string" }} =&gt; "Valid Value",
+                { ParameterType: { Name: "int" }} =&gt; 22,
+                _ =&gt; Mocks.GetObject(info.ParameterType),
+            };
+        }
+    );</code></pre>
+  syntax:
+    content: protected void TestConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null)
+    parameters:
+    - id: createAction
+      type: System.Action{System.Action,System.String,System.String}
+      description: The create action.
+    - id: defaultValue
+      type: System.Func{System.Reflection.ParameterInfo,System.Object}
+      description: The default value.
+    - id: validValue
+      type: System.Func{System.Reflection.ParameterInfo,System.Object}
+      description: The valid value.
+    content.vb: Protected Sub TestConstructorParameters(createAction As Action(Of Action, String, String), defaultValue As Func(Of ParameterInfo, Object) = Nothing, validValue As Func(Of ParameterInfo, Object) = Nothing)
+  overload: FastMoq.MockerTestBase`1.TestConstructorParameters*
+  nameWithType.vb: MockerTestBase(Of TComponent).TestConstructorParameters(Action(Of Action, String, String), Func(Of ParameterInfo, Object), Func(Of ParameterInfo, Object))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).TestConstructorParameters(System.Action(Of System.Action, String, String), System.Func(Of System.Reflection.ParameterInfo, Object), System.Func(Of System.Reflection.ParameterInfo, Object))
+  name.vb: TestConstructorParameters(Action(Of Action, String, String), Func(Of ParameterInfo, Object), Func(Of ParameterInfo, Object))
+- uid: FastMoq.MockerTestBase`1.TestConstructorParameters(System.Reflection.ConstructorInfo,System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+  commentId: M:FastMoq.MockerTestBase`1.TestConstructorParameters(System.Reflection.ConstructorInfo,System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+  id: TestConstructorParameters(System.Reflection.ConstructorInfo,System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: TestConstructorParameters(ConstructorInfo, Action<Action, string, string>, Func<ParameterInfo, object?>?, Func<ParameterInfo, object?>?)
+  nameWithType: MockerTestBase<TComponent>.TestConstructorParameters(ConstructorInfo, Action<Action, string, string>, Func<ParameterInfo, object?>?, Func<ParameterInfo, object?>?)
+  fullName: FastMoq.MockerTestBase<TComponent>.TestConstructorParameters(System.Reflection.ConstructorInfo, System.Action<System.Action, string, string>, System.Func<System.Reflection.ParameterInfo, object?>?, System.Func<System.Reflection.ParameterInfo, object?>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: TestConstructorParameters
+    path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
+    startLine: 93
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Tests the constructor parameters.
+  example: []
+  syntax:
+    content: protected void TestConstructorParameters(ConstructorInfo constructorInfo, Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null)
+    parameters:
+    - id: constructorInfo
+      type: System.Reflection.ConstructorInfo
+      description: The constructor information.
+    - id: createAction
+      type: System.Action{System.Action,System.String,System.String}
+      description: The create action.
+    - id: defaultValue
+      type: System.Func{System.Reflection.ParameterInfo,System.Object}
+      description: The value replaced when testing a parameter.
+    - id: validValue
+      type: System.Func{System.Reflection.ParameterInfo,System.Object}
+      description: The valid value.
+    content.vb: Protected Sub TestConstructorParameters(constructorInfo As ConstructorInfo, createAction As Action(Of Action, String, String), defaultValue As Func(Of ParameterInfo, Object) = Nothing, validValue As Func(Of ParameterInfo, Object) = Nothing)
+  overload: FastMoq.MockerTestBase`1.TestConstructorParameters*
+  nameWithType.vb: MockerTestBase(Of TComponent).TestConstructorParameters(ConstructorInfo, Action(Of Action, String, String), Func(Of ParameterInfo, Object), Func(Of ParameterInfo, Object))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).TestConstructorParameters(System.Reflection.ConstructorInfo, System.Action(Of System.Action, String, String), System.Func(Of System.Reflection.ParameterInfo, Object), System.Func(Of System.Reflection.ParameterInfo, Object))
+  name.vb: TestConstructorParameters(ConstructorInfo, Action(Of Action, String, String), Func(Of ParameterInfo, Object), Func(Of ParameterInfo, Object))
+references:
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
+- uid: FastMoq.MockerTestBase`1.Mocks
+  commentId: P:FastMoq.MockerTestBase`1.Mocks
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Mocks
+  name: Mocks
+  nameWithType: MockerTestBase<TComponent>.Mocks
+  fullName: FastMoq.MockerTestBase<TComponent>.Mocks
+  nameWithType.vb: MockerTestBase(Of TComponent).Mocks
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Mocks
+- uid: FastMoq.MockerTestBase`1
+  commentId: T:FastMoq.MockerTestBase`1
+  href: FastMoq.MockerTestBase-1.html
+  name: MockerTestBase<TComponent>
+  nameWithType: MockerTestBase<TComponent>
+  fullName: FastMoq.MockerTestBase<TComponent>
+  nameWithType.vb: MockerTestBase(Of TComponent)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent)
+  name.vb: MockerTestBase(Of TComponent)
+  spec.csharp:
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+- uid: FastMoq.MockerTestBase`1.Component
+  commentId: P:FastMoq.MockerTestBase`1.Component
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Component
+  name: Component
+  nameWithType: MockerTestBase<TComponent>.Component
+  fullName: FastMoq.MockerTestBase<TComponent>.Component
+  nameWithType.vb: MockerTestBase(Of TComponent).Component
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Component
+- uid: FastMoq.MockerTestBase`1.get_SetupMocksAction
+  commentId: M:FastMoq.MockerTestBase`1.get_SetupMocksAction
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_SetupMocksAction
+  name: SetupMocksAction.get
+  nameWithType: MockerTestBase<TComponent>.SetupMocksAction.get
+  fullName: FastMoq.MockerTestBase<TComponent>.SetupMocksAction.get
+  nameWithType.vb: MockerTestBase(Of TComponent).SetupMocksAction()
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).SetupMocksAction()
+  name.vb: SetupMocksAction()
+  spec.csharp:
+  - uid: FastMoq.MockerTestBase`1.SetupMocksAction
+    name: SetupMocksAction
+    href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_SetupMocksAction
+  - name: .
+  - name: get
+  spec.vb:
+  - uid: FastMoq.MockerTestBase`1.SetupMocksAction
+    name: SetupMocksAction
+    href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_SetupMocksAction
+  - name: (
+  - name: )
+- uid: FastMoq
+  commentId: N:FastMoq
+  href: FastMoq.html
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  parent: FastMoq.Extensions.ObjectExtensions
+  definition: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, string, int?, string)
+  nameWithType: ObjectExtensions.RaiseIfNull<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, string, int?, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<FastMoq.MockerTestBase<TComponent>>(FastMoq.MockerTestBase<TComponent>, string, string, int?, string)
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of FastMoq.MockerTestBase(Of TComponent))(FastMoq.MockerTestBase(Of TComponent), String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, String, Integer?, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(FastMoq.MockerTestBase{`0},System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(FastMoq.MockerTestBase{`0},System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.MockerTestBase{{TComponent}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  name: GetFieldValue<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, MockerTestBase<TComponent>)
+  nameWithType: TestClassExtensions.GetFieldValue<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, MockerTestBase<TComponent>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<FastMoq.MockerTestBase<TComponent>>(FastMoq.MockerTestBase<TComponent>, string, FastMoq.MockerTestBase<TComponent>)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, MockerTestBase(Of TComponent))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of FastMoq.MockerTestBase(Of TComponent))(FastMoq.MockerTestBase(Of TComponent), String, FastMoq.MockerTestBase(Of TComponent))
+  name.vb: GetFieldValue(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, MockerTestBase(Of TComponent))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(FastMoq.MockerTestBase{`0},System.String,FastMoq.MockerTestBase{`0})
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(FastMoq.MockerTestBase{`0},System.String,FastMoq.MockerTestBase{`0})
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  name: GetField<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string)
+  nameWithType: TestClassExtensions.GetField<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetField<FastMoq.MockerTestBase<TComponent>>(FastMoq.MockerTestBase<TComponent>, string)
+  nameWithType.vb: TestClassExtensions.GetField(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetField(Of FastMoq.MockerTestBase(Of TComponent))(FastMoq.MockerTestBase(Of TComponent), String)
+  name.vb: GetField(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(FastMoq.MockerTestBase{`0},System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(FastMoq.MockerTestBase{`0},System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.MockerTestBase{{TComponent}},{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<MockerTestBase<TComponent>, TValue>(MockerTestBase<TComponent>, Expression<Func<MockerTestBase<TComponent>, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<MockerTestBase<TComponent>, TValue>(MockerTestBase<TComponent>, Expression<Func<MockerTestBase<TComponent>, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<FastMoq.MockerTestBase<TComponent>, TValue>(FastMoq.MockerTestBase<TComponent>, System.Linq.Expressions.Expression<System.Func<FastMoq.MockerTestBase<TComponent>, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of MockerTestBase(Of TComponent), TValue)(MockerTestBase(Of TComponent), Expression(Of Func(Of MockerTestBase(Of TComponent), TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of FastMoq.MockerTestBase(Of TComponent), TValue)(FastMoq.MockerTestBase(Of TComponent), System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.MockerTestBase(Of TComponent), TValue)))
+  name.vb: GetMemberName(Of MockerTestBase(Of TComponent), TValue)(MockerTestBase(Of TComponent), Expression(Of Func(Of MockerTestBase(Of TComponent), TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.MockerTestBase{`0},System.Linq.Expressions.Expression{System.Func{FastMoq.MockerTestBase{`0},``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.MockerTestBase{`0},System.Linq.Expressions.Expression{System.Func{FastMoq.MockerTestBase{`0},``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.MockerTestBase{{TComponent}},{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<MockerTestBase<TComponent>, TValue>(MockerTestBase<TComponent>, Expression<Func<MockerTestBase<TComponent>, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<MockerTestBase<TComponent>, TValue>(MockerTestBase<TComponent>, Expression<Func<MockerTestBase<TComponent>, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<FastMoq.MockerTestBase<TComponent>, TValue>(FastMoq.MockerTestBase<TComponent>, System.Linq.Expressions.Expression<System.Func<FastMoq.MockerTestBase<TComponent>, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of MockerTestBase(Of TComponent), TValue)(MockerTestBase(Of TComponent), Expression(Of Func(Of MockerTestBase(Of TComponent), TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of FastMoq.MockerTestBase(Of TComponent), TValue)(FastMoq.MockerTestBase(Of TComponent), System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.MockerTestBase(Of TComponent), TValue)))
+  name.vb: GetMember(Of MockerTestBase(Of TComponent), TValue)(MockerTestBase(Of TComponent), Expression(Of Func(Of MockerTestBase(Of TComponent), TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.MockerTestBase{`0},System.Linq.Expressions.Expression{System.Func{FastMoq.MockerTestBase{`0},``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.MockerTestBase{`0},System.Linq.Expressions.Expression{System.Func{FastMoq.MockerTestBase{`0},``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(System.String,System.Object,System.Object[])
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  name: GetMethodValue<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, object, params object[])
+  nameWithType: TestClassExtensions.GetMethodValue<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, object, params object[])
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethodValue<FastMoq.MockerTestBase<TComponent>>(FastMoq.MockerTestBase<TComponent>, string, object, params object[])
+  nameWithType.vb: TestClassExtensions.GetMethodValue(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, Object, ParamArray Object())
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethodValue(Of FastMoq.MockerTestBase(Of TComponent))(FastMoq.MockerTestBase(Of TComponent), String, Object, ParamArray Object())
+  name.vb: GetMethodValue(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, Object, ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(FastMoq.MockerTestBase{`0},System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(FastMoq.MockerTestBase{`0},System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetMethod``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  name: GetMethod<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string)
+  nameWithType: TestClassExtensions.GetMethod<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethod<FastMoq.MockerTestBase<TComponent>>(FastMoq.MockerTestBase<TComponent>, string)
+  nameWithType.vb: TestClassExtensions.GetMethod(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethod(Of FastMoq.MockerTestBase(Of TComponent))(FastMoq.MockerTestBase(Of TComponent), String)
+  name.vb: GetMethod(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(FastMoq.MockerTestBase{`0},System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(FastMoq.MockerTestBase{`0},System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  name: GetPropertyValue<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, object)
+  nameWithType: TestClassExtensions.GetPropertyValue<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetPropertyValue<FastMoq.MockerTestBase<TComponent>>(FastMoq.MockerTestBase<TComponent>, string, object)
+  nameWithType.vb: TestClassExtensions.GetPropertyValue(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetPropertyValue(Of FastMoq.MockerTestBase(Of TComponent))(FastMoq.MockerTestBase(Of TComponent), String, Object)
+  name.vb: GetPropertyValue(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(FastMoq.MockerTestBase{`0},System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(FastMoq.MockerTestBase{`0},System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string)
+  nameWithType: TestClassExtensions.GetProperty<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<FastMoq.MockerTestBase<TComponent>>(FastMoq.MockerTestBase<TComponent>, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of FastMoq.MockerTestBase(Of TComponent))(FastMoq.MockerTestBase(Of TComponent), String)
+  name.vb: GetProperty(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.MockerTestBase{`0},System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.MockerTestBase{`0},System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  name: SetFieldValue<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, object)
+  nameWithType: TestClassExtensions.SetFieldValue<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetFieldValue<FastMoq.MockerTestBase<TComponent>>(FastMoq.MockerTestBase<TComponent>, string, object)
+  nameWithType.vb: TestClassExtensions.SetFieldValue(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetFieldValue(Of FastMoq.MockerTestBase(Of TComponent))(FastMoq.MockerTestBase(Of TComponent), String, Object)
+  name.vb: SetFieldValue(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(FastMoq.MockerTestBase{`0},System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(FastMoq.MockerTestBase{`0},System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.MockerTestBase`1.FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  name: SetPropertyValue<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, object)
+  nameWithType: TestClassExtensions.SetPropertyValue<MockerTestBase<TComponent>>(MockerTestBase<TComponent>, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue<FastMoq.MockerTestBase<TComponent>>(FastMoq.MockerTestBase<TComponent>, string, object)
+  nameWithType.vb: TestClassExtensions.SetPropertyValue(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of FastMoq.MockerTestBase(Of TComponent))(FastMoq.MockerTestBase(Of TComponent), String, Object)
+  name.vb: SetPropertyValue(Of MockerTestBase(Of TComponent))(MockerTestBase(Of TComponent), String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(FastMoq.MockerTestBase{`0},System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(FastMoq.MockerTestBase{`0},System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  isExternal: true
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull<T>(T, string, string, int?, string)
+  nameWithType: ObjectExtensions.RaiseIfNull<T>(T, string, string, int?, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<T>(T, string, string, int?, string)
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.ObjectExtensions
+  commentId: T:FastMoq.Extensions.ObjectExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FastMoq.Extensions.ObjectExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  name: GetFieldValue<TObject>(TObject, string, TObject)
+  nameWithType: TestClassExtensions.GetFieldValue<TObject>(TObject, string, TObject)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<TObject>(TObject, string, TObject)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of TObject)(TObject, String, TObject)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of TObject)(TObject, String, TObject)
+  name.vb: GetFieldValue(Of TObject)(TObject, String, TObject)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TObject
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TObject
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions
+  commentId: T:FastMoq.Extensions.TestClassExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.TestClassExtensions.html
+  name: TestClassExtensions
+  nameWithType: TestClassExtensions
+  fullName: FastMoq.Extensions.TestClassExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  name: GetField<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetField<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetField<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetField(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetField(Of TObject)(TObject, String)
+  name.vb: GetField(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  name: GetMethodValue<TObject>(TObject, string, object, params object[])
+  nameWithType: TestClassExtensions.GetMethodValue<TObject>(TObject, string, object, params object[])
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethodValue<TObject>(TObject, string, object, params object[])
+  nameWithType.vb: TestClassExtensions.GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  name.vb: GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  name: GetMethod<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetMethod<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethod<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetMethod(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethod(Of TObject)(TObject, String)
+  name.vb: GetMethod(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  name: GetPropertyValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.GetPropertyValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetPropertyValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.GetPropertyValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetPropertyValue(Of TObject)(TObject, String, Object)
+  name.vb: GetPropertyValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetProperty<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  name.vb: GetProperty(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  name: SetFieldValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.SetFieldValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetFieldValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.SetFieldValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetFieldValue(Of TObject)(TObject, String, Object)
+  name.vb: SetFieldValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  name: SetPropertyValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
+  name.vb: SetPropertyValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+- uid: FastMoq.MockerTestBase`1.Component*
+  commentId: Overload:FastMoq.MockerTestBase`1.Component
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Component
+  name: Component
+  nameWithType: MockerTestBase<TComponent>.Component
+  fullName: FastMoq.MockerTestBase<TComponent>.Component
+  nameWithType.vb: MockerTestBase(Of TComponent).Component
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Component
+- uid: '{TComponent}'
+  commentId: '!:TComponent'
+  definition: TComponent
+  name: TComponent
+  nameWithType: TComponent
+  fullName: TComponent
+- uid: TComponent
+  commentId: '!:TComponent'
+  name: TComponent
+  nameWithType: TComponent
+  fullName: TComponent
+- uid: FastMoq.MockerTestBase`1.CustomMocks*
+  commentId: Overload:FastMoq.MockerTestBase`1.CustomMocks
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CustomMocks
+  name: CustomMocks
+  nameWithType: MockerTestBase<TComponent>.CustomMocks
+  fullName: FastMoq.MockerTestBase<TComponent>.CustomMocks
+  nameWithType.vb: MockerTestBase(Of TComponent).CustomMocks
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CustomMocks
+- uid: System.Collections.Generic.IEnumerable{FastMoq.Models.MockModel}
+  commentId: T:System.Collections.Generic.IEnumerable{FastMoq.Models.MockModel}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<MockModel>
+  nameWithType: IEnumerable<MockModel>
+  fullName: System.Collections.Generic.IEnumerable<FastMoq.Models.MockModel>
+  nameWithType.vb: IEnumerable(Of MockModel)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FastMoq.Models.MockModel)
+  name.vb: IEnumerable(Of MockModel)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FastMoq.Models.MockModel
+    name: MockModel
+    href: FastMoq.Models.MockModel.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.MockModel
+    name: MockModel
+    href: FastMoq.Models.MockModel.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FastMoq.MockerTestBase`1.CreateComponentAction*
+  commentId: Overload:FastMoq.MockerTestBase`1.CreateComponentAction
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreateComponentAction
+  name: CreateComponentAction
+  nameWithType: MockerTestBase<TComponent>.CreateComponentAction
+  fullName: FastMoq.MockerTestBase<TComponent>.CreateComponentAction
+  nameWithType.vb: MockerTestBase(Of TComponent).CreateComponentAction
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CreateComponentAction
+- uid: System.Func{FastMoq.Mocker,{TComponent}}
+  commentId: T:System.Func{FastMoq.Mocker,`0}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<Mocker, TComponent>
+  nameWithType: Func<Mocker, TComponent>
+  fullName: System.Func<FastMoq.Mocker, TComponent>
+  nameWithType.vb: Func(Of Mocker, TComponent)
+  fullName.vb: System.Func(Of FastMoq.Mocker, TComponent)
+  name.vb: Func(Of Mocker, TComponent)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - name: TComponent
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - name: TComponent
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FastMoq.MockerTestBase`1.SetupMocksAction*
+  commentId: Overload:FastMoq.MockerTestBase`1.SetupMocksAction
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_SetupMocksAction
+  name: SetupMocksAction
+  nameWithType: MockerTestBase<TComponent>.SetupMocksAction
+  fullName: FastMoq.MockerTestBase<TComponent>.SetupMocksAction
+  nameWithType.vb: MockerTestBase(Of TComponent).SetupMocksAction
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).SetupMocksAction
+- uid: System.Action{FastMoq.Mocker}
+  commentId: T:System.Action{FastMoq.Mocker}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<Mocker>
+  nameWithType: Action<Mocker>
+  fullName: System.Action<FastMoq.Mocker>
+  nameWithType.vb: Action(Of Mocker)
+  fullName.vb: System.Action(Of FastMoq.Mocker)
+  name.vb: Action(Of Mocker)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.MockerTestBase`1.CreatedComponentAction*
+  commentId: Overload:FastMoq.MockerTestBase`1.CreatedComponentAction
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreatedComponentAction
+  name: CreatedComponentAction
+  nameWithType: MockerTestBase<TComponent>.CreatedComponentAction
+  fullName: FastMoq.MockerTestBase<TComponent>.CreatedComponentAction
+  nameWithType.vb: MockerTestBase(Of TComponent).CreatedComponentAction
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CreatedComponentAction
+- uid: System.Action{{TComponent}}
+  commentId: T:System.Action{`0}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<TComponent>
+  nameWithType: Action<TComponent>
+  fullName: System.Action<TComponent>
+  nameWithType.vb: Action(Of TComponent)
+  fullName.vb: System.Action(Of TComponent)
+  name.vb: Action(Of TComponent)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: TComponent
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+- uid: FastMoq.MockerTestBase`1.ConfigureMockerPolicy*
+  commentId: Overload:FastMoq.MockerTestBase`1.ConfigureMockerPolicy
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_ConfigureMockerPolicy
+  name: ConfigureMockerPolicy
+  nameWithType: MockerTestBase<TComponent>.ConfigureMockerPolicy
+  fullName: FastMoq.MockerTestBase<TComponent>.ConfigureMockerPolicy
+  nameWithType.vb: MockerTestBase(Of TComponent).ConfigureMockerPolicy
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).ConfigureMockerPolicy
+- uid: System.Action{FastMoq.MockerPolicyOptions}
+  commentId: T:System.Action{FastMoq.MockerPolicyOptions}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<MockerPolicyOptions>
+  nameWithType: Action<MockerPolicyOptions>
+  fullName: System.Action<FastMoq.MockerPolicyOptions>
+  nameWithType.vb: Action(Of MockerPolicyOptions)
+  fullName.vb: System.Action(Of FastMoq.MockerPolicyOptions)
+  name.vb: Action(Of MockerPolicyOptions)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: FastMoq.MockerPolicyOptions
+    name: MockerPolicyOptions
+    href: FastMoq.MockerPolicyOptions.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.MockerPolicyOptions
+    name: MockerPolicyOptions
+    href: FastMoq.MockerPolicyOptions.html
+  - name: )
+- uid: FastMoq.MockerTestBase`1.Mocks*
+  commentId: Overload:FastMoq.MockerTestBase`1.Mocks
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Mocks
+  name: Mocks
+  nameWithType: MockerTestBase<TComponent>.Mocks
+  fullName: FastMoq.MockerTestBase<TComponent>.Mocks
+  nameWithType.vb: MockerTestBase(Of TComponent).Mocks
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Mocks
+- uid: FastMoq.MockerTestBase`1.Scenario*
+  commentId: Overload:FastMoq.MockerTestBase`1.Scenario
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Scenario
+  name: Scenario
+  nameWithType: MockerTestBase<TComponent>.Scenario
+  fullName: FastMoq.MockerTestBase<TComponent>.Scenario
+  nameWithType.vb: MockerTestBase(Of TComponent).Scenario
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Scenario
+- uid: FastMoq.ScenarioBuilder{{TComponent}}
+  commentId: T:FastMoq.ScenarioBuilder{`0}
+  parent: FastMoq
+  definition: FastMoq.ScenarioBuilder`1
+  href: FastMoq.ScenarioBuilder-1.html
+  name: ScenarioBuilder<TComponent>
+  nameWithType: ScenarioBuilder<TComponent>
+  fullName: FastMoq.ScenarioBuilder<TComponent>
+  nameWithType.vb: ScenarioBuilder(Of TComponent)
+  fullName.vb: FastMoq.ScenarioBuilder(Of TComponent)
+  name.vb: ScenarioBuilder(Of TComponent)
+  spec.csharp:
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1
+  commentId: T:FastMoq.ScenarioBuilder`1
+  parent: FastMoq
+  href: FastMoq.ScenarioBuilder-1.html
+  name: ScenarioBuilder<T>
+  nameWithType: ScenarioBuilder<T>
+  fullName: FastMoq.ScenarioBuilder<T>
+  nameWithType.vb: ScenarioBuilder(Of T)
+  fullName.vb: FastMoq.ScenarioBuilder(Of T)
+  name.vb: ScenarioBuilder(Of T)
+  spec.csharp:
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: System.ApplicationException
+  commentId: T:System.ApplicationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.applicationexception
+  name: ApplicationException
+  nameWithType: ApplicationException
+  fullName: System.ApplicationException
+- uid: FastMoq.MockerTestBase`1.WaitFor*
+  commentId: Overload:FastMoq.MockerTestBase`1.WaitFor
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_WaitFor__1_System_Func___0__System_TimeSpan_System_TimeSpan_
+  name: WaitFor
+  nameWithType: MockerTestBase<TComponent>.WaitFor
+  fullName: FastMoq.MockerTestBase<TComponent>.WaitFor
+  nameWithType.vb: MockerTestBase(Of TComponent).WaitFor
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).WaitFor
+- uid: System.Func{{T}}
+  commentId: T:System.Func{``0}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<T>
+  nameWithType: Func<T>
+  fullName: System.Func<T>
+  nameWithType.vb: Func(Of T)
+  fullName.vb: System.Func(Of T)
+  name.vb: Func(Of T)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: FastMoq.MockerTestBase`1.CreateComponent*
+  commentId: Overload:FastMoq.MockerTestBase`1.CreateComponent
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreateComponent
+  name: CreateComponent
+  nameWithType: MockerTestBase<TComponent>.CreateComponent
+  fullName: FastMoq.MockerTestBase<TComponent>.CreateComponent
+  nameWithType.vb: MockerTestBase(Of TComponent).CreateComponent
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CreateComponent
+- uid: FastMoq.MockerTestBase`1.Dispose*
+  commentId: Overload:FastMoq.MockerTestBase`1.Dispose
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Dispose_System_Boolean_
+  name: Dispose
+  nameWithType: MockerTestBase<TComponent>.Dispose
+  fullName: FastMoq.MockerTestBase<TComponent>.Dispose
+  nameWithType.vb: MockerTestBase(Of TComponent).Dispose
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Dispose
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: FastMoq.MockerTestBase`1.ComponentCreationFlags*
+  commentId: Overload:FastMoq.MockerTestBase`1.ComponentCreationFlags
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_ComponentCreationFlags
+  name: ComponentCreationFlags
+  nameWithType: MockerTestBase<TComponent>.ComponentCreationFlags
+  fullName: FastMoq.MockerTestBase<TComponent>.ComponentCreationFlags
+  nameWithType.vb: MockerTestBase(Of TComponent).ComponentCreationFlags
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).ComponentCreationFlags
+- uid: FastMoq.InstanceCreationFlags
+  commentId: T:FastMoq.InstanceCreationFlags
+  parent: FastMoq
+  href: FastMoq.InstanceCreationFlags.html
+  name: InstanceCreationFlags
+  nameWithType: InstanceCreationFlags
+  fullName: FastMoq.InstanceCreationFlags
+- uid: FastMoq.MockerTestBase`1.#ctor*
+  commentId: Overload:FastMoq.MockerTestBase`1.#ctor
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1__ctor
+  name: MockerTestBase
+  nameWithType: MockerTestBase<TComponent>.MockerTestBase
+  fullName: FastMoq.MockerTestBase<TComponent>.MockerTestBase
+  nameWithType.vb: MockerTestBase(Of TComponent).New
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).New
+  name.vb: New
+- uid: FastMoq.MockerTestBase`1.LoggingCallback*
+  commentId: Overload:FastMoq.MockerTestBase`1.LoggingCallback
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_LoggingCallback_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception_
+  name: LoggingCallback
+  nameWithType: MockerTestBase<TComponent>.LoggingCallback
+  fullName: FastMoq.MockerTestBase<TComponent>.LoggingCallback
+  nameWithType.vb: MockerTestBase(Of TComponent).LoggingCallback
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).LoggingCallback
+- uid: Microsoft.Extensions.Logging.LogLevel
+  commentId: T:Microsoft.Extensions.Logging.LogLevel
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  name: LogLevel
+  nameWithType: LogLevel
+  fullName: Microsoft.Extensions.Logging.LogLevel
+- uid: Microsoft.Extensions.Logging.EventId
+  commentId: T:Microsoft.Extensions.Logging.EventId
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid
+  name: EventId
+  nameWithType: EventId
+  fullName: Microsoft.Extensions.Logging.EventId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.Type[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type[]
+  nameWithType: Type[]
+  fullName: System.Type[]
+  nameWithType.vb: Type()
+  fullName.vb: System.Type()
+  name.vb: Type()
+  spec.csharp:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: (
+  - name: )
+- uid: System.TypeAccessException
+  commentId: T:System.TypeAccessException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.typeaccessexception
+  name: TypeAccessException
+  nameWithType: TypeAccessException
+  fullName: System.TypeAccessException
+- uid: FastMoq.MockerTestBase`1.GetConstructor*
+  commentId: Overload:FastMoq.MockerTestBase`1.GetConstructor
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_GetConstructor
+  name: GetConstructor
+  nameWithType: MockerTestBase<TComponent>.GetConstructor
+  fullName: FastMoq.MockerTestBase<TComponent>.GetConstructor
+  nameWithType.vb: MockerTestBase(Of TComponent).GetConstructor
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).GetConstructor
+- uid: System.Reflection.ConstructorInfo
+  commentId: T:System.Reflection.ConstructorInfo
+  parent: System.Reflection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.reflection.constructorinfo
+  name: ConstructorInfo
+  nameWithType: ConstructorInfo
+  fullName: System.Reflection.ConstructorInfo
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Reflection
+    name: Reflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Reflection
+    name: Reflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection
+- uid: FastMoq.MockerTestBase`1.TestAllConstructorParameters*
+  commentId: Overload:FastMoq.MockerTestBase`1.TestAllConstructorParameters
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_TestAllConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__System_Reflection_BindingFlags_
+  name: TestAllConstructorParameters
+  nameWithType: MockerTestBase<TComponent>.TestAllConstructorParameters
+  fullName: FastMoq.MockerTestBase<TComponent>.TestAllConstructorParameters
+  nameWithType.vb: MockerTestBase(Of TComponent).TestAllConstructorParameters
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).TestAllConstructorParameters
+- uid: System.Action{System.Action,System.String,System.String}
+  commentId: T:System.Action{System.Action,System.String,System.String}
+  parent: System
+  definition: System.Action`3
+  href: https://learn.microsoft.com/dotnet/api/system.action-3
+  name: Action<Action, string, string>
+  nameWithType: Action<Action, string, string>
+  fullName: System.Action<System.Action, string, string>
+  nameWithType.vb: Action(Of Action, String, String)
+  fullName.vb: System.Action(Of System.Action, String, String)
+  name.vb: Action(Of Action, String, String)
+  spec.csharp:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: <
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Func{System.Reflection.ParameterInfo,System.Object}
+  commentId: T:System.Func{System.Reflection.ParameterInfo,System.Object}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<ParameterInfo, object>
+  nameWithType: Func<ParameterInfo, object>
+  fullName: System.Func<System.Reflection.ParameterInfo, object>
+  nameWithType.vb: Func(Of ParameterInfo, Object)
+  fullName.vb: System.Func(Of System.Reflection.ParameterInfo, Object)
+  name.vb: Func(Of ParameterInfo, Object)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Reflection.BindingFlags
+  commentId: T:System.Reflection.BindingFlags
+  parent: System.Reflection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  name: BindingFlags
+  nameWithType: BindingFlags
+  fullName: System.Reflection.BindingFlags
+- uid: System.Action`3
+  commentId: T:System.Action`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-3
+  name: Action<T1, T2, T3>
+  nameWithType: Action<T1, T2, T3>
+  fullName: System.Action<T1, T2, T3>
+  nameWithType.vb: Action(Of T1, T2, T3)
+  fullName.vb: System.Action(Of T1, T2, T3)
+  name.vb: Action(Of T1, T2, T3)
+  spec.csharp:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: )
+- uid: FastMoq.MockerTestBase`1.TestConstructorParameters*
+  commentId: Overload:FastMoq.MockerTestBase`1.TestConstructorParameters
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_TestConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__
+  name: TestConstructorParameters
+  nameWithType: MockerTestBase<TComponent>.TestConstructorParameters
+  fullName: FastMoq.MockerTestBase<TComponent>.TestConstructorParameters
+  nameWithType.vb: MockerTestBase(Of TComponent).TestConstructorParameters
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).TestConstructorParameters

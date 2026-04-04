@@ -1,0 +1,88 @@
+# FastMoq Documentation
+
+This site combines generated API reference with real-world example documentation for the current FastMoq v4 codebase.
+
+## Start here
+
+- [Executable testing examples](docs/samples/testing-examples.md)
+- [Sample applications](docs/samples/README.md)
+- [TestingExample project overview](FastMoq.TestingExample/README.md)
+- [Core namespace reference](api/FastMoq.yml)
+- [Provider APIs](api/FastMoq.Providers.yml)
+- [Extension methods](api/FastMoq.Extensions.yml)
+- [Blazor and web APIs](api/FastMoq.Web.Blazor.yml)
+- [Models and helper types](api/FastMoq.Models.yml)
+- [Provider overview page](docs/api/index.md)
+
+## Real-world examples
+
+Use the example pages first when you want to understand how FastMoq is applied in tests, then drop into API reference pages when you need the exact shape of a type or member.
+
+- [Executable testing examples](docs/samples/testing-examples.md)
+- [Sample applications overview](docs/samples/README.md)
+- [TestingExample project README](FastMoq.TestingExample/README.md)
+
+## Package map
+
+### FastMoq
+
+The aggregate package that pulls together the core runtime, database helpers, and web support.
+
+- [FastMoq namespace](api/FastMoq.yml)
+- [Extension methods](api/FastMoq.Extensions.yml)
+- [Provider APIs](api/FastMoq.Providers.yml)
+- [Web and Blazor APIs](api/FastMoq.Web.Blazor.yml)
+
+### FastMoq.Core
+
+Core mocking, auto-construction, instance resolution, and provider-neutral verification support.
+
+- [Mocker](api/FastMoq.Mocker.yml)
+- [MockerTestBase&lt;TComponent&gt;](api/FastMoq.MockerTestBase-1.yml)
+- [ScenarioBuilder&lt;T&gt;](api/FastMoq.ScenarioBuilder-1.yml)
+- [MockingProviderRegistry](api/FastMoq.Providers.MockingProviderRegistry.yml)
+- [TimesSpec](api/FastMoq.Providers.TimesSpec.yml)
+
+### FastMoq.Database
+
+EF and DbContext-oriented helpers that stay exposed through the main `FastMoq` namespace.
+
+- [DbContextMockerExtensions](api/FastMoq.DbContextMockerExtensions.yml)
+- [DbContextHandle&lt;TContext&gt;](api/FastMoq.DbContextHandle-1.yml)
+- [DbContextHandleOptions&lt;TContext&gt;](api/FastMoq.DbContextHandleOptions-1.yml)
+- [DbContextTestMode](api/FastMoq.DbContextTestMode.yml)
+
+### FastMoq.Web
+
+Blazor and web-oriented testing helpers.
+
+- [MockerBlazorTestBase&lt;T&gt;](api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.yml)
+- [IMockerBlazorTestHelpers&lt;T&gt;](api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.yml)
+- [Blazor namespace](api/FastMoq.Web.Blazor.yml)
+
+## Provider-first APIs
+
+FastMoq v4 defaults to the built-in reflection provider. Moq remains available as a compatibility provider, and additional providers can be added explicitly.
+
+- [IMockingProvider](api/FastMoq.Providers.IMockingProvider.yml)
+- [IMockingProviderCapabilities](api/FastMoq.Providers.IMockingProviderCapabilities.yml)
+- [MockCreationOptions](api/FastMoq.Providers.MockCreationOptions.yml)
+- [Moq provider types](api/FastMoq.Providers.MoqProvider.yml)
+- [NSubstitute provider types](api/FastMoq.Providers.NSubstituteProvider.yml)
+
+## Notes
+
+- Generated API reference from XML comments across the FastMoq projects
+- Conceptual example pages published from the repository's sample documentation
+- Searchable HTML output suitable for GitHub Pages and the `help.fastmoq.com` host
+- A reproducible build path using the pinned local DocFX tool manifest
+
+## Generate locally
+
+Run the clean generation script from the repository root:
+
+```powershell
+pwsh ./scripts/Generate-ApiDocs.ps1
+```
+
+That script removes the existing `Help` folder before rebuilding so stale files are not kept between runs.

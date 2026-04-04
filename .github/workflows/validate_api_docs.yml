@@ -6,9 +6,19 @@ on:
       - master
     paths:
       - '.config/dotnet-tools.json'
+      - '.github/workflows/publish_pages.yml'
       - '.github/workflows/validate_api_docs.yml'
       - 'docfx.json'
+      - 'index.md'
       - 'docs/api/**'
+      - 'docs/breaking-changes/**'
+      - 'docs/getting-started/**'
+      - 'docs/migration/**'
+      - 'docs/roadmap/**'
+      - 'docs/samples/**'
+      - 'docs/whats-new/**'
+      - 'FastMoq.TestingExample/**'
+      - 'scripts/Generate-ApiDocs.ps1'
       - 'FastMoq.Abstractions/**'
       - 'FastMoq.Core/**'
       - 'FastMoq.Database/**'
@@ -37,13 +47,9 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Restore local tools
-        run: |
-          dotnet tool restore
-
       - name: Generate API documentation
         run: |
-          dotnet tool run docfx docfx.json
+          pwsh ./scripts/Generate-ApiDocs.ps1
 
       - name: Validate generated site output
         run: |

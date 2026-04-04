@@ -1,0 +1,94 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Providers.MoqProvider
+  commentId: N:FastMoq.Providers.MoqProvider
+  id: FastMoq.Providers.MoqProvider
+  children:
+  - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  - FastMoq.Providers.MoqProvider.MoqMockAdapter
+  - FastMoq.Providers.MoqProvider.MoqMockAdapter`1
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: FastMoq.Providers.MoqProvider
+  nameWithType: FastMoq.Providers.MoqProvider
+  fullName: FastMoq.Providers.MoqProvider
+  type: Namespace
+  assemblies:
+  - FastMoq.Provider.Moq
+references:
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  commentId: T:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  href: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.html
+  name: MoqLoggerCompatibility
+  nameWithType: MoqLoggerCompatibility
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+- uid: FastMoq.Providers.MoqProvider.MoqMockAdapter`1
+  commentId: T:FastMoq.Providers.MoqProvider.MoqMockAdapter`1
+  href: FastMoq.Providers.MoqProvider.MoqMockAdapter-1.html
+  name: MoqMockAdapter<T>
+  nameWithType: MoqMockAdapter<T>
+  fullName: FastMoq.Providers.MoqProvider.MoqMockAdapter<T>
+  nameWithType.vb: MoqMockAdapter(Of T)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqMockAdapter(Of T)
+  name.vb: MoqMockAdapter(Of T)
+  spec.csharp:
+  - uid: FastMoq.Providers.MoqProvider.MoqMockAdapter`1
+    name: MoqMockAdapter
+    href: FastMoq.Providers.MoqProvider.MoqMockAdapter-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Providers.MoqProvider.MoqMockAdapter`1
+    name: MoqMockAdapter
+    href: FastMoq.Providers.MoqProvider.MoqMockAdapter-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockAdapter
+  commentId: T:FastMoq.Providers.MoqProvider.MoqMockAdapter
+  href: FastMoq.Providers.MoqProvider.MoqMockAdapter.html
+  name: MoqMockAdapter
+  nameWithType: MoqMockAdapter
+  fullName: FastMoq.Providers.MoqProvider.MoqMockAdapter
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  commentId: T:FastMoq.Providers.MoqProvider.MoqMockingProvider
+  parent: FastMoq.Providers.MoqProvider
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  name: MoqMockingProvider
+  nameWithType: MoqMockingProvider
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider
+- uid: FastMoq.Providers.MoqProvider
+  commentId: N:FastMoq.Providers.MoqProvider
+  href: FastMoq.html
+  name: FastMoq.Providers.MoqProvider
+  nameWithType: FastMoq.Providers.MoqProvider
+  fullName: FastMoq.Providers.MoqProvider
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  - name: .
+  - uid: FastMoq.Providers.MoqProvider
+    name: MoqProvider
+    href: FastMoq.Providers.MoqProvider.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  - name: .
+  - uid: FastMoq.Providers.MoqProvider
+    name: MoqProvider
+    href: FastMoq.Providers.MoqProvider.html

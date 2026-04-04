@@ -1,0 +1,395 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Models
+  commentId: N:FastMoq.Models
+  id: FastMoq.Models
+  children:
+  - FastMoq.Models.ConstructorHistory
+  - FastMoq.Models.ConstructorModel
+  - FastMoq.Models.DbContextMock`1
+  - FastMoq.Models.DbSetMock`1
+  - FastMoq.Models.FastMoqNonVoidSetupPhrase`1
+  - FastMoq.Models.IDbContextMock
+  - FastMoq.Models.IDbContextMock`1
+  - FastMoq.Models.IDbSetMock
+  - FastMoq.Models.IHistoryModel
+  - FastMoq.Models.IInstanceModel
+  - FastMoq.Models.InstanceFunction
+  - FastMoq.Models.InstanceFunction`1
+  - FastMoq.Models.InstanceModel
+  - FastMoq.Models.InstanceModel`1
+  - FastMoq.Models.LogEntry
+  - FastMoq.Models.MockAsyncEnumerable`1
+  - FastMoq.Models.MockAsyncEnumerator`1
+  - FastMoq.Models.MockDbContextOptions`1
+  - FastMoq.Models.MockModel
+  - FastMoq.Models.MockModel`1
+  - FastMoq.Models.ObservableExceptionLog
+  - FastMoq.Models.ObservableLogEntries
+  langs:
+  - csharp
+  - vb
+  name: FastMoq.Models
+  nameWithType: FastMoq.Models
+  fullName: FastMoq.Models
+  type: Namespace
+  assemblies:
+  - FastMoq.Core
+references:
+- uid: FastMoq.Models.ConstructorHistory
+  commentId: T:FastMoq.Models.ConstructorHistory
+  parent: FastMoq.Models
+  href: FastMoq.Models.ConstructorHistory.html
+  name: ConstructorHistory
+  nameWithType: ConstructorHistory
+  fullName: FastMoq.Models.ConstructorHistory
+- uid: FastMoq.Models.ConstructorModel
+  commentId: T:FastMoq.Models.ConstructorModel
+  parent: FastMoq.Models
+  href: FastMoq.Models.ConstructorModel.html
+  name: ConstructorModel
+  nameWithType: ConstructorModel
+  fullName: FastMoq.Models.ConstructorModel
+- uid: FastMoq.Models.FastMoqNonVoidSetupPhrase`1
+  commentId: T:FastMoq.Models.FastMoqNonVoidSetupPhrase`1
+  href: FastMoq.Models.FastMoqNonVoidSetupPhrase-1.html
+  name: FastMoqNonVoidSetupPhrase<T>
+  nameWithType: FastMoqNonVoidSetupPhrase<T>
+  fullName: FastMoq.Models.FastMoqNonVoidSetupPhrase<T>
+  nameWithType.vb: FastMoqNonVoidSetupPhrase(Of T)
+  fullName.vb: FastMoq.Models.FastMoqNonVoidSetupPhrase(Of T)
+  name.vb: FastMoqNonVoidSetupPhrase(Of T)
+  spec.csharp:
+  - uid: FastMoq.Models.FastMoqNonVoidSetupPhrase`1
+    name: FastMoqNonVoidSetupPhrase
+    href: FastMoq.Models.FastMoqNonVoidSetupPhrase-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.FastMoqNonVoidSetupPhrase`1
+    name: FastMoqNonVoidSetupPhrase
+    href: FastMoq.Models.FastMoqNonVoidSetupPhrase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Models.IHistoryModel
+  commentId: T:FastMoq.Models.IHistoryModel
+  parent: FastMoq.Models
+  href: FastMoq.Models.IHistoryModel.html
+  name: IHistoryModel
+  nameWithType: IHistoryModel
+  fullName: FastMoq.Models.IHistoryModel
+- uid: FastMoq.Models.IInstanceModel
+  commentId: T:FastMoq.Models.IInstanceModel
+  parent: FastMoq.Models
+  href: FastMoq.Models.IInstanceModel.html
+  name: IInstanceModel
+  nameWithType: IInstanceModel
+  fullName: FastMoq.Models.IInstanceModel
+- uid: FastMoq.Models.InstanceFunction
+  commentId: T:FastMoq.Models.InstanceFunction
+  parent: FastMoq.Models
+  href: FastMoq.Models.InstanceFunction.html
+  name: InstanceFunction
+  nameWithType: InstanceFunction
+  fullName: FastMoq.Models.InstanceFunction
+- uid: FastMoq.Models.InstanceFunction`1
+  commentId: T:FastMoq.Models.InstanceFunction`1
+  href: FastMoq.Models.InstanceFunction-1.html
+  name: InstanceFunction<T>
+  nameWithType: InstanceFunction<T>
+  fullName: FastMoq.Models.InstanceFunction<T>
+  nameWithType.vb: InstanceFunction(Of T)
+  fullName.vb: FastMoq.Models.InstanceFunction(Of T)
+  name.vb: InstanceFunction(Of T)
+  spec.csharp:
+  - uid: FastMoq.Models.InstanceFunction`1
+    name: InstanceFunction
+    href: FastMoq.Models.InstanceFunction-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.InstanceFunction`1
+    name: InstanceFunction
+    href: FastMoq.Models.InstanceFunction-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Models.InstanceModel
+  commentId: T:FastMoq.Models.InstanceModel
+  parent: FastMoq.Models
+  href: FastMoq.Models.InstanceModel.html
+  name: InstanceModel
+  nameWithType: InstanceModel
+  fullName: FastMoq.Models.InstanceModel
+- uid: FastMoq.Models.InstanceModel`1
+  commentId: T:FastMoq.Models.InstanceModel`1
+  href: FastMoq.Models.InstanceModel-1.html
+  name: InstanceModel<TClass>
+  nameWithType: InstanceModel<TClass>
+  fullName: FastMoq.Models.InstanceModel<TClass>
+  nameWithType.vb: InstanceModel(Of TClass)
+  fullName.vb: FastMoq.Models.InstanceModel(Of TClass)
+  name.vb: InstanceModel(Of TClass)
+  spec.csharp:
+  - uid: FastMoq.Models.InstanceModel`1
+    name: InstanceModel
+    href: FastMoq.Models.InstanceModel-1.html
+  - name: <
+  - name: TClass
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.InstanceModel`1
+    name: InstanceModel
+    href: FastMoq.Models.InstanceModel-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TClass
+  - name: )
+- uid: FastMoq.Models.LogEntry
+  commentId: T:FastMoq.Models.LogEntry
+  href: FastMoq.Models.LogEntry.html
+  name: LogEntry
+  nameWithType: LogEntry
+  fullName: FastMoq.Models.LogEntry
+- uid: FastMoq.Models.MockModel
+  commentId: T:FastMoq.Models.MockModel
+  parent: FastMoq.Models
+  href: FastMoq.Models.MockModel.html
+  name: MockModel
+  nameWithType: MockModel
+  fullName: FastMoq.Models.MockModel
+- uid: FastMoq.Models.MockModel`1
+  commentId: T:FastMoq.Models.MockModel`1
+  parent: FastMoq.Models
+  href: FastMoq.Models.MockModel-1.html
+  name: MockModel<T>
+  nameWithType: MockModel<T>
+  fullName: FastMoq.Models.MockModel<T>
+  nameWithType.vb: MockModel(Of T)
+  fullName.vb: FastMoq.Models.MockModel(Of T)
+  name.vb: MockModel(Of T)
+  spec.csharp:
+  - uid: FastMoq.Models.MockModel`1
+    name: MockModel
+    href: FastMoq.Models.MockModel-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.MockModel`1
+    name: MockModel
+    href: FastMoq.Models.MockModel-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Models.ObservableExceptionLog
+  commentId: T:FastMoq.Models.ObservableExceptionLog
+  parent: FastMoq.Models
+  href: FastMoq.Models.ObservableExceptionLog.html
+  name: ObservableExceptionLog
+  nameWithType: ObservableExceptionLog
+  fullName: FastMoq.Models.ObservableExceptionLog
+- uid: FastMoq.Models.ObservableLogEntries
+  commentId: T:FastMoq.Models.ObservableLogEntries
+  parent: FastMoq.Models
+  href: FastMoq.Models.ObservableLogEntries.html
+  name: ObservableLogEntries
+  nameWithType: ObservableLogEntries
+  fullName: FastMoq.Models.ObservableLogEntries
+- uid: FastMoq.Models.DbContextMock`1
+  commentId: T:FastMoq.Models.DbContextMock`1
+  parent: FastMoq.Models
+  href: FastMoq.Models.DbContextMock-1.html
+  name: DbContextMock<TEntity>
+  nameWithType: DbContextMock<TEntity>
+  fullName: FastMoq.Models.DbContextMock<TEntity>
+  nameWithType.vb: DbContextMock(Of TEntity)
+  fullName.vb: FastMoq.Models.DbContextMock(Of TEntity)
+  name.vb: DbContextMock(Of TEntity)
+  spec.csharp:
+  - uid: FastMoq.Models.DbContextMock`1
+    name: DbContextMock
+    href: FastMoq.Models.DbContextMock-1.html
+  - name: <
+  - name: TEntity
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.DbContextMock`1
+    name: DbContextMock
+    href: FastMoq.Models.DbContextMock-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: )
+- uid: FastMoq.Models.DbSetMock`1
+  commentId: T:FastMoq.Models.DbSetMock`1
+  href: FastMoq.Models.DbSetMock-1.html
+  name: DbSetMock<TEntity>
+  nameWithType: DbSetMock<TEntity>
+  fullName: FastMoq.Models.DbSetMock<TEntity>
+  nameWithType.vb: DbSetMock(Of TEntity)
+  fullName.vb: FastMoq.Models.DbSetMock(Of TEntity)
+  name.vb: DbSetMock(Of TEntity)
+  spec.csharp:
+  - uid: FastMoq.Models.DbSetMock`1
+    name: DbSetMock
+    href: FastMoq.Models.DbSetMock-1.html
+  - name: <
+  - name: TEntity
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.DbSetMock`1
+    name: DbSetMock
+    href: FastMoq.Models.DbSetMock-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: )
+- uid: FastMoq.Models.IDbContextMock
+  commentId: T:FastMoq.Models.IDbContextMock
+  parent: FastMoq.Models
+  href: FastMoq.Models.IDbContextMock.html
+  name: IDbContextMock
+  nameWithType: IDbContextMock
+  fullName: FastMoq.Models.IDbContextMock
+- uid: FastMoq.Models.IDbContextMock`1
+  commentId: T:FastMoq.Models.IDbContextMock`1
+  href: FastMoq.Models.IDbContextMock-1.html
+  name: IDbContextMock<TEntity>
+  nameWithType: IDbContextMock<TEntity>
+  fullName: FastMoq.Models.IDbContextMock<TEntity>
+  nameWithType.vb: IDbContextMock(Of TEntity)
+  fullName.vb: FastMoq.Models.IDbContextMock(Of TEntity)
+  name.vb: IDbContextMock(Of TEntity)
+  spec.csharp:
+  - uid: FastMoq.Models.IDbContextMock`1
+    name: IDbContextMock
+    href: FastMoq.Models.IDbContextMock-1.html
+  - name: <
+  - name: TEntity
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.IDbContextMock`1
+    name: IDbContextMock
+    href: FastMoq.Models.IDbContextMock-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: )
+- uid: FastMoq.Models.IDbSetMock
+  commentId: T:FastMoq.Models.IDbSetMock
+  parent: FastMoq.Models
+  href: FastMoq.Models.IDbSetMock.html
+  name: IDbSetMock
+  nameWithType: IDbSetMock
+  fullName: FastMoq.Models.IDbSetMock
+- uid: FastMoq.Models.MockAsyncEnumerable`1
+  commentId: T:FastMoq.Models.MockAsyncEnumerable`1
+  href: FastMoq.Models.MockAsyncEnumerable-1.html
+  name: MockAsyncEnumerable<T>
+  nameWithType: MockAsyncEnumerable<T>
+  fullName: FastMoq.Models.MockAsyncEnumerable<T>
+  nameWithType.vb: MockAsyncEnumerable(Of T)
+  fullName.vb: FastMoq.Models.MockAsyncEnumerable(Of T)
+  name.vb: MockAsyncEnumerable(Of T)
+  spec.csharp:
+  - uid: FastMoq.Models.MockAsyncEnumerable`1
+    name: MockAsyncEnumerable
+    href: FastMoq.Models.MockAsyncEnumerable-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.MockAsyncEnumerable`1
+    name: MockAsyncEnumerable
+    href: FastMoq.Models.MockAsyncEnumerable-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Models.MockAsyncEnumerator`1
+  commentId: T:FastMoq.Models.MockAsyncEnumerator`1
+  href: FastMoq.Models.MockAsyncEnumerator-1.html
+  name: MockAsyncEnumerator<T>
+  nameWithType: MockAsyncEnumerator<T>
+  fullName: FastMoq.Models.MockAsyncEnumerator<T>
+  nameWithType.vb: MockAsyncEnumerator(Of T)
+  fullName.vb: FastMoq.Models.MockAsyncEnumerator(Of T)
+  name.vb: MockAsyncEnumerator(Of T)
+  spec.csharp:
+  - uid: FastMoq.Models.MockAsyncEnumerator`1
+    name: MockAsyncEnumerator
+    href: FastMoq.Models.MockAsyncEnumerator-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.MockAsyncEnumerator`1
+    name: MockAsyncEnumerator
+    href: FastMoq.Models.MockAsyncEnumerator-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Models.MockDbContextOptions`1
+  commentId: T:FastMoq.Models.MockDbContextOptions`1
+  href: FastMoq.Models.MockDbContextOptions-1.html
+  name: MockDbContextOptions<T>
+  nameWithType: MockDbContextOptions<T>
+  fullName: FastMoq.Models.MockDbContextOptions<T>
+  nameWithType.vb: MockDbContextOptions(Of T)
+  fullName.vb: FastMoq.Models.MockDbContextOptions(Of T)
+  name.vb: MockDbContextOptions(Of T)
+  spec.csharp:
+  - uid: FastMoq.Models.MockDbContextOptions`1
+    name: MockDbContextOptions
+    href: FastMoq.Models.MockDbContextOptions-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.MockDbContextOptions`1
+    name: MockDbContextOptions
+    href: FastMoq.Models.MockDbContextOptions-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Models
+  commentId: N:FastMoq.Models
+  href: FastMoq.html
+  name: FastMoq.Models
+  nameWithType: FastMoq.Models
+  fullName: FastMoq.Models
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Models
+    name: Models
+    href: FastMoq.Models.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Models
+    name: Models
+    href: FastMoq.Models.html

@@ -4,7 +4,7 @@ This directory contains the sample documentation and executable examples that cu
 
 ## Available samples in this repository
 
-1. **[E-Commerce Order Processing](./ecommerce-orders/)** - Full sample documentation for an order-processing workflow
+1. **[E-Commerce Order Processing](./ecommerce-orders/README.md)** - Full sample documentation for an order-processing workflow
 2. **[Executable Testing Examples](./testing-examples.md)** - Smaller repo-local service examples backed by the `FastMoq.TestingExample` project
 
 ## Repo-local executable examples
@@ -117,7 +117,7 @@ The current samples are intentionally focused. Consider extending locally with:
 
 ## Getting started
 
-Start with [Executable Testing Examples](./testing-examples.md) if you want the quickest path to real, runnable tests in this repository. Use [E-Commerce Order Processing](./ecommerce-orders/) when you want a larger sample walkthrough.
+Start with [Executable Testing Examples](./testing-examples.md) if you want the quickest path to real, runnable tests in this repository. Use [E-Commerce Order Processing](./ecommerce-orders/README.md) when you want a larger sample walkthrough.
 
 ## Prerequisites
 
@@ -162,5 +162,5 @@ After exploring these samples, you'll understand how to:
 If you have questions about the samples or need help adapting them to your specific use case, please:
 
 1. Check the individual sample README files
-2. Review the [main documentation](../../README.md)
+2. Review the [main documentation](../../index.md)
 3. Open an issue on the [FastMoq repository](https://github.com/cwinland/FastMoq/issues)

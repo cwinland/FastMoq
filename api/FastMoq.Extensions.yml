@@ -1,0 +1,85 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  id: FastMoq.Extensions
+  children:
+  - FastMoq.Extensions.IdentityHelperExtensions
+  - FastMoq.Extensions.MockerBooleanExtensions
+  - FastMoq.Extensions.MockerCreationExtensions
+  - FastMoq.Extensions.MockerHttpExtensions
+  - FastMoq.Extensions.ObjectExtensions
+  - FastMoq.Extensions.TestClassExtensions
+  langs:
+  - csharp
+  - vb
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  type: Namespace
+  assemblies:
+  - FastMoq.Core
+references:
+- uid: FastMoq.Extensions.IdentityHelperExtensions
+  commentId: T:FastMoq.Extensions.IdentityHelperExtensions
+  href: FastMoq.Extensions.IdentityHelperExtensions.html
+  name: IdentityHelperExtensions
+  nameWithType: IdentityHelperExtensions
+  fullName: FastMoq.Extensions.IdentityHelperExtensions
+- uid: FastMoq.Extensions.MockerBooleanExtensions
+  commentId: T:FastMoq.Extensions.MockerBooleanExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.MockerBooleanExtensions.html
+  name: MockerBooleanExtensions
+  nameWithType: MockerBooleanExtensions
+  fullName: FastMoq.Extensions.MockerBooleanExtensions
+- uid: FastMoq.Extensions.MockerCreationExtensions
+  commentId: T:FastMoq.Extensions.MockerCreationExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.MockerCreationExtensions.html
+  name: MockerCreationExtensions
+  nameWithType: MockerCreationExtensions
+  fullName: FastMoq.Extensions.MockerCreationExtensions
+- uid: FastMoq.Extensions.MockerHttpExtensions
+  commentId: T:FastMoq.Extensions.MockerHttpExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.MockerHttpExtensions.html
+  name: MockerHttpExtensions
+  nameWithType: MockerHttpExtensions
+  fullName: FastMoq.Extensions.MockerHttpExtensions
+- uid: FastMoq.Extensions.ObjectExtensions
+  commentId: T:FastMoq.Extensions.ObjectExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FastMoq.Extensions.ObjectExtensions
+- uid: FastMoq.Extensions.TestClassExtensions
+  commentId: T:FastMoq.Extensions.TestClassExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.TestClassExtensions.html
+  name: TestClassExtensions
+  nameWithType: TestClassExtensions
+  fullName: FastMoq.Extensions.TestClassExtensions
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html

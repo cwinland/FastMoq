@@ -1,0 +1,1507 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Providers.TimesSpec
+  commentId: T:FastMoq.Providers.TimesSpec
+  id: TimesSpec
+  parent: FastMoq.Providers
+  children:
+  - FastMoq.Providers.TimesSpec.AtLeast(System.Int32)
+  - FastMoq.Providers.TimesSpec.AtMost(System.Int32)
+  - FastMoq.Providers.TimesSpec.Count
+  - FastMoq.Providers.TimesSpec.Exactly(System.Int32)
+  - FastMoq.Providers.TimesSpec.Mode
+  - FastMoq.Providers.TimesSpec.Never
+  - FastMoq.Providers.TimesSpec.NeverCalled
+  - FastMoq.Providers.TimesSpec.Once
+  langs:
+  - csharp
+  - vb
+  name: TimesSpec
+  nameWithType: TimesSpec
+  fullName: FastMoq.Providers.TimesSpec
+  type: Struct
+  source:
+    remote:
+      path: FastMoq.Abstractions/Providers/TimesSpec.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: TimesSpec
+    path: FastMoq.Abstractions/Providers/TimesSpec.cs
+    startLine: 15
+  assemblies:
+  - FastMoq.Abstractions
+  namespace: FastMoq.Providers
+  summary: >-
+    Provider agnostic verification specification.
+
+    Uses a single verification mode with an optional count where applicable.
+  example: []
+  syntax:
+    content: 'public readonly record struct TimesSpec : IEquatable<TimesSpec>'
+    content.vb: Public Structure TimesSpec Implements IEquatable(Of TimesSpec)
+  implements:
+  - System.IEquatable{FastMoq.Providers.TimesSpec}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - FastMoq.Providers.TimesSpec.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.TimesSpec,{TValue}}})
+  - FastMoq.Providers.TimesSpec.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.TimesSpec,{TValue}}})
+  - FastMoq.Providers.TimesSpec.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+- uid: FastMoq.Providers.TimesSpec.Mode
+  commentId: P:FastMoq.Providers.TimesSpec.Mode
+  id: Mode
+  parent: FastMoq.Providers.TimesSpec
+  langs:
+  - csharp
+  - vb
+  name: Mode
+  nameWithType: TimesSpec.Mode
+  fullName: FastMoq.Providers.TimesSpec.Mode
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Abstractions/Providers/TimesSpec.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Mode
+    path: FastMoq.Abstractions/Providers/TimesSpec.cs
+    startLine: 44
+  assemblies:
+  - FastMoq.Abstractions
+  namespace: FastMoq.Providers
+  syntax:
+    content: public TimesSpecMode Mode { get; }
+    parameters: []
+    return:
+      type: FastMoq.Providers.TimesSpecMode
+    content.vb: Public ReadOnly Property Mode As TimesSpecMode
+  overload: FastMoq.Providers.TimesSpec.Mode*
+- uid: FastMoq.Providers.TimesSpec.Count
+  commentId: P:FastMoq.Providers.TimesSpec.Count
+  id: Count
+  parent: FastMoq.Providers.TimesSpec
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: TimesSpec.Count
+  fullName: FastMoq.Providers.TimesSpec.Count
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Abstractions/Providers/TimesSpec.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Count
+    path: FastMoq.Abstractions/Providers/TimesSpec.cs
+    startLine: 45
+  assemblies:
+  - FastMoq.Abstractions
+  namespace: FastMoq.Providers
+  syntax:
+    content: public int? Count { get; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Public ReadOnly Property Count As Integer?
+  overload: FastMoq.Providers.TimesSpec.Count*
+- uid: FastMoq.Providers.TimesSpec.Once
+  commentId: P:FastMoq.Providers.TimesSpec.Once
+  id: Once
+  parent: FastMoq.Providers.TimesSpec
+  langs:
+  - csharp
+  - vb
+  name: Once
+  nameWithType: TimesSpec.Once
+  fullName: FastMoq.Providers.TimesSpec.Once
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Abstractions/Providers/TimesSpec.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Once
+    path: FastMoq.Abstractions/Providers/TimesSpec.cs
+    startLine: 47
+  assemblies:
+  - FastMoq.Abstractions
+  namespace: FastMoq.Providers
+  syntax:
+    content: public static TimesSpec Once { get; }
+    parameters: []
+    return:
+      type: FastMoq.Providers.TimesSpec
+    content.vb: Public Shared ReadOnly Property Once As TimesSpec
+  overload: FastMoq.Providers.TimesSpec.Once*
+- uid: FastMoq.Providers.TimesSpec.NeverCalled
+  commentId: P:FastMoq.Providers.TimesSpec.NeverCalled
+  id: NeverCalled
+  parent: FastMoq.Providers.TimesSpec
+  langs:
+  - csharp
+  - vb
+  name: NeverCalled
+  nameWithType: TimesSpec.NeverCalled
+  fullName: FastMoq.Providers.TimesSpec.NeverCalled
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Abstractions/Providers/TimesSpec.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: NeverCalled
+    path: FastMoq.Abstractions/Providers/TimesSpec.cs
+    startLine: 48
+  assemblies:
+  - FastMoq.Abstractions
+  namespace: FastMoq.Providers
+  syntax:
+    content: public static TimesSpec NeverCalled { get; }
+    parameters: []
+    return:
+      type: FastMoq.Providers.TimesSpec
+    content.vb: Public Shared ReadOnly Property NeverCalled As TimesSpec
+  overload: FastMoq.Providers.TimesSpec.NeverCalled*
+- uid: FastMoq.Providers.TimesSpec.Exactly(System.Int32)
+  commentId: M:FastMoq.Providers.TimesSpec.Exactly(System.Int32)
+  id: Exactly(System.Int32)
+  parent: FastMoq.Providers.TimesSpec
+  langs:
+  - csharp
+  - vb
+  name: Exactly(int)
+  nameWithType: TimesSpec.Exactly(int)
+  fullName: FastMoq.Providers.TimesSpec.Exactly(int)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Abstractions/Providers/TimesSpec.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Exactly
+    path: FastMoq.Abstractions/Providers/TimesSpec.cs
+    startLine: 50
+  assemblies:
+  - FastMoq.Abstractions
+  namespace: FastMoq.Providers
+  syntax:
+    content: public static TimesSpec Exactly(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+    return:
+      type: FastMoq.Providers.TimesSpec
+    content.vb: Public Shared Function Exactly(count As Integer) As TimesSpec
+  overload: FastMoq.Providers.TimesSpec.Exactly*
+  nameWithType.vb: TimesSpec.Exactly(Integer)
+  fullName.vb: FastMoq.Providers.TimesSpec.Exactly(Integer)
+  name.vb: Exactly(Integer)
+- uid: FastMoq.Providers.TimesSpec.AtLeast(System.Int32)
+  commentId: M:FastMoq.Providers.TimesSpec.AtLeast(System.Int32)
+  id: AtLeast(System.Int32)
+  parent: FastMoq.Providers.TimesSpec
+  langs:
+  - csharp
+  - vb
+  name: AtLeast(int)
+  nameWithType: TimesSpec.AtLeast(int)
+  fullName: FastMoq.Providers.TimesSpec.AtLeast(int)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Abstractions/Providers/TimesSpec.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AtLeast
+    path: FastMoq.Abstractions/Providers/TimesSpec.cs
+    startLine: 51
+  assemblies:
+  - FastMoq.Abstractions
+  namespace: FastMoq.Providers
+  syntax:
+    content: public static TimesSpec AtLeast(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+    return:
+      type: FastMoq.Providers.TimesSpec
+    content.vb: Public Shared Function AtLeast(count As Integer) As TimesSpec
+  overload: FastMoq.Providers.TimesSpec.AtLeast*
+  nameWithType.vb: TimesSpec.AtLeast(Integer)
+  fullName.vb: FastMoq.Providers.TimesSpec.AtLeast(Integer)
+  name.vb: AtLeast(Integer)
+- uid: FastMoq.Providers.TimesSpec.AtMost(System.Int32)
+  commentId: M:FastMoq.Providers.TimesSpec.AtMost(System.Int32)
+  id: AtMost(System.Int32)
+  parent: FastMoq.Providers.TimesSpec
+  langs:
+  - csharp
+  - vb
+  name: AtMost(int)
+  nameWithType: TimesSpec.AtMost(int)
+  fullName: FastMoq.Providers.TimesSpec.AtMost(int)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Abstractions/Providers/TimesSpec.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AtMost
+    path: FastMoq.Abstractions/Providers/TimesSpec.cs
+    startLine: 52
+  assemblies:
+  - FastMoq.Abstractions
+  namespace: FastMoq.Providers
+  syntax:
+    content: public static TimesSpec AtMost(int count)
+    parameters:
+    - id: count
+      type: System.Int32
+    return:
+      type: FastMoq.Providers.TimesSpec
+    content.vb: Public Shared Function AtMost(count As Integer) As TimesSpec
+  overload: FastMoq.Providers.TimesSpec.AtMost*
+  nameWithType.vb: TimesSpec.AtMost(Integer)
+  fullName.vb: FastMoq.Providers.TimesSpec.AtMost(Integer)
+  name.vb: AtMost(Integer)
+- uid: FastMoq.Providers.TimesSpec.Never
+  commentId: M:FastMoq.Providers.TimesSpec.Never
+  id: Never
+  parent: FastMoq.Providers.TimesSpec
+  langs:
+  - csharp
+  - vb
+  name: Never()
+  nameWithType: TimesSpec.Never()
+  fullName: FastMoq.Providers.TimesSpec.Never()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Abstractions/Providers/TimesSpec.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Never
+    path: FastMoq.Abstractions/Providers/TimesSpec.cs
+    startLine: 53
+  assemblies:
+  - FastMoq.Abstractions
+  namespace: FastMoq.Providers
+  syntax:
+    content: public static TimesSpec Never()
+    return:
+      type: FastMoq.Providers.TimesSpec
+    content.vb: Public Shared Function Never() As TimesSpec
+  overload: FastMoq.Providers.TimesSpec.Never*
+references:
+- uid: FastMoq.Providers
+  commentId: N:FastMoq.Providers
+  href: FastMoq.html
+  name: FastMoq.Providers
+  nameWithType: FastMoq.Providers
+  fullName: FastMoq.Providers
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+- uid: System.IEquatable{FastMoq.Providers.TimesSpec}
+  commentId: T:System.IEquatable{FastMoq.Providers.TimesSpec}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<TimesSpec>
+  nameWithType: IEquatable<TimesSpec>
+  fullName: System.IEquatable<FastMoq.Providers.TimesSpec>
+  nameWithType.vb: IEquatable(Of TimesSpec)
+  fullName.vb: System.IEquatable(Of FastMoq.Providers.TimesSpec)
+  name.vb: IEquatable(Of TimesSpec)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Providers.TimesSpec.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.TimesSpec,{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<TimesSpec, TValue>(TimesSpec, Expression<Func<TimesSpec, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<TimesSpec, TValue>(TimesSpec, Expression<Func<TimesSpec, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<FastMoq.Providers.TimesSpec, TValue>(FastMoq.Providers.TimesSpec, System.Linq.Expressions.Expression<System.Func<FastMoq.Providers.TimesSpec, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of TimesSpec, TValue)(TimesSpec, Expression(Of Func(Of TimesSpec, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of FastMoq.Providers.TimesSpec, TValue)(FastMoq.Providers.TimesSpec, System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.Providers.TimesSpec, TValue)))
+  name.vb: GetMemberName(Of TimesSpec, TValue)(TimesSpec, Expression(Of Func(Of TimesSpec, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.Providers.TimesSpec,System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.TimesSpec,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.Providers.TimesSpec,System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.TimesSpec,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Providers.TimesSpec.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.TimesSpec,{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<TimesSpec, TValue>(TimesSpec, Expression<Func<TimesSpec, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<TimesSpec, TValue>(TimesSpec, Expression<Func<TimesSpec, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<FastMoq.Providers.TimesSpec, TValue>(FastMoq.Providers.TimesSpec, System.Linq.Expressions.Expression<System.Func<FastMoq.Providers.TimesSpec, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of TimesSpec, TValue)(TimesSpec, Expression(Of Func(Of TimesSpec, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of FastMoq.Providers.TimesSpec, TValue)(FastMoq.Providers.TimesSpec, System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.Providers.TimesSpec, TValue)))
+  name.vb: GetMember(Of TimesSpec, TValue)(TimesSpec, Expression(Of Func(Of TimesSpec, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.Providers.TimesSpec,System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.TimesSpec,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.Providers.TimesSpec,System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.TimesSpec,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Providers.TimesSpec.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<TimesSpec>(TimesSpec, string)
+  nameWithType: TestClassExtensions.GetProperty<TimesSpec>(TimesSpec, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<FastMoq.Providers.TimesSpec>(FastMoq.Providers.TimesSpec, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of TimesSpec)(TimesSpec, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of FastMoq.Providers.TimesSpec)(FastMoq.Providers.TimesSpec, String)
+  name.vb: GetProperty(Of TimesSpec)(TimesSpec, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.Providers.TimesSpec,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.Providers.TimesSpec,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions
+  commentId: T:FastMoq.Extensions.TestClassExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.TestClassExtensions.html
+  name: TestClassExtensions
+  nameWithType: TestClassExtensions
+  fullName: FastMoq.Extensions.TestClassExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetProperty<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  name.vb: GetProperty(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+- uid: FastMoq.Providers.TimesSpec.Mode*
+  commentId: Overload:FastMoq.Providers.TimesSpec.Mode
+  href: FastMoq.Providers.TimesSpec.html#FastMoq_Providers_TimesSpec_Mode
+  name: Mode
+  nameWithType: TimesSpec.Mode
+  fullName: FastMoq.Providers.TimesSpec.Mode
+- uid: FastMoq.Providers.TimesSpecMode
+  commentId: T:FastMoq.Providers.TimesSpecMode
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.TimesSpecMode.html
+  name: TimesSpecMode
+  nameWithType: TimesSpecMode
+  fullName: FastMoq.Providers.TimesSpecMode
+- uid: FastMoq.Providers.TimesSpec.Count*
+  commentId: Overload:FastMoq.Providers.TimesSpec.Count
+  href: FastMoq.Providers.TimesSpec.html#FastMoq_Providers_TimesSpec_Count
+  name: Count
+  nameWithType: TimesSpec.Count
+  fullName: FastMoq.Providers.TimesSpec.Count
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Providers.TimesSpec.Once*
+  commentId: Overload:FastMoq.Providers.TimesSpec.Once
+  href: FastMoq.Providers.TimesSpec.html#FastMoq_Providers_TimesSpec_Once
+  name: Once
+  nameWithType: TimesSpec.Once
+  fullName: FastMoq.Providers.TimesSpec.Once
+- uid: FastMoq.Providers.TimesSpec
+  commentId: T:FastMoq.Providers.TimesSpec
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.TimesSpec.html
+  name: TimesSpec
+  nameWithType: TimesSpec
+  fullName: FastMoq.Providers.TimesSpec
+- uid: FastMoq.Providers.TimesSpec.NeverCalled*
+  commentId: Overload:FastMoq.Providers.TimesSpec.NeverCalled
+  href: FastMoq.Providers.TimesSpec.html#FastMoq_Providers_TimesSpec_NeverCalled
+  name: NeverCalled
+  nameWithType: TimesSpec.NeverCalled
+  fullName: FastMoq.Providers.TimesSpec.NeverCalled
+- uid: FastMoq.Providers.TimesSpec.Exactly*
+  commentId: Overload:FastMoq.Providers.TimesSpec.Exactly
+  href: FastMoq.Providers.TimesSpec.html#FastMoq_Providers_TimesSpec_Exactly_System_Int32_
+  name: Exactly
+  nameWithType: TimesSpec.Exactly
+  fullName: FastMoq.Providers.TimesSpec.Exactly
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: FastMoq.Providers.TimesSpec.AtLeast*
+  commentId: Overload:FastMoq.Providers.TimesSpec.AtLeast
+  href: FastMoq.Providers.TimesSpec.html#FastMoq_Providers_TimesSpec_AtLeast_System_Int32_
+  name: AtLeast
+  nameWithType: TimesSpec.AtLeast
+  fullName: FastMoq.Providers.TimesSpec.AtLeast
+- uid: FastMoq.Providers.TimesSpec.AtMost*
+  commentId: Overload:FastMoq.Providers.TimesSpec.AtMost
+  href: FastMoq.Providers.TimesSpec.html#FastMoq_Providers_TimesSpec_AtMost_System_Int32_
+  name: AtMost
+  nameWithType: TimesSpec.AtMost
+  fullName: FastMoq.Providers.TimesSpec.AtMost
+- uid: FastMoq.Providers.TimesSpec.Never*
+  commentId: Overload:FastMoq.Providers.TimesSpec.Never
+  href: FastMoq.Providers.TimesSpec.html#FastMoq_Providers_TimesSpec_Never
+  name: Never
+  nameWithType: TimesSpec.Never
+  fullName: FastMoq.Providers.TimesSpec.Never

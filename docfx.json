@@ -24,8 +24,16 @@
     "content": [
       {
         "files": [
+          "index.md",
           "api/**.yml",
-          "docs/api/**.md"
+          "docs/api/**.md",
+          "docs/breaking-changes/**.md",
+          "docs/getting-started/**.md",
+          "docs/migration/**.md",
+          "docs/roadmap/**.md",
+          "docs/samples/**.md",
+          "docs/whats-new/**.md",
+          "FastMoq.TestingExample/README.md"
         ]
       }
     ],
@@ -34,7 +42,7 @@
       "default"
     ],
     "globalMetadata": {
-      "_appName": "FastMoq API Reference",
+      "_appName": "FastMoq Documentation",
       "_enableSearch": true
     }
   }

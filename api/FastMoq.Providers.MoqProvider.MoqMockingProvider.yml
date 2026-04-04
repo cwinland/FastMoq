@@ -1,0 +1,3659 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  commentId: T:FastMoq.Providers.MoqProvider.MoqMockingProvider
+  id: MoqMockingProvider
+  parent: FastMoq.Providers.MoqProvider
+  children:
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.Capabilities
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock(System.Type,FastMoq.Providers.MockCreationOptions)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock``1(FastMoq.Providers.MockCreationOptions)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.Instance
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsCallBase
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsInvocationTracking
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsLoggerCapture
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsProtectedMembers
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsSetupAllProperties
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  langs:
+  - csharp
+  - vb
+  name: MoqMockingProvider
+  nameWithType: MoqMockingProvider
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  type: Class
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: MoqMockingProvider
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 10
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: 'public sealed class MoqMockingProvider : IMockingProvider, IMockingProviderCapabilities'
+    content.vb: Public NotInheritable Class MoqMockingProvider Implements IMockingProvider, IMockingProviderCapabilities
+  inheritance:
+  - System.Object
+  implements:
+  - FastMoq.Providers.IMockingProvider
+  - FastMoq.Providers.IMockingProviderCapabilities
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.Providers.MoqProvider.MoqMockingProvider)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.MoqProvider.MoqMockingProvider,{TValue}}})
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.MoqProvider.MoqMockingProvider,{TValue}}})
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(System.String,System.Object,System.Object[])
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetMethod``1(System.String)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(System.String,System.Object)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(System.String,System.Object)
+  - FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(System.String,System.Object)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.Instance
+  commentId: F:FastMoq.Providers.MoqProvider.MoqMockingProvider.Instance
+  id: Instance
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: Instance
+  nameWithType: MoqMockingProvider.Instance
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.Instance
+  type: Field
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Instance
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 12
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: public static readonly MoqMockingProvider Instance
+    return:
+      type: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    content.vb: Public Shared ReadOnly Instance As MoqMockingProvider
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.Capabilities
+  commentId: P:FastMoq.Providers.MoqProvider.MoqMockingProvider.Capabilities
+  id: Capabilities
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: Capabilities
+  nameWithType: MoqMockingProvider.Capabilities
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.Capabilities
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Capabilities
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 18
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public IMockingProviderCapabilities Capabilities { get; }
+    parameters: []
+    return:
+      type: FastMoq.Providers.IMockingProviderCapabilities
+    content.vb: Public ReadOnly Property Capabilities As IMockingProviderCapabilities
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.Capabilities*
+  implements:
+  - FastMoq.Providers.IMockingProvider.Capabilities
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsCallBase
+  commentId: P:FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsCallBase
+  id: SupportsCallBase
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: SupportsCallBase
+  nameWithType: MoqMockingProvider.SupportsCallBase
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsCallBase
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SupportsCallBase
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 19
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public bool SupportsCallBase { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property SupportsCallBase As Boolean
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsCallBase*
+  implements:
+  - FastMoq.Providers.IMockingProviderCapabilities.SupportsCallBase
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsSetupAllProperties
+  commentId: P:FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsSetupAllProperties
+  id: SupportsSetupAllProperties
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: SupportsSetupAllProperties
+  nameWithType: MoqMockingProvider.SupportsSetupAllProperties
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsSetupAllProperties
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SupportsSetupAllProperties
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 20
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public bool SupportsSetupAllProperties { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property SupportsSetupAllProperties As Boolean
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsSetupAllProperties*
+  implements:
+  - FastMoq.Providers.IMockingProviderCapabilities.SupportsSetupAllProperties
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsProtectedMembers
+  commentId: P:FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsProtectedMembers
+  id: SupportsProtectedMembers
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: SupportsProtectedMembers
+  nameWithType: MoqMockingProvider.SupportsProtectedMembers
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsProtectedMembers
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SupportsProtectedMembers
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 21
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public bool SupportsProtectedMembers { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property SupportsProtectedMembers As Boolean
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsProtectedMembers*
+  implements:
+  - FastMoq.Providers.IMockingProviderCapabilities.SupportsProtectedMembers
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsInvocationTracking
+  commentId: P:FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsInvocationTracking
+  id: SupportsInvocationTracking
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: SupportsInvocationTracking
+  nameWithType: MoqMockingProvider.SupportsInvocationTracking
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsInvocationTracking
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SupportsInvocationTracking
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 22
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public bool SupportsInvocationTracking { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property SupportsInvocationTracking As Boolean
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsInvocationTracking*
+  implements:
+  - FastMoq.Providers.IMockingProviderCapabilities.SupportsInvocationTracking
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsLoggerCapture
+  commentId: P:FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsLoggerCapture
+  id: SupportsLoggerCapture
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: SupportsLoggerCapture
+  nameWithType: MoqMockingProvider.SupportsLoggerCapture
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsLoggerCapture
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SupportsLoggerCapture
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 23
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public bool SupportsLoggerCapture { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property SupportsLoggerCapture As Boolean
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsLoggerCapture*
+  implements:
+  - FastMoq.Providers.IMockingProviderCapabilities.SupportsLoggerCapture
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock``1(FastMoq.Providers.MockCreationOptions)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock``1(FastMoq.Providers.MockCreationOptions)
+  id: CreateMock``1(FastMoq.Providers.MockCreationOptions)
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: CreateMock<T>(MockCreationOptions?)
+  nameWithType: MoqMockingProvider.CreateMock<T>(MockCreationOptions?)
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock<T>(FastMoq.Providers.MockCreationOptions?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateMock
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 25
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: 'public IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class'
+    parameters:
+    - id: options
+      type: FastMoq.Providers.MockCreationOptions
+    typeParameters:
+    - id: T
+    return:
+      type: FastMoq.Providers.IFastMock{{T}}
+    content.vb: Public Function CreateMock(Of T As Class)(options As MockCreationOptions = Nothing) As IFastMock(Of T)
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock*
+  implements:
+  - FastMoq.Providers.IMockingProvider.CreateMock``1(FastMoq.Providers.MockCreationOptions)
+  nameWithType.vb: MoqMockingProvider.CreateMock(Of T)(MockCreationOptions)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock(Of T)(FastMoq.Providers.MockCreationOptions)
+  name.vb: CreateMock(Of T)(MockCreationOptions)
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock(System.Type,FastMoq.Providers.MockCreationOptions)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock(System.Type,FastMoq.Providers.MockCreationOptions)
+  id: CreateMock(System.Type,FastMoq.Providers.MockCreationOptions)
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: CreateMock(Type, MockCreationOptions?)
+  nameWithType: MoqMockingProvider.CreateMock(Type, MockCreationOptions?)
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock(System.Type, FastMoq.Providers.MockCreationOptions?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateMock
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 43
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public IFastMock CreateMock(Type type, MockCreationOptions? options = null)
+    parameters:
+    - id: type
+      type: System.Type
+    - id: options
+      type: FastMoq.Providers.MockCreationOptions
+    return:
+      type: FastMoq.Providers.IFastMock
+    content.vb: Public Function CreateMock(type As Type, options As MockCreationOptions = Nothing) As IFastMock
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock*
+  implements:
+  - FastMoq.Providers.IMockingProvider.CreateMock(System.Type,FastMoq.Providers.MockCreationOptions)
+  nameWithType.vb: MoqMockingProvider.CreateMock(Type, MockCreationOptions)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock(System.Type, FastMoq.Providers.MockCreationOptions)
+  name.vb: CreateMock(Type, MockCreationOptions)
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)
+  id: SetupAllProperties(FastMoq.Providers.IFastMock)
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: SetupAllProperties(IFastMock)
+  nameWithType: MoqMockingProvider.SetupAllProperties(IFastMock)
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupAllProperties
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 65
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public void SetupAllProperties(IFastMock mock)
+    parameters:
+    - id: mock
+      type: FastMoq.Providers.IFastMock
+    content.vb: Public Sub SetupAllProperties(mock As IFastMock)
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetupAllProperties*
+  implements:
+  - FastMoq.Providers.IMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)
+  id: SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: SetCallBase(IFastMock, bool)
+  nameWithType: MoqMockingProvider.SetCallBase(IFastMock, bool)
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetCallBase(FastMoq.Providers.IFastMock, bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetCallBase
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 71
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public void SetCallBase(IFastMock mock, bool value)
+    parameters:
+    - id: mock
+      type: FastMoq.Providers.IFastMock
+    - id: value
+      type: System.Boolean
+    content.vb: Public Sub SetCallBase(mock As IFastMock, value As Boolean)
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetCallBase*
+  implements:
+  - FastMoq.Providers.IMockingProvider.SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)
+  nameWithType.vb: MoqMockingProvider.SetCallBase(IFastMock, Boolean)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetCallBase(FastMoq.Providers.IFastMock, Boolean)
+  name.vb: SetCallBase(IFastMock, Boolean)
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  id: Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: Verify<T>(IFastMock<T>, Expression<Action<T>>, TimesSpec?)
+  nameWithType: MoqMockingProvider.Verify<T>(IFastMock<T>, Expression<Action<T>>, TimesSpec?)
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.Verify<T>(FastMoq.Providers.IFastMock<T>, System.Linq.Expressions.Expression<System.Action<T>>, FastMoq.Providers.TimesSpec?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Verify
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 80
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: 'public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class'
+    parameters:
+    - id: mock
+      type: FastMoq.Providers.IFastMock{{T}}
+    - id: expression
+      type: System.Linq.Expressions.Expression{System.Action{{T}}}
+    - id: times
+      type: System.Nullable{FastMoq.Providers.TimesSpec}
+    typeParameters:
+    - id: T
+    content.vb: Public Sub Verify(Of T As Class)(mock As IFastMock(Of T), expression As Expression(Of Action(Of T)), times As TimesSpec? = Nothing)
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.Verify*
+  implements:
+  - FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{{T}},System.Linq.Expressions.Expression{System.Action{{T}}},System.Nullable{FastMoq.Providers.TimesSpec})
+  nameWithType.vb: MoqMockingProvider.Verify(Of T)(IFastMock(Of T), Expression(Of Action(Of T)), TimesSpec?)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqMockingProvider.Verify(Of T)(FastMoq.Providers.IFastMock(Of T), System.Linq.Expressions.Expression(Of System.Action(Of T)), FastMoq.Providers.TimesSpec?)
+  name.vb: Verify(Of T)(IFastMock(Of T), Expression(Of Action(Of T)), TimesSpec?)
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+  id: VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: VerifyNoOtherCalls(IFastMock)
+  nameWithType: MoqMockingProvider.VerifyNoOtherCalls(IFastMock)
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: VerifyNoOtherCalls
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 123
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public void VerifyNoOtherCalls(IFastMock mock)
+    parameters:
+    - id: mock
+      type: FastMoq.Providers.IFastMock
+    content.vb: Public Sub VerifyNoOtherCalls(mock As IFastMock)
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.VerifyNoOtherCalls*
+  implements:
+  - FastMoq.Providers.IMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
+  id: ConfigureProperties(FastMoq.Providers.IFastMock)
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: ConfigureProperties(IFastMock)
+  nameWithType: MoqMockingProvider.ConfigureProperties(IFastMock)
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ConfigureProperties
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 150
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public void ConfigureProperties(IFastMock mock)
+    parameters:
+    - id: mock
+      type: FastMoq.Providers.IFastMock
+    content.vb: Public Sub ConfigureProperties(mock As IFastMock)
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureProperties*
+  implements:
+  - FastMoq.Providers.IMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  id: ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: ConfigureLogger(IFastMock, Action<LogLevel, EventId, string, Exception?>)
+  nameWithType: MoqMockingProvider.ConfigureLogger(IFastMock, Action<LogLevel, EventId, string, Exception?>)
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception?>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ConfigureLogger
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 158
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback)
+    parameters:
+    - id: mock
+      type: FastMoq.Providers.IFastMock
+    - id: callback
+      type: System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+    content.vb: Public Sub ConfigureLogger(mock As IFastMock, callback As Action(Of LogLevel, EventId, String, Exception))
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureLogger*
+  implements:
+  - FastMoq.Providers.IMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  nameWithType.vb: MoqMockingProvider.ConfigureLogger(IFastMock, Action(Of LogLevel, EventId, String, Exception))
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock, System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception))
+  name.vb: ConfigureLogger(IFastMock, Action(Of LogLevel, EventId, String, Exception))
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)
+  id: TryGetLegacy(FastMoq.Providers.IFastMock)
+  parent: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: TryGetLegacy(IFastMock)
+  nameWithType: MoqMockingProvider.TryGetLegacy(IFastMock)
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: TryGetLegacy
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
+    startLine: 177
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  example: []
+  syntax:
+    content: public object? TryGetLegacy(IFastMock mock)
+    parameters:
+    - id: mock
+      type: FastMoq.Providers.IFastMock
+    return:
+      type: System.Object
+    content.vb: Public Function TryGetLegacy(mock As IFastMock) As Object
+  overload: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryGetLegacy*
+  implements:
+  - FastMoq.Providers.IMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)
+references:
+- uid: FastMoq.Providers.MoqProvider
+  commentId: N:FastMoq.Providers.MoqProvider
+  href: FastMoq.html
+  name: FastMoq.Providers.MoqProvider
+  nameWithType: FastMoq.Providers.MoqProvider
+  fullName: FastMoq.Providers.MoqProvider
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  - name: .
+  - uid: FastMoq.Providers.MoqProvider
+    name: MoqProvider
+    href: FastMoq.Providers.MoqProvider.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  - name: .
+  - uid: FastMoq.Providers.MoqProvider
+    name: MoqProvider
+    href: FastMoq.Providers.MoqProvider.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: FastMoq.Providers.IMockingProvider
+  commentId: T:FastMoq.Providers.IMockingProvider
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IMockingProvider.html
+  name: IMockingProvider
+  nameWithType: IMockingProvider
+  fullName: FastMoq.Providers.IMockingProvider
+- uid: FastMoq.Providers.IMockingProviderCapabilities
+  commentId: T:FastMoq.Providers.IMockingProviderCapabilities
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IMockingProviderCapabilities.html
+  name: IMockingProviderCapabilities
+  nameWithType: IMockingProviderCapabilities
+  fullName: FastMoq.Providers.IMockingProviderCapabilities
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  parent: FastMoq.Extensions.ObjectExtensions
+  definition: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull<MoqMockingProvider>(MoqMockingProvider, string, string, int?, string)
+  nameWithType: ObjectExtensions.RaiseIfNull<MoqMockingProvider>(MoqMockingProvider, string, string, int?, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<FastMoq.Providers.MoqProvider.MoqMockingProvider>(FastMoq.Providers.MoqProvider.MoqMockingProvider, string, string, int?, string)
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of MoqMockingProvider)(MoqMockingProvider, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of FastMoq.Providers.MoqProvider.MoqMockingProvider)(FastMoq.Providers.MoqProvider.MoqMockingProvider, String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of MoqMockingProvider)(MoqMockingProvider, String, String, Integer?, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.Providers.MoqProvider.MoqMockingProvider)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  name: GetFieldValue<MoqMockingProvider>(MoqMockingProvider, string, MoqMockingProvider)
+  nameWithType: TestClassExtensions.GetFieldValue<MoqMockingProvider>(MoqMockingProvider, string, MoqMockingProvider)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<FastMoq.Providers.MoqProvider.MoqMockingProvider>(FastMoq.Providers.MoqProvider.MoqMockingProvider, string, FastMoq.Providers.MoqProvider.MoqMockingProvider)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of MoqMockingProvider)(MoqMockingProvider, String, MoqMockingProvider)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of FastMoq.Providers.MoqProvider.MoqMockingProvider)(FastMoq.Providers.MoqProvider.MoqMockingProvider, String, FastMoq.Providers.MoqProvider.MoqMockingProvider)
+  name.vb: GetFieldValue(Of MoqMockingProvider)(MoqMockingProvider, String, MoqMockingProvider)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,FastMoq.Providers.MoqProvider.MoqMockingProvider)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,FastMoq.Providers.MoqProvider.MoqMockingProvider)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  name: GetField<MoqMockingProvider>(MoqMockingProvider, string)
+  nameWithType: TestClassExtensions.GetField<MoqMockingProvider>(MoqMockingProvider, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetField<FastMoq.Providers.MoqProvider.MoqMockingProvider>(FastMoq.Providers.MoqProvider.MoqMockingProvider, string)
+  nameWithType.vb: TestClassExtensions.GetField(Of MoqMockingProvider)(MoqMockingProvider, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetField(Of FastMoq.Providers.MoqProvider.MoqMockingProvider)(FastMoq.Providers.MoqProvider.MoqMockingProvider, String)
+  name.vb: GetField(Of MoqMockingProvider)(MoqMockingProvider, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.MoqProvider.MoqMockingProvider,{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<MoqMockingProvider, TValue>(MoqMockingProvider, Expression<Func<MoqMockingProvider, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<MoqMockingProvider, TValue>(MoqMockingProvider, Expression<Func<MoqMockingProvider, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<FastMoq.Providers.MoqProvider.MoqMockingProvider, TValue>(FastMoq.Providers.MoqProvider.MoqMockingProvider, System.Linq.Expressions.Expression<System.Func<FastMoq.Providers.MoqProvider.MoqMockingProvider, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of MoqMockingProvider, TValue)(MoqMockingProvider, Expression(Of Func(Of MoqMockingProvider, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of FastMoq.Providers.MoqProvider.MoqMockingProvider, TValue)(FastMoq.Providers.MoqProvider.MoqMockingProvider, System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.Providers.MoqProvider.MoqMockingProvider, TValue)))
+  name.vb: GetMemberName(Of MoqMockingProvider, TValue)(MoqMockingProvider, Expression(Of Func(Of MoqMockingProvider, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.MoqProvider.MoqMockingProvider,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.MoqProvider.MoqMockingProvider,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.MoqProvider.MoqMockingProvider,{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<MoqMockingProvider, TValue>(MoqMockingProvider, Expression<Func<MoqMockingProvider, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<MoqMockingProvider, TValue>(MoqMockingProvider, Expression<Func<MoqMockingProvider, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<FastMoq.Providers.MoqProvider.MoqMockingProvider, TValue>(FastMoq.Providers.MoqProvider.MoqMockingProvider, System.Linq.Expressions.Expression<System.Func<FastMoq.Providers.MoqProvider.MoqMockingProvider, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of MoqMockingProvider, TValue)(MoqMockingProvider, Expression(Of Func(Of MoqMockingProvider, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of FastMoq.Providers.MoqProvider.MoqMockingProvider, TValue)(FastMoq.Providers.MoqProvider.MoqMockingProvider, System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.Providers.MoqProvider.MoqMockingProvider, TValue)))
+  name.vb: GetMember(Of MoqMockingProvider, TValue)(MoqMockingProvider, Expression(Of Func(Of MoqMockingProvider, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.MoqProvider.MoqMockingProvider,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.Linq.Expressions.Expression{System.Func{FastMoq.Providers.MoqProvider.MoqMockingProvider,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(System.String,System.Object,System.Object[])
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  name: GetMethodValue<MoqMockingProvider>(MoqMockingProvider, string, object, params object[])
+  nameWithType: TestClassExtensions.GetMethodValue<MoqMockingProvider>(MoqMockingProvider, string, object, params object[])
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethodValue<FastMoq.Providers.MoqProvider.MoqMockingProvider>(FastMoq.Providers.MoqProvider.MoqMockingProvider, string, object, params object[])
+  nameWithType.vb: TestClassExtensions.GetMethodValue(Of MoqMockingProvider)(MoqMockingProvider, String, Object, ParamArray Object())
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethodValue(Of FastMoq.Providers.MoqProvider.MoqMockingProvider)(FastMoq.Providers.MoqProvider.MoqMockingProvider, String, Object, ParamArray Object())
+  name.vb: GetMethodValue(Of MoqMockingProvider)(MoqMockingProvider, String, Object, ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetMethod``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  name: GetMethod<MoqMockingProvider>(MoqMockingProvider, string)
+  nameWithType: TestClassExtensions.GetMethod<MoqMockingProvider>(MoqMockingProvider, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethod<FastMoq.Providers.MoqProvider.MoqMockingProvider>(FastMoq.Providers.MoqProvider.MoqMockingProvider, string)
+  nameWithType.vb: TestClassExtensions.GetMethod(Of MoqMockingProvider)(MoqMockingProvider, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethod(Of FastMoq.Providers.MoqProvider.MoqMockingProvider)(FastMoq.Providers.MoqProvider.MoqMockingProvider, String)
+  name.vb: GetMethod(Of MoqMockingProvider)(MoqMockingProvider, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  name: GetPropertyValue<MoqMockingProvider>(MoqMockingProvider, string, object)
+  nameWithType: TestClassExtensions.GetPropertyValue<MoqMockingProvider>(MoqMockingProvider, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetPropertyValue<FastMoq.Providers.MoqProvider.MoqMockingProvider>(FastMoq.Providers.MoqProvider.MoqMockingProvider, string, object)
+  nameWithType.vb: TestClassExtensions.GetPropertyValue(Of MoqMockingProvider)(MoqMockingProvider, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetPropertyValue(Of FastMoq.Providers.MoqProvider.MoqMockingProvider)(FastMoq.Providers.MoqProvider.MoqMockingProvider, String, Object)
+  name.vb: GetPropertyValue(Of MoqMockingProvider)(MoqMockingProvider, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<MoqMockingProvider>(MoqMockingProvider, string)
+  nameWithType: TestClassExtensions.GetProperty<MoqMockingProvider>(MoqMockingProvider, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<FastMoq.Providers.MoqProvider.MoqMockingProvider>(FastMoq.Providers.MoqProvider.MoqMockingProvider, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of MoqMockingProvider)(MoqMockingProvider, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of FastMoq.Providers.MoqProvider.MoqMockingProvider)(FastMoq.Providers.MoqProvider.MoqMockingProvider, String)
+  name.vb: GetProperty(Of MoqMockingProvider)(MoqMockingProvider, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  name: SetFieldValue<MoqMockingProvider>(MoqMockingProvider, string, object)
+  nameWithType: TestClassExtensions.SetFieldValue<MoqMockingProvider>(MoqMockingProvider, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetFieldValue<FastMoq.Providers.MoqProvider.MoqMockingProvider>(FastMoq.Providers.MoqProvider.MoqMockingProvider, string, object)
+  nameWithType.vb: TestClassExtensions.SetFieldValue(Of MoqMockingProvider)(MoqMockingProvider, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetFieldValue(Of FastMoq.Providers.MoqProvider.MoqMockingProvider)(FastMoq.Providers.MoqProvider.MoqMockingProvider, String, Object)
+  name.vb: SetFieldValue(Of MoqMockingProvider)(MoqMockingProvider, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  name: SetPropertyValue<MoqMockingProvider>(MoqMockingProvider, string, object)
+  nameWithType: TestClassExtensions.SetPropertyValue<MoqMockingProvider>(MoqMockingProvider, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue<FastMoq.Providers.MoqProvider.MoqMockingProvider>(FastMoq.Providers.MoqProvider.MoqMockingProvider, string, object)
+  nameWithType.vb: TestClassExtensions.SetPropertyValue(Of MoqMockingProvider)(MoqMockingProvider, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of FastMoq.Providers.MoqProvider.MoqMockingProvider)(FastMoq.Providers.MoqProvider.MoqMockingProvider, String, Object)
+  name.vb: SetPropertyValue(Of MoqMockingProvider)(MoqMockingProvider, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(FastMoq.Providers.MoqProvider.MoqMockingProvider,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+    name: MoqMockingProvider
+    href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FastMoq.Providers
+  commentId: N:FastMoq.Providers
+  href: FastMoq.html
+  name: FastMoq.Providers
+  nameWithType: FastMoq.Providers
+  fullName: FastMoq.Providers
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  isExternal: true
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull<T>(T, string, string, int?, string)
+  nameWithType: ObjectExtensions.RaiseIfNull<T>(T, string, string, int?, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<T>(T, string, string, int?, string)
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.ObjectExtensions
+  commentId: T:FastMoq.Extensions.ObjectExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FastMoq.Extensions.ObjectExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  name: GetFieldValue<TObject>(TObject, string, TObject)
+  nameWithType: TestClassExtensions.GetFieldValue<TObject>(TObject, string, TObject)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<TObject>(TObject, string, TObject)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of TObject)(TObject, String, TObject)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of TObject)(TObject, String, TObject)
+  name.vb: GetFieldValue(Of TObject)(TObject, String, TObject)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TObject
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TObject
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions
+  commentId: T:FastMoq.Extensions.TestClassExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.TestClassExtensions.html
+  name: TestClassExtensions
+  nameWithType: TestClassExtensions
+  fullName: FastMoq.Extensions.TestClassExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  name: GetField<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetField<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetField<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetField(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetField(Of TObject)(TObject, String)
+  name.vb: GetField(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  name: GetMethodValue<TObject>(TObject, string, object, params object[])
+  nameWithType: TestClassExtensions.GetMethodValue<TObject>(TObject, string, object, params object[])
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethodValue<TObject>(TObject, string, object, params object[])
+  nameWithType.vb: TestClassExtensions.GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  name.vb: GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  name: GetMethod<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetMethod<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethod<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetMethod(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethod(Of TObject)(TObject, String)
+  name.vb: GetMethod(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  name: GetPropertyValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.GetPropertyValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetPropertyValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.GetPropertyValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetPropertyValue(Of TObject)(TObject, String, Object)
+  name.vb: GetPropertyValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetProperty<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  name.vb: GetProperty(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  name: SetFieldValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.SetFieldValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetFieldValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.SetFieldValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetFieldValue(Of TObject)(TObject, String, Object)
+  name.vb: SetFieldValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  name: SetPropertyValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
+  name.vb: SetPropertyValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider
+  commentId: T:FastMoq.Providers.MoqProvider.MoqMockingProvider
+  parent: FastMoq.Providers.MoqProvider
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html
+  name: MoqMockingProvider
+  nameWithType: MoqMockingProvider
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.Capabilities*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.Capabilities
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_Capabilities
+  name: Capabilities
+  nameWithType: MoqMockingProvider.Capabilities
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.Capabilities
+- uid: FastMoq.Providers.IMockingProvider.Capabilities
+  commentId: P:FastMoq.Providers.IMockingProvider.Capabilities
+  parent: FastMoq.Providers.IMockingProvider
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_Capabilities
+  name: Capabilities
+  nameWithType: IMockingProvider.Capabilities
+  fullName: FastMoq.Providers.IMockingProvider.Capabilities
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsCallBase*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsCallBase
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_SupportsCallBase
+  name: SupportsCallBase
+  nameWithType: MoqMockingProvider.SupportsCallBase
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsCallBase
+- uid: FastMoq.Providers.IMockingProviderCapabilities.SupportsCallBase
+  commentId: P:FastMoq.Providers.IMockingProviderCapabilities.SupportsCallBase
+  parent: FastMoq.Providers.IMockingProviderCapabilities
+  href: FastMoq.Providers.IMockingProviderCapabilities.html#FastMoq_Providers_IMockingProviderCapabilities_SupportsCallBase
+  name: SupportsCallBase
+  nameWithType: IMockingProviderCapabilities.SupportsCallBase
+  fullName: FastMoq.Providers.IMockingProviderCapabilities.SupportsCallBase
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsSetupAllProperties*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsSetupAllProperties
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_SupportsSetupAllProperties
+  name: SupportsSetupAllProperties
+  nameWithType: MoqMockingProvider.SupportsSetupAllProperties
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsSetupAllProperties
+- uid: FastMoq.Providers.IMockingProviderCapabilities.SupportsSetupAllProperties
+  commentId: P:FastMoq.Providers.IMockingProviderCapabilities.SupportsSetupAllProperties
+  parent: FastMoq.Providers.IMockingProviderCapabilities
+  href: FastMoq.Providers.IMockingProviderCapabilities.html#FastMoq_Providers_IMockingProviderCapabilities_SupportsSetupAllProperties
+  name: SupportsSetupAllProperties
+  nameWithType: IMockingProviderCapabilities.SupportsSetupAllProperties
+  fullName: FastMoq.Providers.IMockingProviderCapabilities.SupportsSetupAllProperties
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsProtectedMembers*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsProtectedMembers
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_SupportsProtectedMembers
+  name: SupportsProtectedMembers
+  nameWithType: MoqMockingProvider.SupportsProtectedMembers
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsProtectedMembers
+- uid: FastMoq.Providers.IMockingProviderCapabilities.SupportsProtectedMembers
+  commentId: P:FastMoq.Providers.IMockingProviderCapabilities.SupportsProtectedMembers
+  parent: FastMoq.Providers.IMockingProviderCapabilities
+  href: FastMoq.Providers.IMockingProviderCapabilities.html#FastMoq_Providers_IMockingProviderCapabilities_SupportsProtectedMembers
+  name: SupportsProtectedMembers
+  nameWithType: IMockingProviderCapabilities.SupportsProtectedMembers
+  fullName: FastMoq.Providers.IMockingProviderCapabilities.SupportsProtectedMembers
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsInvocationTracking*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsInvocationTracking
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_SupportsInvocationTracking
+  name: SupportsInvocationTracking
+  nameWithType: MoqMockingProvider.SupportsInvocationTracking
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsInvocationTracking
+- uid: FastMoq.Providers.IMockingProviderCapabilities.SupportsInvocationTracking
+  commentId: P:FastMoq.Providers.IMockingProviderCapabilities.SupportsInvocationTracking
+  parent: FastMoq.Providers.IMockingProviderCapabilities
+  href: FastMoq.Providers.IMockingProviderCapabilities.html#FastMoq_Providers_IMockingProviderCapabilities_SupportsInvocationTracking
+  name: SupportsInvocationTracking
+  nameWithType: IMockingProviderCapabilities.SupportsInvocationTracking
+  fullName: FastMoq.Providers.IMockingProviderCapabilities.SupportsInvocationTracking
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsLoggerCapture*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsLoggerCapture
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_SupportsLoggerCapture
+  name: SupportsLoggerCapture
+  nameWithType: MoqMockingProvider.SupportsLoggerCapture
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SupportsLoggerCapture
+- uid: FastMoq.Providers.IMockingProviderCapabilities.SupportsLoggerCapture
+  commentId: P:FastMoq.Providers.IMockingProviderCapabilities.SupportsLoggerCapture
+  parent: FastMoq.Providers.IMockingProviderCapabilities
+  href: FastMoq.Providers.IMockingProviderCapabilities.html#FastMoq_Providers_IMockingProviderCapabilities_SupportsLoggerCapture
+  name: SupportsLoggerCapture
+  nameWithType: IMockingProviderCapabilities.SupportsLoggerCapture
+  fullName: FastMoq.Providers.IMockingProviderCapabilities.SupportsLoggerCapture
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_CreateMock__1_FastMoq_Providers_MockCreationOptions_
+  name: CreateMock
+  nameWithType: MoqMockingProvider.CreateMock
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.CreateMock
+- uid: FastMoq.Providers.IMockingProvider.CreateMock``1(FastMoq.Providers.MockCreationOptions)
+  commentId: M:FastMoq.Providers.IMockingProvider.CreateMock``1(FastMoq.Providers.MockCreationOptions)
+  parent: FastMoq.Providers.IMockingProvider
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_CreateMock__1_FastMoq_Providers_MockCreationOptions_
+  name: CreateMock<T>(MockCreationOptions)
+  nameWithType: IMockingProvider.CreateMock<T>(MockCreationOptions)
+  fullName: FastMoq.Providers.IMockingProvider.CreateMock<T>(FastMoq.Providers.MockCreationOptions)
+  nameWithType.vb: IMockingProvider.CreateMock(Of T)(MockCreationOptions)
+  fullName.vb: FastMoq.Providers.IMockingProvider.CreateMock(Of T)(FastMoq.Providers.MockCreationOptions)
+  name.vb: CreateMock(Of T)(MockCreationOptions)
+  spec.csharp:
+  - uid: FastMoq.Providers.IMockingProvider.CreateMock``1(FastMoq.Providers.MockCreationOptions)
+    name: CreateMock
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_CreateMock__1_FastMoq_Providers_MockCreationOptions_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.MockCreationOptions
+    name: MockCreationOptions
+    href: FastMoq.Providers.MockCreationOptions.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IMockingProvider.CreateMock``1(FastMoq.Providers.MockCreationOptions)
+    name: CreateMock
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_CreateMock__1_FastMoq_Providers_MockCreationOptions_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.MockCreationOptions
+    name: MockCreationOptions
+    href: FastMoq.Providers.MockCreationOptions.html
+  - name: )
+- uid: FastMoq.Providers.MockCreationOptions
+  commentId: T:FastMoq.Providers.MockCreationOptions
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.MockCreationOptions.html
+  name: MockCreationOptions
+  nameWithType: MockCreationOptions
+  fullName: FastMoq.Providers.MockCreationOptions
+- uid: FastMoq.Providers.IFastMock{{T}}
+  commentId: T:FastMoq.Providers.IFastMock{``0}
+  parent: FastMoq.Providers
+  definition: FastMoq.Providers.IFastMock`1
+  href: FastMoq.Providers.IFastMock-1.html
+  name: IFastMock<T>
+  nameWithType: IFastMock<T>
+  fullName: FastMoq.Providers.IFastMock<T>
+  nameWithType.vb: IFastMock(Of T)
+  fullName.vb: FastMoq.Providers.IFastMock(Of T)
+  name.vb: IFastMock(Of T)
+  spec.csharp:
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Providers.IFastMock`1
+  commentId: T:FastMoq.Providers.IFastMock`1
+  href: FastMoq.Providers.IFastMock-1.html
+  name: IFastMock<T>
+  nameWithType: IFastMock<T>
+  fullName: FastMoq.Providers.IFastMock<T>
+  nameWithType.vb: IFastMock(Of T)
+  fullName.vb: FastMoq.Providers.IFastMock(Of T)
+  name.vb: IFastMock(Of T)
+  spec.csharp:
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Providers.IMockingProvider.CreateMock(System.Type,FastMoq.Providers.MockCreationOptions)
+  commentId: M:FastMoq.Providers.IMockingProvider.CreateMock(System.Type,FastMoq.Providers.MockCreationOptions)
+  parent: FastMoq.Providers.IMockingProvider
+  isExternal: true
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_CreateMock_System_Type_FastMoq_Providers_MockCreationOptions_
+  name: CreateMock(Type, MockCreationOptions)
+  nameWithType: IMockingProvider.CreateMock(Type, MockCreationOptions)
+  fullName: FastMoq.Providers.IMockingProvider.CreateMock(System.Type, FastMoq.Providers.MockCreationOptions)
+  spec.csharp:
+  - uid: FastMoq.Providers.IMockingProvider.CreateMock(System.Type,FastMoq.Providers.MockCreationOptions)
+    name: CreateMock
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_CreateMock_System_Type_FastMoq_Providers_MockCreationOptions_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Providers.MockCreationOptions
+    name: MockCreationOptions
+    href: FastMoq.Providers.MockCreationOptions.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IMockingProvider.CreateMock(System.Type,FastMoq.Providers.MockCreationOptions)
+    name: CreateMock
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_CreateMock_System_Type_FastMoq_Providers_MockCreationOptions_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Providers.MockCreationOptions
+    name: MockCreationOptions
+    href: FastMoq.Providers.MockCreationOptions.html
+  - name: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: FastMoq.Providers.IFastMock
+  commentId: T:FastMoq.Providers.IFastMock
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IFastMock.html
+  name: IFastMock
+  nameWithType: IFastMock
+  fullName: FastMoq.Providers.IFastMock
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetupAllProperties*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.SetupAllProperties
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_SetupAllProperties_FastMoq_Providers_IFastMock_
+  name: SetupAllProperties
+  nameWithType: MoqMockingProvider.SetupAllProperties
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetupAllProperties
+- uid: FastMoq.Providers.IMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)
+  commentId: M:FastMoq.Providers.IMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)
+  parent: FastMoq.Providers.IMockingProvider
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_SetupAllProperties_FastMoq_Providers_IFastMock_
+  name: SetupAllProperties(IFastMock)
+  nameWithType: IMockingProvider.SetupAllProperties(IFastMock)
+  fullName: FastMoq.Providers.IMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)
+  spec.csharp:
+  - uid: FastMoq.Providers.IMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)
+    name: SetupAllProperties
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_SetupAllProperties_FastMoq_Providers_IFastMock_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)
+    name: SetupAllProperties
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_SetupAllProperties_FastMoq_Providers_IFastMock_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetCallBase*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.SetCallBase
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_SetCallBase_FastMoq_Providers_IFastMock_System_Boolean_
+  name: SetCallBase
+  nameWithType: MoqMockingProvider.SetCallBase
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.SetCallBase
+- uid: FastMoq.Providers.IMockingProvider.SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)
+  commentId: M:FastMoq.Providers.IMockingProvider.SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)
+  parent: FastMoq.Providers.IMockingProvider
+  isExternal: true
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_SetCallBase_FastMoq_Providers_IFastMock_System_Boolean_
+  name: SetCallBase(IFastMock, bool)
+  nameWithType: IMockingProvider.SetCallBase(IFastMock, bool)
+  fullName: FastMoq.Providers.IMockingProvider.SetCallBase(FastMoq.Providers.IFastMock, bool)
+  nameWithType.vb: IMockingProvider.SetCallBase(IFastMock, Boolean)
+  fullName.vb: FastMoq.Providers.IMockingProvider.SetCallBase(FastMoq.Providers.IFastMock, Boolean)
+  name.vb: SetCallBase(IFastMock, Boolean)
+  spec.csharp:
+  - uid: FastMoq.Providers.IMockingProvider.SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)
+    name: SetCallBase
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_SetCallBase_FastMoq_Providers_IFastMock_System_Boolean_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IMockingProvider.SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)
+    name: SetCallBase
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_SetCallBase_FastMoq_Providers_IFastMock_System_Boolean_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.Verify*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.Verify
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_Verify__1_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__
+  name: Verify
+  nameWithType: MoqMockingProvider.Verify
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.Verify
+- uid: FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{{T}},System.Linq.Expressions.Expression{System.Action{{T}}},System.Nullable{FastMoq.Providers.TimesSpec})
+  commentId: M:FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  parent: FastMoq.Providers.IMockingProvider
+  definition: FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_Verify__1_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__
+  name: Verify<T>(IFastMock<T>, Expression<Action<T>>, TimesSpec?)
+  nameWithType: IMockingProvider.Verify<T>(IFastMock<T>, Expression<Action<T>>, TimesSpec?)
+  fullName: FastMoq.Providers.IMockingProvider.Verify<T>(FastMoq.Providers.IFastMock<T>, System.Linq.Expressions.Expression<System.Action<T>>, FastMoq.Providers.TimesSpec?)
+  nameWithType.vb: IMockingProvider.Verify(Of T)(IFastMock(Of T), Expression(Of Action(Of T)), TimesSpec?)
+  fullName.vb: FastMoq.Providers.IMockingProvider.Verify(Of T)(FastMoq.Providers.IFastMock(Of T), System.Linq.Expressions.Expression(Of System.Action(Of T)), FastMoq.Providers.TimesSpec?)
+  name.vb: Verify(Of T)(IFastMock(Of T), Expression(Of Action(Of T)), TimesSpec?)
+  spec.csharp:
+  - uid: FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+    name: Verify
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_Verify__1_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+    name: Verify
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_Verify__1_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: '?'
+  - name: )
+- uid: System.Linq.Expressions.Expression{System.Action{{T}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Action{``0}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Action<T>>
+  nameWithType: Expression<Action<T>>
+  fullName: System.Linq.Expressions.Expression<System.Action<T>>
+  nameWithType.vb: Expression(Of Action(Of T))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Action(Of T))
+  name.vb: Expression(Of Action(Of T))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Nullable{FastMoq.Providers.TimesSpec}
+  commentId: T:System.Nullable{FastMoq.Providers.TimesSpec}
+  parent: System
+  definition: System.Nullable`1
+  href: FastMoq.Providers.TimesSpec.html
+  name: TimesSpec?
+  nameWithType: TimesSpec?
+  fullName: FastMoq.Providers.TimesSpec?
+  spec.csharp:
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: '?'
+  spec.vb:
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: '?'
+- uid: FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  commentId: M:FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  isExternal: true
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_Verify__1_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__
+  name: Verify<T>(IFastMock<T>, Expression<Action<T>>, TimesSpec?)
+  nameWithType: IMockingProvider.Verify<T>(IFastMock<T>, Expression<Action<T>>, TimesSpec?)
+  fullName: FastMoq.Providers.IMockingProvider.Verify<T>(FastMoq.Providers.IFastMock<T>, System.Linq.Expressions.Expression<System.Action<T>>, FastMoq.Providers.TimesSpec?)
+  nameWithType.vb: IMockingProvider.Verify(Of T)(IFastMock(Of T), Expression(Of Action(Of T)), TimesSpec?)
+  fullName.vb: FastMoq.Providers.IMockingProvider.Verify(Of T)(FastMoq.Providers.IFastMock(Of T), System.Linq.Expressions.Expression(Of System.Action(Of T)), FastMoq.Providers.TimesSpec?)
+  name.vb: Verify(Of T)(IFastMock(Of T), Expression(Of Action(Of T)), TimesSpec?)
+  spec.csharp:
+  - uid: FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+    name: Verify
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_Verify__1_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+    name: Verify
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_Verify__1_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: '?'
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.VerifyNoOtherCalls*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.VerifyNoOtherCalls
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_VerifyNoOtherCalls_FastMoq_Providers_IFastMock_
+  name: VerifyNoOtherCalls
+  nameWithType: MoqMockingProvider.VerifyNoOtherCalls
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.VerifyNoOtherCalls
+- uid: FastMoq.Providers.IMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+  commentId: M:FastMoq.Providers.IMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+  parent: FastMoq.Providers.IMockingProvider
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_VerifyNoOtherCalls_FastMoq_Providers_IFastMock_
+  name: VerifyNoOtherCalls(IFastMock)
+  nameWithType: IMockingProvider.VerifyNoOtherCalls(IFastMock)
+  fullName: FastMoq.Providers.IMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+  spec.csharp:
+  - uid: FastMoq.Providers.IMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+    name: VerifyNoOtherCalls
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_VerifyNoOtherCalls_FastMoq_Providers_IFastMock_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)
+    name: VerifyNoOtherCalls
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_VerifyNoOtherCalls_FastMoq_Providers_IFastMock_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureProperties*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureProperties
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_ConfigureProperties_FastMoq_Providers_IFastMock_
+  name: ConfigureProperties
+  nameWithType: MoqMockingProvider.ConfigureProperties
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureProperties
+- uid: FastMoq.Providers.IMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
+  commentId: M:FastMoq.Providers.IMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
+  parent: FastMoq.Providers.IMockingProvider
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_ConfigureProperties_FastMoq_Providers_IFastMock_
+  name: ConfigureProperties(IFastMock)
+  nameWithType: IMockingProvider.ConfigureProperties(IFastMock)
+  fullName: FastMoq.Providers.IMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
+  spec.csharp:
+  - uid: FastMoq.Providers.IMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
+    name: ConfigureProperties
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_ConfigureProperties_FastMoq_Providers_IFastMock_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
+    name: ConfigureProperties
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_ConfigureProperties_FastMoq_Providers_IFastMock_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureLogger*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureLogger
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_ConfigureLogger_FastMoq_Providers_IFastMock_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__
+  name: ConfigureLogger
+  nameWithType: MoqMockingProvider.ConfigureLogger
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.ConfigureLogger
+- uid: FastMoq.Providers.IMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  commentId: M:FastMoq.Providers.IMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  parent: FastMoq.Providers.IMockingProvider
+  isExternal: true
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_ConfigureLogger_FastMoq_Providers_IFastMock_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__
+  name: ConfigureLogger(IFastMock, Action<LogLevel, EventId, string, Exception>)
+  nameWithType: IMockingProvider.ConfigureLogger(IFastMock, Action<LogLevel, EventId, string, Exception>)
+  fullName: FastMoq.Providers.IMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception>)
+  nameWithType.vb: IMockingProvider.ConfigureLogger(IFastMock, Action(Of LogLevel, EventId, String, Exception))
+  fullName.vb: FastMoq.Providers.IMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock, System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception))
+  name.vb: ConfigureLogger(IFastMock, Action(Of LogLevel, EventId, String, Exception))
+  spec.csharp:
+  - uid: FastMoq.Providers.IMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+    name: ConfigureLogger
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_ConfigureLogger_FastMoq_Providers_IFastMock_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: <
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.EventId
+    name: EventId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+    name: ConfigureLogger
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_ConfigureLogger_FastMoq_Providers_IFastMock_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.EventId
+    name: EventId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+  - name: )
+- uid: System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+  commentId: T:System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+  parent: System
+  definition: System.Action`4
+  href: https://learn.microsoft.com/dotnet/api/system.action-4
+  name: Action<LogLevel, EventId, string, Exception>
+  nameWithType: Action<LogLevel, EventId, string, Exception>
+  fullName: System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception>
+  nameWithType.vb: Action(Of LogLevel, EventId, String, Exception)
+  fullName.vb: System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception)
+  name.vb: Action(Of LogLevel, EventId, String, Exception)
+  spec.csharp:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: <
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.EventId
+    name: EventId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.EventId
+    name: EventId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+- uid: System.Action`4
+  commentId: T:System.Action`4
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-4
+  name: Action<T1, T2, T3, T4>
+  nameWithType: Action<T1, T2, T3, T4>
+  fullName: System.Action<T1, T2, T3, T4>
+  nameWithType.vb: Action(Of T1, T2, T3, T4)
+  fullName.vb: System.Action(Of T1, T2, T3, T4)
+  name.vb: Action(Of T1, T2, T3, T4)
+  spec.csharp:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryGetLegacy*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.TryGetLegacy
+  href: FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_TryGetLegacy_FastMoq_Providers_IFastMock_
+  name: TryGetLegacy
+  nameWithType: MoqMockingProvider.TryGetLegacy
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryGetLegacy
+- uid: FastMoq.Providers.IMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)
+  commentId: M:FastMoq.Providers.IMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)
+  parent: FastMoq.Providers.IMockingProvider
+  href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_TryGetLegacy_FastMoq_Providers_IFastMock_
+  name: TryGetLegacy(IFastMock)
+  nameWithType: IMockingProvider.TryGetLegacy(IFastMock)
+  fullName: FastMoq.Providers.IMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)
+  spec.csharp:
+  - uid: FastMoq.Providers.IMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)
+    name: TryGetLegacy
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_TryGetLegacy_FastMoq_Providers_IFastMock_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)
+    name: TryGetLegacy
+    href: FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_TryGetLegacy_FastMoq_Providers_IFastMock_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: )

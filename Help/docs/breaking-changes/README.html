@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Breaking Changes </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Breaking Changes ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="">
+      <meta property="docfx:tocrel" content="">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="FastMoq Documentation">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="breaking-changes">Breaking Changes</h1>
+
+<p>This page tracks intentional v4 breaking changes relative to the last public <code>3.0.0</code> package.</p>
+<ul>
+<li>Public release baseline: <code>3.0.0</code></li>
+<li>Release date: May 12, 2025</li>
+<li>This document describes the changed behavior in the current v4 release line.</li>
+</ul>
+<h2 id="current-breaking-changes">Current breaking changes</h2>
+<h3 id="strict-no-longer-implies-the-old-full-strict-profile"><code>Strict</code> no longer implies the old full strict profile</h3>
+<p>In <code>3.0.0</code>, <code>Strict</code> was documented as a broader switch that affected multiple behaviors at once, including preconfigured object substitution, non-public fallback behavior, and strict Moq behavior.</p>
+<p>In the current repo, <code>Strict</code> is primarily a compatibility property layered over <code>MockFeatures.FailOnUnconfigured</code> rather than the single entry point for the full strict profile.</p>
+<p>What changed:</p>
+<ul>
+<li><code>Strict = true</code> should no longer be treated as shorthand for the whole current strict behavior profile.</li>
+<li>If you want the broader current strict preset, use <code>UseStrictPreset()</code>.</li>
+<li>If you only want fail-on-unconfigured compatibility behavior, <code>Strict</code> still works for that path.</li>
+</ul>
+<p>What did not disappear:</p>
+<ul>
+<li><code>Strict</code> still affects strict mock creation behavior.</li>
+<li><code>Strict</code> still affects some non-public fallback behavior because constructor and method fallback logic is tied to <code>FailOnUnconfigured</code>.</li>
+</ul>
+<p>Migration guidance:</p>
+<pre><code class="lang-csharp">// Compatibility-style strict behavior
+Mocks.Strict = true;
+
+// Full current strict preset
+Mocks.UseStrictPreset();
+</code></pre>
+<p>Use <code>UseStrictPreset()</code> when the test intends to opt into the full strict behavior profile. Use <code>Strict</code> only when the test intentionally depends on the narrower compatibility path.</p>
+<h3 id="strict-ifilesystem-no-longer-guarantees-a-raw-mock">Strict <code>IFileSystem</code> no longer guarantees a raw mock</h3>
+<p>In <code>3.0.0</code>, strict <code>IFileSystem</code> behavior was documented and demonstrated as using a raw Moq mock rather than the built-in <code>MockFileSystem</code> defaults.</p>
+<p>In the current repo, tracked <code>IFileSystem</code> mocks are still preconfigured against FastMoq's built-in in-memory file system even when <code>Strict</code> or <code>MockFeatures.FailOnUnconfigured</code> is enabled.</p>
+<p>What changed:</p>
+<ul>
+<li><code>GetMock&lt;IFileSystem&gt;()</code> no longer implies an &quot;empty&quot; <code>IFileSystem</code> mock under strict behavior.</li>
+<li>Auto-created tracked <code>IFileSystem</code> mocks can expose non-null members such as <code>File</code>, <code>Directory</code>, and <code>Path</code> even when fail-on-unconfigured behavior is enabled.</li>
+<li>Tests that previously asserted null members on strict <code>IFileSystem</code> mocks must now explicitly override those members if null behavior is required.</li>
+</ul>
+<p>Why this changed:</p>
+<ul>
+<li>The repo now treats known framework-heavy types as useful built-ins by default.</li>
+<li>Tracked mocks are preconfigured through the known-type pipeline so they behave consistently with the built-in in-memory file system model.</li>
+<li>This keeps the provider-first model simpler than having a separate strict-only <code>IFileSystem</code> branch.</li>
+</ul>
+<p>Previous expectation:</p>
+<pre><code class="lang-csharp">Mocks.Strict = true;
+var fileSystem = Mocks.GetMock&lt;IFileSystem&gt;().Object;
+
+fileSystem.Directory.Should().BeNull();
+</code></pre>
+<p>Current repo behavior:</p>
+<pre><code class="lang-csharp">Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+var fileSystem = Mocks.GetMock&lt;IFileSystem&gt;().Object;
+
+fileSystem.Directory.Should().NotBeNull();
+</code></pre>
+<p>If you need a null or otherwise custom member value, set it explicitly:</p>
+<pre><code class="lang-csharp">Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+Mocks.GetMock&lt;IFileSystem&gt;()
+    .Setup(x =&gt; x.Directory)
+    .Returns((IDirectory)null!);
+</code></pre>
+<h3 id="what-did-not-change-in-the-same-way">What did not change in the same way</h3>
+<p>This breaking change is currently specific to strict <code>IFileSystem</code> mock enrichment.</p>
+<ul>
+<li>strict <code>HttpClient</code> still avoids the prebuilt direct <code>Mocker.HttpClient</code> instance during normal object resolution</li>
+<li><code>DbContext</code> continues to use the existing built-in managed-instance path and is not part of this strict <code>IFileSystem</code> break</li>
+<li><code>Strict</code> still participates in non-public constructor and method fallback decisions; the break here is about <code>IFileSystem</code> mock enrichment, not removal of all strict semantics</li>
+</ul>
+<p>In other words, the repo did not broadly change every built-in type to ignore strict-mode behavior. The compatibility break identified here is the tracked <code>IFileSystem</code> mock path.</p>
+<h2 id="historical-package-line-change-summary">Historical package-line change summary</h2>
+<p>The root README previously carried this older package-line summary. It is kept here so compatibility notes live in one place.</p>
+<ul>
+<li><code>3.0</code> =&gt; .NET 9 added; <code>FindBestMatch</code> updated; component creation changes; logging callbacks and helpers updated</li>
+<li><code>2.28</code> =&gt; .NET 7 removed from support</li>
+<li><code>2.25</code> =&gt; some methods moved to extensions that are no longer on <code>MockerTestBase</code> or <code>Mocker</code>; extra <code>CreateInstance&lt;T&gt;</code> methods removed</li>
+<li><code>2.23.200</code> =&gt; .NET 8 support added</li>
+<li><code>2.23.x</code> =&gt; .NET Core 5 support removed</li>
+<li><code>2.22.1215</code> =&gt; .NET Core 3.1 removed from <code>FastMoq.Core</code>; .NET Core 5 deprecated; package supporting .NET Core 5.0 moved from <code>FastMoq</code> to <code>FastMoq.Core</code></li>
+<li><code>1.22.810</code> =&gt; setters removed from <code>MockerTestBase</code> virtual methods <code>SetupMocksAction</code>, <code>CreateComponentAction</code>, and <code>CreatedComponentAction</code></li>
+<li><code>1.22.810</code> =&gt; package dependencies updated</li>
+<li><code>1.22.728</code> =&gt; <code>Initialize</code> resets the mock if it already exists unless the <code>reset</code> parameter is set to <code>false</code></li>
+<li><code>1.22.604</code> =&gt; <code>Mocks</code> renamed to <code>Mocker</code>; <code>TestBase</code> renamed to <code>MockerTestBase</code></li>
+</ul>
+<h2 id="related-docs">Related docs</h2>
+<ul>
+<li><a href="../whats-new/README.html">What's New Since 3.0.0</a></li>
+<li><a href="../migration/README.html">Migration Guide: 3.0.0 To Current Repo</a></li>
+<li><a href="../samples/testing-examples.html">Executable Testing Examples</a></li>
+</ul>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/docs/breaking-changes/README.md/#L1" class="contribution-link">Edit this page</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

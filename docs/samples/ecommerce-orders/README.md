@@ -579,7 +579,7 @@ The sample includes Azure deployment templates and GitHub Actions workflows for:
 - Azure Storage Account creation
 - Azure Key Vault setup
 
-See the [deployment guide](docs/deployment-guide.md) for detailed instructions.
+See this sample's deployment section and repository workflows for the currently documented deployment path.
 
 ## Learning Outcomes
 
@@ -594,7 +594,5 @@ After exploring this sample, you'll understand:
 
 ## Next Steps
 
-- Explore the [Microservices Communication sample](../microservices/) for service-to-service patterns
-- Check out the [Blazor Web Application sample](../blazor-webapp/) for frontend testing
- 
-- Review the [Background Processing sample](../background-services/) for more queue processing patterns
+- Review the [sample applications overview](../README.md) for the currently available repository samples.
+- Explore the [executable testing examples](../testing-examples.md) for smaller repo-backed service examples.

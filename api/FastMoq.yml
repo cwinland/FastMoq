@@ -1,0 +1,223 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq
+  commentId: N:FastMoq
+  id: FastMoq
+  children:
+  - FastMoq.BuiltInTypeResolutionFlags
+  - FastMoq.DbContextHandleOptions`1
+  - FastMoq.DbContextHandle`1
+  - FastMoq.DbContextMockerExtensions
+  - FastMoq.DbContextTestMode
+  - FastMoq.InstanceCreationFlags
+  - FastMoq.InvocationOptions
+  - FastMoq.KnownTypeRegistration
+  - FastMoq.MockBehaviorOptions
+  - FastMoq.MockFeatures
+  - FastMoq.MockRequestOptions
+  - FastMoq.Mocker
+  - FastMoq.MockerPolicyOptions
+  - FastMoq.MockerTestBase`1
+  - FastMoq.OptionalParameterResolutionMode
+  - FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq
+  type: Namespace
+  assemblies:
+  - FastMoq.Core
+references:
+- uid: FastMoq.BuiltInTypeResolutionFlags
+  commentId: T:FastMoq.BuiltInTypeResolutionFlags
+  parent: FastMoq
+  href: FastMoq.BuiltInTypeResolutionFlags.html
+  name: BuiltInTypeResolutionFlags
+  nameWithType: BuiltInTypeResolutionFlags
+  fullName: FastMoq.BuiltInTypeResolutionFlags
+- uid: FastMoq.InstanceCreationFlags
+  commentId: T:FastMoq.InstanceCreationFlags
+  parent: FastMoq
+  href: FastMoq.InstanceCreationFlags.html
+  name: InstanceCreationFlags
+  nameWithType: InstanceCreationFlags
+  fullName: FastMoq.InstanceCreationFlags
+- uid: FastMoq.InvocationOptions
+  commentId: T:FastMoq.InvocationOptions
+  parent: FastMoq
+  href: FastMoq.InvocationOptions.html
+  name: InvocationOptions
+  nameWithType: InvocationOptions
+  fullName: FastMoq.InvocationOptions
+- uid: FastMoq.KnownTypeRegistration
+  commentId: T:FastMoq.KnownTypeRegistration
+  parent: FastMoq
+  href: FastMoq.KnownTypeRegistration.html
+  name: KnownTypeRegistration
+  nameWithType: KnownTypeRegistration
+  fullName: FastMoq.KnownTypeRegistration
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
+- uid: FastMoq.MockerPolicyOptions
+  commentId: T:FastMoq.MockerPolicyOptions
+  parent: FastMoq
+  href: FastMoq.MockerPolicyOptions.html
+  name: MockerPolicyOptions
+  nameWithType: MockerPolicyOptions
+  fullName: FastMoq.MockerPolicyOptions
+- uid: FastMoq.MockerTestBase`1
+  commentId: T:FastMoq.MockerTestBase`1
+  href: FastMoq.MockerTestBase-1.html
+  name: MockerTestBase<TComponent>
+  nameWithType: MockerTestBase<TComponent>
+  fullName: FastMoq.MockerTestBase<TComponent>
+  nameWithType.vb: MockerTestBase(Of TComponent)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent)
+  name.vb: MockerTestBase(Of TComponent)
+  spec.csharp:
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+- uid: FastMoq.MockFeatures
+  commentId: T:FastMoq.MockFeatures
+  parent: FastMoq
+  href: FastMoq.MockFeatures.html
+  name: MockFeatures
+  nameWithType: MockFeatures
+  fullName: FastMoq.MockFeatures
+- uid: FastMoq.MockBehaviorOptions
+  commentId: T:FastMoq.MockBehaviorOptions
+  parent: FastMoq
+  href: FastMoq.MockBehaviorOptions.html
+  name: MockBehaviorOptions
+  nameWithType: MockBehaviorOptions
+  fullName: FastMoq.MockBehaviorOptions
+- uid: FastMoq.MockRequestOptions
+  commentId: T:FastMoq.MockRequestOptions
+  parent: FastMoq
+  href: FastMoq.MockRequestOptions.html
+  name: MockRequestOptions
+  nameWithType: MockRequestOptions
+  fullName: FastMoq.MockRequestOptions
+- uid: FastMoq.OptionalParameterResolutionMode
+  commentId: T:FastMoq.OptionalParameterResolutionMode
+  parent: FastMoq
+  href: FastMoq.OptionalParameterResolutionMode.html
+  name: OptionalParameterResolutionMode
+  nameWithType: OptionalParameterResolutionMode
+  fullName: FastMoq.OptionalParameterResolutionMode
+- uid: FastMoq.ScenarioBuilder`1
+  commentId: T:FastMoq.ScenarioBuilder`1
+  parent: FastMoq
+  href: FastMoq.ScenarioBuilder-1.html
+  name: ScenarioBuilder<T>
+  nameWithType: ScenarioBuilder<T>
+  fullName: FastMoq.ScenarioBuilder<T>
+  nameWithType.vb: ScenarioBuilder(Of T)
+  fullName.vb: FastMoq.ScenarioBuilder(Of T)
+  name.vb: ScenarioBuilder(Of T)
+  spec.csharp:
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.DbContextHandle`1
+  commentId: T:FastMoq.DbContextHandle`1
+  href: FastMoq.DbContextHandle-1.html
+  name: DbContextHandle<TContext>
+  nameWithType: DbContextHandle<TContext>
+  fullName: FastMoq.DbContextHandle<TContext>
+  nameWithType.vb: DbContextHandle(Of TContext)
+  fullName.vb: FastMoq.DbContextHandle(Of TContext)
+  name.vb: DbContextHandle(Of TContext)
+  spec.csharp:
+  - uid: FastMoq.DbContextHandle`1
+    name: DbContextHandle
+    href: FastMoq.DbContextHandle-1.html
+  - name: <
+  - name: TContext
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.DbContextHandle`1
+    name: DbContextHandle
+    href: FastMoq.DbContextHandle-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TContext
+  - name: )
+- uid: FastMoq.DbContextHandleOptions`1
+  commentId: T:FastMoq.DbContextHandleOptions`1
+  href: FastMoq.DbContextHandleOptions-1.html
+  name: DbContextHandleOptions<TContext>
+  nameWithType: DbContextHandleOptions<TContext>
+  fullName: FastMoq.DbContextHandleOptions<TContext>
+  nameWithType.vb: DbContextHandleOptions(Of TContext)
+  fullName.vb: FastMoq.DbContextHandleOptions(Of TContext)
+  name.vb: DbContextHandleOptions(Of TContext)
+  spec.csharp:
+  - uid: FastMoq.DbContextHandleOptions`1
+    name: DbContextHandleOptions
+    href: FastMoq.DbContextHandleOptions-1.html
+  - name: <
+  - name: TContext
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.DbContextHandleOptions`1
+    name: DbContextHandleOptions
+    href: FastMoq.DbContextHandleOptions-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TContext
+  - name: )
+- uid: FastMoq.DbContextMockerExtensions
+  commentId: T:FastMoq.DbContextMockerExtensions
+  parent: FastMoq
+  href: FastMoq.DbContextMockerExtensions.html
+  name: DbContextMockerExtensions
+  nameWithType: DbContextMockerExtensions
+  fullName: FastMoq.DbContextMockerExtensions
+- uid: FastMoq.DbContextTestMode
+  commentId: T:FastMoq.DbContextTestMode
+  parent: FastMoq
+  href: FastMoq.DbContextTestMode.html
+  name: DbContextTestMode
+  nameWithType: DbContextTestMode
+  fullName: FastMoq.DbContextTestMode
+- uid: FastMoq
+  commentId: N:FastMoq
+  href: FastMoq.html
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq

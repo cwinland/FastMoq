@@ -8,9 +8,9 @@ This API reference is generated from XML comments in the source projects.
 
    dotnet tool restore
 
-2. From the repository root, generate metadata and build the site:
+2. From the repository root, clean and regenerate the site:
 
-   dotnet tool run docfx docfx.json
+   pwsh ./scripts/Generate-ApiDocs.ps1
 
 3. Open the generated site:
 
@@ -19,5 +19,6 @@ This API reference is generated from XML comments in the source projects.
 ## Notes
 
 - The generated site output is written to the Help folder.
+- The generation script clears the existing Help folder before building so stale files are not carried forward.
 - The metadata step is pinned to net8.0 for consistent CI generation.
 - DocFX is pinned through `.config/dotnet-tools.json` so local and CI builds use the same version.

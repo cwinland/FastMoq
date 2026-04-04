@@ -1,0 +1,1198 @@
+{
+  "source_base_path": "C:/Users/chriswin/source/repos/FastMoq",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "FastMoq.TestingExample/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "FastMoq.TestingExample/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.BuiltInTypeResolutionFlags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.BuiltInTypeResolutionFlags.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.BuiltInTypeResolutionFlags",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Core.Providers.MockWrapper-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Core.Providers.MockWrapper-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Core.Providers.MockWrapper<T>",
+      "Summary": "<p sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"1\">Provider-agnostic wrapper around an <xref href=\"FastMoq.Providers.IFastMock%601\" data-throw-if-not-resolved=\"false\"></xref> supplying:</p>\n<ul sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"2\">\n<li sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"2\">Instance (test subject dependency)</li>\n<li sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"3\">NativeMock (legacy underlying mock if the provider exposes one)</li>\n<li sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"4\">Verify delegation through <xref href=\"FastMoq.Providers.IMockingProvider\" data-throw-if-not-resolved=\"false\"></xref></li>\n<li sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"5\">Transitional Setup helpers (Moq pass-through). Other providers throw until a common Setup abstraction exists.</li>\n</ul>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Core.Providers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Core.Providers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Core.Providers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.DbContextHandle-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.DbContextHandle-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.DbContextHandle<TContext>",
+      "Summary": "<p sourcefile=\"api/FastMoq.DbContextHandle-1.yml\" sourcestartlinenumber=\"1\">Represents a DbContext test double created by FastMoq.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.DbContextHandleOptions-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.DbContextHandleOptions-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.DbContextHandleOptions<TContext>",
+      "Summary": "<p sourcefile=\"api/FastMoq.DbContextHandleOptions-1.yml\" sourcestartlinenumber=\"1\">Options for creating DbContext test handles.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.DbContextMockerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.DbContextMockerExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.DbContextMockerExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.DbContextMockerExtensions.yml\" sourcestartlinenumber=\"1\">Entity Framework-specific FastMoq helpers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.DbContextTestMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.DbContextTestMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.DbContextTestMode",
+      "Summary": "<p sourcefile=\"api/FastMoq.DbContextTestMode.yml\" sourcestartlinenumber=\"1\">Selects how FastMoq should provision a DbContext test double.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.IdentityHelperExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.IdentityHelperExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions.IdentityHelperExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.IdentityHelperExtensions.yml\" sourcestartlinenumber=\"1\">Class IdentityHelper.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.MockerBooleanExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.MockerBooleanExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions.MockerBooleanExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.MockerBooleanExtensions.yml\" sourcestartlinenumber=\"1\">Mocker Boolean Extensions Class.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.MockerCreationExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.MockerCreationExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions.MockerCreationExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.MockerCreationExtensions.yml\" sourcestartlinenumber=\"1\">Mocker Create Extensions</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.MockerHttpExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.MockerHttpExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions.MockerHttpExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.MockerHttpExtensions.yml\" sourcestartlinenumber=\"1\">Mocker Http Extensions Class.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.ObjectExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.ObjectExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions.ObjectExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.ObjectExtensions.yml\" sourcestartlinenumber=\"1\">Class ObjectExtensions.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.TestClassExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.TestClassExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions.TestClassExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.TestClassExtensions.yml\" sourcestartlinenumber=\"1\">Helper Methods for testing.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.InstanceCreationFlags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.InstanceCreationFlags.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.InstanceCreationFlags",
+      "Summary": "<p sourcefile=\"api/FastMoq.InstanceCreationFlags.yml\" sourcestartlinenumber=\"1\">Per-call overrides for constructor selection and optional-parameter resolution during instance creation.\n<xref href=\"FastMoq.InstanceCreationFlags.None\" data-throw-if-not-resolved=\"false\"></xref> preserves the current <xref href=\"FastMoq.Mocker\" data-throw-if-not-resolved=\"false\"></xref> defaults.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.InvocationOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.InvocationOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.InvocationOptions",
+      "Summary": "<p sourcefile=\"api/FastMoq.InvocationOptions.yml\" sourcestartlinenumber=\"1\">Controls how FastMoq fills method parameters when invoking delegates or reflected methods.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.KnownTypeRegistration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.KnownTypeRegistration.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.KnownTypeRegistration",
+      "Summary": "<p sourcefile=\"api/FastMoq.KnownTypeRegistration.yml\" sourcestartlinenumber=\"1\">Describes custom behavior for a known type handled specially by <xref href=\"FastMoq.Mocker\" data-throw-if-not-resolved=\"false\"></xref>.\nRegistrations can supply direct instances, managed instances, mock configuration, and post-creation defaults.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.MockBehaviorOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.MockBehaviorOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.MockBehaviorOptions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.MockFeatures.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.MockFeatures.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.MockFeatures",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.MockRequestOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.MockRequestOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.MockRequestOptions",
+      "Summary": "<p sourcefile=\"api/FastMoq.MockRequestOptions.yml\" sourcestartlinenumber=\"1\">Options that control tracked mock retrieval and creation.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Mocker.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Mocker.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Mocker",
+      "Summary": "<p sourcefile=\"api/FastMoq.Mocker.yml\" sourcestartlinenumber=\"1\">Core mock coordinator (provider-based creation integrated).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.MockerPolicyOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.MockerPolicyOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.MockerPolicyOptions",
+      "Summary": "<p sourcefile=\"api/FastMoq.MockerPolicyOptions.yml\" sourcestartlinenumber=\"1\">Groups the default policy settings that shape how a <xref href=\"FastMoq.Mocker\" data-throw-if-not-resolved=\"false\"></xref> resolves built-ins and creates mocks.\nPer-call options may still override the relevant creation or invocation behavior where supported.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.MockerTestBase-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.MockerTestBase-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.MockerTestBase<TComponent>",
+      "Summary": "<p sourcefile=\"api/FastMoq.MockerTestBase-1.yml\" sourcestartlinenumber=\"1\">Mock Test Base with Automatic Mocking using <xref href=\"FastMoq.Mocker\" data-throw-if-not-resolved=\"false\"></xref>.\nThis class contains the <xref href=\"FastMoq.MockerTestBase%601.Mocks\" data-throw-if-not-resolved=\"false\"></xref> property to create and track all Mocks from creation of the component.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.ConstructorHistory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.ConstructorHistory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.ConstructorHistory",
+      "Summary": "<pre><code sourcefile=\"api/FastMoq.Models.ConstructorHistory.yml\" sourcestartlinenumber=\"1\">Class ConstructorHistory.\n</code></pre>\n<p sourcefile=\"api/FastMoq.Models.ConstructorHistory.yml\" sourcestartlinenumber=\"2\">Implements the <xref href=\"System.Collections.Generic.IReadOnlyDictionary%602\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.ConstructorModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.ConstructorModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.ConstructorModel",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.ConstructorModel.yml\" sourcestartlinenumber=\"1\">Interface IHistoryModel used for identifying objects that can be put in the history model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.DbContextMock-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.DbContextMock-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.DbContextMock<TEntity>",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.DbContextMock-1.yml\" sourcestartlinenumber=\"1\">Wrapper for Mock.\nImplements the <xref href=\"Moq.Mock%601\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.DbSetMock-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.DbSetMock-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.DbSetMock<TEntity>",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.DbSetMock-1.yml\" sourcestartlinenumber=\"1\">Class DbSetMock.\nImplements the <xref href=\"Moq.Mock%601\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.FastMoqNonVoidSetupPhrase-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.FastMoqNonVoidSetupPhrase-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.FastMoqNonVoidSetupPhrase<T>",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.FastMoqNonVoidSetupPhrase-1.yml\" sourcestartlinenumber=\"1\">Class FastMoqNonVoidSetupPhrase.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.IDbContextMock-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.IDbContextMock-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.IDbContextMock<TEntity>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.IDbContextMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.IDbContextMock.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.IDbContextMock",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.IDbSetMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.IDbSetMock.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.IDbSetMock",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.IHistoryModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.IHistoryModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.IHistoryModel",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.IHistoryModel.yml\" sourcestartlinenumber=\"1\">Interface IHistoryModel used for identifying objects that can be put in the history model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.IInstanceModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.IInstanceModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.IInstanceModel",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.IInstanceModel.yml\" sourcestartlinenumber=\"1\">Interface IHistoryModel used for identifying objects that can be put in the history model.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.InstanceFunction-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.InstanceFunction-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.InstanceFunction<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.InstanceFunction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.InstanceFunction.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.InstanceFunction",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.InstanceModel-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.InstanceModel-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.InstanceModel<TClass>",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.InstanceModel-1.yml\" sourcestartlinenumber=\"1\">Class InstanceModel represents a type and how to create that type's instance.\nImplements the <xref href=\"FastMoq.Models.InstanceModel\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.InstanceModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.InstanceModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.InstanceModel",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.InstanceModel.yml\" sourcestartlinenumber=\"1\">Class InstanceModel represents a type and how to create that type's instance.\nImplements the <xref href=\"FastMoq.Models.InstanceModel\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.LogEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.LogEntry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.LogEntry",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.LogEntry.yml\" sourcestartlinenumber=\"1\">Captured provider-agnostic logger event emitted by an ILogger mock configured through FastMoq.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.MockAsyncEnumerable-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.MockAsyncEnumerable-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.MockAsyncEnumerable<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.MockAsyncEnumerator-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.MockAsyncEnumerator-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.MockAsyncEnumerator<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.MockDbContextOptions-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.MockDbContextOptions-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.MockDbContextOptions<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.MockModel-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.MockModel-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.MockModel<T>",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.MockModel-1.yml\" sourcestartlinenumber=\"1\">Generic mock model wrapper (provider-first, Moq legacy compatible).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.MockModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.MockModel.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.MockModel",
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.MockModel.yml\" sourcestartlinenumber=\"1\">Contains provider-agnostic mock and Type information.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.ObservableExceptionLog.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.ObservableExceptionLog.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.ObservableExceptionLog",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.ObservableLogEntries.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.ObservableLogEntries.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models.ObservableLogEntries",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Models.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.OptionalParameterResolutionMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.OptionalParameterResolutionMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.OptionalParameterResolutionMode",
+      "Summary": "<p sourcefile=\"api/FastMoq.OptionalParameterResolutionMode.yml\" sourcestartlinenumber=\"1\">Controls how FastMoq resolves optional parameters when it needs to supply values automatically.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.IFastMock-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.IFastMock-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.IFastMock<T>",
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.IFastMock-1.yml\" sourcestartlinenumber=\"1\">Generic variant for convenience strongly typing Instance.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.IFastMock.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.IFastMock.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.IFastMock",
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.IFastMock.yml\" sourcestartlinenumber=\"1\">Non generic abstraction for a created mock instance. Named IFastMock to avoid collision with provider library IMock types.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.IMockingProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.IMockingProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.IMockingProvider",
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.IMockingProvider.yml\" sourcestartlinenumber=\"1\">Abstraction implemented by concrete mocking libraries (Moq, NSubstitute, etc.).</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.IMockingProviderCapabilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.IMockingProviderCapabilities.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.IMockingProviderCapabilities",
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.IMockingProviderCapabilities.yml\" sourcestartlinenumber=\"1\">Describes optional features a concrete mocking provider supports so the framework can adapt behavior.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.MockCreationOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.MockCreationOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.MockCreationOptions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.MockCreationOptions.yml\" sourcestartlinenumber=\"1\">Options to influence mock creation in a provider agnostic manner.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.MockingProviderRegistry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.MockingProviderRegistry.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.MockingProviderRegistry",
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.MockingProviderRegistry.yml\" sourcestartlinenumber=\"1\">Global registry for available mocking providers with support for scoped overrides.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.MoqProvider.MoqLoggerCompatibility",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.MoqProvider.MoqMockAdapter-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.MoqProvider.MoqMockAdapter-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.MoqProvider.MoqMockAdapter<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.MoqProvider.MoqMockAdapter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.MoqProvider.MoqMockAdapter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.MoqProvider.MoqMockAdapter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.MoqProvider.MoqMockingProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.MoqProvider.MoqMockingProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.MoqProvider.MoqMockingProvider",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.MoqProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.MoqProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.MoqProvider",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.NSubstituteProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.NSubstituteProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.NSubstituteProvider",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.TimesSpec.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.TimesSpec.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.TimesSpec",
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.TimesSpec.yml\" sourcestartlinenumber=\"1\">Provider agnostic verification specification.\nUses a single verification mode with an optional count where applicable.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.TimesSpecMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.TimesSpecMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.TimesSpecMode",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.ScenarioBuilder-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.ScenarioBuilder-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.ScenarioBuilder<T>",
+      "Summary": "<p sourcefile=\"api/FastMoq.ScenarioBuilder-1.yml\" sourcestartlinenumber=\"1\">Provides a fluent arrange/act/assert pipeline for a tracked scenario target.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>",
+      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.yml\" sourcestartlinenumber=\"1\">Interface IMockerBlazorTestHelpers</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Web.Blazor.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Web.Blazor.Interfaces.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Web.Blazor.Interfaces",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Web.Blazor.MockerBlazorTestBase<T>",
+      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.yml\" sourcestartlinenumber=\"1\">Class MockerBlazorTestBase.\nImplements the <xref href=\"Bunit.TestContext\" data-throw-if-not-resolved=\"false\"></xref>\nImplements the <xref href=\"FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers%601\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Web.Blazor.Models.ComponentState-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Web.Blazor.Models.ComponentState-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Web.Blazor.Models.ComponentState<T>",
+      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.Models.ComponentState-1.yml\" sourcestartlinenumber=\"1\">Class ComponentState.\nImplements the <xref href=\"FastMoq.Web.Blazor.Models.ComponentState\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Web.Blazor.Models.ComponentState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Web.Blazor.Models.ComponentState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Web.Blazor.Models.ComponentState",
+      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.Models.ComponentState.yml\" sourcestartlinenumber=\"1\">Class ComponentState.\nImplements the <xref href=\"FastMoq.Web.Blazor.Models.ComponentState\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Web.Blazor.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Web.Blazor.Models.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Web.Blazor.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Web.Blazor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Web.Blazor.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Web.Blazor",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Web.Extensions.TestWebExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Web.Extensions.TestWebExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Web.Extensions.TestWebExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Web.Extensions.TestWebExtensions.yml\" sourcestartlinenumber=\"1\">Class TestWebExtensions.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Web.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Web.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Web.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/api/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/breaking-changes/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/breaking-changes/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started/provider-selection.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started/provider-selection.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started/testing-guide.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started/testing-guide.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/migration/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/migration/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/roadmap/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/roadmap/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/samples/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/samples/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/samples/ecommerce-orders/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/samples/ecommerce-orders/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/samples/testing-examples.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/samples/testing-examples.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/whats-new/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/whats-new/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

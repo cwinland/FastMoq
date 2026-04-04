@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class MockerTestBase&lt;TComponent&gt; </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class MockerTestBase&lt;TComponent&gt; ">
+    
+    <meta name="description" content="Mock Test Base with Automatic Mocking using . This class contains the  property to create and track all Mocks from creation of the component.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="FastMoq Documentation">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="FastMoq.MockerTestBase`1">
+
+
+
+  <h1 id="FastMoq_MockerTestBase_1" data-uid="FastMoq.MockerTestBase`1" class="text-break">Class MockerTestBase&lt;TComponent&gt;</h1>
+  <div class="markdown level0 summary"><p>Mock Test Base with Automatic Mocking using <a class="xref" href="FastMoq.Mocker.html">Mocker</a>.
+This class contains the <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Mocks">Mocks</a> property to create and track all Mocks from creation of the component.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">MockerTestBase&lt;TComponent&gt;</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a></h6>
+  <h6><strong>Assembly</strong>: FastMoq.Core.dll</h6>
+  <h5 id="FastMoq_MockerTestBase_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class MockerTestBase&lt;TComponent&gt; : IDisposable where TComponent : class</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TComponent</span></td>
+        <td><p>The type of the t component.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_MockerTestBase_1_examples"><strong>Examples</strong></h5>
+  <pre><code>Test example of the base class creating the Car class and auto mocking ICarService.
+Start by creating the test class that inherits &lt;xref href=&quot;FastMoq.MockerTestBase%601&quot; data-throw-if-not-resolved=&quot;false&quot;&gt;&lt;/xref&gt;. The object that is passed is the concrete class being tested.
+Use &lt;xref href=&quot;FastMoq.MockerTestBase%601.Component&quot; data-throw-if-not-resolved=&quot;false&quot;&gt;&lt;/xref&gt; Property to access the test object.
+
+&lt;pre&gt;&lt;code class=&quot;lang-csharp&quot;&gt;public class CarTest : MockerTestBase&lt;Car&gt; {
+ public void TestCar() {
+     Component.CarService.Should().NotBeNull();
+ }&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
+<p>ICarService is automatically injected into the Car object when created by the base class.</p>
+<pre><code class="lang-csharp">public partial class Car {
+     public Car(ICarService carService) =&gt; CarService = carService;
+}</code></pre>
+<pre><code>When needing to set up mocks before the component is created, use the &lt;xref href=&quot;FastMoq.MockerTestBase%601.get_SetupMocksAction&quot; data-throw-if-not-resolved=&quot;false&quot;&gt;&lt;/xref&gt; property or the base class constructor.
+This example shows pre-creating a database context mock before the component is created.
+
+&lt;pre&gt;&lt;code class=&quot;lang-csharp&quot;&gt;protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+mocker.GetMockDbContext&lt;ApplicationDbContext&gt;();&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
+
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L23">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor" data-uid="FastMoq.MockerTestBase`1.#ctor">MockerTestBase()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor(System.Action%7BFastMoq.Mocker%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L26">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker})">MockerTestBase(Action&lt;Mocker&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase(Action&lt;Mocker&gt; setupMocksAction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>&gt;</td>
+        <td><span class="parametername">setupMocksAction</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Action__0__.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor(System.Action%7BFastMoq.Mocker%7D%2CSystem.Action%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L33">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Action__0__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Action{`0})">MockerTestBase(Action&lt;Mocker&gt;, Action&lt;TComponent&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase(Action&lt;Mocker&gt; setupMocksAction, Action&lt;TComponent&gt; createdComponentAction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>&gt;</td>
+        <td><span class="parametername">setupMocksAction</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;TComponent&gt;</td>
+        <td><span class="parametername">createdComponentAction</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Action__0__System_Type___.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor(System.Action%7BFastMoq.Mocker%7D%2CSystem.Action%7B%600%7D%2CSystem.Type%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L92">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Action__0__System_Type___" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Action{`0},System.Type[])">MockerTestBase(Action&lt;Mocker&gt;, Action&lt;TComponent&gt;, params Type[])</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase(Action&lt;Mocker&gt; setupMocksAction, Action&lt;TComponent&gt; createdComponentAction, params Type[] createArgumentTypes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>&gt;</td>
+        <td><span class="parametername">setupMocksAction</span></td>
+        <td><p>The setup mocks action.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;TComponent&gt;</td>
+        <td><span class="parametername">createdComponentAction</span></td>
+        <td><p>The created component action.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>[]</td>
+        <td><span class="parametername">createArgumentTypes</span></td>
+        <td><p>Create component using constructor with matching types.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Func_FastMoq_Mocker__0__.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor(System.Action%7BFastMoq.Mocker%7D%2CSystem.Func%7BFastMoq.Mocker%2C%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L29">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Func_FastMoq_Mocker__0__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0})">MockerTestBase(Action&lt;Mocker&gt;, Func&lt;Mocker, TComponent&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase(Action&lt;Mocker&gt; setupMocksAction, Func&lt;Mocker, TComponent&gt; createComponentAction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>&gt;</td>
+        <td><span class="parametername">setupMocksAction</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>, TComponent&gt;</td>
+        <td><span class="parametername">createComponentAction</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Func_FastMoq_Mocker__0__System_Action__0__.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor(System.Action%7BFastMoq.Mocker%7D%2CSystem.Func%7BFastMoq.Mocker%2C%600%7D%2CSystem.Action%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L62">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Func_FastMoq_Mocker__0__System_Action__0__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0},System.Action{`0})">MockerTestBase(Action&lt;Mocker&gt;, Func&lt;Mocker, TComponent&gt;?, Action&lt;TComponent&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase(Action&lt;Mocker&gt; setupMocksAction, Func&lt;Mocker, TComponent&gt;? createComponentAction, Action&lt;TComponent&gt; createdComponentAction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>&gt;</td>
+        <td><span class="parametername">setupMocksAction</span></td>
+        <td><p>The action to set up the mocks before component creation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>, TComponent&gt;</td>
+        <td><span class="parametername">createComponentAction</span></td>
+        <td><p>The action to override component creation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;TComponent&gt;</td>
+        <td><span class="parametername">createdComponentAction</span></td>
+        <td><p>The action to do after the component is created.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor_System_Action__0__.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor(System.Action%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L46">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action__0__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{`0})">MockerTestBase(Action&lt;TComponent&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase(Action&lt;TComponent&gt; createdComponentAction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;TComponent&gt;</td>
+        <td><span class="parametername">createdComponentAction</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor_System_Boolean_.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L54">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor_System_Boolean_" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Boolean)">MockerTestBase(bool)</h4>
+  <div class="markdown level1 summary"><p>Create instance and setting mock resolution. Mock resolution is on by default.
+When it is off, it may not be able to fill in properties or other injections of components.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase(bool innerMockResolution)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">innerMockResolution</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor_System_Func_FastMoq_Mocker__0__.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor(System.Func%7BFastMoq.Mocker%2C%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L37">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor_System_Func_FastMoq_Mocker__0__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Func{FastMoq.Mocker,`0})">MockerTestBase(Func&lt;Mocker, TComponent&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase(Func&lt;Mocker, TComponent&gt; createComponentAction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>, TComponent&gt;</td>
+        <td><span class="parametername">createComponentAction</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor_System_Func_FastMoq_Mocker__0__System_Action__0__.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor(System.Func%7BFastMoq.Mocker%2C%600%7D%2CSystem.Action%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L41">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor_System_Func_FastMoq_Mocker__0__System_Action__0__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Func{FastMoq.Mocker,`0},System.Action{`0})">MockerTestBase(Func&lt;Mocker, TComponent&gt;, Action&lt;TComponent&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase(Func&lt;Mocker, TComponent&gt; createComponentAction, Action&lt;TComponent&gt; createdComponentAction)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>, TComponent&gt;</td>
+        <td><span class="parametername">createComponentAction</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;TComponent&gt;</td>
+        <td><span class="parametername">createdComponentAction</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1__ctor_System_Type___.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.%23ctor(System.Type%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L82">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1__ctor_System_Type___" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Type[])">MockerTestBase(params Type[])</h4>
+  <div class="markdown level1 summary"><p>Create instance using the component constructor that matches the type parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MockerTestBase(params Type[] createArgumentTypes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>[]</td>
+        <td><span class="parametername">createArgumentTypes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_Component.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.Component%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L52">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_Component_" data-uid="FastMoq.MockerTestBase`1.Component*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_Component" data-uid="FastMoq.MockerTestBase`1.Component">Component</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the component under test.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected TComponent Component { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TComponent</span></td>
+        <td><p>The service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_ComponentCreationFlags.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.ComponentCreationFlags%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L12">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_ComponentCreationFlags_" data-uid="FastMoq.MockerTestBase`1.ComponentCreationFlags*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_ComponentCreationFlags" data-uid="FastMoq.MockerTestBase`1.ComponentCreationFlags">ComponentCreationFlags</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual InstanceCreationFlags ComponentCreationFlags { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.InstanceCreationFlags.html">InstanceCreationFlags</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_ConfigureMockerPolicy.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.ConfigureMockerPolicy%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L85">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_ConfigureMockerPolicy_" data-uid="FastMoq.MockerTestBase`1.ConfigureMockerPolicy*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_ConfigureMockerPolicy" data-uid="FastMoq.MockerTestBase`1.ConfigureMockerPolicy">ConfigureMockerPolicy</h4>
+  <div class="markdown level1 summary"><p>Allows a test base to configure grouped <a class="xref" href="FastMoq.Mocker.html">Mocker</a> policy defaults before the component is created.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Action&lt;MockerPolicyOptions&gt;? ConfigureMockerPolicy { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.MockerPolicyOptions.html">MockerPolicyOptions</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_CreateComponentAction.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.CreateComponentAction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L68">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_CreateComponentAction_" data-uid="FastMoq.MockerTestBase`1.CreateComponentAction*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_CreateComponentAction" data-uid="FastMoq.MockerTestBase`1.CreateComponentAction">CreateComponentAction</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the creation component action. This action is run whenever the component is created.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Func&lt;Mocker, TComponent&gt; CreateComponentAction { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>, TComponent&gt;</td>
+        <td><p>The action to override the component creation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_CreatedComponentAction.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.CreatedComponentAction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L80">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_CreatedComponentAction_" data-uid="FastMoq.MockerTestBase`1.CreatedComponentAction*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_CreatedComponentAction" data-uid="FastMoq.MockerTestBase`1.CreatedComponentAction">CreatedComponentAction</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the created component action. This action is run after the component is created.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Action&lt;TComponent&gt;? CreatedComponentAction { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;TComponent&gt;</td>
+        <td><p>The created component action.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_CustomMocks.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.CustomMocks%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L62">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_CustomMocks_" data-uid="FastMoq.MockerTestBase`1.CustomMocks*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_CustomMocks" data-uid="FastMoq.MockerTestBase`1.CustomMocks">CustomMocks</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the custom mocks. These are added whenever the component is created.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IEnumerable&lt;MockModel&gt; CustomMocks { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="FastMoq.Models.MockModel.html">MockModel</a>&gt;</td>
+        <td><p>The custom mocks.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_Mocks.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.Mocks%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L91">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_Mocks_" data-uid="FastMoq.MockerTestBase`1.Mocks*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_Mocks" data-uid="FastMoq.MockerTestBase`1.Mocks">Mocks</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="FastMoq.Mocker.html">Mocker</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Mocker Mocks { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><p>The mocks.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_Scenario.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.Scenario%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L96">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_Scenario_" data-uid="FastMoq.MockerTestBase`1.Scenario*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_Scenario" data-uid="FastMoq.MockerTestBase`1.Scenario">Scenario</h4>
+  <div class="markdown level1 summary"><p>Gets a fluent scenario builder for the current component.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ScenarioBuilder&lt;TComponent&gt; Scenario { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.ScenarioBuilder-1.html">ScenarioBuilder</a>&lt;TComponent&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_SetupMocksAction.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.SetupMocksAction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L74">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_SetupMocksAction_" data-uid="FastMoq.MockerTestBase`1.SetupMocksAction*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_SetupMocksAction" data-uid="FastMoq.MockerTestBase`1.SetupMocksAction">SetupMocksAction</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the setup mocks action. This action is run before the component is created.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Action&lt;Mocker&gt;? SetupMocksAction { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>&gt;</td>
+        <td><p>The setup mocks action.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_CreateComponent.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.CreateComponent%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L162">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_CreateComponent_" data-uid="FastMoq.MockerTestBase`1.CreateComponent*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_CreateComponent" data-uid="FastMoq.MockerTestBase`1.CreateComponent">CreateComponent()</h4>
+  <div class="markdown level1 summary"><pre><code>Sets the &lt;xref href=&quot;FastMoq.MockerTestBase%601.Component&quot; data-throw-if-not-resolved=&quot;false&quot;&gt;&lt;/xref&gt; property with a new instance while maintaining the constructor setup and any
+</code></pre>
+<p>other changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void CreateComponent()</code></pre>
+  </div>
+  <h5 id="FastMoq_MockerTestBase_1_CreateComponent_examples">Examples</h5>
+  <p>CreateComponent allows creating the component when desired, instead of in the base class constructor.</p>
+<pre><code class="lang-csharp">public void Test() {
+    Mocks.GetMock&lt;ICarService&gt;().Setup(x =&gt; x.StartCar).Returns(true);
+    CreateComponent();
+}</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_Dispose.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L207">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_Dispose_" data-uid="FastMoq.MockerTestBase`1.Dispose*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_Dispose" data-uid="FastMoq.MockerTestBase`1.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.Dispose(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L189">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_Dispose_" data-uid="FastMoq.MockerTestBase`1.Dispose*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_Dispose_System_Boolean_" data-uid="FastMoq.MockerTestBase`1.Dispose(System.Boolean)">Dispose(bool)</h4>
+  <div class="markdown level1 summary"><p>Releases unmanaged and - optionally - managed resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">disposing</span></td>
+        <td><p><code>true</code> to release both managed and unmanaged resources; <code>false</code> to release only
+unmanaged resources.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_GetConstructor.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.GetConstructor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_ConstructorTesting.cs/#L13">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_GetConstructor_" data-uid="FastMoq.MockerTestBase`1.GetConstructor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_GetConstructor" data-uid="FastMoq.MockerTestBase`1.GetConstructor">GetConstructor()</h4>
+  <div class="markdown level1 summary"><p>Gets the constructor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ConstructorInfo GetConstructor()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.constructorinfo">ConstructorInfo</a></td>
+        <td><p>ConstructorInfo of the constructor.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.typeaccessexception">TypeAccessException</a></td>
+        <td><p>Error finding the constructor used to create the component.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_LoggingCallback_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception_.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.LoggingCallback(Microsoft.Extensions.Logging.LogLevel%2CMicrosoft.Extensions.Logging.EventId%2CSystem.String%2CSystem.Exception)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_Constructors.cs/#L75">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_LoggingCallback_" data-uid="FastMoq.MockerTestBase`1.LoggingCallback*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_LoggingCallback_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception_" data-uid="FastMoq.MockerTestBase`1.LoggingCallback(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception)">LoggingCallback(LogLevel, EventId, string, Exception?)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message, Exception? exception)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a></td>
+        <td><span class="parametername">eventId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_TestAllConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__System_Reflection_BindingFlags_.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.TestAllConstructorParameters(System.Action%7BSystem.Action%2CSystem.String%2CSystem.String%7D%2CSystem.Func%7BSystem.Reflection.ParameterInfo%2CSystem.Object%7D%2CSystem.Func%7BSystem.Reflection.ParameterInfo%2CSystem.Object%7D%2CSystem.Reflection.BindingFlags)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_ConstructorTesting.cs/#L23">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_TestAllConstructorParameters_" data-uid="FastMoq.MockerTestBase`1.TestAllConstructorParameters*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_TestAllConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__System_Reflection_BindingFlags_" data-uid="FastMoq.MockerTestBase`1.TestAllConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object},System.Reflection.BindingFlags)">TestAllConstructorParameters(Action&lt;Action, string, string&gt;, Func&lt;ParameterInfo, object?&gt;?, Func&lt;ParameterInfo, object?&gt;?, BindingFlags)</h4>
+  <div class="markdown level1 summary"><p>Tests all constructor parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void TestAllConstructorParameters(Action&lt;Action, string, string&gt; createAction, Func&lt;ParameterInfo, object?&gt;? defaultValue = null, Func&lt;ParameterInfo, object?&gt;? validValue = null, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action">Action</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><span class="parametername">createAction</span></td>
+        <td><p>The action used for each parameter of each constructor.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">defaultValue</span></td>
+        <td><p>The default value used when testing the parameter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">validValue</span></td>
+        <td><p>The valid value used when not testing the parameter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags">BindingFlags</a></td>
+        <td><span class="parametername">bindingFlags</span></td>
+        <td><p>The binding flags.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_TestConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.TestConstructorParameters(System.Action%7BSystem.Action%2CSystem.String%2CSystem.String%7D%2CSystem.Func%7BSystem.Reflection.ParameterInfo%2CSystem.Object%7D%2CSystem.Func%7BSystem.Reflection.ParameterInfo%2CSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_ConstructorTesting.cs/#L84">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_TestConstructorParameters_" data-uid="FastMoq.MockerTestBase`1.TestConstructorParameters*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_TestConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__" data-uid="FastMoq.MockerTestBase`1.TestConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})">TestConstructorParameters(Action&lt;Action, string, string&gt;, Func&lt;ParameterInfo, object?&gt;?, Func&lt;ParameterInfo, object?&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Tests the constructor parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void TestConstructorParameters(Action&lt;Action, string, string&gt; createAction, Func&lt;ParameterInfo, object?&gt;? defaultValue = null, Func&lt;ParameterInfo, object?&gt;? validValue = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action">Action</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><span class="parametername">createAction</span></td>
+        <td><p>The create action.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">defaultValue</span></td>
+        <td><p>The default value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">validValue</span></td>
+        <td><p>The valid value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_MockerTestBase_1_TestConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object___examples">Examples</h5>
+  <p>CreateComponent allows creating the component when desired, instead of in the base class constructor.</p>
+<pre><code class="lang-csharp">[Fact]
+public void Service_NullArgChecks() =&gt; TestConstructorParameters((action, constructorName, parameterName) =&gt;
+{
+    output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
+
+    action
+        .Should()
+        .Throw&lt;ArgumentNullException&gt;()
+        .WithMessage($"*{parameterName}*");
+});
+
+[Fact]
+public void Service_NullArgChecks() =&gt; TestConstructorParameters((action, constructorName, parameterName) =&gt;
+    {
+        output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
+
+        action
+            .Should()
+            .Throw&lt;ArgumentNullException&gt;()
+            .WithMessage($"*{parameterName}*");
+    },
+    info =&gt;
+    {
+        return info switch
+        {
+            { ParameterType: { Name: "string" }} =&gt; string.Empty,
+            { ParameterType: { Name: "int" }} =&gt; -1,
+            _ =&gt; default,
+        };
+    },
+    info =&gt;
+    {
+        return info switch
+        {
+            { ParameterType: { Name: "string" }} =&gt; "Valid Value",
+            { ParameterType: { Name: "int" }} =&gt; 22,
+            _ =&gt; Mocks.GetObject(info.ParameterType),
+        };
+    }
+);</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_TestConstructorParameters_System_Reflection_ConstructorInfo_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.TestConstructorParameters(System.Reflection.ConstructorInfo%2CSystem.Action%7BSystem.Action%2CSystem.String%2CSystem.String%7D%2CSystem.Func%7BSystem.Reflection.ParameterInfo%2CSystem.Object%7D%2CSystem.Func%7BSystem.Reflection.ParameterInfo%2CSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_ConstructorTesting.cs/#L94">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_TestConstructorParameters_" data-uid="FastMoq.MockerTestBase`1.TestConstructorParameters*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_TestConstructorParameters_System_Reflection_ConstructorInfo_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__" data-uid="FastMoq.MockerTestBase`1.TestConstructorParameters(System.Reflection.ConstructorInfo,System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})">TestConstructorParameters(ConstructorInfo, Action&lt;Action, string, string&gt;, Func&lt;ParameterInfo, object?&gt;?, Func&lt;ParameterInfo, object?&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Tests the constructor parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void TestConstructorParameters(ConstructorInfo constructorInfo, Action&lt;Action, string, string&gt; createAction, Func&lt;ParameterInfo, object?&gt;? defaultValue = null, Func&lt;ParameterInfo, object?&gt;? validValue = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.constructorinfo">ConstructorInfo</a></td>
+        <td><span class="parametername">constructorInfo</span></td>
+        <td><p>The constructor information.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action">Action</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><span class="parametername">createAction</span></td>
+        <td><p>The create action.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">defaultValue</span></td>
+        <td><p>The value replaced when testing a parameter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">validValue</span></td>
+        <td><p>The valid value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_WaitFor__1_System_Func___0__.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.WaitFor%60%601(System.Func%7B%60%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L138">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_WaitFor_" data-uid="FastMoq.MockerTestBase`1.WaitFor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_WaitFor__1_System_Func___0__" data-uid="FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0})">WaitFor&lt;T&gt;(Func&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Waits for an action.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T WaitFor&lt;T&gt;(Func&lt;T&gt; logic)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;T&gt;</td>
+        <td><span class="parametername">logic</span></td>
+        <td><p>The action.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>T.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>logic</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_WaitFor__1_System_Func___0__System_TimeSpan_.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.WaitFor%60%601(System.Func%7B%60%600%7D%2CSystem.TimeSpan)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L148">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_WaitFor_" data-uid="FastMoq.MockerTestBase`1.WaitFor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_WaitFor__1_System_Func___0__System_TimeSpan_" data-uid="FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0},System.TimeSpan)">WaitFor&lt;T&gt;(Func&lt;T&gt;, TimeSpan)</h4>
+  <div class="markdown level1 summary"><p>Waits for an action.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T WaitFor&lt;T&gt;(Func&lt;T&gt; logic, TimeSpan timespan)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;T&gt;</td>
+        <td><span class="parametername">logic</span></td>
+        <td><p>The action.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">timespan</span></td>
+        <td><p>The timespan, defaults to 4 seconds.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>T.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>logic</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1_WaitFor__1_System_Func___0__System_TimeSpan_System_TimeSpan_.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601.WaitFor%60%601(System.Func%7B%60%600%7D%2CSystem.TimeSpan%2CSystem.TimeSpan)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase.cs/#L110">View Source</a>
+  </span>
+  <a id="FastMoq_MockerTestBase_1_WaitFor_" data-uid="FastMoq.MockerTestBase`1.WaitFor*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_WaitFor__1_System_Func___0__System_TimeSpan_System_TimeSpan_" data-uid="FastMoq.MockerTestBase`1.WaitFor``1(System.Func{``0},System.TimeSpan,System.TimeSpan)">WaitFor&lt;T&gt;(Func&lt;T&gt;, TimeSpan, TimeSpan)</h4>
+  <div class="markdown level1 summary"><p>Waits for an action.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T WaitFor&lt;T&gt;(Func&lt;T&gt; logic, TimeSpan timespan, TimeSpan waitBetweenChecks)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;T&gt;</td>
+        <td><span class="parametername">logic</span></td>
+        <td><p>The action.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">timespan</span></td>
+        <td><p>The maximum time to wait.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
+        <td><span class="parametername">waitBetweenChecks</span></td>
+        <td><p>Time between each check.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>T.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Logic of T.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>logic</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.applicationexception">ApplicationException</a></td>
+        <td><p>Timeout waiting for condition</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_">ObjectExtensions.RaiseIfNull&lt;T&gt;(T?, string?, string?, int?, string?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_">TestClassExtensions.GetFieldValue&lt;TObject&gt;(TObject, string, TObject?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_">TestClassExtensions.GetField&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___">TestClassExtensions.GetMemberName&lt;T, TValue&gt;(T, Expression&lt;Func&lt;T, TValue&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___">TestClassExtensions.GetMember&lt;T, TValue&gt;(T, Expression&lt;Func&lt;T, TValue&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___">TestClassExtensions.GetMethodValue&lt;TObject&gt;(TObject, string, object?, params object[])</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_">TestClassExtensions.GetMethod&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.GetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_">TestClassExtensions.GetProperty&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_">TestClassExtensions.SetFieldValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.SetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_">TestClassExtensions.GetFieldInfo&lt;TType&gt;(object, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_">TestClassExtensions.GetFieldValue&lt;T&gt;(object?, FieldInfo)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_">TestClassExtensions.GetFieldValue&lt;T, TType&gt;(object, string)</a>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_MockerTestBase_1.md&amp;value=---%0Auid%3A%20FastMoq.MockerTestBase%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/MockerTestBase_ConstructorTesting.cs/#L6" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

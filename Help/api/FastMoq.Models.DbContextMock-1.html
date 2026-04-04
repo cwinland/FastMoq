@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class DbContextMock&lt;TEntity&gt; </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class DbContextMock&lt;TEntity&gt; ">
+    
+    <meta name="description" content="Wrapper for Mock. Implements the">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="FastMoq Documentation">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="FastMoq.Models.DbContextMock`1">
+
+
+
+  <h1 id="FastMoq_Models_DbContextMock_1" data-uid="FastMoq.Models.DbContextMock`1" class="text-break">Class DbContextMock&lt;TEntity&gt;</h1>
+  <div class="markdown level0 summary"><p>Wrapper for Mock.
+Implements the <span class="xref">Moq.Mock&lt;T&gt;</span></p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">Mock</span></div>
+    <div class="level2"><span class="xref">Mock</span>&lt;TEntity&gt;</div>
+    <div class="level3"><span class="xref">DbContextMock&lt;TEntity&gt;</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMock</span>&lt;TEntity&gt;</div>
+    <div><a class="xref" href="FastMoq.Models.IDbContextMock-1.html">IDbContextMock</a>&lt;TEntity&gt;</div>
+    <div><a class="xref" href="FastMoq.Models.IDbContextMock.html">IDbContextMock</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">Mock&lt;TEntity&gt;.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">Mock&lt;TEntity&gt;.OnGetObject()</span>
+    </div>
+    <div>
+      <span class="xref">Mock&lt;TEntity&gt;.As&lt;TInterface&gt;()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Setup(Expression&lt;Action&lt;TEntity&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Setup&lt;TResult&gt;(Expression&lt;Func&lt;TEntity, TResult&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.SetupGet&lt;TProperty&gt;(Expression&lt;Func&lt;TEntity, TProperty&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.SetupSet&lt;TProperty&gt;(Action&lt;TEntity&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.SetupSet(Action&lt;TEntity&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.SetupAdd(Action&lt;TEntity&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.SetupRemove(Action&lt;TEntity&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.SetupProperty&lt;TProperty&gt;(Expression&lt;Func&lt;TEntity, TProperty&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.SetupProperty&lt;TProperty&gt;(Expression&lt;Func&lt;TEntity, TProperty&gt;&gt;, TProperty)</a>
+    </div>
+    <div>
+      <span class="xref">Mock&lt;TEntity&gt;.SetupAllProperties()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.SetupSequence&lt;TResult&gt;(Expression&lt;Func&lt;TEntity, TResult&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.SetupSequence(Expression&lt;Action&lt;TEntity&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Mock&lt;TEntity&gt;.When(Func&lt;bool&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify(Expression&lt;Action&lt;TEntity&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify(Expression&lt;Action&lt;TEntity&gt;&gt;, Times)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify(Expression&lt;Action&lt;TEntity&gt;&gt;, Func&lt;Times&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify(Expression&lt;Action&lt;TEntity&gt;&gt;, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify(Expression&lt;Action&lt;TEntity&gt;&gt;, Times, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify(Expression&lt;Action&lt;TEntity&gt;&gt;, Func&lt;Times&gt;, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify&lt;TResult&gt;(Expression&lt;Func&lt;TEntity, TResult&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify&lt;TResult&gt;(Expression&lt;Func&lt;TEntity, TResult&gt;&gt;, Times)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify&lt;TResult&gt;(Expression&lt;Func&lt;TEntity, TResult&gt;&gt;, Func&lt;Times&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify&lt;TResult&gt;(Expression&lt;Func&lt;TEntity, TResult&gt;&gt;, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.Verify&lt;TResult&gt;(Expression&lt;Func&lt;TEntity, TResult&gt;&gt;, Times, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.VerifyGet&lt;TProperty&gt;(Expression&lt;Func&lt;TEntity, TProperty&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.VerifyGet&lt;TProperty&gt;(Expression&lt;Func&lt;TEntity, TProperty&gt;&gt;, Times)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.VerifyGet&lt;TProperty&gt;(Expression&lt;Func&lt;TEntity, TProperty&gt;&gt;, Func&lt;Times&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.VerifyGet&lt;TProperty&gt;(Expression&lt;Func&lt;TEntity, TProperty&gt;&gt;, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.VerifyGet&lt;TProperty&gt;(Expression&lt;Func&lt;TEntity, TProperty&gt;&gt;, Times, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock&lt;TEntity&gt;.VerifyGet&lt;TProperty&gt;(Expression&lt;Func&lt;TEntity, TProperty&gt;&gt;, Func&lt;Times&gt;, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifySet(Action&lt;TEntity&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifySet(Action&lt;TEntity&gt;, Times)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifySet(Action&lt;TEntity&gt;, Func&lt;Times&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifySet(Action&lt;TEntity&gt;, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifySet(Action&lt;TEntity&gt;, Times, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifySet(Action&lt;TEntity&gt;, Func&lt;Times&gt;, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyAdd(Action&lt;TEntity&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyAdd(Action&lt;TEntity&gt;, Times)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyAdd(Action&lt;TEntity&gt;, Func&lt;Times&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyAdd(Action&lt;TEntity&gt;, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyAdd(Action&lt;TEntity&gt;, Times, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyAdd(Action&lt;TEntity&gt;, Func&lt;Times&gt;, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyRemove(Action&lt;TEntity&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyRemove(Action&lt;TEntity&gt;, Times)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyRemove(Action&lt;TEntity&gt;, Func&lt;Times&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyRemove(Action&lt;TEntity&gt;, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyRemove(Action&lt;TEntity&gt;, Times, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.VerifyRemove(Action&lt;TEntity&gt;, Func&lt;Times&gt;, string)</a>
+    </div>
+    <div>
+      <span class="xref">Mock&lt;TEntity&gt;.VerifyNoOtherCalls()</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.Raise(Action&lt;TEntity&gt;, EventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Mock&lt;TEntity&gt;.Raise(Action&lt;TEntity&gt;, params object[])</a>
+    </div>
+    <div>
+      <span class="xref">Mock&lt;TEntity&gt;.Behavior</span>
+    </div>
+    <div>
+      <span class="xref">Mock&lt;TEntity&gt;.DefaultValueProvider</span>
+    </div>
+    <div>
+      <span class="xref">Mock&lt;TEntity&gt;.Object</span>
+    </div>
+    <div>
+      <span class="xref">Mock&lt;TEntity&gt;.Name</span>
+    </div>
+    <div>
+      <span class="xref">Mock&lt;TEntity&gt;.Switches</span>
+    </div>
+    <div>
+      <span class="xref">Mock.Of&lt;T&gt;()</span>
+    </div>
+    <div>
+      <span class="xref">Mock.Of&lt;T&gt;(MockBehavior)</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock.Of&lt;T&gt;(Expression&lt;Func&lt;T, bool&gt;&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Mock.Of&lt;T&gt;(Expression&lt;Func&lt;T, bool&gt;&gt;, MockBehavior)</a>
+    </div>
+    <div>
+      <span class="xref">Mock.Get&lt;T&gt;(T)</span>
+    </div>
+    <div>
+      <span class="xref">Mock.Verify(params Mock[])</span>
+    </div>
+    <div>
+      <span class="xref">Mock.VerifyAll(params Mock[])</span>
+    </div>
+    <div>
+      <span class="xref">Mock.Verify()</span>
+    </div>
+    <div>
+      <span class="xref">Mock.VerifyAll()</span>
+    </div>
+    <div>
+      <span class="xref">Mock.SetReturnsDefault&lt;TReturn&gt;(TReturn)</span>
+    </div>
+    <div>
+      <span class="xref">Mock.DefaultValue</span>
+    </div>
+    <div>
+      <span class="xref">Mock.Invocations</span>
+    </div>
+    <div>
+      <span class="xref">Mock.Setups</span>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a>.<a class="xref" href="FastMoq.Models.html">Models</a></h6>
+  <h6><strong>Assembly</strong>: FastMoq.Database.dll</h6>
+  <h5 id="FastMoq_Models_DbContextMock_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DbContextMock&lt;TEntity&gt; : Mock&lt;TEntity&gt;, IMock&lt;TEntity&gt;, IDbContextMock&lt;TEntity&gt;, IDbContextMock where TEntity : DbContext</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TEntity</span></td>
+        <td><p>The type of the t entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Models_DbContextMock_1_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Any interface type can be used for mocking, but for classes, only abstract and virtual members can be mocked.</p>
+<p>
+  The behavior of the mock with regards to the setups and the actual calls is determined by the optional
+  <span class="xref">Moq.MockBehavior</span> that can be passed to the <span class="xref">Moq.Mock&lt;T&gt;.Mock(Moq.MockBehavior)</span> constructor.
+</p>
+</div>
+  <h5 id="FastMoq_Models_DbContextMock_1_examples"><strong>Examples</strong></h5>
+  <p>The following example shows establishing setups with specific values for method invocations:</p>
+<pre><code class="lang-csharp">// Arrange
+var order = new Order(TALISKER, 50);
+var warehouse = new Mock&lt;IWarehouse&gt;();
+warehouse.Setup(w =&gt; w.HasInventory(TALISKER, 50)).Returns(true);
+
+// Act
+order.Fill(warehouse.Object);
+
+// Assert
+Assert.True(order.IsFilled);</code></pre>
+
+  <p>The following example shows how to use the <span class="xref">Moq.It</span> class
+to specify conditions for arguments instead of specific values:</p>
+<pre><code class="lang-csharp">// Arrange
+var order = new Order(TALISKER, 50);
+var warehouse = new Mock&lt;IWarehouse&gt;();
+
+// shows how to expect a value within a range:
+warehouse.Setup(x =&gt; x.HasInventory(
+                         It.IsAny&lt;string&gt;(),
+                         It.IsInRange(0, 100, Range.Inclusive)))
+         .Returns(false);
+
+// shows how to throw for unexpected calls.
+warehouse.Setup(x =&gt; x.Remove(
+                         It.IsAny&lt;string&gt;(),
+                         It.IsAny&lt;int&gt;()))
+         .Throws(new InvalidOperationException());
+
+// Act
+order.Fill(warehouse.Object);
+
+// Assert
+Assert.False(order.IsFilled);</code></pre>
+
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1__ctor.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.%23ctor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L29">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1__ctor" data-uid="FastMoq.Models.DbContextMock`1.#ctor">DbContextMock()</h4>
+  <div class="markdown level1 summary"><p>Initializes an instance of the mock with <span class="xref">Moq.MockBehavior.Default</span> behavior.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DbContextMock()</code></pre>
+  </div>
+  <h5 id="FastMoq_Models_DbContextMock_1__ctor_examples">Examples</h5>
+  <pre><code class="lang-csharp">var mock = new Mock&lt;IFormatProvider&gt;();</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.%23ctor(Moq.MockBehavior)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L32">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior_" data-uid="FastMoq.Models.DbContextMock`1.#ctor(Moq.MockBehavior)">DbContextMock(MockBehavior)</h4>
+  <div class="markdown level1 summary"><p>Initializes an instance of the mock with the specified <span class="xref">Moq.MockBehavior</span> behavior.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DbContextMock(MockBehavior behavior)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MockBehavior</span></td>
+        <td><span class="parametername">behavior</span></td>
+        <td><p>Behavior of the mock.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior__examples">Examples</h5>
+  <pre><code class="lang-csharp">var mock = new Mock&lt;IFormatProvider&gt;(MockBehavior.Strict);</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior_System_Object___.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.%23ctor(Moq.MockBehavior%2CSystem.Object%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L42">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior_System_Object___" data-uid="FastMoq.Models.DbContextMock`1.#ctor(Moq.MockBehavior,System.Object[])">DbContextMock(MockBehavior, params object[])</h4>
+  <div class="markdown level1 summary"><p>Initializes an instance of the mock with a specific <span class="xref">Moq.MockBehavior</span> behavior
+and with the given constructor arguments for the class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DbContextMock(MockBehavior behavior, params object[] args)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MockBehavior</span></td>
+        <td><span class="parametername">behavior</span></td>
+        <td><p>Behavior of the mock.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
+        <td><span class="parametername">args</span></td>
+        <td><p>Optional constructor arguments if the mocked type is a class.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior_System_Object____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The mock will try to find the best match constructor given the constructor arguments,
+and invoke that to initialize the instance. This applies only to classes, not interfaces.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1__ctor_System_Linq_Expressions_Expression_System_Func__0___Moq_MockBehavior_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.%23ctor(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%7D%7D%2CMoq.MockBehavior)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L38">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1__ctor_System_Linq_Expressions_Expression_System_Func__0___Moq_MockBehavior_" data-uid="FastMoq.Models.DbContextMock`1.#ctor(System.Linq.Expressions.Expression{System.Func{`0}},Moq.MockBehavior)">DbContextMock(Expression&lt;Func&lt;TEntity&gt;&gt;, MockBehavior)</h4>
+  <div class="markdown level1 summary"><p>Initializes an instance of the mock using the given constructor call including its
+argument values and with a specific <span class="xref">Moq.MockBehavior</span> behavior.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DbContextMock(Expression&lt;Func&lt;TEntity&gt;&gt; newExpression, MockBehavior behavior = MockBehavior.Default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TEntity&gt;&gt;</td>
+        <td><span class="parametername">newExpression</span></td>
+        <td><p>Lambda expression that creates an instance of <code class="typeparamref">T</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">MockBehavior</span></td>
+        <td><span class="parametername">behavior</span></td>
+        <td><p>Behavior of the mock.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Models_DbContextMock_1__ctor_System_Linq_Expressions_Expression_System_Func__0___Moq_MockBehavior__examples">Examples</h5>
+  <pre><code class="lang-csharp">var mock = new Mock&lt;MyProvider&gt;(() =&gt; new MyProvider(someArgument, 25), MockBehavior.Loose);</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1__ctor_System_Object___.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.%23ctor(System.Object%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L35">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1__ctor_System_Object___" data-uid="FastMoq.Models.DbContextMock`1.#ctor(System.Object[])">DbContextMock(params object[])</h4>
+  <div class="markdown level1 summary"><p>Initializes an instance of the mock with <span class="xref">Moq.MockBehavior.Default</span> behavior
+and with the given constructor arguments for the class. (Only valid when <code class="typeparamref">T</code> is a class.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DbContextMock(params object[] args)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
+        <td><span class="parametername">args</span></td>
+        <td><p>Optional constructor arguments if the mocked type is a class.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Models_DbContextMock_1__ctor_System_Object____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The mock will try to find the best match constructor given the constructor arguments,
+and invoke that to initialize the instance.This applies only for classes, not interfaces.</p>
+</div>
+  <h5 id="FastMoq_Models_DbContextMock_1__ctor_System_Object____examples">Examples</h5>
+  <pre><code class="lang-csharp">var mock = new Mock&lt;MyProvider&gt;(someArgument, 25);</code></pre>
+
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_CallBase.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.CallBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L20">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1_CallBase_" data-uid="FastMoq.Models.DbContextMock`1.CallBase*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1_CallBase" data-uid="FastMoq.Models.DbContextMock`1.CallBase">CallBase</h4>
+  <div class="markdown level1 summary"><p>Whether the base member virtual implementation will be called for mocked classes if no setup is matched.
+Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool CallBase { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Moq.Mock&lt;TEntity&gt;.CallBase</span></div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_SetupDbContextSetMethods_System_Reflection_PropertyInfo_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.SetupDbContextSetMethods(System.Reflection.PropertyInfo)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L65">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1_SetupDbContextSetMethods_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbContextSetMethods*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1_SetupDbContextSetMethods_System_Reflection_PropertyInfo_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbContextSetMethods(System.Reflection.PropertyInfo)">SetupDbContextSetMethods(PropertyInfo)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetupDbContextSetMethods(PropertyInfo propertyInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a></td>
+        <td><span class="parametername">propertyInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_SetupDbSetProperties_System_Reflection_PropertyInfo_System_Object_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.SetupDbSetProperties(System.Reflection.PropertyInfo%2CSystem.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L87">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1_SetupDbSetProperties_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetProperties*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1_SetupDbSetProperties_System_Reflection_PropertyInfo_System_Object_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetProperties(System.Reflection.PropertyInfo,System.Object)">SetupDbSetProperties(PropertyInfo, object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetupDbSetProperties(PropertyInfo propertyInfo, object value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a></td>
+        <td><span class="parametername">propertyInfo</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_SetupDbSetPropertyGet_System_Reflection_PropertyInfo_System_Object_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.SetupDbSetPropertyGet(System.Reflection.PropertyInfo%2CSystem.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L94">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1_SetupDbSetPropertyGet_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetPropertyGet*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1_SetupDbSetPropertyGet_System_Reflection_PropertyInfo_System_Object_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetPropertyGet(System.Reflection.PropertyInfo,System.Object)">SetupDbSetPropertyGet(PropertyInfo, object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetupDbSetPropertyGet(PropertyInfo propertyInfo, object value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a></td>
+        <td><span class="parametername">propertyInfo</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_SetupDbSets_FastMoq_Mocker_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.SetupDbSets(FastMoq.Mocker)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L133">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1_SetupDbSets_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSets*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1_SetupDbSets_FastMoq_Mocker_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSets(FastMoq.Mocker)">SetupDbSets(Mocker)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DbContextMock&lt;TEntity&gt; SetupDbSets(Mocker mocks)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocks</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Models.DbContextMock-1.html">DbContextMock</a>&lt;TEntity&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_SetupSetMethod_System_Type_System_Delegate_System_Type___System_Object___.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.SetupSetMethod(System.Type%2CSystem.Delegate%2CSystem.Type%5B%5D%2CSystem.Object%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L103">View Source</a>
+  </span>
+  <a id="FastMoq_Models_DbContextMock_1_SetupSetMethod_" data-uid="FastMoq.Models.DbContextMock`1.SetupSetMethod*"></a>
+  <h4 id="FastMoq_Models_DbContextMock_1_SetupSetMethod_System_Type_System_Delegate_System_Type___System_Object___" data-uid="FastMoq.Models.DbContextMock`1.SetupSetMethod(System.Type,System.Delegate,System.Type[],System.Object[])">SetupSetMethod(Type, Delegate, Type[]?, object?[]?)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetupSetMethod(Type setType, Delegate propValueDelegate, Type[]? types = null, object?[]? parameters = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">setType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Delegate</a></td>
+        <td><span class="parametername">propValueDelegate</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>[]</td>
+        <td><span class="parametername">types</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">Moq.IMock&lt;T&gt;</span>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Models.IDbContextMock-1.html">IDbContextMock&lt;TEntity&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Models.IDbContextMock.html">IDbContextMock</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_">ObjectExtensions.RaiseIfNull&lt;T&gt;(T?, string?, string?, int?, string?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_">TestClassExtensions.GetFieldValue&lt;TObject&gt;(TObject, string, TObject?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_">TestClassExtensions.GetField&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___">TestClassExtensions.GetMemberName&lt;T, TValue&gt;(T, Expression&lt;Func&lt;T, TValue&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___">TestClassExtensions.GetMember&lt;T, TValue&gt;(T, Expression&lt;Func&lt;T, TValue&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___">TestClassExtensions.GetMethodValue&lt;TObject&gt;(TObject, string, object?, params object[])</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_">TestClassExtensions.GetMethod&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.GetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_">TestClassExtensions.GetProperty&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_">TestClassExtensions.SetFieldValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.SetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerCreationExtensions.html#FastMoq_Extensions_MockerCreationExtensions_SetupMockProperty__1_Moq_Mock___0__System_Linq_Expressions_Expression_System_Func___0_System_Object___System_Object_">MockerCreationExtensions.SetupMockProperty&lt;TMock&gt;(Mock&lt;TMock&gt;, Expression&lt;Func&lt;TMock, object&gt;&gt;, object)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerCreationExtensions.html#FastMoq_Extensions_MockerCreationExtensions_SetupMockProperty__1_Moq_Mock___0__System_Reflection_PropertyInfo_System_Object_">MockerCreationExtensions.SetupMockProperty&lt;TMock&gt;(Mock&lt;TMock&gt;, PropertyInfo, object)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerCreationExtensions.html#FastMoq_Extensions_MockerCreationExtensions_SetupMockProperty__1_Moq_Mock___0__System_String_System_Object_">MockerCreationExtensions.SetupMockProperty&lt;TMock&gt;(Mock&lt;TMock&gt;, string, object)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_">TestClassExtensions.GetFieldInfo&lt;TType&gt;(object, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_">TestClassExtensions.GetFieldValue&lt;T&gt;(object?, FieldInfo)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_">TestClassExtensions.GetFieldValue&lt;T, TType&gt;(object, string)</a>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><span class="xref">Mock</span>&lt;T&gt;</div>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L17" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

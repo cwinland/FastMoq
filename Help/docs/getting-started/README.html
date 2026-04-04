@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Getting Started with FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Getting Started with FastMoq ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="">
+      <meta property="docfx:tocrel" content="">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="FastMoq Documentation">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="getting-started-with-fastmoq">Getting Started with FastMoq</h1>
+
+<p>Welcome to FastMoq. This guide walks through setup and a first test using the current v4 release line. FastMoq helps you create tests with automatic dependency injection, mock tracking, and test-focused object creation without forcing you to wire every dependency by hand.</p>
+<h2 id="what-is-fastmoq">What is FastMoq?</h2>
+<p>FastMoq is designed to reduce the boilerplate usually required when setting up unit tests. It automatically creates and injects test doubles, lets you override only the parts that matter, and supports both provider-neutral test patterns and Moq compatibility for migration scenarios.</p>
+<p>For the repo-native testing conventions and framework-specific guidance used by this codebase, see the <a href="testing-guide.html">FastMoq Testing Guide</a>.</p>
+<p>If you want examples that run directly in this repository instead of static snippets only, see <a href="../samples/testing-examples.html">Executable Testing Examples</a>.</p>
+<p>If you are updating older FastMoq usage from the last public <code>3.0.0</code> release, see <a href="../migration/README.html">Migration Guide: 3.0.0 To Current Repo</a>.</p>
+<p>If you need to choose or bootstrap a provider explicitly, see the <a href="provider-selection.html">Provider Selection Guide</a>.</p>
+<h3 id="key-benefits">Key Benefits</h3>
+<ul>
+<li><strong>Automatic Mock Creation</strong>: No need to manually declare and setup mocks</li>
+<li><strong>Dependency Injection</strong>: Automatically resolves and injects dependencies into your components</li>
+<li><strong>Fluent API</strong>: Clean, readable syntax for test setup and verification</li>
+<li><strong>Provider Architecture</strong>: Extensible system for custom mock configurations</li>
+<li><strong>Built-in Helpers</strong>: Common patterns for EF Core, HttpClient, IFileSystem, and more</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>Install FastMoq using your preferred package manager:</p>
+<h3 id="net-cli">.NET CLI</h3>
+<pre><code class="lang-bash">dotnet add package FastMoq
+</code></pre>
+<p>If you prefer the split packages instead of the aggregate package:</p>
+<pre><code class="lang-bash">dotnet add package FastMoq.Core
+dotnet add package FastMoq.Database
+dotnet add package FastMoq.Web
+</code></pre>
+<h3 id="package-manager-console">Package Manager Console</h3>
+<pre><code class="lang-powershell">Install-Package FastMoq
+</code></pre>
+<h3 id="packagereference">PackageReference</h3>
+<pre><code class="lang-xml">&lt;PackageReference Include=&quot;FastMoq&quot; Version=&quot;4.*&quot; /&gt;
+</code></pre>
+<p>Split-package example:</p>
+<pre><code class="lang-xml">&lt;PackageReference Include=&quot;FastMoq.Core&quot; Version=&quot;4.*&quot; /&gt;
+&lt;PackageReference Include=&quot;FastMoq.Database&quot; Version=&quot;4.*&quot; /&gt;
+&lt;PackageReference Include=&quot;FastMoq.Web&quot; Version=&quot;4.*&quot; /&gt;
+</code></pre>
+<blockquote>
+<p>Note: this guide targets the current v4 release line. For the release delta relative to the last public <code>3.0.0</code> package, see <a href="../whats-new/README.html">What's New Since 3.0.0</a>.
+Note: in the current repository, <code>GetMockDbContext&lt;TContext&gt;()</code> keeps the same <code>FastMoq</code> namespace call shape, but direct <code>FastMoq.Core</code> consumers should add <code>FastMoq.Database</code> for EF-specific helpers. Direct web-helper consumers should add <code>FastMoq.Web</code>.</p>
+</blockquote>
+<p>In the current v4 transition layout, <code>FastMoq.Core</code> bundles the built-in <code>moq</code> provider and the internal <code>reflection</code> fallback. The default provider is <code>reflection</code>. Optional providers such as <code>nsubstitute</code> can be added explicitly and registered with <code>MockingProviderRegistry</code>.</p>
+<p>The DbContext helper path now exposes explicit modes through <code>GetDbContextHandle&lt;TContext&gt;(...)</code>. <code>GetMockDbContext&lt;TContext&gt;()</code> remains the mocked-sets convenience entry point, and <code>DbContextTestMode.RealInMemory</code> is the real EF-backed option. The mocked-sets implementation still uses the existing moved Moq-based <code>DbContextMock&lt;TContext&gt;</code> path internally.</p>
+<h3 id="required-using-statements">Required Using Statements</h3>
+<p>For most FastMoq tests, these using statements are a good starting point:</p>
+<pre><code class="lang-csharp">using FastMoq;
+using FastMoq.Extensions;
+using Microsoft.Extensions.Logging;
+using Moq; // Only needed when you intentionally use Moq-specific compatibility APIs.
+</code></pre>
+<p>For all FastMoq tests, these are optional and suggested, but they are not required for FastMoq:</p>
+<pre><code class="lang-csharp">using Xunit; // Whatever your testing framework is
+using FluentAssertions; // Used in examples (free version)
+</code></pre>
+<p><code>FastMoq.Extensions</code> is especially useful because it contains logger verification helpers and other testing utilities.</p>
+<h2 id="your-first-test">Your First Test</h2>
+<p>Let's create a simple service and write a test for it using FastMoq.</p>
+<h3 id="1-create-a-service-to-test">1. Create a Service to Test</h3>
+<p>First, let's create a simple file processing service that depends on the <code>IFileSystem</code> interface:</p>
+<pre><code class="lang-csharp">// Services/FileProcessorService.cs
+using System.IO.Abstractions;
+using Microsoft.Extensions.Logging;
+
+public interface IFileProcessorService
+{
+    Task&lt;string&gt; ProcessFileAsync(string filePath);
+    bool ValidateFilePath(string filePath);
+}
+
+public class FileProcessorService : IFileProcessorService
+{
+    private readonly IFileSystem _fileSystem;
+    private readonly ILogger&lt;FileProcessorService&gt; _logger;
+
+    public FileProcessorService(IFileSystem fileSystem, ILogger&lt;FileProcessorService&gt; logger)
+    {
+        _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
+    public async Task&lt;string&gt; ProcessFileAsync(string filePath)
+    {
+        if (!ValidateFilePath(filePath))
+        {
+            _logger.LogWarning(&quot;Invalid file path: {FilePath}&quot;, filePath);
+            return string.Empty;
+        }
+
+        _logger.LogInformation(&quot;Processing file: {FilePath}&quot;, filePath);
+        
+        var content = await _fileSystem.File.ReadAllTextAsync(filePath);
+        var processedContent = content.ToUpperInvariant();
+        
+        _logger.LogInformation(&quot;File processed successfully: {FilePath}&quot;, filePath);
+        return processedContent;
+    }
+
+    public bool ValidateFilePath(string filePath)
+    {
+        return !string.IsNullOrWhiteSpace(filePath) &amp;&amp; _fileSystem.File.Exists(filePath);
+    }
+}
+</code></pre>
+<h3 id="2-write-your-first-fastmoq-test">2. Write Your First FastMoq Test</h3>
+<p>Now let's create a test using FastMoq's <code>MockerTestBase&lt;T&gt;</code>:</p>
+<pre><code class="lang-csharp">// Tests/FileProcessorServiceTests.cs
+using FastMoq;
+using FastMoq.Extensions;
+using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using Moq;
+using System.IO.Abstractions;
+using Xunit;
+
+public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&gt;
+{
+    [Fact]
+    public async Task ProcessFileAsync_ShouldReturnProcessedContent_WhenValidFile()
+    {
+        // Arrange
+        var filePath = &quot;test.txt&quot;;
+        var fileContent = &quot;hello world&quot;;
+        var expectedResult = &quot;HELLO WORLD&quot;;
+
+        Mocks.GetMock&lt;IFileSystem&gt;()
+            .Setup(x =&gt; x.File.Exists(filePath))
+            .Returns(true);
+
+        Mocks.GetMock&lt;IFileSystem&gt;()
+            .Setup(x =&gt; x.File.ReadAllTextAsync(filePath, It.IsAny&lt;CancellationToken&gt;()))
+            .ReturnsAsync(fileContent);
+
+        // Act
+        var result = await Component.ProcessFileAsync(filePath);
+
+        // Assert
+        result.Should().Be(expectedResult);
+        
+        // Verify interactions
+        Mocks.GetMock&lt;IFileSystem&gt;()
+            .Verify(x =&gt; x.File.ReadAllTextAsync(filePath, It.IsAny&lt;CancellationToken&gt;()), Times.Once);
+    }
+
+    [Fact]
+    public async Task ProcessFileAsync_ShouldReturnEmpty_WhenInvalidFile()
+    {
+        // Arrange
+        var filePath = &quot;nonexistent.txt&quot;;
+
+        Mocks.GetMock&lt;IFileSystem&gt;()
+            .Setup(x =&gt; x.File.Exists(filePath))
+            .Returns(false);
+
+        // Act
+        var result = await Component.ProcessFileAsync(filePath);
+
+        // Assert
+        result.Should().BeEmpty();
+        
+        // Verify logging
+        Mocks.VerifyLogged(LogLevel.Warning, &quot;not found&quot;, 1);
+        
+        // Verify file was never read
+        Mocks.GetMock&lt;IFileSystem&gt;()
+            .Verify(x =&gt; x.File.ReadAllTextAsync(It.IsAny&lt;string&gt;(), It.IsAny&lt;CancellationToken&gt;()), Times.Never);
+    }
+}
+</code></pre>
+<h2 id="understanding-the-fastmoq-architecture">Understanding the FastMoq Architecture</h2>
+<h3 id="mockertestbaset"><code>MockerTestBase&lt;T&gt;</code></h3>
+<p><code>MockerTestBase&lt;T&gt;</code> is the foundation of FastMoq testing. It automatically:</p>
+<ol>
+<li><strong>Creates your component</strong>: The <code>Component</code> property contains an instance of your class under test</li>
+<li><strong>Manages dependencies</strong>: Constructor parameters are resolved automatically using FastMoq's current type-map, known-type, and auto-mock rules</li>
+<li><strong>Provides mock access</strong>: Use <code>Mocks.GetMock&lt;T&gt;()</code> to configure mock behavior</li>
+<li><strong>Handles cleanup</strong>: Mocks are properly disposed after each test</li>
+</ol>
+<h3 id="key-properties-and-methods">Key Properties and Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Property/Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Component</code></td>
+<td>The instance of your class under test</td>
+</tr>
+<tr>
+<td><code>MockOptional</code></td>
+<td>Obsolete compatibility alias for <code>OptionalParameterResolution</code>. Prefer explicit <code>OptionalParameterResolution</code> or <code>InvocationOptions</code> in new code.</td>
+</tr>
+<tr>
+<td><code>Mocks</code></td>
+<td>The <code>Mocker</code> instance that manages all mocks</td>
+</tr>
+<tr>
+<td><code>Mocks.GetMock&lt;T&gt;()</code></td>
+<td>Gets the mock for interface T</td>
+</tr>
+<tr>
+<td><code>Mocks.GetObject&lt;T&gt;()</code></td>
+<td>Gets the mocked object instance</td>
+</tr>
+</tbody>
+</table>
+<h3 id="automatic-dependency-resolution">Automatic Dependency Resolution</h3>
+<p>FastMoq uses a smart dependency resolver that:</p>
+<ul>
+<li>Creates mocks for interfaces automatically</li>
+<li>Uses sensible defaults for common types (ILogger, IOptions, etc.)</li>
+<li>Supports complex dependency chains</li>
+<li>Handles circular dependencies gracefully</li>
+</ul>
+<h2 id="advanced-setup-options">Advanced Setup Options</h2>
+<h3 id="custom-mock-configuration">Custom Mock Configuration</h3>
+<p>If you need to configure mocks before your component is created, use the <code>SetupMocksAction</code>:</p>
+<pre><code class="lang-csharp">public class OrderServiceTests : MockerTestBase&lt;OrderService&gt;
+{
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    {
+        // Configure mock behavior before component creation
+        mocker.GetMock&lt;IPaymentProcessor&gt;()
+            .Setup(x =&gt; x.ValidateCard(It.IsAny&lt;string&gt;()))
+            .Returns(true);
+    };
+
+    [Fact]
+    public void TestWithPreConfiguredMocks()
+    {
+        // Your test here - mocks are already configured
+    }
+}
+</code></pre>
+<h3 id="constructor-injection-control">Constructor Injection Control</h3>
+<p>You can also configure mock setup through the base constructor:</p>
+<pre><code class="lang-csharp">public class OrderServiceTests : MockerTestBase&lt;OrderService&gt;
+{
+    public OrderServiceTests() : base(ConfigureMocks)
+    {
+    }
+
+    private static void ConfigureMocks(Mocker mocker)
+    {
+        mocker.GetMock&lt;IOrderRepository&gt;()
+            .Setup(x =&gt; x.GetOrderAsync(It.IsAny&lt;int&gt;()))
+            .ReturnsAsync(new Order());
+    }
+}
+</code></pre>
+<h2 id="common-patterns">Common Patterns</h2>
+<h3 id="testing-constructor-parameters">Testing Constructor Parameters</h3>
+<p>FastMoq provides helpers for testing constructor parameter validation:</p>
+<pre><code class="lang-csharp">[Fact]
+public void Constructor_ShouldThrow_WhenFileSystemIsNull()
+{
+    TestConstructorParameters((action, constructorName, parameterName) =&gt;
+    {
+        action.Should()
+            .Throw&lt;ArgumentNullException&gt;()
+            .WithMessage($&quot;*{parameterName}*&quot;);
+    });
+}
+</code></pre>
+<h3 id="async-method-testing">Async Method Testing</h3>
+<p>FastMoq works seamlessly with async methods:</p>
+<pre><code class="lang-csharp">[Fact]
+public async Task ProcessFileAsync_ShouldReturnProcessedContent()
+{
+    // Arrange
+    var filePath = &quot;data.txt&quot;;
+    var expectedContent = &quot;PROCESSED DATA&quot;;
+    
+    Mocks.GetMock&lt;IFileSystem&gt;()
+        .Setup(x =&gt; x.File.Exists(filePath))
+        .Returns(true);
+    
+    Mocks.GetMock&lt;IFileSystem&gt;()
+        .Setup(x =&gt; x.File.ReadAllTextAsync(filePath, It.IsAny&lt;CancellationToken&gt;()))
+        .ReturnsAsync(&quot;processed data&quot;);
+
+    // Act
+    var result = await Component.ProcessFileAsync(filePath);
+
+    // Assert
+    result.Should().Be(expectedContent);
+}
+</code></pre>
+<h2 id="next-steps">Next Steps</h2>
+<p>Now that you understand the basics, explore these advanced topics:</p>
+<ul>
+<li><a href="../cookbook">Cookbook</a> - Common patterns and real-world scenarios</li>
+<li><a href="../feature-parity">Feature Parity</a> - Compare FastMoq with other frameworks</li>
+<li><a href="../samples">Sample Applications</a> - Complete examples with Azure integration</li>
+</ul>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Use descriptive test names</strong> following the pattern <code>MethodName_ShouldExpectedBehavior_WhenCondition</code></li>
+<li><strong>Follow AAA pattern</strong> (Arrange, Act, Assert) for clarity</li>
+<li><strong>Keep tests focused</strong> - test one behavior per test method</li>
+<li><strong>Use FluentAssertions</strong> for more readable assertions</li>
+<li><strong>Include proper using statements</strong> - Always include <code>FastMoq.Extensions</code> for logger verification helpers</li>
+<li><strong>Verify important interactions</strong> but avoid over-verification</li>
+<li><strong>Group related tests</strong> in the same test class</li>
+<li><strong>Use provider-safe logger verification</strong> with <code>Mocks.VerifyLogged(...)</code></li>
+</ol>
+<h3 id="logger-verification-guidance">Logger verification guidance</h3>
+<p>Prefer <code>Mocks.VerifyLogged(...)</code> for new code. It is provider-safe because FastMoq captures <code>ILogger</code> callbacks through the active <code>IMockingProvider</code> and verifies the captured entries in core.</p>
+<p>Use <code>GetMock&lt;ILogger&lt;T&gt;&gt;().VerifyLogger(...)</code> only when you intentionally want the legacy Moq-specific behavior. That API is a compatibility shim and is planned to leave core in v5.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<p><strong>Problem</strong>: <code>System.MethodAccessException</code> when mocking DbContext
+<strong>Solution</strong>: Add <code>[assembly: InternalsVisibleTo(&quot;DynamicProxyGenAssembly2&quot;)]</code> to your AssemblyInfo.cs</p>
+<p><strong>Problem</strong>: Mock not being created for optional interface parameter
+<strong>Solution</strong>: Set <code>Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker</code> before creating the SUT. <code>MockOptional = true</code> is obsolete and only retained as a compatibility alias.</p>
+<p><strong>Problem</strong>: Component constructor throws exception
+<strong>Solution</strong>: Use <code>SetupMocksAction</code> or base constructor to configure required mocks before component creation</p>
+<p>For more troubleshooting tips, see the <a href="../../FAQs.md">FAQ</a>.</p>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/docs/getting-started/README.md/#L1" class="contribution-link">Edit this page</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

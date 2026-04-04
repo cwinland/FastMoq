@@ -1,0 +1,4296 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Models.ConstructorHistory
+  commentId: T:FastMoq.Models.ConstructorHistory
+  id: ConstructorHistory
+  parent: FastMoq.Models
+  children:
+  - FastMoq.Models.ConstructorHistory.#ctor
+  - FastMoq.Models.ConstructorHistory.#ctor(System.Collections.Generic.IDictionary{System.Type,System.Collections.Generic.List{FastMoq.Models.IHistoryModel}})
+  - FastMoq.Models.ConstructorHistory.AsEnumerable
+  - FastMoq.Models.ConstructorHistory.AsLookup
+  - FastMoq.Models.ConstructorHistory.AsReadOnlyDictionary
+  - FastMoq.Models.ConstructorHistory.Contains(System.Type)
+  - FastMoq.Models.ConstructorHistory.ContainsKey(System.Type)
+  - FastMoq.Models.ConstructorHistory.Count
+  - FastMoq.Models.ConstructorHistory.GetConstructor(System.Type)
+  - FastMoq.Models.ConstructorHistory.GetEnumerator
+  - FastMoq.Models.ConstructorHistory.Item(System.Int32)
+  - FastMoq.Models.ConstructorHistory.Item(System.Type)
+  - FastMoq.Models.ConstructorHistory.Keys
+  - FastMoq.Models.ConstructorHistory.TryGetValue(System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}@)
+  - FastMoq.Models.ConstructorHistory.Values
+  langs:
+  - csharp
+  - vb
+  name: ConstructorHistory
+  nameWithType: ConstructorHistory
+  fullName: FastMoq.Models.ConstructorHistory
+  type: Class
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ConstructorHistory
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 15
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: "    Class ConstructorHistory.\r\nImplements the <xref href=\"System.Collections.Generic.IReadOnlyDictionary%602\" data-throw-if-not-resolved=\"false\"></xref>"
+  example: []
+  syntax:
+    content: 'public class ConstructorHistory : ILookup<Type, IHistoryModel>, IEnumerable<IGrouping<Type, IHistoryModel>>, IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>, IReadOnlyCollection<KeyValuePair<Type, ReadOnlyCollection<IHistoryModel>>>, IEnumerable<KeyValuePair<Type, ReadOnlyCollection<IHistoryModel>>>, IEnumerable<KeyValuePair<Type, IEnumerable<IHistoryModel>>>, IEnumerable'
+    content.vb: Public Class ConstructorHistory Implements ILookup(Of Type, IHistoryModel), IEnumerable(Of IGrouping(Of Type, IHistoryModel)), IReadOnlyDictionary(Of Type, ReadOnlyCollection(Of IHistoryModel)), IReadOnlyCollection(Of KeyValuePair(Of Type, ReadOnlyCollection(Of IHistoryModel))), IEnumerable(Of KeyValuePair(Of Type, ReadOnlyCollection(Of IHistoryModel))), IEnumerable(Of KeyValuePair(Of Type, IEnumerable(Of IHistoryModel))), IEnumerable
+  seealso:
+  - linkId: System.Collections.Generic.IReadOnlyDictionary`2
+    commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  inheritance:
+  - System.Object
+  implements:
+  - System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}
+  - System.Collections.Generic.IEnumerable{System.Linq.IGrouping{System.Type,FastMoq.Models.IHistoryModel}}
+  - System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}
+  - System.Collections.Generic.IReadOnlyCollection{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}}
+  - System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}}
+  - System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}
+  - System.Collections.IEnumerable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.Models.ConstructorHistory)
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Models.ConstructorHistory,{TValue}}})
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Models.ConstructorHistory,{TValue}}})
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(System.String,System.Object,System.Object[])
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetMethod``1(System.String)
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(System.String,System.Object)
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(System.String,System.Object)
+  - FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(System.String,System.Object)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+- uid: FastMoq.Models.ConstructorHistory.Item(System.Int32)
+  commentId: P:FastMoq.Models.ConstructorHistory.Item(System.Int32)
+  id: Item(System.Int32)
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: this[int]
+  nameWithType: ConstructorHistory.this[int]
+  fullName: FastMoq.Models.ConstructorHistory.this[int]
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: this[]
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 38
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Gets the key value pair of IReadOnlyList{IHistoryModel} at the specified index.
+  example: []
+  syntax:
+    content: public KeyValuePair<Type, IReadOnlyList<IHistoryModel>> this[int index] { get; }
+    parameters:
+    - id: index
+      type: System.Int32
+      description: The index.
+    return:
+      type: System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IReadOnlyList{FastMoq.Models.IHistoryModel}}
+      description: >-
+        System.Collections.Generic.KeyValuePair&lt;System.Type, System.Collections.Generic.IReadOnlyList&lt;
+            FastMoq.Models.IHistoryModel&gt;&gt;.
+    content.vb: Public ReadOnly Default Property this[](index As Integer) As KeyValuePair(Of Type, IReadOnlyList(Of IHistoryModel))
+  overload: FastMoq.Models.ConstructorHistory.Item*
+  nameWithType.vb: ConstructorHistory.this[](Integer)
+  fullName.vb: FastMoq.Models.ConstructorHistory.this[](Integer)
+  name.vb: this[](Integer)
+- uid: FastMoq.Models.ConstructorHistory.Values
+  commentId: P:FastMoq.Models.ConstructorHistory.Values
+  id: Values
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: Values
+  nameWithType: ConstructorHistory.Values
+  fullName: FastMoq.Models.ConstructorHistory.Values
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Values
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 51
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Gets the values.
+  example: []
+  syntax:
+    content: public IEnumerable<IReadOnlyList<IHistoryModel>> Values { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Collections.Generic.IReadOnlyList{FastMoq.Models.IHistoryModel}}
+      description: The values.
+    content.vb: Public ReadOnly Property Values As IEnumerable(Of IReadOnlyList(Of IHistoryModel))
+  overload: FastMoq.Models.ConstructorHistory.Values*
+- uid: FastMoq.Models.ConstructorHistory.#ctor
+  commentId: M:FastMoq.Models.ConstructorHistory.#ctor
+  id: '#ctor'
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: ConstructorHistory()
+  nameWithType: ConstructorHistory.ConstructorHistory()
+  fullName: FastMoq.Models.ConstructorHistory.ConstructorHistory()
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 67
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Initializes a new instance of the <xref href="FastMoq.Models.ConstructorHistory" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public ConstructorHistory()
+    content.vb: Public Sub New()
+  overload: FastMoq.Models.ConstructorHistory.#ctor*
+  nameWithType.vb: ConstructorHistory.New()
+  fullName.vb: FastMoq.Models.ConstructorHistory.New()
+  name.vb: New()
+- uid: FastMoq.Models.ConstructorHistory.#ctor(System.Collections.Generic.IDictionary{System.Type,System.Collections.Generic.List{FastMoq.Models.IHistoryModel}})
+  commentId: M:FastMoq.Models.ConstructorHistory.#ctor(System.Collections.Generic.IDictionary{System.Type,System.Collections.Generic.List{FastMoq.Models.IHistoryModel}})
+  id: '#ctor(System.Collections.Generic.IDictionary{System.Type,System.Collections.Generic.List{FastMoq.Models.IHistoryModel}})'
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: ConstructorHistory(IDictionary<Type, List<IHistoryModel>>)
+  nameWithType: ConstructorHistory.ConstructorHistory(IDictionary<Type, List<IHistoryModel>>)
+  fullName: FastMoq.Models.ConstructorHistory.ConstructorHistory(System.Collections.Generic.IDictionary<System.Type, System.Collections.Generic.List<FastMoq.Models.IHistoryModel>>)
+  type: Constructor
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: .ctor
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 74
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Initializes a new instance of the <xref href="FastMoq.Models.ConstructorHistory" data-throw-if-not-resolved="false"></xref> class.
+  example: []
+  syntax:
+    content: public ConstructorHistory(IDictionary<Type, List<IHistoryModel>> dictionary)
+    parameters:
+    - id: dictionary
+      type: System.Collections.Generic.IDictionary{System.Type,System.Collections.Generic.List{FastMoq.Models.IHistoryModel}}
+      description: The dictionary.
+    content.vb: Public Sub New(dictionary As IDictionary(Of Type, List(Of IHistoryModel)))
+  overload: FastMoq.Models.ConstructorHistory.#ctor*
+  nameWithType.vb: ConstructorHistory.New(IDictionary(Of Type, List(Of IHistoryModel)))
+  fullName.vb: FastMoq.Models.ConstructorHistory.New(System.Collections.Generic.IDictionary(Of System.Type, System.Collections.Generic.List(Of FastMoq.Models.IHistoryModel)))
+  name.vb: New(IDictionary(Of Type, List(Of IHistoryModel)))
+- uid: FastMoq.Models.ConstructorHistory.AsEnumerable
+  commentId: M:FastMoq.Models.ConstructorHistory.AsEnumerable
+  id: AsEnumerable
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: AsEnumerable()
+  nameWithType: ConstructorHistory.AsEnumerable()
+  fullName: FastMoq.Models.ConstructorHistory.AsEnumerable()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AsEnumerable
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 81
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Converts to list.
+  example: []
+  syntax:
+    content: public IEnumerable<KeyValuePair<Type, IEnumerable<IHistoryModel>>> AsEnumerable()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}
+      description: <xref href="System.Collections.Generic.IEnumerable%601" data-throw-if-not-resolved="false"></xref>
+    content.vb: Public Function AsEnumerable() As IEnumerable(Of KeyValuePair(Of Type, IEnumerable(Of IHistoryModel)))
+  overload: FastMoq.Models.ConstructorHistory.AsEnumerable*
+- uid: FastMoq.Models.ConstructorHistory.AsLookup
+  commentId: M:FastMoq.Models.ConstructorHistory.AsLookup
+  id: AsLookup
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: AsLookup()
+  nameWithType: ConstructorHistory.AsLookup()
+  fullName: FastMoq.Models.ConstructorHistory.AsLookup()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AsLookup
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 87
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Converts to a Lookup.
+  example: []
+  syntax:
+    content: public ILookup<Type, IHistoryModel> AsLookup()
+    return:
+      type: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}
+      description: <xref href="System.Linq.ILookup%602" data-throw-if-not-resolved="false"></xref>
+    content.vb: Public Function AsLookup() As ILookup(Of Type, IHistoryModel)
+  overload: FastMoq.Models.ConstructorHistory.AsLookup*
+- uid: FastMoq.Models.ConstructorHistory.AsReadOnlyDictionary
+  commentId: M:FastMoq.Models.ConstructorHistory.AsReadOnlyDictionary
+  id: AsReadOnlyDictionary
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: AsReadOnlyDictionary()
+  nameWithType: ConstructorHistory.AsReadOnlyDictionary()
+  fullName: FastMoq.Models.ConstructorHistory.AsReadOnlyDictionary()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AsReadOnlyDictionary
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 93
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Converts to read only dictionary.
+  example: []
+  syntax:
+    content: public IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>> AsReadOnlyDictionary()
+    return:
+      type: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}
+      description: <xref href="System.Collections.Generic.IReadOnlyDictionary%602" data-throw-if-not-resolved="false"></xref>
+    content.vb: Public Function AsReadOnlyDictionary() As IReadOnlyDictionary(Of Type, ReadOnlyCollection(Of IHistoryModel))
+  overload: FastMoq.Models.ConstructorHistory.AsReadOnlyDictionary*
+- uid: FastMoq.Models.ConstructorHistory.GetConstructor(System.Type)
+  commentId: M:FastMoq.Models.ConstructorHistory.GetConstructor(System.Type)
+  id: GetConstructor(System.Type)
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: GetConstructor(Type)
+  nameWithType: ConstructorHistory.GetConstructor(Type)
+  fullName: FastMoq.Models.ConstructorHistory.GetConstructor(System.Type)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: GetConstructor
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 100
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Gets the constructor.
+  example: []
+  syntax:
+    content: public ConstructorInfo? GetConstructor(Type type)
+    parameters:
+    - id: type
+      type: System.Type
+      description: The type.
+    return:
+      type: System.Reflection.ConstructorInfo
+      description: System ofReflection ofConstructorInfo? of the constructor.
+    content.vb: Public Function GetConstructor(type As Type) As ConstructorInfo
+  overload: FastMoq.Models.ConstructorHistory.GetConstructor*
+- uid: FastMoq.Models.ConstructorHistory.GetEnumerator
+  commentId: M:FastMoq.Models.ConstructorHistory.GetEnumerator
+  id: GetEnumerator
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: GetEnumerator()
+  nameWithType: ConstructorHistory.GetEnumerator()
+  fullName: FastMoq.Models.ConstructorHistory.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: GetEnumerator
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 149
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Returns an enumerator that iterates through the collection.
+  example: []
+  syntax:
+    content: public IEnumerator<KeyValuePair<Type, IEnumerable<IHistoryModel>>> GetEnumerator()
+    return:
+      type: System.Collections.Generic.IEnumerator{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}
+      description: An enumerator that can be used to iterate through the collection.
+    content.vb: Public Function GetEnumerator() As IEnumerator(Of KeyValuePair(Of Type, IEnumerable(Of IHistoryModel)))
+  overload: FastMoq.Models.ConstructorHistory.GetEnumerator*
+  implements:
+  - System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}.GetEnumerator
+- uid: FastMoq.Models.ConstructorHistory.Contains(System.Type)
+  commentId: M:FastMoq.Models.ConstructorHistory.Contains(System.Type)
+  id: Contains(System.Type)
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: Contains(Type)
+  nameWithType: ConstructorHistory.Contains(Type)
+  fullName: FastMoq.Models.ConstructorHistory.Contains(System.Type)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Contains
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 189
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Determines whether a specified key exists in the <xref href="System.Linq.ILookup%602" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public bool Contains(Type key)
+    parameters:
+    - id: key
+      type: System.Type
+      description: The key to search for in the <xref href="System.Linq.ILookup%602" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">key</code> is in the <xref href="System.Linq.ILookup%602" data-throw-if-not-resolved="false"></xref>; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function Contains(key As Type) As Boolean
+  overload: FastMoq.Models.ConstructorHistory.Contains*
+  implements:
+  - System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Contains(System.Type)
+- uid: FastMoq.Models.ConstructorHistory.Count
+  commentId: P:FastMoq.Models.ConstructorHistory.Count
+  id: Count
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: ConstructorHistory.Count
+  fullName: FastMoq.Models.ConstructorHistory.Count
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Count
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 201
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Gets the count.
+  example: []
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+      description: The count.
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: FastMoq.Models.ConstructorHistory.Count*
+  implements:
+  - System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Count
+  - System.Collections.Generic.IReadOnlyCollection{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}}.Count
+- uid: FastMoq.Models.ConstructorHistory.Item(System.Type)
+  commentId: P:FastMoq.Models.ConstructorHistory.Item(System.Type)
+  id: Item(System.Type)
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: this[Type]
+  nameWithType: ConstructorHistory.this[Type]
+  fullName: FastMoq.Models.ConstructorHistory.this[System.Type]
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: this[]
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 204
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Gets the <xref href="System.Collections.Generic.IEnumerable%601" data-throw-if-not-resolved="false"></xref> sequence of values indexed by a specified key.
+  example: []
+  syntax:
+    content: public IEnumerable<IHistoryModel> this[Type key] { get; }
+    parameters:
+    - id: key
+      type: System.Type
+      description: The key of the desired sequence of values.
+    return:
+      type: System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}
+      description: The <xref href="System.Collections.Generic.IEnumerable%601" data-throw-if-not-resolved="false"></xref> sequence of values indexed by the specified key.
+    content.vb: Public ReadOnly Default Property this[](key As Type) As IEnumerable(Of IHistoryModel)
+  overload: FastMoq.Models.ConstructorHistory.Item*
+  implements:
+  - System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Item(System.Type)
+  nameWithType.vb: ConstructorHistory.this[](Type)
+  fullName.vb: FastMoq.Models.ConstructorHistory.this[](System.Type)
+  name.vb: this[](Type)
+- uid: FastMoq.Models.ConstructorHistory.ContainsKey(System.Type)
+  commentId: M:FastMoq.Models.ConstructorHistory.ContainsKey(System.Type)
+  id: ContainsKey(System.Type)
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: ContainsKey(Type)
+  nameWithType: ConstructorHistory.ContainsKey(Type)
+  fullName: FastMoq.Models.ConstructorHistory.ContainsKey(System.Type)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ContainsKey
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 211
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Determines whether the read-only dictionary contains an element that has the specified key.
+  example: []
+  syntax:
+    content: public bool ContainsKey(Type key)
+    parameters:
+    - id: key
+      type: System.Type
+      description: The key to locate.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the read-only dictionary contains an element that has the specified key; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function ContainsKey(key As Type) As Boolean
+  overload: FastMoq.Models.ConstructorHistory.ContainsKey*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: <code class="paramref">key</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  implements:
+  - System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.ContainsKey(System.Type)
+- uid: FastMoq.Models.ConstructorHistory.Keys
+  commentId: P:FastMoq.Models.ConstructorHistory.Keys
+  id: Keys
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: Keys
+  nameWithType: ConstructorHistory.Keys
+  fullName: FastMoq.Models.ConstructorHistory.Keys
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Keys
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 219
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Gets an enumerable collection that contains the keys in the read-only dictionary.
+  example: []
+  syntax:
+    content: public IEnumerable<Type> Keys { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Type}
+      description: An enumerable collection that contains the keys in the read-only dictionary.
+    content.vb: Public ReadOnly Property Keys As IEnumerable(Of Type)
+  overload: FastMoq.Models.ConstructorHistory.Keys*
+  implements:
+  - System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.Keys
+- uid: FastMoq.Models.ConstructorHistory.TryGetValue(System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}@)
+  commentId: M:FastMoq.Models.ConstructorHistory.TryGetValue(System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}@)
+  id: TryGetValue(System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}@)
+  parent: FastMoq.Models.ConstructorHistory
+  langs:
+  - csharp
+  - vb
+  name: TryGetValue(Type, out ReadOnlyCollection<IHistoryModel>)
+  nameWithType: ConstructorHistory.TryGetValue(Type, out ReadOnlyCollection<IHistoryModel>)
+  fullName: FastMoq.Models.ConstructorHistory.TryGetValue(System.Type, out System.Collections.ObjectModel.ReadOnlyCollection<FastMoq.Models.IHistoryModel>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Models/ConstructorHistory.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: TryGetValue
+    path: FastMoq.Core/Models/ConstructorHistory.cs
+    startLine: 222
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Gets the value that is associated with the specified key.
+  example: []
+  syntax:
+    content: public bool TryGetValue(Type key, out ReadOnlyCollection<IHistoryModel> value)
+    parameters:
+    - id: key
+      type: System.Type
+      description: The key to locate.
+    - id: value
+      type: System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}
+      description: When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <code class="paramref">value</code> parameter. This parameter is passed uninitialized.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the object that implements the <xref href="System.Collections.Generic.IReadOnlyDictionary%602" data-throw-if-not-resolved="false"></xref> interface contains an element that has the specified key; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function TryGetValue(key As Type, value As ReadOnlyCollection(Of IHistoryModel)) As Boolean
+  overload: FastMoq.Models.ConstructorHistory.TryGetValue*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: <code class="paramref">key</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
+  implements:
+  - System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.TryGetValue(System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}@)
+  nameWithType.vb: ConstructorHistory.TryGetValue(Type, ReadOnlyCollection(Of IHistoryModel))
+  fullName.vb: FastMoq.Models.ConstructorHistory.TryGetValue(System.Type, System.Collections.ObjectModel.ReadOnlyCollection(Of FastMoq.Models.IHistoryModel))
+  name.vb: TryGetValue(Type, ReadOnlyCollection(Of IHistoryModel))
+references:
+- uid: System.Collections.Generic.IReadOnlyDictionary`2
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<TKey, TValue>
+  nameWithType: IReadOnlyDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
+  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Linq.ILookup`2
+  commentId: T:System.Linq.ILookup`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2
+  name: ILookup<TKey, TElement>
+  nameWithType: ILookup<TKey, TElement>
+  fullName: System.Linq.ILookup<TKey, TElement>
+  nameWithType.vb: ILookup(Of TKey, TElement)
+  fullName.vb: System.Linq.ILookup(Of TKey, TElement)
+  name.vb: ILookup(Of TKey, TElement)
+  spec.csharp:
+  - uid: System.Linq.ILookup`2
+    name: ILookup
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.ILookup`2
+    name: ILookup
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TElement
+  - name: )
+- uid: FastMoq.Models
+  commentId: N:FastMoq.Models
+  href: FastMoq.html
+  name: FastMoq.Models
+  nameWithType: FastMoq.Models
+  fullName: FastMoq.Models
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Models
+    name: Models
+    href: FastMoq.Models.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Models
+    name: Models
+    href: FastMoq.Models.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}
+  commentId: T:System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}
+  parent: System.Linq
+  definition: System.Linq.ILookup`2
+  href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2
+  name: ILookup<Type, IHistoryModel>
+  nameWithType: ILookup<Type, IHistoryModel>
+  fullName: System.Linq.ILookup<System.Type, FastMoq.Models.IHistoryModel>
+  nameWithType.vb: ILookup(Of Type, IHistoryModel)
+  fullName.vb: System.Linq.ILookup(Of System.Type, FastMoq.Models.IHistoryModel)
+  name.vb: ILookup(Of Type, IHistoryModel)
+  spec.csharp:
+  - uid: System.Linq.ILookup`2
+    name: ILookup
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.ILookup`2
+    name: ILookup
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{System.Linq.IGrouping{System.Type,FastMoq.Models.IHistoryModel}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Linq.IGrouping{System.Type,FastMoq.Models.IHistoryModel}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IGrouping<Type, IHistoryModel>>
+  nameWithType: IEnumerable<IGrouping<Type, IHistoryModel>>
+  fullName: System.Collections.Generic.IEnumerable<System.Linq.IGrouping<System.Type, FastMoq.Models.IHistoryModel>>
+  nameWithType.vb: IEnumerable(Of IGrouping(Of Type, IHistoryModel))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Linq.IGrouping(Of System.Type, FastMoq.Models.IHistoryModel))
+  name.vb: IEnumerable(Of IGrouping(Of Type, IHistoryModel))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Linq.IGrouping`2
+    name: IGrouping
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.igrouping-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Linq.IGrouping`2
+    name: IGrouping
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.igrouping-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}
+  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  name: IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>
+  nameWithType: IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>
+  fullName: System.Collections.Generic.IReadOnlyDictionary<System.Type, System.Collections.ObjectModel.ReadOnlyCollection<FastMoq.Models.IHistoryModel>>
+  nameWithType.vb: IReadOnlyDictionary(Of Type, ReadOnlyCollection(Of IHistoryModel))
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of System.Type, System.Collections.ObjectModel.ReadOnlyCollection(Of FastMoq.Models.IHistoryModel))
+  name.vb: IReadOnlyDictionary(Of Type, ReadOnlyCollection(Of IHistoryModel))
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2
+    name: IReadOnlyDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyCollection{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}}
+  commentId: T:System.Collections.Generic.IReadOnlyCollection{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<KeyValuePair<Type, ReadOnlyCollection<IHistoryModel>>>
+  nameWithType: IReadOnlyCollection<KeyValuePair<Type, ReadOnlyCollection<IHistoryModel>>>
+  fullName: System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<System.Type, System.Collections.ObjectModel.ReadOnlyCollection<FastMoq.Models.IHistoryModel>>>
+  nameWithType.vb: IReadOnlyCollection(Of KeyValuePair(Of Type, ReadOnlyCollection(Of IHistoryModel)))
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of System.Collections.Generic.KeyValuePair(Of System.Type, System.Collections.ObjectModel.ReadOnlyCollection(Of FastMoq.Models.IHistoryModel)))
+  name.vb: IReadOnlyCollection(Of KeyValuePair(Of Type, ReadOnlyCollection(Of IHistoryModel)))
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<KeyValuePair<Type, ReadOnlyCollection<IHistoryModel>>>
+  nameWithType: IEnumerable<KeyValuePair<Type, ReadOnlyCollection<IHistoryModel>>>
+  fullName: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Type, System.Collections.ObjectModel.ReadOnlyCollection<FastMoq.Models.IHistoryModel>>>
+  nameWithType.vb: IEnumerable(Of KeyValuePair(Of Type, ReadOnlyCollection(Of IHistoryModel)))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.Type, System.Collections.ObjectModel.ReadOnlyCollection(Of FastMoq.Models.IHistoryModel)))
+  name.vb: IEnumerable(Of KeyValuePair(Of Type, ReadOnlyCollection(Of IHistoryModel)))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<KeyValuePair<Type, IEnumerable<IHistoryModel>>>
+  nameWithType: IEnumerable<KeyValuePair<Type, IEnumerable<IHistoryModel>>>
+  fullName: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Type, System.Collections.Generic.IEnumerable<FastMoq.Models.IHistoryModel>>>
+  nameWithType.vb: IEnumerable(Of KeyValuePair(Of Type, IEnumerable(Of IHistoryModel)))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.Type, System.Collections.Generic.IEnumerable(Of FastMoq.Models.IHistoryModel)))
+  name.vb: IEnumerable(Of KeyValuePair(Of Type, IEnumerable(Of IHistoryModel)))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Collections.IEnumerable
+  commentId: T:System.Collections.IEnumerable
+  parent: System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerable
+  name: IEnumerable
+  nameWithType: IEnumerable
+  fullName: System.Collections.IEnumerable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  parent: FastMoq.Extensions.ObjectExtensions
+  definition: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull<ConstructorHistory>(ConstructorHistory, string, string, int?, string)
+  nameWithType: ObjectExtensions.RaiseIfNull<ConstructorHistory>(ConstructorHistory, string, string, int?, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<FastMoq.Models.ConstructorHistory>(FastMoq.Models.ConstructorHistory, string, string, int?, string)
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of ConstructorHistory)(ConstructorHistory, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of FastMoq.Models.ConstructorHistory)(FastMoq.Models.ConstructorHistory, String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of ConstructorHistory)(ConstructorHistory, String, String, Integer?, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(FastMoq.Models.ConstructorHistory,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(FastMoq.Models.ConstructorHistory,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.Models.ConstructorHistory)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  name: GetFieldValue<ConstructorHistory>(ConstructorHistory, string, ConstructorHistory)
+  nameWithType: TestClassExtensions.GetFieldValue<ConstructorHistory>(ConstructorHistory, string, ConstructorHistory)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<FastMoq.Models.ConstructorHistory>(FastMoq.Models.ConstructorHistory, string, FastMoq.Models.ConstructorHistory)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of ConstructorHistory)(ConstructorHistory, String, ConstructorHistory)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of FastMoq.Models.ConstructorHistory)(FastMoq.Models.ConstructorHistory, String, FastMoq.Models.ConstructorHistory)
+  name.vb: GetFieldValue(Of ConstructorHistory)(ConstructorHistory, String, ConstructorHistory)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(FastMoq.Models.ConstructorHistory,System.String,FastMoq.Models.ConstructorHistory)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(FastMoq.Models.ConstructorHistory,System.String,FastMoq.Models.ConstructorHistory)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  name: GetField<ConstructorHistory>(ConstructorHistory, string)
+  nameWithType: TestClassExtensions.GetField<ConstructorHistory>(ConstructorHistory, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetField<FastMoq.Models.ConstructorHistory>(FastMoq.Models.ConstructorHistory, string)
+  nameWithType.vb: TestClassExtensions.GetField(Of ConstructorHistory)(ConstructorHistory, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetField(Of FastMoq.Models.ConstructorHistory)(FastMoq.Models.ConstructorHistory, String)
+  name.vb: GetField(Of ConstructorHistory)(ConstructorHistory, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(FastMoq.Models.ConstructorHistory,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(FastMoq.Models.ConstructorHistory,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Models.ConstructorHistory,{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<ConstructorHistory, TValue>(ConstructorHistory, Expression<Func<ConstructorHistory, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<ConstructorHistory, TValue>(ConstructorHistory, Expression<Func<ConstructorHistory, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<FastMoq.Models.ConstructorHistory, TValue>(FastMoq.Models.ConstructorHistory, System.Linq.Expressions.Expression<System.Func<FastMoq.Models.ConstructorHistory, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of ConstructorHistory, TValue)(ConstructorHistory, Expression(Of Func(Of ConstructorHistory, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of FastMoq.Models.ConstructorHistory, TValue)(FastMoq.Models.ConstructorHistory, System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.Models.ConstructorHistory, TValue)))
+  name.vb: GetMemberName(Of ConstructorHistory, TValue)(ConstructorHistory, Expression(Of Func(Of ConstructorHistory, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.Models.ConstructorHistory,System.Linq.Expressions.Expression{System.Func{FastMoq.Models.ConstructorHistory,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.Models.ConstructorHistory,System.Linq.Expressions.Expression{System.Func{FastMoq.Models.ConstructorHistory,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Models.ConstructorHistory,{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<ConstructorHistory, TValue>(ConstructorHistory, Expression<Func<ConstructorHistory, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<ConstructorHistory, TValue>(ConstructorHistory, Expression<Func<ConstructorHistory, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<FastMoq.Models.ConstructorHistory, TValue>(FastMoq.Models.ConstructorHistory, System.Linq.Expressions.Expression<System.Func<FastMoq.Models.ConstructorHistory, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of ConstructorHistory, TValue)(ConstructorHistory, Expression(Of Func(Of ConstructorHistory, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of FastMoq.Models.ConstructorHistory, TValue)(FastMoq.Models.ConstructorHistory, System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.Models.ConstructorHistory, TValue)))
+  name.vb: GetMember(Of ConstructorHistory, TValue)(ConstructorHistory, Expression(Of Func(Of ConstructorHistory, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.Models.ConstructorHistory,System.Linq.Expressions.Expression{System.Func{FastMoq.Models.ConstructorHistory,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.Models.ConstructorHistory,System.Linq.Expressions.Expression{System.Func{FastMoq.Models.ConstructorHistory,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(System.String,System.Object,System.Object[])
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  name: GetMethodValue<ConstructorHistory>(ConstructorHistory, string, object, params object[])
+  nameWithType: TestClassExtensions.GetMethodValue<ConstructorHistory>(ConstructorHistory, string, object, params object[])
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethodValue<FastMoq.Models.ConstructorHistory>(FastMoq.Models.ConstructorHistory, string, object, params object[])
+  nameWithType.vb: TestClassExtensions.GetMethodValue(Of ConstructorHistory)(ConstructorHistory, String, Object, ParamArray Object())
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethodValue(Of FastMoq.Models.ConstructorHistory)(FastMoq.Models.ConstructorHistory, String, Object, ParamArray Object())
+  name.vb: GetMethodValue(Of ConstructorHistory)(ConstructorHistory, String, Object, ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(FastMoq.Models.ConstructorHistory,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(FastMoq.Models.ConstructorHistory,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetMethod``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  name: GetMethod<ConstructorHistory>(ConstructorHistory, string)
+  nameWithType: TestClassExtensions.GetMethod<ConstructorHistory>(ConstructorHistory, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethod<FastMoq.Models.ConstructorHistory>(FastMoq.Models.ConstructorHistory, string)
+  nameWithType.vb: TestClassExtensions.GetMethod(Of ConstructorHistory)(ConstructorHistory, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethod(Of FastMoq.Models.ConstructorHistory)(FastMoq.Models.ConstructorHistory, String)
+  name.vb: GetMethod(Of ConstructorHistory)(ConstructorHistory, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(FastMoq.Models.ConstructorHistory,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(FastMoq.Models.ConstructorHistory,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  name: GetPropertyValue<ConstructorHistory>(ConstructorHistory, string, object)
+  nameWithType: TestClassExtensions.GetPropertyValue<ConstructorHistory>(ConstructorHistory, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetPropertyValue<FastMoq.Models.ConstructorHistory>(FastMoq.Models.ConstructorHistory, string, object)
+  nameWithType.vb: TestClassExtensions.GetPropertyValue(Of ConstructorHistory)(ConstructorHistory, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetPropertyValue(Of FastMoq.Models.ConstructorHistory)(FastMoq.Models.ConstructorHistory, String, Object)
+  name.vb: GetPropertyValue(Of ConstructorHistory)(ConstructorHistory, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(FastMoq.Models.ConstructorHistory,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(FastMoq.Models.ConstructorHistory,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<ConstructorHistory>(ConstructorHistory, string)
+  nameWithType: TestClassExtensions.GetProperty<ConstructorHistory>(ConstructorHistory, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<FastMoq.Models.ConstructorHistory>(FastMoq.Models.ConstructorHistory, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of ConstructorHistory)(ConstructorHistory, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of FastMoq.Models.ConstructorHistory)(FastMoq.Models.ConstructorHistory, String)
+  name.vb: GetProperty(Of ConstructorHistory)(ConstructorHistory, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.Models.ConstructorHistory,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.Models.ConstructorHistory,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  name: SetFieldValue<ConstructorHistory>(ConstructorHistory, string, object)
+  nameWithType: TestClassExtensions.SetFieldValue<ConstructorHistory>(ConstructorHistory, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetFieldValue<FastMoq.Models.ConstructorHistory>(FastMoq.Models.ConstructorHistory, string, object)
+  nameWithType.vb: TestClassExtensions.SetFieldValue(Of ConstructorHistory)(ConstructorHistory, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetFieldValue(Of FastMoq.Models.ConstructorHistory)(FastMoq.Models.ConstructorHistory, String, Object)
+  name.vb: SetFieldValue(Of ConstructorHistory)(ConstructorHistory, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(FastMoq.Models.ConstructorHistory,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(FastMoq.Models.ConstructorHistory,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  name: SetPropertyValue<ConstructorHistory>(ConstructorHistory, string, object)
+  nameWithType: TestClassExtensions.SetPropertyValue<ConstructorHistory>(ConstructorHistory, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue<FastMoq.Models.ConstructorHistory>(FastMoq.Models.ConstructorHistory, string, object)
+  nameWithType.vb: TestClassExtensions.SetPropertyValue(Of ConstructorHistory)(ConstructorHistory, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of FastMoq.Models.ConstructorHistory)(FastMoq.Models.ConstructorHistory, String, Object)
+  name.vb: SetPropertyValue(Of ConstructorHistory)(ConstructorHistory, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(FastMoq.Models.ConstructorHistory,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(FastMoq.Models.ConstructorHistory,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.ConstructorHistory
+    name: ConstructorHistory
+    href: FastMoq.Models.ConstructorHistory.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Linq
+  commentId: N:System.Linq
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq
+  nameWithType: System.Linq
+  fullName: System.Linq
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections.Generic.IReadOnlyCollection`1
+  commentId: T:System.Collections.Generic.IReadOnlyCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  name: IReadOnlyCollection<T>
+  nameWithType: IReadOnlyCollection<T>
+  fullName: System.Collections.Generic.IReadOnlyCollection<T>
+  nameWithType.vb: IReadOnlyCollection(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T)
+  name.vb: IReadOnlyCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyCollection`1
+    name: IReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  isExternal: true
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull<T>(T, string, string, int?, string)
+  nameWithType: ObjectExtensions.RaiseIfNull<T>(T, string, string, int?, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<T>(T, string, string, int?, string)
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.ObjectExtensions
+  commentId: T:FastMoq.Extensions.ObjectExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FastMoq.Extensions.ObjectExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  name: GetFieldValue<TObject>(TObject, string, TObject)
+  nameWithType: TestClassExtensions.GetFieldValue<TObject>(TObject, string, TObject)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<TObject>(TObject, string, TObject)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of TObject)(TObject, String, TObject)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of TObject)(TObject, String, TObject)
+  name.vb: GetFieldValue(Of TObject)(TObject, String, TObject)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TObject
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TObject
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions
+  commentId: T:FastMoq.Extensions.TestClassExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.TestClassExtensions.html
+  name: TestClassExtensions
+  nameWithType: TestClassExtensions
+  fullName: FastMoq.Extensions.TestClassExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  name: GetField<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetField<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetField<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetField(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetField(Of TObject)(TObject, String)
+  name.vb: GetField(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  name: GetMethodValue<TObject>(TObject, string, object, params object[])
+  nameWithType: TestClassExtensions.GetMethodValue<TObject>(TObject, string, object, params object[])
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethodValue<TObject>(TObject, string, object, params object[])
+  nameWithType.vb: TestClassExtensions.GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  name.vb: GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  name: GetMethod<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetMethod<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethod<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetMethod(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethod(Of TObject)(TObject, String)
+  name.vb: GetMethod(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  name: GetPropertyValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.GetPropertyValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetPropertyValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.GetPropertyValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetPropertyValue(Of TObject)(TObject, String, Object)
+  name.vb: GetPropertyValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetProperty<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  name.vb: GetProperty(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  name: SetFieldValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.SetFieldValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetFieldValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.SetFieldValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetFieldValue(Of TObject)(TObject, String, Object)
+  name.vb: SetFieldValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  name: SetPropertyValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
+  name.vb: SetPropertyValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+- uid: FastMoq.Models.ConstructorHistory.Item*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.Item
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_Item_System_Int32_
+  name: this
+  nameWithType: ConstructorHistory.this
+  fullName: FastMoq.Models.ConstructorHistory.this
+  nameWithType.vb: ConstructorHistory.this[]
+  fullName.vb: FastMoq.Models.ConstructorHistory.this[]
+  name.vb: this[]
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IReadOnlyList{FastMoq.Models.IHistoryModel}}
+  commentId: T:System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IReadOnlyList{FastMoq.Models.IHistoryModel}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.KeyValuePair`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  name: KeyValuePair<Type, IReadOnlyList<IHistoryModel>>
+  nameWithType: KeyValuePair<Type, IReadOnlyList<IHistoryModel>>
+  fullName: System.Collections.Generic.KeyValuePair<System.Type, System.Collections.Generic.IReadOnlyList<FastMoq.Models.IHistoryModel>>
+  nameWithType.vb: KeyValuePair(Of Type, IReadOnlyList(Of IHistoryModel))
+  fullName.vb: System.Collections.Generic.KeyValuePair(Of System.Type, System.Collections.Generic.IReadOnlyList(Of FastMoq.Models.IHistoryModel))
+  name.vb: KeyValuePair(Of Type, IReadOnlyList(Of IHistoryModel))
+  spec.csharp:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.KeyValuePair`2
+  commentId: T:System.Collections.Generic.KeyValuePair`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  name: KeyValuePair<TKey, TValue>
+  nameWithType: KeyValuePair<TKey, TValue>
+  fullName: System.Collections.Generic.KeyValuePair<TKey, TValue>
+  nameWithType.vb: KeyValuePair(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.KeyValuePair(Of TKey, TValue)
+  name.vb: KeyValuePair(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.Values*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.Values
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_Values
+  name: Values
+  nameWithType: ConstructorHistory.Values
+  fullName: FastMoq.Models.ConstructorHistory.Values
+- uid: System.Collections.Generic.IEnumerable{System.Collections.Generic.IReadOnlyList{FastMoq.Models.IHistoryModel}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Collections.Generic.IReadOnlyList{FastMoq.Models.IHistoryModel}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IReadOnlyList<IHistoryModel>>
+  nameWithType: IEnumerable<IReadOnlyList<IHistoryModel>>
+  fullName: System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<FastMoq.Models.IHistoryModel>>
+  nameWithType.vb: IEnumerable(Of IReadOnlyList(Of IHistoryModel))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Collections.Generic.IReadOnlyList(Of FastMoq.Models.IHistoryModel))
+  name.vb: IEnumerable(Of IReadOnlyList(Of IHistoryModel))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory
+  commentId: T:FastMoq.Models.ConstructorHistory
+  parent: FastMoq.Models
+  href: FastMoq.Models.ConstructorHistory.html
+  name: ConstructorHistory
+  nameWithType: ConstructorHistory
+  fullName: FastMoq.Models.ConstructorHistory
+- uid: FastMoq.Models.ConstructorHistory.#ctor*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.#ctor
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory__ctor
+  name: ConstructorHistory
+  nameWithType: ConstructorHistory.ConstructorHistory
+  fullName: FastMoq.Models.ConstructorHistory.ConstructorHistory
+  nameWithType.vb: ConstructorHistory.New
+  fullName.vb: FastMoq.Models.ConstructorHistory.New
+  name.vb: New
+- uid: System.Collections.Generic.IDictionary{System.Type,System.Collections.Generic.List{FastMoq.Models.IHistoryModel}}
+  commentId: T:System.Collections.Generic.IDictionary{System.Type,System.Collections.Generic.List{FastMoq.Models.IHistoryModel}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  name: IDictionary<Type, List<IHistoryModel>>
+  nameWithType: IDictionary<Type, List<IHistoryModel>>
+  fullName: System.Collections.Generic.IDictionary<System.Type, System.Collections.Generic.List<FastMoq.Models.IHistoryModel>>
+  nameWithType.vb: IDictionary(Of Type, List(Of IHistoryModel))
+  fullName.vb: System.Collections.Generic.IDictionary(Of System.Type, System.Collections.Generic.List(Of FastMoq.Models.IHistoryModel))
+  name.vb: IDictionary(Of Type, List(Of IHistoryModel))
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IDictionary`2
+  commentId: T:System.Collections.Generic.IDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  name: IDictionary<TKey, TValue>
+  nameWithType: IDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IDictionary<TKey, TValue>
+  nameWithType.vb: IDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IDictionary(Of TKey, TValue)
+  name.vb: IDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.AsEnumerable*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.AsEnumerable
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_AsEnumerable
+  name: AsEnumerable
+  nameWithType: ConstructorHistory.AsEnumerable
+  fullName: FastMoq.Models.ConstructorHistory.AsEnumerable
+- uid: FastMoq.Models.ConstructorHistory.AsLookup*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.AsLookup
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_AsLookup
+  name: AsLookup
+  nameWithType: ConstructorHistory.AsLookup
+  fullName: FastMoq.Models.ConstructorHistory.AsLookup
+- uid: FastMoq.Models.ConstructorHistory.AsReadOnlyDictionary*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.AsReadOnlyDictionary
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_AsReadOnlyDictionary
+  name: AsReadOnlyDictionary
+  nameWithType: ConstructorHistory.AsReadOnlyDictionary
+  fullName: FastMoq.Models.ConstructorHistory.AsReadOnlyDictionary
+- uid: FastMoq.Models.ConstructorHistory.GetConstructor*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.GetConstructor
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_GetConstructor_System_Type_
+  name: GetConstructor
+  nameWithType: ConstructorHistory.GetConstructor
+  fullName: FastMoq.Models.ConstructorHistory.GetConstructor
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Reflection.ConstructorInfo
+  commentId: T:System.Reflection.ConstructorInfo
+  parent: System.Reflection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.reflection.constructorinfo
+  name: ConstructorInfo
+  nameWithType: ConstructorInfo
+  fullName: System.Reflection.ConstructorInfo
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Reflection
+    name: Reflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Reflection
+    name: Reflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection
+- uid: FastMoq.Models.ConstructorHistory.GetEnumerator*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.GetEnumerator
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_GetEnumerator
+  name: GetEnumerator
+  nameWithType: ConstructorHistory.GetEnumerator
+  fullName: FastMoq.Models.ConstructorHistory.GetEnumerator
+- uid: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}.GetEnumerator
+  parent: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}
+  definition: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<KeyValuePair<Type, IEnumerable<IHistoryModel>>>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Type, System.Collections.Generic.IEnumerable<FastMoq.Models.IHistoryModel>>>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of KeyValuePair(Of Type, IEnumerable(Of IHistoryModel))).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of System.Type, System.Collections.Generic.IEnumerable(Of FastMoq.Models.IHistoryModel))).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.IEnumerator{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}
+  commentId: T:System.Collections.Generic.IEnumerator{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerator`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  name: IEnumerator<KeyValuePair<Type, IEnumerable<IHistoryModel>>>
+  nameWithType: IEnumerator<KeyValuePair<Type, IEnumerable<IHistoryModel>>>
+  fullName: System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<System.Type, System.Collections.Generic.IEnumerable<FastMoq.Models.IHistoryModel>>>
+  nameWithType.vb: IEnumerator(Of KeyValuePair(Of Type, IEnumerable(Of IHistoryModel)))
+  fullName.vb: System.Collections.Generic.IEnumerator(Of System.Collections.Generic.KeyValuePair(Of System.Type, System.Collections.Generic.IEnumerable(Of FastMoq.Models.IHistoryModel)))
+  name.vb: IEnumerator(Of KeyValuePair(Of Type, IEnumerable(Of IHistoryModel)))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: <
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable`1.GetEnumerator
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<T>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of T).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.IEnumerator`1
+  commentId: T:System.Collections.Generic.IEnumerator`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.Contains*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.Contains
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_Contains_System_Type_
+  name: Contains
+  nameWithType: ConstructorHistory.Contains
+  fullName: FastMoq.Models.ConstructorHistory.Contains
+- uid: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Contains(System.Type)
+  commentId: M:System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Contains(System.Type)
+  parent: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}
+  definition: System.Linq.ILookup`2.Contains(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.contains
+  name: Contains(Type)
+  nameWithType: ILookup<Type, IHistoryModel>.Contains(Type)
+  fullName: System.Linq.ILookup<System.Type, FastMoq.Models.IHistoryModel>.Contains(System.Type)
+  nameWithType.vb: ILookup(Of Type, IHistoryModel).Contains(Type)
+  fullName.vb: System.Linq.ILookup(Of System.Type, FastMoq.Models.IHistoryModel).Contains(System.Type)
+  spec.csharp:
+  - uid: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Contains(System.Type)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.contains
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Contains(System.Type)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.contains
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Linq.ILookup`2.Contains(`0)
+  commentId: M:System.Linq.ILookup`2.Contains(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.contains
+  name: Contains(TKey)
+  nameWithType: ILookup<TKey, TElement>.Contains(TKey)
+  fullName: System.Linq.ILookup<TKey, TElement>.Contains(TKey)
+  nameWithType.vb: ILookup(Of TKey, TElement).Contains(TKey)
+  fullName.vb: System.Linq.ILookup(Of TKey, TElement).Contains(TKey)
+  spec.csharp:
+  - uid: System.Linq.ILookup`2.Contains(`0)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.contains
+  - name: (
+  - name: TKey
+  - name: )
+  spec.vb:
+  - uid: System.Linq.ILookup`2.Contains(`0)
+    name: Contains
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.contains
+  - name: (
+  - name: TKey
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.Count*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.Count
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_Count
+  name: Count
+  nameWithType: ConstructorHistory.Count
+  fullName: FastMoq.Models.ConstructorHistory.Count
+- uid: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Count
+  commentId: P:System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Count
+  parent: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}
+  definition: System.Linq.ILookup`2.Count
+  href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.count
+  name: Count
+  nameWithType: ILookup<Type, IHistoryModel>.Count
+  fullName: System.Linq.ILookup<System.Type, FastMoq.Models.IHistoryModel>.Count
+  nameWithType.vb: ILookup(Of Type, IHistoryModel).Count
+  fullName.vb: System.Linq.ILookup(Of System.Type, FastMoq.Models.IHistoryModel).Count
+- uid: System.Collections.Generic.IReadOnlyCollection{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}}.Count
+  commentId: P:System.Collections.Generic.IReadOnlyCollection{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}}.Count
+  parent: System.Collections.Generic.IReadOnlyCollection{System.Collections.Generic.KeyValuePair{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}}
+  definition: System.Collections.Generic.IReadOnlyCollection`1.Count
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1.count
+  name: Count
+  nameWithType: IReadOnlyCollection<KeyValuePair<Type, ReadOnlyCollection<IHistoryModel>>>.Count
+  fullName: System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<System.Type, System.Collections.ObjectModel.ReadOnlyCollection<FastMoq.Models.IHistoryModel>>>.Count
+  nameWithType.vb: IReadOnlyCollection(Of KeyValuePair(Of Type, ReadOnlyCollection(Of IHistoryModel))).Count
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of System.Collections.Generic.KeyValuePair(Of System.Type, System.Collections.ObjectModel.ReadOnlyCollection(Of FastMoq.Models.IHistoryModel))).Count
+- uid: System.Linq.ILookup`2.Count
+  commentId: P:System.Linq.ILookup`2.Count
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.count
+  name: Count
+  nameWithType: ILookup<TKey, TElement>.Count
+  fullName: System.Linq.ILookup<TKey, TElement>.Count
+  nameWithType.vb: ILookup(Of TKey, TElement).Count
+  fullName.vb: System.Linq.ILookup(Of TKey, TElement).Count
+- uid: System.Collections.Generic.IReadOnlyCollection`1.Count
+  commentId: P:System.Collections.Generic.IReadOnlyCollection`1.Count
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1.count
+  name: Count
+  nameWithType: IReadOnlyCollection<T>.Count
+  fullName: System.Collections.Generic.IReadOnlyCollection<T>.Count
+  nameWithType.vb: IReadOnlyCollection(Of T).Count
+  fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T).Count
+- uid: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Item(System.Type)
+  commentId: P:System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Item(System.Type)
+  parent: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}
+  definition: System.Linq.ILookup`2.Item(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: this[Type]
+  nameWithType: ILookup<Type, IHistoryModel>.this[Type]
+  fullName: System.Linq.ILookup<System.Type, FastMoq.Models.IHistoryModel>.this[System.Type]
+  nameWithType.vb: ILookup(Of Type, IHistoryModel).this[](Type)
+  fullName.vb: System.Linq.ILookup(Of System.Type, FastMoq.Models.IHistoryModel).this[](System.Type)
+  name.vb: this[](Type)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ']'
+  spec.vb:
+  - uid: System.Linq.ILookup{System.Type,FastMoq.Models.IHistoryModel}.Item(System.Type)
+    name: this[]
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.item
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}
+  commentId: T:System.Collections.Generic.IEnumerable{FastMoq.Models.IHistoryModel}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<IHistoryModel>
+  nameWithType: IEnumerable<IHistoryModel>
+  fullName: System.Collections.Generic.IEnumerable<FastMoq.Models.IHistoryModel>
+  nameWithType.vb: IEnumerable(Of IHistoryModel)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of FastMoq.Models.IHistoryModel)
+  name.vb: IEnumerable(Of IHistoryModel)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+- uid: System.Linq.ILookup`2.Item(`0)
+  commentId: P:System.Linq.ILookup`2.Item(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.item
+  name: this[TKey]
+  nameWithType: ILookup<TKey, TElement>.this[TKey]
+  fullName: System.Linq.ILookup<TKey, TElement>.this[TKey]
+  nameWithType.vb: ILookup(Of TKey, TElement).this[](TKey)
+  fullName.vb: System.Linq.ILookup(Of TKey, TElement).this[](TKey)
+  name.vb: this[](TKey)
+  spec.csharp:
+  - name: this
+  - name: '['
+  - name: TKey
+  - name: ']'
+  spec.vb:
+  - uid: System.Linq.ILookup`2.Item(`0)
+    name: this[]
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.ilookup-2.item
+  - name: (
+  - name: TKey
+  - name: )
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: FastMoq.Models.ConstructorHistory.ContainsKey*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.ContainsKey
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_ContainsKey_System_Type_
+  name: ContainsKey
+  nameWithType: ConstructorHistory.ContainsKey
+  fullName: FastMoq.Models.ConstructorHistory.ContainsKey
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.ContainsKey(System.Type)
+  commentId: M:System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.ContainsKey(System.Type)
+  parent: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}
+  definition: System.Collections.Generic.IReadOnlyDictionary`2.ContainsKey(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.containskey
+  name: ContainsKey(Type)
+  nameWithType: IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>.ContainsKey(Type)
+  fullName: System.Collections.Generic.IReadOnlyDictionary<System.Type, System.Collections.ObjectModel.ReadOnlyCollection<FastMoq.Models.IHistoryModel>>.ContainsKey(System.Type)
+  nameWithType.vb: IReadOnlyDictionary(Of Type, ReadOnlyCollection(Of IHistoryModel)).ContainsKey(Type)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of System.Type, System.Collections.ObjectModel.ReadOnlyCollection(Of FastMoq.Models.IHistoryModel)).ContainsKey(System.Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.ContainsKey(System.Type)
+    name: ContainsKey
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.containskey
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.ContainsKey(System.Type)
+    name: ContainsKey
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.containskey
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2.ContainsKey(`0)
+  commentId: M:System.Collections.Generic.IReadOnlyDictionary`2.ContainsKey(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.containskey
+  name: ContainsKey(TKey)
+  nameWithType: IReadOnlyDictionary<TKey, TValue>.ContainsKey(TKey)
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>.ContainsKey(TKey)
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue).ContainsKey(TKey)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue).ContainsKey(TKey)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2.ContainsKey(`0)
+    name: ContainsKey
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.containskey
+  - name: (
+  - name: TKey
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2.ContainsKey(`0)
+    name: ContainsKey
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.containskey
+  - name: (
+  - name: TKey
+  - name: )
+- uid: FastMoq.Models.ConstructorHistory.Keys*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.Keys
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_Keys
+  name: Keys
+  nameWithType: ConstructorHistory.Keys
+  fullName: FastMoq.Models.ConstructorHistory.Keys
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.Keys
+  commentId: P:System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.Keys
+  parent: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}
+  definition: System.Collections.Generic.IReadOnlyDictionary`2.Keys
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.keys
+  name: Keys
+  nameWithType: IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>.Keys
+  fullName: System.Collections.Generic.IReadOnlyDictionary<System.Type, System.Collections.ObjectModel.ReadOnlyCollection<FastMoq.Models.IHistoryModel>>.Keys
+  nameWithType.vb: IReadOnlyDictionary(Of Type, ReadOnlyCollection(Of IHistoryModel)).Keys
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of System.Type, System.Collections.ObjectModel.ReadOnlyCollection(Of FastMoq.Models.IHistoryModel)).Keys
+- uid: System.Collections.Generic.IEnumerable{System.Type}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Type}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Type>
+  nameWithType: IEnumerable<Type>
+  fullName: System.Collections.Generic.IEnumerable<System.Type>
+  nameWithType.vb: IEnumerable(Of Type)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Type)
+  name.vb: IEnumerable(Of Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2.Keys
+  commentId: P:System.Collections.Generic.IReadOnlyDictionary`2.Keys
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.keys
+  name: Keys
+  nameWithType: IReadOnlyDictionary<TKey, TValue>.Keys
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>.Keys
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue).Keys
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue).Keys
+- uid: FastMoq.Models.ConstructorHistory.TryGetValue*
+  commentId: Overload:FastMoq.Models.ConstructorHistory.TryGetValue
+  href: FastMoq.Models.ConstructorHistory.html#FastMoq_Models_ConstructorHistory_TryGetValue_System_Type_System_Collections_ObjectModel_ReadOnlyCollection_FastMoq_Models_IHistoryModel___
+  name: TryGetValue
+  nameWithType: ConstructorHistory.TryGetValue
+  fullName: FastMoq.Models.ConstructorHistory.TryGetValue
+- uid: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.TryGetValue(System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}@)
+  commentId: M:System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.TryGetValue(System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}@)
+  parent: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}
+  definition: System.Collections.Generic.IReadOnlyDictionary`2.TryGetValue(`0,`1@)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.trygetvalue
+  name: TryGetValue(Type, out ReadOnlyCollection<IHistoryModel>)
+  nameWithType: IReadOnlyDictionary<Type, ReadOnlyCollection<IHistoryModel>>.TryGetValue(Type, out ReadOnlyCollection<IHistoryModel>)
+  fullName: System.Collections.Generic.IReadOnlyDictionary<System.Type, System.Collections.ObjectModel.ReadOnlyCollection<FastMoq.Models.IHistoryModel>>.TryGetValue(System.Type, out System.Collections.ObjectModel.ReadOnlyCollection<FastMoq.Models.IHistoryModel>)
+  nameWithType.vb: IReadOnlyDictionary(Of Type, ReadOnlyCollection(Of IHistoryModel)).TryGetValue(Type, ReadOnlyCollection(Of IHistoryModel))
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of System.Type, System.Collections.ObjectModel.ReadOnlyCollection(Of FastMoq.Models.IHistoryModel)).TryGetValue(System.Type, System.Collections.ObjectModel.ReadOnlyCollection(Of FastMoq.Models.IHistoryModel))
+  name.vb: TryGetValue(Type, ReadOnlyCollection(Of IHistoryModel))
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.TryGetValue(System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}@)
+    name: TryGetValue
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.trygetvalue
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary{System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}}.TryGetValue(System.Type,System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}@)
+    name: TryGetValue
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.trygetvalue
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: )
+- uid: System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}
+  commentId: T:System.Collections.ObjectModel.ReadOnlyCollection{FastMoq.Models.IHistoryModel}
+  parent: System.Collections.ObjectModel
+  definition: System.Collections.ObjectModel.ReadOnlyCollection`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  name: ReadOnlyCollection<IHistoryModel>
+  nameWithType: ReadOnlyCollection<IHistoryModel>
+  fullName: System.Collections.ObjectModel.ReadOnlyCollection<FastMoq.Models.IHistoryModel>
+  nameWithType.vb: ReadOnlyCollection(Of IHistoryModel)
+  fullName.vb: System.Collections.ObjectModel.ReadOnlyCollection(Of FastMoq.Models.IHistoryModel)
+  name.vb: ReadOnlyCollection(Of IHistoryModel)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyDictionary`2.TryGetValue(`0,`1@)
+  commentId: M:System.Collections.Generic.IReadOnlyDictionary`2.TryGetValue(`0,`1@)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.trygetvalue
+  name: TryGetValue(TKey, out TValue)
+  nameWithType: IReadOnlyDictionary<TKey, TValue>.TryGetValue(TKey, out TValue)
+  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>.TryGetValue(TKey, out TValue)
+  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue).TryGetValue(TKey, TValue)
+  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue).TryGetValue(TKey, TValue)
+  name.vb: TryGetValue(TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2.TryGetValue(`0,`1@)
+    name: TryGetValue
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.trygetvalue
+  - name: (
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - name: TValue
+  - name: )
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyDictionary`2.TryGetValue(`0,`1@)
+    name: TryGetValue
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.trygetvalue
+  - name: (
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+  commentId: T:System.Collections.ObjectModel.ReadOnlyCollection`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  name: ReadOnlyCollection<T>
+  nameWithType: ReadOnlyCollection<T>
+  fullName: System.Collections.ObjectModel.ReadOnlyCollection<T>
+  nameWithType.vb: ReadOnlyCollection(Of T)
+  fullName.vb: System.Collections.ObjectModel.ReadOnlyCollection(Of T)
+  name.vb: ReadOnlyCollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.ObjectModel.ReadOnlyCollection`1
+    name: ReadOnlyCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.ObjectModel
+  commentId: N:System.Collections.ObjectModel
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.ObjectModel
+  nameWithType: System.Collections.ObjectModel
+  fullName: System.Collections.ObjectModel
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.ObjectModel
+    name: ObjectModel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.ObjectModel
+    name: ObjectModel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.objectmodel

@@ -1,0 +1,81 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Web.Blazor.Interfaces
+  commentId: N:FastMoq.Web.Blazor.Interfaces
+  id: FastMoq.Web.Blazor.Interfaces
+  children:
+  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
+  langs:
+  - csharp
+  - vb
+  name: FastMoq.Web.Blazor.Interfaces
+  nameWithType: FastMoq.Web.Blazor.Interfaces
+  fullName: FastMoq.Web.Blazor.Interfaces
+  type: Namespace
+  assemblies:
+  - FastMoq.Web
+references:
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
+  commentId: T:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
+  parent: FastMoq.Web.Blazor.Interfaces
+  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html
+  name: IMockerBlazorTestHelpers<T>
+  nameWithType: IMockerBlazorTestHelpers<T>
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T)
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T)
+  name.vb: IMockerBlazorTestHelpers(Of T)
+  spec.csharp:
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
+    name: IMockerBlazorTestHelpers
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
+    name: IMockerBlazorTestHelpers
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Web.Blazor.Interfaces
+  commentId: N:FastMoq.Web.Blazor.Interfaces
+  href: FastMoq.html
+  name: FastMoq.Web.Blazor.Interfaces
+  nameWithType: FastMoq.Web.Blazor.Interfaces
+  fullName: FastMoq.Web.Blazor.Interfaces
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Web
+    name: Web
+    href: FastMoq.Web.html
+  - name: .
+  - uid: FastMoq.Web.Blazor
+    name: Blazor
+    href: FastMoq.Web.Blazor.html
+  - name: .
+  - uid: FastMoq.Web.Blazor.Interfaces
+    name: Interfaces
+    href: FastMoq.Web.Blazor.Interfaces.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Web
+    name: Web
+    href: FastMoq.Web.html
+  - name: .
+  - uid: FastMoq.Web.Blazor
+    name: Blazor
+    href: FastMoq.Web.Blazor.html
+  - name: .
+  - uid: FastMoq.Web.Blazor.Interfaces
+    name: Interfaces
+    href: FastMoq.Web.Blazor.Interfaces.html

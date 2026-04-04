@@ -1,0 +1,977 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Extensions.ObjectExtensions
+  commentId: T:FastMoq.Extensions.ObjectExtensions
+  id: ObjectExtensions
+  parent: FastMoq.Extensions
+  children:
+  - FastMoq.Extensions.ObjectExtensions.AddOrUpdate``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1)
+  - FastMoq.Extensions.ObjectExtensions.RaiseIf(System.Func{System.Boolean},System.String,System.String,System.Int32,System.String)
+  - FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrEmpty(System.String,System.String,System.String,System.Nullable{System.Int32},System.String)
+  - FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace(System.String,System.String,System.String,System.Nullable{System.Int32},System.String)
+  - FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.Nullable{``0},System.String,System.String,System.Nullable{System.Int32},System.String)
+  - FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  langs:
+  - csharp
+  - vb
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FastMoq.Extensions.ObjectExtensions
+  type: Class
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ObjectExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ObjectExtensions
+    path: FastMoq.Core/Extensions/ObjectExtensions.cs
+    startLine: 9
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Class ObjectExtensions.
+  example: []
+  syntax:
+    content: public static class ObjectExtensions
+    content.vb: Public Module ObjectExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FastMoq.Extensions.ObjectExtensions.AddOrUpdate``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.AddOrUpdate``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1)
+  id: AddOrUpdate``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.ObjectExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddOrUpdate<TKey, TValue>(IDictionary<TKey, TValue>, TKey, TValue)
+  nameWithType: ObjectExtensions.AddOrUpdate<TKey, TValue>(IDictionary<TKey, TValue>, TKey, TValue)
+  fullName: FastMoq.Extensions.ObjectExtensions.AddOrUpdate<TKey, TValue>(System.Collections.Generic.IDictionary<TKey, TValue>, TKey, TValue)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ObjectExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AddOrUpdate
+    path: FastMoq.Core/Extensions/ObjectExtensions.cs
+    startLine: 19
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Adds or updates (if key exists) the value in the dictionary.
+  example: []
+  syntax:
+    content: public static void AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
+    parameters:
+    - id: dictionary
+      type: System.Collections.Generic.IDictionary{{TKey},{TValue}}
+      description: The dictionary.
+    - id: key
+      type: '{TKey}'
+      description: The key.
+    - id: value
+      type: '{TValue}'
+      description: The value.
+    typeParameters:
+    - id: TKey
+      description: The type of the t key.
+    - id: TValue
+      description: The type of the t value.
+    content.vb: Public Shared Sub AddOrUpdate(Of TKey, TValue)(dictionary As IDictionary(Of TKey, TValue), key As TKey, value As TValue)
+  overload: FastMoq.Extensions.ObjectExtensions.AddOrUpdate*
+  nameWithType.vb: ObjectExtensions.AddOrUpdate(Of TKey, TValue)(IDictionary(Of TKey, TValue), TKey, TValue)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.AddOrUpdate(Of TKey, TValue)(System.Collections.Generic.IDictionary(Of TKey, TValue), TKey, TValue)
+  name.vb: AddOrUpdate(Of TKey, TValue)(IDictionary(Of TKey, TValue), TKey, TValue)
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIf(System.Func{System.Boolean},System.String,System.String,System.Int32,System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIf(System.Func{System.Boolean},System.String,System.String,System.Int32,System.String)
+  id: RaiseIf(System.Func{System.Boolean},System.String,System.String,System.Int32,System.String)
+  parent: FastMoq.Extensions.ObjectExtensions
+  langs:
+  - csharp
+  - vb
+  name: RaiseIf(Func<bool>, string, string, int, string)
+  nameWithType: ObjectExtensions.RaiseIf(Func<bool>, string, string, int, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIf(System.Func<bool>, string, string, int, string)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ObjectExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: RaiseIf
+    path: FastMoq.Core/Extensions/ObjectExtensions.cs
+    startLine: 36
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Raises if predicate is true.
+  example: []
+  syntax:
+    content: public static bool RaiseIf(Func<bool> predicate, string name, string path, int line, string exp)
+    parameters:
+    - id: predicate
+      type: System.Func{System.Boolean}
+      description: The predicate.
+    - id: name
+      type: System.String
+      description: The name.
+    - id: path
+      type: System.String
+      description: The path.
+    - id: line
+      type: System.Int32
+      description: The line.
+    - id: exp
+      type: System.String
+      description: The exp.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if expression is true, <code>false</code> otherwise.
+    content.vb: Public Shared Function RaiseIf(predicate As Func(Of Boolean), name As String, path As String, line As Integer, exp As String) As Boolean
+  overload: FastMoq.Extensions.ObjectExtensions.RaiseIf*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: ''
+  nameWithType.vb: ObjectExtensions.RaiseIf(Func(Of Boolean), String, String, Integer, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIf(System.Func(Of Boolean), String, String, Integer, String)
+  name.vb: RaiseIf(Func(Of Boolean), String, String, Integer, String)
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  id: RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.ObjectExtensions
+  langs:
+  - csharp
+  - vb
+  name: RaiseIfNull<T>(T?, string?, string?, int?, string?)
+  nameWithType: ObjectExtensions.RaiseIfNull<T>(T?, string?, string?, int?, string?)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<T>(T?, string?, string?, int?, string?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ObjectExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: RaiseIfNull
+    path: FastMoq.Core/Extensions/ObjectExtensions.cs
+    startLine: 51
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Raises if null.
+  example: []
+  syntax:
+    content: 'public static T RaiseIfNull<T>(this T? thing, string? name = null, string? path = null, int? line = null, string? exp = null) where T : class'
+    parameters:
+    - id: thing
+      type: '{T}'
+      description: The thing.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: name
+      type: System.String
+      description: The name.
+    - id: path
+      type: System.String
+      description: The path.
+    - id: line
+      type: System.Nullable{System.Int32}
+      description: The line.
+    - id: exp
+      type: System.String
+      description: The exp.
+    typeParameters:
+    - id: T
+      description: ''
+    return:
+      type: '{T}'
+      description: Raises if null.
+    content.vb: Public Shared Function RaiseIfNull(Of T As Class)(thing As T, name As String = Nothing, path As String = Nothing, line As Integer? = Nothing, exp As String = Nothing) As T
+  overload: FastMoq.Extensions.ObjectExtensions.RaiseIfNull*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: ''
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: ''
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of T)(T, String, String, Integer?, String)
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.Nullable{``0},System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.Nullable{``0},System.String,System.String,System.Nullable{System.Int32},System.String)
+  id: RaiseIfNull``1(System.Nullable{``0},System.String,System.String,System.Nullable{System.Int32},System.String)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.ObjectExtensions
+  langs:
+  - csharp
+  - vb
+  name: RaiseIfNull<T>(T?, string?, string?, int?, string?)
+  nameWithType: ObjectExtensions.RaiseIfNull<T>(T?, string?, string?, int?, string?)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<T>(T?, string?, string?, int?, string?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ObjectExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: RaiseIfNull
+    path: FastMoq.Core/Extensions/ObjectExtensions.cs
+    startLine: 72
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Raises if null.
+  example: []
+  syntax:
+    content: 'public static void RaiseIfNull<T>(this T? thing, string? name = null, string? path = null, int? line = null, string? exp = null) where T : struct'
+    parameters:
+    - id: thing
+      type: System.Nullable{{T}}
+      description: The thing.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: name
+      type: System.String
+      description: The name.
+    - id: path
+      type: System.String
+      description: The path.
+    - id: line
+      type: System.Nullable{System.Int32}
+      description: The line.
+    - id: exp
+      type: System.String
+      description: The exp.
+    typeParameters:
+    - id: T
+      description: ''
+    content.vb: Public Shared Sub RaiseIfNull(Of T As Structure)(thing As T?, name As String = Nothing, path As String = Nothing, line As Integer? = Nothing, exp As String = Nothing)
+  overload: FastMoq.Extensions.ObjectExtensions.RaiseIfNull*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: ''
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of T)(T?, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of T)(T?, String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of T)(T?, String, String, Integer?, String)
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrEmpty(System.String,System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrEmpty(System.String,System.String,System.String,System.Nullable{System.Int32},System.String)
+  id: RaiseIfNullOrEmpty(System.String,System.String,System.String,System.Nullable{System.Int32},System.String)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.ObjectExtensions
+  langs:
+  - csharp
+  - vb
+  name: RaiseIfNullOrEmpty(string?, string?, string?, int?, string?)
+  nameWithType: ObjectExtensions.RaiseIfNullOrEmpty(string?, string?, string?, int?, string?)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrEmpty(string?, string?, string?, int?, string?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ObjectExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: RaiseIfNullOrEmpty
+    path: FastMoq.Core/Extensions/ObjectExtensions.cs
+    startLine: 85
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Raises if null or empty.
+  example: []
+  syntax:
+    content: public static void RaiseIfNullOrEmpty(this string? thing, string? name = null, string? path = null, int? line = null, string? exp = null)
+    parameters:
+    - id: thing
+      type: System.String
+      description: The thing.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: name
+      type: System.String
+      description: The name.
+    - id: path
+      type: System.String
+      description: The path.
+    - id: line
+      type: System.Nullable{System.Int32}
+      description: The line.
+    - id: exp
+      type: System.String
+      description: The exp.
+    content.vb: Public Shared Sub RaiseIfNullOrEmpty(thing As String, name As String = Nothing, path As String = Nothing, line As Integer? = Nothing, exp As String = Nothing)
+  overload: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrEmpty*
+  nameWithType.vb: ObjectExtensions.RaiseIfNullOrEmpty(String, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrEmpty(String, String, String, Integer?, String)
+  name.vb: RaiseIfNullOrEmpty(String, String, String, Integer?, String)
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace(System.String,System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace(System.String,System.String,System.String,System.Nullable{System.Int32},System.String)
+  id: RaiseIfNullOrWhitespace(System.String,System.String,System.String,System.Nullable{System.Int32},System.String)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.ObjectExtensions
+  langs:
+  - csharp
+  - vb
+  name: RaiseIfNullOrWhitespace(string?, string?, string?, int?, string?)
+  nameWithType: ObjectExtensions.RaiseIfNullOrWhitespace(string?, string?, string?, int?, string?)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace(string?, string?, string?, int?, string?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ObjectExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: RaiseIfNullOrWhitespace
+    path: FastMoq.Core/Extensions/ObjectExtensions.cs
+    startLine: 97
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Raises if null or whitespace.
+  example: []
+  syntax:
+    content: public static void RaiseIfNullOrWhitespace(this string? thing, string? name = null, string? path = null, int? line = null, string? exp = null)
+    parameters:
+    - id: thing
+      type: System.String
+      description: The thing.
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullAttribute.#ctor
+        arguments: []
+    - id: name
+      type: System.String
+      description: The name.
+    - id: path
+      type: System.String
+      description: The path.
+    - id: line
+      type: System.Nullable{System.Int32}
+      description: The line.
+    - id: exp
+      type: System.String
+      description: The exp.
+    content.vb: Public Shared Sub RaiseIfNullOrWhitespace(thing As String, name As String = Nothing, path As String = Nothing, line As Integer? = Nothing, exp As String = Nothing)
+  overload: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace*
+  nameWithType.vb: ObjectExtensions.RaiseIfNullOrWhitespace(String, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace(String, String, String, Integer?, String)
+  name.vb: RaiseIfNullOrWhitespace(String, String, String, Integer?, String)
+references:
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FastMoq.Extensions.ObjectExtensions.AddOrUpdate*
+  commentId: Overload:FastMoq.Extensions.ObjectExtensions.AddOrUpdate
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_AddOrUpdate__2_System_Collections_Generic_IDictionary___0___1____0___1_
+  name: AddOrUpdate
+  nameWithType: ObjectExtensions.AddOrUpdate
+  fullName: FastMoq.Extensions.ObjectExtensions.AddOrUpdate
+- uid: System.Collections.Generic.IDictionary{{TKey},{TValue}}
+  commentId: T:System.Collections.Generic.IDictionary{``0,``1}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  name: IDictionary<TKey, TValue>
+  nameWithType: IDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IDictionary<TKey, TValue>
+  nameWithType.vb: IDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IDictionary(Of TKey, TValue)
+  name.vb: IDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: '{TKey}'
+  commentId: '!:TKey'
+  definition: TKey
+  name: TKey
+  nameWithType: TKey
+  fullName: TKey
+- uid: '{TValue}'
+  commentId: '!:TValue'
+  definition: TValue
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
+- uid: System.Collections.Generic.IDictionary`2
+  commentId: T:System.Collections.Generic.IDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  name: IDictionary<TKey, TValue>
+  nameWithType: IDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IDictionary<TKey, TValue>
+  nameWithType.vb: IDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IDictionary(Of TKey, TValue)
+  name.vb: IDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: TKey
+  commentId: '!:TKey'
+  name: TKey
+  nameWithType: TKey
+  fullName: TKey
+- uid: TValue
+  commentId: '!:TValue'
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIf*
+  commentId: Overload:FastMoq.Extensions.ObjectExtensions.RaiseIf
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIf_System_Func_System_Boolean__System_String_System_String_System_Int32_System_String_
+  name: RaiseIf
+  nameWithType: ObjectExtensions.RaiseIf
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIf
+- uid: System.Func{System.Boolean}
+  commentId: T:System.Func{System.Boolean}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<bool>
+  nameWithType: Func<bool>
+  fullName: System.Func<bool>
+  nameWithType.vb: Func(Of Boolean)
+  fullName.vb: System.Func(Of Boolean)
+  name.vb: Func(Of Boolean)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull*
+  commentId: Overload:FastMoq.Extensions.ObjectExtensions.RaiseIfNull
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull
+  nameWithType: ObjectExtensions.RaiseIfNull
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Nullable{{T}}
+  commentId: T:System.Nullable{``0}
+  parent: System
+  definition: System.Nullable`1
+  name: T?
+  nameWithType: T?
+  fullName: T?
+  spec.csharp:
+  - name: T
+  - name: '?'
+  spec.vb:
+  - name: T
+  - name: '?'
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrEmpty*
+  commentId: Overload:FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrEmpty
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNullOrEmpty_System_String_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNullOrEmpty
+  nameWithType: ObjectExtensions.RaiseIfNullOrEmpty
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrEmpty
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace*
+  commentId: Overload:FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNullOrWhitespace_System_String_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNullOrWhitespace
+  nameWithType: ObjectExtensions.RaiseIfNullOrWhitespace
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace

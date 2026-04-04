@@ -1,0 +1,54 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Providers.NSubstituteProvider
+  commentId: N:FastMoq.Providers.NSubstituteProvider
+  id: FastMoq.Providers.NSubstituteProvider
+  children:
+  - FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
+  langs:
+  - csharp
+  - vb
+  name: FastMoq.Providers.NSubstituteProvider
+  nameWithType: FastMoq.Providers.NSubstituteProvider
+  fullName: FastMoq.Providers.NSubstituteProvider
+  type: Namespace
+  assemblies:
+  - FastMoq.Provider.NSubstitute
+references:
+- uid: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
+  commentId: T:FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
+  parent: FastMoq.Providers.NSubstituteProvider
+  href: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.html
+  name: NSubstituteMockingProvider
+  nameWithType: NSubstituteMockingProvider
+  fullName: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
+- uid: FastMoq.Providers.NSubstituteProvider
+  commentId: N:FastMoq.Providers.NSubstituteProvider
+  href: FastMoq.html
+  name: FastMoq.Providers.NSubstituteProvider
+  nameWithType: FastMoq.Providers.NSubstituteProvider
+  fullName: FastMoq.Providers.NSubstituteProvider
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  - name: .
+  - uid: FastMoq.Providers.NSubstituteProvider
+    name: NSubstituteProvider
+    href: FastMoq.Providers.NSubstituteProvider.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  - name: .
+  - uid: FastMoq.Providers.NSubstituteProvider
+    name: NSubstituteProvider
+    href: FastMoq.Providers.NSubstituteProvider.html

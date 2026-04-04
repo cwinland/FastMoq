@@ -1,0 +1,4279 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.ScenarioBuilder`1
+  commentId: T:FastMoq.ScenarioBuilder`1
+  id: ScenarioBuilder`1
+  parent: FastMoq
+  children:
+  - FastMoq.ScenarioBuilder`1.Execute
+  - FastMoq.ScenarioBuilder`1.ExecuteAsync
+  - FastMoq.ScenarioBuilder`1.ExecuteThrowsAsync``1
+  - FastMoq.ScenarioBuilder`1.ExecuteThrows``1
+  - FastMoq.ScenarioBuilder`1.Instance
+  - FastMoq.ScenarioBuilder`1.Then(System.Action)
+  - FastMoq.ScenarioBuilder`1.Then(System.Action{FastMoq.Mocker,`0})
+  - FastMoq.ScenarioBuilder`1.Then(System.Action{`0})
+  - FastMoq.ScenarioBuilder`1.Then(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.Then(System.Func{System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.Then(System.Func{`0,System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.VerifyNoOtherCalls``1
+  - FastMoq.ScenarioBuilder`1.Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  - FastMoq.ScenarioBuilder`1.When(System.Action)
+  - FastMoq.ScenarioBuilder`1.When(System.Action{FastMoq.Mocker,`0})
+  - FastMoq.ScenarioBuilder`1.When(System.Action{`0})
+  - FastMoq.ScenarioBuilder`1.When(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.When(System.Func{System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.When(System.Func{`0,System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action)
+  - FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action{FastMoq.Mocker,`0})
+  - FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action{`0})
+  - FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{`0,System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.With(System.Action)
+  - FastMoq.ScenarioBuilder`1.With(System.Action{FastMoq.Mocker,`0})
+  - FastMoq.ScenarioBuilder`1.With(System.Action{`0})
+  - FastMoq.ScenarioBuilder`1.With(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.With(System.Func{System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.With(System.Func{`0,System.Threading.Tasks.Task})
+  - FastMoq.ScenarioBuilder`1.With(`0)
+  langs:
+  - csharp
+  - vb
+  name: ScenarioBuilder<T>
+  nameWithType: ScenarioBuilder<T>
+  fullName: FastMoq.ScenarioBuilder<T>
+  type: Class
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ScenarioBuilder
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 34
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Provides a fluent arrange/act/assert pipeline for a tracked scenario target.
+  example:
+  - >-
+    In <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref>, prefer the parameterless overloads when <code>Component</code> is already available.
+
+
+    <pre><code class="lang-csharp">Scenario
+        .With(() =&gt; Mocks.GetMock&lt;IInvoiceRepository&gt;()
+            .Setup(x =&gt; x.GetPastDueAsync(now, CancellationToken.None))
+            .ReturnsAsync(invoices))
+        .When(async () =&gt; reminderCount = await Component.SendRemindersAsync(now, CancellationToken.None))
+        .Then(() =&gt; reminderCount.Should().Be(2))
+        .Execute();</code></pre>
+
+    Outside <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref>, use the target-instance overloads.
+
+
+    <pre><code class="lang-csharp">await mocker.Scenario(service)
+        .When(component =&gt; component.RunAsync())
+        .Then(component =&gt; component.State.Should().Be(ServiceState.Completed))
+        .ExecuteAsync();</code></pre>
+  syntax:
+    content: 'public sealed class ScenarioBuilder<T> where T : class'
+    typeParameters:
+    - id: T
+    content.vb: Public NotInheritable Class ScenarioBuilder(Of T As Class)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.ScenarioBuilder{{T}})
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.ScenarioBuilder{{T}},{TValue}}})
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.ScenarioBuilder{{T}},{TValue}}})
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(System.String,System.Object,System.Object[])
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetMethod``1(System.String)
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(System.String,System.Object)
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(System.String,System.Object)
+  - FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(System.String,System.Object)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+  nameWithType.vb: ScenarioBuilder(Of T)
+  fullName.vb: FastMoq.ScenarioBuilder(Of T)
+  name.vb: ScenarioBuilder(Of T)
+- uid: FastMoq.ScenarioBuilder`1.Instance
+  commentId: P:FastMoq.ScenarioBuilder`1.Instance
+  id: Instance
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Instance
+  nameWithType: ScenarioBuilder<T>.Instance
+  fullName: FastMoq.ScenarioBuilder<T>.Instance
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Instance
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 52
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets the current scenario target instance.
+  example: []
+  syntax:
+    content: public T Instance { get; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: Public ReadOnly Property Instance As T
+  overload: FastMoq.ScenarioBuilder`1.Instance*
+  nameWithType.vb: ScenarioBuilder(Of T).Instance
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Instance
+- uid: FastMoq.ScenarioBuilder`1.With(`0)
+  commentId: M:FastMoq.ScenarioBuilder`1.With(`0)
+  id: With(`0)
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: With(T)
+  nameWithType: ScenarioBuilder<T>.With(T)
+  fullName: FastMoq.ScenarioBuilder<T>.With(T)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: With
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 58
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: >-
+    Replaces the scenario target instance.
+
+    This enables fluent patterns such as <code>Scenario.With(Component)</code>.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> With(T instance)
+    parameters:
+    - id: instance
+      type: '{T}'
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [With](instance As T) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.With*
+  nameWithType.vb: ScenarioBuilder(Of T).With(T)
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).With(T)
+- uid: FastMoq.ScenarioBuilder`1.With(System.Action)
+  commentId: M:FastMoq.ScenarioBuilder`1.With(System.Action)
+  id: With(System.Action)
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: With(Action)
+  nameWithType: ScenarioBuilder<T>.With(Action)
+  fullName: FastMoq.ScenarioBuilder<T>.With(System.Action)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: With
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 67
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an arrangement action executed before any When/Act operations.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> With(Action arrange)
+    parameters:
+    - id: arrange
+      type: System.Action
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [With](arrange As Action) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.With*
+  nameWithType.vb: ScenarioBuilder(Of T).With(Action)
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).With(System.Action)
+- uid: FastMoq.ScenarioBuilder`1.With(System.Func{System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.With(System.Func{System.Threading.Tasks.Task})
+  id: With(System.Func{System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: With(Func<Task>)
+  nameWithType: ScenarioBuilder<T>.With(Func<Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.With(System.Func<System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: With
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 80
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous arrangement action executed before any When/Act operations.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> With(Func<Task> arrange)
+    parameters:
+    - id: arrange
+      type: System.Func{System.Threading.Tasks.Task}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [With](arrange As Func(Of Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.With*
+  nameWithType.vb: ScenarioBuilder(Of T).With(Func(Of Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).With(System.Func(Of System.Threading.Tasks.Task))
+  name.vb: With(Func(Of Task))
+- uid: FastMoq.ScenarioBuilder`1.With(System.Action{FastMoq.Mocker,`0})
+  commentId: M:FastMoq.ScenarioBuilder`1.With(System.Action{FastMoq.Mocker,`0})
+  id: With(System.Action{FastMoq.Mocker,`0})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: With(Action<Mocker, T>)
+  nameWithType: ScenarioBuilder<T>.With(Action<Mocker, T>)
+  fullName: FastMoq.ScenarioBuilder<T>.With(System.Action<FastMoq.Mocker, T>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: With
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 90
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an arrangement action executed before any When/Act operations.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> With(Action<Mocker, T> arrange)
+    parameters:
+    - id: arrange
+      type: System.Action{FastMoq.Mocker,{T}}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [With](arrange As Action(Of Mocker, T)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.With*
+  nameWithType.vb: ScenarioBuilder(Of T).With(Action(Of Mocker, T))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).With(System.Action(Of FastMoq.Mocker, T))
+  name.vb: With(Action(Of Mocker, T))
+- uid: FastMoq.ScenarioBuilder`1.With(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.With(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  id: With(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: With(Func<Mocker, T, Task>)
+  nameWithType: ScenarioBuilder<T>.With(Func<Mocker, T, Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.With(System.Func<FastMoq.Mocker, T, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: With
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 104
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous arrangement action executed before any When/Act operations.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> With(Func<Mocker, T, Task> arrange)
+    parameters:
+    - id: arrange
+      type: System.Func{FastMoq.Mocker,{T},System.Threading.Tasks.Task}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [With](arrange As Func(Of Mocker, T, Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.With*
+  nameWithType.vb: ScenarioBuilder(Of T).With(Func(Of Mocker, T, Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).With(System.Func(Of FastMoq.Mocker, T, System.Threading.Tasks.Task))
+  name.vb: With(Func(Of Mocker, T, Task))
+- uid: FastMoq.ScenarioBuilder`1.With(System.Action{`0})
+  commentId: M:FastMoq.ScenarioBuilder`1.With(System.Action{`0})
+  id: With(System.Action{`0})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: With(Action<T>)
+  nameWithType: ScenarioBuilder<T>.With(Action<T>)
+  fullName: FastMoq.ScenarioBuilder<T>.With(System.Action<T>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: With
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 114
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an arrangement action using only the component instance.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> With(Action<T> arrange)
+    parameters:
+    - id: arrange
+      type: System.Action{{T}}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [With](arrange As Action(Of T)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.With*
+  nameWithType.vb: ScenarioBuilder(Of T).With(Action(Of T))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).With(System.Action(Of T))
+  name.vb: With(Action(Of T))
+- uid: FastMoq.ScenarioBuilder`1.With(System.Func{`0,System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.With(System.Func{`0,System.Threading.Tasks.Task})
+  id: With(System.Func{`0,System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: With(Func<T, Task>)
+  nameWithType: ScenarioBuilder<T>.With(Func<T, Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.With(System.Func<T, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: With
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 123
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous arrangement action using only the component instance.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> With(Func<T, Task> arrange)
+    parameters:
+    - id: arrange
+      type: System.Func{{T},System.Threading.Tasks.Task}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [With](arrange As Func(Of T, Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.With*
+  nameWithType.vb: ScenarioBuilder(Of T).With(Func(Of T, Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).With(System.Func(Of T, System.Threading.Tasks.Task))
+  name.vb: With(Func(Of T, Task))
+- uid: FastMoq.ScenarioBuilder`1.When(System.Func{System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.When(System.Func{System.Threading.Tasks.Task})
+  id: When(System.Func{System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: When(Func<Task>)
+  nameWithType: ScenarioBuilder<T>.When(Func<Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.When(System.Func<System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: When
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 132
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous act step.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> When(Func<Task> act)
+    parameters:
+    - id: act
+      type: System.Func{System.Threading.Tasks.Task}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [When](act As Func(Of Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.When*
+  nameWithType.vb: ScenarioBuilder(Of T).When(Func(Of Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).When(System.Func(Of System.Threading.Tasks.Task))
+  name.vb: When(Func(Of Task))
+- uid: FastMoq.ScenarioBuilder`1.When(System.Action)
+  commentId: M:FastMoq.ScenarioBuilder`1.When(System.Action)
+  id: When(System.Action)
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: When(Action)
+  nameWithType: ScenarioBuilder<T>.When(Action)
+  fullName: FastMoq.ScenarioBuilder<T>.When(System.Action)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: When
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 142
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds a synchronous act step.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> When(Action act)
+    parameters:
+    - id: act
+      type: System.Action
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [When](act As Action) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.When*
+  nameWithType.vb: ScenarioBuilder(Of T).When(Action)
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).When(System.Action)
+- uid: FastMoq.ScenarioBuilder`1.When(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.When(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  id: When(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: When(Func<Mocker, T, Task>)
+  nameWithType: ScenarioBuilder<T>.When(Func<Mocker, T, Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.When(System.Func<FastMoq.Mocker, T, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: When
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 155
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous act step.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> When(Func<Mocker, T, Task> act)
+    parameters:
+    - id: act
+      type: System.Func{FastMoq.Mocker,{T},System.Threading.Tasks.Task}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [When](act As Func(Of Mocker, T, Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.When*
+  nameWithType.vb: ScenarioBuilder(Of T).When(Func(Of Mocker, T, Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).When(System.Func(Of FastMoq.Mocker, T, System.Threading.Tasks.Task))
+  name.vb: When(Func(Of Mocker, T, Task))
+- uid: FastMoq.ScenarioBuilder`1.When(System.Action{FastMoq.Mocker,`0})
+  commentId: M:FastMoq.ScenarioBuilder`1.When(System.Action{FastMoq.Mocker,`0})
+  id: When(System.Action{FastMoq.Mocker,`0})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: When(Action<Mocker, T>)
+  nameWithType: ScenarioBuilder<T>.When(Action<Mocker, T>)
+  fullName: FastMoq.ScenarioBuilder<T>.When(System.Action<FastMoq.Mocker, T>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: When
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 165
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds a synchronous act step.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> When(Action<Mocker, T> act)
+    parameters:
+    - id: act
+      type: System.Action{FastMoq.Mocker,{T}}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [When](act As Action(Of Mocker, T)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.When*
+  nameWithType.vb: ScenarioBuilder(Of T).When(Action(Of Mocker, T))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).When(System.Action(Of FastMoq.Mocker, T))
+  name.vb: When(Action(Of Mocker, T))
+- uid: FastMoq.ScenarioBuilder`1.When(System.Func{`0,System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.When(System.Func{`0,System.Threading.Tasks.Task})
+  id: When(System.Func{`0,System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: When(Func<T, Task>)
+  nameWithType: ScenarioBuilder<T>.When(Func<T, Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.When(System.Func<T, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: When
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 179
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous act step using only the component instance.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> When(Func<T, Task> act)
+    parameters:
+    - id: act
+      type: System.Func{{T},System.Threading.Tasks.Task}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [When](act As Func(Of T, Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.When*
+  nameWithType.vb: ScenarioBuilder(Of T).When(Func(Of T, Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).When(System.Func(Of T, System.Threading.Tasks.Task))
+  name.vb: When(Func(Of T, Task))
+- uid: FastMoq.ScenarioBuilder`1.When(System.Action{`0})
+  commentId: M:FastMoq.ScenarioBuilder`1.When(System.Action{`0})
+  id: When(System.Action{`0})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: When(Action<T>)
+  nameWithType: ScenarioBuilder<T>.When(Action<T>)
+  fullName: FastMoq.ScenarioBuilder<T>.When(System.Action<T>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: When
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 188
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds a synchronous act step using only the component instance.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> When(Action<T> act)
+    parameters:
+    - id: act
+      type: System.Action{{T}}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [When](act As Action(Of T)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.When*
+  nameWithType.vb: ScenarioBuilder(Of T).When(Action(Of T))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).When(System.Action(Of T))
+  name.vb: When(Action(Of T))
+- uid: FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action)
+  commentId: M:FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action)
+  id: WhenThrows``1(System.Action)
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: WhenThrows<TException>(Action)
+  nameWithType: ScenarioBuilder<T>.WhenThrows<TException>(Action)
+  fullName: FastMoq.ScenarioBuilder<T>.WhenThrows<TException>(System.Action)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WhenThrows
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 208
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds a synchronous act step that is expected to throw the specified exception type.
+  example:
+  - >-
+    Use this when the act step is expected to fail but trailing assertions should still run.
+
+
+    <pre><code class="lang-csharp">Scenario
+        .WhenThrows&lt;InvalidOperationException&gt;(() =&gt; Component.SendRemindersAsync(now, CancellationToken.None))
+        .Then(() =&gt; auditTrail.Count.Should().Be(1))
+        .Execute();</code></pre>
+  syntax:
+    content: 'public ScenarioBuilder<T> WhenThrows<TException>(Action act) where TException : Exception'
+    parameters:
+    - id: act
+      type: System.Action
+    typeParameters:
+    - id: TException
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function WhenThrows(Of TException As Exception)(act As Action) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.WhenThrows*
+  nameWithType.vb: ScenarioBuilder(Of T).WhenThrows(Of TException)(Action)
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).WhenThrows(Of TException)(System.Action)
+  name.vb: WhenThrows(Of TException)(Action)
+- uid: FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{System.Threading.Tasks.Task})
+  id: WhenThrows``1(System.Func{System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: WhenThrows<TException>(Func<Task>)
+  nameWithType: ScenarioBuilder<T>.WhenThrows<TException>(Func<Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.WhenThrows<TException>(System.Func<System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WhenThrows
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 231
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous act step that is expected to throw the specified exception type.
+  example:
+  - >-
+    <pre><code class="lang-csharp">await mocker.Scenario(service)
+        .WhenThrows&lt;InvalidOperationException&gt;(component =&gt; component.RunAsync())
+        .Then(component =&gt; component.Attempts.Should().Be(1))
+        .ExecuteAsync();</code></pre>
+  syntax:
+    content: 'public ScenarioBuilder<T> WhenThrows<TException>(Func<Task> act) where TException : Exception'
+    parameters:
+    - id: act
+      type: System.Func{System.Threading.Tasks.Task}
+    typeParameters:
+    - id: TException
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function WhenThrows(Of TException As Exception)(act As Func(Of Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.WhenThrows*
+  nameWithType.vb: ScenarioBuilder(Of T).WhenThrows(Of TException)(Func(Of Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).WhenThrows(Of TException)(System.Func(Of System.Threading.Tasks.Task))
+  name.vb: WhenThrows(Of TException)(Func(Of Task))
+- uid: FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action{`0})
+  commentId: M:FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action{`0})
+  id: WhenThrows``1(System.Action{`0})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: WhenThrows<TException>(Action<T>)
+  nameWithType: ScenarioBuilder<T>.WhenThrows<TException>(Action<T>)
+  fullName: FastMoq.ScenarioBuilder<T>.WhenThrows<TException>(System.Action<T>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WhenThrows
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 261
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds a synchronous act step using only the component instance that is expected to throw the specified exception type.
+  example: []
+  syntax:
+    content: 'public ScenarioBuilder<T> WhenThrows<TException>(Action<T> act) where TException : Exception'
+    parameters:
+    - id: act
+      type: System.Action{{T}}
+    typeParameters:
+    - id: TException
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function WhenThrows(Of TException As Exception)(act As Action(Of T)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.WhenThrows*
+  nameWithType.vb: ScenarioBuilder(Of T).WhenThrows(Of TException)(Action(Of T))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).WhenThrows(Of TException)(System.Action(Of T))
+  name.vb: WhenThrows(Of TException)(Action(Of T))
+- uid: FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{`0,System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{`0,System.Threading.Tasks.Task})
+  id: WhenThrows``1(System.Func{`0,System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: WhenThrows<TException>(Func<T, Task>)
+  nameWithType: ScenarioBuilder<T>.WhenThrows<TException>(Func<T, Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.WhenThrows<TException>(System.Func<T, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WhenThrows
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 270
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous act step using only the component instance that is expected to throw the specified exception type.
+  example: []
+  syntax:
+    content: 'public ScenarioBuilder<T> WhenThrows<TException>(Func<T, Task> act) where TException : Exception'
+    parameters:
+    - id: act
+      type: System.Func{{T},System.Threading.Tasks.Task}
+    typeParameters:
+    - id: TException
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function WhenThrows(Of TException As Exception)(act As Func(Of T, Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.WhenThrows*
+  nameWithType.vb: ScenarioBuilder(Of T).WhenThrows(Of TException)(Func(Of T, Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).WhenThrows(Of TException)(System.Func(Of T, System.Threading.Tasks.Task))
+  name.vb: WhenThrows(Of TException)(Func(Of T, Task))
+- uid: FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action{FastMoq.Mocker,`0})
+  commentId: M:FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action{FastMoq.Mocker,`0})
+  id: WhenThrows``1(System.Action{FastMoq.Mocker,`0})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: WhenThrows<TException>(Action<Mocker, T>)
+  nameWithType: ScenarioBuilder<T>.WhenThrows<TException>(Action<Mocker, T>)
+  fullName: FastMoq.ScenarioBuilder<T>.WhenThrows<TException>(System.Action<FastMoq.Mocker, T>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WhenThrows
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 279
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds a synchronous act step using the mocker and component instance that is expected to throw the specified exception type.
+  example: []
+  syntax:
+    content: 'public ScenarioBuilder<T> WhenThrows<TException>(Action<Mocker, T> act) where TException : Exception'
+    parameters:
+    - id: act
+      type: System.Action{FastMoq.Mocker,{T}}
+    typeParameters:
+    - id: TException
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function WhenThrows(Of TException As Exception)(act As Action(Of Mocker, T)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.WhenThrows*
+  nameWithType.vb: ScenarioBuilder(Of T).WhenThrows(Of TException)(Action(Of Mocker, T))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).WhenThrows(Of TException)(System.Action(Of FastMoq.Mocker, T))
+  name.vb: WhenThrows(Of TException)(Action(Of Mocker, T))
+- uid: FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  id: WhenThrows``1(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: WhenThrows<TException>(Func<Mocker, T, Task>)
+  nameWithType: ScenarioBuilder<T>.WhenThrows<TException>(Func<Mocker, T, Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.WhenThrows<TException>(System.Func<FastMoq.Mocker, T, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WhenThrows
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 288
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous act step using the mocker and component instance that is expected to throw the specified exception type.
+  example: []
+  syntax:
+    content: 'public ScenarioBuilder<T> WhenThrows<TException>(Func<Mocker, T, Task> act) where TException : Exception'
+    parameters:
+    - id: act
+      type: System.Func{FastMoq.Mocker,{T},System.Threading.Tasks.Task}
+    typeParameters:
+    - id: TException
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function WhenThrows(Of TException As Exception)(act As Func(Of Mocker, T, Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.WhenThrows*
+  nameWithType.vb: ScenarioBuilder(Of T).WhenThrows(Of TException)(Func(Of Mocker, T, Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).WhenThrows(Of TException)(System.Func(Of FastMoq.Mocker, T, System.Threading.Tasks.Task))
+  name.vb: WhenThrows(Of TException)(Func(Of Mocker, T, Task))
+- uid: FastMoq.ScenarioBuilder`1.Then(System.Action)
+  commentId: M:FastMoq.ScenarioBuilder`1.Then(System.Action)
+  id: Then(System.Action)
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Then(Action)
+  nameWithType: ScenarioBuilder<T>.Then(Action)
+  fullName: FastMoq.ScenarioBuilder<T>.Then(System.Action)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Then
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 297
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an assertion step.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> Then(Action assertion)
+    parameters:
+    - id: assertion
+      type: System.Action
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [Then](assertion As Action) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.Then*
+  nameWithType.vb: ScenarioBuilder(Of T).Then(Action)
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Then(System.Action)
+- uid: FastMoq.ScenarioBuilder`1.Then(System.Func{System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.Then(System.Func{System.Threading.Tasks.Task})
+  id: Then(System.Func{System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Then(Func<Task>)
+  nameWithType: ScenarioBuilder<T>.Then(Func<Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.Then(System.Func<System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Then
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 310
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous assertion step.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> Then(Func<Task> assertion)
+    parameters:
+    - id: assertion
+      type: System.Func{System.Threading.Tasks.Task}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [Then](assertion As Func(Of Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.Then*
+  nameWithType.vb: ScenarioBuilder(Of T).Then(Func(Of Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Then(System.Func(Of System.Threading.Tasks.Task))
+  name.vb: Then(Func(Of Task))
+- uid: FastMoq.ScenarioBuilder`1.Then(System.Action{FastMoq.Mocker,`0})
+  commentId: M:FastMoq.ScenarioBuilder`1.Then(System.Action{FastMoq.Mocker,`0})
+  id: Then(System.Action{FastMoq.Mocker,`0})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Then(Action<Mocker, T>)
+  nameWithType: ScenarioBuilder<T>.Then(Action<Mocker, T>)
+  fullName: FastMoq.ScenarioBuilder<T>.Then(System.Action<FastMoq.Mocker, T>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Then
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 320
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an assertion step.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> Then(Action<Mocker, T> assertion)
+    parameters:
+    - id: assertion
+      type: System.Action{FastMoq.Mocker,{T}}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [Then](assertion As Action(Of Mocker, T)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.Then*
+  nameWithType.vb: ScenarioBuilder(Of T).Then(Action(Of Mocker, T))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Then(System.Action(Of FastMoq.Mocker, T))
+  name.vb: Then(Action(Of Mocker, T))
+- uid: FastMoq.ScenarioBuilder`1.Then(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.Then(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  id: Then(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Then(Func<Mocker, T, Task>)
+  nameWithType: ScenarioBuilder<T>.Then(Func<Mocker, T, Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.Then(System.Func<FastMoq.Mocker, T, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Then
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 334
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous assertion step.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> Then(Func<Mocker, T, Task> assertion)
+    parameters:
+    - id: assertion
+      type: System.Func{FastMoq.Mocker,{T},System.Threading.Tasks.Task}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [Then](assertion As Func(Of Mocker, T, Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.Then*
+  nameWithType.vb: ScenarioBuilder(Of T).Then(Func(Of Mocker, T, Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Then(System.Func(Of FastMoq.Mocker, T, System.Threading.Tasks.Task))
+  name.vb: Then(Func(Of Mocker, T, Task))
+- uid: FastMoq.ScenarioBuilder`1.Then(System.Action{`0})
+  commentId: M:FastMoq.ScenarioBuilder`1.Then(System.Action{`0})
+  id: Then(System.Action{`0})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Then(Action<T>)
+  nameWithType: ScenarioBuilder<T>.Then(Action<T>)
+  fullName: FastMoq.ScenarioBuilder<T>.Then(System.Action<T>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Then
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 344
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds a synchronous assertion step using only the component instance.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> Then(Action<T> assertion)
+    parameters:
+    - id: assertion
+      type: System.Action{{T}}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [Then](assertion As Action(Of T)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.Then*
+  nameWithType.vb: ScenarioBuilder(Of T).Then(Action(Of T))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Then(System.Action(Of T))
+  name.vb: Then(Action(Of T))
+- uid: FastMoq.ScenarioBuilder`1.Then(System.Func{`0,System.Threading.Tasks.Task})
+  commentId: M:FastMoq.ScenarioBuilder`1.Then(System.Func{`0,System.Threading.Tasks.Task})
+  id: Then(System.Func{`0,System.Threading.Tasks.Task})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Then(Func<T, Task>)
+  nameWithType: ScenarioBuilder<T>.Then(Func<T, Task>)
+  fullName: FastMoq.ScenarioBuilder<T>.Then(System.Func<T, System.Threading.Tasks.Task>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Then
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 353
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Adds an asynchronous assertion step using only the component instance.
+  example: []
+  syntax:
+    content: public ScenarioBuilder<T> Then(Func<T, Task> assertion)
+    parameters:
+    - id: assertion
+      type: System.Func{{T},System.Threading.Tasks.Task}
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function [Then](assertion As Func(Of T, Task)) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.Then*
+  nameWithType.vb: ScenarioBuilder(Of T).Then(Func(Of T, Task))
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Then(System.Func(Of T, System.Threading.Tasks.Task))
+  name.vb: Then(Func(Of T, Task))
+- uid: FastMoq.ScenarioBuilder`1.Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  commentId: M:FastMoq.ScenarioBuilder`1.Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  id: Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Verify<TMock>(Expression<Action<TMock>>, TimesSpec?)
+  nameWithType: ScenarioBuilder<T>.Verify<TMock>(Expression<Action<TMock>>, TimesSpec?)
+  fullName: FastMoq.ScenarioBuilder<T>.Verify<TMock>(System.Linq.Expressions.Expression<System.Action<TMock>>, FastMoq.Providers.TimesSpec?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Verify
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 362
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Queues a provider-first verification step to run during scenario execution.
+  example: []
+  syntax:
+    content: 'public ScenarioBuilder<T> Verify<TMock>(Expression<Action<TMock>> expression, TimesSpec? times = null) where TMock : class'
+    parameters:
+    - id: expression
+      type: System.Linq.Expressions.Expression{System.Action{{TMock}}}
+    - id: times
+      type: System.Nullable{FastMoq.Providers.TimesSpec}
+    typeParameters:
+    - id: TMock
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function Verify(Of TMock As Class)(expression As Expression(Of Action(Of TMock)), times As TimesSpec? = Nothing) As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.Verify*
+  nameWithType.vb: ScenarioBuilder(Of T).Verify(Of TMock)(Expression(Of Action(Of TMock)), TimesSpec?)
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Verify(Of TMock)(System.Linq.Expressions.Expression(Of System.Action(Of TMock)), FastMoq.Providers.TimesSpec?)
+  name.vb: Verify(Of TMock)(Expression(Of Action(Of TMock)), TimesSpec?)
+- uid: FastMoq.ScenarioBuilder`1.ExecuteAsync
+  commentId: M:FastMoq.ScenarioBuilder`1.ExecuteAsync
+  id: ExecuteAsync
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: ExecuteAsync()
+  nameWithType: ScenarioBuilder<T>.ExecuteAsync()
+  fullName: FastMoq.ScenarioBuilder<T>.ExecuteAsync()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ExecuteAsync
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 376
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Executes the scenario (arrange -&gt; act -&gt; assert).
+  example: []
+  syntax:
+    content: public Task ExecuteAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function ExecuteAsync() As Task
+  overload: FastMoq.ScenarioBuilder`1.ExecuteAsync*
+  nameWithType.vb: ScenarioBuilder(Of T).ExecuteAsync()
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).ExecuteAsync()
+- uid: FastMoq.ScenarioBuilder`1.Execute
+  commentId: M:FastMoq.ScenarioBuilder`1.Execute
+  id: Execute
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: Execute()
+  nameWithType: ScenarioBuilder<T>.Execute()
+  fullName: FastMoq.ScenarioBuilder<T>.Execute()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Execute
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 404
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Convenience execute for synchronous test bodies.
+  example: []
+  syntax:
+    content: public void Execute()
+    content.vb: Public Sub Execute()
+  overload: FastMoq.ScenarioBuilder`1.Execute*
+  nameWithType.vb: ScenarioBuilder(Of T).Execute()
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Execute()
+- uid: FastMoq.ScenarioBuilder`1.ExecuteThrows``1
+  commentId: M:FastMoq.ScenarioBuilder`1.ExecuteThrows``1
+  id: ExecuteThrows``1
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: ExecuteThrows<TException>()
+  nameWithType: ScenarioBuilder<T>.ExecuteThrows<TException>()
+  fullName: FastMoq.ScenarioBuilder<T>.ExecuteThrows<TException>()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ExecuteThrows
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 421
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Executes the scenario and returns the expected exception.
+  example:
+  - >-
+    Use this form when the exception object itself is the primary assertion target.
+
+
+    <pre><code class="lang-csharp">var exception = Scenario
+        .When(() =&gt; Component.SendRemindersAsync(now, CancellationToken.None))
+        .ExecuteThrows&lt;InvalidOperationException&gt;();
+
+    exception.Message.Should().Be("SMTP unavailable");</code></pre>
+  syntax:
+    content: 'public TException ExecuteThrows<TException>() where TException : Exception'
+    typeParameters:
+    - id: TException
+    return:
+      type: '{TException}'
+    content.vb: Public Function ExecuteThrows(Of TException As Exception)() As TException
+  overload: FastMoq.ScenarioBuilder`1.ExecuteThrows*
+  nameWithType.vb: ScenarioBuilder(Of T).ExecuteThrows(Of TException)()
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).ExecuteThrows(Of TException)()
+  name.vb: ExecuteThrows(Of TException)()
+- uid: FastMoq.ScenarioBuilder`1.ExecuteThrowsAsync``1
+  commentId: M:FastMoq.ScenarioBuilder`1.ExecuteThrowsAsync``1
+  id: ExecuteThrowsAsync``1
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: ExecuteThrowsAsync<TException>()
+  nameWithType: ScenarioBuilder<T>.ExecuteThrowsAsync<TException>()
+  fullName: FastMoq.ScenarioBuilder<T>.ExecuteThrowsAsync<TException>()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ExecuteThrowsAsync
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 438
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Executes the scenario and returns the expected exception.
+  example:
+  - >-
+    <pre><code class="lang-csharp">var exception = await mocker.Scenario(service)
+        .When(component =&gt; component.RunAsync())
+        .ExecuteThrowsAsync&lt;InvalidOperationException&gt;();</code></pre>
+  syntax:
+    content: 'public Task<TException> ExecuteThrowsAsync<TException>() where TException : Exception'
+    typeParameters:
+    - id: TException
+    return:
+      type: System.Threading.Tasks.Task{{TException}}
+    content.vb: Public Function ExecuteThrowsAsync(Of TException As Exception)() As Task(Of TException)
+  overload: FastMoq.ScenarioBuilder`1.ExecuteThrowsAsync*
+  nameWithType.vb: ScenarioBuilder(Of T).ExecuteThrowsAsync(Of TException)()
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).ExecuteThrowsAsync(Of TException)()
+  name.vb: ExecuteThrowsAsync(Of TException)()
+- uid: FastMoq.ScenarioBuilder`1.VerifyNoOtherCalls``1
+  commentId: M:FastMoq.ScenarioBuilder`1.VerifyNoOtherCalls``1
+  id: VerifyNoOtherCalls``1
+  parent: FastMoq.ScenarioBuilder`1
+  langs:
+  - csharp
+  - vb
+  name: VerifyNoOtherCalls<TMock>()
+  nameWithType: ScenarioBuilder<T>.VerifyNoOtherCalls<TMock>()
+  fullName: FastMoq.ScenarioBuilder<T>.VerifyNoOtherCalls<TMock>()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/ScenarioBuilder.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: VerifyNoOtherCalls
+    path: FastMoq.Core/ScenarioBuilder.cs
+    startLine: 462
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Queues a provider-first VerifyNoOtherCalls step to run during scenario execution.
+  example: []
+  syntax:
+    content: 'public ScenarioBuilder<T> VerifyNoOtherCalls<TMock>() where TMock : class'
+    typeParameters:
+    - id: TMock
+    return:
+      type: FastMoq.ScenarioBuilder`1
+    content.vb: Public Function VerifyNoOtherCalls(Of TMock As Class)() As ScenarioBuilder(Of T)
+  overload: FastMoq.ScenarioBuilder`1.VerifyNoOtherCalls*
+  nameWithType.vb: ScenarioBuilder(Of T).VerifyNoOtherCalls(Of TMock)()
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).VerifyNoOtherCalls(Of TMock)()
+  name.vb: VerifyNoOtherCalls(Of TMock)()
+references:
+- uid: FastMoq.MockerTestBase`1
+  commentId: T:FastMoq.MockerTestBase`1
+  href: FastMoq.MockerTestBase-1.html
+  name: MockerTestBase<TComponent>
+  nameWithType: MockerTestBase<TComponent>
+  fullName: FastMoq.MockerTestBase<TComponent>
+  nameWithType.vb: MockerTestBase(Of TComponent)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent)
+  name.vb: MockerTestBase(Of TComponent)
+  spec.csharp:
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+- uid: FastMoq
+  commentId: N:FastMoq
+  href: FastMoq.html
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  parent: FastMoq.Extensions.ObjectExtensions
+  definition: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, string, int?, string)
+  nameWithType: ObjectExtensions.RaiseIfNull<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, string, int?, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<FastMoq.ScenarioBuilder<T>>(FastMoq.ScenarioBuilder<T>, string, string, int?, string)
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of FastMoq.ScenarioBuilder(Of T))(FastMoq.ScenarioBuilder(Of T), String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, String, Integer?, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(FastMoq.ScenarioBuilder{`0},System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(FastMoq.ScenarioBuilder{`0},System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.ScenarioBuilder{{T}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  name: GetFieldValue<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, ScenarioBuilder<T>)
+  nameWithType: TestClassExtensions.GetFieldValue<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, ScenarioBuilder<T>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<FastMoq.ScenarioBuilder<T>>(FastMoq.ScenarioBuilder<T>, string, FastMoq.ScenarioBuilder<T>)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, ScenarioBuilder(Of T))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of FastMoq.ScenarioBuilder(Of T))(FastMoq.ScenarioBuilder(Of T), String, FastMoq.ScenarioBuilder(Of T))
+  name.vb: GetFieldValue(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, ScenarioBuilder(Of T))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(FastMoq.ScenarioBuilder{`0},System.String,FastMoq.ScenarioBuilder{`0})
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(FastMoq.ScenarioBuilder{`0},System.String,FastMoq.ScenarioBuilder{`0})
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  name: GetField<ScenarioBuilder<T>>(ScenarioBuilder<T>, string)
+  nameWithType: TestClassExtensions.GetField<ScenarioBuilder<T>>(ScenarioBuilder<T>, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetField<FastMoq.ScenarioBuilder<T>>(FastMoq.ScenarioBuilder<T>, string)
+  nameWithType.vb: TestClassExtensions.GetField(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetField(Of FastMoq.ScenarioBuilder(Of T))(FastMoq.ScenarioBuilder(Of T), String)
+  name.vb: GetField(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(FastMoq.ScenarioBuilder{`0},System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(FastMoq.ScenarioBuilder{`0},System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.ScenarioBuilder{{T}},{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<ScenarioBuilder<T>, TValue>(ScenarioBuilder<T>, Expression<Func<ScenarioBuilder<T>, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<ScenarioBuilder<T>, TValue>(ScenarioBuilder<T>, Expression<Func<ScenarioBuilder<T>, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<FastMoq.ScenarioBuilder<T>, TValue>(FastMoq.ScenarioBuilder<T>, System.Linq.Expressions.Expression<System.Func<FastMoq.ScenarioBuilder<T>, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of ScenarioBuilder(Of T), TValue)(ScenarioBuilder(Of T), Expression(Of Func(Of ScenarioBuilder(Of T), TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of FastMoq.ScenarioBuilder(Of T), TValue)(FastMoq.ScenarioBuilder(Of T), System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.ScenarioBuilder(Of T), TValue)))
+  name.vb: GetMemberName(Of ScenarioBuilder(Of T), TValue)(ScenarioBuilder(Of T), Expression(Of Func(Of ScenarioBuilder(Of T), TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.ScenarioBuilder{`0},System.Linq.Expressions.Expression{System.Func{FastMoq.ScenarioBuilder{`0},``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.ScenarioBuilder{`0},System.Linq.Expressions.Expression{System.Func{FastMoq.ScenarioBuilder{`0},``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.ScenarioBuilder{{T}},{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<ScenarioBuilder<T>, TValue>(ScenarioBuilder<T>, Expression<Func<ScenarioBuilder<T>, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<ScenarioBuilder<T>, TValue>(ScenarioBuilder<T>, Expression<Func<ScenarioBuilder<T>, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<FastMoq.ScenarioBuilder<T>, TValue>(FastMoq.ScenarioBuilder<T>, System.Linq.Expressions.Expression<System.Func<FastMoq.ScenarioBuilder<T>, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of ScenarioBuilder(Of T), TValue)(ScenarioBuilder(Of T), Expression(Of Func(Of ScenarioBuilder(Of T), TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of FastMoq.ScenarioBuilder(Of T), TValue)(FastMoq.ScenarioBuilder(Of T), System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.ScenarioBuilder(Of T), TValue)))
+  name.vb: GetMember(Of ScenarioBuilder(Of T), TValue)(ScenarioBuilder(Of T), Expression(Of Func(Of ScenarioBuilder(Of T), TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.ScenarioBuilder{`0},System.Linq.Expressions.Expression{System.Func{FastMoq.ScenarioBuilder{`0},``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.ScenarioBuilder{`0},System.Linq.Expressions.Expression{System.Func{FastMoq.ScenarioBuilder{`0},``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(System.String,System.Object,System.Object[])
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  name: GetMethodValue<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, object, params object[])
+  nameWithType: TestClassExtensions.GetMethodValue<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, object, params object[])
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethodValue<FastMoq.ScenarioBuilder<T>>(FastMoq.ScenarioBuilder<T>, string, object, params object[])
+  nameWithType.vb: TestClassExtensions.GetMethodValue(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, Object, ParamArray Object())
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethodValue(Of FastMoq.ScenarioBuilder(Of T))(FastMoq.ScenarioBuilder(Of T), String, Object, ParamArray Object())
+  name.vb: GetMethodValue(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, Object, ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(FastMoq.ScenarioBuilder{`0},System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(FastMoq.ScenarioBuilder{`0},System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetMethod``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  name: GetMethod<ScenarioBuilder<T>>(ScenarioBuilder<T>, string)
+  nameWithType: TestClassExtensions.GetMethod<ScenarioBuilder<T>>(ScenarioBuilder<T>, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethod<FastMoq.ScenarioBuilder<T>>(FastMoq.ScenarioBuilder<T>, string)
+  nameWithType.vb: TestClassExtensions.GetMethod(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethod(Of FastMoq.ScenarioBuilder(Of T))(FastMoq.ScenarioBuilder(Of T), String)
+  name.vb: GetMethod(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(FastMoq.ScenarioBuilder{`0},System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(FastMoq.ScenarioBuilder{`0},System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  name: GetPropertyValue<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, object)
+  nameWithType: TestClassExtensions.GetPropertyValue<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetPropertyValue<FastMoq.ScenarioBuilder<T>>(FastMoq.ScenarioBuilder<T>, string, object)
+  nameWithType.vb: TestClassExtensions.GetPropertyValue(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetPropertyValue(Of FastMoq.ScenarioBuilder(Of T))(FastMoq.ScenarioBuilder(Of T), String, Object)
+  name.vb: GetPropertyValue(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(FastMoq.ScenarioBuilder{`0},System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(FastMoq.ScenarioBuilder{`0},System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<ScenarioBuilder<T>>(ScenarioBuilder<T>, string)
+  nameWithType: TestClassExtensions.GetProperty<ScenarioBuilder<T>>(ScenarioBuilder<T>, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<FastMoq.ScenarioBuilder<T>>(FastMoq.ScenarioBuilder<T>, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of FastMoq.ScenarioBuilder(Of T))(FastMoq.ScenarioBuilder(Of T), String)
+  name.vb: GetProperty(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.ScenarioBuilder{`0},System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.ScenarioBuilder{`0},System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  name: SetFieldValue<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, object)
+  nameWithType: TestClassExtensions.SetFieldValue<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetFieldValue<FastMoq.ScenarioBuilder<T>>(FastMoq.ScenarioBuilder<T>, string, object)
+  nameWithType.vb: TestClassExtensions.SetFieldValue(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetFieldValue(Of FastMoq.ScenarioBuilder(Of T))(FastMoq.ScenarioBuilder(Of T), String, Object)
+  name.vb: SetFieldValue(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(FastMoq.ScenarioBuilder{`0},System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(FastMoq.ScenarioBuilder{`0},System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  name: SetPropertyValue<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, object)
+  nameWithType: TestClassExtensions.SetPropertyValue<ScenarioBuilder<T>>(ScenarioBuilder<T>, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue<FastMoq.ScenarioBuilder<T>>(FastMoq.ScenarioBuilder<T>, string, object)
+  nameWithType.vb: TestClassExtensions.SetPropertyValue(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of FastMoq.ScenarioBuilder(Of T))(FastMoq.ScenarioBuilder(Of T), String, Object)
+  name.vb: SetPropertyValue(Of ScenarioBuilder(Of T))(ScenarioBuilder(Of T), String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(FastMoq.ScenarioBuilder{`0},System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(FastMoq.ScenarioBuilder{`0},System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: (
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  isExternal: true
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull<T>(T, string, string, int?, string)
+  nameWithType: ObjectExtensions.RaiseIfNull<T>(T, string, string, int?, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<T>(T, string, string, int?, string)
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.ObjectExtensions
+  commentId: T:FastMoq.Extensions.ObjectExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FastMoq.Extensions.ObjectExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  name: GetFieldValue<TObject>(TObject, string, TObject)
+  nameWithType: TestClassExtensions.GetFieldValue<TObject>(TObject, string, TObject)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<TObject>(TObject, string, TObject)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of TObject)(TObject, String, TObject)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of TObject)(TObject, String, TObject)
+  name.vb: GetFieldValue(Of TObject)(TObject, String, TObject)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TObject
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TObject
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions
+  commentId: T:FastMoq.Extensions.TestClassExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.TestClassExtensions.html
+  name: TestClassExtensions
+  nameWithType: TestClassExtensions
+  fullName: FastMoq.Extensions.TestClassExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  name: GetField<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetField<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetField<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetField(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetField(Of TObject)(TObject, String)
+  name.vb: GetField(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  name: GetMethodValue<TObject>(TObject, string, object, params object[])
+  nameWithType: TestClassExtensions.GetMethodValue<TObject>(TObject, string, object, params object[])
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethodValue<TObject>(TObject, string, object, params object[])
+  nameWithType.vb: TestClassExtensions.GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  name.vb: GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  name: GetMethod<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetMethod<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethod<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetMethod(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethod(Of TObject)(TObject, String)
+  name.vb: GetMethod(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  name: GetPropertyValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.GetPropertyValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetPropertyValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.GetPropertyValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetPropertyValue(Of TObject)(TObject, String, Object)
+  name.vb: GetPropertyValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetProperty<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  name.vb: GetProperty(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  name: SetFieldValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.SetFieldValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetFieldValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.SetFieldValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetFieldValue(Of TObject)(TObject, String, Object)
+  name.vb: SetFieldValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  name: SetPropertyValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
+  name.vb: SetPropertyValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+- uid: FastMoq.ScenarioBuilder`1.Instance*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.Instance
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_Instance
+  name: Instance
+  nameWithType: ScenarioBuilder<T>.Instance
+  fullName: FastMoq.ScenarioBuilder<T>.Instance
+  nameWithType.vb: ScenarioBuilder(Of T).Instance
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Instance
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: FastMoq.ScenarioBuilder`1.With*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.With
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_With__0_
+  name: With
+  nameWithType: ScenarioBuilder<T>.With
+  fullName: FastMoq.ScenarioBuilder<T>.With
+  nameWithType.vb: ScenarioBuilder(Of T).With
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).With
+- uid: FastMoq.ScenarioBuilder`1
+  commentId: T:FastMoq.ScenarioBuilder`1
+  parent: FastMoq
+  href: FastMoq.ScenarioBuilder-1.html
+  name: ScenarioBuilder<T>
+  nameWithType: ScenarioBuilder<T>
+  fullName: FastMoq.ScenarioBuilder<T>
+  nameWithType.vb: ScenarioBuilder(Of T)
+  fullName.vb: FastMoq.ScenarioBuilder(Of T)
+  name.vb: ScenarioBuilder(Of T)
+  spec.csharp:
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.ScenarioBuilder`1
+    name: ScenarioBuilder
+    href: FastMoq.ScenarioBuilder-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: System.Func{System.Threading.Tasks.Task}
+  commentId: T:System.Func{System.Threading.Tasks.Task}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<Task>
+  nameWithType: Func<Task>
+  fullName: System.Func<System.Threading.Tasks.Task>
+  nameWithType.vb: Func(Of Task)
+  fullName.vb: System.Func(Of System.Threading.Tasks.Task)
+  name.vb: Func(Of Task)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Action{FastMoq.Mocker,{T}}
+  commentId: T:System.Action{FastMoq.Mocker,`0}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<Mocker, T>
+  nameWithType: Action<Mocker, T>
+  fullName: System.Action<FastMoq.Mocker, T>
+  nameWithType.vb: Action(Of Mocker, T)
+  fullName.vb: System.Action(Of FastMoq.Mocker, T)
+  name.vb: Action(Of Mocker, T)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Action`2
+  commentId: T:System.Action`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T1, T2>
+  nameWithType: Action<T1, T2>
+  fullName: System.Action<T1, T2>
+  nameWithType.vb: Action(Of T1, T2)
+  fullName.vb: System.Action(Of T1, T2)
+  name.vb: Action(Of T1, T2)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: System.Func{FastMoq.Mocker,{T},System.Threading.Tasks.Task}
+  commentId: T:System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<Mocker, T, Task>
+  nameWithType: Func<Mocker, T, Task>
+  fullName: System.Func<FastMoq.Mocker, T, System.Threading.Tasks.Task>
+  nameWithType.vb: Func(Of Mocker, T, Task)
+  fullName.vb: System.Func(Of FastMoq.Mocker, T, System.Threading.Tasks.Task)
+  name.vb: Func(Of Mocker, T, Task)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: )
+- uid: System.Func`3
+  commentId: T:System.Func`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<T1, T2, TResult>
+  nameWithType: Func<T1, T2, TResult>
+  fullName: System.Func<T1, T2, TResult>
+  nameWithType.vb: Func(Of T1, T2, TResult)
+  fullName.vb: System.Func(Of T1, T2, TResult)
+  name.vb: Func(Of T1, T2, TResult)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Action{{T}}
+  commentId: T:System.Action{``0}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Func{{T},System.Threading.Tasks.Task}
+  commentId: T:System.Func{`0,System.Threading.Tasks.Task}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, Task>
+  nameWithType: Func<T, Task>
+  fullName: System.Func<T, System.Threading.Tasks.Task>
+  nameWithType.vb: Func(Of T, Task)
+  fullName.vb: System.Func(Of T, System.Threading.Tasks.Task)
+  name.vb: Func(Of T, Task)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.When*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.When
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_When_System_Func_System_Threading_Tasks_Task__
+  name: When
+  nameWithType: ScenarioBuilder<T>.When
+  fullName: FastMoq.ScenarioBuilder<T>.When
+  nameWithType.vb: ScenarioBuilder(Of T).When
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).When
+- uid: FastMoq.ScenarioBuilder`1.WhenThrows*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.WhenThrows
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Action_
+  name: WhenThrows
+  nameWithType: ScenarioBuilder<T>.WhenThrows
+  fullName: FastMoq.ScenarioBuilder<T>.WhenThrows
+  nameWithType.vb: ScenarioBuilder(Of T).WhenThrows
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).WhenThrows
+- uid: FastMoq.ScenarioBuilder`1.Then*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.Then
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_Then_System_Action_
+  name: Then
+  nameWithType: ScenarioBuilder<T>.Then
+  fullName: FastMoq.ScenarioBuilder<T>.Then
+  nameWithType.vb: ScenarioBuilder(Of T).Then
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Then
+- uid: FastMoq.ScenarioBuilder`1.Verify*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.Verify
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_Verify__1_System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__
+  name: Verify
+  nameWithType: ScenarioBuilder<T>.Verify
+  fullName: FastMoq.ScenarioBuilder<T>.Verify
+  nameWithType.vb: ScenarioBuilder(Of T).Verify
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Verify
+- uid: System.Linq.Expressions.Expression{System.Action{{TMock}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Action{``0}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Action<TMock>>
+  nameWithType: Expression<Action<TMock>>
+  fullName: System.Linq.Expressions.Expression<System.Action<TMock>>
+  nameWithType.vb: Expression(Of Action(Of TMock))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Action(Of TMock))
+  name.vb: Expression(Of Action(Of TMock))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: TMock
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: )
+  - name: )
+- uid: System.Nullable{FastMoq.Providers.TimesSpec}
+  commentId: T:System.Nullable{FastMoq.Providers.TimesSpec}
+  parent: System
+  definition: System.Nullable`1
+  href: FastMoq.Providers.TimesSpec.html
+  name: TimesSpec?
+  nameWithType: TimesSpec?
+  fullName: FastMoq.Providers.TimesSpec?
+  spec.csharp:
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: '?'
+  spec.vb:
+  - uid: FastMoq.Providers.TimesSpec
+    name: TimesSpec
+    href: FastMoq.Providers.TimesSpec.html
+  - name: '?'
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.ExecuteAsync*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.ExecuteAsync
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_ExecuteAsync
+  name: ExecuteAsync
+  nameWithType: ScenarioBuilder<T>.ExecuteAsync
+  fullName: FastMoq.ScenarioBuilder<T>.ExecuteAsync
+  nameWithType.vb: ScenarioBuilder(Of T).ExecuteAsync
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).ExecuteAsync
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FastMoq.ScenarioBuilder`1.Execute*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.Execute
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_Execute
+  name: Execute
+  nameWithType: ScenarioBuilder<T>.Execute
+  fullName: FastMoq.ScenarioBuilder<T>.Execute
+  nameWithType.vb: ScenarioBuilder(Of T).Execute
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).Execute
+- uid: FastMoq.ScenarioBuilder`1.ExecuteThrows*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.ExecuteThrows
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_ExecuteThrows__1
+  name: ExecuteThrows
+  nameWithType: ScenarioBuilder<T>.ExecuteThrows
+  fullName: FastMoq.ScenarioBuilder<T>.ExecuteThrows
+  nameWithType.vb: ScenarioBuilder(Of T).ExecuteThrows
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).ExecuteThrows
+- uid: '{TException}'
+  commentId: '!:TException'
+  definition: TException
+  name: TException
+  nameWithType: TException
+  fullName: TException
+- uid: TException
+  name: TException
+  nameWithType: TException
+  fullName: TException
+- uid: FastMoq.ScenarioBuilder`1.ExecuteThrowsAsync*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.ExecuteThrowsAsync
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_ExecuteThrowsAsync__1
+  name: ExecuteThrowsAsync
+  nameWithType: ScenarioBuilder<T>.ExecuteThrowsAsync
+  fullName: FastMoq.ScenarioBuilder<T>.ExecuteThrowsAsync
+  nameWithType.vb: ScenarioBuilder(Of T).ExecuteThrowsAsync
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).ExecuteThrowsAsync
+- uid: System.Threading.Tasks.Task{{TException}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TException>
+  nameWithType: Task<TException>
+  fullName: System.Threading.Tasks.Task<TException>
+  nameWithType.vb: Task(Of TException)
+  fullName.vb: System.Threading.Tasks.Task(Of TException)
+  name.vb: Task(Of TException)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TException
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TException
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FastMoq.ScenarioBuilder`1.VerifyNoOtherCalls*
+  commentId: Overload:FastMoq.ScenarioBuilder`1.VerifyNoOtherCalls
+  href: FastMoq.ScenarioBuilder-1.html#FastMoq_ScenarioBuilder_1_VerifyNoOtherCalls__1
+  name: VerifyNoOtherCalls
+  nameWithType: ScenarioBuilder<T>.VerifyNoOtherCalls
+  fullName: FastMoq.ScenarioBuilder<T>.VerifyNoOtherCalls
+  nameWithType.vb: ScenarioBuilder(Of T).VerifyNoOtherCalls
+  fullName.vb: FastMoq.ScenarioBuilder(Of T).VerifyNoOtherCalls
