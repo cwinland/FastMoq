@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class MockerCreationExtensions | FastMoq ">
     
-    <meta name="description" content="Mocker Create Extensions">
+    <meta name="description" content="Helpers for creating components or raw mocks when you need constructor selection to be explicit in a test.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -81,7 +81,7 @@
 
 
   <h1 id="FastMoq_Extensions_MockerCreationExtensions" data-uid="FastMoq.Extensions.MockerCreationExtensions" class="text-break">Class MockerCreationExtensions</h1>
-  <div class="markdown level0 summary"><p>Mocker Create Extensions</p>
+  <div class="markdown level0 summary"><p>Helpers for creating components or raw mocks when you need constructor selection to be explicit in a test.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -119,6 +119,16 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class MockerCreationExtensions</code></pre>
   </div>
+  <h5 id="FastMoq_Extensions_MockerCreationExtensions_examples"><strong>Examples</strong></h5>
+  <p>Use these overloads when the constructor choice matters and you want to supply only a subset of arguments explicitly.</p>
+<pre><code class="lang-csharp">var mocker = new Mocker();
+<p>var processor = mocker.CreateInstance&lt;OrderProcessor, string&gt;(
+new Dictionary&lt;Type, object?&gt;
+{
+[typeof(string)] = &quot;orders-eu&quot;
+});</p>
+<p>processor.Should().NotBeNull();</p></code></pre>
+
   <h3 id="methods">Methods
 </h3>
   <a id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance_" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance*"></a>
@@ -192,7 +202,7 @@
   </table>
   <a id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance_" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance*"></a>
   <h4 id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance__2_FastMoq_Mocker_System_Collections_Generic_Dictionary_System_Type_System_Object__" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance``2(FastMoq.Mocker,System.Collections.Generic.Dictionary{System.Type,System.Object})">CreateInstance&lt;T, TParam1&gt;(Mocker, Dictionary&lt;Type, object?&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates an instance of <code>T</code>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.</p>
+  <div class="markdown level1 summary"><p>Creates an instance of <code>T</code> by selecting the constructor that matches <code class="typeparamref">TParam1</code> and injecting the supplied value from <code class="paramref">data</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -234,7 +244,7 @@
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td><p>T.</p>
+        <td><p>The created instance or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when resolution cannot produce one.</p>
 </td>
       </tr>
     </tbody>
@@ -250,7 +260,8 @@
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The concrete type to create.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam1</span></td>
@@ -259,6 +270,17 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance__2_FastMoq_Mocker_System_Collections_Generic_Dictionary_System_Type_System_Object___examples">Examples</h5>
+  <p>This is useful when a component has multiple constructors and your test needs to target the overload that accepts a tenant or region value.</p>
+<pre><code class="lang-csharp">var mocker = new Mocker();
+<p>var handler = mocker.CreateInstance&lt;InvoiceHandler, string&gt;(
+new Dictionary&lt;Type, object?&gt;
+{
+[typeof(string)] = &quot;contoso&quot;
+});</p>
+<p>handler.Should().NotBeNull();
+handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
+
   <a id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance_" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance*"></a>
   <h4 id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance__3_FastMoq_Mocker_FastMoq_InstanceCreationFlags_System_Collections_Generic_Dictionary_System_Type_System_Object__" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance``3(FastMoq.Mocker,FastMoq.InstanceCreationFlags,System.Collections.Generic.Dictionary{System.Type,System.Object})">CreateInstance&lt;T, TParam1, TParam2&gt;(Mocker, InstanceCreationFlags, Dictionary&lt;Type, object?&gt;)</h4>
   <div class="markdown level1 summary"></div>
@@ -1251,7 +1273,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:20 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:24 UTC</span></div>
       
           </div>
         </div>

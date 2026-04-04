@@ -168,7 +168,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Extensions.MockerCreationExtensions",
-      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.MockerCreationExtensions.yml\" sourcestartlinenumber=\"1\">Mocker Create Extensions</p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.MockerCreationExtensions.yml\" sourcestartlinenumber=\"1\">Helpers for creating components or raw mocks when you need constructor selection to be explicit in a test.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -210,7 +210,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Extensions.TestClassExtensions",
-      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.TestClassExtensions.yml\" sourcestartlinenumber=\"1\">Helper Methods for testing.</p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.TestClassExtensions.yml\" sourcestartlinenumber=\"1\">Helper methods for reflection-based assertions, constructor-guard verification, and logger verification helpers used in tests.</p>\n"
     },
     {
       "type": "ManagedReference",

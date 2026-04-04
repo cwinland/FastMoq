@@ -60,33 +60,46 @@ items:
     This class contains the <xref href="FastMoq.MockerTestBase%601.Mocks" data-throw-if-not-resolved="false"></xref> property to create and track all Mocks from creation of the component.
   example:
   - >-
-    <p>Example test class using MockerTestBase&lt;Car&gt;.</p>
+    <p>Use <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref> when you want the component under test created automatically with constructor dependencies resolved from FastMoq.</p>
 
-    <pre><code class="lang-csharp">public class CarTests : MockerTestBase&lt;Car&gt;
+    <pre><code class="lang-csharp">public class CheckoutServiceTests : MockerTestBase&lt;CheckoutService&gt;
 
     {
-        [Fact]
-        public void TestCar()
+        protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
         {
-            Component.CarService.Should().NotBeNull();
+            mocker.GetMock&lt;IPricingClient&gt;()
+                .Setup(x =&gt; x.GetPrice("SKU-42"))
+                .Returns(125.50m);
+
+            mocker.AddType<IClock>(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+        };
+
+        [Fact]
+        public void Calculates_total_using_auto_injected_dependencies()
+        {
+            var total = Component.CalculateTotal("SKU-42", quantity: 2);
+
+            total.Should().Be(251.00m);
+            Mocks.GetMock<IPricingClient>().Verify(x => x.GetPrice("SKU-42"), Times.Once);
         }
     }</code></pre>
 
-    <p>ICarService is automatically injected into the Car object when the base class creates the component.</p>
+    <p>The base class creates <code>CheckoutService</code> before the test body runs, so the test can assert directly against <xref href="FastMoq.MockerTestBase%601.Component" data-throw-if-not-resolved="false"></xref>.</p>
 
-    <pre><code class="lang-csharp">public partial class Car
+    <pre><code class="lang-csharp">public sealed class CheckoutService
 
     {
-        public Car(ICarService carService) =&gt; CarService = carService;
+        public CheckoutService(IPricingClient pricingClient, IClock clock)
+        {
+            _pricingClient = pricingClient;
+            _clock = clock;
+        }
     }</code></pre>
 
-    <p>To configure mocks before the component is created, override SetupMocksAction.</p>
+    <p>Use <xref href="FastMoq.MockerTestBase%601.CreatedComponentAction" data-throw-if-not-resolved="false"></xref> when you need a final arrangement step after construction, such as setting mutable state or attaching events.</p>
 
-    <pre><code class="lang-csharp">protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
-
-    {
-        mocker.GetMockDbContext&lt;ApplicationDbContext&gt;();
-    };</code></pre>
+    <pre><code class="lang-csharp">protected override Action&lt;CheckoutService&gt; CreatedComponentAction =&gt; component =&gt;
+        component.Currency = "USD";</code></pre>
   syntax:
     content: 'public abstract class MockerTestBase<TComponent> : IDisposable where TComponent : class'
     typeParameters:
@@ -141,7 +154,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Component
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 55
+    startLine: 69
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -175,7 +188,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CustomMocks
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 65
+    startLine: 79
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -209,7 +222,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateComponentAction
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 71
+    startLine: 85
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -243,7 +256,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMocksAction
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 77
+    startLine: 91
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -277,7 +290,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreatedComponentAction
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 83
+    startLine: 97
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -311,7 +324,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureMockerPolicy
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 88
+    startLine: 102
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -344,7 +357,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Mocks
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 94
+    startLine: 108
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -378,7 +391,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Scenario
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 99
+    startLine: 113
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -411,7 +424,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 113
+    startLine: 127
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -465,7 +478,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 141
+    startLine: 155
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -510,7 +523,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 151
+    startLine: 165
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -558,22 +571,27 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateComponent
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 167
+    startLine: 186
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
   summary: Sets the <xref href="FastMoq.MockerTestBase%601.Component" data-throw-if-not-resolved="false"></xref> property with a new instance while maintaining the constructor setup and any other changes.
   example:
   - >-
-    <p>Use CreateComponent when you want to arrange mocks before the component is created.</p>
+    <p>Use <xref href="FastMoq.MockerTestBase%601.CreateComponent" data-throw-if-not-resolved="false"></xref> when the test needs to change mock behavior first and then rebuild the component with the updated arrangement.</p>
 
     <pre><code class="lang-csharp">[Fact]
 
-    public void Test()
+    public void Recreates_component_after_overriding_a_dependency()
 
     {
-        Mocks.GetMock&lt;ICarService&gt;().Setup(x =&gt; x.StartCar).Returns(true);
+        Mocks.GetMock&lt;IPricingClient&gt;()
+            .Setup(x =&gt; x.GetPrice("SKU-42"))
+            .Returns(99.00m);
+
         CreateComponent();
+
+        Component.CalculateTotal("SKU-42", 1).Should().Be(99.00m);
     }</code></pre>
   syntax:
     content: protected void CreateComponent()
@@ -599,7 +617,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 194
+    startLine: 213
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -636,7 +654,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 212
+    startLine: 231
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1329,6 +1347,47 @@ references:
   fullName: FastMoq.MockerTestBase<TComponent>.Mocks
   nameWithType.vb: MockerTestBase(Of TComponent).Mocks
   fullName.vb: FastMoq.MockerTestBase(Of TComponent).Mocks
+- uid: FastMoq.MockerTestBase`1
+  commentId: T:FastMoq.MockerTestBase`1
+  href: FastMoq.MockerTestBase-1.html
+  name: MockerTestBase<TComponent>
+  nameWithType: MockerTestBase<TComponent>
+  fullName: FastMoq.MockerTestBase<TComponent>
+  nameWithType.vb: MockerTestBase(Of TComponent)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent)
+  name.vb: MockerTestBase(Of TComponent)
+  spec.csharp:
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: <
+  - name: TComponent
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.MockerTestBase`1
+    name: MockerTestBase
+    href: FastMoq.MockerTestBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+- uid: FastMoq.MockerTestBase`1.Component
+  commentId: P:FastMoq.MockerTestBase`1.Component
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Component
+  name: Component
+  nameWithType: MockerTestBase<TComponent>.Component
+  fullName: FastMoq.MockerTestBase<TComponent>.Component
+  nameWithType.vb: MockerTestBase(Of TComponent).Component
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Component
+- uid: FastMoq.MockerTestBase`1.CreatedComponentAction
+  commentId: P:FastMoq.MockerTestBase`1.CreatedComponentAction
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreatedComponentAction
+  name: CreatedComponentAction
+  nameWithType: MockerTestBase<TComponent>.CreatedComponentAction
+  fullName: FastMoq.MockerTestBase<TComponent>.CreatedComponentAction
+  nameWithType.vb: MockerTestBase(Of TComponent).CreatedComponentAction
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CreatedComponentAction
 - uid: FastMoq
   commentId: N:FastMoq
   href: FastMoq.html
@@ -4089,14 +4148,26 @@ references:
   name: T
   nameWithType: T
   fullName: T
-- uid: FastMoq.MockerTestBase`1.Component
-  commentId: P:FastMoq.MockerTestBase`1.Component
-  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Component
-  name: Component
-  nameWithType: MockerTestBase<TComponent>.Component
-  fullName: FastMoq.MockerTestBase<TComponent>.Component
-  nameWithType.vb: MockerTestBase(Of TComponent).Component
-  fullName.vb: FastMoq.MockerTestBase(Of TComponent).Component
+- uid: FastMoq.MockerTestBase`1.CreateComponent
+  commentId: M:FastMoq.MockerTestBase`1.CreateComponent
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreateComponent
+  name: CreateComponent()
+  nameWithType: MockerTestBase<TComponent>.CreateComponent()
+  fullName: FastMoq.MockerTestBase<TComponent>.CreateComponent()
+  nameWithType.vb: MockerTestBase(Of TComponent).CreateComponent()
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CreateComponent()
+  spec.csharp:
+  - uid: FastMoq.MockerTestBase`1.CreateComponent
+    name: CreateComponent
+    href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreateComponent
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FastMoq.MockerTestBase`1.CreateComponent
+    name: CreateComponent
+    href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreateComponent
+  - name: (
+  - name: )
 - uid: FastMoq.MockerTestBase`1.CreateComponent*
   commentId: Overload:FastMoq.MockerTestBase`1.CreateComponent
   href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreateComponent
@@ -4170,31 +4241,6 @@ references:
   nameWithType.vb: MockerTestBase(Of TComponent).New
   fullName.vb: FastMoq.MockerTestBase(Of TComponent).New
   name.vb: New
-- uid: FastMoq.MockerTestBase`1
-  commentId: T:FastMoq.MockerTestBase`1
-  href: FastMoq.MockerTestBase-1.html
-  name: MockerTestBase<TComponent>
-  nameWithType: MockerTestBase<TComponent>
-  fullName: FastMoq.MockerTestBase<TComponent>
-  nameWithType.vb: MockerTestBase(Of TComponent)
-  fullName.vb: FastMoq.MockerTestBase(Of TComponent)
-  name.vb: MockerTestBase(Of TComponent)
-  spec.csharp:
-  - uid: FastMoq.MockerTestBase`1
-    name: MockerTestBase
-    href: FastMoq.MockerTestBase-1.html
-  - name: <
-  - name: TComponent
-  - name: '>'
-  spec.vb:
-  - uid: FastMoq.MockerTestBase`1
-    name: MockerTestBase
-    href: FastMoq.MockerTestBase-1.html
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TComponent
-  - name: )
 - uid: FastMoq.MockerTestBase`1.LoggingCallback*
   commentId: Overload:FastMoq.MockerTestBase`1.LoggingCallback
   href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_LoggingCallback_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception_

@@ -134,6 +134,17 @@ For setup values, use AddMock() or component constructor parameters instead.</p>
 <ol><li>Custom type mapping (AddType&lt;TInterface, TImpl&gt;())</li><li>Falls back to GetObject for all other resolution</li></ol>
 <p>Constructor parameters follow the same hierarchy as GetObject after type mapping.</p>
 </div>
+  <h5 id="FastMoq_Mocker_examples"><strong>Examples</strong></h5>
+  <p>Use <a class="xref" href="FastMoq.Mocker.html">Mocker</a> as the main test composition root when you want to mix concrete registrations with mock setup.</p>
+<pre><code class="lang-csharp">var mocker = new Mocker()
+    .AddType&lt;IClock&gt;(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+<p>mocker.GetMock&lt;IOrderRepository&gt;(repo =&gt;
+repo.Setup(x =&gt; x.GetByIdAsync(42)).ReturnsAsync(new Order { Id = 42, Total = 125.50m }));</p>
+<p>var service = mocker.GetRequiredObject&lt;OrderService&gt;();
+var order = await service.LoadAsync(42);</p>
+<p>order.Total.Should().Be(125.50m);
+mocker.GetMock&lt;IOrderRepository&gt;().Verify(x =&gt; x.GetByIdAsync(42), Times.Once);</p></code></pre>
+
   <h3 id="constructors">Constructors
 </h3>
   <a id="FastMoq_Mocker__ctor_" data-uid="FastMoq.Mocker.#ctor*"></a>
@@ -1554,7 +1565,8 @@ public Mocker AddType(Type tInterface, Type tClass, Func&lt;Mocker, object, obje
   </table>
   <a id="FastMoq_Mocker_AddType_" data-uid="FastMoq.Mocker.AddType*"></a>
   <h4 id="FastMoq_Mocker_AddType__1___0_System_Boolean_" data-uid="FastMoq.Mocker.AddType``1(``0,System.Boolean)">AddType&lt;T&gt;(T, bool)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers a concrete instance so future object resolution returns that instance instead of auto-creating a mock.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1612,6 +1624,14 @@ public Mocker AddType(Type tInterface, Type tClass, Func&lt;Mocker, object, obje
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Mocker_AddType__1___0_System_Boolean__examples">Examples</h5>
+  <p>Use this overload when a dependency should be a known runtime object rather than a tracked mock.</p>
+<pre><code class="lang-csharp">var clock = new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero));
+<p>var mocker = new Mocker()
+.AddType&lt;IClock&gt;(clock);</p>
+<p>var service = mocker.GetRequiredObject&lt;OrderService&gt;();
+service.Clock.Should().BeSameAs(clock);</p></code></pre>
+
   <a id="FastMoq_Mocker_AddType_" data-uid="FastMoq.Mocker.AddType*"></a>
   <h4 id="FastMoq_Mocker_AddType__2_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.AddType``2(System.Boolean,System.Object[])">AddType&lt;TInterface, TClass&gt;(bool, params object?[]?)</h4>
   <div class="markdown level1 summary"></div>
@@ -3748,7 +3768,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetMock_" data-uid="FastMoq.Mocker.GetMock*"></a>
   <h4 id="FastMoq_Mocker_GetMock__1_System_Object___" data-uid="FastMoq.Mocker.GetMock``1(System.Object[])">GetMock&lt;T&gt;(params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns a tracked mock for the requested type, creating it if needed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3801,6 +3822,16 @@ Useful when the same interface is needed multiple times without constructor inje
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Mocker_GetMock__1_System_Object____examples">Examples</h5>
+  <p>Use the callback overload when you want mock creation and setup in one place.</p>
+<pre><code class="lang-csharp">var mocker = new Mocker();
+<p>mocker.GetMock&lt;IPaymentGateway&gt;(gateway =&gt;
+gateway.Setup(x =&gt; x.Charge(125.50m)).Returns(true));</p>
+<p>var service = mocker.GetRequiredObject&lt;CheckoutService&gt;();
+var approved = service.SubmitPayment(125.50m);</p>
+<p>approved.Should().BeTrue();
+mocker.GetMock&lt;IPaymentGateway&gt;().Verify(x =&gt; x.Charge(125.50m), Times.Once);</p></code></pre>
+
   <a id="FastMoq_Mocker_GetNativeMock_" data-uid="FastMoq.Mocker.GetNativeMock*"></a>
   <h4 id="FastMoq_Mocker_GetNativeMock_System_Type_" data-uid="FastMoq.Mocker.GetNativeMock(System.Type)">GetNativeMock(Type)</h4>
   <div class="markdown level1 summary"></div>
@@ -3983,7 +4014,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetObject_" data-uid="FastMoq.Mocker.GetObject*"></a>
   <h4 id="FastMoq_Mocker_GetObject__1" data-uid="FastMoq.Mocker.GetObject``1">GetObject&lt;T&gt;()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Resolves an object using FastMoq's runtime resolution pipeline.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4019,6 +4051,16 @@ Useful when the same interface is needed multiple times without constructor inje
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Mocker_GetObject__1_examples">Examples</h5>
+  <p>Resolve the component under test after configuring any concrete registrations and mock behavior.</p>
+<pre><code class="lang-csharp">var mocker = new Mocker();
+<p>mocker.GetMock&lt;IInventoryGateway&gt;()
+.Setup(x =&gt; x.IsInStock(&quot;SKU-42&quot;))
+.Returns(true);</p>
+<p>var service = mocker.GetRequiredObject&lt;CheckoutService&gt;();
+var canShip = service.CanShip(&quot;SKU-42&quot;);</p>
+<p>canShip.Should().BeTrue();</p></code></pre>
+
   <a id="FastMoq_Mocker_GetObject_" data-uid="FastMoq.Mocker.GetObject*"></a>
   <h4 id="FastMoq_Mocker_GetObject__1_System_Action___0__" data-uid="FastMoq.Mocker.GetObject``1(System.Action{``0})">GetObject&lt;T&gt;(Action&lt;T?&gt;)</h4>
   <div class="markdown level1 summary"></div>
@@ -5206,7 +5248,7 @@ This is broader than <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_St
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:20 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:24 UTC</span></div>
       
           </div>
         </div>

@@ -51,6 +51,22 @@ namespace FastMoq
     /// </list>
     /// <para>Constructor parameters follow the same hierarchy as GetObject after type mapping.</para>
     /// </remarks>
+    /// <example>
+    /// <para>Use <see cref="Mocker" /> as the main test composition root when you want to mix concrete registrations with mock setup.</para>
+    /// <code language="csharp"><![CDATA[
+    /// var mocker = new Mocker()
+    ///     .AddType<IClock>(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+    ///
+    /// mocker.GetMock<IOrderRepository>(repo =>
+    ///     repo.Setup(x => x.GetByIdAsync(42)).ReturnsAsync(new Order { Id = 42, Total = 125.50m }));
+    ///
+    /// var service = mocker.GetRequiredObject<OrderService>();
+    /// var order = await service.LoadAsync(42);
+    ///
+    /// order.Total.Should().Be(125.50m);
+    /// mocker.GetMock<IOrderRepository>().Verify(x => x.GetByIdAsync(42), Times.Once);
+    /// ]]></code>
+    /// </example>
     public partial class Mocker
     {
         public const string SETUP_ALL_PROPERTIES_METHOD_NAME = "SetupAllProperties";
@@ -230,6 +246,21 @@ namespace FastMoq
             typeMap[tInterface] = new InstanceModel(tInterface, tClass, createFunc, args?.ToList() ?? new List<object?>());
             return this;
         }
+        /// <summary>
+        /// Registers a concrete instance so future object resolution returns that instance instead of auto-creating a mock.
+        /// </summary>
+        /// <example>
+        /// <para>Use this overload when a dependency should be a known runtime object rather than a tracked mock.</para>
+        /// <code language="csharp"><![CDATA[
+        /// var clock = new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero));
+        ///
+        /// var mocker = new Mocker()
+        ///     .AddType<IClock>(clock);
+        ///
+        /// var service = mocker.GetRequiredObject<OrderService>();
+        /// service.Clock.Should().BeSameAs(clock);
+        /// ]]></code>
+        /// </example>
         public Mocker AddType<T>(T value, bool replace = false)
         {
             if (typeMap.ContainsKey(typeof(T)))
@@ -681,6 +712,24 @@ namespace FastMoq
                 return info.ParameterType.GetDefaultValue();
             }
         }
+        /// <summary>
+        /// Resolves an object using FastMoq's runtime resolution pipeline.
+        /// </summary>
+        /// <example>
+        /// <para>Resolve the component under test after configuring any concrete registrations and mock behavior.</para>
+        /// <code language="csharp"><![CDATA[
+        /// var mocker = new Mocker();
+        ///
+        /// mocker.GetMock<IInventoryGateway>()
+        ///     .Setup(x => x.IsInStock("SKU-42"))
+        ///     .Returns(true);
+        ///
+        /// var service = mocker.GetRequiredObject<CheckoutService>();
+        /// var canShip = service.CanShip("SKU-42");
+        ///
+        /// canShip.Should().BeTrue();
+        /// ]]></code>
+        /// </example>
         public T? GetObject<T>() where T : class => GetObject(typeof(T)) as T;
         public T? GetObject<T>(Action<T?> init) where T : class => GetObject(typeof(T), o => init((T?)o)) as T;
         public T? GetKeyedObject<T>(object serviceKey) where T : class => GetKeyedObject(typeof(T), serviceKey) as T;
@@ -1376,6 +1425,24 @@ namespace FastMoq
 
             return GetRequiredMock(type);
         }
+        /// <summary>
+        /// Returns a tracked mock for the requested type, creating it if needed.
+        /// </summary>
+        /// <example>
+        /// <para>Use the callback overload when you want mock creation and setup in one place.</para>
+        /// <code language="csharp"><![CDATA[
+        /// var mocker = new Mocker();
+        ///
+        /// mocker.GetMock<IPaymentGateway>(gateway =>
+        ///     gateway.Setup(x => x.Charge(125.50m)).Returns(true));
+        ///
+        /// var service = mocker.GetRequiredObject<CheckoutService>();
+        /// var approved = service.SubmitPayment(125.50m);
+        ///
+        /// approved.Should().BeTrue();
+        /// mocker.GetMock<IPaymentGateway>().Verify(x => x.Charge(125.50m), Times.Once);
+        /// ]]></code>
+        /// </example>
         public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>)GetMock(typeof(T), args);
         public Mock<T> GetMock<T>(Action<Mock<T>> action, params object?[] args) where T : class
         {

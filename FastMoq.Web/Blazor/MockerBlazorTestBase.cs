@@ -27,67 +27,44 @@ namespace FastMoq.Web.Blazor
     /// <seealso cref="ComponentBase" />
     /// <inheritdoc cref="TestContext" />
     /// <example>
-    ///     Basic example.
-    ///     <code language="cs"><![CDATA[
-    /// public class IndexTests : MockerBlazorTestBase<Index>
+    /// <para>Start with a realistic page-level test that configures services, mocks, and assertions in one place.</para>
+    /// <code language="csharp"><![CDATA[
+    /// public class OrdersPageTests : MockerBlazorTestBase<OrdersPage>
     /// {
+    ///     protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices => (services, _, _) =>
+    ///         services.AddSingleton<IClock>(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+    ///
+    ///     protected override Action<Mocker> SetupComponent => mocker =>
+    ///     {
+    ///         mocker.GetMock<IOrdersClient>()
+    ///             .Setup(x => x.GetOpenOrdersAsync())
+    ///             .ReturnsAsync(new[]
+    ///             {
+    ///                 new OrderSummary { Id = 42, CustomerName = "Contoso", Total = 125.50m }
+    ///             });
+    ///     };
+    ///
     ///     [Fact]
-    ///     public void Create() => Component.Should().NotBeNull();
+    ///     public void LoadsOpenOrdersOnFirstRender()
+    ///     {
+    ///         Component.Markup.Should().Contain("Contoso");
+    ///         Mocks.GetMock<IOrdersClient>().Verify(x => x.GetOpenOrdersAsync(), Times.Once);
+    ///     }
     /// }
     /// ]]></code>
     /// </example>
     /// <example>
-    ///     Configure services.
-    ///     <code language="cs"><![CDATA[
-    /// protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices => (services, c, m) => services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
-    /// ]]></code>
-    /// </example>
-    /// <example>
-    ///     Configure roles.
-    ///     <code language="cs"><![CDATA[
-    /// protected override MockerObservableCollection<string> AuthorizedRoles => new MockerObservableCollection<string>() { "Role1", "Role2"}
-    /// ]]></code>
-    /// </example>
-    /// <example>
-    ///     Configure an HTTP response.
-    ///     <code language="cs"><![CDATA[
-    /// protected override Action<Mocker> SetupComponent => mocker =>
-    /// mocker.SetupHttpMessage(() => new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent("ContextGoesHere")});
-    /// ]]></code>
-    /// </example>
-    /// <example>
-    ///     Configure mocks.
-    ///     <code language="cs"><![CDATA[
-    /// protected override Action<Mocker> SetupComponent => mocker =>
+    /// <para>Use authorization and navigation helpers together when a component renders actions conditionally.</para>
+    /// <code language="csharp"><![CDATA[
+    /// protected override MockerObservableCollection<string> AuthorizedRoles => new() { "Orders.Read", "Orders.Submit" };
+    ///
+    /// [Fact]
+    /// public void ClickingSubmitNavigatesToReview()
     /// {
-    ///     mocker.GetMock<IFile>().Setup(f => f.Exists(It.IsAny<string>())).Returns(true);                     // Add setup to mock.
-    ///     mocker.GetMock<IDirectory>().Setup(d => d.Exists(It.IsAny<string>())).Returns(true);
-    ///     mocker.GetMock<IDirectory>().Setup(d=>d.Exists("C:\\testfile.txt")).Returns(false);                 // add setup to existing mock.
-    /// };
-    /// ]]></code>
-    /// </example>
-    /// <example>
-    ///     Click a button by selector or element and verify navigation changes.
-    ///     <code language="cs"><![CDATA[
-    /// NavigationManager.History.Count.Should().Be(0);
-    /// 
-    /// ClickButton("button", () => NavigationManager.History.Count == 1);
-    /// NavigationManager.History.Count.Should().Be(1);
-    /// 
-    /// ClickButton("button[id='testbutton']", () => NavigationManager.History.Count == 2);
-    /// NavigationManager.History.Count.Should().Be(2);
-    /// 
-    /// ClickButton(FindAllByTag("button").First(x => x.Id == "testbutton"), () => NavigationManager.History.Count == 3);
-    /// NavigationManager.History.Count.Should().Be(3);
-    /// 
-    /// ClickButton(FindById("testbutton"), () => NavigationManager.History.Count == 4);
-    /// NavigationManager.History.Count.Should().Be(4);
-    /// 
-    /// ClickButton("button", () => NavigationManager.History.Count == 5, Component, TimeSpan.FromSeconds(5));
-    /// NavigationManager.History.Count.Should().Be(5);
-    /// 
-    /// ClickButton(e => e.Id == "testbutton", () => NavigationManager.History.Count == 6);
-    /// NavigationManager.History.Count.Should().Be(6);
+    ///     ClickButton("button[type='submit']", () => NavigationManager.History.Count == 1);
+    ///
+    ///     NavigationManager.Uri.Should().Contain("/orders/review");
+    /// }
     /// ]]></code>
     /// </example>
     public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHelpers<T> where T : ComponentBase

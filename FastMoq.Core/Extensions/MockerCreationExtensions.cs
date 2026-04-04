@@ -9,18 +9,47 @@ using System.Security.Claims;
 namespace FastMoq.Extensions
 {
     /// <summary>
-    ///     Mocker Create Extensions
+    /// Helpers for creating components or raw mocks when you need constructor selection to be explicit in a test.
     /// </summary>
+    /// <example>
+    /// <para>Use these overloads when the constructor choice matters and you want to supply only a subset of arguments explicitly.</para>
+    /// <code language="csharp"><![CDATA[
+    /// var mocker = new Mocker();
+    ///
+    /// var processor = mocker.CreateInstance<OrderProcessor, string>(
+    ///     new Dictionary<Type, object?>
+    ///     {
+    ///         [typeof(string)] = "orders-eu"
+    ///     });
+    ///
+    /// processor.Should().NotBeNull();
+    /// ]]></code>
+    /// </example>
     public static class MockerCreationExtensions
     {
         /// <summary>
-        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
+        /// Creates an instance of <c>T</c> by selecting the constructor that matches <typeparamref name="TParam1"/> and injecting the supplied value from <paramref name="data"/>.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The concrete type to create.</typeparam>
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
         /// <param name="mocker">The mocker.</param>
         /// <param name="data">The data.</param>
-        /// <returns>T.</returns>
+        /// <returns>The created instance or <see langword="null"/> when resolution cannot produce one.</returns>
+        /// <example>
+        /// <para>This is useful when a component has multiple constructors and your test needs to target the overload that accepts a tenant or region value.</para>
+        /// <code language="csharp"><![CDATA[
+        /// var mocker = new Mocker();
+        ///
+        /// var handler = mocker.CreateInstance<InvoiceHandler, string>(
+        ///     new Dictionary<Type, object?>
+        ///     {
+        ///         [typeof(string)] = "contoso"
+        ///     });
+        ///
+        /// handler.Should().NotBeNull();
+        /// handler!.TenantName.Should().Be("contoso");
+        /// ]]></code>
+        /// </example>
         public static T? CreateInstance<T, TParam1>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstance<T, TParam1>(InstanceCreationFlags.None, data);
 

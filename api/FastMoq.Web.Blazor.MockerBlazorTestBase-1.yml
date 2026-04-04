@@ -78,85 +78,53 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerBlazorTestBase
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 92
+    startLine: 69
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
   summary: Base class for bUnit component tests that integrates FastMoq auto-mocking, service setup, and helper methods for Blazor interaction.
   example:
   - >-
-    Basic example.
+    <p>Start with a realistic page-level test that configures services, mocks, and assertions in one place.</p>
 
-
-    <pre><code class="lang-cs">public class IndexTests : MockerBlazorTestBase&lt;Index&gt;
+    <pre><code class="lang-csharp">public class OrdersPageTests : MockerBlazorTestBase&lt;OrdersPage&gt;
 
     {
+        protected override Action&lt;TestServiceProvider, IConfiguration, Mocker&gt; ConfigureServices =&gt; (services, _, _) =&gt;
+            services.AddSingleton&lt;IClock&gt;(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+
+        protected override Action<Mocker> SetupComponent => mocker =>
+        {
+            mocker.GetMock<IOrdersClient>()
+                .Setup(x => x.GetOpenOrdersAsync())
+                .ReturnsAsync(new[]
+                {
+                    new OrderSummary { Id = 42, CustomerName = "Contoso", Total = 125.50m }
+                });
+        };
+
         [Fact]
-        public void Create() =&gt; Component.Should().NotBeNull();
+        public void LoadsOpenOrdersOnFirstRender()
+        {
+            Component.Markup.Should().Contain("Contoso");
+            Mocks.GetMock<IOrdersClient>().Verify(x => x.GetOpenOrdersAsync(), Times.Once);
+        }
     }</code></pre>
   - >-
-    Configure services.
+    <p>Use authorization and navigation helpers together when a component renders actions conditionally.</p>
+
+    <pre><code class="lang-csharp">protected override MockerObservableCollection&lt;string&gt; AuthorizedRoles =&gt; new() { "Orders.Read", "Orders.Submit" };
 
 
-    <pre><code class="lang-cs">protected override Action&lt;TestServiceProvider, IConfiguration, Mocker&gt; ConfigureServices =&gt; (services, c, m) =&gt; services.AddSingleton&lt;IWeatherForecastService, WeatherForecastService&gt;();</code></pre>
-  - >-
-    Configure roles.
+    [Fact]
 
-
-    <pre><code class="lang-cs">protected override MockerObservableCollection&lt;string&gt; AuthorizedRoles =&gt; new MockerObservableCollection&lt;string&gt;() { "Role1", "Role2"}</code></pre>
-  - >-
-    Configure an HTTP response.
-
-
-    <pre><code class="lang-cs">protected override Action&lt;Mocker&gt; SetupComponent =&gt; mocker =&gt;
-
-    mocker.SetupHttpMessage(() =&gt; new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent("ContextGoesHere")});</code></pre>
-  - >-
-    Configure mocks.
-
-
-    <pre><code class="lang-cs">protected override Action&lt;Mocker&gt; SetupComponent =&gt; mocker =&gt;
+    public void ClickingSubmitNavigatesToReview()
 
     {
-        mocker.GetMock&lt;IFile&gt;().Setup(f =&gt; f.Exists(It.IsAny&lt;string&gt;())).Returns(true);                     // Add setup to mock.
-        mocker.GetMock&lt;IDirectory&gt;().Setup(d =&gt; d.Exists(It.IsAny&lt;string&gt;())).Returns(true);
-        mocker.GetMock&lt;IDirectory&gt;().Setup(d=&gt;d.Exists("C:\\testfile.txt")).Returns(false);                 // add setup to existing mock.
-    };</code></pre>
-  - >-
-    Click a button by selector or element and verify navigation changes.
+        ClickButton("button[type='submit']", () =&gt; NavigationManager.History.Count == 1);
 
-
-    <pre><code class="lang-cs">NavigationManager.History.Count.Should().Be(0);
-
-
-    ClickButton("button", () =&gt; NavigationManager.History.Count == 1);
-
-    NavigationManager.History.Count.Should().Be(1);
-
-
-    ClickButton("button[id='testbutton']", () =&gt; NavigationManager.History.Count == 2);
-
-    NavigationManager.History.Count.Should().Be(2);
-
-
-    ClickButton(FindAllByTag("button").First(x =&gt; x.Id == "testbutton"), () =&gt; NavigationManager.History.Count == 3);
-
-    NavigationManager.History.Count.Should().Be(3);
-
-
-    ClickButton(FindById("testbutton"), () =&gt; NavigationManager.History.Count == 4);
-
-    NavigationManager.History.Count.Should().Be(4);
-
-
-    ClickButton("button", () =&gt; NavigationManager.History.Count == 5, Component, TimeSpan.FromSeconds(5));
-
-    NavigationManager.History.Count.Should().Be(5);
-
-
-    ClickButton(e =&gt; e.Id == "testbutton", () =&gt; NavigationManager.History.Count == 6);
-
-    NavigationManager.History.Count.Should().Be(6);</code></pre>
+        NavigationManager.Uri.Should().Contain("/orders/review");
+    }</code></pre>
   syntax:
     content: 'public abstract class MockerBlazorTestBase<T> : TestContext, IDisposable, IMockerBlazorTestHelpers<T> where T : ComponentBase'
     typeParameters:
@@ -233,7 +201,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AuthContext
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 127
+    startLine: 104
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -286,7 +254,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AuthorizedClaims
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 137
+    startLine: 114
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -329,7 +297,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AuthorizedPolicies
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 153
+    startLine: 130
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -377,7 +345,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AuthorizedRoles
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 169
+    startLine: 146
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -425,7 +393,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AuthUsername
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 187
+    startLine: 164
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -487,7 +455,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Component
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 202
+    startLine: 179
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -521,7 +489,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureServices
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 214
+    startLine: 191
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -570,7 +538,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 221
+    startLine: 198
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -604,7 +572,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Mocks
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 228
+    startLine: 205
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -641,7 +609,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: NavigationManager
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 240
+    startLine: 217
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -680,7 +648,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderParameters
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 247
+    startLine: 224
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -727,7 +695,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 254
+    startLine: 231
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -771,7 +739,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TokenSource
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 261
+    startLine: 238
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -805,7 +773,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 266
+    startLine: 243
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -836,7 +804,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 275
+    startLine: 252
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -877,7 +845,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupJsInterop
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 294
+    startLine: 271
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -918,7 +886,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAllComponents
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 311
+    startLine: 288
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -959,7 +927,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAllComponents
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 341
+    startLine: 318
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -992,7 +960,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Setup
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 346
+    startLine: 323
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1028,7 +996,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 361
+    startLine: 338
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1073,7 +1041,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAuthorization
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 381
+    startLine: 358
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1114,7 +1082,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMocks
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 392
+    startLine: 369
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1144,7 +1112,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupServices
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 398
+    startLine: 375
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1178,7 +1146,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: OnAuthorizedClaimsChanged
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 414
+    startLine: 391
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1216,7 +1184,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: OnAuthorizedPoliciesChanged
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 422
+    startLine: 399
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1254,7 +1222,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: OnAuthorizedRolesChanged
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 430
+    startLine: 407
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1292,7 +1260,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 436
+    startLine: 413
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1338,7 +1306,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 447
+    startLine: 424
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1384,7 +1352,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 455
+    startLine: 432
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1436,7 +1404,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 462
+    startLine: 439
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1486,7 +1454,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 477
+    startLine: 454
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1539,7 +1507,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickDropdownItem
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 483
+    startLine: 460
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1591,7 +1559,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickDropdownItem
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 497
+    startLine: 474
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1643,7 +1611,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: FindAllByTag
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 506
+    startLine: 483
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1683,7 +1651,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: FindById
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 512
+    startLine: 489
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1723,7 +1691,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 516
+    startLine: 493
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1763,7 +1731,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 520
+    startLine: 497
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1814,7 +1782,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 534
+    startLine: 511
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1858,7 +1826,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 544
+    startLine: 521
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1908,7 +1876,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 555
+    startLine: 532
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1951,7 +1919,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 565
+    startLine: 542
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1993,7 +1961,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 571
+    startLine: 548
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2032,7 +2000,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 574
+    startLine: 551
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2071,7 +2039,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 577
+    startLine: 554
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2110,7 +2078,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 580
+    startLine: 557
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2152,7 +2120,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 599
+    startLine: 576
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2191,7 +2159,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 602
+    startLine: 579
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2232,7 +2200,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IsExists
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 606
+    startLine: 583
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2275,7 +2243,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 619
+    startLine: 596
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2323,7 +2291,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 635
+    startLine: 612
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2374,7 +2342,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetAutoComplete
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 651
+    startLine: 628
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2423,7 +2391,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementCheck
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 675
+    startLine: 652
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2485,7 +2453,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementSwitch
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 733
+    startLine: 710
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2544,7 +2512,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 792
+    startLine: 769
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2593,7 +2561,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 806
+    startLine: 783
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2649,7 +2617,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitDelay
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 839
+    startLine: 816
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2688,7 +2656,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForExists
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 854
+    startLine: 831
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2731,7 +2699,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForNotExists
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 858
+    startLine: 835
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2774,7 +2742,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForState
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 862
+    startLine: 839
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor

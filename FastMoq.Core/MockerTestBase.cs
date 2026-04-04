@@ -9,30 +9,44 @@ namespace FastMoq
     ///     This class contains the <see cref="Mocks"/> property to create and track all Mocks from creation of the component.
     /// </summary>
     /// <example>
-    /// <para>Example test class using MockerTestBase&lt;Car&gt;.</para>
+    /// <para>Use <see cref="MockerTestBase{TComponent}"/> when you want the component under test created automatically with constructor dependencies resolved from FastMoq.</para>
     /// <code language="csharp"><![CDATA[
-    /// public class CarTests : MockerTestBase<Car>
+    /// public class CheckoutServiceTests : MockerTestBase<CheckoutService>
     /// {
-    ///     [Fact]
-    ///     public void TestCar()
+    ///     protected override Action<Mocker> SetupMocksAction => mocker =>
     ///     {
-    ///         Component.CarService.Should().NotBeNull();
+    ///         mocker.GetMock<IPricingClient>()
+    ///             .Setup(x => x.GetPrice("SKU-42"))
+    ///             .Returns(125.50m);
+    ///
+    ///         mocker.AddType<IClock>(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+    ///     };
+    ///
+    ///     [Fact]
+    ///     public void Calculates_total_using_auto_injected_dependencies()
+    ///     {
+    ///         var total = Component.CalculateTotal("SKU-42", quantity: 2);
+    ///
+    ///         total.Should().Be(251.00m);
+    ///         Mocks.GetMock<IPricingClient>().Verify(x => x.GetPrice("SKU-42"), Times.Once);
     ///     }
     /// }
     /// ]]></code>
-    /// <para>ICarService is automatically injected into the Car object when the base class creates the component.</para>
+    /// <para>The base class creates <c>CheckoutService</c> before the test body runs, so the test can assert directly against <see cref="Component"/>.</para>
     /// <code language="csharp"><![CDATA[
-    /// public partial class Car
+    /// public sealed class CheckoutService
     /// {
-    ///     public Car(ICarService carService) => CarService = carService;
+    ///     public CheckoutService(IPricingClient pricingClient, IClock clock)
+    ///     {
+    ///         _pricingClient = pricingClient;
+    ///         _clock = clock;
+    ///     }
     /// }
     /// ]]></code>
-    /// <para>To configure mocks before the component is created, override SetupMocksAction.</para>
+    /// <para>Use <see cref="CreatedComponentAction"/> when you need a final arrangement step after construction, such as setting mutable state or attaching events.</para>
     /// <code language="csharp"><![CDATA[
-    /// protected override Action<Mocker> SetupMocksAction => mocker =>
-    /// {
-    ///     mocker.GetMockDbContext<ApplicationDbContext>();
-    /// };
+    /// protected override Action<CheckoutService> CreatedComponentAction => component =>
+    ///     component.Currency = "USD";
     /// ]]></code>
     /// </example>
     /// <typeparam name="TComponent">The type of the t component.</typeparam>
@@ -155,13 +169,18 @@ namespace FastMoq
         /// Sets the <see cref="Component" /> property with a new instance while maintaining the constructor setup and any other changes.
         /// </summary>
         /// <example>
-        /// <para>Use CreateComponent when you want to arrange mocks before the component is created.</para>
+        /// <para>Use <see cref="CreateComponent"/> when the test needs to change mock behavior first and then rebuild the component with the updated arrangement.</para>
         /// <code language="csharp"><![CDATA[
         /// [Fact]
-        /// public void Test()
+        /// public void Recreates_component_after_overriding_a_dependency()
         /// {
-        ///     Mocks.GetMock<ICarService>().Setup(x => x.StartCar).Returns(true);
+        ///     Mocks.GetMock<IPricingClient>()
+        ///         .Setup(x => x.GetPrice("SKU-42"))
+        ///         .Returns(99.00m);
+        ///
         ///     CreateComponent();
+        ///
+        ///     Component.CalculateTotal("SKU-42", 1).Should().Be(99.00m);
         /// }
         /// ]]></code>
         /// </example>

@@ -141,25 +141,39 @@ This class contains the <a class="xref" href="FastMoq.MockerTestBase-1.html#Fast
     </tbody>
   </table>
   <h5 id="FastMoq_MockerTestBase_1_examples"><strong>Examples</strong></h5>
-  <p>Example test class using MockerTestBase&lt;Car&gt;.</p>
-<pre><code class="lang-csharp">public class CarTests : MockerTestBase&lt;Car&gt;
+  <p>Use <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> when you want the component under test created automatically with constructor dependencies resolved from FastMoq.</p>
+<pre><code class="lang-csharp">public class CheckoutServiceTests : MockerTestBase&lt;CheckoutService&gt;
 {
-    [Fact]
-    public void TestCar()
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
     {
-        Component.CarService.Should().NotBeNull();
+        mocker.GetMock&lt;IPricingClient&gt;()
+            .Setup(x =&gt; x.GetPrice("SKU-42"))
+            .Returns(125.50m);
+<pre><code>    mocker.AddType&lt;IClock&gt;(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+};
+
+[Fact]
+public void Calculates_total_using_auto_injected_dependencies()
+{
+    var total = Component.CalculateTotal(&quot;SKU-42&quot;, quantity: 2);
+
+    total.Should().Be(251.00m);
+    Mocks.GetMock&lt;IPricingClient&gt;().Verify(x =&gt; x.GetPrice(&quot;SKU-42&quot;), Times.Once);
+}
+</code></pre>
+<p>}</p></code></pre>
+<p>The base class creates <code>CheckoutService</code> before the test body runs, so the test can assert directly against <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Component">Component</a>.</p>
+<pre><code class="lang-csharp">public sealed class CheckoutService
+{
+    public CheckoutService(IPricingClient pricingClient, IClock clock)
+    {
+        _pricingClient = pricingClient;
+        _clock = clock;
     }
 }</code></pre>
-<p>ICarService is automatically injected into the Car object when the base class creates the component.</p>
-<pre><code class="lang-csharp">public partial class Car
-{
-    public Car(ICarService carService) =&gt; CarService = carService;
-}</code></pre>
-<p>To configure mocks before the component is created, override SetupMocksAction.</p>
-<pre><code class="lang-csharp">protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
-{
-    mocker.GetMockDbContext&lt;ApplicationDbContext&gt;();
-};</code></pre>
+<p>Use <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreatedComponentAction">CreatedComponentAction</a> when you need a final arrangement step after construction, such as setting mutable state or attaching events.</p>
+<pre><code class="lang-csharp">protected override Action&lt;CheckoutService&gt; CreatedComponentAction =&gt; component =&gt;
+    component.Currency = "USD";</code></pre>
 
   <h3 id="constructors">Constructors
 </h3>
@@ -703,13 +717,18 @@ When it is off, it may not be able to fill in properties or other injections of 
     <pre><code class="lang-csharp hljs">protected void CreateComponent()</code></pre>
   </div>
   <h5 id="FastMoq_MockerTestBase_1_CreateComponent_examples">Examples</h5>
-  <p>Use CreateComponent when you want to arrange mocks before the component is created.</p>
+  <p>Use <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreateComponent">CreateComponent()</a> when the test needs to change mock behavior first and then rebuild the component with the updated arrangement.</p>
 <pre><code class="lang-csharp">[Fact]
-public void Test()
+public void Recreates_component_after_overriding_a_dependency()
 {
-    Mocks.GetMock&lt;ICarService&gt;().Setup(x =&gt; x.StartCar).Returns(true);
-    CreateComponent();
-}</code></pre>
+    Mocks.GetMock&lt;IPricingClient&gt;()
+        .Setup(x =&gt; x.GetPrice("SKU-42"))
+        .Returns(99.00m);
+<pre><code>CreateComponent();
+
+Component.CalculateTotal(&quot;SKU-42&quot;, 1).Should().Be(99.00m);
+</code></pre>
+<p>}</p></code></pre>
 
   <a id="FastMoq_MockerTestBase_1_Dispose_" data-uid="FastMoq.MockerTestBase`1.Dispose*"></a>
   <h4 id="FastMoq_MockerTestBase_1_Dispose" data-uid="FastMoq.MockerTestBase`1.Dispose">Dispose()</h4>
@@ -1308,7 +1327,7 @@ public void Service_NullArgChecks_WithOverrides() =&gt; TestConstructorParameter
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:20 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:24 UTC</span></div>
       
           </div>
         </div>

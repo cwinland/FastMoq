@@ -56,12 +56,22 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TestClassExtensions
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 22
+    startLine: 32
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
-  summary: Helper Methods for testing.
-  example: []
+  summary: Helper methods for reflection-based assertions, constructor-guard verification, and logger verification helpers used in tests.
+  example:
+  - >-
+    <p>The logger helpers are commonly used to keep tests focused on intent instead of verbose Moq verification expressions.</p>
+
+    <pre><code class="lang-csharp">var logger = Mocks.GetMock&lt;ILogger&lt;CheckoutService&gt;&gt;();
+
+
+    Component.Submit(order);
+
+
+    logger.VerifyLogger(LogLevel.Information, "Order submitted", times: 1);</code></pre>
   syntax:
     content: public static class TestClassExtensions
     content.vb: Public Module TestClassExtensions
@@ -94,7 +104,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallGenericMethod
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 53
+    startLine: 63
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -152,7 +162,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: EnsureNullCheckThrown
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 80
+    startLine: 90
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -201,7 +211,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: EnsureNullCheckThrown
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 117
+    startLine: 127
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -246,7 +256,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetDefaultValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 126
+    startLine: 136
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -282,7 +292,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetField
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 143
+    startLine: 153
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -327,7 +337,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldInfo
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 154
+    startLine: 164
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -372,7 +382,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 168
+    startLine: 178
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -419,7 +429,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 177
+    startLine: 187
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -464,7 +474,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 187
+    startLine: 197
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -512,7 +522,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMember
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 198
+    startLine: 208
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -559,7 +569,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberExpression
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 207
+    startLine: 217
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -601,7 +611,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberExpression
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 214
+    startLine: 224
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -637,7 +647,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberName
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 224
+    startLine: 234
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -684,7 +694,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberName
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 232
+    startLine: 242
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -720,7 +730,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethod
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 241
+    startLine: 251
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -765,7 +775,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 254
+    startLine: 264
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -816,7 +826,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetProperty
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 265
+    startLine: 275
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -861,7 +871,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetPropertyValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 277
+    startLine: 287
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -909,7 +919,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetTestData
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 288
+    startLine: 298
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -954,7 +964,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetTypeFromInterface
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 299
+    startLine: 309
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1003,7 +1013,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 451
+    startLine: 461
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1045,7 +1055,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddFiles
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 457
+    startLine: 467
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1080,7 +1090,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 472
+    startLine: 482
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1125,7 +1135,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousConstructorImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 491
+    startLine: 501
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1164,7 +1174,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 501
+    startLine: 511
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1209,7 +1219,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetPropertyValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 511
+    startLine: 521
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1254,7 +1264,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 517
+    startLine: 527
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1295,7 +1305,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 523
+    startLine: 533
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1340,7 +1350,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 552
+    startLine: 562
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1397,12 +1407,22 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 564
+    startLine: 584
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
-  summary: Verifies the Mock ILogger of T was invoked.
-  example: []
+  summary: Verifies that a generic logger mock recorded a message at the expected level.
+  example:
+  - >-
+    <p>Verify the important log entry after exercising the component under test.</p>
+
+    <pre><code class="lang-csharp">var logger = Mocks.GetMock&lt;ILogger&lt;CheckoutService&gt;&gt;();
+
+
+    Component.Submit(order);
+
+
+    logger.VerifyLogger(LogLevel.Information, "Order submitted", times: 1);</code></pre>
   syntax:
     content: >-
       [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
@@ -1423,7 +1443,7 @@ items:
       description: The expected number of invocations.
     typeParameters:
     - id: TLogger
-      description: ''
+      description: The logger type, typically <code>ILogger&lt;TCategory&gt;</code>.
     content.vb: >-
       <Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")>
 
@@ -1457,7 +1477,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 578
+    startLine: 598
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1520,7 +1540,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 592
+    startLine: 612
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1585,7 +1605,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 607
+    startLine: 627
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1651,7 +1671,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 612
+    startLine: 632
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1708,7 +1728,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 617
+    startLine: 637
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1765,7 +1785,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 633
+    startLine: 653
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1833,7 +1853,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupLoggerCallback
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 644
+    startLine: 664
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions

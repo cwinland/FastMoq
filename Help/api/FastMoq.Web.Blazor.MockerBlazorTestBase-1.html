@@ -185,51 +185,39 @@
     </tbody>
   </table>
   <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_examples"><strong>Examples</strong></h5>
-  <p>Basic example.</p>
-<pre><code class="lang-cs">public class IndexTests : MockerBlazorTestBase&lt;Index&gt;
+  <p>Start with a realistic page-level test that configures services, mocks, and assertions in one place.</p>
+<pre><code class="lang-csharp">public class OrdersPageTests : MockerBlazorTestBase&lt;OrdersPage&gt;
 {
-    [Fact]
-    public void Create() =&gt; Component.Should().NotBeNull();
-}</code></pre>
-
-  <p>Configure services.</p>
-<pre><code class="lang-cs">protected override Action&lt;TestServiceProvider, IConfiguration, Mocker&gt; ConfigureServices =&gt; (services, c, m) =&gt; services.AddSingleton&lt;IWeatherForecastService, WeatherForecastService&gt;();</code></pre>
-
-  <p>Configure roles.</p>
-<pre><code class="lang-cs">protected override MockerObservableCollection&lt;string&gt; AuthorizedRoles =&gt; new MockerObservableCollection&lt;string&gt;() { "Role1", "Role2"}</code></pre>
-
-  <p>Configure an HTTP response.</p>
-<pre><code class="lang-cs">protected override Action&lt;Mocker&gt; SetupComponent =&gt; mocker =&gt;
-mocker.SetupHttpMessage(() =&gt; new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent("ContextGoesHere")});</code></pre>
-
-  <p>Configure mocks.</p>
-<pre><code class="lang-cs">protected override Action&lt;Mocker&gt; SetupComponent =&gt; mocker =&gt;
+    protected override Action&lt;TestServiceProvider, IConfiguration, Mocker&gt; ConfigureServices =&gt; (services, _, _) =&gt;
+        services.AddSingleton&lt;IClock&gt;(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+<pre><code>protected override Action&lt;Mocker&gt; SetupComponent =&gt; mocker =&gt;
 {
-    mocker.GetMock&lt;IFile&gt;().Setup(f =&gt; f.Exists(It.IsAny&lt;string&gt;())).Returns(true);                     // Add setup to mock.
-    mocker.GetMock&lt;IDirectory&gt;().Setup(d =&gt; d.Exists(It.IsAny&lt;string&gt;())).Returns(true);
-    mocker.GetMock&lt;IDirectory&gt;().Setup(d=&gt;d.Exists("C:\\testfile.txt")).Returns(false);                 // add setup to existing mock.
-};</code></pre>
+    mocker.GetMock&lt;IOrdersClient&gt;()
+        .Setup(x =&gt; x.GetOpenOrdersAsync())
+        .ReturnsAsync(new[]
+        {
+            new OrderSummary { Id = 42, CustomerName = &quot;Contoso&quot;, Total = 125.50m }
+        });
+};
 
-  <p>Click a button by selector or element and verify navigation changes.</p>
-<pre><code class="lang-cs">NavigationManager.History.Count.Should().Be(0);
+[Fact]
+public void LoadsOpenOrdersOnFirstRender()
+{
+    Component.Markup.Should().Contain(&quot;Contoso&quot;);
+    Mocks.GetMock&lt;IOrdersClient&gt;().Verify(x =&gt; x.GetOpenOrdersAsync(), Times.Once);
+}
+</code></pre>
+<p>}</p></code></pre>
 
-ClickButton("button", () =&gt; NavigationManager.History.Count == 1);
-NavigationManager.History.Count.Should().Be(1);
-
-ClickButton("button[id='testbutton']", () =&gt; NavigationManager.History.Count == 2);
-NavigationManager.History.Count.Should().Be(2);
-
-ClickButton(FindAllByTag("button").First(x =&gt; x.Id == "testbutton"), () =&gt; NavigationManager.History.Count == 3);
-NavigationManager.History.Count.Should().Be(3);
-
-ClickButton(FindById("testbutton"), () =&gt; NavigationManager.History.Count == 4);
-NavigationManager.History.Count.Should().Be(4);
-
-ClickButton("button", () =&gt; NavigationManager.History.Count == 5, Component, TimeSpan.FromSeconds(5));
-NavigationManager.History.Count.Should().Be(5);
-
-ClickButton(e =&gt; e.Id == "testbutton", () =&gt; NavigationManager.History.Count == 6);
-NavigationManager.History.Count.Should().Be(6);</code></pre>
+  <p>Use authorization and navigation helpers together when a component renders actions conditionally.</p>
+<pre><code class="lang-csharp">protected override MockerObservableCollection&lt;string&gt; AuthorizedRoles =&gt; new() { "Orders.Read", "Orders.Submit" };
+<p>[Fact]
+public void ClickingSubmitNavigatesToReview()
+{
+ClickButton(&quot;button[type='submit']&quot;, () =&gt; NavigationManager.History.Count == 1);</p>
+<pre><code>NavigationManager.Uri.Should().Contain(&quot;/orders/review&quot;);
+</code></pre>
+<p>}</p></code></pre>
 
   <h3 id="constructors">Constructors
 </h3>
@@ -3055,7 +3043,7 @@ but their disposal will not be awaited..</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:20 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:24 UTC</span></div>
       
           </div>
         </div>

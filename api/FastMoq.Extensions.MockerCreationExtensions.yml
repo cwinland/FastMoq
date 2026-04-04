@@ -34,12 +34,25 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerCreationExtensions
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 13
+    startLine: 27
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
-  summary: Mocker Create Extensions
-  example: []
+  summary: Helpers for creating components or raw mocks when you need constructor selection to be explicit in a test.
+  example:
+  - >-
+    <p>Use these overloads when the constructor choice matters and you want to supply only a subset of arguments explicitly.</p>
+
+    <pre><code class="lang-csharp">var mocker = new Mocker();
+
+
+    var processor = mocker.CreateInstance&lt;OrderProcessor, string&gt;(
+        new Dictionary&lt;Type, object?&gt;
+        {
+            [typeof(string)] = "orders-eu"
+        });
+
+    processor.Should().NotBeNull();</code></pre>
   syntax:
     content: public static class MockerCreationExtensions
     content.vb: Public Module MockerCreationExtensions
@@ -72,12 +85,27 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 23
+    startLine: 52
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
-  summary: Creates an instance of <code>T</code>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
-  example: []
+  summary: Creates an instance of <code>T</code> by selecting the constructor that matches <code class="typeparamref">TParam1</code> and injecting the supplied value from <code class="paramref">data</code>.
+  example:
+  - >-
+    <p>This is useful when a component has multiple constructors and your test needs to target the overload that accepts a tenant or region value.</p>
+
+    <pre><code class="lang-csharp">var mocker = new Mocker();
+
+
+    var handler = mocker.CreateInstance&lt;InvoiceHandler, string&gt;(
+        new Dictionary&lt;Type, object?&gt;
+        {
+            [typeof(string)] = "contoso"
+        });
+
+    handler.Should().NotBeNull();
+
+    handler!.TenantName.Should().Be("contoso");</code></pre>
   syntax:
     content: 'public static T? CreateInstance<T, TParam1>(this Mocker mocker, Dictionary<Type, object?> data) where T : class'
     parameters:
@@ -89,12 +117,12 @@ items:
       description: The data.
     typeParameters:
     - id: T
-      description: ''
+      description: The concrete type to create.
     - id: TParam1
       description: The type of the t param1.
     return:
       type: '{T}'
-      description: T.
+      description: The created instance or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when resolution cannot produce one.
     content.vb: Public Shared Function CreateInstance(Of T As Class, TParam1)(mocker As Mocker, data As Dictionary(Of Type, Object)) As T
   overload: FastMoq.Extensions.MockerCreationExtensions.CreateInstance*
   nameWithType.vb: MockerCreationExtensions.CreateInstance(Of T, TParam1)(Mocker, Dictionary(Of Type, Object))
@@ -119,7 +147,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 26
+    startLine: 55
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -161,7 +189,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 43
+    startLine: 72
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -210,7 +238,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 46
+    startLine: 75
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -253,7 +281,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 64
+    startLine: 93
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -304,7 +332,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 67
+    startLine: 96
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -348,7 +376,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 86
+    startLine: 115
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -401,7 +429,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 89
+    startLine: 118
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -446,7 +474,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 109
+    startLine: 138
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -501,7 +529,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 112
+    startLine: 141
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -547,7 +575,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInternal
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 174
+    startLine: 203
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -596,7 +624,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInternal
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 187
+    startLine: 216
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -651,7 +679,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 378
+    startLine: 407
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -696,7 +724,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 391
+    startLine: 420
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -741,7 +769,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 407
+    startLine: 436
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions

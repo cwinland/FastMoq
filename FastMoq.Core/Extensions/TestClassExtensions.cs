@@ -18,8 +18,18 @@ using FastMoq.Providers.MoqProvider;
 namespace FastMoq.Extensions
 {
     /// <summary>
-    ///     Helper Methods for testing.
+    /// Helper methods for reflection-based assertions, constructor-guard verification, and logger verification helpers used in tests.
     /// </summary>
+    /// <example>
+    /// <para>The logger helpers are commonly used to keep tests focused on intent instead of verbose Moq verification expressions.</para>
+    /// <code language="csharp"><![CDATA[
+    /// var logger = Mocks.GetMock<ILogger<CheckoutService>>();
+    ///
+    /// Component.Submit(order);
+    ///
+    /// logger.VerifyLogger(LogLevel.Information, "Order submitted", times: 1);
+    /// ]]></code>
+    /// </example>
     public static class TestClassExtensions
     {
         /// <summary>
@@ -555,13 +565,23 @@ namespace FastMoq.Extensions
             MoqLoggerCompatibility.VerifyLogger(loggerMock, logLevel, message, times);
 
         /// <summary>
-        ///     Verifies the Mock ILogger of T was invoked.
+        /// Verifies that a generic logger mock recorded a message at the expected level.
         /// </summary>
-        /// <typeparam name="TLogger"></typeparam>
+        /// <typeparam name="TLogger">The logger type, typically <c>ILogger&lt;TCategory&gt;</c>.</typeparam>
         /// <param name="loggerMock">The logger mock.</param>
         /// <param name="logLevel">The expected log level.</param>
         /// <param name="message">The expected message.</param>
         /// <param name="times">The expected number of invocations.</param>
+        /// <example>
+        /// <para>Verify the important log entry after exercising the component under test.</para>
+        /// <code language="csharp"><![CDATA[
+        /// var logger = Mocks.GetMock<ILogger<CheckoutService>>();
+        ///
+        /// Component.Submit(order);
+        ///
+        /// logger.VerifyLogger(LogLevel.Information, "Order submitted", times: 1);
+        /// ]]></code>
+        /// </example>
         [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
         public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, int times = 1)
         where TLogger : class, ILogger =>

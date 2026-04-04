@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class TestClassExtensions | FastMoq ">
     
-    <meta name="description" content="Helper Methods for testing.">
+    <meta name="description" content="Helper methods for reflection-based assertions, constructor-guard verification, and logger verification helpers used in tests.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -81,7 +81,7 @@
 
 
   <h1 id="FastMoq_Extensions_TestClassExtensions" data-uid="FastMoq.Extensions.TestClassExtensions" class="text-break">Class TestClassExtensions</h1>
-  <div class="markdown level0 summary"><p>Helper Methods for testing.</p>
+  <div class="markdown level0 summary"><p>Helper methods for reflection-based assertions, constructor-guard verification, and logger verification helpers used in tests.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -119,6 +119,12 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class TestClassExtensions</code></pre>
   </div>
+  <h5 id="FastMoq_Extensions_TestClassExtensions_examples"><strong>Examples</strong></h5>
+  <p>The logger helpers are commonly used to keep tests focused on intent instead of verbose Moq verification expressions.</p>
+<pre><code class="lang-csharp">var logger = Mocks.GetMock&lt;ILogger&lt;CheckoutService&gt;&gt;();
+<p>Component.Submit(order);</p>
+<p>logger.VerifyLogger(LogLevel.Information, &quot;Order submitted&quot;, times: 1);</p></code></pre>
+
   <h3 id="methods">Methods
 </h3>
   <a id="FastMoq_Extensions_TestClassExtensions_AddFiles_" data-uid="FastMoq.Extensions.TestClassExtensions.AddFiles*"></a>
@@ -2194,7 +2200,7 @@ public static void VerifyLogger&lt;TLogger&gt;(this Mock&lt;TLogger&gt; loggerMo
   </table>
   <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogger_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogger*"></a>
   <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogger__1_Moq_Mock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)">VerifyLogger&lt;TLogger&gt;(Mock&lt;TLogger&gt;, LogLevel, string, int)</h4>
-  <div class="markdown level1 summary"><p>Verifies the Mock ILogger of T was invoked.</p>
+  <div class="markdown level1 summary"><p>Verifies that a generic logger mock recorded a message at the expected level.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -2249,10 +2255,17 @@ public static void VerifyLogger&lt;TLogger&gt;(this Mock&lt;TLogger&gt; loggerMo
     <tbody>
       <tr>
         <td><span class="parametername">TLogger</span></td>
-        <td></td>
+        <td><p>The logger type, typically <code>ILogger&lt;TCategory&gt;</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Extensions_TestClassExtensions_VerifyLogger__1_Moq_Mock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32__examples">Examples</h5>
+  <p>Verify the important log entry after exercising the component under test.</p>
+<pre><code class="lang-csharp">var logger = Mocks.GetMock&lt;ILogger&lt;CheckoutService&gt;&gt;();
+<p>Component.Submit(order);</p>
+<p>logger.VerifyLogger(LogLevel.Information, &quot;Order submitted&quot;, times: 1);</p></code></pre>
+
   <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogger_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogger*"></a>
   <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogger__2_Moq_Mock___1__Microsoft_Extensions_Logging_LogLevel_System_String___0_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogger``2(Moq.Mock{``1},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)">VerifyLogger&lt;TException, TLogger&gt;(Mock&lt;TLogger&gt;, LogLevel, string, TException?, int?, int)</h4>
   <div class="markdown level1 summary"><p>Verifies the Mock ILogger was invoked.</p>
@@ -2354,7 +2367,7 @@ public static void VerifyLogger&lt;TException, TLogger&gt;(this Mock&lt;TLogger&
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:20 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:24 UTC</span></div>
       
           </div>
         </div>
