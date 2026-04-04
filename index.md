@@ -66,6 +66,14 @@ The aggregate package that pulls together the core runtime, database helpers, an
 - [Provider APIs](api/FastMoq.Providers.yml)
 - [Web and Blazor APIs](api/FastMoq.Web.Blazor.yml)
 
+### FastMoq.Abstractions
+
+Provider contracts shared by the core runtime and provider-specific packages.
+
+- [Provider APIs](api/FastMoq.Providers.yml)
+- [IMockingProvider](api/FastMoq.Providers.IMockingProvider.yml)
+- [IMockingProviderCapabilities](api/FastMoq.Providers.IMockingProviderCapabilities.yml)
+
 ### FastMoq.Core
 
 Core mocking, auto-construction, instance resolution, and provider-neutral verification support.
@@ -92,6 +100,22 @@ Blazor and web-oriented testing helpers.
 - [MockerBlazorTestBase&lt;T&gt;](api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.yml)
 - [IMockerBlazorTestHelpers&lt;T&gt;](api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.yml)
 - [Blazor namespace](api/FastMoq.Web.Blazor.yml)
+
+### FastMoq.Provider.Moq
+
+Moq compatibility provider package for v4 migration and existing Moq-heavy tests.
+
+- [Moq provider types](api/FastMoq.Providers.MoqProvider.yml)
+- [MockWrapper&lt;T&gt;](api/FastMoq.Core.Providers.MockWrapper-1.yml)
+- [MockingProviderRegistry](api/FastMoq.Providers.MockingProviderRegistry.yml)
+
+### FastMoq.Provider.NSubstitute
+
+Optional NSubstitute provider package for teams standardizing on NSubstitute instead of Moq.
+
+- [NSubstitute provider types](api/FastMoq.Providers.NSubstituteProvider.yml)
+- [IMockingProvider](api/FastMoq.Providers.IMockingProvider.yml)
+- [MockingProviderRegistry](api/FastMoq.Providers.MockingProviderRegistry.yml)
 
 ## Provider-first APIs
 

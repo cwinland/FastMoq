@@ -17,20 +17,6 @@ This API reference is generated from XML comments in the source projects.
 - [ScenarioBuilder&lt;T&gt;](../../api/FastMoq.ScenarioBuilder-1.yml)
 - [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml)
 
-## Generate locally
-
-1. Restore the pinned local tools:
-
-   dotnet tool restore
-
-2. From the repository root, clean and regenerate the site:
-
-   pwsh ./scripts/Generate-ApiDocs.ps1
-
-3. Open the generated site:
-
-   Help/index.html
-
 ## Notes
 
 - The generated site output is written to the Help folder.
