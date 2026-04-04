@@ -2,17 +2,30 @@
 
 This site combines generated API reference with real-world example documentation for the current FastMoq v4 codebase.
 
-## Start here
+## New to FastMoq
 
+- [Quick reference for common types](docs/api/quick-reference.md)
 - [Executable testing examples](docs/samples/testing-examples.md)
-- [Sample applications](docs/samples/README.md)
-- [TestingExample project overview](FastMoq.TestingExample/README.md)
+- [Provider selection guide](docs/getting-started/provider-selection.md)
+- [Getting started guide](docs/getting-started/README.md)
+- [Testing guide](docs/getting-started/testing-guide.md)
+
+## Upgrading to v4
+
+- [Migration guide](docs/migration/README.md)
+- [What's new since 3.0.0](docs/whats-new/README.md)
+- [Breaking changes](docs/breaking-changes/README.md)
+- [Provider selection guide](docs/getting-started/provider-selection.md)
+
+## Looking for an API
+
+- [Quick reference for common types](docs/api/quick-reference.md)
 - [Core namespace reference](api/FastMoq.yml)
 - [Provider APIs](api/FastMoq.Providers.yml)
 - [Extension methods](api/FastMoq.Extensions.yml)
 - [Blazor and web APIs](api/FastMoq.Web.Blazor.yml)
 - [Models and helper types](api/FastMoq.Models.yml)
-- [Provider overview page](docs/api/index.md)
+- [API overview page](docs/api/index.md)
 
 ## Real-world examples
 
@@ -21,6 +34,26 @@ Use the example pages first when you want to understand how FastMoq is applied i
 - [Executable testing examples](docs/samples/testing-examples.md)
 - [Sample applications overview](docs/samples/README.md)
 - [TestingExample project README](FastMoq.TestingExample/README.md)
+
+## Blazor and web testing
+
+- [MockerBlazorTestBase&lt;T&gt;](api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.yml)
+- [IMockerBlazorTestHelpers&lt;T&gt;](api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.yml)
+- [TestWebExtensions](api/FastMoq.Web.Extensions.TestWebExtensions.yml)
+
+## Quick type lookup
+
+- [Quick reference for common types](docs/api/quick-reference.md)
+- [Mocker](api/FastMoq.Mocker.yml)
+- [MockerTestBase&lt;TComponent&gt;](api/FastMoq.MockerTestBase-1.yml)
+- [ScenarioBuilder&lt;T&gt;](api/FastMoq.ScenarioBuilder-1.yml)
+- [MockingProviderRegistry](api/FastMoq.Providers.MockingProviderRegistry.yml)
+
+## How to find a type fast
+
+- Use the top-right search box for exact names such as `Mocker`, `MockerTestBase`, or `ScenarioBuilder`.
+- Use [Quick reference for common types](docs/api/quick-reference.md) when you want one-click links to the most-used APIs.
+- Use the left-side site navigation when you want to browse by topic instead of by type name.
 
 ## Package map
 

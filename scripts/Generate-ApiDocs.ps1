@@ -1,9 +1,16 @@
+param(
+    [string]$PublishedVersion = ''
+)
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $helpPath = Join-Path $repoRoot 'Help'
 $docfxConfigPath = Join-Path $repoRoot 'docfx.json'
+$metadataScriptPath = Join-Path $PSScriptRoot 'Write-DocfxBuildMetadata.ps1'
+
+& $metadataScriptPath -PublishedVersion $PublishedVersion
 
 if (Test-Path $helpPath)
 {

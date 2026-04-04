@@ -21,13 +21,21 @@
     }
   ],
   "build": {
+    "globalMetadataFiles": [
+      "docfx.build.json"
+    ],
     "content": [
       {
         "files": [
+          "toc.yml",
           "index.md",
           "api/**.yml",
+          "FAQs.md",
+          "docs/README.md",
           "docs/api/**.md",
           "docs/breaking-changes/**.md",
+          "docs/cookbook/**.md",
+          "docs/feature-parity/**.md",
           "docs/getting-started/**.md",
           "docs/migration/**.md",
           "docs/roadmap/**.md",
@@ -39,10 +47,14 @@
     ],
     "dest": "Help",
     "template": [
-      "default"
+      "default",
+      "docfx-template"
     ],
     "globalMetadata": {
-      "_appName": "FastMoq Documentation",
+      "_appName": "FastMoq",
+      "_appTitle": "FastMoq",
+      "_appFaviconPath": "favicon.svg",
+      "_disableContribution": true,
       "_enableSearch": true
     }
   }

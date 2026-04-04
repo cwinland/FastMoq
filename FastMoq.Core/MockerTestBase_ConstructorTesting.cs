@@ -38,8 +38,8 @@ namespace FastMoq
         /// <param name="defaultValue">The default value.</param>
         /// <param name="validValue">The valid value.</param>
         /// <example>
-        /// CreateComponent allows creating the component when desired, instead of in the base class constructor.
-        /// <code><![CDATA[
+        /// <para>Use TestConstructorParameters to verify null checks with default value generation.</para>
+        /// <code language="csharp"><![CDATA[
         /// [Fact]
         /// public void Service_NullArgChecks() => TestConstructorParameters((action, constructorName, parameterName) =>
         /// {
@@ -50,37 +50,32 @@ namespace FastMoq
         ///         .Throw<ArgumentNullException>()
         ///         .WithMessage($"*{parameterName}*");
         /// });
-        ///
+        /// ]]></code>
+        /// <para>Provide explicit invalid and valid values when constructor parameter defaults need to vary by type.</para>
+        /// <code language="csharp"><![CDATA[
         /// [Fact]
-        /// public void Service_NullArgChecks() => TestConstructorParameters((action, constructorName, parameterName) =>
+        /// public void Service_NullArgChecks_WithOverrides() => TestConstructorParameters(
+        ///     (action, constructorName, parameterName) =>
         ///     {
-        ///         output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
-        ///
         ///         action
         ///             .Should()
         ///             .Throw<ArgumentNullException>()
         ///             .WithMessage($"*{parameterName}*");
         ///     },
-        ///     info =>
+        ///     info => info.ParameterType.Name switch
         ///     {
-        ///         return info switch
-        ///         {
-        ///             { ParameterType: { Name: "string" }} => string.Empty,
-        ///             { ParameterType: { Name: "int" }} => -1,
-        ///             _ => default,
-        ///         };
+        ///         "string" => string.Empty,
+        ///         "int" => -1,
+        ///         _ => default,
         ///     },
-        ///     info =>
+        ///     info => info.ParameterType.Name switch
         ///     {
-        ///         return info switch
-        ///         {
-        ///             { ParameterType: { Name: "string" }} => "Valid Value",
-        ///             { ParameterType: { Name: "int" }} => 22,
-        ///             _ => Mocks.GetObject(info.ParameterType),
-        ///         };
-        ///     }
-        /// );
-        /// ]]></code></example>
+        ///         "string" => "Valid Value",
+        ///         "int" => 22,
+        ///         _ => Mocks.GetObject(info.ParameterType),
+        ///     });
+        /// ]]></code>
+        /// </example>
         protected void TestConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null) =>
             TestConstructorParameters(GetConstructor(), createAction, defaultValue, validValue);
 

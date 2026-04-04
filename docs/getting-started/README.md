@@ -336,9 +336,9 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
 
 Now that you understand the basics, explore these advanced topics:
 
-- [Cookbook](../cookbook) - Common patterns and real-world scenarios
-- [Feature Parity](../feature-parity) - Compare FastMoq with other frameworks
-- [Sample Applications](../samples) - Complete examples with Azure integration
+- [Cookbook](../cookbook/README.md) - Common patterns and real-world scenarios
+- [Feature Parity](../feature-parity/README.md) - Compare FastMoq with other frameworks
+- [Sample Applications](../samples/README.md) - Complete examples with Azure integration
 
 ## Best Practices
 

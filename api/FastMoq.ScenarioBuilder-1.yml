@@ -51,15 +51,14 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ScenarioBuilder
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 34
+    startLine: 30
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
   summary: Provides a fluent arrange/act/assert pipeline for a tracked scenario target.
   example:
   - >-
-    In <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref>, prefer the parameterless overloads when <code>Component</code> is already available.
-
+    <p>In MockerTestBase&lt;TComponent&gt;, prefer the parameterless overloads when Component is already available.</p>
 
     <pre><code class="lang-csharp">Scenario
         .With(() =&gt; Mocks.GetMock&lt;IInvoiceRepository&gt;()
@@ -68,9 +67,7 @@ items:
         .When(async () =&gt; reminderCount = await Component.SendRemindersAsync(now, CancellationToken.None))
         .Then(() =&gt; reminderCount.Should().Be(2))
         .Execute();</code></pre>
-
-    Outside <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref>, use the target-instance overloads.
-
+    <p>Outside MockerTestBase&lt;TComponent&gt;, use the target-instance overloads.</p>
 
     <pre><code class="lang-csharp">await mocker.Scenario(service)
         .When(component =&gt; component.RunAsync())
@@ -126,7 +123,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 52
+    startLine: 48
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -159,7 +156,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 58
+    startLine: 54
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -197,7 +194,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 67
+    startLine: 63
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -232,7 +229,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 80
+    startLine: 76
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -268,7 +265,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 90
+    startLine: 86
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -304,7 +301,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 104
+    startLine: 100
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -340,7 +337,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 114
+    startLine: 110
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -376,7 +373,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 123
+    startLine: 119
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -412,7 +409,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 132
+    startLine: 128
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -448,7 +445,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 142
+    startLine: 138
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -483,7 +480,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 155
+    startLine: 151
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -519,7 +516,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 165
+    startLine: 161
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -555,7 +552,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 179
+    startLine: 175
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -591,7 +588,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 188
+    startLine: 184
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -627,15 +624,14 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 208
+    startLine: 202
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
   summary: Adds a synchronous act step that is expected to throw the specified exception type.
   example:
   - >-
-    Use this when the act step is expected to fail but trailing assertions should still run.
-
+    <p>Use this when the act step is expected to fail but trailing assertions should still run.</p>
 
     <pre><code class="lang-csharp">Scenario
         .WhenThrows&lt;InvalidOperationException&gt;(() =&gt; Component.SendRemindersAsync(now, CancellationToken.None))
@@ -673,7 +669,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 231
+    startLine: 223
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -716,7 +712,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 261
+    startLine: 253
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -754,7 +750,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 270
+    startLine: 262
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -792,7 +788,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 279
+    startLine: 271
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -830,7 +826,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 288
+    startLine: 280
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -868,7 +864,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 297
+    startLine: 289
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -903,7 +899,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 310
+    startLine: 302
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -939,7 +935,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 320
+    startLine: 312
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -975,7 +971,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 334
+    startLine: 326
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1011,7 +1007,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 344
+    startLine: 336
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1047,7 +1043,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 353
+    startLine: 345
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1083,7 +1079,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 362
+    startLine: 354
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1123,7 +1119,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ExecuteAsync
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 376
+    startLine: 368
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1155,7 +1151,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Execute
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 404
+    startLine: 396
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1185,15 +1181,14 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ExecuteThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 421
+    startLine: 411
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
   summary: Executes the scenario and returns the expected exception.
   example:
   - >-
-    Use this form when the exception object itself is the primary assertion target.
-
+    <p>Use this form when the exception object itself is the primary assertion target.</p>
 
     <pre><code class="lang-csharp">var exception = Scenario
         .When(() =&gt; Component.SendRemindersAsync(now, CancellationToken.None))
@@ -1229,7 +1224,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ExecuteThrowsAsync
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 438
+    startLine: 426
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1268,7 +1263,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 462
+    startLine: 450
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1286,31 +1281,6 @@ items:
   fullName.vb: FastMoq.ScenarioBuilder(Of T).VerifyNoOtherCalls(Of TMock)()
   name.vb: VerifyNoOtherCalls(Of TMock)()
 references:
-- uid: FastMoq.MockerTestBase`1
-  commentId: T:FastMoq.MockerTestBase`1
-  href: FastMoq.MockerTestBase-1.html
-  name: MockerTestBase<TComponent>
-  nameWithType: MockerTestBase<TComponent>
-  fullName: FastMoq.MockerTestBase<TComponent>
-  nameWithType.vb: MockerTestBase(Of TComponent)
-  fullName.vb: FastMoq.MockerTestBase(Of TComponent)
-  name.vb: MockerTestBase(Of TComponent)
-  spec.csharp:
-  - uid: FastMoq.MockerTestBase`1
-    name: MockerTestBase
-    href: FastMoq.MockerTestBase-1.html
-  - name: <
-  - name: TComponent
-  - name: '>'
-  spec.vb:
-  - uid: FastMoq.MockerTestBase`1
-    name: MockerTestBase
-    href: FastMoq.MockerTestBase-1.html
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TComponent
-  - name: )
 - uid: FastMoq
   commentId: N:FastMoq
   href: FastMoq.html

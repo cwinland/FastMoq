@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>FastMoq Cookbook | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="FastMoq Cookbook | FastMoq ">
+    
+    
+      <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+      <link rel="shortcut icon" href="../../favicon.svg">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="fastmoq-cookbook">FastMoq Cookbook</h1>
+
+<p>This cookbook contains practical recipes for common testing scenarios using FastMoq. Each recipe includes complete, runnable examples that you can adapt to your specific needs.</p>
+<p>Most recipes here focus on common test shapes and readability first. Some examples still use <code>GetMock&lt;T&gt;()</code> because that remains a useful v4 compatibility path. When you are writing new tests or actively modernizing existing ones, prefer provider-neutral APIs such as <code>GetOrCreateMock(...)</code>, provider-safe <code>Verify(...)</code>, and <code>Mocks.VerifyLogged(...)</code> where they fit the test intent.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#api-controller-testing">API Controller Testing</a></li>
+<li><a href="#entity-framework-core-testing">Entity Framework Core Testing</a></li>
+<li><a href="#background-services-testing">Background Services Testing</a></li>
+<li><a href="#httpclient-and-external-api-testing">HttpClient and External API Testing</a></li>
+<li><a href="#configuration-and-options-testing">Configuration and Options Testing</a></li>
+<li><a href="#logging-verification">Logging Verification</a></li>
+</ol>
+<hr>
+<h2 id="api-controller-testing">API Controller Testing</h2>
+<p>Testing ASP.NET Core controllers with dependency injection and various scenarios.</p>
+<h3 id="basic-controller-test">Basic Controller Test</h3>
+<h4 id="controller-example">Controller Example</h4>
+<pre><code class="lang-csharp">[ApiController]
+[Route(&quot;api/[controller]&quot;)]
+public class UsersController : ControllerBase
+{
+    private readonly IUserService _userService;
+    private readonly ILogger&lt;UsersController&gt; _logger;
+
+    public UsersController(IUserService userService, ILogger&lt;UsersController&gt; logger)
+    {
+        _userService = userService;
+        _logger = logger;
+    }
+
+    [HttpGet(&quot;{id}&quot;)]
+    public async Task&lt;ActionResult&lt;UserDto&gt;&gt; GetUser(int id)
+    {
+        try
+        {
+            var user = await _userService.GetUserAsync(id);
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Error getting user {UserId}&quot;, id);
+            return StatusCode(500);
+        }
+    }
+
+    [HttpPost]
+    public async Task&lt;ActionResult&lt;UserDto&gt;&gt; CreateUser(CreateUserRequest request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var user = await _userService.CreateUserAsync(request);
+        return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+    }
+}
+</code></pre>
+<h4 id="test-example">Test Example</h4>
+<pre><code class="lang-csharp">using FastMoq;
+using FastMoq.Extensions;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Xunit;
+
+public class UsersControllerTests : MockerTestBase&lt;UsersController&gt;
+{
+    [Fact]
+    public async Task GetUser_ShouldReturnOkResult_WhenUserExists()
+    {
+        // Arrange
+        var userId = 1;
+        var expectedUser = new UserDto { Id = userId, Name = &quot;John Doe&quot; };
+        
+        Mocks.GetMock&lt;IUserService&gt;()
+            .Setup(x =&gt; x.GetUserAsync(userId))
+            .ReturnsAsync(expectedUser);
+
+        // Act
+        var result = await Component.GetUser(userId);
+
+        // Assert
+        var okResult = result.Result.Should().BeOfType&lt;OkObjectResult&gt;().Subject;
+        okResult.Value.Should().Be(expectedUser);
+    }
+
+    [Fact]
+    public async Task GetUser_ShouldReturnNotFound_WhenUserNotFound()
+    {
+        // Arrange
+        Mocks.GetMock&lt;IUserService&gt;()
+            .Setup(x =&gt; x.GetUserAsync(It.IsAny&lt;int&gt;()))
+            .ReturnsAsync((UserDto)null);
+
+        // Act
+        var result = await Component.GetUser(999);
+
+        // Assert
+        result.Result.Should().BeOfType&lt;NotFoundResult&gt;();
+    }
+
+    [Fact]
+    public async Task GetUser_ShouldReturnInternalServerError_WhenServiceThrows()
+    {
+        // Arrange
+        Mocks.GetMock&lt;IUserService&gt;()
+            .Setup(x =&gt; x.GetUserAsync(It.IsAny&lt;int&gt;()))
+            .ThrowsAsync(new InvalidOperationException(&quot;Database error&quot;));
+
+        // Act
+        var result = await Component.GetUser(1);
+
+        // Assert
+        var statusResult = result.Result.Should().BeOfType&lt;ObjectResult&gt;().Subject;
+        statusResult.StatusCode.Should().Be(500);
+        
+        // Verify logging
+        Mocks.VerifyLogged(LogLevel.Error, &quot;Database error&quot;, 1);
+    }
+
+    [Fact]
+    public async Task CreateUser_ShouldReturnCreatedResult_WithValidModel()
+    {
+        // Arrange
+        var request = new CreateUserRequest { Name = &quot;Jane Doe&quot;, Email = &quot;jane@example.com&quot; };
+        var createdUser = new UserDto { Id = 2, Name = request.Name, Email = request.Email };
+        
+        Mocks.GetMock&lt;IUserService&gt;()
+            .Setup(x =&gt; x.CreateUserAsync(request))
+            .ReturnsAsync(createdUser);
+
+        // Act
+        var result = await Component.CreateUser(request);
+
+        // Assert
+        var createdResult = result.Result.Should().BeOfType&lt;CreatedAtActionResult&gt;().Subject;
+        createdResult.Value.Should().Be(createdUser);
+        createdResult.ActionName.Should().Be(nameof(UsersController.GetUser));
+    }
+}
+</code></pre>
+<h3 id="testing-controller-with-authorization">Testing Controller with Authorization</h3>
+<p>FastMoq provides built-in <strong>Identity Helper Extensions</strong> that simplify controller authorization testing. These helpers eliminate the boilerplate code for setting up authenticated users, claims, and HTTP contexts.</p>
+<h4 id="using-fastmoq-identity-helpers-recommended">Using FastMoq Identity Helpers (Recommended)</h4>
+<p>FastMoq includes <code>IdentityHelperExtensions.cs</code> with convenient methods for authorization testing:</p>
+<pre><code class="lang-csharp">using FastMoq;
+using FastMoq.Extensions;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+
+public class UsersControllerAuthTests : MockerTestBase&lt;UsersController&gt;
+{
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    {
+        // Use FastMoq's identity helpers to create claims and principal
+        var userIdClaim = IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, &quot;user123&quot;);
+        var roleClaim = IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, &quot;User&quot;);
+        
+        var principal = IdentityHelperExtensions.CreatePrincipal(new[] { userIdClaim, roleClaim }, &quot;TestAuth&quot;);
+        
+        // Set up HTTP context with the principal using FastMoq helper
+        var httpContext = Mocks.CreateHttpContext();
+        httpContext.SetUser(principal); // Extension method from FastMoq
+        
+        mocker.CreateInstance&lt;UsersController&gt;().ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+    };
+
+    [Fact]
+    public void GetCurrentUser_ShouldReturnUserFromClaims_WithBuiltInHelpers()
+    {
+        // Act
+        var userId = Component.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var isInRole = Component.HttpContext.User.IsInRole(&quot;User&quot;);
+
+        // Assert
+        userId.Should().Be(&quot;user123&quot;);
+        isInRole.Should().BeTrue();
+    }
+
+    [Fact]
+    public void AdminAction_ShouldAllowAccess_WithMultipleRoles()
+    {
+        // Arrange - Create multiple role claims using FastMoq helpers
+        var claims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, &quot;admin123&quot;),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, &quot;Admin&quot;),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, &quot;User&quot;),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, &quot;Manager&quot;)
+        };
+        
+        var principal = IdentityHelperExtensions.CreatePrincipal(claims, &quot;TestAuth&quot;);
+        Component.HttpContext.SetUser(principal);
+
+        // Act &amp; Assert
+        Component.HttpContext.User.IsInRole(&quot;Admin&quot;).Should().BeTrue();
+        Component.HttpContext.User.IsInRole(&quot;Manager&quot;).Should().BeTrue();
+        Component.HttpContext.User.HasClaim(ClaimTypes.NameIdentifier, &quot;admin123&quot;).Should().BeTrue();
+    }
+
+    [Fact]
+    public void GetCurrentUser_ShouldReturnAnonymous_WhenNotAuthenticated()
+    {
+        // Arrange - Create unauthenticated principal
+        var principal = IdentityHelperExtensions.CreatePrincipal(Array.Empty&lt;Claim&gt;());
+        Component.HttpContext.SetUser(principal);
+
+        // Act &amp; Assert
+        Component.HttpContext.User.Identity.IsAuthenticated.Should().BeFalse();
+    }
+}
+</code></pre>
+<h4 id="advanced-identity-helper-usage">Advanced Identity Helper Usage</h4>
+<p>FastMoq's identity helpers support custom claims and complex authorization scenarios:</p>
+<pre><code class="lang-csharp">public class UsersControllerAdvancedAuthTests : MockerTestBase&lt;UsersController&gt;
+{
+    [Fact]
+    public void GetUserProfile_ShouldIncludeCustomClaims()
+    {
+        // Arrange - Setup user with custom claims using FastMoq helpers
+        var claims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, &quot;user123&quot;),
+            IdentityHelperExtensions.CreateClaim(&quot;department&quot;, &quot;Engineering&quot;, allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim(&quot;employee_id&quot;, &quot;E12345&quot;, allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim(&quot;security_clearance&quot;, &quot;Level2&quot;, allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, &quot;Employee&quot;),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, &quot;Developer&quot;)
+        };
+        
+        var principal = IdentityHelperExtensions.CreatePrincipal(claims, &quot;CustomAuth&quot;);
+        Component.HttpContext.SetUser(principal);
+
+        // Act
+        var department = Component.HttpContext.User.FindFirst(&quot;department&quot;)?.Value;
+        var employeeId = Component.HttpContext.User.FindFirst(&quot;employee_id&quot;)?.Value;
+
+        // Assert
+        department.Should().Be(&quot;Engineering&quot;);
+        employeeId.Should().Be(&quot;E12345&quot;);
+        Component.HttpContext.User.IsInRole(&quot;Developer&quot;).Should().BeTrue();
+    }
+
+    [Fact]
+    public void AuthorizeAction_ShouldValidateJwtClaims()
+    {
+        // Arrange - Setup JWT-style claims using FastMoq helpers
+        var jwtClaims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(&quot;sub&quot;, &quot;user123&quot;, allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim(&quot;iss&quot;, &quot;https://auth.mycompany.com&quot;, allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim(&quot;aud&quot;, &quot;myapp-api&quot;, allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim(&quot;exp&quot;, DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds().ToString(), allowCustomType: true),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, &quot;ApiUser&quot;)
+        };
+
+        var principal = IdentityHelperExtensions.CreatePrincipal(jwtClaims, &quot;JwtAuth&quot;);
+        Component.HttpContext.SetUser(principal);
+
+        // Act &amp; Assert
+        Component.HttpContext.User.FindFirst(&quot;sub&quot;)?.Value.Should().Be(&quot;user123&quot;);
+        Component.HttpContext.User.FindFirst(&quot;iss&quot;)?.Value.Should().Be(&quot;https://auth.mycompany.com&quot;);
+        Component.HttpContext.User.IsInRole(&quot;ApiUser&quot;).Should().BeTrue();
+    }
+}
+</code></pre>
+<h4 id="setup-actions-with-identity-helpers">Setup Actions with Identity Helpers</h4>
+<p>You can also use identity helpers in setup actions for consistent test configuration:</p>
+<pre><code class="lang-csharp">public class UsersControllerAuthTests : MockerTestBase&lt;UsersController&gt;
+{
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    {
+        // Use FastMoq identity helpers in setup
+        var defaultClaims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, &quot;default-user&quot;),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, &quot;User&quot;)
+        };
+        
+        var principal = IdentityHelperExtensions.CreatePrincipal(defaultClaims, &quot;DefaultAuth&quot;);
+        
+        // Set up controller with authenticated user using helper
+        var controller = mocker.CreateInstance&lt;UsersController&gt;();
+        var httpContext = Mocks.CreateHttpContext();
+        httpContext.SetUser(principal);
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+        
+        // Additional mock setup...
+        mocker.GetMock&lt;IUserService&gt;()
+            .Setup(x =&gt; x.GetCurrentUserAsync())
+            .ReturnsAsync(new UserDto { Id = 1, Name = &quot;Default User&quot; });
+    };
+
+    [Fact]
+    public void GetCurrentUser_ShouldUseDefaultSetup()
+    {
+        // Test automatically uses the user setup from SetupMocksAction
+        var user = Component.HttpContext.User;
+        user.Identity.IsAuthenticated.Should().BeTrue();
+        user.IsInRole(&quot;User&quot;).Should().BeTrue();
+    }
+    
+    [Fact] 
+    public void AdminAction_ShouldOverrideDefaultUser()
+    {
+        // Arrange - Override the default user setup for this specific test
+        var adminClaims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, &quot;admin456&quot;),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, &quot;Admin&quot;)
+        };
+        
+        var adminPrincipal = IdentityHelperExtensions.CreatePrincipal(adminClaims, &quot;AdminAuth&quot;);
+        Component.HttpContext.SetUser(adminPrincipal);
+
+        // Act &amp; Assert
+        Component.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value.Should().Be(&quot;admin456&quot;);
+        Component.HttpContext.User.IsInRole(&quot;Admin&quot;).Should().BeTrue();
+        Component.HttpContext.User.IsInRole(&quot;User&quot;).Should().BeFalse(); // Previous setup is replaced
+    }
+}
+</code></pre>
+<h4 id="manual-setup-vs-fastmoq-helpers-comparison">Manual Setup vs FastMoq Helpers (Comparison)</h4>
+<p>For comparison, here's how you would set up authorization manually vs using FastMoq helpers:</p>
+<pre><code class="lang-csharp">// ❌ Manual approach (more verbose, error-prone)
+public class UsersControllerManualAuthTests : MockerTestBase&lt;UsersController&gt;
+{
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    {
+        // Manual approach - creating everything from scratch
+        var httpContext = new DefaultHttpContext();
+        httpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, &quot;user123&quot;),
+            new Claim(ClaimTypes.Role, &quot;User&quot;)
+        }, &quot;mock&quot;));
+
+        mocker.CreateInstance&lt;UsersController&gt;().ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+    };
+}
+
+// ✅ FastMoq helper approach (cleaner, safer)
+public class UsersControllerHelperAuthTests : MockerTestBase&lt;UsersController&gt;
+{
+    [Fact]
+    public void TestAction_WithFastMoqHelpers()
+    {
+        // Arrange - Using FastMoq identity helpers
+        var claims = new[]
+        {
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, &quot;user123&quot;),
+            IdentityHelperExtensions.CreateClaim(ClaimTypes.Role, &quot;User&quot;)
+        };
+        
+        var principal = IdentityHelperExtensions.CreatePrincipal(claims, &quot;TestAuth&quot;);
+        Component.HttpContext.SetUser(principal);
+        
+        // Test implementation is cleaner and less error-prone...
+        Component.HttpContext.User.IsInRole(&quot;User&quot;).Should().BeTrue();
+    }
+}
+</code></pre>
+<h4 id="available-identity-helper-methods">Available Identity Helper Methods</h4>
+<p>FastMoq provides these built-in identity helper methods from <code>IdentityHelperExtensions.cs</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Example Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CreateClaim(type, value, properties, allowCustomType)</code></td>
+<td>Creates a validated claim</td>
+<td><code>IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, &quot;user123&quot;)</code></td>
+</tr>
+<tr>
+<td><code>CreatePrincipal(claims, authenticationType)</code></td>
+<td>Creates a ClaimsPrincipal from claims</td>
+<td><code>IdentityHelperExtensions.CreatePrincipal(claims, &quot;TestAuth&quot;)</code></td>
+</tr>
+<tr>
+<td><code>SetUser(context, principal)</code></td>
+<td>Sets user on HttpContext</td>
+<td><code>context.SetUser(principal)</code></td>
+</tr>
+<tr>
+<td><code>SetUser(context, identity)</code></td>
+<td>Sets user from ClaimsIdentity</td>
+<td><code>context.SetUser(identity)</code></td>
+</tr>
+<tr>
+<td><code>IsValidClaimType(type)</code></td>
+<td>Validates if claim type exists in ClaimTypes</td>
+<td><code>IdentityHelperExtensions.IsValidClaimType(ClaimTypes.Role)</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="key-benefits-of-fastmoq-identity-helpers">Key Benefits of FastMoq Identity Helpers</h4>
+<ul>
+<li><strong>Type Safety</strong>: <code>CreateClaim</code> validates claim types against <code>ClaimTypes</code> constants</li>
+<li><strong>Custom Claims</strong>: Use <code>allowCustomType: true</code> for JWT or custom claim types</li>
+<li><strong>Cleaner Code</strong>: Eliminates manual <code>new Claim()</code> and <code>new ClaimsPrincipal()</code> construction</li>
+<li><strong>Error Prevention</strong>: Built-in validation prevents common claim setup mistakes</li>
+<li><strong>Consistent API</strong>: All helpers follow FastMoq's extension method patterns</li>
+</ul>
+<p><strong>Note</strong>: These identity helpers are part of FastMoq's <code>IdentityHelperExtensions.cs</code> and provide type-safe, validated claim creation while significantly reducing boilerplate code for authorization testing.</p>
+<hr>
+<h2 id="entity-framework-core-testing">Entity Framework Core Testing</h2>
+<p>FastMoq provides excellent support for testing with Entity Framework Core using in-memory databases.</p>
+<h3 id="dbcontext-setup">DbContext Setup</h3>
+<pre><code class="lang-csharp">public class BlogContext : DbContext
+{
+    public DbSet&lt;Blog&gt; Blogs { get; set; }
+    public DbSet&lt;Post&gt; Posts { get; set; }
+
+    public BlogContext(DbContextOptions&lt;BlogContext&gt; options) : base(options) { }
+
+    // Internal constructor for testing
+    internal BlogContext() { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity&lt;Blog&gt;()
+            .HasMany(b =&gt; b.Posts)
+            .WithOne(p =&gt; p.Blog)
+            .HasForeignKey(p =&gt; p.BlogId);
+    }
+}
+
+public class BlogService
+{
+    private readonly BlogContext _context;
+    private readonly ILogger&lt;BlogService&gt; _logger;
+
+    public BlogService(BlogContext context, ILogger&lt;BlogService&gt; logger)
+    {
+        _context = context;
+        _logger = logger;
+    }
+
+    public async Task&lt;Blog&gt; CreateBlogAsync(string title, string description)
+    {
+        var blog = new Blog
+        {
+            Title = title,
+            Description = description,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _context.Blogs.Add(blog);
+        await _context.SaveChangesAsync();
+
+        _logger.LogInformation(&quot;Created blog {BlogId} with title {Title}&quot;, blog.Id, blog.Title);
+        return blog;
+    }
+
+    public async Task&lt;List&lt;Blog&gt;&gt; GetBlogsWithPostsAsync()
+    {
+        return await _context.Blogs
+            .Include(b =&gt; b.Posts)
+            .Where(b =&gt; b.Posts.Any())
+            .ToListAsync();
+    }
+}
+</code></pre>
+<h3 id="testing-with-fastmoq-dbcontext">Testing with FastMoq DbContext</h3>
+<pre><code class="lang-csharp">public class BlogServiceTests : MockerTestBase&lt;BlogService&gt;
+{
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    {
+        var dbContextMock = mocker.GetMockDbContext&lt;BlogContext&gt;();
+        mocker.AddType(_ =&gt; dbContextMock.Object);
+    };
+
+    [Fact]
+    public async Task CreateBlog_ShouldAddBlogToDatabase()
+    {
+        // Arrange
+        var title = &quot;Test Blog&quot;;
+        var description = &quot;Test Description&quot;;
+
+        // Act
+        var result = await Component.CreateBlogAsync(title, description);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Title.Should().Be(title);
+        result.Description.Should().Be(description);
+        result.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
+
+        // Verify database interaction
+        var dbContext = Mocks.GetRequiredObject&lt;BlogContext&gt;();
+        dbContext.Blogs.Should().Contain(result);
+        
+        // Verify logging
+        Mocks.VerifyLogged(LogLevel.Information,
+            &quot;Created blog&quot;, 1);
+    }
+
+    [Fact]
+    public async Task GetBlogsWithPosts_ShouldReturnOnlyBlogsWithPosts()
+    {
+        // Arrange
+        var dbContext = Mocks.GetRequiredObject&lt;BlogContext&gt;();
+        
+        var blogWithPosts = new Blog { Id = 1, Title = &quot;Blog with Posts&quot; };
+        var blogWithoutPosts = new Blog { Id = 2, Title = &quot;Empty Blog&quot; };
+        var post = new Post { Id = 1, Title = &quot;Test Post&quot;, BlogId = 1, Blog = blogWithPosts };
+        
+        blogWithPosts.Posts = new List&lt;Post&gt; { post };
+        
+        dbContext.Blogs.AddRange(blogWithPosts, blogWithoutPosts);
+        dbContext.Posts.Add(post);
+        dbContext.SaveChanges();
+
+        // Act
+        var result = await Component.GetBlogsWithPostsAsync();
+
+        // Assert
+        result.Should().HaveCount(1);
+        result[0].Should().Be(blogWithPosts);
+        result[0].Posts.Should().HaveCount(1);
+    }
+
+    [Fact]
+    public async Task CreateBlog_ShouldThrowException_WhenDatabaseFails()
+    {
+        // Arrange
+        var dbContext = Mocks.GetRequiredObject&lt;BlogContext&gt;();
+        dbContext.Dispose(); // Simulate database error
+
+        // Act &amp; Assert
+        await Assert.ThrowsAsync&lt;ObjectDisposedException&gt;(() =&gt;
+            Component.CreateBlogAsync(&quot;Test&quot;, &quot;Description&quot;));
+    }
+}
+</code></pre>
+<h3 id="advanced-dbcontext-scenarios">Advanced DbContext Scenarios</h3>
+<pre><code class="lang-csharp">public class BlogServiceAdvancedTests : MockerTestBase&lt;BlogService&gt;
+{
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    {
+        // Custom DbContext with specific behavior
+        var dbContextMock = mocker.GetMockDbContext&lt;BlogContext&gt;();
+        
+        // Setup specific DbSet behavior if needed
+        var blogSet = dbContextMock.Object.Set&lt;Blog&gt;();
+        // Additional setup...
+        
+        mocker.AddType(_ =&gt; dbContextMock.Object);
+    };
+
+    [Fact]
+    public async Task BulkOperation_ShouldHandleLargeDataSets()
+    {
+        // Arrange
+        var dbContext = Mocks.GetRequiredObject&lt;BlogContext&gt;();
+        var blogs = GenerateTestBlogs(1000); // Generate test data
+        
+        dbContext.Blogs.AddRange(blogs);
+        dbContext.SaveChanges();
+
+        // Act &amp; Assert
+        var result = await Component.GetBlogsWithPostsAsync();
+        // Verify bulk operation behavior
+    }
+}
+</code></pre>
+<hr>
+<h2 id="background-services-testing">Background Services Testing</h2>
+<p>Testing hosted services, background tasks, and workers.</p>
+<h3 id="background-service-implementation">Background Service Implementation</h3>
+<pre><code class="lang-csharp">public class EmailProcessingService : BackgroundService
+{
+    private readonly IEmailQueue _emailQueue;
+    private readonly IEmailSender _emailSender;
+    private readonly ILogger&lt;EmailProcessingService&gt; _logger;
+
+    public EmailProcessingService(
+        IEmailQueue emailQueue,
+        IEmailSender emailSender,
+        ILogger&lt;EmailProcessingService&gt; logger)
+    {
+        _emailQueue = emailQueue;
+        _emailSender = emailSender;
+        _logger = logger;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                var emailMessage = await _emailQueue.DequeueAsync(stoppingToken);
+                if (emailMessage != null)
+                {
+                    await ProcessEmailAsync(emailMessage);
+                }
+                else
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, &quot;Error processing email queue&quot;);
+                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            }
+        }
+    }
+
+    private async Task ProcessEmailAsync(EmailMessage message)
+    {
+        _logger.LogInformation(&quot;Processing email to {Recipient}&quot;, message.To);
+        
+        await _emailSender.SendAsync(message);
+        
+        _logger.LogInformation(&quot;Email sent successfully to {Recipient}&quot;, message.To);
+    }
+}
+</code></pre>
+<h3 id="testing-background-service">Testing Background Service</h3>
+<pre><code class="lang-csharp">public class EmailProcessingServiceTests : MockerTestBase&lt;EmailProcessingService&gt;
+{
+    [Fact]
+    public async Task ExecuteAsync_ShouldProcessQueuedEmails()
+    {
+        // Arrange
+        var emailMessage = new EmailMessage
+        {
+            To = &quot;test@example.com&quot;,
+            Subject = &quot;Test&quot;,
+            Body = &quot;Test Body&quot;
+        };
+
+        var cancellationTokenSource = new CancellationTokenSource();
+        
+        Mocks.GetMock&lt;IEmailQueue&gt;()
+            .SetupSequence(x =&gt; x.DequeueAsync(It.IsAny&lt;CancellationToken&gt;()))
+            .ReturnsAsync(emailMessage)
+            .ReturnsAsync((EmailMessage)null); // Stop after one message
+
+        Mocks.GetMock&lt;IEmailSender&gt;()
+            .Setup(x =&gt; x.SendAsync(emailMessage))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var executeTask = Component.StartAsync(cancellationTokenSource.Token);
+        
+        // Give it time to process
+        await Task.Delay(100);
+        cancellationTokenSource.Cancel();
+        
+        await executeTask;
+
+        // Assert
+        Mocks.GetMock&lt;IEmailSender&gt;()
+            .Verify(x =&gt; x.SendAsync(emailMessage), Times.Once);
+            
+        Mocks.VerifyLogged(LogLevel.Information,
+            &quot;Processing email&quot;, 1);
+        Mocks.VerifyLogged(LogLevel.Information,
+            &quot;Email sent successfully&quot;, 1);
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldLogErrorAndContinue_WhenEmailSenderFails()
+    {
+        // Arrange
+        var emailMessage = new EmailMessage { To = &quot;test@example.com&quot; };
+        var cancellationTokenSource = new CancellationTokenSource();
+
+        Mocks.GetMock&lt;IEmailQueue&gt;()
+            .Setup(x =&gt; x.DequeueAsync(It.IsAny&lt;CancellationToken&gt;()))
+            .ReturnsAsync(emailMessage);
+
+        Mocks.GetMock&lt;IEmailSender&gt;()
+            .Setup(x =&gt; x.SendAsync(It.IsAny&lt;EmailMessage&gt;()))
+            .ThrowsAsync(new InvalidOperationException(&quot;SMTP error&quot;));
+
+        // Act
+        var executeTask = Component.StartAsync(cancellationTokenSource.Token);
+        await Task.Delay(100);
+        cancellationTokenSource.Cancel();
+        await executeTask;
+
+        // Assert
+        Mocks.VerifyLogged(LogLevel.Error, &quot;SMTP error&quot;, 1);
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldStopGracefully_WhenCancellationRequested()
+    {
+        // Arrange
+        var cancellationTokenSource = new CancellationTokenSource();
+        
+        Mocks.GetMock&lt;IEmailQueue&gt;()
+            .Setup(x =&gt; x.DequeueAsync(It.IsAny&lt;CancellationToken&gt;()))
+            .Returns&lt;CancellationToken&gt;(async token =&gt;
+            {
+                await Task.Delay(50, token);
+                return null;
+            });
+
+        // Act
+        var executeTask = Component.StartAsync(cancellationTokenSource.Token);
+        await Task.Delay(25); // Let it start
+        cancellationTokenSource.Cancel();
+        await executeTask;
+
+        // Assert - Should complete without throwing
+        executeTask.IsCompletedSuccessfully.Should().BeTrue();
+    }
+}
+</code></pre>
+<hr>
+<h2 id="httpclient-and-external-api-testing">HttpClient and External API Testing</h2>
+<p>Testing services that make HTTP calls to external APIs.</p>
+<h3 id="service-implementation">Service Implementation</h3>
+<pre><code class="lang-csharp">public class WeatherService
+{
+    private readonly HttpClient _httpClient;
+    private readonly ILogger&lt;WeatherService&gt; _logger;
+    private readonly IOptions&lt;WeatherApiOptions&gt; _options;
+
+    public WeatherService(HttpClient httpClient, ILogger&lt;WeatherService&gt; logger, IOptions&lt;WeatherApiOptions&gt; options)
+    {
+        _httpClient = httpClient;
+        _logger = logger;
+        _options = options;
+    }
+
+    public async Task&lt;WeatherData&gt; GetWeatherAsync(string city)
+    { 
+        try
+        {
+            var url = $&quot;weather?q={city}&amp;appid={_options.Value.ApiKey}&quot;;
+            _logger.LogInformation(&quot;Fetching weather for {City}&quot;, city);
+            
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            
+            var content = await response.Content.ReadAsStringAsync();
+            var weatherData = JsonSerializer.Deserialize&lt;WeatherData&gt;(content);
+            
+            _logger.LogInformation(&quot;Successfully retrieved weather for {City}&quot;, city);
+            return weatherData;
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, &quot;Failed to fetch weather for {City}&quot;, city);
+            throw new WeatherServiceException($&quot;Unable to get weather for {city}&quot;, ex);
+        }
+    }
+}
+</code></pre>
+<h3 id="testing-with-fastmoq-httpclient-support">Testing with FastMoq HttpClient Support</h3>
+<p>FastMoq provides built-in <strong>HTTP extension helpers</strong> from <code>MockerHttpExtensions.cs</code> that simplify HTTP client testing. There are two main approaches:</p>
+<h4 id="quick-setup-with-createhttpclient-best-for-simple-scenarios">Quick Setup with CreateHttpClient (Best for Simple Scenarios)</h4>
+<pre><code class="lang-csharp">using FastMoq;
+using FastMoq.Extensions;
+
+public class WeatherServiceQuickTests : MockerTestBase&lt;WeatherService&gt;
+{
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    {
+        // Setup options
+        var options = new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; };
+        mocker.GetMock&lt;IOptions&lt;WeatherApiOptions&gt;&gt;()
+            .Setup(x =&gt; x.Value)
+            .Returns(options);
+        
+        // ✅ EASIEST - CreateHttpClient with defaults (auto-registers HttpClient)
+        var httpClient = mocker.CreateHttpClient(
+            clientName: &quot;WeatherApiClient&quot;,
+            baseAddress: &quot;https://api.openweathermap.org/data/2.5/&quot;,
+            statusCode: HttpStatusCode.OK,
+            stringContent: JsonSerializer.Serialize(new { temperature = 20.5, humidity = 65, description = &quot;Partly cloudy&quot; })
+        );
+        
+        // HttpClient is automatically available for dependency injection
+    };
+
+    [Fact]
+    public async Task GetWeatherAsync_ShouldReturnWeatherData_WithCreateHttpClient()
+    {
+        // Arrange
+        var city = &quot;London&quot;;
+
+        // Act - Component automatically gets the configured HttpClient
+        var result = await Component.GetWeatherAsync(city);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Temperature.Should().Be(20.5);
+        result.Description.Should().Be(&quot;Partly cloudy&quot;);
+
+        // Verify HttpClient was used with correct base address
+        Mocks.GetMock&lt;HttpMessageHandler&gt;()
+            .Protected()
+            .Verify(&quot;SendAsync&quot;,
+                Times.Once(),
+                ItExpr.Is&lt;HttpRequestMessage&gt;(req =&gt; 
+                    req.RequestUri!.ToString().StartsWith(&quot;https://api.openweathermap.org/data/2.5/&quot;)
+                ),
+                ItExpr.IsAny&lt;CancellationToken&gt;()
+            );
+    }
+
+    [Fact]
+    public async Task GetWeatherAsync_ShouldUseBuiltInHttpClient_WhenNoCustomSetup()
+    {
+        // Arrange - FastMoq provides default HttpClient with JSON response [{'id':1}]
+        var city = &quot;Paris&quot;;
+
+        // Act - Uses Mocker's built-in HttpClient (http://localhost with default response)
+        var httpResponse = await Mocks.HttpClient.GetAsync($&quot;weather?q={city}&quot;);
+
+        // Assert - Use FastMoq's GetStringContent helper
+        var content = await Mocks.GetStringContent(httpResponse.Content);
+        content.Should().Be(&quot;[{'id':1}]&quot;); // Default response from CreateHttpClient
+        httpResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+}
+</code></pre>
+<h4 id="advanced-setup-with-setuphttpmessage-best-for-complex-scenarios">Advanced Setup with SetupHttpMessage (Best for Complex Scenarios)</h4>
+<pre><code class="lang-csharp">public class WeatherServiceAdvancedTests : MockerTestBase&lt;WeatherService&gt;
+{
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    {
+        // Setup options
+        var options = new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; };
+        mocker.GetMock&lt;IOptions&lt;WeatherApiOptions&gt;&gt;()
+            .Setup(x =&gt; x.Value)
+            .Returns(options);
+    };
+
+    [Fact]
+    public async Task GetWeatherAsync_ShouldReturnWeatherData_WithSetupHttpMessage()
+    {
+        // Arrange
+        var city = &quot;London&quot;;
+        var expectedWeatherData = new WeatherData
+        {
+            Temperature = 20.5,
+            Humidity = 65,
+            Description = &quot;Partly cloudy&quot;
+        };
+
+        var responseContent = JsonSerializer.Serialize(expectedWeatherData);
+        
+        // ✅ ADVANCED - SetupHttpMessage for fine-grained control
+        Mocks.SetupHttpMessage(() =&gt; new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(responseContent, Encoding.UTF8, &quot;application/json&quot;),
+            Headers = { { &quot;X-API-Version&quot;, &quot;1.0&quot; } }
+        });
+
+        // Act
+        var result = await Component.GetWeatherAsync(city);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedWeatherData);
+        
+        // Verify logging
+        Mocks.VerifyLogged(LogLevel.Information, &quot;Fetching weather&quot;, 1);
+        Mocks.VerifyLogged(LogLevel.Information, &quot;Successfully retrieved weather&quot;, 1);
+    }
+
+    [Fact]
+    public async Task GetWeatherAsync_ShouldThrowException_WhenApiReturnsError()
+    {
+        // Arrange
+        var city = &quot;InvalidCity&quot;;
+        
+        // Override setup for error scenario
+        Mocks.SetupHttpMessage(() =&gt; new HttpResponseMessage(HttpStatusCode.NotFound)
+        {
+            Content = new StringContent(&quot;City not found&quot;, Encoding.UTF8, &quot;text/plain&quot;)
+        });
+
+        // Act &amp; Assert
+        var exception = await Assert.ThrowsAsync&lt;WeatherServiceException&gt;(() =&gt;
+            Component.GetWeatherAsync(city));
+            
+        exception.Message.Should().Contain(city);
+        
+        Mocks.VerifyLogged(LogLevel.Error, &quot;City not found&quot;, 1);
+    }
+
+    [Fact]
+    public async Task GetWeatherAsync_ShouldExtractContent_UsingFastMoqHelpers()
+    {
+        // Arrange
+        var city = &quot;Tokyo&quot;;
+        var expectedJson = JsonSerializer.Serialize(new { temperature = 18, description = &quot;Cloudy&quot; });
+        
+        Mocks.SetupHttpMessage(() =&gt; new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(expectedJson, Encoding.UTF8, &quot;application/json&quot;)
+        });
+
+        // Act
+        var response = await Mocks.HttpClient.GetAsync($&quot;weather?q={city}&amp;appid=test-api-key&quot;);
+        
+        // Assert - Demonstrate FastMoq's GetStringContent helper
+        var content = await Mocks.GetStringContent(response.Content);
+        content.Should().Be(expectedJson);
+    }
+}
+</code></pre>
+<h3 id="advanced-http-testing-scenarios">Advanced HTTP Testing Scenarios</h3>
+<h4 id="combining-createhttpclient-with-ihttpclientfactory">Combining CreateHttpClient with IHttpClientFactory</h4>
+<pre><code class="lang-csharp">public class WeatherServiceFactoryTests : MockerTestBase&lt;WeatherService&gt;
+{
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    {
+        // Setup options
+        var options = new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; };
+        mocker.GetMock&lt;IOptions&lt;WeatherApiOptions&gt;&gt;()
+            .Setup(x =&gt; x.Value)
+            .Returns(options);
+        
+        // ✅ CreateHttpClient automatically sets up IHttpClientFactory
+        mocker.CreateHttpClient(
+            clientName: &quot;WeatherApiClient&quot;,
+            baseAddress: &quot;https://api.openweathermap.org/data/2.5/&quot;,
+            statusCode: HttpStatusCode.OK,
+            stringContent: JsonSerializer.Serialize(new { temperature = 25, description = &quot;Sunny&quot; })
+        );
+        
+        // IHttpClientFactory is now available and configured
+    };
+
+    [Fact]
+    public async Task GetWeatherAsync_ShouldUseNamedHttpClient_WhenIHttpClientFactoryProvided()
+    {
+        // Arrange
+        var city = &quot;Miami&quot;;
+        
+        // Act - Service can use named HttpClient from factory
+        var factory = Mocks.GetObject&lt;IHttpClientFactory&gt;();
+        var httpClient = factory!.CreateClient(&quot;WeatherApiClient&quot;);
+        
+        var response = await httpClient.GetAsync($&quot;weather?q={city}&amp;appid=test-api-key&quot;);
+        var content = await Mocks.GetStringContent(response.Content);
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        content.Should().Contain(&quot;temperature&quot;);
+        httpClient.BaseAddress.Should().Be(&quot;https://api.openweathermap.org/data/2.5/&quot;);
+    }
+}
+</code></pre>
+<h4 id="multiple-http-responses-and-content-helpers">Multiple HTTP Responses and Content Helpers</h4>
+<pre><code class="lang-csharp">public class WeatherServiceContentTests : MockerTestBase&lt;WeatherService&gt;
+{
+    [Fact]
+    public async Task GetWeatherAsync_ShouldHandleDifferentContentTypes()
+    {
+        // Arrange
+        var city = &quot;London&quot;;
+        var weatherData = new WeatherData { Temperature = 20 };
+        var responseContent = JsonSerializer.Serialize(weatherData);
+
+        // Test JSON content
+        Mocks.SetupHttpMessage(() =&gt; new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(responseContent, Encoding.UTF8, &quot;application/json&quot;)
+        });
+
+        // Act
+        var result = await Component.GetWeatherAsync(city);
+
+        // Assert
+        result.Should().BeEquivalentTo(weatherData);
+    }
+
+    [Fact]
+    public async Task GetWeatherAsync_WithBinaryContent_ShouldUseContentHelpers()
+    {
+        // Arrange
+        var binaryData = Encoding.UTF8.GetBytes(&quot;Binary weather data&quot;);
+        
+        Mocks.SetupHttpMessage(() =&gt; new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new ByteArrayContent(binaryData)
+        });
+
+        // Act
+        var response = await Mocks.HttpClient.GetAsync(&quot;weather&quot;);
+        
+        // Assert - Use FastMoq's content helpers from MockerHttpExtensions
+        var contentBytes = await response.Content.GetContentBytesAsync();
+        var contentStream = await response.Content.GetContentStreamAsync();
+        
+        contentBytes.Should().BeEquivalentTo(binaryData);
+        contentStream.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task GetWeatherAsync_WithCustomSetup_ShouldAllowMultipleResponses()
+    {
+        // Arrange
+        var city = &quot;London&quot;;
+        var weatherData = new WeatherData { Temperature = 20 };
+        var responseContent = JsonSerializer.Serialize(weatherData);
+
+        // Setup sequence of responses using SetupHttpMessage
+        var callCount = 0;
+        Mocks.SetupHttpMessage(() =&gt;
+        {
+            callCount++;
+            return callCount == 1 
+                ? new HttpResponseMessage(HttpStatusCode.InternalServerError) // First call fails
+                : new HttpResponseMessage(HttpStatusCode.OK) // Second call succeeds
+                {
+                    Content = new StringContent(responseContent, Encoding.UTF8, &quot;application/json&quot;)
+                };
+        });
+
+        // Act &amp; Assert - This would need retry logic in the actual service
+        var firstResponse = await Mocks.HttpClient.GetAsync($&quot;weather?q={city}&quot;);
+        firstResponse.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        
+        var secondResponse = await Mocks.HttpClient.GetAsync($&quot;weather?q={city}&quot;);
+        secondResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        
+        var content = await Mocks.GetStringContent(secondResponse.Content);
+        content.Should().Be(responseContent);
+    }
+}
+</code></pre>
+<h4 id="fastmoq-http-extensions-summary">FastMoq HTTP Extensions Summary</h4>
+<p>FastMoq provides several convenient methods for HTTP testing:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CreateHttpClient()</code></td>
+<td>Quick setup with defaults</td>
+<td>Simple scenarios with standard responses</td>
+</tr>
+<tr>
+<td><code>SetupHttpMessage()</code></td>
+<td>Fine-grained response control</td>
+<td>Complex scenarios, custom headers, error cases</td>
+</tr>
+<tr>
+<td><code>GetStringContent()</code></td>
+<td>Extract string from HttpContent</td>
+<td>Reading response content in tests</td>
+</tr>
+<tr>
+<td><code>GetContentBytesAsync()</code></td>
+<td>Extract bytes from HttpContent</td>
+<td>Binary content testing</td>
+</tr>
+<tr>
+<td><code>GetContentStreamAsync()</code></td>
+<td>Extract stream from HttpContent</td>
+<td>Stream-based content testing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key Benefits:</strong></p>
+<ul>
+<li><strong>Auto-Registration</strong>: <code>CreateHttpClient</code> automatically registers <code>HttpClient</code> and <code>IHttpClientFactory</code></li>
+<li><strong>Default Values</strong>: Provides sensible defaults (localhost, OK status, JSON response)</li>
+<li><strong>Flexible Setup</strong>: <code>SetupHttpMessage</code> allows custom response creation</li>
+<li><strong>Content Helpers</strong>: Built-in methods for content extraction</li>
+<li><strong>Built-in HttpClient</strong>: <code>Mocks.HttpClient</code> always available with default configuration</li>
+</ul>
+<p><strong>Pattern Recommendations:</strong></p>
+<ul>
+<li>Use <code>CreateHttpClient</code> for simple test setups with consistent responses</li>
+<li>Use <code>SetupHttpMessage</code> when you need different responses per test or custom headers</li>
+<li>Combine both approaches: <code>CreateHttpClient</code> in setup, <code>SetupHttpMessage</code> for specific test cases</li>
+<li>Always use <code>GetStringContent()</code> and other helpers instead of manual content reading</li>
+</ul>
+<hr>
+<hr>
+<h2 id="configuration-and-options-testing">Configuration and Options Testing</h2>
+<p>Testing services that depend on configuration and options patterns.</p>
+<h3 id="service-with-configuration">Service with Configuration</h3>
+<pre><code class="lang-csharp">public class EmailOptions
+{
+    public string SmtpHost { get; set; }
+    public int SmtpPort { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
+    public bool EnableSsl { get; set; } = true;
+}
+
+public class EmailService
+{
+    private readonly IOptions&lt;EmailOptions&gt; _emailOptions;
+    private readonly ILogger&lt;EmailService&gt; _logger;
+    private readonly IConfiguration _configuration;
+
+    public EmailService(IOptions&lt;EmailOptions&gt; emailOptions, ILogger&lt;EmailService&gt; logger, IConfiguration configuration)
+    {
+        _emailOptions = emailOptions;
+        _logger = logger;
+        _configuration = configuration;
+    }
+
+    public async Task&lt;bool&gt; SendEmailAsync(string to, string subject, string body)
+    {
+        var options = _emailOptions.Value;
+        
+        if (string.IsNullOrEmpty(options.SmtpHost))
+        {
+            _logger.LogError(&quot;SMTP host not configured&quot;);
+            return false;
+        }
+
+        var timeout = _configuration.GetValue&lt;int&gt;(&quot;Email:TimeoutSeconds&quot;, 30);
+        
+        _logger.LogInformation(&quot;Sending email to {Recipient} via {SmtpHost}:{SmtpPort}&quot;, 
+            to, options.SmtpHost, options.SmtpPort);
+
+        // Simulate sending email
+        await Task.Delay(100);
+        
+        _logger.LogInformation(&quot;Email sent successfully to {Recipient}&quot;, to);
+        return true;
+    }
+
+    public string GetConnectionString()
+    {
+        return _configuration.GetConnectionString(&quot;DefaultConnection&quot;);
+    }
+}
+</code></pre>
+<h3 id="testing-with-configuration">Testing with Configuration</h3>
+<pre><code class="lang-csharp">public class EmailServiceTests : MockerTestBase&lt;EmailService&gt;
+{
+    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    {
+        // Setup email options
+        var emailOptions = new EmailOptions
+        {
+            SmtpHost = &quot;smtp.example.com&quot;,
+            SmtpPort = 587,
+            Username = &quot;test@example.com&quot;,
+            Password = &quot;password&quot;,
+            EnableSsl = true
+        };
+
+        mocker.GetMock&lt;IOptions&lt;EmailOptions&gt;&gt;()
+            .Setup(x =&gt; x.Value)
+            .Returns(emailOptions);
+
+        // Setup configuration
+        var configurationData = new Dictionary&lt;string, string&gt;
+        {
+            [&quot;Email:TimeoutSeconds&quot;] = &quot;45&quot;,
+            [&quot;ConnectionStrings:DefaultConnection&quot;] = &quot;Server=localhost;Database=TestDb&quot;
+        };
+
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(configurationData)
+            .Build();
+
+        mocker.AddType&lt;IConfiguration&gt;(() =&gt; configuration);
+    };
+
+    [Fact]
+    public async Task SendEmailAsync_WithValidConfiguration_ShouldSendEmail()
+    {
+        // Arrange
+        var to = &quot;recipient@example.com&quot;;
+        var subject = &quot;Test Subject&quot;;
+        var body = &quot;Test Body&quot;;
+
+        // Act
+        var result = await Component.SendEmailAsync(to, subject, body);
+
+        // Assert
+        result.Should().BeTrue();
+        
+        Mocks.VerifyLogged(LogLevel.Information,
+            &quot;Sending email&quot;, 1);
+        Mocks.VerifyLogged(LogLevel.Information,
+            &quot;Email sent successfully&quot;, 1);
+    }
+
+    [Fact]
+    public async Task SendEmailAsync_WithMissingSmtpHost_ShouldReturnFalse()
+    {
+        // Arrange - Override options with empty SMTP host
+        var emailOptions = new EmailOptions { SmtpHost = &quot;&quot; };
+        Mocks.GetMock&lt;IOptions&lt;EmailOptions&gt;&gt;()
+            .Setup(x =&gt; x.Value)
+            .Returns(emailOptions);
+
+        // Act
+        var result = await Component.SendEmailAsync(&quot;test@example.com&quot;, &quot;Subject&quot;, &quot;Body&quot;);
+
+        // Assert
+        result.Should().BeFalse();
+        Mocks.VerifyLogged(LogLevel.Error, &quot;SMTP host not configured&quot;, 1);
+    }
+
+    [Fact]
+    public void GetConnectionString_ShouldReturnConfiguredValue()
+    {
+        // Act
+        var connectionString = Component.GetConnectionString();
+
+        // Assert
+        connectionString.Should().Be(&quot;Server=localhost;Database=TestDb&quot;);
+    }
+
+    [Fact]
+    public async Task SendEmailAsync_ShouldUseConfiguredTimeout()
+    {
+        // Arrange
+        var configMock = Mocks.GetMock&lt;IConfiguration&gt;();
+        configMock.Setup(x =&gt; x.GetValue&lt;int&gt;(&quot;Email:TimeoutSeconds&quot;, 30))
+            .Returns(60);
+
+        // Act
+        await Component.SendEmailAsync(&quot;test@example.com&quot;, &quot;Subject&quot;, &quot;Body&quot;);
+
+        // Assert
+        configMock.Verify(x =&gt; x.GetValue&lt;int&gt;(&quot;Email:TimeoutSeconds&quot;, 30), Times.Once);
+    }
+}
+</code></pre>
+<h3 id="testing-with-ioptionsmonitor">Testing with IOptionsMonitor</h3>
+<pre><code class="lang-csharp">public class EmailServiceWithMonitorTests : MockerTestBase&lt;EmailService&gt;
+{
+    [Fact]
+    public async Task SendEmailAsync_WhenOptionsChange_ShouldUseNewOptions()
+    {
+        // Arrange
+        var optionsMonitor = Mocks.GetMock&lt;IOptionsMonitor&lt;EmailOptions&gt;&gt;();
+        var initialOptions = new EmailOptions { SmtpHost = &quot;old-smtp.com&quot;, SmtpPort = 25 };
+        var updatedOptions = new EmailOptions { SmtpHost = &quot;new-smtp.com&quot;, SmtpPort = 587 };
+
+        optionsMonitor.Setup(x =&gt; x.CurrentValue)
+            .Returns(initialOptions);
+
+        // Act - First call
+        await Component.SendEmailAsync(&quot;test@example.com&quot;, &quot;Subject&quot;, &quot;Body&quot;);
+
+        // Change options
+        optionsMonitor.Setup(x =&gt; x.CurrentValue)
+            .Returns(updatedOptions);
+
+        // Act - Second call
+        await Component.SendEmailAsync(&quot;test@example.com&quot;, &quot;Subject&quot;, &quot;Body&quot;);
+
+        // Assert
+        Mocks.VerifyLogged(LogLevel.Information,
+            &quot;Sending email&quot;, 2);
+    }
+}
+</code></pre>
+<hr>
+<h2 id="logging-verification">Logging Verification</h2>
+<p>FastMoq provides powerful helpers for testing logging behavior through the <code>FastMoq.Extensions</code> namespace.</p>
+<h3 id="proper-logger-verification-pattern">Proper Logger Verification Pattern</h3>
+<p>Prefer the provider-safe <code>VerifyLogged</code> helper on <code>Mocks</code>:</p>
+<pre><code class="lang-csharp">// ✅ CORRECT - Provider-safe assertion through captured ILogger entries
+Mocks.VerifyLogged(LogLevel.Information, &quot;Processing complete&quot;, 1);
+
+// ✅ CORRECT - With exception verification
+Mocks.VerifyLogged(LogLevel.Error, &quot;Error occurred&quot;, exception, times: 1);
+
+// ⚠️ COMPATIBILITY ONLY - Moq-specific legacy helper
+// Use only when you intentionally want the legacy Moq-specific surface.
+Mocks.GetMock&lt;ILogger&lt;MyService&gt;&gt;()
+    .VerifyLogger(LogLevel.Information, &quot;Processing complete&quot;, 1);
+</code></pre>
+<p><code>VerifyLogged(...)</code> is provider-safe because the active provider is responsible for wiring <code>ILogger</code> capture through <code>IMockingProvider.ConfigureLogger(...)</code>, while FastMoq core owns the assertion semantics. Providers that cannot capture logger callbacks advertise that through capabilities and FastMoq fails fast instead of silently giving a false negative.</p>
+<h3 id="service-with-logging">Service with Logging</h3>
+<pre><code class="lang-csharp">public class OrderProcessingService
+{
+    private readonly IOrderRepository _orderRepository;
+    private readonly IPaymentService _paymentService;
+    private readonly ILogger&lt;OrderProcessingService&gt; _logger;
+
+    public OrderProcessingService(
+        IOrderRepository orderRepository,
+        IPaymentService paymentService,
+        ILogger&lt;OrderProcessingService&gt; logger)
+    {
+        _orderRepository = orderRepository;
+        _paymentService = paymentService;
+        _logger = logger;
+    }
+
+    public async Task&lt;ProcessOrderResult&gt; ProcessOrderAsync(int orderId)
+    {
+        using var scope = _logger.BeginScope(&quot;Processing order {OrderId}&quot;, orderId);
+        
+        try
+        {
+            _logger.LogInformation(&quot;Starting order processing for order {OrderId}&quot;, orderId);
+
+            var order = await _orderRepository.GetOrderAsync(orderId);
+            if (order == null)
+            {
+                _logger.LogWarning(&quot;Order {OrderId} not found&quot;, orderId);
+                return ProcessOrderResult.NotFound();
+            }
+
+            _logger.LogDebug(&quot;Order {OrderId} retrieved: {OrderTotal:C}&quot;, orderId, order.Total);
+
+            var paymentResult = await _paymentService.ProcessPaymentAsync(order.Total);
+            if (!paymentResult.Success)
+            {
+                _logger.LogError(&quot;Payment failed for order {OrderId}: {ErrorMessage}&quot;, 
+                    orderId, paymentResult.ErrorMessage);
+                return ProcessOrderResult.PaymentFailed(paymentResult.ErrorMessage);
+            }
+
+            order.Status = OrderStatus.Completed;
+            await _orderRepository.UpdateOrderAsync(order);
+
+            _logger.LogInformation(&quot;Order {OrderId} processed successfully&quot;, orderId);
+            return ProcessOrderResult.Success();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, &quot;Unexpected error processing order {OrderId}&quot;, orderId);
+            throw;
+        }
+    }
+}
+</code></pre>
+<h3 id="comprehensive-logging-tests">Comprehensive Logging Tests</h3>
+<pre><code class="lang-csharp">public class OrderProcessingServiceTests : MockerTestBase&lt;OrderProcessingService&gt;
+{
+    [Fact]
+    public async Task ProcessOrderAsync_WhenSuccessful_ShouldLogCorrectSequence()
+    {
+        // Arrange
+        var orderId = 123;
+        var order = new Order { Id = orderId, Total = 99.99m };
+        var paymentResult = new PaymentResult { Success = true };
+
+        Mocks.GetMock&lt;IOrderRepository&gt;()
+            .Setup(x =&gt; x.GetOrderAsync(orderId))
+            .ReturnsAsync(order);
+
+        Mocks.GetMock&lt;IPaymentService&gt;()
+            .Setup(x =&gt; x.ProcessPaymentAsync(order.Total))
+            .ReturnsAsync(paymentResult);
+
+        // Act
+        var result = await Component.ProcessOrderAsync(orderId);
+
+        // Assert
+        result.IsSuccess.Should().BeTrue();
+
+        // Verify logging sequence
+        Mocks.VerifyLogged(LogLevel.Information,
+            &quot;Starting order processing for order&quot;, 1);
+        
+        Mocks.VerifyLogged(LogLevel.Debug,
+            &quot;retrieved&quot;, 1);
+            
+        Mocks.VerifyLogged(LogLevel.Information,
+            &quot;processed successfully&quot;, 1);
+
+        // Verify no error logging
+        Mocks.VerifyLogged(LogLevel.Error, &quot;Unexpected error&quot;, 0);
+    }
+
+    [Fact]
+    public async Task ProcessOrderAsync_WhenOrderNotFound_ShouldLogWarning()
+    {
+        // Arrange
+        var orderId = 999;
+        
+        Mocks.GetMock&lt;IOrderRepository&gt;()
+            .Setup(x =&gt; x.GetOrderAsync(orderId))
+            .ReturnsAsync((Order)null);
+
+        // Act
+        var result = await Component.ProcessOrderAsync(orderId);
+
+        // Assert
+        result.IsNotFound.Should().BeTrue();
+        
+        Mocks.VerifyLogged(LogLevel.Warning,
+            &quot;not found&quot;, 1);
+    }
+
+    [Fact]
+    public async Task ProcessOrderAsync_WhenPaymentFails_ShouldLogError()
+    {
+        // Arrange
+        var orderId = 123;
+        var order = new Order { Id = orderId, Total = 99.99m };
+        var paymentResult = new PaymentResult 
+        { 
+            Success = false, 
+            ErrorMessage = &quot;Insufficient funds&quot; 
+        };
+
+        Mocks.GetMock&lt;IOrderRepository&gt;()
+            .Setup(x =&gt; x.GetOrderAsync(orderId))
+            .ReturnsAsync(order);
+
+        Mocks.GetMock&lt;IPaymentService&gt;()
+            .Setup(x =&gt; x.ProcessPaymentAsync(order.Total))
+            .ReturnsAsync(paymentResult);
+
+        // Act
+        var result = await Component.ProcessOrderAsync(orderId);
+
+        // Assert
+        result.IsPaymentFailed.Should().BeTrue();
+        
+        Mocks.VerifyLogged(LogLevel.Error,
+            &quot;Payment failed for order&quot;, 1);
+    }
+
+    [Fact]
+    public async Task ProcessOrderAsync_WhenExceptionThrown_ShouldLogErrorWithException()
+    {
+        // Arrange
+        var orderId = 123;
+        var expectedException = new InvalidOperationException(&quot;Database connection failed&quot;);
+
+        Mocks.GetMock&lt;IOrderRepository&gt;()
+            .Setup(x =&gt; x.GetOrderAsync(orderId))
+            .ThrowsAsync(expectedException);
+
+        // Act &amp; Assert
+        var thrownException = await Assert.ThrowsAsync&lt;InvalidOperationException&gt;(
+            () =&gt; Component.ProcessOrderAsync(orderId));
+
+        thrownException.Should().Be(expectedException);
+        
+        Mocks.VerifyLogged(LogLevel.Error,
+            &quot;Unexpected error processing order&quot;,
+            expectedException,
+            times: 1);
+    }
+
+    [Fact]
+    public async Task ProcessOrderAsync_ShouldUseLoggingScope()
+    {
+        // Arrange
+        var orderId = 123;
+        var order = new Order { Id = orderId, Total = 99.99m };
+
+        Mocks.GetMock&lt;IOrderRepository&gt;()
+            .Setup(x =&gt; x.GetOrderAsync(orderId))
+            .ReturnsAsync(order);
+
+        // Setup logging callback to capture scope information
+        var logEntries = new List&lt;(LogLevel Level, string Message, object[] Args)&gt;();
+        
+        Mocks.SetupLoggerCallback&lt;ILogger&lt;OrderProcessingService&gt;&gt;((level, eventId, message) =&gt;
+        {
+            logEntries.Add((level, message, new object[0]));
+        });
+
+        // Act
+        await Component.ProcessOrderAsync(orderId);
+
+        // Assert
+        logEntries.Should().NotBeEmpty();
+        // Verify scope was used (implementation depends on logging framework)
+    }
+}
+</code></pre>
+<h3 id="advanced-logging-scenarios">Advanced Logging Scenarios</h3>
+<pre><code class="lang-csharp">public class LoggingAdvancedTests : MockerTestBase&lt;OrderProcessingService&gt;
+{
+    [Fact]
+    public async Task ProcessOrderAsync_ShouldLogStructuredData()
+    {
+        // Arrange
+        var orderId = 123;
+        var order = new Order { Id = orderId, Total = 99.99m, CustomerId = 456 };
+
+        Mocks.GetMock&lt;IOrderRepository&gt;()
+            .Setup(x =&gt; x.GetOrderAsync(orderId))
+            .ReturnsAsync(order);
+
+        // Setup to capture structured logging data
+        var loggedProperties = new Dictionary&lt;string, object&gt;();
+        
+        Mocks.GetMock&lt;ILogger&lt;OrderProcessingService&gt;&gt;()
+            .Setup(x =&gt; x.Log(
+                It.IsAny&lt;LogLevel&gt;(),
+                It.IsAny&lt;EventId&gt;(),
+                It.IsAny&lt;It.IsAnyType&gt;(),
+                It.IsAny&lt;Exception&gt;(),
+                It.IsAny&lt;Func&lt;It.IsAnyType, Exception, string&gt;&gt;()))
+            .Callback&lt;LogLevel, EventId, object, Exception, Delegate&gt;((level, eventId, state, exception, formatter) =&gt;
+            {
+                if (state is IEnumerable&lt;KeyValuePair&lt;string, object&gt;&gt; properties)
+                {
+                    foreach (var prop in properties)
+                    {
+                        loggedProperties[prop.Key] = prop.Value;
+                    }
+                }
+            });
+
+        // Act
+        await Component.ProcessOrderAsync(orderId);
+
+        // Assert
+        loggedProperties.Should().ContainKey(&quot;OrderId&quot;);
+        loggedProperties[&quot;OrderId&quot;].Should().Be(orderId);
+    }
+
+    [Fact]
+    public async Task ProcessOrderAsync_WithHighVolumeLogging_ShouldPerformWell()
+    {
+        // Arrange
+        var orders = Enumerable.Range(1, 100)
+            .Select(i =&gt; new Order { Id = i, Total = i * 10m })
+            .ToList();
+
+        foreach (var order in orders)
+        {
+            Mocks.GetMock&lt;IOrderRepository&gt;()
+                .Setup(x =&gt; x.GetOrderAsync(order.Id))
+                .ReturnsAsync(order);
+        }
+
+        // Act
+        var stopwatch = Stopwatch.StartNew();
+        
+        var tasks = orders.Select(order =&gt; Component.ProcessOrderAsync(order.Id));
+        await Task.WhenAll(tasks);
+        
+        stopwatch.Stop();
+
+        // Assert
+        stopwatch.ElapsedMilliseconds.Should().BeLessThan(5000); // Performance assertion
+        
+        Mocks.VerifyLogged(LogLevel.Information, &quot;order&quot;, 200); // 2 info logs per order
+    }
+}
+</code></pre>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:17 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

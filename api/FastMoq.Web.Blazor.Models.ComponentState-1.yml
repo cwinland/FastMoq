@@ -21,20 +21,17 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ComponentState
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 18
+    startLine: 17
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
-  summary: >-
-    Class ComponentState.
-
-    Implements the <xref href="FastMoq.Web.Blazor.Models.ComponentState" data-throw-if-not-resolved="false"></xref>
+  summary: Typed wrapper around Blazor component render state information.
   example: []
   syntax:
     content: 'public class ComponentState<T> : ComponentState where T : ComponentBase'
     typeParameters:
     - id: T
-      description: ''
+      description: The component type represented by the state wrapper.
     content.vb: Public Class ComponentState(Of T As ComponentBase) Inherits ComponentState
   seealso:
   - linkId: FastMoq.Web.Blazor.Models.ComponentState
@@ -95,7 +92,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Component
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 26
+    startLine: 25
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -129,7 +126,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 36
+    startLine: 34
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -146,13 +143,6 @@ items:
       description: The renderer.
     content.vb: Public Sub New(obj As Object, renderer As TestRenderer)
   overload: FastMoq.Web.Blazor.Models.ComponentState`1.#ctor*
-  exceptions:
-  - type: System.ArgumentNullException
-    commentId: T:System.ArgumentNullException
-    description: renderer
-  - type: System.ArgumentNullException
-    commentId: T:System.ArgumentNullException
-    description: services
   nameWithType.vb: ComponentState(Of T).New(Object, TestRenderer)
   fullName.vb: FastMoq.Web.Blazor.Models.ComponentState(Of T).New(Object, Bunit.Rendering.TestRenderer)
   name.vb: New(Object, TestRenderer)
@@ -2565,13 +2555,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: System.ArgumentNullException
-  commentId: T:System.ArgumentNullException
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
-  name: ArgumentNullException
-  nameWithType: ArgumentNullException
-  fullName: System.ArgumentNullException
 - uid: FastMoq.Web.Blazor.Models.ComponentState`1.#ctor*
   commentId: Overload:FastMoq.Web.Blazor.Models.ComponentState`1.#ctor
   href: FastMoq.Web.Blazor.Models.ComponentState-1.html#FastMoq_Web_Blazor_Models_ComponentState_1__ctor_System_Object_Bunit_Rendering_TestRenderer_

@@ -5,22 +5,23 @@
   <head>
     <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <title>Class DbContextMock&lt;TEntity&gt; </title>
+      <title>Class DbContextMock&lt;TEntity&gt; | FastMoq </title>
       <meta name="viewport" content="width=device-width">
-      <meta name="title" content="Class DbContextMock&lt;TEntity&gt; ">
+      <meta name="title" content="Class DbContextMock&lt;TEntity&gt; | FastMoq ">
     
     <meta name="description" content="Wrapper for Mock. Implements the">
-      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+      <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
       <link rel="stylesheet" href="../styles/docfx.css">
       <link rel="stylesheet" href="../styles/main.css">
-      <meta property="docfx:navrel" content="">
+      <link rel="stylesheet" href="../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../toc.html">
       <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
-  </head>
-  <body data-spy="scroll" data-target="#affix" data-offset="120">
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
 
@@ -34,10 +35,9 @@
                 <span class="icon-bar"></span>
               </button>
 
-              <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../logo.svg" alt="FastMoq Documentation">
-              </a>
-            </div>
+              <a class="navbar-brand fastmoq-brand" href="../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
             <div class="collapse navbar-collapse" id="navbar">
               <form class="navbar-form navbar-right" role="search" id="search">
                 <div class="form-group">
@@ -403,13 +403,6 @@ Assert.False(order.IsFilled);</code></pre>
 
   <h3 id="constructors">Constructors
 </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1__ctor.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.%23ctor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L29">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1__ctor" data-uid="FastMoq.Models.DbContextMock`1.#ctor">DbContextMock()</h4>
   <div class="markdown level1 summary"><p>Initializes an instance of the mock with <span class="xref">Moq.MockBehavior.Default</span> behavior.</p>
@@ -422,13 +415,6 @@ Assert.False(order.IsFilled);</code></pre>
   <h5 id="FastMoq_Models_DbContextMock_1__ctor_examples">Examples</h5>
   <pre><code class="lang-csharp">var mock = new Mock&lt;IFormatProvider&gt;();</code></pre>
 
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.%23ctor(Moq.MockBehavior)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L32">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior_" data-uid="FastMoq.Models.DbContextMock`1.#ctor(Moq.MockBehavior)">DbContextMock(MockBehavior)</h4>
   <div class="markdown level1 summary"><p>Initializes an instance of the mock with the specified <span class="xref">Moq.MockBehavior</span> behavior.</p>
@@ -459,13 +445,6 @@ Assert.False(order.IsFilled);</code></pre>
   <h5 id="FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior__examples">Examples</h5>
   <pre><code class="lang-csharp">var mock = new Mock&lt;IFormatProvider&gt;(MockBehavior.Strict);</code></pre>
 
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior_System_Object___.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.%23ctor(Moq.MockBehavior%2CSystem.Object%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L42">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1__ctor_Moq_MockBehavior_System_Object___" data-uid="FastMoq.Models.DbContextMock`1.#ctor(Moq.MockBehavior,System.Object[])">DbContextMock(MockBehavior, params object[])</h4>
   <div class="markdown level1 summary"><p>Initializes an instance of the mock with a specific <span class="xref">Moq.MockBehavior</span> behavior
@@ -504,13 +483,6 @@ and with the given constructor arguments for the class.</p>
   <div class="markdown level1 remarks"><p>The mock will try to find the best match constructor given the constructor arguments,
 and invoke that to initialize the instance. This applies only to classes, not interfaces.</p>
 </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1__ctor_System_Linq_Expressions_Expression_System_Func__0___Moq_MockBehavior_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.%23ctor(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%7D%7D%2CMoq.MockBehavior)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L38">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1__ctor_System_Linq_Expressions_Expression_System_Func__0___Moq_MockBehavior_" data-uid="FastMoq.Models.DbContextMock`1.#ctor(System.Linq.Expressions.Expression{System.Func{`0}},Moq.MockBehavior)">DbContextMock(Expression&lt;Func&lt;TEntity&gt;&gt;, MockBehavior)</h4>
   <div class="markdown level1 summary"><p>Initializes an instance of the mock using the given constructor call including its
@@ -548,13 +520,6 @@ argument values and with a specific <span class="xref">Moq.MockBehavior</span> b
   <h5 id="FastMoq_Models_DbContextMock_1__ctor_System_Linq_Expressions_Expression_System_Func__0___Moq_MockBehavior__examples">Examples</h5>
   <pre><code class="lang-csharp">var mock = new Mock&lt;MyProvider&gt;(() =&gt; new MyProvider(someArgument, 25), MockBehavior.Loose);</code></pre>
 
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1__ctor_System_Object___.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.%23ctor(System.Object%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L35">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1__ctor_System_Object___" data-uid="FastMoq.Models.DbContextMock`1.#ctor(System.Object[])">DbContextMock(params object[])</h4>
   <div class="markdown level1 summary"><p>Initializes an instance of the mock with <span class="xref">Moq.MockBehavior.Default</span> behavior
@@ -592,13 +557,6 @@ and invoke that to initialize the instance.This applies only for classes, not in
 
   <h3 id="properties">Properties
 </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_CallBase.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.CallBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L20">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1_CallBase_" data-uid="FastMoq.Models.DbContextMock`1.CallBase*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_CallBase" data-uid="FastMoq.Models.DbContextMock`1.CallBase">CallBase</h4>
   <div class="markdown level1 summary"><p>Whether the base member virtual implementation will be called for mocked classes if no setup is matched.
@@ -628,13 +586,6 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
   <div><span class="xref">Moq.Mock&lt;TEntity&gt;.CallBase</span></div>
   <h3 id="methods">Methods
 </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_SetupDbContextSetMethods_System_Reflection_PropertyInfo_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.SetupDbContextSetMethods(System.Reflection.PropertyInfo)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L65">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1_SetupDbContextSetMethods_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbContextSetMethods*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_SetupDbContextSetMethods_System_Reflection_PropertyInfo_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbContextSetMethods(System.Reflection.PropertyInfo)">SetupDbContextSetMethods(PropertyInfo)</h4>
   <div class="markdown level1 summary"></div>
@@ -660,13 +611,6 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_SetupDbSetProperties_System_Reflection_PropertyInfo_System_Object_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.SetupDbSetProperties(System.Reflection.PropertyInfo%2CSystem.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L87">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1_SetupDbSetProperties_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetProperties*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_SetupDbSetProperties_System_Reflection_PropertyInfo_System_Object_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetProperties(System.Reflection.PropertyInfo,System.Object)">SetupDbSetProperties(PropertyInfo, object)</h4>
   <div class="markdown level1 summary"></div>
@@ -697,13 +641,6 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_SetupDbSetPropertyGet_System_Reflection_PropertyInfo_System_Object_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.SetupDbSetPropertyGet(System.Reflection.PropertyInfo%2CSystem.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L94">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1_SetupDbSetPropertyGet_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetPropertyGet*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_SetupDbSetPropertyGet_System_Reflection_PropertyInfo_System_Object_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetPropertyGet(System.Reflection.PropertyInfo,System.Object)">SetupDbSetPropertyGet(PropertyInfo, object)</h4>
   <div class="markdown level1 summary"></div>
@@ -734,13 +671,6 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_SetupDbSets_FastMoq_Mocker_.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.SetupDbSets(FastMoq.Mocker)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L133">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1_SetupDbSets_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSets*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_SetupDbSets_FastMoq_Mocker_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSets(FastMoq.Mocker)">SetupDbSets(Mocker)</h4>
   <div class="markdown level1 summary"></div>
@@ -781,13 +711,6 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1_SetupSetMethod_System_Type_System_Delegate_System_Type___System_Object___.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601.SetupSetMethod(System.Type%2CSystem.Delegate%2CSystem.Type%5B%5D%2CSystem.Object%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L103">View Source</a>
-  </span>
   <a id="FastMoq_Models_DbContextMock_1_SetupSetMethod_" data-uid="FastMoq.Models.DbContextMock`1.SetupSetMethod*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_SetupSetMethod_System_Type_System_Delegate_System_Type___System_Object___" data-uid="FastMoq.Models.DbContextMock`1.SetupSetMethod(System.Type,System.Delegate,System.Type[],System.Object[])">SetupSetMethod(Type, Delegate, Type[]?, object?[]?)</h4>
   <div class="markdown level1 summary"></div>
@@ -900,16 +823,6 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
 
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
-              <div class="contribution">
-                <ul class="nav">
-                  <li>
-                    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_Models_DbContextMock_1.md&amp;value=---%0Auid%3A%20FastMoq.Models.DbContextMock%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Database/Models/DbContextMock.cs/#L17" class="contribution-link">View Source</a>
-                  </li>
-                </ul>
-              </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
                 <h5>In this article</h5>
                 <div></div>
@@ -926,8 +839,8 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:17 UTC</span></div>
       
-      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

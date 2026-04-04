@@ -56,13 +56,13 @@ items:
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
-  summary: Interface IMockerBlazorTestHelpers
+  summary: Helper methods for locating, rendering, and interacting with Blazor components in FastMoq-based bUnit tests.
   example: []
   syntax:
     content: 'public interface IMockerBlazorTestHelpers<T> where T : ComponentBase'
     typeParameters:
     - id: T
-      description: ''
+      description: The root component type under test.
     content.vb: Public Interface IMockerBlazorTestHelpers(Of T As ComponentBase)
   derivedClasses:
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1
@@ -518,11 +518,7 @@ items:
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Gets the component.
   example:
-  - >-
-    Get FetchData component. /&gt;
-
-
-    <pre><code class="lang-cs">var comp = GetComponent&lt;FetchData&gt;();</code></pre>
+  - <pre><code class="lang-csharp">var comp = GetComponent&lt;FetchData&gt;();</code></pre>
   syntax:
     content: 'IRenderedComponent<TComponent> GetComponent<TComponent>() where TComponent : class, IComponent'
     typeParameters:
@@ -554,22 +550,20 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 131
+    startLine: 133
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Gets the component.
   example:
   - >-
-    Get FetchData component with Id 1234. /&gt;
+    <p>Filter rendered components by component state.</p>
 
-
-    <pre><code class="lang-cs">var comp = GetComponent&lt;FetchData&gt;(x =&gt; x.ComponentId == 1234));</code></pre>
+    <pre><code class="lang-csharp">var comp = GetComponent&lt;FetchData&gt;(x =&gt; x.ComponentId == 1234);</code></pre>
   - >-
-    Get FetchData instance property. /&gt;
+    <p>Filter rendered components by instance values.</p>
 
-
-    <pre><code class="lang-cs">var comp = GetComponent&lt;FetchData&gt;(x =&gt; x.Instance.IsRunning));</code></pre>
+    <pre><code class="lang-csharp">var comp = GetComponent&lt;FetchData&gt;(x =&gt; x.Instance.IsRunning);</code></pre>
   syntax:
     content: 'IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IRenderedComponent<TComponent>, bool> predicate) where TComponent : class, IComponent'
     parameters:
@@ -605,17 +599,13 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 145
+    startLine: 147
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Gets the component.
   example:
-  - >-
-    Get FetchData component with inner html containing text. /&gt;
-
-
-    <pre><code class="lang-cs">var comp = GetComponent&lt;FetchData&gt;(element =&gt; element.InnerHtml.Contains("hello"));</code></pre>
+  - <pre><code class="lang-csharp">var comp = GetComponent&lt;FetchData&gt;(element =&gt; element.InnerHtml.Contains("hello"));</code></pre>
   syntax:
     content: 'IRenderedComponent<TComponent> GetComponent<TComponent>(Func<IElement, bool> predicate) where TComponent : class, IComponent'
     parameters:
@@ -651,22 +641,20 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 163
+    startLine: 167
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Gets the components.
   example:
   - >-
-    Get FetchData component with Id 1234. /&gt;
+    <p>Get all rendered FetchData components with a matching component id.</p>
 
-
-    <pre><code class="lang-cs">var list = GetComponent&lt;FetchData&gt;(x =&gt; x.ComponentId == 1234));</code></pre>
+    <pre><code class="lang-csharp">var list = GetComponents&lt;FetchData&gt;(x =&gt; x.ComponentId == 1234);</code></pre>
   - >-
-    Get FetchData instance property. /&gt;
+    <p>Get all rendered FetchData components with a matching instance state.</p>
 
-
-    <pre><code class="lang-cs">var list = GetComponent&lt;FetchData&gt;(x =&gt; x.Instance.IsRunning));</code></pre>
+    <pre><code class="lang-csharp">var list = GetComponents&lt;FetchData&gt;(x =&gt; x.Instance.IsRunning);</code></pre>
   syntax:
     content: 'IReadOnlyList<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IRenderedComponent<TComponent>, bool>? predicate = null) where TComponent : class, IComponent'
     parameters:
@@ -702,17 +690,13 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 177
+    startLine: 181
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Gets the components.
   example:
-  - >-
-    Get FetchData component with inner html containing text. /&gt;
-
-
-    <pre><code class="lang-cs">var list = GetComponent&lt;FetchData&gt;(element =&gt; element.InnerHtml.Contains("hello"));</code></pre>
+  - <pre><code class="lang-csharp">var list = GetComponents&lt;FetchData&gt;(element =&gt; element.InnerHtml.Contains("hello"));</code></pre>
   syntax:
     content: 'List<IRenderedComponent<TComponent>> GetComponents<TComponent>(Func<IElement, bool>? predicate = null) where TComponent : class, IComponent'
     parameters:
@@ -748,7 +732,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 184
+    startLine: 188
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -785,7 +769,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 191
+    startLine: 195
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -822,7 +806,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 199
+    startLine: 203
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -862,7 +846,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 207
+    startLine: 211
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -902,7 +886,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 214
+    startLine: 218
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -939,7 +923,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 221
+    startLine: 225
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -976,7 +960,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 229
+    startLine: 233
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1015,7 +999,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IsExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 237
+    startLine: 241
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1056,22 +1040,20 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 254
+    startLine: 260
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Renders the component. If the component is already rendered, it will act like a stateChanged.
   example:
   - >-
-    Render again without losing context. This honors any parameters in the RenderParameters action. /&gt;
+    <p>Render again without losing context. This honors any parameters already configured in RenderParameters.</p>
 
-
-    <pre><code class="lang-cs">RenderComponent()</code></pre>
+    <pre><code class="lang-csharp">RenderComponent();</code></pre>
   - >-
-    Force initial render.
+    <p>Force a fresh initial render.</p>
 
-
-    <pre><code class="lang-cs">RenderComponent(true);</code></pre>
+    <pre><code class="lang-csharp">RenderComponent(true);</code></pre>
   syntax:
     content: IRenderedComponent<T> RenderComponent(bool forceNew = false)
     parameters:
@@ -1104,22 +1086,20 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 272
+    startLine: 280
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Renders the component. If the component is already rendered, it will act like a stateChanged.
   example:
   - >-
-    Render again with parameters without losing context
+    <p>Render again with parameters without losing context.</p>
 
-
-    <pre><code class="lang-cs">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()));</code></pre>
+    <pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()));</code></pre>
   - >-
-    Force initial render with parameters
+    <p>Force an initial render with parameters.</p>
 
-
-    <pre><code class="lang-cs">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()), true);</code></pre>
+    <pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()), true);</code></pre>
   syntax:
     content: IRenderedComponent<T> RenderComponent(Action<ComponentParameterCollectionBuilder<T>> parameterBuilder, bool forceNew = false)
     parameters:
@@ -1155,7 +1135,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetAutoComplete
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 282
+    startLine: 290
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1202,7 +1182,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementCheck
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 296
+    startLine: 304
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1262,7 +1242,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementSwitch
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 311
+    startLine: 319
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1319,7 +1299,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 323
+    startLine: 331
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1366,7 +1346,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 335
+    startLine: 343
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1420,7 +1400,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitDelay
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 344
+    startLine: 352
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1457,7 +1437,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 352
+    startLine: 360
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1498,7 +1478,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForNotExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 360
+    startLine: 368
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1539,7 +1519,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForState
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 368
+    startLine: 376
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces

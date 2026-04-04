@@ -28,7 +28,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ComponentState
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 44
+    startLine: 42
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -88,7 +88,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Component
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 57
+    startLine: 55
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -120,7 +120,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ComponentId
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 63
+    startLine: 61
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -152,7 +152,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CurrentRenderTree
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 69
+    startLine: 67
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -184,7 +184,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IsComponentBase
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 75
+    startLine: 73
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -216,7 +216,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ParentComponentState
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 81
+    startLine: 79
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -248,7 +248,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ComponentType
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 87
+    startLine: 85
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -280,7 +280,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 98
+    startLine: 96
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -325,7 +325,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateRenderedComponent
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 122
+    startLine: 120
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
@@ -360,7 +360,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateRenderedComponent
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 136
+    startLine: 134
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models

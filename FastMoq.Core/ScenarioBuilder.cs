@@ -10,9 +10,8 @@ namespace FastMoq
     /// Provides a fluent arrange/act/assert pipeline for a tracked scenario target.
     /// </summary>
     /// <example>
-    /// In <see cref="MockerTestBase{TComponent}"/>, prefer the parameterless overloads when <c>Component</c> is already available.
-    /// <code>
-    /// <![CDATA[
+    /// <para>In MockerTestBase&lt;TComponent&gt;, prefer the parameterless overloads when Component is already available.</para>
+    /// <code language="csharp"><![CDATA[
     /// Scenario
     ///     .With(() => Mocks.GetMock<IInvoiceRepository>()
     ///         .Setup(x => x.GetPastDueAsync(now, CancellationToken.None))
@@ -20,17 +19,14 @@ namespace FastMoq
     ///     .When(async () => reminderCount = await Component.SendRemindersAsync(now, CancellationToken.None))
     ///     .Then(() => reminderCount.Should().Be(2))
     ///     .Execute();
-    /// ]]>
-    /// </code>
-    /// Outside <see cref="MockerTestBase{TComponent}"/>, use the target-instance overloads.
-    /// <code>
-    /// <![CDATA[
+    /// ]]></code>
+    /// <para>Outside MockerTestBase&lt;TComponent&gt;, use the target-instance overloads.</para>
+    /// <code language="csharp"><![CDATA[
     /// await mocker.Scenario(service)
     ///     .When(component => component.RunAsync())
     ///     .Then(component => component.State.Should().Be(ServiceState.Completed))
     ///     .ExecuteAsync();
-    /// ]]>
-    /// </code>
+    /// ]]></code>
     /// </example>
     public sealed class ScenarioBuilder<T> where T : class
     {
@@ -196,15 +192,13 @@ namespace FastMoq
         /// Adds a synchronous act step that is expected to throw the specified exception type.
         /// </summary>
         /// <example>
-        /// Use this when the act step is expected to fail but trailing assertions should still run.
-        /// <code>
-        /// <![CDATA[
+        /// <para>Use this when the act step is expected to fail but trailing assertions should still run.</para>
+        /// <code language="csharp"><![CDATA[
         /// Scenario
         ///     .WhenThrows<InvalidOperationException>(() => Component.SendRemindersAsync(now, CancellationToken.None))
         ///     .Then(() => auditTrail.Count.Should().Be(1))
         ///     .Execute();
-        /// ]]>
-        /// </code>
+        /// ]]></code>
         /// </example>
         public ScenarioBuilder<T> WhenThrows<TException>(Action act) where TException : Exception
         {
@@ -220,14 +214,12 @@ namespace FastMoq
         /// Adds an asynchronous act step that is expected to throw the specified exception type.
         /// </summary>
         /// <example>
-        /// <code>
-        /// <![CDATA[
+        /// <code language="csharp"><![CDATA[
         /// await mocker.Scenario(service)
         ///     .WhenThrows<InvalidOperationException>(component => component.RunAsync())
         ///     .Then(component => component.Attempts.Should().Be(1))
         ///     .ExecuteAsync();
-        /// ]]>
-        /// </code>
+        /// ]]></code>
         /// </example>
         public ScenarioBuilder<T> WhenThrows<TException>(Func<Task> act) where TException : Exception
         {
@@ -408,16 +400,14 @@ namespace FastMoq
         /// Executes the scenario and returns the expected exception.
         /// </summary>
         /// <example>
-        /// Use this form when the exception object itself is the primary assertion target.
-        /// <code>
-        /// <![CDATA[
+        /// <para>Use this form when the exception object itself is the primary assertion target.</para>
+        /// <code language="csharp"><![CDATA[
         /// var exception = Scenario
         ///     .When(() => Component.SendRemindersAsync(now, CancellationToken.None))
         ///     .ExecuteThrows<InvalidOperationException>();
         ///
         /// exception.Message.Should().Be("SMTP unavailable");
-        /// ]]>
-        /// </code>
+        /// ]]></code>
         /// </example>
         public TException ExecuteThrows<TException>() where TException : Exception
         {
@@ -428,13 +418,11 @@ namespace FastMoq
         /// Executes the scenario and returns the expected exception.
         /// </summary>
         /// <example>
-        /// <code>
-        /// <![CDATA[
+        /// <code language="csharp"><![CDATA[
         /// var exception = await mocker.Scenario(service)
         ///     .When(component => component.RunAsync())
         ///     .ExecuteThrowsAsync<InvalidOperationException>();
-        /// ]]>
-        /// </code>
+        /// ]]></code>
         /// </example>
         public async Task<TException> ExecuteThrowsAsync<TException>() where TException : Exception
         {

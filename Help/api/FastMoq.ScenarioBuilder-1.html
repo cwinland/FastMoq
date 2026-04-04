@@ -5,22 +5,23 @@
   <head>
     <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <title>Class ScenarioBuilder&lt;T&gt; </title>
+      <title>Class ScenarioBuilder&lt;T&gt; | FastMoq </title>
       <meta name="viewport" content="width=device-width">
-      <meta name="title" content="Class ScenarioBuilder&lt;T&gt; ">
+      <meta name="title" content="Class ScenarioBuilder&lt;T&gt; | FastMoq ">
     
     <meta name="description" content="Provides a fluent arrange/act/assert pipeline for a tracked scenario target.">
-      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+      <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
       <link rel="stylesheet" href="../styles/docfx.css">
       <link rel="stylesheet" href="../styles/main.css">
-      <meta property="docfx:navrel" content="">
+      <link rel="stylesheet" href="../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../toc.html">
       <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
     
-  </head>
-  <body data-spy="scroll" data-target="#affix" data-offset="120">
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
 
@@ -34,10 +35,9 @@
                 <span class="icon-bar"></span>
               </button>
 
-              <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../logo.svg" alt="FastMoq Documentation">
-              </a>
-            </div>
+              <a class="navbar-brand fastmoq-brand" href="../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
             <div class="collapse navbar-collapse" id="navbar">
               <form class="navbar-form navbar-right" role="search" id="search">
                 <div class="form-group">
@@ -132,7 +132,7 @@
     </tbody>
   </table>
   <h5 id="FastMoq_ScenarioBuilder_1_examples"><strong>Examples</strong></h5>
-  <p>In <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a>, prefer the parameterless overloads when <code>Component</code> is already available.</p>
+  <p>In MockerTestBase&lt;TComponent&gt;, prefer the parameterless overloads when Component is already available.</p>
 <pre><code class="lang-csharp">Scenario
     .With(() =&gt; Mocks.GetMock&lt;IInvoiceRepository&gt;()
         .Setup(x =&gt; x.GetPastDueAsync(now, CancellationToken.None))
@@ -140,7 +140,7 @@
     .When(async () =&gt; reminderCount = await Component.SendRemindersAsync(now, CancellationToken.None))
     .Then(() =&gt; reminderCount.Should().Be(2))
     .Execute();</code></pre>
-<p>Outside <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a>, use the target-instance overloads.</p>
+<p>Outside MockerTestBase&lt;TComponent&gt;, use the target-instance overloads.</p>
 <pre><code class="lang-csharp">await mocker.Scenario(service)
     .When(component =&gt; component.RunAsync())
     .Then(component =&gt; component.State.Should().Be(ServiceState.Completed))
@@ -148,13 +148,6 @@
 
   <h3 id="properties">Properties
 </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_Instance.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.Instance%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L53">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_Instance_" data-uid="FastMoq.ScenarioBuilder`1.Instance*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_Instance" data-uid="FastMoq.ScenarioBuilder`1.Instance">Instance</h4>
   <div class="markdown level1 summary"><p>Gets the current scenario target instance.</p>
@@ -181,13 +174,6 @@
   </table>
   <h3 id="methods">Methods
 </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_Execute.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.Execute%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L405">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_Execute_" data-uid="FastMoq.ScenarioBuilder`1.Execute*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_Execute" data-uid="FastMoq.ScenarioBuilder`1.Execute">Execute()</h4>
   <div class="markdown level1 summary"><p>Convenience execute for synchronous test bodies.</p>
@@ -197,13 +183,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Execute()</code></pre>
   </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_ExecuteAsync.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.ExecuteAsync%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L377">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_ExecuteAsync_" data-uid="FastMoq.ScenarioBuilder`1.ExecuteAsync*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_ExecuteAsync" data-uid="FastMoq.ScenarioBuilder`1.ExecuteAsync">ExecuteAsync()</h4>
   <div class="markdown level1 summary"><p>Executes the scenario (arrange -&gt; act -&gt; assert).</p>
@@ -228,13 +207,6 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_ExecuteThrowsAsync__1.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.ExecuteThrowsAsync%60%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L439">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_ExecuteThrowsAsync_" data-uid="FastMoq.ScenarioBuilder`1.ExecuteThrowsAsync*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_ExecuteThrowsAsync__1" data-uid="FastMoq.ScenarioBuilder`1.ExecuteThrowsAsync``1">ExecuteThrowsAsync&lt;TException&gt;()</h4>
   <div class="markdown level1 summary"><p>Executes the scenario and returns the expected exception.</p>
@@ -279,13 +251,6 @@
     .When(component =&gt; component.RunAsync())
     .ExecuteThrowsAsync&lt;InvalidOperationException&gt;();</code></pre>
 
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_ExecuteThrows__1.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.ExecuteThrows%60%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L422">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_ExecuteThrows_" data-uid="FastMoq.ScenarioBuilder`1.ExecuteThrows*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_ExecuteThrows__1" data-uid="FastMoq.ScenarioBuilder`1.ExecuteThrows``1">ExecuteThrows&lt;TException&gt;()</h4>
   <div class="markdown level1 summary"><p>Executes the scenario and returns the expected exception.</p>
@@ -330,16 +295,8 @@
 <pre><code class="lang-csharp">var exception = Scenario
     .When(() =&gt; Component.SendRemindersAsync(now, CancellationToken.None))
     .ExecuteThrows&lt;InvalidOperationException&gt;();
+<p>exception.Message.Should().Be(&quot;SMTP unavailable&quot;);</p></code></pre>
 
-exception.Message.Should().Be("SMTP unavailable");</code></pre>
-
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_Then_System_Action_.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.Then(System.Action)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L298">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_Then_" data-uid="FastMoq.ScenarioBuilder`1.Then*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_Then_System_Action_" data-uid="FastMoq.ScenarioBuilder`1.Then(System.Action)">Then(Action)</h4>
   <div class="markdown level1 summary"><p>Adds an assertion step.</p>
@@ -381,13 +338,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_Then_System_Action_FastMoq_Mocker__0__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.Then(System.Action%7BFastMoq.Mocker%2C%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L321">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_Then_" data-uid="FastMoq.ScenarioBuilder`1.Then*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_Then_System_Action_FastMoq_Mocker__0__" data-uid="FastMoq.ScenarioBuilder`1.Then(System.Action{FastMoq.Mocker,`0})">Then(Action&lt;Mocker, T&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an assertion step.</p>
@@ -429,13 +379,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_Then_System_Action__0__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.Then(System.Action%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L345">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_Then_" data-uid="FastMoq.ScenarioBuilder`1.Then*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_Then_System_Action__0__" data-uid="FastMoq.ScenarioBuilder`1.Then(System.Action{`0})">Then(Action&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds a synchronous assertion step using only the component instance.</p>
@@ -477,13 +420,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_Then_System_Func_FastMoq_Mocker__0_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.Then(System.Func%7BFastMoq.Mocker%2C%600%2CSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L335">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_Then_" data-uid="FastMoq.ScenarioBuilder`1.Then*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_Then_System_Func_FastMoq_Mocker__0_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.Then(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})">Then(Func&lt;Mocker, T, Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous assertion step.</p>
@@ -525,13 +461,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_Then_System_Func_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.Then(System.Func%7BSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L311">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_Then_" data-uid="FastMoq.ScenarioBuilder`1.Then*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_Then_System_Func_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.Then(System.Func{System.Threading.Tasks.Task})">Then(Func&lt;Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous assertion step.</p>
@@ -573,13 +502,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_Then_System_Func__0_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.Then(System.Func%7B%600%2CSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L354">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_Then_" data-uid="FastMoq.ScenarioBuilder`1.Then*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_Then_System_Func__0_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.Then(System.Func{`0,System.Threading.Tasks.Task})">Then(Func&lt;T, Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous assertion step using only the component instance.</p>
@@ -621,13 +543,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_VerifyNoOtherCalls__1.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.VerifyNoOtherCalls%60%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L463">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_VerifyNoOtherCalls_" data-uid="FastMoq.ScenarioBuilder`1.VerifyNoOtherCalls*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_VerifyNoOtherCalls__1" data-uid="FastMoq.ScenarioBuilder`1.VerifyNoOtherCalls``1">VerifyNoOtherCalls&lt;TMock&gt;()</h4>
   <div class="markdown level1 summary"><p>Queues a provider-first VerifyNoOtherCalls step to run during scenario execution.</p>
@@ -667,13 +582,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_Verify__1_System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.Verify%60%601(System.Linq.Expressions.Expression%7BSystem.Action%7B%60%600%7D%7D%2CSystem.Nullable%7BFastMoq.Providers.TimesSpec%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L363">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_Verify_" data-uid="FastMoq.ScenarioBuilder`1.Verify*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_Verify__1_System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__" data-uid="FastMoq.ScenarioBuilder`1.Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})">Verify&lt;TMock&gt;(Expression&lt;Action&lt;TMock&gt;&gt;, TimesSpec?)</h4>
   <div class="markdown level1 summary"><p>Queues a provider-first verification step to run during scenario execution.</p>
@@ -735,13 +643,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_When_System_Action_.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.When(System.Action)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L143">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_When_" data-uid="FastMoq.ScenarioBuilder`1.When*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_When_System_Action_" data-uid="FastMoq.ScenarioBuilder`1.When(System.Action)">When(Action)</h4>
   <div class="markdown level1 summary"><p>Adds a synchronous act step.</p>
@@ -783,13 +684,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_When_System_Action_FastMoq_Mocker__0__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.When(System.Action%7BFastMoq.Mocker%2C%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L166">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_When_" data-uid="FastMoq.ScenarioBuilder`1.When*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_When_System_Action_FastMoq_Mocker__0__" data-uid="FastMoq.ScenarioBuilder`1.When(System.Action{FastMoq.Mocker,`0})">When(Action&lt;Mocker, T&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds a synchronous act step.</p>
@@ -831,13 +725,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_When_System_Action__0__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.When(System.Action%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L189">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_When_" data-uid="FastMoq.ScenarioBuilder`1.When*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_When_System_Action__0__" data-uid="FastMoq.ScenarioBuilder`1.When(System.Action{`0})">When(Action&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds a synchronous act step using only the component instance.</p>
@@ -879,13 +766,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_When_System_Func_FastMoq_Mocker__0_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.When(System.Func%7BFastMoq.Mocker%2C%600%2CSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L156">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_When_" data-uid="FastMoq.ScenarioBuilder`1.When*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_When_System_Func_FastMoq_Mocker__0_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.When(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})">When(Func&lt;Mocker, T, Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous act step.</p>
@@ -927,13 +807,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_When_System_Func_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.When(System.Func%7BSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L133">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_When_" data-uid="FastMoq.ScenarioBuilder`1.When*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_When_System_Func_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.When(System.Func{System.Threading.Tasks.Task})">When(Func&lt;Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous act step.</p>
@@ -975,13 +848,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_When_System_Func__0_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.When(System.Func%7B%600%2CSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L180">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_When_" data-uid="FastMoq.ScenarioBuilder`1.When*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_When_System_Func__0_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.When(System.Func{`0,System.Threading.Tasks.Task})">When(Func&lt;T, Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous act step using only the component instance.</p>
@@ -1023,13 +889,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Action_.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.WhenThrows%60%601(System.Action)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L209">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_WhenThrows_" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Action_" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action)">WhenThrows&lt;TException&gt;(Action)</h4>
   <div class="markdown level1 summary"><p>Adds a synchronous act step that is expected to throw the specified exception type.</p>
@@ -1093,13 +952,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
     .Then(() =&gt; auditTrail.Count.Should().Be(1))
     .Execute();</code></pre>
 
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Action_FastMoq_Mocker__0__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.WhenThrows%60%601(System.Action%7BFastMoq.Mocker%2C%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L280">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_WhenThrows_" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Action_FastMoq_Mocker__0__" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action{FastMoq.Mocker,`0})">WhenThrows&lt;TException&gt;(Action&lt;Mocker, T&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds a synchronous act step using the mocker and component instance that is expected to throw the specified exception type.</p>
@@ -1156,13 +1008,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Action__0__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.WhenThrows%60%601(System.Action%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L262">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_WhenThrows_" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Action__0__" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Action{`0})">WhenThrows&lt;TException&gt;(Action&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds a synchronous act step using only the component instance that is expected to throw the specified exception type.</p>
@@ -1219,13 +1064,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Func_FastMoq_Mocker__0_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.WhenThrows%60%601(System.Func%7BFastMoq.Mocker%2C%600%2CSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L289">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_WhenThrows_" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Func_FastMoq_Mocker__0_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})">WhenThrows&lt;TException&gt;(Func&lt;Mocker, T, Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous act step using the mocker and component instance that is expected to throw the specified exception type.</p>
@@ -1282,13 +1120,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Func_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.WhenThrows%60%601(System.Func%7BSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L232">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_WhenThrows_" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Func_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{System.Threading.Tasks.Task})">WhenThrows&lt;TException&gt;(Func&lt;Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous act step that is expected to throw the specified exception type.</p>
@@ -1351,13 +1182,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
     .Then(component =&gt; component.Attempts.Should().Be(1))
     .ExecuteAsync();</code></pre>
 
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Func__0_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.WhenThrows%60%601(System.Func%7B%600%2CSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L271">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_WhenThrows_" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_WhenThrows__1_System_Func__0_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.WhenThrows``1(System.Func{`0,System.Threading.Tasks.Task})">WhenThrows&lt;TException&gt;(Func&lt;T, Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous act step using only the component instance that is expected to throw the specified exception type.</p>
@@ -1414,13 +1238,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_With_System_Action_.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.With(System.Action)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L68">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_With_" data-uid="FastMoq.ScenarioBuilder`1.With*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_With_System_Action_" data-uid="FastMoq.ScenarioBuilder`1.With(System.Action)">With(Action)</h4>
   <div class="markdown level1 summary"><p>Adds an arrangement action executed before any When/Act operations.</p>
@@ -1462,13 +1279,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_With_System_Action_FastMoq_Mocker__0__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.With(System.Action%7BFastMoq.Mocker%2C%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L91">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_With_" data-uid="FastMoq.ScenarioBuilder`1.With*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_With_System_Action_FastMoq_Mocker__0__" data-uid="FastMoq.ScenarioBuilder`1.With(System.Action{FastMoq.Mocker,`0})">With(Action&lt;Mocker, T&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an arrangement action executed before any When/Act operations.</p>
@@ -1510,13 +1320,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_With_System_Action__0__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.With(System.Action%7B%600%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L115">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_With_" data-uid="FastMoq.ScenarioBuilder`1.With*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_With_System_Action__0__" data-uid="FastMoq.ScenarioBuilder`1.With(System.Action{`0})">With(Action&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an arrangement action using only the component instance.</p>
@@ -1558,13 +1361,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_With_System_Func_FastMoq_Mocker__0_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.With(System.Func%7BFastMoq.Mocker%2C%600%2CSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L105">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_With_" data-uid="FastMoq.ScenarioBuilder`1.With*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_With_System_Func_FastMoq_Mocker__0_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.With(System.Func{FastMoq.Mocker,`0,System.Threading.Tasks.Task})">With(Func&lt;Mocker, T, Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous arrangement action executed before any When/Act operations.</p>
@@ -1606,13 +1402,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_With_System_Func_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.With(System.Func%7BSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L81">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_With_" data-uid="FastMoq.ScenarioBuilder`1.With*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_With_System_Func_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.With(System.Func{System.Threading.Tasks.Task})">With(Func&lt;Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous arrangement action executed before any When/Act operations.</p>
@@ -1654,13 +1443,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_With_System_Func__0_System_Threading_Tasks_Task__.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.With(System.Func%7B%600%2CSystem.Threading.Tasks.Task%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L124">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_With_" data-uid="FastMoq.ScenarioBuilder`1.With*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_With_System_Func__0_System_Threading_Tasks_Task__" data-uid="FastMoq.ScenarioBuilder`1.With(System.Func{`0,System.Threading.Tasks.Task})">With(Func&lt;T, Task&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds an asynchronous arrangement action using only the component instance.</p>
@@ -1702,13 +1484,6 @@ exception.Message.Should().Be("SMTP unavailable");</code></pre>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1_With__0_.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601.With(%600)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L59">View Source</a>
-  </span>
   <a id="FastMoq_ScenarioBuilder_1_With_" data-uid="FastMoq.ScenarioBuilder`1.With*"></a>
   <h4 id="FastMoq_ScenarioBuilder_1_With__0_" data-uid="FastMoq.ScenarioBuilder`1.With(`0)">With(T)</h4>
   <div class="markdown level1 summary"><p>Replaces the scenario target instance.
@@ -1800,16 +1575,6 @@ This enables fluent patterns such as <code>Scenario.With(Component)</code>.</p>
 
           <div class="hidden-sm col-md-2" role="complementary">
             <div class="sideaffix">
-              <div class="contribution">
-                <ul class="nav">
-                  <li>
-                    <a href="https://github.com/cwinland/FastMoq/new/IProvider/apiSpec/new?filename=FastMoq_ScenarioBuilder_1.md&amp;value=---%0Auid%3A%20FastMoq.ScenarioBuilder%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/cwinland/FastMoq/blob/IProvider/FastMoq.Core/ScenarioBuilder.cs/#L35" class="contribution-link">View Source</a>
-                  </li>
-                </ul>
-              </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
                 <h5>In this article</h5>
                 <div></div>
@@ -1826,8 +1591,8 @@ This enables fluent patterns such as <code>Scenario.With(Component)</code>.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:17 UTC</span></div>
       
-      <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

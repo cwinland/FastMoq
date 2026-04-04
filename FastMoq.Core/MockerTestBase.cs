@@ -9,27 +9,31 @@ namespace FastMoq
     ///     This class contains the <see cref="Mocks"/> property to create and track all Mocks from creation of the component.
     /// </summary>
     /// <example>
-    ///     Test example of the base class creating the Car class and auto mocking ICarService.
-    ///     Start by creating the test class that inherits <see cref="MockerTestBase{TComponent}"/>. The object that is passed is the concrete class being tested.
-    ///     Use <see cref="Component" /> Property to access the test object.
-    ///     <code>
-    /// <![CDATA[public class CarTest : MockerTestBase<Car> {]]>
-    ///      public void TestCar() {
-    ///          Component.CarService.Should().NotBeNull();
-    ///      }
-    /// </code>
-    /// ICarService is automatically injected into the Car object when created by the base class.
-    /// <code>
-    /// public partial class Car {
-    ///      public Car(ICarService carService) => CarService = carService;
+    /// <para>Example test class using MockerTestBase&lt;Car&gt;.</para>
+    /// <code language="csharp"><![CDATA[
+    /// public class CarTests : MockerTestBase<Car>
+    /// {
+    ///     [Fact]
+    ///     public void TestCar()
+    ///     {
+    ///         Component.CarService.Should().NotBeNull();
+    ///     }
     /// }
-    ///  </code>
-    ///     When needing to set up mocks before the component is created, use the <see cref="get_SetupMocksAction"/> property or the base class constructor.
-    ///     This example shows pre-creating a database context mock before the component is created.
-    ///     <code>
-    /// <![CDATA[protected override Action<Mocker>]]> SetupMocksAction => mocker =>
-    ///     <![CDATA[mocker.GetMockDbContext<ApplicationDbContext>();]]>
-    ///  </code>
+    /// ]]></code>
+    /// <para>ICarService is automatically injected into the Car object when the base class creates the component.</para>
+    /// <code language="csharp"><![CDATA[
+    /// public partial class Car
+    /// {
+    ///     public Car(ICarService carService) => CarService = carService;
+    /// }
+    /// ]]></code>
+    /// <para>To configure mocks before the component is created, override SetupMocksAction.</para>
+    /// <code language="csharp"><![CDATA[
+    /// protected override Action<Mocker> SetupMocksAction => mocker =>
+    /// {
+    ///     mocker.GetMockDbContext<ApplicationDbContext>();
+    /// };
+    /// ]]></code>
     /// </example>
     /// <typeparam name="TComponent">The type of the t component.</typeparam>
     /// <inheritdoc />
@@ -148,17 +152,19 @@ namespace FastMoq
         public static T WaitFor<T>(Func<T> logic, TimeSpan timespan) => WaitFor(logic, timespan, TimeSpan.FromMilliseconds(100));
 
         /// <summary>
-        ///     Sets the <see cref="Component" /> property with a new instance while maintaining the constructor setup and any
-        /// other changes.
+        /// Sets the <see cref="Component" /> property with a new instance while maintaining the constructor setup and any other changes.
         /// </summary>
         /// <example>
-        /// CreateComponent allows creating the component when desired, instead of in the base class constructor.
-        /// <code><![CDATA[
-        /// public void Test() {
+        /// <para>Use CreateComponent when you want to arrange mocks before the component is created.</para>
+        /// <code language="csharp"><![CDATA[
+        /// [Fact]
+        /// public void Test()
+        /// {
         ///     Mocks.GetMock<ICarService>().Setup(x => x.StartCar).Returns(true);
         ///     CreateComponent();
         /// }
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         protected void CreateComponent()
         {
             GetComponent();

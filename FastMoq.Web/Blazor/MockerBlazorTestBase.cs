@@ -20,17 +20,14 @@ using System.Security.Claims;
 namespace FastMoq.Web.Blazor
 {
     /// <summary>
-    ///     Class MockerBlazorTestBase.
-    ///     Implements the <see cref="TestContext" />
-    ///     Implements the <see cref="IMockerBlazorTestHelpers{T}" />
+    /// Base class for bUnit component tests that integrates FastMoq auto-mocking, service setup, and helper methods for Blazor interaction.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The Blazor component under test.</typeparam>
     /// <seealso cref="IMockerBlazorTestHelpers{T}" />
     /// <seealso cref="ComponentBase" />
     /// <inheritdoc cref="TestContext" />
-    /// <inheritdoc cref="IMockerBlazorTestHelpers{T}" />
     /// <example>
-    ///     Basic Example
+    ///     Basic example.
     ///     <code language="cs"><![CDATA[
     /// public class IndexTests : MockerBlazorTestBase<Index>
     /// {
@@ -40,26 +37,26 @@ namespace FastMoq.Web.Blazor
     /// ]]></code>
     /// </example>
     /// <example>
-    ///     Setup Services
+    ///     Configure services.
     ///     <code language="cs"><![CDATA[
     /// protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices => (services, c, m) => services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
     /// ]]></code>
     /// </example>
     /// <example>
-    ///     Setup Roles.
+    ///     Configure roles.
     ///     <code language="cs"><![CDATA[
     /// protected override MockerObservableCollection<string> AuthorizedRoles => new MockerObservableCollection<string>() { "Role1", "Role2"}
     /// ]]></code>
     /// </example>
     /// <example>
-    ///     Setup Http Response Message
+    ///     Configure an HTTP response.
     ///     <code language="cs"><![CDATA[
     /// protected override Action<Mocker> SetupComponent => mocker =>
     /// mocker.SetupHttpMessage(() => new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent("ContextGoesHere")});
     /// ]]></code>
     /// </example>
     /// <example>
-    ///     Setup Mocks
+    ///     Configure mocks.
     ///     <code language="cs"><![CDATA[
     /// protected override Action<Mocker> SetupComponent => mocker =>
     /// {
@@ -70,7 +67,7 @@ namespace FastMoq.Web.Blazor
     /// ]]></code>
     /// </example>
     /// <example>
-    ///     Click Button by class, tag, or id and check the navigation manager for changes.
+    ///     Click a button by selector or element and verify navigation changes.
     ///     <code language="cs"><![CDATA[
     /// NavigationManager.History.Count.Should().Be(0);
     /// 

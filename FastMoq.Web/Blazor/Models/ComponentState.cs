@@ -10,10 +10,9 @@ using IComponent = Microsoft.AspNetCore.Components.IComponent;
 namespace FastMoq.Web.Blazor.Models
 {
     /// <summary>
-    ///     Class ComponentState.
-    ///     Implements the <see cref="FastMoq.Web.Blazor.Models.ComponentState" />
+    /// Typed wrapper around Blazor component render state information.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The component type represented by the state wrapper.</typeparam>
     /// <inheritdoc />
     /// <seealso cref="FastMoq.Web.Blazor.Models.ComponentState" />
     public class ComponentState<T> : ComponentState where T : ComponentBase
@@ -33,7 +32,6 @@ namespace FastMoq.Web.Blazor.Models
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="renderer">The renderer.</param>
-        /// <inheritdoc />
         public ComponentState(object? obj, TestRenderer renderer) : base(obj, renderer) => ComponentType = typeof(T);
     }
 

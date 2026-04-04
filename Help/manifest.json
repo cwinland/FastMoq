@@ -12,6 +12,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "FAQs.md",
+      "output": {
+        ".html": {
+          "relative_path": "FAQs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "FastMoq.TestingExample/README.md",
       "output": {
         ".html": {
@@ -928,7 +938,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>",
-      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.yml\" sourcestartlinenumber=\"1\">Interface IMockerBlazorTestHelpers</p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.yml\" sourcestartlinenumber=\"1\">Helper methods for locating, rendering, and interacting with Blazor components in FastMoq-based bUnit tests.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -956,7 +966,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Web.Blazor.MockerBlazorTestBase<T>",
-      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.yml\" sourcestartlinenumber=\"1\">Class MockerBlazorTestBase.\nImplements the <xref href=\"Bunit.TestContext\" data-throw-if-not-resolved=\"false\"></xref>\nImplements the <xref href=\"FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers%601\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.yml\" sourcestartlinenumber=\"1\">Base class for bUnit component tests that integrates FastMoq auto-mocking, service setup, and helper methods for Blazor interaction.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -970,7 +980,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Web.Blazor.Models.ComponentState<T>",
-      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.Models.ComponentState-1.yml\" sourcestartlinenumber=\"1\">Class ComponentState.\nImplements the <xref href=\"FastMoq.Web.Blazor.Models.ComponentState\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.Models.ComponentState-1.yml\" sourcestartlinenumber=\"1\">Typed wrapper around Blazor component render state information.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1071,6 +1081,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "docs/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "docs/api/index.md",
       "output": {
         ".html": {
@@ -1081,10 +1101,40 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "docs/api/quick-reference.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/api/quick-reference.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "docs/breaking-changes/README.md",
       "output": {
         ".html": {
           "relative_path": "docs/breaking-changes/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/cookbook/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/cookbook/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/feature-parity/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/feature-parity/README.html"
         }
       },
       "version": ""
@@ -1185,6 +1235,19 @@
       "output": {
         ".html": {
           "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
         }
       },
       "version": ""

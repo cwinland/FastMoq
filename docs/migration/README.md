@@ -507,7 +507,7 @@ Use `ExecuteThrows<TException>()` or `ExecuteThrowsAsync<TException>()` when you
 1. Upgrade to v4 and run the suite unchanged.
 2. If legacy Moq-shaped tests fail, select `moq` explicitly for the test assembly.
 3. Audit `Strict` usage and decide whether each case means fail-on-unconfigured only or a full strict preset. Use [Testing Guide: Strict vs Presets](../getting-started/testing-guide.md#strict-vs-presets) when the replacement is unclear.
-4. Replace new `MockOptional` usage with explicit `OptionalParameterResolution`, `InvocationOptions`, or `MockerTestBase<TComponent>` component-construction overrides. See [Obsolete `MockOptional`](#obsolete-mockoptional) and [Testing Guide: Optional parameter resolution](../getting-started/testing-guide.md#optional-parameter-resolution) when the right replacement is unclear.
+4. Replace new `MockOptional` usage with explicit `OptionalParameterResolution`, `InvocationOptions`, or `MockerTestBase<TComponent>` component-construction overrides. See [Obsolete `MockOptional`](#obsolete-mockoptional) and [Testing Guide: Optional constructor and method parameters](../getting-started/testing-guide.md#optional-constructor-and-method-parameters) when the right replacement is unclear.
 5. Stop once the suite is stable unless you are already touching tests for other work.
 
 ### Modernize-while-touched order
