@@ -1,10 +1,16 @@
 using System;
+using System.Linq.Expressions;
 using FastMoq.Providers;
 
 namespace FastMoq
 {
     public partial class Mocker
     {
+        /// <summary>
+        /// Builds a wildcard predicate expression using the active mocking provider.
+        /// </summary>
+        public static Expression<Func<T, bool>> BuildExpression<T>() => MockingProviderRegistry.Default.BuildExpression<T>();
+
         /// <summary>
         /// Creates a new fluent scenario builder for the specified component type using provider-first creation.
         /// </summary>

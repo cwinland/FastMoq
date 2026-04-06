@@ -2,5 +2,8 @@
     "cSpell.words": [
         "Xunit"
     ],
-    "sarif-viewer.connectToGithubCodeScanning": "off"
+    "sarif-viewer.connectToGithubCodeScanning": "off",
+    "chat.tools.terminal.autoApprove": {
+        "Get-Command": true
+    }
 }

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using FastMoq.Extensions;
 using FastMoq.Providers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace FastMoq
@@ -29,7 +30,15 @@ namespace FastMoq
             },
             new KnownTypeRegistration(typeof(HttpContext))
             {
+                DirectInstanceFactory = TryGetBuiltInHttpContext,
+                ManagedInstanceFactory = TryGetBuiltInHttpContext,
                 ConfigureMock = ConfigureBuiltInHttpContextMock,
+            },
+            new KnownTypeRegistration(typeof(ControllerContext))
+            {
+                DirectInstanceFactory = TryGetBuiltInControllerContext,
+                ManagedInstanceFactory = TryGetBuiltInControllerContext,
+                ApplyObjectDefaults = ApplyBuiltInControllerContextDefaults,
             },
             new KnownTypeRegistration(typeof(IHttpContextAccessor))
             {
@@ -162,6 +171,23 @@ namespace FastMoq
                 : null;
         }
 
+        private static object? TryGetBuiltInHttpContext(Mocker mocker, Type type)
+        {
+            if (!type.IsEquivalentTo(typeof(HttpContext)) || mocker.Contains<HttpContext>())
+            {
+                return null;
+            }
+
+            var httpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(),
+            };
+            httpContext.Items = new Dictionary<object, object?>();
+
+            mocker.AddType<HttpContext>(_ => httpContext, replace: true);
+            return httpContext;
+        }
+
         private static object? TryGetBuiltInUri(Mocker mocker, Type type)
         {
             if ((mocker.Policy.EnabledBuiltInTypeResolutions & BuiltInTypeResolutionFlags.Uri) == 0)
@@ -186,6 +212,22 @@ namespace FastMoq
             }
 
             return DatabaseSupportBridge.TryCreateManagedInstance(mocker, requestedType, out instance);
+        }
+
+        private static object? TryGetBuiltInControllerContext(Mocker mocker, Type type)
+        {
+            if (!type.IsEquivalentTo(typeof(ControllerContext)) || mocker.HasTypeRegistration(typeof(ControllerContext)))
+            {
+                return null;
+            }
+
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = mocker.GetObject<HttpContext>() ?? new DefaultHttpContext(),
+            };
+
+            mocker.AddType(controllerContext, replace: true);
+            return controllerContext;
         }
 
         private static void ConfigureBuiltInHttpContextMock(Mocker mocker, Type type, IFastMock mock)
@@ -222,6 +264,14 @@ namespace FastMoq
             if (obj is IHttpContextAccessor accessor && accessor.HttpContext == null)
             {
                 accessor.HttpContext = mocker.GetObject<HttpContext>();
+            }
+        }
+
+        private static void ApplyBuiltInControllerContextDefaults(Mocker mocker, object obj)
+        {
+            if (obj is ControllerContext controllerContext && controllerContext.HttpContext == null)
+            {
+                controllerContext.HttpContext = mocker.GetObject<HttpContext>() ?? new DefaultHttpContext();
             }
         }
 

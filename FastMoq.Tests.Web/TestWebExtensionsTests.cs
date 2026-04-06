@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using FastMoq.Web;
 using FastMoq.Web.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,99 @@ namespace FastMoq.Tests.Web
             principal.Identity.Name.Should().Be("Test User");
             principal.IsInRole("Admin").Should().BeTrue();
             principal.IsInRole("FaasUser").Should().BeTrue();
+            principal.FindFirst(ClaimTypes.Email)!.Value.Should().Be("test.user@microsoft.com");
+            principal.FindFirst(ClaimTypes.NameIdentifier)!.Value.Should().Be("11111111-1111-1111-1111-111111111111");
+        }
+
+        [Fact]
+        public void SetupClaimsPrincipal_ShouldRespectConfiguredOptions()
+        {
+            var mocker = new Mocker();
+            var options = new TestClaimsPrincipalOptions
+            {
+                AuthenticationType = "CustomAuth",
+                Name = "Adele Vance",
+                DisplayName = "Adele Vance",
+                Email = "adele.vance@microsoft.com",
+                PreferredUserName = "adevance@microsoft.com",
+                ObjectId = "22222222-2222-2222-2222-222222222222",
+                TenantId = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+            };
+            options.AdditionalClaims.Add(new Claim("custom", "value"));
+
+            var principal = mocker.SetupClaimsPrincipal(options, "Admin");
+
+            principal.Identity.Should().NotBeNull();
+            principal.Identity!.AuthenticationType.Should().Be("CustomAuth");
+            principal.Identity.Name.Should().Be("Adele Vance");
+            principal.FindFirst(ClaimTypes.Email)!.Value.Should().Be("adele.vance@microsoft.com");
+            principal.FindFirst("preferred_username")!.Value.Should().Be("adevance@microsoft.com");
+            principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")!.Value.Should().Be("22222222-2222-2222-2222-222222222222");
+            principal.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid")!.Value.Should().Be("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
+            principal.FindFirst("custom")!.Value.Should().Be("value");
+        }
+
+        [Fact]
+        public void SetupClaimsPrincipal_WithCustomClaims_ShouldPreserveExistingClaims_AndBackfillCompatibilityDefaults()
+        {
+            var mocker = new Mocker();
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Name, "Custom User"),
+                new Claim(ClaimTypes.Email, "custom.user@microsoft.com"),
+            };
+
+            var principal = mocker.SetupClaimsPrincipal(claims);
+
+            principal.Identity.Should().NotBeNull();
+            principal.Identity!.Name.Should().Be("Custom User");
+            principal.IsInRole("Admin").Should().BeTrue();
+            principal.FindFirst(ClaimTypes.Email)!.Value.Should().Be("custom.user@microsoft.com");
+            principal.FindFirst("preferred_username")!.Value.Should().Be("test.user@microsoft.com");
+            principal.FindFirst(ClaimTypes.NameIdentifier)!.Value.Should().Be("11111111-1111-1111-1111-111111111111");
+        }
+
+        [Fact]
+        public void SetupClaimsPrincipal_WithCustomClaimsAndOptions_ShouldBackfillOnlyMissingValues()
+        {
+            var mocker = new Mocker();
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim("preferred_username", "custom.alias@microsoft.com"),
+            };
+            var options = new TestClaimsPrincipalOptions
+            {
+                Name = "Configured User",
+                Email = "configured.user@microsoft.com",
+            };
+
+            var principal = mocker.SetupClaimsPrincipal(claims, options);
+
+            principal.Identity.Should().NotBeNull();
+            principal.Identity!.Name.Should().Be("Configured User");
+            principal.FindFirst("preferred_username")!.Value.Should().Be("custom.alias@microsoft.com");
+            principal.FindFirst(ClaimTypes.Email)!.Value.Should().Be("configured.user@microsoft.com");
+        }
+
+        [Fact]
+        public void SetupClaimsPrincipal_ShouldAllowDisablingCompatibilityClaims()
+        {
+            var mocker = new Mocker();
+            var options = new TestClaimsPrincipalOptions
+            {
+                IncludeDefaultIdentityClaims = false,
+            };
+            options.AdditionalClaims.Add(new Claim("custom", "value"));
+
+            var principal = mocker.SetupClaimsPrincipal(options, "Admin");
+
+            principal.Identity.Should().NotBeNull();
+            principal.Identity!.Name.Should().BeNull();
+            principal.IsInRole("Admin").Should().BeTrue();
+            principal.FindFirst(ClaimTypes.Email).Should().BeNull();
+            principal.FindFirst("custom")!.Value.Should().Be("value");
         }
 
         [Fact]
@@ -53,6 +147,45 @@ namespace FastMoq.Tests.Web
         }
 
         [Fact]
+        public void CreateControllerContext_WithClaims_ShouldAvoidSeparateUserAssignment()
+        {
+            var mocker = new Mocker();
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Name, "jdoe@microsoft.com"),
+            };
+
+            var controllerContext = mocker.CreateControllerContext(claims);
+
+            controllerContext.HttpContext.Should().NotBeNull();
+            controllerContext.HttpContext.User.Identity.Should().NotBeNull();
+            controllerContext.HttpContext.User.Identity!.Name.Should().Be("jdoe@microsoft.com");
+            controllerContext.HttpContext.User.IsInRole("Admin").Should().BeTrue();
+        }
+
+        [Fact]
+        public void GetObject_ControllerContext_ShouldShareTrackedHttpContext()
+        {
+            var mocker = new Mocker();
+            var controllerContext = mocker.GetObject<ControllerContext>();
+            var secondControllerContext = mocker.GetObject<ControllerContext>();
+            var httpContext = mocker.GetObject<HttpContext>();
+            var principal = mocker.SetupClaimsPrincipal("Admin");
+
+            controllerContext.Should().NotBeNull();
+            secondControllerContext.Should().NotBeNull();
+            controllerContext!.HttpContext.Should().NotBeNull();
+            secondControllerContext.Should().BeSameAs(controllerContext);
+            controllerContext.HttpContext.Should().BeSameAs(httpContext);
+
+            controllerContext.HttpContext.User = principal;
+
+            secondControllerContext!.HttpContext.User.Should().BeSameAs(principal);
+            mocker.GetObject<HttpContext>()!.User.Should().BeSameAs(principal);
+        }
+
+        [Fact]
         public void CreateHttpContext_ShouldStampClaimsPrincipal_OnHttpContext()
         {
             var mocker = new Mocker();
@@ -64,6 +197,41 @@ namespace FastMoq.Tests.Web
             httpContext.User.Identity.Name.Should().Be("Test User");
             httpContext.User.IsInRole("Admin").Should().BeTrue();
             httpContext.User.IsInRole("Support").Should().BeTrue();
+            httpContext.User.FindFirst(ClaimTypes.Email)!.Value.Should().Be("test.user@microsoft.com");
+        }
+
+        [Fact]
+        public void CreateHttpContext_ShouldUseConfiguredPrincipalOptions()
+        {
+            var mocker = new Mocker();
+            var options = new TestClaimsPrincipalOptions
+            {
+                Name = "Configured User",
+                Email = "configured.user@microsoft.com",
+            };
+
+            var httpContext = mocker.CreateHttpContext(options, "Admin");
+
+            httpContext.User.Identity.Should().NotBeNull();
+            httpContext.User.Identity!.Name.Should().Be("Configured User");
+            httpContext.User.FindFirst(ClaimTypes.Email)!.Value.Should().Be("configured.user@microsoft.com");
+        }
+
+        [Fact]
+        public void CreateHttpContext_WithClaims_ShouldAvoidSeparateUserAssignment()
+        {
+            var mocker = new Mocker();
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Name, "jdoe@microsoft.com"),
+            };
+
+            var httpContext = mocker.CreateHttpContext(claims);
+
+            httpContext.User.Identity.Should().NotBeNull();
+            httpContext.User.Identity!.Name.Should().Be("jdoe@microsoft.com");
+            httpContext.User.IsInRole("Admin").Should().BeTrue();
         }
 
         [Fact]

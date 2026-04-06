@@ -11,6 +11,8 @@ namespace FastMoq.Providers
     {
         IMockingProviderCapabilities Capabilities { get; }
 
+        Expression<Func<T, bool>> BuildExpression<T>();
+
         IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class;
         IFastMock CreateMock(Type type, MockCreationOptions? options = null);
 

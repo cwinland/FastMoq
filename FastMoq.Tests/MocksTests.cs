@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
@@ -1142,6 +1143,17 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetArgData_ShouldPreferNonPublicConstructorUnlessPublicOnlyIsRequested()
+        {
+            var defaultArgs = Component.GetArgData<NonPublicArgDataPreferenceType>();
+            defaultArgs.Should().HaveCount(1);
+            defaultArgs[0].Should().BeNull();
+
+            var publicOnlyArgs = Component.GetArgData<NonPublicArgDataPreferenceType>(InstanceCreationFlags.PublicConstructorsOnly);
+            publicOnlyArgs.Should().BeEmpty();
+        }
+
+        [Fact]
         public void CreateInstanceByTypedParameterMap_ShouldRespectExplicitOptionalParameterResolution()
         {
             Component.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
@@ -1865,6 +1877,20 @@ namespace FastMoq.Tests
         internal ILogger? Logger { get; }
 
         internal IFileSystem? FileSystem { get; }
+    }
+
+    internal sealed class NonPublicArgDataPreferenceType
+    {
+        public NonPublicArgDataPreferenceType()
+        {
+        }
+
+        internal NonPublicArgDataPreferenceType(JsonSerializerContext? serializerContext)
+        {
+            SerializerContext = serializerContext;
+        }
+
+        internal JsonSerializerContext? SerializerContext { get; }
     }
 
     internal sealed class OptionalInvokeTarget

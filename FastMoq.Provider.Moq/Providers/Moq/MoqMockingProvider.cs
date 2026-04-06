@@ -23,6 +23,12 @@ namespace FastMoq.Providers.MoqProvider
         public bool SupportsInvocationTracking => true;
         public bool SupportsLoggerCapture => true;
 
+        public Expression<Func<T, bool>> BuildExpression<T>()
+        {
+            MoqProviderTransitionWarning.EmitOnce();
+            return It.IsAny<Expression<Func<T, bool>>>();
+        }
+
         public IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class
         {
             MoqProviderTransitionWarning.EmitOnce();

@@ -628,6 +628,11 @@ namespace FastMoq
             ArgumentNullException.ThrowIfNull(serviceKey);
 
             type = CleanType(type);
+            if (ShouldFallbackToUnkeyedResolution(type, serviceKey))
+            {
+                return GetObject(type, initAction);
+            }
+
             var m = GetKeyedTypeModel(type, serviceKey);
             if (m.CreateFunc != null)
             {
@@ -644,6 +649,14 @@ namespace FastMoq
             var def = type.GetDefaultValue();
             initAction?.Invoke(def);
             return def;
+        }
+
+        private bool ShouldFallbackToUnkeyedResolution(Type type, object serviceKey)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            return !HasKeyedTypeModel(type, serviceKey) && !Contains(type, serviceKey);
         }
 
         private object? ResolveTrackedMockObject(Type type, Action<object?>? initAction, object? serviceKey = null)
@@ -1814,10 +1827,31 @@ namespace FastMoq
         internal object?[] GetArgData<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution) where T : class
         {
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
-            var constructor = FindPreferredConstructor(type.InstanceType, false, ShouldFallbackToNonPublicConstructors(publicOnly), optionalParameterResolution);
+            var flags = publicOnly == true
+                ? BindingFlags.Instance | BindingFlags.Public
+                : BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            var constructors = type.InstanceType.GetConstructors(flags)
+                .Where(c => c.GetParameters().All(p => p.ParameterType != type.InstanceType))
+                .Select(ci => new ConstructorModel(ci, new object?[ci.GetParameters().Length]))
+                .ToList();
+            var constructor = SelectPreferredConstructor(type.InstanceType, constructors)
+                ?? throw new NotImplementedException("Unable to find the constructor.");
+
             return constructor.ConstructorInfo == null
                 ? Array.Empty<object?>()
-                : constructor.ConstructorInfo.GetParameters().Select(p => ResolveParameter(p, optionalParameterResolution)).ToArray();
+                : constructor.ConstructorInfo.GetParameters().Select(p => ResolveParameterForArgData(p, optionalParameterResolution)).ToArray();
+        }
+
+        private object? ResolveParameterForArgData(ParameterInfo parameter, OptionalParameterResolutionMode optionalParameterResolution)
+        {
+            try
+            {
+                return ResolveParameter(parameter, optionalParameterResolution);
+            }
+            catch
+            {
+                return parameter.ParameterType.GetDefaultValue();
+            }
         }
 
         private object?[] BuildInvocationArgs(ParameterInfo[] parameters, InvocationOptions? options, object?[] provided)

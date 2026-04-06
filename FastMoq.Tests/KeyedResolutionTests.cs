@@ -57,6 +57,31 @@ namespace FastMoq.Tests
             instance.DefaultHttpClient.Should().BeSameAs(mocker.HttpClient);
             instance.DefaultUri.Should().BeSameAs(mocker.Uri);
         }
+
+        [Fact]
+        public void CreateInstance_ShouldFallbackToUnkeyedTrackedMock_WhenKeyedDependencyIsNotRegistered()
+        {
+            var mocker = new Mocker();
+            var unkeyedMock = mocker.GetOrCreateMock<IKeyedDependency>();
+
+            var instance = mocker.CreateInstance<KeyedFallbackConsumer>();
+
+            instance.Should().NotBeNull();
+            instance!.Dependency.Should().BeSameAs(unkeyedMock.Instance);
+        }
+
+        [Fact]
+        public void GetKeyedObject_ShouldFallbackToUnkeyedRegistration_WhenKeyedRegistrationIsMissing()
+        {
+            var mocker = new Mocker();
+            var expected = new Uri("http://fallback.fastmoq/");
+
+            mocker.AddType<Uri>(_ => expected, replace: true);
+
+            var resolved = mocker.GetKeyedObject<Uri>("missing");
+
+            resolved.Should().BeSameAs(expected);
+        }
     }
 
     public interface IKeyedDependency
@@ -75,5 +100,10 @@ namespace FastMoq.Tests
         public IKeyedDependency Dependency { get; } = dependency;
         public HttpClient DefaultHttpClient { get; } = defaultHttpClient;
         public Uri DefaultUri { get; } = defaultUri;
+    }
+
+    public class KeyedFallbackConsumer([FromKeyedServices("dep")] IKeyedDependency dependency)
+    {
+        public IKeyedDependency Dependency { get; } = dependency;
     }
 }

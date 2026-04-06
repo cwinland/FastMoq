@@ -27,6 +27,11 @@ namespace FastMoq.Providers.ReflectionProvider
         public bool SupportsInvocationTracking => true;
         public bool SupportsLoggerCapture => false;
 
+        public Expression<Func<T, bool>> BuildExpression<T>()
+        {
+            return _ => true;
+        }
+
         // Target instance -> invocation records
         private static readonly ConcurrentDictionary<object, List<InvocationRecord>> _invocations = new();
 

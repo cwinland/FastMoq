@@ -10,18 +10,72 @@ namespace FastMoq.Web.Extensions
     /// </summary>
     public static class TestWebExtensions
     {
+        private const string PreferredUserNameClaimType = "preferred_username";
+        private const string DisplayNameClaimType = "name";
+        private const string ObjectIdentifierClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
+        private const string TenantIdClaimType = "http://schemas.microsoft.com/identity/claims/tenantid";
+
         /// <summary>
-        /// Creates an authenticated <see cref="ClaimsPrincipal"/> with role claims and a default name claim.
+        /// Creates an authenticated <see cref="ClaimsPrincipal"/> with compatibility-focused default claims.
         /// </summary>
         public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, params string[] roleNames)
         {
+            return _.SetupClaimsPrincipal(new TestClaimsPrincipalOptions(), roleNames);
+        }
+
+        /// <summary>
+        /// Creates an authenticated <see cref="ClaimsPrincipal"/> by combining custom claims with compatibility defaults.
+        /// Existing custom claim types are preserved.
+        /// </summary>
+        public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, IEnumerable<Claim> claims)
+        {
+            return _.SetupClaimsPrincipal(claims, new TestClaimsPrincipalOptions());
+        }
+
+        /// <summary>
+        /// Creates an authenticated <see cref="ClaimsPrincipal"/> by combining custom claims with compatibility defaults.
+        /// Existing custom claim types are preserved.
+        /// </summary>
+        public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, IEnumerable<Claim> claims, TestClaimsPrincipalOptions principalOptions)
+        {
+            ArgumentNullException.ThrowIfNull(_);
+            ArgumentNullException.ThrowIfNull(claims);
+            ArgumentNullException.ThrowIfNull(principalOptions);
+
+            var mergedClaims = claims.ToList();
+            if (principalOptions.IncludeDefaultIdentityClaims)
+            {
+                AddClaimIfMissing(mergedClaims, ClaimTypes.Name, principalOptions.Name);
+                AddClaimIfMissing(mergedClaims, DisplayNameClaimType, principalOptions.DisplayName ?? principalOptions.Name);
+                AddClaimIfMissing(mergedClaims, ClaimTypes.Email, principalOptions.Email);
+                AddClaimIfMissing(mergedClaims, PreferredUserNameClaimType, principalOptions.PreferredUserName ?? principalOptions.Email);
+                AddClaimIfMissing(mergedClaims, ClaimTypes.Upn, principalOptions.PreferredUserName ?? principalOptions.Email);
+                AddClaimIfMissing(mergedClaims, ClaimTypes.NameIdentifier, principalOptions.ObjectId ?? principalOptions.Email);
+                AddClaimIfMissing(mergedClaims, ObjectIdentifierClaimType, principalOptions.ObjectId);
+                AddClaimIfMissing(mergedClaims, TenantIdClaimType, principalOptions.TenantId);
+            }
+
+            foreach (var claim in principalOptions.AdditionalClaims)
+            {
+                mergedClaims.Add(claim);
+            }
+
+            var identity = new ClaimsIdentity(mergedClaims, principalOptions.AuthenticationType, ClaimTypes.Name, ClaimTypes.Role);
+            return new ClaimsPrincipal(identity);
+        }
+
+        /// <summary>
+        /// Creates an authenticated <see cref="ClaimsPrincipal"/> using the provided identity options and roles.
+        /// </summary>
+        public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, TestClaimsPrincipalOptions principalOptions, params string[] roleNames)
+        {
+            ArgumentNullException.ThrowIfNull(_);
+            ArgumentNullException.ThrowIfNull(principalOptions);
+
             var claims = roleNames
                 .Select(roleName => new Claim(ClaimTypes.Role, roleName))
-                .Append(new Claim(ClaimTypes.Name, "Test User"))
                 .ToList();
-
-            var identity = new ClaimsIdentity(claims, "TestAuth");
-            return new ClaimsPrincipal(identity);
+            return _.SetupClaimsPrincipal(claims, principalOptions);
         }
 
         /// <summary>
@@ -29,13 +83,54 @@ namespace FastMoq.Web.Extensions
         /// </summary>
         public static ControllerContext CreateControllerContext(this Mocker mocker, params string[] roleNames)
         {
+            return mocker.CreateControllerContext(new TestClaimsPrincipalOptions(), roleNames);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ControllerContext"/> with a principal composed from the supplied claims and compatibility defaults.
+        /// </summary>
+        public static ControllerContext CreateControllerContext(this Mocker mocker, IEnumerable<Claim> claims)
+        {
+            return mocker.CreateControllerContext(mocker.SetupClaimsPrincipal(claims));
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ControllerContext"/> with a principal composed from the supplied claims and compatibility defaults.
+        /// </summary>
+        public static ControllerContext CreateControllerContext(this Mocker mocker, IEnumerable<Claim> claims, TestClaimsPrincipalOptions principalOptions)
+        {
+            return mocker.CreateControllerContext(mocker.SetupClaimsPrincipal(claims, principalOptions));
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ControllerContext"/> from an existing principal.
+        /// </summary>
+        public static ControllerContext CreateControllerContext(this Mocker mocker, ClaimsPrincipal principal)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(principal);
+
+            return new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = principal,
+                },
+            };
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ControllerContext"/> with an authenticated test user using the provided identity options.
+        /// </summary>
+        public static ControllerContext CreateControllerContext(this Mocker mocker, TestClaimsPrincipalOptions principalOptions, params string[] roleNames)
+        {
             ArgumentNullException.ThrowIfNull(mocker);
 
             return new ControllerContext
             {
                 HttpContext = new DefaultHttpContext
                 {
-                    User = mocker.SetupClaimsPrincipal(roleNames),
+                    User = mocker.SetupClaimsPrincipal(principalOptions, roleNames),
                 },
             };
         }
@@ -59,11 +154,49 @@ namespace FastMoq.Web.Extensions
         /// </summary>
         public static HttpContext CreateHttpContext(this Mocker mocker, params string[] roleNames)
         {
+            return mocker.CreateHttpContext(new TestClaimsPrincipalOptions(), roleNames);
+        }
+
+        /// <summary>
+        /// Creates an <see cref="HttpContext"/> with a principal composed from the supplied claims and compatibility defaults.
+        /// </summary>
+        public static HttpContext CreateHttpContext(this Mocker mocker, IEnumerable<Claim> claims)
+        {
+            return mocker.CreateHttpContext(mocker.SetupClaimsPrincipal(claims));
+        }
+
+        /// <summary>
+        /// Creates an <see cref="HttpContext"/> with a principal composed from the supplied claims and compatibility defaults.
+        /// </summary>
+        public static HttpContext CreateHttpContext(this Mocker mocker, IEnumerable<Claim> claims, TestClaimsPrincipalOptions principalOptions)
+        {
+            return mocker.CreateHttpContext(mocker.SetupClaimsPrincipal(claims, principalOptions));
+        }
+
+        /// <summary>
+        /// Creates an <see cref="HttpContext"/> from an existing principal.
+        /// </summary>
+        public static HttpContext CreateHttpContext(this Mocker mocker, ClaimsPrincipal principal)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(principal);
+
+            return new DefaultHttpContext
+            {
+                User = principal,
+            };
+        }
+
+        /// <summary>
+        /// Creates an <see cref="HttpContext"/> with an authenticated test user using the provided identity options.
+        /// </summary>
+        public static HttpContext CreateHttpContext(this Mocker mocker, TestClaimsPrincipalOptions principalOptions, params string[] roleNames)
+        {
             ArgumentNullException.ThrowIfNull(mocker);
 
             return new DefaultHttpContext
             {
-                User = mocker.SetupClaimsPrincipal(roleNames),
+                User = mocker.SetupClaimsPrincipal(principalOptions, roleNames),
             };
         }
 
@@ -261,6 +394,30 @@ namespace FastMoq.Web.Extensions
         {
             return result as NoContentResult
                 ?? throw new InvalidOperationException($"Expected {nameof(NoContentResult)} but received {result.GetType().Name}.");
+        }
+
+        private static void AddClaimIfValue(ICollection<Claim> claims, string claimType, string? value)
+        {
+            ArgumentNullException.ThrowIfNull(claims);
+            ArgumentException.ThrowIfNullOrWhiteSpace(claimType);
+
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                claims.Add(new Claim(claimType, value));
+            }
+        }
+
+        private static void AddClaimIfMissing(ICollection<Claim> claims, string claimType, string? value)
+        {
+            ArgumentNullException.ThrowIfNull(claims);
+            ArgumentException.ThrowIfNullOrWhiteSpace(claimType);
+
+            if (claims.Any(claim => string.Equals(claim.Type, claimType, StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+
+            AddClaimIfValue(claims, claimType, value);
         }
     }
 }

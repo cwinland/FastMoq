@@ -27,6 +27,11 @@ namespace FastMoq.Providers.NSubstituteProvider
         public bool SupportsInvocationTracking => true;
         public bool SupportsLoggerCapture => true;
 
+        public Expression<Func<T, bool>> BuildExpression<T>()
+        {
+            return _ => true;
+        }
+
         public IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class
         {
             options ??= new();

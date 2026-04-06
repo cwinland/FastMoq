@@ -1,5 +1,6 @@
 using System;
 using System.IO.Abstractions;
+using System.Linq.Expressions;
 using System.Net.Http;
 using FastMoq.Extensions;
 using FastMoq.Providers;
@@ -262,6 +263,49 @@ namespace FastMoq.Tests
 
         [Theory]
         [MemberData(nameof(ProviderNames))]
+        public void CreateInstance_ShouldFallbackToUnkeyedTrackedMock_WhenKeyedDependencyIsNotRegistered(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var unkeyedDependency = mocker.GetOrCreateMock<IProviderDependency>();
+
+            var instance = mocker.CreateInstance<KeyedProviderFallbackConsumer>();
+
+            instance.Should().NotBeNull();
+            instance!.Dependency.Should().BeSameAs(unkeyedDependency.Instance);
+        }
+
+        [Fact]
+        public void BuildExpression_ShouldUseMoqWildcardMatcher_WhenMoqIsActive()
+        {
+            using var providerScope = PushProvider("moq");
+            var mocker = new Mocker();
+            var dependency = mocker.GetMock<IExpressionConsumer>();
+
+            dependency
+                .Setup(x => x.Match(Mocker.BuildExpression<string>()))
+                .Returns(true);
+
+            var matched = dependency.Object.Match(value => value == "alpha");
+
+            matched.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void BuildExpression_ShouldReturnProviderSafePredicate_ForNonMoqProviders(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+
+            var expression = Mocker.BuildExpression<string>();
+
+            expression.Should().NotBeNull();
+            expression.Compile().Invoke("alpha").Should().BeTrue();
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
         public void GetObject_ShouldPreferKnownTypeOverride_ForSelectedProvider(string providerName)
         {
             using var providerScope = PushProvider(providerName);
@@ -388,6 +432,16 @@ namespace FastMoq.Tests
             public Uri PrimaryUri { get; } = primaryUri;
             public IProviderDependency Dependency { get; } = dependency;
             public HttpClient DefaultHttpClient { get; } = defaultHttpClient;
+        }
+
+        public class KeyedProviderFallbackConsumer([FromKeyedServices("dep")] IProviderDependency dependency)
+        {
+            public IProviderDependency Dependency { get; } = dependency;
+        }
+
+        public interface IExpressionConsumer
+        {
+            bool Match(Expression<Func<string, bool>> predicate);
         }
 
         public class ProviderDbContext(DbContextOptions<ProviderDbContext> options) : DbContext(options)
