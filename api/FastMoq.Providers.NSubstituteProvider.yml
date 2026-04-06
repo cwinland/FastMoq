@@ -4,6 +4,7 @@ items:
   commentId: N:FastMoq.Providers.NSubstituteProvider
   id: FastMoq.Providers.NSubstituteProvider
   children:
+  - FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions
   - FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
   langs:
   - csharp
@@ -15,6 +16,13 @@ items:
   assemblies:
   - FastMoq.Provider.NSubstitute
 references:
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions
+  commentId: T:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions
+  parent: FastMoq.Providers.NSubstituteProvider
+  href: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html
+  name: IFastMockNSubstituteExtensions
+  nameWithType: IFastMockNSubstituteExtensions
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions
 - uid: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
   commentId: T:FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
   parent: FastMoq.Providers.NSubstituteProvider

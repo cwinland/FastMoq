@@ -18,6 +18,7 @@ namespace FastMoq
             new KnownTypeRegistration(typeof(IFileSystem))
             {
                 DirectInstanceFactory = TryGetBuiltInFileSystem,
+                ManagedInstanceFactory = TryGetBuiltInFileSystem,
                 ConfigureMock = ConfigureBuiltInFileSystemMock,
             },
             new KnownTypeRegistration(typeof(HttpClient))
@@ -43,6 +44,8 @@ namespace FastMoq
             new KnownTypeRegistration(typeof(IHttpContextAccessor))
             {
                 IncludeDerivedTypes = true,
+                DirectInstanceFactory = TryGetBuiltInHttpContextAccessor,
+                ManagedInstanceFactory = TryGetBuiltInHttpContextAccessor,
                 ConfigureMock = ConfigureBuiltInHttpContextAccessorMock,
                 ApplyObjectDefaults = ApplyBuiltInHttpContextAccessorDefaults,
             },
@@ -201,6 +204,22 @@ namespace FastMoq
             }
 
             return mocker.Uri;
+        }
+
+        private static object? TryGetBuiltInHttpContextAccessor(Mocker mocker, Type type)
+        {
+            if (!typeof(IHttpContextAccessor).IsAssignableFrom(type) || mocker.Contains<IHttpContextAccessor>())
+            {
+                return null;
+            }
+
+            var accessor = new HttpContextAccessor
+            {
+                HttpContext = mocker.GetObject<HttpContext>() ?? new DefaultHttpContext(),
+            };
+
+            mocker.AddType<IHttpContextAccessor>(accessor, replace: true);
+            return accessor;
         }
 
         private static bool TryGetBuiltInDbContext(Mocker mocker, Type requestedType, out object? instance)

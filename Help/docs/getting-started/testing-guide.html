@@ -77,7 +77,7 @@
 <p>Use these rules first:</p>
 <ol>
 <li>Use <code>MockerTestBase&lt;TComponent&gt;</code> when you want FastMoq to create the component under test and manage its dependencies.</li>
-<li>Use <code>Mocks.GetMock&lt;T&gt;()</code> when you want the normal FastMoq auto-mock path for a dependency.</li>
+<li>Use <code>Mocks.GetOrCreateMock&lt;T&gt;()</code> when you want the normal FastMoq tracked mock path for a dependency.</li>
 <li>Use <code>AddType(...)</code> when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.</li>
 <li>Use <code>AddKnownType(...)</code> when a framework-style type needs special resolution or post-processing behavior.</li>
 <li>Use <code>GetMockDbContext&lt;TContext&gt;()</code> when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.</li>
@@ -90,15 +90,15 @@
 <li>Auto-mock / auto-create: default mock creation and constructor injection when no explicit mapping exists.</li>
 </ol>
 <p>That distinction matters because the API choice communicates intent.</p>
-<h2 id="getmockt-vs-addtype"><code>GetMock&lt;T&gt;()</code> vs <code>AddType(...)</code></h2>
+<h2 id="getorcreatemockt-vs-addtype"><code>GetOrCreateMock&lt;T&gt;()</code> vs <code>AddType(...)</code></h2>
 <p>These are not interchangeable.</p>
-<h3 id="use-getmockt-when">Use <code>GetMock&lt;T&gt;()</code> when</h3>
+<h3 id="use-getorcreatemockt-when">Use <code>GetOrCreateMock&lt;T&gt;()</code> when</h3>
 <ul>
 <li>You want the dependency to stay on the default auto-mock path.</li>
 <li>You only need to arrange or verify behavior.</li>
 <li>You want the dependency tracked as the mock FastMoq would have created anyway.</li>
 </ul>
-<pre><code class="lang-csharp">var repoMock = Mocks.GetMock&lt;IOrderRepository&gt;();
+<pre><code class="lang-csharp">var repoMock = Mocks.GetOrCreateMock&lt;IOrderRepository&gt;();
 repoMock.Setup(x =&gt; x.Load(123)).Returns(order);
 </code></pre>
 <h3 id="when-addtype-is-the-right-tool">When <code>AddType(...)</code> is the right tool</h3>
@@ -111,7 +111,7 @@ repoMock.Setup(x =&gt; x.Load(123)).Returns(order);
 <pre><code class="lang-csharp">Mocks.AddType&lt;IClock&gt;(_ =&gt; new FakeClock(DateTimeOffset.Parse(&quot;2026-04-01T12:00:00Z&quot;)));
 </code></pre>
 <h3 id="practical-rule">Practical rule</h3>
-<p>If the dependency is still conceptually a mock, prefer <code>GetMock&lt;T&gt;()</code>. If you are changing how the type is resolved, prefer <code>AddType(...)</code>.</p>
+<p>If the dependency is still conceptually a mock, prefer <code>GetOrCreateMock&lt;T&gt;()</code>. If you are changing how the type is resolved, prefer <code>AddType(...)</code>.</p>
 <h2 id="construction-apis">Construction APIs</h2>
 <p>FastMoq still supports the older entry points:</p>
 <ul>
@@ -206,7 +206,7 @@ var component = Mocks.CreateInstance&lt;MyComponent&gt;();
 fileSystem.File.WriteAllText(&quot;/tmp/test.txt&quot;, &quot;hello&quot;);
 </code></pre>
 <p>If you want mock arrangement and verification instead, stay on the mock path:</p>
-<pre><code class="lang-csharp">Mocks.GetMock&lt;IFileSystem&gt;()
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IFileSystem&gt;()
     .Setup(x =&gt; x.File.Exists(&quot;orders.json&quot;))
     .Returns(true);
 </code></pre>
@@ -266,7 +266,7 @@ public class OrdersControllerTests : MockerTestBase&lt;OrdersController&gt;
         var requestContext = Mocks.GetObject&lt;HttpContext&gt;();
         Component.ControllerContext = Mocks.CreateControllerContext(requestContext);
 
-        Mocks.GetMock&lt;IOrderService&gt;()
+        Mocks.GetOrCreateMock&lt;IOrderService&gt;()
             .Setup(x =&gt; x.GetOrdersAsync(true, It.IsAny&lt;CancellationToken&gt;()))
             .ReturnsAsync([new OrderDto { Id = 42 }]);
 
@@ -363,8 +363,8 @@ public class RequestContextReaderTests : MockerTestBase&lt;RequestContextReader&
 <pre><code class="lang-csharp">Mocks.AddKnownType&lt;HttpContext&gt;(
     configureMock: (_, _, fastMock) =&gt;
     {
-        var nativeMock = (Mock&lt;HttpContext&gt;)fastMock.NativeMock;
-        nativeMock.Setup(x =&gt; x.TraceIdentifier).Returns(&quot;trace-123&quot;);
+        var moqMock = fastMock.AsMoq();
+        moqMock.Setup(x =&gt; x.TraceIdentifier).Returns(&quot;trace-123&quot;);
     });
 </code></pre>
 <p>These are <code>AddKnownType(...)</code> examples because:</p>
@@ -408,10 +408,17 @@ Mocks.AddKnownType&lt;IFileSystem&gt;(
 <li>Use the provider-native object only when you genuinely need library-specific arrangement behavior.</li>
 <li>Assume Moq compatibility is currently strongest, but new extension points should avoid hard-coding Moq assumptions unless the scenario is explicitly Moq-only.</li>
 </ol>
-<p>If you need the underlying provider object for a tracked mock, use <code>GetNativeMock(...)</code> or <code>MockModel.NativeMock</code>.</p>
+<p><code>ScenarioBuilder</code> still works with each registered provider because it only orchestrates arrange, act, and assert steps and forwards provider-first verification through <code>Mocker.Verify(...)</code>. The provider-specific part is still the arrangement code you put inside <code>With(...)</code> or <code>When(...)</code>.</p>
+<p><code>VerifyLogged(...)</code> now follows the same default expectation model as provider-first verification: if you do not specify a count, it means at least once. Use <code>TimesSpec</code> when you need <code>Exactly</code>, <code>AtLeast</code>, <code>AtMost</code>, or <code>Never</code> semantics for captured log entries.</p>
+<p>If you need provider-specific behavior for a tracked mock, prefer the typed provider-package extensions first, such as <code>AsMoq()</code> or <code>AsNSubstitute()</code>.</p>
+<p>Use <code>GetNativeMock(...)</code> or <code>MockModel.NativeMock</code> only when you truly need the raw provider object beyond those typed helpers.</p>
 <p>You can also retrieve the provider-first abstraction directly:</p>
 <pre><code class="lang-csharp">var fastMock = Mocks.GetOrCreateMock&lt;IOrderRepository&gt;();
-var providerObject = fastMock.NativeMock;
+var moqMock = fastMock.AsMoq();
+</code></pre>
+<p>For NSubstitute-backed tests:</p>
+<pre><code class="lang-csharp">var fastMock = Mocks.GetOrCreateMock&lt;IOrderRepository&gt;();
+fastMock.AsNSubstitute().Load(123).Returns(order);
 </code></pre>
 <h2 id="strict-vs-presets"><code>Strict</code> vs Presets</h2>
 <p><code>Strict</code> is now best understood as a compatibility alias for <code>MockFeatures.FailOnUnconfigured</code>.</p>
@@ -452,14 +459,14 @@ Mocks.UseLenientPreset();
 <p>For most tests in this repo, this order is the least surprising:</p>
 <ol>
 <li>Register explicit type overrides with <code>AddType(...)</code> only when needed.</li>
-<li>Configure default mocks with <code>GetMock&lt;T&gt;()</code>.</li>
+<li>Configure default mocks with <code>GetOrCreateMock&lt;T&gt;()</code>.</li>
 <li>Use known-type helpers for <code>DbContext</code>, <code>HttpClient</code>, <code>IFileSystem</code>, and web abstractions.</li>
 <li>Create the component through <code>MockerTestBase&lt;T&gt;</code> or <code>CreateInstance(...)</code>.</li>
 <li>Assert behavior and verify the dependency interactions you actually care about.</li>
 </ol>
 <h2 id="pitfalls-to-avoid">Pitfalls to Avoid</h2>
 <ul>
-<li>Do not use <code>AddType(...)</code> as a general replacement for <code>GetMock&lt;T&gt;()</code>.</li>
+<li>Do not use <code>AddType(...)</code> as a general replacement for <code>GetOrCreateMock&lt;T&gt;()</code>.</li>
 <li>Do not bypass <code>GetMockDbContext&lt;TContext&gt;()</code> unless FastMoq's EF Core support is the thing you are explicitly testing around.</li>
 <li>Do not assume <code>CreateInstanceByType(...)</code> alone is the best API for new code. Use <code>InstanceCreationFlags</code> when you need to express constructor-selection intent explicitly.</li>
 <li>Do not make known-type extensions global. Keep them scoped to the <code>Mocker</code> used by the test.</li>
@@ -492,7 +499,7 @@ Mocks.UseLenientPreset();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

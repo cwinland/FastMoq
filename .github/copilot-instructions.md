@@ -43,10 +43,15 @@ When generating code:
    - Example: Use `using System.Runtime;` then reference `AmbiguousImplementationException` instead of `System.Runtime.AmbiguousImplementationException`.
    - Keep using statements organized and remove unused ones.
 6. **Document new APIs**  
-   - Add XML doc comments for public methods.
+    - Add XML doc comments for all public and protected members you touch, including obsolete compatibility APIs that still appear in the public surface.
+    - When doing a documentation cleanup pass, finish by re-checking the touched file for any remaining undocumented public/protected members instead of assuming the patch caught them all.
    - Include usage examples in Milestone docs.
 7. **Static Analysis (Sonar) Compliance**  
    - Honor the rules in the "Static Analysis Rules" section below (S121, S122, S6608) when generating or refactoring code.
+8. **Keep edits and updates task-bound**
+    - Progress updates must stay grounded in the current task, files, and findings. Do not insert speculative filler, unrelated examples, or generic brainstorming text.
+    - When a patch is too broad, split it into smaller targeted edits and complete local formatting cleanup before stopping.
+    - If you touch a large partial class, preserve the surrounding style and fix any indentation or malformed XML introduced in the edited region before considering the work done.
 
 ## 🔐 Static Analysis Rules (Sonar)
 Apply these consistently in generated code (and prefer refactoring existing code toward them when touched):
@@ -63,6 +68,8 @@ Notes:
 - Duplicating constructor resolution logic — always centralize in `MockerConstructionHelper`.
 - Adding provider‑specific logic to `MockerTestBase` classes.
 - Breaking existing public API signatures.
+- Leaving touched public/protected members undocumented because they are obsolete or compatibility-only.
+- Posting unrelated status text while working; every progress update should reflect the active task.
 
 ## 📚 Reference Examples
 - See `FastMoq.Tests` for usage of `MockerTestBase<T>` and `VerifyLogger`.

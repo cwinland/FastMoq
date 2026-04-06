@@ -68,14 +68,26 @@ namespace FastMoq
     /// </example>
     public partial class Mocker
     {
+        /// <summary>
+        /// Name of the legacy Moq setup-all-properties method used by compatibility helpers.
+        /// </summary>
         public const string SETUP_ALL_PROPERTIES_METHOD_NAME = "SetupAllProperties";
+
+        /// <summary>
+        /// Name of the legacy Moq setup method used by compatibility helpers.
+        /// </summary>
         public const string SETUP = "Setup";
+
+        private static readonly NullabilityInfoContext NullabilityContext = new();
 
         private readonly record struct InstanceConstructionRequest(
             bool? PublicOnly,
             Type?[]? ConstructorParameterTypes,
             OptionalParameterResolutionMode OptionalParameterResolution);
 
+        /// <summary>
+        /// The shared in-memory file system used by built-in file-system resolution helpers.
+        /// </summary>
         public readonly MockFileSystem fileSystem;
         protected internal readonly List<Type> creatingTypeList = new();
         protected internal readonly List<MockModel> mockCollection = new();
@@ -86,12 +98,29 @@ namespace FastMoq
         private readonly ObservableExceptionLog exceptionLog = new();
         private readonly ObservableLogEntries logEntries = new();
         private readonly Action<LogLevel, EventId, string, Exception?> externalLoggingCallback;
+        /// <summary>
+        /// Tracks constructor-selection history for created instances.
+        /// </summary>
         public ConstructorHistory ConstructorHistory { get; } = new();
 
+        /// <summary>
+        /// Callback invoked when FastMoq captures a log entry through this mocker instance.
+        /// </summary>
         public Action<LogLevel, EventId, string, Exception?> LoggingCallback { get; }
+
+        /// <summary>
+        /// Controls how optional constructor and invocation parameters are resolved when values are not supplied explicitly.
+        /// </summary>
         public OptionalParameterResolutionMode OptionalParameterResolution { get; set; } = OptionalParameterResolutionMode.UseDefaultOrNull;
+
+        /// <summary>
+        /// Policy settings that control built-in type resolution and constructor fallback behavior.
+        /// </summary>
         public MockerPolicyOptions Policy { get; } = new();
 
+        /// <summary>
+        /// Obsolete compatibility alias for <see cref="MockerPolicyOptions.EnabledBuiltInTypeResolutions"/>.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Use Policy.EnabledBuiltInTypeResolutions instead.")]
         public BuiltInTypeResolutionFlags EnabledBuiltInTypeResolutions
@@ -100,6 +129,9 @@ namespace FastMoq
             set => Policy.EnabledBuiltInTypeResolutions = value;
         }
 
+        /// <summary>
+        /// Obsolete compatibility alias for <see cref="MockerPolicyOptions.DefaultFallbackToNonPublicConstructors"/>.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Use Policy.DefaultFallbackToNonPublicConstructors instead.")]
         public bool DefaultFallbackToNonPublicConstructors
@@ -108,6 +140,9 @@ namespace FastMoq
             set => Policy.DefaultFallbackToNonPublicConstructors = value;
         }
 
+        /// <summary>
+        /// Obsolete compatibility alias for <see cref="MockerPolicyOptions.DefaultFallbackToNonPublicMethods"/>.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Use Policy.DefaultFallbackToNonPublicMethods instead.")]
         public bool DefaultFallbackToNonPublicMethods
@@ -116,6 +151,9 @@ namespace FastMoq
             set => Policy.DefaultFallbackToNonPublicMethods = value;
         }
 
+        /// <summary>
+        /// Obsolete compatibility alias for <see cref="MockerPolicyOptions.DefaultStrictMockCreation"/>.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Use Policy.DefaultStrictMockCreation instead.")]
         public bool? DefaultStrictMockCreation
@@ -137,10 +175,30 @@ namespace FastMoq
                 ? OptionalParameterResolutionMode.ResolveViaMocker
                 : OptionalParameterResolutionMode.UseDefaultOrNull;
         }
+
+        /// <summary>
+        /// Captured exception messages observed during resolution and invocation helper flows.
+        /// </summary>
         public ObservableExceptionLog ExceptionLog => exceptionLog;
+
+        /// <summary>
+        /// Captured log entries observed through this mocker instance.
+        /// </summary>
         public ObservableLogEntries LogEntries => logEntries;
+
+        /// <summary>
+        /// The shared <see cref="System.Net.Http.HttpClient"/> created for this mocker instance.
+        /// </summary>
         public HttpClient HttpClient { get; }
+
+        /// <summary>
+        /// The base URI associated with the shared <see cref="HttpClient"/>.
+        /// </summary>
         public Uri Uri { get; }
+
+        /// <summary>
+        /// Controls whether nested property and injection resolution should run while creating instances and tracked mocks.
+        /// </summary>
         public bool InnerMockResolution { get; set; } = true;
 
         /// <summary>
@@ -150,6 +208,9 @@ namespace FastMoq
 
         /// <summary>
         /// Backward compatibility: maps to FailOnUnconfigured flag (Strict semantics) and presets.
+        /// </summary>
+        /// <summary>
+        /// Obsolete compatibility property that maps to <see cref="MockFeatures.FailOnUnconfigured"/> within <see cref="Behavior"/>.
         /// </summary>
         [Obsolete("Use Behavior.Enabled flags instead (FailOnUnconfigured -> Strict semantics).")]
         public bool Strict
@@ -191,13 +252,24 @@ namespace FastMoq
         }
 
         #region Ctors
+        /// <summary>
+        /// Initializes a new <see cref="Mocker"/> instance with a no-op external logging callback.
+        /// </summary>
         public Mocker() : this((_, _, _, _) => { }) { }
 
+        /// <summary>
+        /// Initializes a new <see cref="Mocker"/> instance with a three-parameter logging callback.
+        /// </summary>
+        /// <param name="loggingCallback">Callback invoked for log entries emitted by this mocker.</param>
         public Mocker(Action<LogLevel, EventId, string> loggingCallback)
             : this((logLevel, eventId, message, _) => loggingCallback(logLevel, eventId, message))
         {
         }
 
+        /// <summary>
+        /// Initializes a new <see cref="Mocker"/> instance with an exception-aware logging callback.
+        /// </summary>
+        /// <param name="loggingCallback">Callback invoked for log entries emitted by this mocker.</param>
         public Mocker(Action<LogLevel, EventId, string, Exception?> loggingCallback)
         {
             ProviderBootstrap.Ensure();
@@ -207,11 +279,26 @@ namespace FastMoq
             externalLoggingCallback = loggingCallback;
             LoggingCallback = CaptureLogEntry;
         }
+
+        /// <summary>
+        /// Initializes a new <see cref="Mocker"/> instance with an existing type map.
+        /// </summary>
+        /// <param name="map">The preconfigured type registrations to seed into the mocker.</param>
         public Mocker(Dictionary<Type, IInstanceModel> map) : this() => typeMap = map;
 
+        /// <summary>
+        /// Initializes a new <see cref="Mocker"/> instance with an existing type map and a three-parameter logging callback.
+        /// </summary>
+        /// <param name="map">The preconfigured type registrations to seed into the mocker.</param>
+        /// <param name="loggingCallback">Callback invoked for log entries emitted by this mocker.</param>
         public Mocker(Dictionary<Type, IInstanceModel> map, Action<LogLevel, EventId, string> loggingCallback)
             : this(loggingCallback) => typeMap = map;
 
+        /// <summary>
+        /// Initializes a new <see cref="Mocker"/> instance with an existing type map and an exception-aware logging callback.
+        /// </summary>
+        /// <param name="map">The preconfigured type registrations to seed into the mocker.</param>
+        /// <param name="loggingCallback">Callback invoked for log entries emitted by this mocker.</param>
         public Mocker(Dictionary<Type, IInstanceModel> map, Action<LogLevel, EventId, string, Exception?> loggingCallback) : this(loggingCallback) => typeMap = map;
         #endregion
 
@@ -237,6 +324,15 @@ namespace FastMoq
 
         internal bool ShouldCreateStrictMocks() => Policy.DefaultStrictMockCreation ?? Behavior.Has(MockFeatures.FailOnUnconfigured);
 
+        /// <summary>
+        /// Registers an interface-to-concrete mapping for object resolution.
+        /// </summary>
+        /// <param name="tInterface">The service or abstraction type to resolve.</param>
+        /// <param name="tClass">The concrete implementation type to construct.</param>
+        /// <param name="createFunc">Optional factory used instead of the default constructor path.</param>
+        /// <param name="replace">True to replace an existing registration for the same service type.</param>
+        /// <param name="args">Optional constructor or factory arguments associated with the registration.</param>
+        /// <returns>The current <see cref="Mocker"/> instance.</returns>
         public Mocker AddType(Type tInterface, Type tClass, Func<Mocker, object>? createFunc = null, bool replace = false, params object?[]? args)
         {
             ArgumentNullException.ThrowIfNull(tInterface);
@@ -246,6 +342,15 @@ namespace FastMoq
             return this;
         }
 
+        /// <summary>
+        /// Registers an interface-to-concrete mapping using a context-aware compatibility factory.
+        /// </summary>
+        /// <param name="tInterface">The service or abstraction type to resolve.</param>
+        /// <param name="tClass">The concrete implementation type to construct.</param>
+        /// <param name="createFunc">Compatibility factory that receives the requested resolution context.</param>
+        /// <param name="replace">True to replace an existing registration for the same service type.</param>
+        /// <param name="args">Optional constructor or factory arguments associated with the registration.</param>
+        /// <returns>The current <see cref="Mocker"/> instance.</returns>
         [Obsolete("Use the explicit AddType(...) overloads for normal type mapping. Use AddKnownType(...) when resolution depends on framework-style requested-type/context behavior. This context-aware AddType overload is retained for compatibility only.")]
         public Mocker AddType(Type tInterface, Type tClass, Func<Mocker, object, object>? createFunc, bool replace = false, params object?[]? args)
         {
@@ -285,10 +390,21 @@ namespace FastMoq
             typeMap[typeof(T)] = new InstanceModel<T>(_ => value);
             return this;
         }
+        /// <summary>
+        /// Registers a type as its own implementation for future resolution.
+        /// </summary>
         public Mocker AddType<TInterface, TClass>(bool replace = false, params object?[]? args)
             where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), (Func<Mocker, object>?)null, replace, args);
+
+        /// <summary>
+        /// Registers a type mapping that uses a typed factory during resolution.
+        /// </summary>
         public Mocker AddType<TInterface, TClass>(Func<Mocker, TClass>? createFunc, bool replace = false, params object?[]? args)
             where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), createFunc is null ? null : new Func<Mocker, object>(m => createFunc(m)!), replace, args);
+
+        /// <summary>
+        /// Registers a concrete type using an optional typed factory.
+        /// </summary>
         public Mocker AddType<T>(Func<Mocker, T>? createFunc = null, bool replace = false, params object?[]? args) where T : class => AddType<T, T>(createFunc, replace, args);
 
         /// <summary>
@@ -346,6 +462,12 @@ namespace FastMoq
         public Mocker AddKeyedType<T>(object serviceKey, Func<Mocker, T>? createFunc = null, bool replace = false, params object?[]? args) where T : class =>
             AddKeyedType<T, T>(serviceKey, createFunc, replace, args);
 
+        /// <summary>
+        /// Registers a compatibility string mapping that uses the requested resolution context.
+        /// </summary>
+        /// <summary>
+        /// Registers a compatibility string mapping that uses the requested resolution context.
+        /// </summary>
         [Obsolete("Use AddType<string>(...) or AddType(value) for ordinary type mapping. Use AddKnownType(...) for framework-style special handling. This context-driven string AddType overload is retained for compatibility only.")]
         public Mocker AddType(Func<Mocker, object?, object?> createFunc, bool replace = false, params object?[]? args)
         {
@@ -415,6 +537,9 @@ namespace FastMoq
             }
         }
 
+        /// <summary>
+        /// Registers the standard System.IO.Abstractions mappings backed by the current mock file system.
+        /// </summary>
         public void AddFileSystemAbstractionMapping()
         {
             AddType(typeof(IDirectory), typeof(DirectoryBase));
@@ -568,6 +693,13 @@ namespace FastMoq
                 : GetParameter(parameter);
         }
 
+        /// <summary>
+        /// Populates injectable fields and properties on the supplied object using the current resolution pipeline.
+        /// </summary>
+        /// <typeparam name="T">The object type to update.</typeparam>
+        /// <param name="obj">The object whose injectable members should be populated.</param>
+        /// <param name="referenceType">Optional type used to discover injectable members instead of the runtime type.</param>
+        /// <returns>The same object instance after injection.</returns>
         public T AddInjections<T>(T obj, Type? referenceType = null) where T : class?
         {
             if (obj == null)
@@ -587,6 +719,12 @@ namespace FastMoq
             return obj;
         }
 
+        /// <summary>
+        /// Resolves an object using custom registrations, known types, tracked mocks, and default fallbacks.
+        /// </summary>
+        /// <param name="type">The requested service or concrete type.</param>
+        /// <param name="initAction">Optional callback invoked with the resolved value before it is returned.</param>
+        /// <returns>The resolved object instance, or the type default when no value can be created.</returns>
         public object? GetObject(Type type, Action<object?>? initAction = null)
         {
             ArgumentNullException.ThrowIfNull(type);
@@ -672,6 +810,11 @@ namespace FastMoq
         private object? ResolveTrackedMockObject(Type type, Action<object?>? initAction, object? serviceKey = null)
         {
             var fast = serviceKey == null ? GetOrCreateFastMock(type) : GetOrCreateFastMock(type, serviceKey);
+            if (DatabaseSupportBridge.IsEntityFrameworkDbContextType(type))
+            {
+                ReapplyTrackedMockConfiguration(type, fast);
+            }
+
             var provider = MockingProviderRegistry.Default;
             if (Behavior.Has(MockFeatures.LoggerCallback))
             {
@@ -710,6 +853,11 @@ namespace FastMoq
             legacyMock.GetType().GetMethod("SetupDbSets")?.Invoke(legacyMock, [this]);
         }
 
+        /// <summary>
+        /// Resolves a value for the supplied parameter using the mocker's constructor and object-resolution rules.
+        /// </summary>
+        /// <param name="info">The parameter to resolve.</param>
+        /// <returns>The resolved value, or the parameter type default when resolution fails.</returns>
         public object? GetObject(ParameterInfo info)
         {
             ArgumentNullException.ThrowIfNull(info);
@@ -747,9 +895,24 @@ namespace FastMoq
         /// ]]></code>
         /// </example>
         public T? GetObject<T>() where T : class => GetObject(typeof(T)) as T;
+        /// <summary>
+        /// Resolves an object and invokes an initialization callback with the typed result.
+        /// </summary>
         public T? GetObject<T>(Action<T?> init) where T : class => GetObject(typeof(T), o => init((T?)o)) as T;
+
+        /// <summary>
+        /// Resolves a keyed object using the supplied service key.
+        /// </summary>
         public T? GetKeyedObject<T>(object serviceKey) where T : class => GetKeyedObject(typeof(T), serviceKey) as T;
+
+        /// <summary>
+        /// Resolves a keyed object and invokes an initialization callback with the typed result.
+        /// </summary>
         public T? GetKeyedObject<T>(object serviceKey, Action<T?> init) where T : class => GetKeyedObject(typeof(T), serviceKey, o => init((T?)o)) as T;
+
+        /// <summary>
+        /// Creates an instance of <typeparamref name="T"/> using the supplied constructor arguments.
+        /// </summary>
         public T? GetObject<T>(object?[] args) where T : class
         {
             if (args == null)
@@ -783,6 +946,9 @@ namespace FastMoq
             return false;
         }
 
+        /// <summary>
+        /// Populates readable properties on an object using either explicit values or resolved dependencies.
+        /// </summary>
         public object? AddProperties(Type type, object? obj, params KeyValuePair<string, object>[] data)
         {
             if (obj == null)
@@ -829,10 +995,16 @@ namespace FastMoq
             finally { creatingTypeList.Remove(type); }
             return obj;
         }
+        /// <summary>
+        /// Populates readable properties on an object using either explicit values or resolved dependencies.
+        /// </summary>
         public T? AddProperties<T>(T obj, params KeyValuePair<string, object>[] data) => (T?)AddProperties(typeof(T), obj, data);
         #endregion
 
         #region Constructor Resolution / Instance Creation
+        /// <summary>
+        /// Creates an instance of <typeparamref name="T"/> using the current component-construction defaults.
+        /// </summary>
         public T? CreateInstance<T>(params object?[] args) where T : class =>
             CreateInstance<T>(InstanceCreationFlags.None, args);
 
@@ -846,6 +1018,9 @@ namespace FastMoq
         /// Legacy compatibility overload retained for source compatibility.
         /// File-system resolution now follows <see cref="Policy"/> instead of a per-call flag.
         /// </summary>
+        /// <summary>
+        /// Legacy compatibility overload retained for callers that previously toggled file-system resolution per call.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Ignored. Use CreateInstance<T>() to follow Policy.EnabledBuiltInTypeResolutions and Policy.DefaultFallbackToNonPublicConstructors.")]
         public IFileSystem? CreateInstance<T>(bool usePredefinedFileSystem) where T : class, IFileSystem =>
@@ -854,6 +1029,9 @@ namespace FastMoq
         /// <summary>
         /// Legacy compatibility overload retained for source compatibility.
         /// File-system resolution now follows <see cref="Policy"/> instead of a per-call flag.
+        /// </summary>
+        /// <summary>
+        /// Legacy compatibility overload retained for callers that previously toggled file-system resolution per call.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Ignored. Use CreateInstance<T>() to follow Policy.EnabledBuiltInTypeResolutions and Policy.DefaultFallbackToNonPublicConstructors.")]
@@ -864,6 +1042,9 @@ namespace FastMoq
         /// Legacy compatibility alias retained for source compatibility.
         /// Use <see cref="CreateInstance{T}(InstanceCreationFlags, object?[])"/> with <see cref="InstanceCreationFlags.AllowNonPublicConstructorFallback"/>.
         /// </summary>
+        /// <summary>
+        /// Legacy compatibility alias for creating an instance with non-public constructor fallback enabled.
+        /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Use CreateInstance<T>(InstanceCreationFlags.AllowNonPublicConstructorFallback, ...) for the legacy non-public behavior, or CreateInstance<T>() to follow the current policy defaults.")]
         public T? CreateInstanceNonPublic<T>(params object?[] args) where T : class =>
@@ -872,6 +1053,9 @@ namespace FastMoq
         /// <summary>
         /// Legacy compatibility alias retained for source compatibility.
         /// Public and non-public constructor selection now follows the shared constructor-resolution rules.
+        /// </summary>
+        /// <summary>
+        /// Legacy compatibility alias for creating an instance by runtime type with non-public constructor fallback enabled.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Use CreateInstance<T>(InstanceCreationFlags.AllowNonPublicConstructorFallback, ...) where possible. This Type-based compatibility overload remains only for older callers.")]
@@ -886,11 +1070,17 @@ namespace FastMoq
         internal T? CreateInstance<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution, params object?[] args) where T : class =>
             CreateInstanceCore<T>(CreateInstanceConstructionRequest(publicOnly, null, optionalParameterResolution), args);
 
+        /// <summary>
+        /// Creates an instance of <typeparamref name="T"/> by selecting a constructor that matches the supplied parameter types.
+        /// </summary>
         public T? CreateInstanceByType<T>(params Type?[] parameterTypes) where T : class
         {
             return CreateInstanceByType<T>(InstanceCreationFlags.None, parameterTypes);
         }
 
+        /// <summary>
+        /// Creates an instance of <typeparamref name="T"/> by selecting a constructor that matches the supplied parameter types and creation flags.
+        /// </summary>
         public T? CreateInstanceByType<T>(InstanceCreationFlags flags, params Type?[] parameterTypes) where T : class =>
             CreateInstanceCore<T>(CreateInstanceConstructionRequest(flags, parameterTypes), Array.Empty<object?>());
 
@@ -1222,6 +1412,9 @@ namespace FastMoq
 
             return bestMatches[0];
         }
+        /// <summary>
+        /// Determines whether the supplied type exposes a parameterless constructor.
+        /// </summary>
         public bool HasParameterlessConstructor(Type type, bool nonPublic = false) => GetConstructors(type, nonPublic).Any(x => x.ParameterList.Length == 0);
         internal List<ConstructorModel> GetConstructors(Type type, bool nonPublic, params object?[] values) =>
             GetConstructors(type, nonPublic, OptionalParameterResolution, values);
@@ -1273,6 +1466,18 @@ namespace FastMoq
                 return GetMockModel(type).FastMock; // reuse existing
             }
 
+            var provider = MockingProviderRegistry.Default;
+            if (!provider.Capabilities.SupportsSetupAllProperties
+                && !DatabaseSupportBridge.IsEntityFrameworkDbContextType(type)
+                && KnownTypeRegistry.TryGetBuiltInManagedInstance(this, type, out var builtInManagedInstance)
+                && builtInManagedInstance != null)
+            {
+                var builtInFastMock = CreateManagedFastMock(type, builtInManagedInstance);
+                AddFastMock(builtInFastMock, type, nonPublic: nonPublic);
+                SetupFastMock(type, builtInFastMock);
+                return builtInFastMock;
+            }
+
             object?[] ctorArgs = Array.Empty<object?>();
             if (type.IsClass)
             {
@@ -1290,7 +1495,6 @@ namespace FastMoq
                 return model.FastMock;
             }
 
-            var provider = MockingProviderRegistry.Default;
             var callBase = Behavior.Has(MockFeatures.CallBase) && provider.Capabilities.SupportsCallBase && !type.IsInterface;
             var options = new MockCreationOptions(ShouldCreateStrictMocks(), CallBase: callBase, ConstructorArgs: ctorArgs, AllowNonPublic: nonPublic);
             var fast = provider.CreateMock(type, options);
@@ -1299,6 +1503,9 @@ namespace FastMoq
             return fast;
         }
 
+        /// <summary>
+        /// Creates and tracks a legacy Moq-compatible mock for the supplied runtime type.
+        /// </summary>
         [Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.")]
         public List<MockModel> CreateMock(Type type, bool nonPublic = false, params object?[] args)
         {
@@ -1320,9 +1527,15 @@ namespace FastMoq
             }
             return mockCollection;
         }
+        /// <summary>
+        /// Creates and tracks a legacy Moq-compatible mock for the supplied type parameter.
+        /// </summary>
         [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.")]
         public List<MockModel> CreateMock<T>(bool nonPublic = false, params object?[] args) where T : class => CreateMock(typeof(T), nonPublic, args);
 
+        /// <summary>
+        /// Creates a detached legacy <see cref="Mock{T}"/> for the supplied type parameter.
+        /// </summary>
         [Obsolete("Use GetOrCreateMock<T>(...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")]
         public Mock<T> CreateMockInstance<T>(bool nonPublic = false, params object?[] args) where T : class
         {
@@ -1332,9 +1545,12 @@ namespace FastMoq
                 return typed;
             }
 
-            throw new NotSupportedException($"Active provider '{MockingProviderRegistry.Default.GetType().Name}' does not expose Moq legacy surface for {typeof(T).Name}.");
+            throw CreateLegacyMoqSurfaceUnavailableException(typeof(T));
         }
 
+        /// <summary>
+        /// Creates a detached legacy <see cref="Mock"/> for the supplied runtime type.
+        /// </summary>
         [Obsolete("Use GetOrCreateMock(Type, ...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")]
         public Mock CreateMockInstance(Type type, bool nonPublic = false, params object?[] args)
         {
@@ -1363,7 +1579,7 @@ namespace FastMoq
                 return legacy;
             }
 
-            throw new NotSupportedException($"Active provider '{MockingProviderRegistry.Default.GetType().Name}' does not expose Moq legacy surface for {type.Name}.");
+            throw CreateLegacyMoqSurfaceUnavailableException(type);
         }
 
         /// <summary>
@@ -1423,6 +1639,9 @@ namespace FastMoq
             mockCollection.Add(new MockModel(type, mock, nonPublic));
             return GetMockModel(type);
         }
+        /// <summary>
+        /// Adds an existing legacy Moq mock to the tracked mock collection.
+        /// </summary>
         [Obsolete("Use GetOrCreateMock<T>(...) for tracked mocks or AddType<T>(...) for concrete instances. This legacy Moq compatibility API will be removed in v5.")]
         public MockModel<T> AddMock<T>(Mock<T> mock, bool overwrite = false, bool nonPublic = false) where T : class
             => new MockModel<T>(AddMock((Mock)mock, typeof(T), overwrite, nonPublic));
@@ -1435,10 +1654,21 @@ namespace FastMoq
 
             return null;
         }
+
+        private static NotSupportedException CreateLegacyMoqSurfaceUnavailableException(Type type)
+        {
+            var providerName = MockingProviderRegistry.Default.GetType().Name;
+            return new NotSupportedException(
+                $"Active provider '{providerName}' does not expose a legacy Moq.Mock instance for {type.Name}. " +
+                $"Use GetOrCreateMock<{type.Name}>() for provider-neutral access, or select the Moq provider for this test assembly before calling legacy GetMock/CreateMockInstance APIs.");
+        }
         #endregion
 
         #region Mock Retrieval & Setup
-        [Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral access. This legacy Moq compatibility API will be removed in v5.")]
+        /// <summary>
+        /// Gets a tracked legacy Moq mock for the supplied runtime type, creating it if needed.
+        /// </summary>
+        [Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral retrieval. Keep GetMock(Type, ...) only for legacy Moq-specific setup/access. This API will be removed in v5.")]
         public Mock GetMock(Type type, params object?[]? args)
         {
             type = CleanType(type);
@@ -1450,14 +1680,14 @@ namespace FastMoq
             return GetRequiredMock(type);
         }
         /// <summary>
-        /// Returns a tracked mock for the requested type, creating it if needed.
+        /// Gets a tracked legacy Moq mock for the supplied type parameter, creating it if needed.
         /// </summary>
         /// <example>
-        /// <para><c>GetMock&lt;T&gt;()</c> remains the Moq-compatibility path. For new examples, prefer <c>GetOrCreateMock&lt;T&gt;()</c> plus provider-neutral verification.</para>
+        /// <para><c>GetMock&lt;T&gt;()</c> remains the Moq-compatibility path. For new examples, prefer <c>GetOrCreateMock&lt;T&gt;()</c> for provider-neutral retrieval, and use <c>GetMock&lt;T&gt;()</c> only when the test intentionally relies on Moq-specific setup APIs.</para>
         /// <code language="csharp"><![CDATA[
         /// var mocker = new Mocker();
         ///
-        /// mocker.GetOrCreateMock<IPaymentGateway>()
+        /// mocker.GetMock<IPaymentGateway>()
         ///     .Setup(x => x.Charge(125.50m))
         ///     .Returns(true);
         ///
@@ -1468,16 +1698,23 @@ namespace FastMoq
         /// mocker.Verify<IPaymentGateway>(x => x.Charge(125.50m), TimesSpec.Once);
         /// ]]></code>
         /// </example>
-        [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral access. This legacy Moq compatibility API will be removed in v5.")]
+        [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval. Keep GetMock<T>(...) only for legacy Moq-specific setup/access. This API will be removed in v5.")]
         public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>)GetMock(typeof(T), args);
-        [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral access. This legacy Moq compatibility API will be removed in v5.")]
+
+        /// <summary>
+        /// Gets a tracked legacy Moq mock and applies an initialization callback to it.
+        /// </summary>
+        [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval. Keep GetMock<T>(...) only for legacy Moq-specific setup/access. This API will be removed in v5.")]
         public Mock<T> GetMock<T>(Action<Mock<T>> action, params object?[] args) where T : class
         {
             var m = GetMock<T>(args);
             action?.Invoke(m);
             return m;
         }
-        [Obsolete("Use GetOrCreateMock(Type, ...) with provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")]
+        /// <summary>
+        /// Gets an already tracked legacy Moq mock for the supplied runtime type.
+        /// </summary>
+        [Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock(Type) only for legacy Moq-specific access. This API will be removed in v5.")]
         public Mock GetRequiredMock(Type type)
         {
             ArgumentNullException.ThrowIfNull(type);
@@ -1490,14 +1727,21 @@ namespace FastMoq
             var model = mockCollection.First(x => x.Type == type);
             if (!model.TryGetLegacyMock(out var mock))
             {
-                throw new NotSupportedException($"Active provider '{MockingProviderRegistry.Default.GetType().Name}' does not expose a legacy Moq.Mock instance for {type.Name}.");
+                throw CreateLegacyMoqSurfaceUnavailableException(type);
             }
 
             mock.RaiseIfNull();
             return mock;
         }
-        [Obsolete("Use GetOrCreateMock<T>(...) with provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")]
+        /// <summary>
+        /// Gets an already tracked legacy Moq mock for the supplied type parameter.
+        /// </summary>
+        [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock<T>() only for legacy Moq-specific access. This API will be removed in v5.")]
         public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>)GetRequiredMock(typeof(T));
+
+        /// <summary>
+        /// Gets the provider-native mock object for the supplied runtime type.
+        /// </summary>
         public object GetNativeMock(Type type)
         {
             ArgumentNullException.ThrowIfNull(type);
@@ -1510,6 +1754,9 @@ namespace FastMoq
 
             return GetMockModel(type).NativeMock;
         }
+        /// <summary>
+        /// Gets the provider-native mock object for the supplied type parameter.
+        /// </summary>
         public object GetNativeMock<T>(params object?[] args) where T : class
         {
             if (!Contains<T>())
@@ -1519,7 +1766,14 @@ namespace FastMoq
 
             return GetMockModel(typeof(T)).NativeMock;
         }
+        /// <summary>
+        /// Gets the tracked mock model for the supplied type parameter.
+        /// </summary>
         public MockModel<T> GetMockModel<T>() where T : class => new(GetMockModel(typeof(T)));
+
+        /// <summary>
+        /// Gets the index of the tracked mock model for the supplied runtime type.
+        /// </summary>
         public int GetMockModelIndexOf(Type type, bool throwIfMissing = true)
         {
             var idx = mockCollection.FindIndex(m => m.Type == type);
@@ -1542,6 +1796,9 @@ namespace FastMoq
 
             return idx;
         }
+        /// <summary>
+        /// Removes a tracked legacy Moq mock from the mock collection.
+        /// </summary>
         [Obsolete("Use provider-neutral mock lifecycle APIs instead. This legacy Moq compatibility API will be removed in v5.")]
         public bool RemoveMock(Mock mock)
         {
@@ -1747,13 +2004,23 @@ namespace FastMoq
         #endregion
 
         #region Legacy Helper Methods (Batch C)
+        /// <summary>
+        /// Returns the shared mock file system after optionally applying additional configuration.
+        /// </summary>
         public IFileSystem GetFileSystem(Action<MockFileSystem>? configure = null)
         {
             configure?.Invoke(fileSystem);
             return fileSystem;
         }
+
+        /// <summary>
+        /// Returns the shared mock file system.
+        /// </summary>
         public IFileSystem GetFileSystem() => fileSystem;
 
+        /// <summary>
+        /// Creates a list by invoking the supplied factory a fixed number of times.
+        /// </summary>
         public static List<T> GetList<T>(int count, Func<T> factory)
         {
             var list = new List<T>(count);
@@ -1764,6 +2031,10 @@ namespace FastMoq
 
             return list;
         }
+
+        /// <summary>
+        /// Creates a list by invoking the supplied indexed factory a fixed number of times.
+        /// </summary>
         public static List<T> GetList<T>(int count, Func<int, T> factory)
         {
             var list = new List<T>(count);
@@ -1774,6 +2045,10 @@ namespace FastMoq
 
             return list;
         }
+
+        /// <summary>
+        /// Creates a list by invoking the supplied indexed factory and initializer a fixed number of times.
+        /// </summary>
         public static List<T> GetList<T>(int count, Func<int, T> factory, Action<int, T> init)
         {
             var list = new List<T>(count);
@@ -1786,11 +2061,17 @@ namespace FastMoq
             return list;
         }
 
+        /// <summary>
+        /// Builds invocation arguments for a method using the mocker's current optional-parameter policy.
+        /// </summary>
         public object?[] GetMethodArgData(MethodBase? method) => GetMethodArgData(method, new InvocationOptions
         {
             OptionalParameterResolution = OptionalParameterResolution,
         });
 
+        /// <summary>
+        /// Builds invocation arguments for a method using the supplied invocation options.
+        /// </summary>
         public object?[] GetMethodArgData(MethodBase? method, InvocationOptions? options)
         {
             if (method == null)
@@ -1805,6 +2086,10 @@ namespace FastMoq
 
             return method.GetParameters().Select(p => ResolveParameter(p, options.OptionalParameterResolution)).ToArray();
         }
+
+        /// <summary>
+        /// Builds invocation arguments that contain only default values for the supplied method.
+        /// </summary>
         public object?[] GetMethodDefaultData(MethodBase? method)
         {
             if (method == null)
@@ -1814,14 +2099,24 @@ namespace FastMoq
 
             return method.GetParameters().Select(p => p.ParameterType.GetDefaultValue()).ToArray();
         }
+
+        /// <summary>
+        /// Builds constructor argument data for <typeparamref name="T"/> using the mocker's current optional-parameter policy.
+        /// </summary>
         public object?[] GetArgData<T>() where T : class
         {
             return GetArgData<T>(InstanceCreationFlags.None);
         }
 
+        /// <summary>
+        /// Builds constructor argument data for <typeparamref name="T"/> using the supplied optional-parameter policy.
+        /// </summary>
         public object?[] GetArgData<T>(OptionalParameterResolutionMode optionalParameterResolution) where T : class =>
             GetArgData<T>(publicOnly: null, optionalParameterResolution);
 
+        /// <summary>
+        /// Builds constructor argument data for <typeparamref name="T"/> using the supplied creation flags.
+        /// </summary>
         public object?[] GetArgData<T>(InstanceCreationFlags flags) where T : class
         {
             var publicOnly = ResolvePublicOnlyOverride(flags);
@@ -1849,6 +2144,11 @@ namespace FastMoq
 
         private object? ResolveParameterForArgData(ParameterInfo parameter, OptionalParameterResolutionMode optionalParameterResolution)
         {
+            if (optionalParameterResolution == OptionalParameterResolutionMode.UseDefaultOrNull && ShouldUseDefaultValueForArgData(parameter))
+            {
+                return parameter.ParameterType.GetDefaultValue();
+            }
+
             try
             {
                 return ResolveParameter(parameter, optionalParameterResolution);
@@ -1857,6 +2157,21 @@ namespace FastMoq
             {
                 return parameter.ParameterType.GetDefaultValue();
             }
+        }
+
+        private static bool ShouldUseDefaultValueForArgData(ParameterInfo parameter)
+        {
+            if (parameter.IsOptional)
+            {
+                return true;
+            }
+
+            if (parameter.ParameterType.IsValueType)
+            {
+                return parameter.ParameterType.IsNullableType();
+            }
+
+            return NullabilityContext.Create(parameter).ReadState == NullabilityState.Nullable;
         }
 
         private object?[] BuildInvocationArgs(ParameterInfo[] parameters, InvocationOptions? options, object?[] provided)
@@ -1888,12 +2203,18 @@ namespace FastMoq
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Invokes a method on the supplied instance using the mocker's current invocation defaults.
+        /// </summary>
         public object? InvokeMethod(object? instance, string methodName, bool nonPublic = false, params object?[] args) =>
             InvokeMethod(new InvocationOptions
             {
                 OptionalParameterResolution = OptionalParameterResolution,
             }, instance, methodName, nonPublic, args);
 
+        /// <summary>
+        /// Invokes a method on the supplied instance using the supplied invocation options.
+        /// </summary>
         public object? InvokeMethod(InvocationOptions? options, object? instance, string methodName, bool nonPublic = false, params object?[] args)
         {
             if (instance == null)
@@ -1921,12 +2242,19 @@ namespace FastMoq
 
             return method.Invoke(instance, flags, null, BuildInvocationArgs(method.GetParameters(), options, args), null);
         }
+
+        /// <summary>
+        /// Invokes a method declared on <typeparamref name="T"/> using the mocker's current invocation defaults.
+        /// </summary>
         public object? InvokeMethod<T>(object? instance, string methodName, bool nonPublic = false, params object?[] args) =>
             InvokeMethod<T>(new InvocationOptions
             {
                 OptionalParameterResolution = OptionalParameterResolution,
             }, instance, methodName, nonPublic, args);
 
+        /// <summary>
+        /// Invokes a method declared on <typeparamref name="T"/> using the supplied invocation options.
+        /// </summary>
         public object? InvokeMethod<T>(InvocationOptions? options, object? instance, string methodName, bool nonPublic = false, params object?[] args)
         {
             options ??= new InvocationOptions
@@ -1955,20 +2283,34 @@ namespace FastMoq
         {
             return options.FallbackToNonPublicMethods ?? Policy.DefaultFallbackToNonPublicMethods;
         }
+
+        /// <summary>
+        /// Invokes a method declared on <typeparamref name="T"/> without an explicit instance parameter.
+        /// </summary>
         public object? InvokeMethod<T>(string methodName, bool nonPublic = false, params object?[] args) =>
             InvokeMethod<T>((object?)null, methodName, nonPublic, args);
+
+        /// <summary>
+        /// Invokes a method declared on <typeparamref name="T"/> without an explicit instance parameter using the supplied invocation options.
+        /// </summary>
         public object? InvokeMethod<T>(InvocationOptions? options, string methodName, bool nonPublic = false, params object?[] args) => InvokeMethod<T>(options, null, methodName, nonPublic, args);
 
         private object?[] BuildInvocationArgs(Delegate del, InvocationOptions? options, object?[] provided)
         {
             return BuildInvocationArgs(del.Method.GetParameters(), options, provided);
         }
+        /// <summary>
+        /// Invokes a delegate and returns its result using the mocker's current invocation defaults.
+        /// </summary>
         public TReturn CallMethod<TReturn>(Delegate del, params object?[] args) =>
             CallMethod<TReturn>(new InvocationOptions
             {
                 OptionalParameterResolution = OptionalParameterResolution,
             }, del, args);
 
+        /// <summary>
+        /// Invokes a delegate and returns its result using the supplied invocation options.
+        /// </summary>
         public TReturn CallMethod<TReturn>(InvocationOptions? options, Delegate del, params object?[] args)
         {
             if (del == null)
@@ -1987,12 +2329,40 @@ namespace FastMoq
                 throw inner;
             }
         }
+
+        /// <summary>
+        /// Invokes a delegate without using its return value.
+        /// </summary>
         public void CallMethod(Delegate del, params object?[] args) => CallMethod<object?>(del, args);
+
+        /// <summary>
+        /// Invokes a delegate without using its return value and with explicit invocation options.
+        /// </summary>
         public void CallMethod(InvocationOptions? options, Delegate del, params object?[] args) => CallMethod<object?>(options, del, args);
+
+        /// <summary>
+        /// Invokes a function and returns its result using the mocker's current invocation defaults.
+        /// </summary>
         public TReturn CallMethod<TReturn>(Func<TReturn> func, params object?[] args) => CallMethod<TReturn>((Delegate)func, args);
+
+        /// <summary>
+        /// Invokes a function and returns its result using the supplied invocation options.
+        /// </summary>
         public TReturn CallMethod<TReturn>(InvocationOptions? options, Func<TReturn> func, params object?[] args) => CallMethod<TReturn>(options, (Delegate)func, args);
+
+        /// <summary>
+        /// Invokes an action using the mocker's current invocation defaults.
+        /// </summary>
         public void CallMethod(Action action, params object?[] args) => CallMethod<object?>((Delegate)action, args);
+
+        /// <summary>
+        /// Invokes an action using the supplied invocation options.
+        /// </summary>
         public void CallMethod(InvocationOptions? options, Action action, params object?[] args) => CallMethod<object?>(options, (Delegate)action, args);
+
+        /// <summary>
+        /// Invokes a delegate and awaits a task result using the mocker's current invocation defaults.
+        /// </summary>
         public async Task<TReturn> CallMethodAsync<TReturn>(Delegate del, params object?[] args)
         {
             return await CallMethodAsync<TReturn>(new InvocationOptions
@@ -2001,6 +2371,9 @@ namespace FastMoq
             }, del, args).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Invokes a delegate and awaits a task result using the supplied invocation options.
+        /// </summary>
         public async Task<TReturn> CallMethodAsync<TReturn>(InvocationOptions? options, Delegate del, params object?[] args)
         {
             var result = CallMethod<object>(options, del, args);
@@ -2016,6 +2389,9 @@ namespace FastMoq
             return (TReturn)result;
         }
 
+        /// <summary>
+        /// Initializes a tracked legacy Moq mock by invoking the supplied setup callback.
+        /// </summary>
         [Obsolete("Use GetMock<T>() and configure the returned mock directly. Initialize<T>() is a compatibility wrapper and may be removed in a future major version.")]
         public void Initialize<T>(Action<Mock<T>> init) where T : class
         {
@@ -2023,8 +2399,14 @@ namespace FastMoq
             init?.Invoke(m);
         }
 
+        /// <summary>
+        /// Reads the string content from an <see cref="HttpContent"/> instance, returning an empty string when the content is null.
+        /// </summary>
         public async Task<string> GetStringContent(HttpContent? content) => content == null ? string.Empty : await content.ReadAsStringAsync().ConfigureAwait(false);
 
+        /// <summary>
+        /// Resolves a required object and throws when no instance can be produced.
+        /// </summary>
         public T GetRequiredObject<T>() where T : class => GetObject<T>() ?? throw new InvalidOperationException($"Unable to resolve object of type {typeof(T).Name}.");
         #endregion
     }

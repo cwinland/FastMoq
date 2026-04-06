@@ -1,0 +1,46 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Web
+  commentId: N:FastMoq.Web
+  id: FastMoq.Web
+  children:
+  - FastMoq.Web.TestClaimsPrincipalOptions
+  langs:
+  - csharp
+  - vb
+  name: FastMoq.Web
+  nameWithType: FastMoq.Web
+  fullName: FastMoq.Web
+  type: Namespace
+  assemblies:
+  - FastMoq.Web
+references:
+- uid: FastMoq.Web.TestClaimsPrincipalOptions
+  commentId: T:FastMoq.Web.TestClaimsPrincipalOptions
+  parent: FastMoq.Web
+  href: FastMoq.Web.TestClaimsPrincipalOptions.html
+  name: TestClaimsPrincipalOptions
+  nameWithType: TestClaimsPrincipalOptions
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions
+- uid: FastMoq.Web
+  commentId: N:FastMoq.Web
+  href: FastMoq.html
+  name: FastMoq.Web
+  nameWithType: FastMoq.Web
+  fullName: FastMoq.Web
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Web
+    name: Web
+    href: FastMoq.Web.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Web
+    name: Web
+    href: FastMoq.Web.html

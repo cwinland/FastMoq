@@ -121,9 +121,9 @@
   </div>
   <h5 id="FastMoq_Extensions_TestClassExtensions_examples"><strong>Examples</strong></h5>
   <p>The logger helpers are commonly used to keep tests focused on intent instead of verbose Moq verification expressions.</p>
-<pre><code class="lang-csharp">var logger = Mocks.GetMock&lt;ILogger&lt;CheckoutService&gt;&gt;();
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;ILogger&lt;CheckoutService&gt;&gt;();
 <p>Component.Submit(order);</p>
-<p>logger.VerifyLogger(LogLevel.Information, &quot;Order submitted&quot;, times: 1);</p></code></pre>
+<p>Mocks.VerifyLogged(LogLevel.Information, &quot;Order submitted&quot;, TimesSpec.Once);</p></code></pre>
 
   <h3 id="methods">Methods
 </h3>
@@ -1723,14 +1723,193 @@ public static void SetupLoggerCallback&lt;TLogger&gt;(this Mock&lt;TLogger&gt; l
       </tr>
     </tbody>
   </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_SetupLoggerCallback_" data-uid="FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_SetupLoggerCallback__1_Moq_Mock___0__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String__" data-uid="FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})">SetupLoggerCallback&lt;TLogger&gt;(Mock&lt;TLogger&gt;, Action&lt;LogLevel, EventId, string&gt;)</h4>
+  <div class="markdown level1 summary"><p>Setups the logger callback.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Prefer Mocker.LogEntries or Mocks.VerifyLogged(...) for logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.&quot;)]
+public static void SetupLoggerCallback&lt;TLogger&gt;(this Mock&lt;TLogger&gt; logger, Action&lt;LogLevel, EventId, string&gt; callback) where TLogger : class, ILogger</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Mock</span>&lt;TLogger&gt;</td>
+        <td><span class="parametername">logger</span></td>
+        <td><p>The mock logger.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>The callback action.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TLogger</span></td>
+        <td><p>Class type of ILogger or ILogger{T}</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
-  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)">VerifyLogged(Mocker, LogLevel, string, Exception?, int?, int)</h4>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String)">VerifyLogged(Mocker, LogLevel, string)</h4>
   <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId = null, int times = 1)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String__examples">Examples</h5>
+  <p>Prefer <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_">VerifyLogged(Mocker, LogLevel, string)</a> in general documentation because it works through FastMoq's captured log entries instead of a provider-specific mock API.</p>
+<pre><code class="lang-csharp">Component.Submit(order);
+<p>Mocks.VerifyLogged(LogLevel.Information, &quot;Order submitted&quot;);</p></code></pre>
+
+  <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_FastMoq_Providers_TimesSpec_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,FastMoq.Providers.TimesSpec)">VerifyLogged(Mocker, LogLevel, string, TimesSpec)</h4>
+  <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks using a provider-neutral count specification.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, TimesSpec times)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.TimesSpec.html">TimesSpec</a></td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32})">VerifyLogged(Mocker, LogLevel, string, Exception?, int?)</h4>
+  <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks.
+Defaults to at least one matching log entry when no explicit count specification is supplied.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</td>
+        <td><span class="parametername">eventId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)">VerifyLogged(Mocker, LogLevel, string, Exception?, int?, int)</h4>
+  <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks using an exact match count.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId, int times)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -1775,13 +1954,64 @@ public static void SetupLoggerCallback&lt;TLogger&gt;(this Mock&lt;TLogger&gt; l
     </tbody>
   </table>
   <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
-  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)">VerifyLogged(Mocker, LogLevel, string, int)</h4>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Nullable_FastMoq_Providers_TimesSpec__" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Nullable{FastMoq.Providers.TimesSpec})">VerifyLogged(Mocker, LogLevel, string, Exception?, int?, TimesSpec?)</h4>
   <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, int times = 1)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId, TimesSpec? times)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</td>
+        <td><span class="parametername">eventId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.TimesSpec.html">TimesSpec</a>?</td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)">VerifyLogged(Mocker, LogLevel, string, int)</h4>
+  <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks using an exact match count.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, int times)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -1815,11 +2045,6 @@ public static void SetupLoggerCallback&lt;TLogger&gt;(this Mock&lt;TLogger&gt; l
       </tr>
     </tbody>
   </table>
-  <h5 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32__examples">Examples</h5>
-  <p>Prefer <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_">VerifyLogged(Mocker, LogLevel, string, int)</a> in general documentation because it works through FastMoq's captured log entries instead of a provider-specific mock API.</p>
-<pre><code class="lang-csharp">Component.Submit(order);
-<p>Mocks.VerifyLogged(LogLevel.Information, &quot;Order submitted&quot;, times: 1);</p></code></pre>
-
   <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogger_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogger*"></a>
   <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogger_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)">VerifyLogger(Mock&lt;ILogger&gt;, LogLevel, string, Exception?, int?, int)</h4>
   <div class="markdown level1 summary"><p>Verifies the Mock ILogger was invoked.</p>
@@ -2366,7 +2591,7 @@ public static void VerifyLogger&lt;TException, TLogger&gt;(this Mock&lt;TLogger&
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

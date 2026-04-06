@@ -79,6 +79,23 @@
 <li>This document describes the changed behavior in the current v4 release line.</li>
 </ul>
 <h2 id="current-breaking-changes">Current breaking changes</h2>
+<h3 id="moq-specific-http-setup-helpers-moved-packages">Moq-specific HTTP setup helpers moved packages</h3>
+<p>The older Moq-shaped HTTP setup helpers such as <code>SetupHttpMessage(...)</code> are no longer provided by <code>FastMoq.Core</code>.</p>
+<p>What changed:</p>
+<ul>
+<li>provider-neutral HTTP behavior helpers now live in core and are the preferred path for new tests</li>
+<li>Moq-specific HTTP compatibility helpers now come from <code>FastMoq.Provider.Moq</code></li>
+<li>the compatibility helpers intentionally remain in <code>FastMoq.Extensions</code>, so the source-level namespace usually does not need to change</li>
+</ul>
+<p>Migration guidance:</p>
+<pre><code class="lang-csharp">// Preferred for new tests
+Mocks.WhenHttpRequestJson(HttpMethod.Get, &quot;/orders/42&quot;, &quot;{\&quot;id\&quot;:42}&quot;);
+
+// Compatibility path for older Moq-specific tests
+// Keep using FastMoq.Extensions, but ensure FastMoq.Provider.Moq is referenced
+Mocks.SetupHttpMessage(HttpStatusCode.OK, &quot;{\&quot;id\&quot;:42}&quot;);
+</code></pre>
+<p>Treat this as a package move with a preferred API change, not as a namespace-rename exercise.</p>
 <h3 id="strict-no-longer-implies-the-old-full-strict-profile"><code>Strict</code> no longer implies the old full strict profile</h3>
 <p>In <code>3.0.0</code>, <code>Strict</code> was documented as a broader switch that affected multiple behaviors at once, including preconfigured object substitution, non-public fallback behavior, and strict Moq behavior.</p>
 <p>In the current repo, <code>Strict</code> is primarily a compatibility property layered over <code>MockFeatures.FailOnUnconfigured</code> rather than the single entry point for the full strict profile.</p>
@@ -184,7 +201,7 @@ Mocks.GetMock&lt;IFileSystem&gt;()
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

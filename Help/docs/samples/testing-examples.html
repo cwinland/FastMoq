@@ -78,6 +78,34 @@
 <li>realistic enough to explain how FastMoq fits into an actual service workflow</li>
 <li>backed by tests in the repository instead of static documentation snippets</li>
 </ul>
+<h2 id="why-these-examples-matter">Why these examples matter</h2>
+<p>These examples are meant to show that FastMoq still removes boilerplate compared with using a mocking library directly.</p>
+<p>The goal is not to hide the provider. The goal is to keep the test focused on behavior instead of mock field declarations, constructor wiring, and helper setup that repeats from test to test.</p>
+<h3 id="side-by-side-direct-mock-provider-usage-versus-fastmoq">Side-by-side: direct mock-provider usage versus FastMoq</h3>
+<p>Direct mock-provider shape:</p>
+<pre><code class="lang-csharp">var inventoryGateway = new Mock&lt;IInventoryGateway&gt;();
+var paymentGateway = new Mock&lt;IPaymentGateway&gt;();
+var repository = new Mock&lt;IOrderRepository&gt;();
+var logger = new Mock&lt;ILogger&lt;OrderProcessingService&gt;&gt;();
+
+var component = new OrderProcessingService(
+    inventoryGateway.Object,
+    paymentGateway.Object,
+    repository.Object,
+    logger.Object);
+
+inventoryGateway
+    .Setup(x =&gt; x.ReserveAsync(request.Sku, request.Quantity, CancellationToken.None))
+    .ReturnsAsync(true);
+</code></pre>
+<p>FastMoq shape:</p>
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IInventoryGateway&gt;()
+    .Setup(x =&gt; x.ReserveAsync(request.Sku, request.Quantity, CancellationToken.None))
+    .ReturnsAsync(true);
+
+var result = await Component.PlaceOrderAsync(request, CancellationToken.None);
+</code></pre>
+<p>FastMoq removes mock field declarations and subject construction, while still letting the test move to provider-specific APIs when needed.</p>
 <p>The source of truth for these examples is the test project itself:</p>
 <ul>
 <li><code>FastMoq.TestingExample/RealWorldExampleServices.cs</code></li>
@@ -89,7 +117,7 @@
 <p>They demonstrate:</p>
 <ul>
 <li><code>MockerTestBase&lt;TComponent&gt;</code> for normal component creation and dependency auto-injection</li>
-<li><code>Mocks.GetMock&lt;T&gt;()</code> for arrange and verify flows</li>
+<li><code>Mocks.GetOrCreateMock&lt;T&gt;()</code> for tracked arrange flows</li>
 <li>built-in <code>IFileSystem</code> behavior via the predefined <code>MockFileSystem</code></li>
 <li><code>VerifyLogged(...)</code> for provider-safe structured logging assertions</li>
 <li><code>Scenario.With(...).When(...).Then(...).Verify(...)</code> for the fluent scenario style inside <code>MockerTestBase&lt;TComponent&gt;</code></li>
@@ -116,20 +144,21 @@
             TotalAmount = 149.90m,
         };
 
-        Mocks.GetMock&lt;IInventoryGateway&gt;()
+        Mocks.GetOrCreateMock&lt;IInventoryGateway&gt;()
             .Setup(x =&gt; x.ReserveAsync(request.Sku, request.Quantity, CancellationToken.None))
             .ReturnsAsync(true);
 
-        Mocks.GetMock&lt;IPaymentGateway&gt;()
+        Mocks.GetOrCreateMock&lt;IPaymentGateway&gt;()
             .Setup(x =&gt; x.ChargeAsync(request.CustomerId, request.TotalAmount, CancellationToken.None))
             .ReturnsAsync(&quot;pay_12345&quot;);
 
         var result = await Component.PlaceOrderAsync(request, CancellationToken.None);
 
         result.Success.Should().BeTrue();
-        Mocks.GetMock&lt;IOrderRepository&gt;()
-            .Verify(x =&gt; x.SaveAsync(It.IsAny&lt;OrderRecord&gt;(), CancellationToken.None), Times.Once);
-        Mocks.VerifyLogged(LogLevel.Information, &quot;Placed order&quot;, 1);
+        Mocks.Verify&lt;IOrderRepository&gt;(
+            x =&gt; x.SaveAsync(It.IsAny&lt;OrderRecord&gt;(), CancellationToken.None),
+            TimesSpec.Once);
+        Mocks.VerifyLogged(LogLevel.Information, &quot;Placed order&quot;, TimesSpec.Once);
     }
 }
 </code></pre>
@@ -144,7 +173,7 @@
         const string csv = &quot;customerId,email,segment\nC-100,ada@example.test,VIP&quot;;
 
         Mocks.fileSystem.AddFile(filePath, new MockFileData(csv));
-        Mocks.GetMock&lt;ICustomerCsvParser&gt;()
+        Mocks.GetOrCreateMock&lt;ICustomerCsvParser&gt;()
             .Setup(x =&gt; x.Parse(csv))
             .Returns(new List&lt;CustomerImportRow&gt;
             {
@@ -154,8 +183,9 @@
         var importedCount = await Component.ImportAsync(filePath, CancellationToken.None);
 
         importedCount.Should().Be(1);
-        Mocks.GetMock&lt;ICustomerRepository&gt;()
-            .Verify(x =&gt; x.UpsertAsync(It.IsAny&lt;IReadOnlyList&lt;CustomerImportRow&gt;&gt;(), CancellationToken.None), Times.Once);
+        Mocks.Verify&lt;ICustomerRepository&gt;(
+            x =&gt; x.UpsertAsync(It.IsAny&lt;IReadOnlyList&lt;CustomerImportRow&gt;&gt;(), CancellationToken.None),
+            TimesSpec.Once);
     }
 }
 </code></pre>
@@ -164,7 +194,7 @@
 <pre><code class="lang-csharp">Scenario
     .With(() =&gt;
     {
-        Mocks.GetMock&lt;IInvoiceRepository&gt;()
+        Mocks.GetOrCreateMock&lt;IInvoiceRepository&gt;()
             .Setup(x =&gt; x.GetPastDueAsync(now, CancellationToken.None))
             .ReturnsAsync(invoices);
     })
@@ -215,7 +245,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

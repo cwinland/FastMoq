@@ -8,11 +8,9 @@ items:
   - FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(FastMoq.Mocker,System.String,System.String,System.Net.HttpStatusCode,System.String)
   - FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync(System.Net.Http.HttpContent)
   - FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync(System.Net.Http.HttpContent)
-  - FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage(FastMoq.Mocker,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
-  - FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
-  - FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  - FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  - FastMoq.Extensions.MockerHttpExtensions.SetupMessage``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  - FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})
+  - FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
+  - FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
   langs:
   - csharp
   - vb
@@ -27,7 +25,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerHttpExtensions
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 12
+    startLine: 10
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -65,11 +63,17 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpClient
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 17
+    startLine: 20
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
-  summary: Creates the HTTP client using a mock IHttpClientFactory.
+  summary: Creates an HTTP client backed by FastMoq-managed HTTP dependencies.
+  remarks: >-
+    This entry point remains supported after v5.
+
+    New tests should prefer the provider-neutral request helpers in this class for HTTP behavior.
+
+    Advanced protected-member setups remain available from the Moq provider package for migration scenarios.
   example: []
   syntax:
     content: public static HttpClient CreateHttpClient(this Mocker mocker, string clientName = "FastMoqHttpClient", string baseAddress = "http://localhost", HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1}]")
@@ -91,249 +95,141 @@ items:
   nameWithType.vb: MockerHttpExtensions.CreateHttpClient(Mocker, String, String, HttpStatusCode, String)
   fullName.vb: FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(FastMoq.Mocker, String, String, System.Net.HttpStatusCode, String)
   name.vb: CreateHttpClient(Mocker, String, String, HttpStatusCode, String)
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage(FastMoq.Mocker,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
-  commentId: M:FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage(FastMoq.Mocker,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
-  id: SetupHttpMessage(FastMoq.Mocker,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})
+  id: WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})
   isExtensionMethod: true
   parent: FastMoq.Extensions.MockerHttpExtensions
   langs:
   - csharp
   - vb
-  name: SetupHttpMessage(Mocker, Func<HttpResponseMessage>, Expression?, Expression?)
-  nameWithType: MockerHttpExtensions.SetupHttpMessage(Mocker, Func<HttpResponseMessage>, Expression?, Expression?)
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage(FastMoq.Mocker, System.Func<System.Net.Http.HttpResponseMessage>, System.Linq.Expressions.Expression?, System.Linq.Expressions.Expression?)
+  name: WhenHttpRequest(Mocker, Func<HttpRequestMessage, bool>, Func<HttpResponseMessage>)
+  nameWithType: MockerHttpExtensions.WhenHttpRequest(Mocker, Func<HttpRequestMessage, bool>, Func<HttpResponseMessage>)
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Func<System.Net.Http.HttpRequestMessage, bool>, System.Func<System.Net.Http.HttpResponseMessage>)
   type: Method
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
       branch: IProvider
       repo: https://github.com/cwinland/FastMoq.git
-    id: SetupHttpMessage
+    id: WhenHttpRequest
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 73
+    startLine: 32
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
-  summary: Setups the HTTP message.
+  summary: Configures a provider-neutral HTTP response for requests that match the supplied predicate.
   example: []
   syntax:
-    content: public static void SetupHttpMessage(this Mocker mocker, Func<HttpResponseMessage> messageFunc, Expression? request = null, Expression? cancellationToken = null)
+    content: public static void WhenHttpRequest(this Mocker mocker, Func<HttpRequestMessage, bool> requestPredicate, Func<HttpResponseMessage> responseFactory)
     parameters:
     - id: mocker
       type: FastMoq.Mocker
       description: The mocker.
-    - id: messageFunc
+    - id: requestPredicate
+      type: System.Func{System.Net.Http.HttpRequestMessage,System.Boolean}
+      description: Predicate used to match an outgoing request.
+    - id: responseFactory
       type: System.Func{System.Net.Http.HttpResponseMessage}
-      description: The message function.
-    - id: request
-      type: System.Linq.Expressions.Expression
-      description: The request.
-    - id: cancellationToken
-      type: System.Linq.Expressions.Expression
-      description: The cancellation token.
-    content.vb: Public Shared Sub SetupHttpMessage(mocker As Mocker, messageFunc As Func(Of HttpResponseMessage), request As Expression = Nothing, cancellationToken As Expression = Nothing)
-  overload: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage*
-  nameWithType.vb: MockerHttpExtensions.SetupHttpMessage(Mocker, Func(Of HttpResponseMessage), Expression, Expression)
-  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage(FastMoq.Mocker, System.Func(Of System.Net.Http.HttpResponseMessage), System.Linq.Expressions.Expression, System.Linq.Expressions.Expression)
-  name.vb: SetupHttpMessage(Mocker, Func(Of HttpResponseMessage), Expression, Expression)
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessage``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
-  commentId: M:FastMoq.Extensions.MockerHttpExtensions.SetupMessage``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
-  id: SetupMessage``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+      description: Factory used to create the HTTP response for a matching request.
+    content.vb: Public Shared Sub WhenHttpRequest(mocker As Mocker, requestPredicate As Func(Of HttpRequestMessage, Boolean), responseFactory As Func(Of HttpResponseMessage))
+  overload: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*
+  nameWithType.vb: MockerHttpExtensions.WhenHttpRequest(Mocker, Func(Of HttpRequestMessage, Boolean), Func(Of HttpResponseMessage))
+  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Func(Of System.Net.Http.HttpRequestMessage, Boolean), System.Func(Of System.Net.Http.HttpResponseMessage))
+  name.vb: WhenHttpRequest(Mocker, Func(Of HttpRequestMessage, Boolean), Func(Of HttpResponseMessage))
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
+  id: WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
   isExtensionMethod: true
   parent: FastMoq.Extensions.MockerHttpExtensions
   langs:
   - csharp
   - vb
-  name: SetupMessage<TMock, TReturn>(Mocker, Expression<Func<TMock, TReturn>>, Func<TReturn>)
-  nameWithType: MockerHttpExtensions.SetupMessage<TMock, TReturn>(Mocker, Expression<Func<TMock, TReturn>>, Func<TReturn>)
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessage<TMock, TReturn>(FastMoq.Mocker, System.Linq.Expressions.Expression<System.Func<TMock, TReturn>>, System.Func<TReturn>)
+  name: WhenHttpRequest(Mocker, HttpMethod, string, Func<HttpResponseMessage>)
+  nameWithType: MockerHttpExtensions.WhenHttpRequest(Mocker, HttpMethod, string, Func<HttpResponseMessage>)
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Net.Http.HttpMethod, string, System.Func<System.Net.Http.HttpResponseMessage>)
   type: Method
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
       branch: IProvider
       repo: https://github.com/cwinland/FastMoq.git
-    id: SetupMessage
+    id: WhenHttpRequest
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 95
+    startLine: 48
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
-  summary: Setups the message.
+  summary: Configures a provider-neutral HTTP response for a specific method and request URI or path.
   example: []
   syntax:
-    content: 'public static void SetupMessage<TMock, TReturn>(this Mocker mocker, Expression<Func<TMock, TReturn>> expression, Func<TReturn> messageFunc) where TMock : class'
+    content: public static void WhenHttpRequest(this Mocker mocker, HttpMethod method, string requestUriOrPath, Func<HttpResponseMessage> responseFactory)
     parameters:
     - id: mocker
       type: FastMoq.Mocker
       description: The mocker.
-    - id: expression
-      type: System.Linq.Expressions.Expression{System.Func{{TMock},{TReturn}}}
-      description: The expression.
-    - id: messageFunc
-      type: System.Func{{TReturn}}
-      description: The message function.
-    typeParameters:
-    - id: TMock
-      description: The type of the mock.
-    - id: TReturn
-      description: The type of the return value.
-    content.vb: Public Shared Sub SetupMessage(Of TMock As Class, TReturn)(mocker As Mocker, expression As Expression(Of Func(Of TMock, TReturn)), messageFunc As Func(Of TReturn))
-  overload: FastMoq.Extensions.MockerHttpExtensions.SetupMessage*
-  nameWithType.vb: MockerHttpExtensions.SetupMessage(Of TMock, TReturn)(Mocker, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
-  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.SetupMessage(Of TMock, TReturn)(FastMoq.Mocker, System.Linq.Expressions.Expression(Of System.Func(Of TMock, TReturn)), System.Func(Of TReturn))
-  name.vb: SetupMessage(Of TMock, TReturn)(Mocker, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
-  commentId: M:FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
-  id: SetupMessageAsync``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
-  isExtensionMethod: true
-  parent: FastMoq.Extensions.MockerHttpExtensions
-  langs:
-  - csharp
-  - vb
-  name: SetupMessageAsync<TMock, TReturn>(Mocker, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
-  nameWithType: MockerHttpExtensions.SetupMessageAsync<TMock, TReturn>(Mocker, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync<TMock, TReturn>(FastMoq.Mocker, System.Linq.Expressions.Expression<System.Func<TMock, System.Threading.Tasks.Task<TReturn>>>, System.Func<TReturn>)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: SetupMessageAsync
-    path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 110
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq.Extensions
-  summary: Setups the message asynchronous.
-  example: []
-  syntax:
-    content: 'public static void SetupMessageAsync<TMock, TReturn>(this Mocker mocker, Expression<Func<TMock, Task<TReturn>>> expression, Func<TReturn> messageFunc) where TMock : class'
-    parameters:
-    - id: mocker
-      type: FastMoq.Mocker
-      description: The mocker.
-    - id: expression
-      type: System.Linq.Expressions.Expression{System.Func{{TMock},System.Threading.Tasks.Task{{TReturn}}}}
-      description: The expression.
-    - id: messageFunc
-      type: System.Func{{TReturn}}
-      description: The message function.
-    typeParameters:
-    - id: TMock
-      description: The type of the mock.
-    - id: TReturn
-      description: The type of the return value.
-    content.vb: Public Shared Sub SetupMessageAsync(Of TMock As Class, TReturn)(mocker As Mocker, expression As Expression(Of Func(Of TMock, Task(Of TReturn))), messageFunc As Func(Of TReturn))
-  overload: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync*
-  exceptions:
-  - type: System.IO.InvalidDataException
-    commentId: T:System.IO.InvalidDataException
-    description: Unable to setup '{typeof(TMock)}'.
-  nameWithType.vb: MockerHttpExtensions.SetupMessageAsync(Of TMock, TReturn)(Mocker, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
-  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync(Of TMock, TReturn)(FastMoq.Mocker, System.Linq.Expressions.Expression(Of System.Func(Of TMock, System.Threading.Tasks.Task(Of TReturn))), System.Func(Of TReturn))
-  name.vb: SetupMessageAsync(Of TMock, TReturn)(Mocker, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  commentId: M:FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  id: SetupMessageProtected``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  isExtensionMethod: true
-  parent: FastMoq.Extensions.MockerHttpExtensions
-  langs:
-  - csharp
-  - vb
-  name: SetupMessageProtected<TMock, TReturn>(Mocker, string, Func<TReturn>, params object?[]?)
-  nameWithType: MockerHttpExtensions.SetupMessageProtected<TMock, TReturn>(Mocker, string, Func<TReturn>, params object?[]?)
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected<TMock, TReturn>(FastMoq.Mocker, string, System.Func<TReturn>, params object?[]?)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: SetupMessageProtected
-    path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 126
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq.Extensions
-  summary: Setups the message protected.
-  example: []
-  syntax:
-    content: 'public static void SetupMessageProtected<TMock, TReturn>(this Mocker mocker, string methodOrPropertyName, Func<TReturn> messageFunc, params object?[]? args) where TMock : class'
-    parameters:
-    - id: mocker
-      type: FastMoq.Mocker
-      description: The mocker.
-    - id: methodOrPropertyName
+    - id: method
+      type: System.Net.Http.HttpMethod
+      description: The expected HTTP method.
+    - id: requestUriOrPath
       type: System.String
-      description: Name of the method or property.
-    - id: messageFunc
-      type: System.Func{{TReturn}}
-      description: The message function.
-    - id: args
-      type: System.Object[]
-      description: The arguments.
-    typeParameters:
-    - id: TMock
-      description: The type of the mock.
-    - id: TReturn
-      description: The type of the return value.
-    content.vb: Public Shared Sub SetupMessageProtected(Of TMock As Class, TReturn)(mocker As Mocker, methodOrPropertyName As String, messageFunc As Func(Of TReturn), ParamArray args As Object())
-  overload: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected*
-  nameWithType.vb: MockerHttpExtensions.SetupMessageProtected(Of TMock, TReturn)(Mocker, String, Func(Of TReturn), ParamArray Object())
-  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected(Of TMock, TReturn)(FastMoq.Mocker, String, System.Func(Of TReturn), ParamArray Object())
-  name.vb: SetupMessageProtected(Of TMock, TReturn)(Mocker, String, Func(Of TReturn), ParamArray Object())
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  commentId: M:FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  id: SetupMessageProtectedAsync``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
+      description: The absolute URI or relative path to match.
+    - id: responseFactory
+      type: System.Func{System.Net.Http.HttpResponseMessage}
+      description: Factory used to create the HTTP response for a matching request.
+    content.vb: Public Shared Sub WhenHttpRequest(mocker As Mocker, method As HttpMethod, requestUriOrPath As String, responseFactory As Func(Of HttpResponseMessage))
+  overload: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*
+  nameWithType.vb: MockerHttpExtensions.WhenHttpRequest(Mocker, HttpMethod, String, Func(Of HttpResponseMessage))
+  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Net.Http.HttpMethod, String, System.Func(Of System.Net.Http.HttpResponseMessage))
+  name.vb: WhenHttpRequest(Mocker, HttpMethod, String, Func(Of HttpResponseMessage))
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
+  id: WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
   isExtensionMethod: true
   parent: FastMoq.Extensions.MockerHttpExtensions
   langs:
   - csharp
   - vb
-  name: SetupMessageProtectedAsync<TMock, TReturn>(Mocker, string, Func<TReturn>, params object?[]?)
-  nameWithType: MockerHttpExtensions.SetupMessageProtectedAsync<TMock, TReturn>(Mocker, string, Func<TReturn>, params object?[]?)
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync<TMock, TReturn>(FastMoq.Mocker, string, System.Func<TReturn>, params object?[]?)
+  name: WhenHttpRequestJson(Mocker, HttpMethod, string, string, HttpStatusCode)
+  nameWithType: MockerHttpExtensions.WhenHttpRequestJson(Mocker, HttpMethod, string, string, HttpStatusCode)
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker, System.Net.Http.HttpMethod, string, string, System.Net.HttpStatusCode)
   type: Method
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
       branch: IProvider
       repo: https://github.com/cwinland/FastMoq.git
-    id: SetupMessageProtectedAsync
+    id: WhenHttpRequestJson
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 141
+    startLine: 66
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
-  summary: Setups the message protected asynchronous.
+  summary: Configures a provider-neutral JSON response for a specific method and request URI or path.
   example: []
   syntax:
-    content: 'public static void SetupMessageProtectedAsync<TMock, TReturn>(this Mocker mocker, string methodOrPropertyName, Func<TReturn> messageFunc, params object?[]? args) where TMock : class'
+    content: public static void WhenHttpRequestJson(this Mocker mocker, HttpMethod method, string requestUriOrPath, string json, HttpStatusCode statusCode = HttpStatusCode.OK)
     parameters:
     - id: mocker
       type: FastMoq.Mocker
       description: The mocker.
-    - id: methodOrPropertyName
+    - id: method
+      type: System.Net.Http.HttpMethod
+      description: The expected HTTP method.
+    - id: requestUriOrPath
       type: System.String
-      description: Name of the method or property.
-    - id: messageFunc
-      type: System.Func{{TReturn}}
-      description: The message function.
-    - id: args
-      type: System.Object[]
-      description: The arguments.
-    typeParameters:
-    - id: TMock
-      description: The type of the mock.
-    - id: TReturn
-      description: The type of the return value.
-    content.vb: Public Shared Sub SetupMessageProtectedAsync(Of TMock As Class, TReturn)(mocker As Mocker, methodOrPropertyName As String, messageFunc As Func(Of TReturn), ParamArray args As Object())
-  overload: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync*
-  nameWithType.vb: MockerHttpExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(Mocker, String, Func(Of TReturn), ParamArray Object())
-  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(FastMoq.Mocker, String, System.Func(Of TReturn), ParamArray Object())
-  name.vb: SetupMessageProtectedAsync(Of TMock, TReturn)(Mocker, String, Func(Of TReturn), ParamArray Object())
+      description: The absolute URI or relative path to match.
+    - id: json
+      type: System.String
+      description: The JSON payload returned to matching requests.
+    - id: statusCode
+      type: System.Net.HttpStatusCode
+      description: The response status code.
+    content.vb: Public Shared Sub WhenHttpRequestJson(mocker As Mocker, method As HttpMethod, requestUriOrPath As String, json As String, statusCode As HttpStatusCode = HttpStatusCode.OK)
+  overload: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson*
+  nameWithType.vb: MockerHttpExtensions.WhenHttpRequestJson(Mocker, HttpMethod, String, String, HttpStatusCode)
+  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker, System.Net.Http.HttpMethod, String, String, System.Net.HttpStatusCode)
+  name.vb: WhenHttpRequestJson(Mocker, HttpMethod, String, String, HttpStatusCode)
 - uid: FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync(System.Net.Http.HttpContent)
   commentId: M:FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync(System.Net.Http.HttpContent)
   id: GetContentBytesAsync(System.Net.Http.HttpContent)
@@ -353,7 +249,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetContentBytesAsync
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 152
+    startLine: 104
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -389,7 +285,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetContentStreamAsync
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 160
+    startLine: 112
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -776,12 +672,59 @@ references:
     name: Http
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.net.http
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage*
-  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage
-  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupHttpMessage_FastMoq_Mocker_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_
-  name: SetupHttpMessage
-  nameWithType: MockerHttpExtensions.SetupHttpMessage
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*
+  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest
+  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_FastMoq_Mocker_System_Func_System_Net_Http_HttpRequestMessage_System_Boolean__System_Func_System_Net_Http_HttpResponseMessage__
+  name: WhenHttpRequest
+  nameWithType: MockerHttpExtensions.WhenHttpRequest
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest
+- uid: System.Func{System.Net.Http.HttpRequestMessage,System.Boolean}
+  commentId: T:System.Func{System.Net.Http.HttpRequestMessage,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<HttpRequestMessage, bool>
+  nameWithType: Func<HttpRequestMessage, bool>
+  fullName: System.Func<System.Net.Http.HttpRequestMessage, bool>
+  nameWithType.vb: Func(Of HttpRequestMessage, Boolean)
+  fullName.vb: System.Func(Of System.Net.Http.HttpRequestMessage, Boolean)
+  name.vb: Func(Of HttpRequestMessage, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Net.Http.HttpRequestMessage
+    name: HttpRequestMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httprequestmessage
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Net.Http.HttpRequestMessage
+    name: HttpRequestMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httprequestmessage
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: System.Func{System.Net.Http.HttpResponseMessage}
   commentId: T:System.Func{System.Net.Http.HttpResponseMessage}
   parent: System
@@ -817,14 +760,40 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
   - name: )
-- uid: System.Linq.Expressions.Expression
-  commentId: T:System.Linq.Expressions.Expression
-  parent: System.Linq.Expressions
+- uid: System.Func`2
+  commentId: T:System.Func`2
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
-  name: Expression
-  nameWithType: Expression
-  fullName: System.Linq.Expressions.Expression
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
 - uid: System.Func`1
   commentId: T:System.Func`1
   isExternal: true
@@ -853,266 +822,20 @@ references:
   - name: " "
   - name: TResult
   - name: )
-- uid: System.Linq.Expressions
-  commentId: N:System.Linq.Expressions
+- uid: System.Net.Http.HttpMethod
+  commentId: T:System.Net.Http.HttpMethod
+  parent: System.Net.Http
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Linq.Expressions
-  nameWithType: System.Linq.Expressions
-  fullName: System.Linq.Expressions
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Linq
-    name: Linq
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq
-  - name: .
-  - uid: System.Linq.Expressions
-    name: Expressions
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Linq
-    name: Linq
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq
-  - name: .
-  - uid: System.Linq.Expressions
-    name: Expressions
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessage*
-  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.SetupMessage
-  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessage__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__
-  name: SetupMessage
-  nameWithType: MockerHttpExtensions.SetupMessage
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessage
-- uid: System.Linq.Expressions.Expression{System.Func{{TMock},{TReturn}}}
-  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,``1}}
-  parent: System.Linq.Expressions
-  definition: System.Linq.Expressions.Expression`1
-  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  name: Expression<Func<TMock, TReturn>>
-  nameWithType: Expression<Func<TMock, TReturn>>
-  fullName: System.Linq.Expressions.Expression<System.Func<TMock, TReturn>>
-  nameWithType.vb: Expression(Of Func(Of TMock, TReturn))
-  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TMock, TReturn))
-  name.vb: Expression(Of Func(Of TMock, TReturn))
-  spec.csharp:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: <
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: <
-  - name: TMock
-  - name: ','
-  - name: " "
-  - name: TReturn
-  - name: '>'
-  - name: '>'
-  spec.vb:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TMock
-  - name: ','
-  - name: " "
-  - name: TReturn
-  - name: )
-  - name: )
-- uid: System.Func{{TReturn}}
-  commentId: T:System.Func{``0}
-  parent: System
-  definition: System.Func`1
-  href: https://learn.microsoft.com/dotnet/api/system.func-1
-  name: Func<TReturn>
-  nameWithType: Func<TReturn>
-  fullName: System.Func<TReturn>
-  nameWithType.vb: Func(Of TReturn)
-  fullName.vb: System.Func(Of TReturn)
-  name.vb: Func(Of TReturn)
-  spec.csharp:
-  - uid: System.Func`1
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-1
-  - name: <
-  - name: TReturn
-  - name: '>'
-  spec.vb:
-  - uid: System.Func`1
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TReturn
-  - name: )
-- uid: System.Linq.Expressions.Expression`1
-  commentId: T:System.Linq.Expressions.Expression`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  name: Expression<TDelegate>
-  nameWithType: Expression<TDelegate>
-  fullName: System.Linq.Expressions.Expression<TDelegate>
-  nameWithType.vb: Expression(Of TDelegate)
-  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
-  name.vb: Expression(Of TDelegate)
-  spec.csharp:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: <
-  - name: TDelegate
-  - name: '>'
-  spec.vb:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TDelegate
-  - name: )
-- uid: System.IO.InvalidDataException
-  commentId: T:System.IO.InvalidDataException
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.io.invaliddataexception
-  name: InvalidDataException
-  nameWithType: InvalidDataException
-  fullName: System.IO.InvalidDataException
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync*
-  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync
-  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageAsync__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__
-  name: SetupMessageAsync
-  nameWithType: MockerHttpExtensions.SetupMessageAsync
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync
-- uid: System.Linq.Expressions.Expression{System.Func{{TMock},System.Threading.Tasks.Task{{TReturn}}}}
-  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}}
-  parent: System.Linq.Expressions
-  definition: System.Linq.Expressions.Expression`1
-  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  name: Expression<Func<TMock, Task<TReturn>>>
-  nameWithType: Expression<Func<TMock, Task<TReturn>>>
-  fullName: System.Linq.Expressions.Expression<System.Func<TMock, System.Threading.Tasks.Task<TReturn>>>
-  nameWithType.vb: Expression(Of Func(Of TMock, Task(Of TReturn)))
-  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TMock, System.Threading.Tasks.Task(Of TReturn)))
-  name.vb: Expression(Of Func(Of TMock, Task(Of TReturn)))
-  spec.csharp:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: <
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: <
-  - name: TMock
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: <
-  - name: TReturn
-  - name: '>'
-  - name: '>'
-  - name: '>'
-  spec.vb:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TMock
-  - name: ','
-  - name: " "
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TReturn
-  - name: )
-  - name: )
-  - name: )
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected*
-  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected
-  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtected__2_FastMoq_Mocker_System_String_System_Func___1__System_Object___
-  name: SetupMessageProtected
-  nameWithType: MockerHttpExtensions.SetupMessageProtected
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected
-- uid: System.Object[]
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.object
-  name: object[]
-  nameWithType: object[]
-  fullName: object[]
-  nameWithType.vb: Object()
-  fullName.vb: Object()
-  name.vb: Object()
-  spec.csharp:
-  - uid: System.Object
-    name: object
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.object
-  - name: '['
-  - name: ']'
-  spec.vb:
-  - uid: System.Object
-    name: Object
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.object
-  - name: (
-  - name: )
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync*
-  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync
-  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtectedAsync__2_FastMoq_Mocker_System_String_System_Func___1__System_Object___
-  name: SetupMessageProtectedAsync
-  nameWithType: MockerHttpExtensions.SetupMessageProtectedAsync
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpmethod
+  name: HttpMethod
+  nameWithType: HttpMethod
+  fullName: System.Net.Http.HttpMethod
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson*
+  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson
+  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequestJson_FastMoq_Mocker_System_Net_Http_HttpMethod_System_String_System_String_System_Net_HttpStatusCode_
+  name: WhenHttpRequestJson
+  nameWithType: MockerHttpExtensions.WhenHttpRequestJson
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson
 - uid: FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync*
   commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync
   href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_GetContentBytesAsync_System_Net_Http_HttpContent_

@@ -99,13 +99,14 @@
 <li>provider implementations for Moq, NSubstitute, and reflection-based fallback behavior</li>
 </ul>
 <h3 id="provider-first-mock-access">Provider-first mock access</h3>
-<p>Tracked mocks now expose the active provider object directly.</p>
+<p>Tracked mocks now expose the active provider object directly, and provider packages can layer typed convenience extensions on top of that tracked surface.</p>
 <p>Key surfaces include:</p>
 <ul>
 <li><code>MockModel.NativeMock</code></li>
 <li><code>GetNativeMock(...)</code></li>
 <li><code>GetOrCreateMock&lt;T&gt;()</code></li>
 <li><code>GetOrCreateMock(Type, ...)</code></li>
+<li>provider-package bridges such as <code>AsMoq()</code> and <code>AsNSubstitute()</code></li>
 </ul>
 <h3 id="focused-instance-creation">Focused instance creation</h3>
 <p>The older options bag has been removed in favor of focused creation APIs.</p>
@@ -251,7 +252,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

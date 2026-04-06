@@ -85,6 +85,7 @@
 <ul>
 <li>provider-neutral APIs such as <code>GetOrCreateMock(...)</code>, <code>VerifyLogged(...)</code>, and the scenario builder can work with any registered provider that supports the needed capability.</li>
 <li>Moq compatibility APIs such as <code>GetMock&lt;T&gt;()</code>, <code>VerifyLogger(...)</code>, <code>Protected()</code>, and direct <code>Mock&lt;T&gt;</code> setup require the Moq provider to be selected.</li>
+<li>provider-package extensions such as <code>AsMoq()</code>, <code>Setup(...)</code> on <code>IFastMock&lt;T&gt;</code>, and <code>AsNSubstitute()</code> also require their corresponding provider package and selected provider.</li>
 </ul>
 <h2 id="how-provider-selection-works">How provider selection works</h2>
 <p>The selection code lives in <code>MockingProviderRegistry</code>.</p>
@@ -193,7 +194,7 @@ var mocker = new Mocker();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

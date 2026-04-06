@@ -74,7 +74,43 @@
 
 <p>Welcome to FastMoq. This guide walks through setup and a first test using the current v4 release line. FastMoq helps you create tests with automatic dependency injection, mock tracking, and test-focused object creation without forcing you to wire every dependency by hand.</p>
 <h2 id="what-is-fastmoq">What is FastMoq?</h2>
-<p>FastMoq is designed to reduce the boilerplate usually required when setting up unit tests. It automatically creates and injects test doubles, lets you override only the parts that matter, and supports both provider-neutral test patterns and Moq compatibility for migration scenarios.</p>
+<p>FastMoq is designed to reduce the boilerplate usually required when setting up unit tests. It automatically creates and injects test doubles, lets you override only the parts that matter, and supports both provider-neutral test patterns and provider-specific compatibility for migration scenarios.</p>
+<h3 id="why-teams-use-fastmoq-instead-of-using-a-mock-provider-directly">Why teams use FastMoq instead of using a mock provider directly</h3>
+<p>The main value is still less test harness code.</p>
+<p>With a mock provider used directly, the test usually needs to do all of this itself:</p>
+<ul>
+<li>declare each dependency mock</li>
+<li>construct the subject under test manually</li>
+<li>keep constructor wiring in sync as dependencies change</li>
+<li>add extra harness code for framework-heavy types and logging</li>
+</ul>
+<p>With FastMoq, the test usually only configures the dependencies that matter for the behavior under test.</p>
+<p>Side-by-side example:</p>
+<pre><code class="lang-csharp">// Direct mock-provider usage
+var parser = new Mock&lt;ICustomerCsvParser&gt;();
+var repository = new Mock&lt;ICustomerRepository&gt;();
+var logger = new Mock&lt;ILogger&lt;CustomerImportService&gt;&gt;();
+var component = new CustomerImportService(parser.Object, repository.Object, logger.Object);
+
+parser.Setup(x =&gt; x.Parse(csv)).Returns(rows);
+
+var importedCount = await component.ImportAsync(filePath, CancellationToken.None);
+
+repository.Verify(x =&gt; x.UpsertAsync(It.IsAny&lt;IReadOnlyList&lt;CustomerImportRow&gt;&gt;(), CancellationToken.None), Times.Once);
+</code></pre>
+<pre><code class="lang-csharp">// FastMoq
+Mocks.GetOrCreateMock&lt;ICustomerCsvParser&gt;()
+    .Setup(x =&gt; x.Parse(csv))
+    .Returns(rows);
+
+var importedCount = await Component.ImportAsync(filePath, CancellationToken.None);
+
+Mocks.Verify&lt;ICustomerRepository&gt;(
+    x =&gt; x.UpsertAsync(It.IsAny&lt;IReadOnlyList&lt;CustomerImportRow&gt;&gt;(), CancellationToken.None),
+    TimesSpec.Once);
+</code></pre>
+<p>FastMoq is most valuable when the subject has multiple dependencies, when constructor signatures change frequently, or when your tests repeatedly need built-in framework helpers.</p>
+<p>This guide is intentionally the &quot;how to&quot; companion to the repo README. The README is the better first read when you are deciding whether FastMoq is the right fit. This guide is the better first read when you already want to write a test.</p>
 <p>For the repo-native testing conventions and framework-specific guidance used by this codebase, see the <a href="testing-guide.html">FastMoq Testing Guide</a>.</p>
 <p>If you want examples that run directly in this repository instead of static snippets only, see <a href="../samples/testing-examples.html">Executable Testing Examples</a>.</p>
 <p>If you are updating older FastMoq usage from the last public <code>3.0.0</code> release, see <a href="../migration/README.html">Migration Guide: 3.0.0 To Current Repo</a>.</p>
@@ -86,6 +122,7 @@
 <li><strong>Fluent API</strong>: Clean, readable syntax for test setup and verification</li>
 <li><strong>Provider Architecture</strong>: Extensible system for custom mock configurations</li>
 <li><strong>Built-in Helpers</strong>: Common patterns for EF Core, HttpClient, IFileSystem, and more</li>
+<li><strong>Less Constructor Wiring</strong>: The test stays focused on the behavior under test instead of the dependency graph</li>
 </ul>
 <h2 id="installation">Installation</h2>
 <p>Install FastMoq using your preferred package manager:</p>
@@ -195,11 +232,11 @@ public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&
         var fileContent = &quot;hello world&quot;;
         var expectedResult = &quot;HELLO WORLD&quot;;
 
-        Mocks.GetMock&lt;IFileSystem&gt;()
+        Mocks.GetOrCreateMock&lt;IFileSystem&gt;()
             .Setup(x =&gt; x.File.Exists(filePath))
             .Returns(true);
 
-        Mocks.GetMock&lt;IFileSystem&gt;()
+        Mocks.GetOrCreateMock&lt;IFileSystem&gt;()
             .Setup(x =&gt; x.File.ReadAllTextAsync(filePath, It.IsAny&lt;CancellationToken&gt;()))
             .ReturnsAsync(fileContent);
 
@@ -210,8 +247,9 @@ public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&
         result.Should().Be(expectedResult);
         
         // Verify interactions
-        Mocks.GetMock&lt;IFileSystem&gt;()
-            .Verify(x =&gt; x.File.ReadAllTextAsync(filePath, It.IsAny&lt;CancellationToken&gt;()), Times.Once);
+        Mocks.Verify&lt;IFileSystem&gt;(
+            x =&gt; x.File.ReadAllTextAsync(filePath, It.IsAny&lt;CancellationToken&gt;()),
+            TimesSpec.Once);
     }
 
     [Fact]
@@ -220,7 +258,7 @@ public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&
         // Arrange
         var filePath = &quot;nonexistent.txt&quot;;
 
-        Mocks.GetMock&lt;IFileSystem&gt;()
+        Mocks.GetOrCreateMock&lt;IFileSystem&gt;()
             .Setup(x =&gt; x.File.Exists(filePath))
             .Returns(false);
 
@@ -234,8 +272,9 @@ public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&
         Mocks.VerifyLogged(LogLevel.Warning, &quot;not found&quot;, 1);
         
         // Verify file was never read
-        Mocks.GetMock&lt;IFileSystem&gt;()
-            .Verify(x =&gt; x.File.ReadAllTextAsync(It.IsAny&lt;string&gt;(), It.IsAny&lt;CancellationToken&gt;()), Times.Never);
+        Mocks.Verify&lt;IFileSystem&gt;(
+            x =&gt; x.File.ReadAllTextAsync(It.IsAny&lt;string&gt;(), It.IsAny&lt;CancellationToken&gt;()),
+            TimesSpec.Never());
     }
 }
 </code></pre>
@@ -245,7 +284,7 @@ public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&
 <ol>
 <li><strong>Creates your component</strong>: The <code>Component</code> property contains an instance of your class under test</li>
 <li><strong>Manages dependencies</strong>: Constructor parameters are resolved automatically using FastMoq's current type-map, known-type, and auto-mock rules</li>
-<li><strong>Provides mock access</strong>: Use <code>Mocks.GetMock&lt;T&gt;()</code> to configure mock behavior</li>
+<li><strong>Provides mock access</strong>: Use <code>Mocks.GetOrCreateMock&lt;T&gt;()</code> to configure tracked mock behavior</li>
 <li><strong>Handles cleanup</strong>: Mocks are properly disposed after each test</li>
 </ol>
 <h3 id="key-properties-and-methods">Key Properties and Methods</h3>
@@ -270,8 +309,8 @@ public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&
 <td>The <code>Mocker</code> instance that manages all mocks</td>
 </tr>
 <tr>
-<td><code>Mocks.GetMock&lt;T&gt;()</code></td>
-<td>Gets the mock for interface T</td>
+<td><code>Mocks.GetOrCreateMock&lt;T&gt;()</code></td>
+<td>Gets the tracked mock handle for interface T</td>
 </tr>
 <tr>
 <td><code>Mocks.GetObject&lt;T&gt;()</code></td>
@@ -295,7 +334,7 @@ public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&
     protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
     {
         // Configure mock behavior before component creation
-        mocker.GetMock&lt;IPaymentProcessor&gt;()
+        mocker.GetOrCreateMock&lt;IPaymentProcessor&gt;()
             .Setup(x =&gt; x.ValidateCard(It.IsAny&lt;string&gt;()))
             .Returns(true);
     };
@@ -317,7 +356,7 @@ public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&
 
     private static void ConfigureMocks(Mocker mocker)
     {
-        mocker.GetMock&lt;IOrderRepository&gt;()
+        mocker.GetOrCreateMock&lt;IOrderRepository&gt;()
             .Setup(x =&gt; x.GetOrderAsync(It.IsAny&lt;int&gt;()))
             .ReturnsAsync(new Order());
     }
@@ -346,11 +385,11 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
     var filePath = &quot;data.txt&quot;;
     var expectedContent = &quot;PROCESSED DATA&quot;;
     
-    Mocks.GetMock&lt;IFileSystem&gt;()
+    Mocks.GetOrCreateMock&lt;IFileSystem&gt;()
         .Setup(x =&gt; x.File.Exists(filePath))
         .Returns(true);
     
-    Mocks.GetMock&lt;IFileSystem&gt;()
+    Mocks.GetOrCreateMock&lt;IFileSystem&gt;()
         .Setup(x =&gt; x.File.ReadAllTextAsync(filePath, It.IsAny&lt;CancellationToken&gt;()))
         .ReturnsAsync(&quot;processed data&quot;);
 
@@ -381,7 +420,7 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
 </ol>
 <h3 id="logger-verification-guidance">Logger verification guidance</h3>
 <p>Prefer <code>Mocks.VerifyLogged(...)</code> for new code. It is provider-safe because FastMoq captures <code>ILogger</code> callbacks through the active <code>IMockingProvider</code> and verifies the captured entries in core.</p>
-<p>Use <code>GetMock&lt;ILogger&lt;T&gt;&gt;().VerifyLogger(...)</code> only when you intentionally want the legacy Moq-specific behavior. That API is a compatibility shim and is planned to leave core in v5.</p>
+<p>Use <code>GetOrCreateMock&lt;ILogger&lt;T&gt;&gt;().AsMoq().VerifyLogger(...)</code> only when you intentionally want the legacy Moq-specific behavior. That API is a compatibility shim and is planned to leave core in v5.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="common-issues">Common Issues</h3>
 <p><strong>Problem</strong>: <code>System.MethodAccessException</code> when mocking DbContext
@@ -413,7 +452,7 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

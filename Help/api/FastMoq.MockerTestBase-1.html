@@ -285,6 +285,7 @@ public void Submit(int orderId)
   </table>
   <h5 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Action__0__System_Type____examples">Examples</h5>
   <p>This overload is useful when a service has several constructors and the selected one needs additional state configured after creation.</p>
+<p>If the test uses Moq-only setup methods such as <code>Setup(...)</code> or <code>ReturnsAsync(...)</code>, use the legacy Moq path intentionally and ensure the Moq provider is selected for that test assembly.</p>
 <pre><code class="lang-csharp">public sealed class OrdersImportTests : MockerTestBase&lt;OrdersImporter&gt;
 {
     public OrdersImportTests()
@@ -374,7 +375,7 @@ public void Submit(int orderId)
   </table>
   <h5 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Func_FastMoq_Mocker__0__System_Action__0___examples">Examples</h5>
   <p>Use this overload when the test base needs full control over the arrange, create, and post-create phases.</p>
-<p>If the example needs to configure a return value such as <code>GetRate("USD", "EUR")</code>, use the mock-setup API that actually exposes setup semantics today. <code>GetOrCreateMock</code> is for obtaining the tracked provider-backed mock handle, not for provider-neutral setup.</p>
+<p><code>GetOrCreateMock</code> returns a provider-backed tracked mock handle. It works with the active FastMoq provider, but chaining Moq-specific setup APIs such as <code>Setup(...)</code> requires the Moq provider to be selected for the test assembly.</p>
 <pre><code class="lang-csharp">public sealed class InvoiceServiceTests : MockerTestBase&lt;InvoiceService&gt;
 {
     public InvoiceServiceTests()
@@ -392,7 +393,7 @@ public void Submit(int orderId)
     {
     }
 }</code></pre>
-<p>Use <code>GetOrCreateMock</code> when you need the tracked mock handle itself, for example to pass <code>Instance</code> into custom construction without relying on automatic resolution, to reuse the same tracked mock across calls, or to use keyed <a class="xref" href="FastMoq.MockRequestOptions.html">MockRequestOptions</a>.</p>
+<p>Use <code>GetOrCreateMock</code> when you need the tracked mock handle itself, for example to pass <code>Instance</code> into custom construction without relying on automatic resolution, to reuse the same tracked mock across calls, or to use keyed <a class="xref" href="FastMoq.MockRequestOptions.html">MockRequestOptions</a>. Use <code>GetMock</code> only for the legacy Moq-specific setup path.</p>
 
   <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
   <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action__0__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{`0})">MockerTestBase(Action&lt;TComponent&gt;)</h4>
@@ -568,7 +569,9 @@ When it is off, it may not be able to fill in properties or other injections of 
   </table>
   <a id="FastMoq_MockerTestBase_1_ComponentCreationFlags_" data-uid="FastMoq.MockerTestBase`1.ComponentCreationFlags*"></a>
   <h4 id="FastMoq_MockerTestBase_1_ComponentCreationFlags" data-uid="FastMoq.MockerTestBase`1.ComponentCreationFlags">ComponentCreationFlags</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Controls how the component under test is created by the default constructor path.
+Override this to opt into alternate constructor-selection or optional-parameter behavior for the component.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -867,8 +870,50 @@ unmanaged resources.</p>
     </tbody>
   </table>
   <a id="FastMoq_MockerTestBase_1_LoggingCallback_" data-uid="FastMoq.MockerTestBase`1.LoggingCallback*"></a>
+  <h4 id="FastMoq_MockerTestBase_1_LoggingCallback_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_" data-uid="FastMoq.MockerTestBase`1.LoggingCallback(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String)">LoggingCallback(LogLevel, EventId, string)</h4>
+  <div class="markdown level1 summary"><p>Receives log entries emitted through the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.
+Override this in a derived test base when log output should be captured or redirected.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td><p>The log severity.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a></td>
+        <td><span class="parametername">eventId</span></td>
+        <td><p>The event identifier.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The formatted log message.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_MockerTestBase_1_LoggingCallback_" data-uid="FastMoq.MockerTestBase`1.LoggingCallback*"></a>
   <h4 id="FastMoq_MockerTestBase_1_LoggingCallback_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception_" data-uid="FastMoq.MockerTestBase`1.LoggingCallback(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception)">LoggingCallback(LogLevel, EventId, string, Exception?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Receives log entries and any attached exception emitted through the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.
+Override this overload when tests need exception-aware log capture.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -887,22 +932,26 @@ unmanaged resources.</p>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
         <td><span class="parametername">logLevel</span></td>
-        <td></td>
+        <td><p>The log severity.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a></td>
         <td><span class="parametername">eventId</span></td>
-        <td></td>
+        <td><p>The event identifier.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">message</span></td>
-        <td></td>
+        <td><p>The formatted log message.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
         <td><span class="parametername">exception</span></td>
-        <td></td>
+        <td><p>The exception associated with the log entry, if any.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1354,6 +1403,21 @@ public void ImportJob_ShouldValidateConstructorArguments() =&gt; TestConstructor
       <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.SetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
   </div>
   <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_">MockerHttpMoqExtensions.SetupHttpMessage(object, Func&lt;HttpResponseMessage&gt;, Expression?, Expression?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__">MockerHttpMoqExtensions.SetupMessageAsync&lt;TMock, TReturn&gt;(object, Expression&lt;Func&lt;TMock, Task&lt;TReturn&gt;&gt;&gt;, Func&lt;TReturn&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___">MockerHttpMoqExtensions.SetupMessageProtectedAsync&lt;TMock, TReturn&gt;(object, string, Func&lt;TReturn&gt;, params object?[]?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___">MockerHttpMoqExtensions.SetupMessageProtected&lt;TMock, TReturn&gt;(object, string, Func&lt;TReturn&gt;, params object?[]?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__">MockerHttpMoqExtensions.SetupMessage&lt;TMock, TReturn&gt;(object, Expression&lt;Func&lt;TMock, TReturn&gt;&gt;, Func&lt;TReturn&gt;)</a>
+  </div>
+  <div>
       <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_">TestClassExtensions.GetFieldInfo&lt;TType&gt;(object, string)</a>
   </div>
   <div>
@@ -1384,7 +1448,7 @@ public void ImportJob_ShouldValidateConstructorArguments() =&gt; TestConstructor
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

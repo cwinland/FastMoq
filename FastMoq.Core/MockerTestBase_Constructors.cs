@@ -9,6 +9,10 @@ namespace FastMoq
 
         internal static Action<object> DefaultAction => _ => { };
 
+        /// <summary>
+        /// Controls how the component under test is created by the default constructor path.
+        /// Override this to opt into alternate constructor-selection or optional-parameter behavior for the component.
+        /// </summary>
         protected virtual InstanceCreationFlags ComponentCreationFlags => InstanceCreationFlags.None;
 
         private Func<Mocker, TComponent> DefaultCreateAction =>
@@ -61,7 +65,7 @@ namespace FastMoq
         /// <param name="createdComponentAction">The action to do after the component is created.</param>
         /// <example>
         /// <para>Use this overload when the test base needs full control over the arrange, create, and post-create phases.</para>
-        /// <para>If the example needs to configure a return value such as <c>GetRate("USD", "EUR")</c>, use the mock-setup API that actually exposes setup semantics today. <c>GetOrCreateMock</c> is for obtaining the tracked provider-backed mock handle, not for provider-neutral setup.</para>
+        /// <para><c>GetOrCreateMock</c> returns a provider-backed tracked mock handle. It works with the active FastMoq provider, but chaining Moq-specific setup APIs such as <c>Setup(...)</c> requires the Moq provider to be selected for the test assembly.</para>
         /// <code language="csharp"><![CDATA[
         /// public sealed class InvoiceServiceTests : MockerTestBase<InvoiceService>
         /// {
@@ -69,7 +73,7 @@ namespace FastMoq
         ///         : base(
         ///             setupMocksAction: mocker =>
         ///             {
-        ///                 mocker.GetOrCreateMock<IExchangeRateClient>()
+        ///                 mocker.GetMock<IExchangeRateClient>()
         ///                     .Setup(x => x.GetRate("USD", "EUR"))
         ///                     .Returns(0.92m);
         ///             },
@@ -81,7 +85,7 @@ namespace FastMoq
         ///     }
         /// }
         /// ]]></code>
-        /// <para>Use <c>GetOrCreateMock</c> when you need the tracked mock handle itself, for example to pass <c>Instance</c> into custom construction without relying on automatic resolution, to reuse the same tracked mock across calls, or to use keyed <see cref="MockRequestOptions"/>.</para>
+        /// <para>Use <c>GetOrCreateMock</c> when you need the tracked mock handle itself, for example to pass <c>Instance</c> into custom construction without relying on automatic resolution, to reuse the same tracked mock across calls, or to use keyed <see cref="MockRequestOptions"/>. Use <c>GetMock</c> only for the legacy Moq-specific setup path.</para>
         /// </example>
         protected MockerTestBase(Action<Mocker> setupMocksAction,
             Func<Mocker, TComponent>? createComponentAction,
@@ -96,11 +100,26 @@ namespace FastMoq
             Component = GetComponent();
         }
 
+        /// <summary>
+        /// Receives log entries emitted through the current <see cref="Mocker"/> instance.
+        /// Override this in a derived test base when log output should be captured or redirected.
+        /// </summary>
+        /// <param name="logLevel">The log severity.</param>
+        /// <param name="eventId">The event identifier.</param>
+        /// <param name="message">The formatted log message.</param>
         public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message)
         {
             Console.WriteLine($"LogLevel: {logLevel}, EventId: {eventId}, Message: {message}");
         }
 
+        /// <summary>
+        /// Receives log entries and any attached exception emitted through the current <see cref="Mocker"/> instance.
+        /// Override this overload when tests need exception-aware log capture.
+        /// </summary>
+        /// <param name="logLevel">The log severity.</param>
+        /// <param name="eventId">The event identifier.</param>
+        /// <param name="message">The formatted log message.</param>
+        /// <param name="exception">The exception associated with the log entry, if any.</param>
         public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message, Exception? exception)
         {
             LoggingCallback(logLevel, eventId, message);
@@ -135,6 +154,7 @@ namespace FastMoq
         /// <param name="createdComponentAction">The created component action.</param>
         /// <example>
         /// <para>This overload is useful when a service has several constructors and the selected one needs additional state configured after creation.</para>
+        /// <para>If the test uses Moq-only setup methods such as <c>Setup(...)</c> or <c>ReturnsAsync(...)</c>, use the legacy Moq path intentionally and ensure the Moq provider is selected for that test assembly.</para>
         /// <code language="csharp"><![CDATA[
         /// public sealed class OrdersImportTests : MockerTestBase<OrdersImporter>
         /// {
@@ -142,7 +162,7 @@ namespace FastMoq
         ///         : base(
         ///             setupMocksAction: mocker =>
         ///             {
-        ///                 mocker.GetOrCreateMock<IOrdersApi>()
+        ///                 mocker.GetMock<IOrdersApi>()
         ///                     .Setup(x => x.FetchPageAsync(1))
         ///                     .ReturnsAsync(new OrdersPage());
         ///             },

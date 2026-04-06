@@ -703,86 +703,133 @@ references:
   isSpec: "True"
   fullName: FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync
   nameWithType: MockerHttpExtensions.GetContentStreamAsync
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage(FastMoq.Mocker,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
-  name: SetupHttpMessage(Mocker, Func<HttpResponseMessage>, Expression?, Expression?)
-  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupHttpMessage_FastMoq_Mocker_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_
-  commentId: M:FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage(FastMoq.Mocker,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
-  name.vb: SetupHttpMessage(Mocker, Func(Of HttpResponseMessage), Expression, Expression)
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage(FastMoq.Mocker, System.Func<System.Net.Http.HttpResponseMessage>, System.Linq.Expressions.Expression?, System.Linq.Expressions.Expression?)
-  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage(FastMoq.Mocker, System.Func(Of System.Net.Http.HttpResponseMessage), System.Linq.Expressions.Expression, System.Linq.Expressions.Expression)
-  nameWithType: MockerHttpExtensions.SetupHttpMessage(Mocker, Func<HttpResponseMessage>, Expression?, Expression?)
-  nameWithType.vb: MockerHttpExtensions.SetupHttpMessage(Mocker, Func(Of HttpResponseMessage), Expression, Expression)
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage*
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})
+  name: WhenHttpRequest(Mocker, Func<HttpRequestMessage, bool>, Func<HttpResponseMessage>)
+  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_FastMoq_Mocker_System_Func_System_Net_Http_HttpRequestMessage_System_Boolean__System_Func_System_Net_Http_HttpResponseMessage__
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})
+  name.vb: WhenHttpRequest(Mocker, Func(Of HttpRequestMessage, Boolean), Func(Of HttpResponseMessage))
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Func<System.Net.Http.HttpRequestMessage, bool>, System.Func<System.Net.Http.HttpResponseMessage>)
+  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Func(Of System.Net.Http.HttpRequestMessage, Boolean), System.Func(Of System.Net.Http.HttpResponseMessage))
+  nameWithType: MockerHttpExtensions.WhenHttpRequest(Mocker, Func<HttpRequestMessage, bool>, Func<HttpResponseMessage>)
+  nameWithType.vb: MockerHttpExtensions.WhenHttpRequest(Mocker, Func(Of HttpRequestMessage, Boolean), Func(Of HttpResponseMessage))
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
+  name: WhenHttpRequest(Mocker, HttpMethod, string, Func<HttpResponseMessage>)
+  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_FastMoq_Mocker_System_Net_Http_HttpMethod_System_String_System_Func_System_Net_Http_HttpResponseMessage__
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
+  name.vb: WhenHttpRequest(Mocker, HttpMethod, String, Func(Of HttpResponseMessage))
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Net.Http.HttpMethod, string, System.Func<System.Net.Http.HttpResponseMessage>)
+  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Net.Http.HttpMethod, String, System.Func(Of System.Net.Http.HttpResponseMessage))
+  nameWithType: MockerHttpExtensions.WhenHttpRequest(Mocker, HttpMethod, string, Func<HttpResponseMessage>)
+  nameWithType.vb: MockerHttpExtensions.WhenHttpRequest(Mocker, HttpMethod, String, Func(Of HttpResponseMessage))
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*
+  name: WhenHttpRequest
+  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_
+  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest
+  isSpec: "True"
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest
+  nameWithType: MockerHttpExtensions.WhenHttpRequest
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
+  name: WhenHttpRequestJson(Mocker, HttpMethod, string, string, HttpStatusCode)
+  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequestJson_FastMoq_Mocker_System_Net_Http_HttpMethod_System_String_System_String_System_Net_HttpStatusCode_
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
+  name.vb: WhenHttpRequestJson(Mocker, HttpMethod, String, String, HttpStatusCode)
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker, System.Net.Http.HttpMethod, string, string, System.Net.HttpStatusCode)
+  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker, System.Net.Http.HttpMethod, String, String, System.Net.HttpStatusCode)
+  nameWithType: MockerHttpExtensions.WhenHttpRequestJson(Mocker, HttpMethod, string, string, HttpStatusCode)
+  nameWithType.vb: MockerHttpExtensions.WhenHttpRequestJson(Mocker, HttpMethod, String, String, HttpStatusCode)
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson*
+  name: WhenHttpRequestJson
+  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequestJson_
+  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson
+  isSpec: "True"
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson
+  nameWithType: MockerHttpExtensions.WhenHttpRequestJson
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions
+  name: MockerHttpMoqExtensions
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html
+  commentId: T:FastMoq.Extensions.MockerHttpMoqExtensions
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions
+  nameWithType: MockerHttpMoqExtensions
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  name: SetupHttpMessage(object, Func<HttpResponseMessage>, Expression?, Expression?)
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  name.vb: SetupHttpMessage(Object, Func(Of HttpResponseMessage), Expression, Expression)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(object, System.Func<System.Net.Http.HttpResponseMessage>, System.Linq.Expressions.Expression?, System.Linq.Expressions.Expression?)
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(Object, System.Func(Of System.Net.Http.HttpResponseMessage), System.Linq.Expressions.Expression, System.Linq.Expressions.Expression)
+  nameWithType: MockerHttpMoqExtensions.SetupHttpMessage(object, Func<HttpResponseMessage>, Expression?, Expression?)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupHttpMessage(Object, Func(Of HttpResponseMessage), Expression, Expression)
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage*
   name: SetupHttpMessage
-  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupHttpMessage_
-  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_
+  commentId: Overload:FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage
   isSpec: "True"
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage
-  nameWithType: MockerHttpExtensions.SetupHttpMessage
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessage*
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage
+  nameWithType: MockerHttpMoqExtensions.SetupHttpMessage
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage*
   name: SetupMessage
-  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessage_
-  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.SetupMessage
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage_
+  commentId: Overload:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage
   isSpec: "True"
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessage
-  nameWithType: MockerHttpExtensions.SetupMessage
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync*
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage
+  nameWithType: MockerHttpMoqExtensions.SetupMessage
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync*
   name: SetupMessageAsync
-  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageAsync_
-  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync_
+  commentId: Overload:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync
   isSpec: "True"
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync
-  nameWithType: MockerHttpExtensions.SetupMessageAsync
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
-  name: SetupMessageAsync<TMock, TReturn>(Mocker, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
-  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageAsync__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__
-  commentId: M:FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
-  name.vb: SetupMessageAsync(Of TMock, TReturn)(Mocker, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync<TMock, TReturn>(FastMoq.Mocker, System.Linq.Expressions.Expression<System.Func<TMock, System.Threading.Tasks.Task<TReturn>>>, System.Func<TReturn>)
-  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync(Of TMock, TReturn)(FastMoq.Mocker, System.Linq.Expressions.Expression(Of System.Func(Of TMock, System.Threading.Tasks.Task(Of TReturn))), System.Func(Of TReturn))
-  nameWithType: MockerHttpExtensions.SetupMessageAsync<TMock, TReturn>(Mocker, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
-  nameWithType.vb: MockerHttpExtensions.SetupMessageAsync(Of TMock, TReturn)(Mocker, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected*
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync
+  nameWithType: MockerHttpMoqExtensions.SetupMessageAsync
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+  name: SetupMessageAsync<TMock, TReturn>(object, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+  name.vb: SetupMessageAsync(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync<TMock, TReturn>(object, System.Linq.Expressions.Expression<System.Func<TMock, System.Threading.Tasks.Task<TReturn>>>, System.Func<TReturn>)
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync(Of TMock, TReturn)(Object, System.Linq.Expressions.Expression(Of System.Func(Of TMock, System.Threading.Tasks.Task(Of TReturn))), System.Func(Of TReturn))
+  nameWithType: MockerHttpMoqExtensions.SetupMessageAsync<TMock, TReturn>(object, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageAsync(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected*
   name: SetupMessageProtected
-  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtected_
-  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected_
+  commentId: Overload:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected
   isSpec: "True"
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected
-  nameWithType: MockerHttpExtensions.SetupMessageProtected
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync*
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtected
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync*
   name: SetupMessageProtectedAsync
-  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtectedAsync_
-  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync_
+  commentId: Overload:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync
   isSpec: "True"
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync
-  nameWithType: MockerHttpExtensions.SetupMessageProtectedAsync
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  name: SetupMessageProtectedAsync<TMock, TReturn>(Mocker, string, Func<TReturn>, params object?[]?)
-  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtectedAsync__2_FastMoq_Mocker_System_String_System_Func___1__System_Object___
-  commentId: M:FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  name.vb: SetupMessageProtectedAsync(Of TMock, TReturn)(Mocker, String, Func(Of TReturn), ParamArray Object())
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync<TMock, TReturn>(FastMoq.Mocker, string, System.Func<TReturn>, params object?[]?)
-  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(FastMoq.Mocker, String, System.Func(Of TReturn), ParamArray Object())
-  nameWithType: MockerHttpExtensions.SetupMessageProtectedAsync<TMock, TReturn>(Mocker, string, Func<TReturn>, params object?[]?)
-  nameWithType.vb: MockerHttpExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(Mocker, String, Func(Of TReturn), ParamArray Object())
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  name: SetupMessageProtected<TMock, TReturn>(Mocker, string, Func<TReturn>, params object?[]?)
-  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtected__2_FastMoq_Mocker_System_String_System_Func___1__System_Object___
-  commentId: M:FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])
-  name.vb: SetupMessageProtected(Of TMock, TReturn)(Mocker, String, Func(Of TReturn), ParamArray Object())
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected<TMock, TReturn>(FastMoq.Mocker, string, System.Func<TReturn>, params object?[]?)
-  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected(Of TMock, TReturn)(FastMoq.Mocker, String, System.Func(Of TReturn), ParamArray Object())
-  nameWithType: MockerHttpExtensions.SetupMessageProtected<TMock, TReturn>(Mocker, string, Func<TReturn>, params object?[]?)
-  nameWithType.vb: MockerHttpExtensions.SetupMessageProtected(Of TMock, TReturn)(Mocker, String, Func(Of TReturn), ParamArray Object())
-- uid: FastMoq.Extensions.MockerHttpExtensions.SetupMessage``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
-  name: SetupMessage<TMock, TReturn>(Mocker, Expression<Func<TMock, TReturn>>, Func<TReturn>)
-  href: api/FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessage__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__
-  commentId: M:FastMoq.Extensions.MockerHttpExtensions.SetupMessage``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
-  name.vb: SetupMessage(Of TMock, TReturn)(Mocker, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
-  fullName: FastMoq.Extensions.MockerHttpExtensions.SetupMessage<TMock, TReturn>(FastMoq.Mocker, System.Linq.Expressions.Expression<System.Func<TMock, TReturn>>, System.Func<TReturn>)
-  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.SetupMessage(Of TMock, TReturn)(FastMoq.Mocker, System.Linq.Expressions.Expression(Of System.Func(Of TMock, TReturn)), System.Func(Of TReturn))
-  nameWithType: MockerHttpExtensions.SetupMessage<TMock, TReturn>(Mocker, Expression<Func<TMock, TReturn>>, Func<TReturn>)
-  nameWithType.vb: MockerHttpExtensions.SetupMessage(Of TMock, TReturn)(Mocker, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtectedAsync
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+  name: SetupMessageProtectedAsync<TMock, TReturn>(object, string, Func<TReturn>, params object?[]?)
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+  name.vb: SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync<TMock, TReturn>(object, string, System.Func<TReturn>, params object?[]?)
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, System.Func(Of TReturn), ParamArray Object())
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtectedAsync<TMock, TReturn>(object, string, Func<TReturn>, params object?[]?)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+  name: SetupMessageProtected<TMock, TReturn>(object, string, Func<TReturn>, params object?[]?)
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+  name.vb: SetupMessageProtected(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected<TMock, TReturn>(object, string, System.Func<TReturn>, params object?[]?)
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected(Of TMock, TReturn)(Object, String, System.Func(Of TReturn), ParamArray Object())
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtected<TMock, TReturn>(object, string, Func<TReturn>, params object?[]?)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageProtected(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  name: SetupMessage<TMock, TReturn>(object, Expression<Func<TMock, TReturn>>, Func<TReturn>)
+  href: api/FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  name.vb: SetupMessage(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage<TMock, TReturn>(object, System.Linq.Expressions.Expression<System.Func<TMock, TReturn>>, System.Func<TReturn>)
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage(Of TMock, TReturn)(Object, System.Linq.Expressions.Expression(Of System.Func(Of TMock, TReturn)), System.Func(Of TReturn))
+  nameWithType: MockerHttpMoqExtensions.SetupMessage<TMock, TReturn>(object, Expression<Func<TMock, TReturn>>, Func<TReturn>)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessage(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
 - uid: FastMoq.Extensions.ObjectExtensions
   name: ObjectExtensions
   href: api/FastMoq.Extensions.ObjectExtensions.html
@@ -1262,6 +1309,42 @@ references:
   fullName.vb: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback(Of TLogger)(Moq.Mock(Of TLogger), System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception))
   nameWithType: TestClassExtensions.SetupLoggerCallback<TLogger>(Mock<TLogger>, Action<LogLevel, EventId, string, Exception?>)
   nameWithType.vb: TestClassExtensions.SetupLoggerCallback(Of TLogger)(Mock(Of TLogger), Action(Of LogLevel, EventId, String, Exception))
+- uid: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})
+  name: SetupLoggerCallback<TLogger>(Mock<TLogger>, Action<LogLevel, EventId, string>)
+  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetupLoggerCallback__1_Moq_Mock___0__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String__
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})
+  name.vb: SetupLoggerCallback(Of TLogger)(Mock(Of TLogger), Action(Of LogLevel, EventId, String))
+  fullName: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback<TLogger>(Moq.Mock<TLogger>, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string>)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback(Of TLogger)(Moq.Mock(Of TLogger), System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String))
+  nameWithType: TestClassExtensions.SetupLoggerCallback<TLogger>(Mock<TLogger>, Action<LogLevel, EventId, string>)
+  nameWithType.vb: TestClassExtensions.SetupLoggerCallback(Of TLogger)(Mock(Of TLogger), Action(Of LogLevel, EventId, String))
+- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String)
+  name: VerifyLogged(Mocker, LogLevel, string)
+  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_
+  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String)
+  name.vb: VerifyLogged(Mocker, LogLevel, String)
+  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, string)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, String)
+  nameWithType: TestClassExtensions.VerifyLogged(Mocker, LogLevel, string)
+  nameWithType.vb: TestClassExtensions.VerifyLogged(Mocker, LogLevel, String)
+- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,FastMoq.Providers.TimesSpec)
+  name: VerifyLogged(Mocker, LogLevel, string, TimesSpec)
+  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_FastMoq_Providers_TimesSpec_
+  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,FastMoq.Providers.TimesSpec)
+  name.vb: VerifyLogged(Mocker, LogLevel, String, TimesSpec)
+  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, string, FastMoq.Providers.TimesSpec)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, String, FastMoq.Providers.TimesSpec)
+  nameWithType: TestClassExtensions.VerifyLogged(Mocker, LogLevel, string, TimesSpec)
+  nameWithType.vb: TestClassExtensions.VerifyLogged(Mocker, LogLevel, String, TimesSpec)
+- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32})
+  name: VerifyLogged(Mocker, LogLevel, string, Exception?, int?)
+  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__
+  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32})
+  name.vb: VerifyLogged(Mocker, LogLevel, String, Exception, Integer?)
+  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, string, System.Exception?, int?)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, String, System.Exception, Integer?)
+  nameWithType: TestClassExtensions.VerifyLogged(Mocker, LogLevel, string, Exception?, int?)
+  nameWithType.vb: TestClassExtensions.VerifyLogged(Mocker, LogLevel, String, Exception, Integer?)
 - uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
   name: VerifyLogged(Mocker, LogLevel, string, Exception?, int?, int)
   href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_
@@ -1271,6 +1354,15 @@ references:
   fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, String, System.Exception, Integer?, Integer)
   nameWithType: TestClassExtensions.VerifyLogged(Mocker, LogLevel, string, Exception?, int?, int)
   nameWithType.vb: TestClassExtensions.VerifyLogged(Mocker, LogLevel, String, Exception, Integer?, Integer)
+- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Nullable{FastMoq.Providers.TimesSpec})
+  name: VerifyLogged(Mocker, LogLevel, string, Exception?, int?, TimesSpec?)
+  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Nullable_FastMoq_Providers_TimesSpec__
+  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Nullable{FastMoq.Providers.TimesSpec})
+  name.vb: VerifyLogged(Mocker, LogLevel, String, Exception, Integer?, TimesSpec?)
+  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, string, System.Exception?, int?, FastMoq.Providers.TimesSpec?)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, String, System.Exception, Integer?, FastMoq.Providers.TimesSpec?)
+  nameWithType: TestClassExtensions.VerifyLogged(Mocker, LogLevel, string, Exception?, int?, TimesSpec?)
+  nameWithType.vb: TestClassExtensions.VerifyLogged(Mocker, LogLevel, String, Exception, Integer?, TimesSpec?)
 - uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
   name: VerifyLogged(Mocker, LogLevel, string, int)
   href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_
@@ -1731,6 +1823,15 @@ references:
   fullName.vb: FastMoq.Mocker.New(System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception))
   nameWithType: Mocker.Mocker(Action<LogLevel, EventId, string, Exception?>)
   nameWithType.vb: Mocker.New(Action(Of LogLevel, EventId, String, Exception))
+- uid: FastMoq.Mocker.#ctor(System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})
+  name: Mocker(Action<LogLevel, EventId, string>)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker__ctor_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String__
+  commentId: M:FastMoq.Mocker.#ctor(System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})
+  name.vb: New(Action(Of LogLevel, EventId, String))
+  fullName: FastMoq.Mocker.Mocker(System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string>)
+  fullName.vb: FastMoq.Mocker.New(System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String))
+  nameWithType: Mocker.Mocker(Action<LogLevel, EventId, string>)
+  nameWithType.vb: Mocker.New(Action(Of LogLevel, EventId, String))
 - uid: FastMoq.Mocker.#ctor(System.Collections.Generic.Dictionary{System.Type,FastMoq.Models.IInstanceModel})
   name: Mocker(Dictionary<Type, IInstanceModel>)
   href: api/FastMoq.Mocker.html#FastMoq_Mocker__ctor_System_Collections_Generic_Dictionary_System_Type_FastMoq_Models_IInstanceModel__
@@ -1749,6 +1850,15 @@ references:
   fullName.vb: FastMoq.Mocker.New(System.Collections.Generic.Dictionary(Of System.Type, FastMoq.Models.IInstanceModel), System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception))
   nameWithType: Mocker.Mocker(Dictionary<Type, IInstanceModel>, Action<LogLevel, EventId, string, Exception?>)
   nameWithType.vb: Mocker.New(Dictionary(Of Type, IInstanceModel), Action(Of LogLevel, EventId, String, Exception))
+- uid: FastMoq.Mocker.#ctor(System.Collections.Generic.Dictionary{System.Type,FastMoq.Models.IInstanceModel},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})
+  name: Mocker(Dictionary<Type, IInstanceModel>, Action<LogLevel, EventId, string>)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker__ctor_System_Collections_Generic_Dictionary_System_Type_FastMoq_Models_IInstanceModel__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String__
+  commentId: M:FastMoq.Mocker.#ctor(System.Collections.Generic.Dictionary{System.Type,FastMoq.Models.IInstanceModel},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})
+  name.vb: New(Dictionary(Of Type, IInstanceModel), Action(Of LogLevel, EventId, String))
+  fullName: FastMoq.Mocker.Mocker(System.Collections.Generic.Dictionary<System.Type, FastMoq.Models.IInstanceModel>, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string>)
+  fullName.vb: FastMoq.Mocker.New(System.Collections.Generic.Dictionary(Of System.Type, FastMoq.Models.IInstanceModel), System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String))
+  nameWithType: Mocker.Mocker(Dictionary<Type, IInstanceModel>, Action<LogLevel, EventId, string>)
+  nameWithType.vb: Mocker.New(Dictionary(Of Type, IInstanceModel), Action(Of LogLevel, EventId, String))
 - uid: FastMoq.Mocker.#ctor*
   name: Mocker
   href: api/FastMoq.Mocker.html#FastMoq_Mocker__ctor_
@@ -1989,6 +2099,22 @@ references:
   isSpec: "True"
   fullName: FastMoq.Mocker.Behavior
   nameWithType: Mocker.Behavior
+- uid: FastMoq.Mocker.BuildExpression*
+  name: BuildExpression
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_BuildExpression_
+  commentId: Overload:FastMoq.Mocker.BuildExpression
+  isSpec: "True"
+  fullName: FastMoq.Mocker.BuildExpression
+  nameWithType: Mocker.BuildExpression
+- uid: FastMoq.Mocker.BuildExpression``1
+  name: BuildExpression<T>()
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_BuildExpression__1
+  commentId: M:FastMoq.Mocker.BuildExpression``1
+  name.vb: BuildExpression(Of T)()
+  fullName: FastMoq.Mocker.BuildExpression<T>()
+  fullName.vb: FastMoq.Mocker.BuildExpression(Of T)()
+  nameWithType: Mocker.BuildExpression<T>()
+  nameWithType.vb: Mocker.BuildExpression(Of T)()
 - uid: FastMoq.Mocker.CallMethod(FastMoq.InvocationOptions,System.Action,System.Object[])
   name: CallMethod(InvocationOptions?, Action, params object?[])
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_CallMethod_FastMoq_InvocationOptions_System_Action_System_Object___
@@ -3293,6 +3419,15 @@ references:
   fullName.vb: FastMoq.MockerTestBase(Of TComponent).GetConstructor
   nameWithType: MockerTestBase<TComponent>.GetConstructor
   nameWithType.vb: MockerTestBase(Of TComponent).GetConstructor
+- uid: FastMoq.MockerTestBase`1.LoggingCallback(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String)
+  name: LoggingCallback(LogLevel, EventId, string)
+  href: api/FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_LoggingCallback_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_
+  commentId: M:FastMoq.MockerTestBase`1.LoggingCallback(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String)
+  name.vb: LoggingCallback(LogLevel, EventId, String)
+  fullName: FastMoq.MockerTestBase<TComponent>.LoggingCallback(Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string)
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).LoggingCallback(Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String)
+  nameWithType: MockerTestBase<TComponent>.LoggingCallback(LogLevel, EventId, string)
+  nameWithType.vb: MockerTestBase(Of TComponent).LoggingCallback(LogLevel, EventId, String)
 - uid: FastMoq.MockerTestBase`1.LoggingCallback(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception)
   name: LoggingCallback(LogLevel, EventId, string, Exception?)
   href: api/FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_LoggingCallback_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception_
@@ -5484,6 +5619,22 @@ references:
   commentId: T:FastMoq.Providers.IMockingProvider
   fullName: FastMoq.Providers.IMockingProvider
   nameWithType: IMockingProvider
+- uid: FastMoq.Providers.IMockingProvider.BuildExpression*
+  name: BuildExpression
+  href: api/FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_BuildExpression_
+  commentId: Overload:FastMoq.Providers.IMockingProvider.BuildExpression
+  isSpec: "True"
+  fullName: FastMoq.Providers.IMockingProvider.BuildExpression
+  nameWithType: IMockingProvider.BuildExpression
+- uid: FastMoq.Providers.IMockingProvider.BuildExpression``1
+  name: BuildExpression<T>()
+  href: api/FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_BuildExpression__1
+  commentId: M:FastMoq.Providers.IMockingProvider.BuildExpression``1
+  name.vb: BuildExpression(Of T)()
+  fullName: FastMoq.Providers.IMockingProvider.BuildExpression<T>()
+  fullName.vb: FastMoq.Providers.IMockingProvider.BuildExpression(Of T)()
+  nameWithType: IMockingProvider.BuildExpression<T>()
+  nameWithType.vb: IMockingProvider.BuildExpression(Of T)()
 - uid: FastMoq.Providers.IMockingProvider.Capabilities
   name: Capabilities
   href: api/FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_Capabilities
@@ -5593,6 +5744,22 @@ references:
   isSpec: "True"
   fullName: FastMoq.Providers.IMockingProvider.TryGetLegacy
   nameWithType: IMockingProvider.TryGetLegacy
+- uid: FastMoq.Providers.IMockingProvider.TryWrapLegacy(System.Object,System.Type)
+  name: TryWrapLegacy(object, Type)
+  href: api/FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_TryWrapLegacy_System_Object_System_Type_
+  commentId: M:FastMoq.Providers.IMockingProvider.TryWrapLegacy(System.Object,System.Type)
+  name.vb: TryWrapLegacy(Object, Type)
+  fullName: FastMoq.Providers.IMockingProvider.TryWrapLegacy(object, System.Type)
+  fullName.vb: FastMoq.Providers.IMockingProvider.TryWrapLegacy(Object, System.Type)
+  nameWithType: IMockingProvider.TryWrapLegacy(object, Type)
+  nameWithType.vb: IMockingProvider.TryWrapLegacy(Object, Type)
+- uid: FastMoq.Providers.IMockingProvider.TryWrapLegacy*
+  name: TryWrapLegacy
+  href: api/FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_TryWrapLegacy_
+  commentId: Overload:FastMoq.Providers.IMockingProvider.TryWrapLegacy
+  isSpec: "True"
+  fullName: FastMoq.Providers.IMockingProvider.TryWrapLegacy
+  nameWithType: IMockingProvider.TryWrapLegacy
 - uid: FastMoq.Providers.IMockingProvider.Verify*
   name: Verify
   href: api/FastMoq.Providers.IMockingProvider.html#FastMoq_Providers_IMockingProvider_Verify_
@@ -5885,12 +6052,197 @@ references:
   isSpec: "True"
   fullName: FastMoq.Providers.MockingProviderRegistry.TryGet
   nameWithType: MockingProviderRegistry.TryGet
+- uid: FastMoq.Providers.MockingProviderRegistry.WrapLegacy(System.Object,System.Type)
+  name: WrapLegacy(object, Type)
+  href: api/FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_WrapLegacy_System_Object_System_Type_
+  commentId: M:FastMoq.Providers.MockingProviderRegistry.WrapLegacy(System.Object,System.Type)
+  name.vb: WrapLegacy(Object, Type)
+  fullName: FastMoq.Providers.MockingProviderRegistry.WrapLegacy(object, System.Type)
+  fullName.vb: FastMoq.Providers.MockingProviderRegistry.WrapLegacy(Object, System.Type)
+  nameWithType: MockingProviderRegistry.WrapLegacy(object, Type)
+  nameWithType.vb: MockingProviderRegistry.WrapLegacy(Object, Type)
+- uid: FastMoq.Providers.MockingProviderRegistry.WrapLegacy*
+  name: WrapLegacy
+  href: api/FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_WrapLegacy_
+  commentId: Overload:FastMoq.Providers.MockingProviderRegistry.WrapLegacy
+  isSpec: "True"
+  fullName: FastMoq.Providers.MockingProviderRegistry.WrapLegacy
+  nameWithType: MockingProviderRegistry.WrapLegacy
 - uid: FastMoq.Providers.MoqProvider
   name: FastMoq.Providers.MoqProvider
   href: api/FastMoq.Providers.MoqProvider.html
   commentId: N:FastMoq.Providers.MoqProvider
   fullName: FastMoq.Providers.MoqProvider
   nameWithType: FastMoq.Providers.MoqProvider
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions
+  name: IFastMockMoqExtensions
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html
+  commentId: T:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions
+  nameWithType: IFastMockMoqExtensions
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq(FastMoq.Providers.IFastMock)
+  name: AsMoq(IFastMock)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq_FastMoq_Providers_IFastMock_
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq(FastMoq.Providers.IFastMock)
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq(FastMoq.Providers.IFastMock)
+  nameWithType: IFastMockMoqExtensions.AsMoq(IFastMock)
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq*
+  name: AsMoq
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq_
+  commentId: Overload:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq
+  isSpec: "True"
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq
+  nameWithType: IFastMockMoqExtensions.AsMoq
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq``1(FastMoq.Providers.IFastMock{``0})
+  name: AsMoq<T>(IFastMock<T>)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq__1_FastMoq_Providers_IFastMock___0__
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq``1(FastMoq.Providers.IFastMock{``0})
+  name.vb: AsMoq(Of T)(IFastMock(Of T))
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq<T>(FastMoq.Providers.IFastMock<T>)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq(Of T)(FastMoq.Providers.IFastMock(Of T))
+  nameWithType: IFastMockMoqExtensions.AsMoq<T>(IFastMock<T>)
+  nameWithType.vb: IFastMockMoqExtensions.AsMoq(Of T)(IFastMock(Of T))
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Protected*
+  name: Protected
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Protected_
+  commentId: Overload:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Protected
+  isSpec: "True"
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Protected
+  nameWithType: IFastMockMoqExtensions.Protected
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Protected``1(FastMoq.Providers.IFastMock{``0})
+  name: Protected<T>(IFastMock<T>)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Protected__1_FastMoq_Providers_IFastMock___0__
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Protected``1(FastMoq.Providers.IFastMock{``0})
+  name.vb: Protected(Of T)(IFastMock(Of T))
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Protected<T>(FastMoq.Providers.IFastMock<T>)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Protected(Of T)(FastMoq.Providers.IFastMock(Of T))
+  nameWithType: IFastMockMoqExtensions.Protected<T>(IFastMock<T>)
+  nameWithType.vb: IFastMockMoqExtensions.Protected(Of T)(IFastMock(Of T))
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup*
+  name: Setup
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Setup_
+  commentId: Overload:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup
+  isSpec: "True"
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup
+  nameWithType: IFastMockMoqExtensions.Setup
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupGet*
+  name: SetupGet
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupGet_
+  commentId: Overload:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupGet
+  isSpec: "True"
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupGet
+  nameWithType: IFastMockMoqExtensions.SetupGet
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupGet``2(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  name: SetupGet<T, TProperty>(IFastMock<T>, Expression<Func<T, TProperty>>)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupGet__2_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Func___0___1___
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupGet``2(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  name.vb: SetupGet(Of T, TProperty)(IFastMock(Of T), Expression(Of Func(Of T, TProperty)))
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupGet<T, TProperty>(FastMoq.Providers.IFastMock<T>, System.Linq.Expressions.Expression<System.Func<T, TProperty>>)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupGet(Of T, TProperty)(FastMoq.Providers.IFastMock(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, TProperty)))
+  nameWithType: IFastMockMoqExtensions.SetupGet<T, TProperty>(IFastMock<T>, Expression<Func<T, TProperty>>)
+  nameWithType.vb: IFastMockMoqExtensions.SetupGet(Of T, TProperty)(IFastMock(Of T), Expression(Of Func(Of T, TProperty)))
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback(FastMoq.Providers.IFastMock{Microsoft.Extensions.Logging.ILogger},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  name: SetupLoggerCallback(IFastMock<ILogger>, Action<LogLevel, EventId, string, Exception?>)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupLoggerCallback_FastMoq_Providers_IFastMock_Microsoft_Extensions_Logging_ILogger__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback(FastMoq.Providers.IFastMock{Microsoft.Extensions.Logging.ILogger},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  name.vb: SetupLoggerCallback(IFastMock(Of ILogger), Action(Of LogLevel, EventId, String, Exception))
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback(FastMoq.Providers.IFastMock<Microsoft.Extensions.Logging.ILogger>, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception?>)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback(FastMoq.Providers.IFastMock(Of Microsoft.Extensions.Logging.ILogger), System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception))
+  nameWithType: IFastMockMoqExtensions.SetupLoggerCallback(IFastMock<ILogger>, Action<LogLevel, EventId, string, Exception?>)
+  nameWithType.vb: IFastMockMoqExtensions.SetupLoggerCallback(IFastMock(Of ILogger), Action(Of LogLevel, EventId, String, Exception))
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback*
+  name: SetupLoggerCallback
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupLoggerCallback_
+  commentId: Overload:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback
+  isSpec: "True"
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback
+  nameWithType: IFastMockMoqExtensions.SetupLoggerCallback
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback``1(FastMoq.Providers.IFastMock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  name: SetupLoggerCallback<TLogger>(IFastMock<TLogger>, Action<LogLevel, EventId, string, Exception?>)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupLoggerCallback__1_FastMoq_Providers_IFastMock___0__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback``1(FastMoq.Providers.IFastMock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  name.vb: SetupLoggerCallback(Of TLogger)(IFastMock(Of TLogger), Action(Of LogLevel, EventId, String, Exception))
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback<TLogger>(FastMoq.Providers.IFastMock<TLogger>, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception?>)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback(Of TLogger)(FastMoq.Providers.IFastMock(Of TLogger), System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception))
+  nameWithType: IFastMockMoqExtensions.SetupLoggerCallback<TLogger>(IFastMock<TLogger>, Action<LogLevel, EventId, string, Exception?>)
+  nameWithType.vb: IFastMockMoqExtensions.SetupLoggerCallback(Of TLogger)(IFastMock(Of TLogger), Action(Of LogLevel, EventId, String, Exception))
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupSequence*
+  name: SetupSequence
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupSequence_
+  commentId: Overload:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupSequence
+  isSpec: "True"
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupSequence
+  nameWithType: IFastMockMoqExtensions.SetupSequence
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupSequence``2(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  name: SetupSequence<T, TResult>(IFastMock<T>, Expression<Func<T, TResult>>)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupSequence__2_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Func___0___1___
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupSequence``2(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  name.vb: SetupSequence(Of T, TResult)(IFastMock(Of T), Expression(Of Func(Of T, TResult)))
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupSequence<T, TResult>(FastMoq.Providers.IFastMock<T>, System.Linq.Expressions.Expression<System.Func<T, TResult>>)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupSequence(Of T, TResult)(FastMoq.Providers.IFastMock(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, TResult)))
+  nameWithType: IFastMockMoqExtensions.SetupSequence<T, TResult>(IFastMock<T>, Expression<Func<T, TResult>>)
+  nameWithType.vb: IFastMockMoqExtensions.SetupSequence(Of T, TResult)(IFastMock(Of T), Expression(Of Func(Of T, TResult)))
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}})
+  name: Setup<T>(IFastMock<T>, Expression<Action<T>>)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Setup__1_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Action___0___
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}})
+  name.vb: Setup(Of T)(IFastMock(Of T), Expression(Of Action(Of T)))
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup<T>(FastMoq.Providers.IFastMock<T>, System.Linq.Expressions.Expression<System.Action<T>>)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup(Of T)(FastMoq.Providers.IFastMock(Of T), System.Linq.Expressions.Expression(Of System.Action(Of T)))
+  nameWithType: IFastMockMoqExtensions.Setup<T>(IFastMock<T>, Expression<Action<T>>)
+  nameWithType.vb: IFastMockMoqExtensions.Setup(Of T)(IFastMock(Of T), Expression(Of Action(Of T)))
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup``2(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  name: Setup<T, TResult>(IFastMock<T>, Expression<Func<T, TResult>>)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Setup__2_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Func___0___1___
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup``2(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  name.vb: Setup(Of T, TResult)(IFastMock(Of T), Expression(Of Func(Of T, TResult)))
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup<T, TResult>(FastMoq.Providers.IFastMock<T>, System.Linq.Expressions.Expression<System.Func<T, TResult>>)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup(Of T, TResult)(FastMoq.Providers.IFastMock(Of T), System.Linq.Expressions.Expression(Of System.Func(Of T, TResult)))
+  nameWithType: IFastMockMoqExtensions.Setup<T, TResult>(IFastMock<T>, Expression<Func<T, TResult>>)
+  nameWithType.vb: IFastMockMoqExtensions.Setup(Of T, TResult)(IFastMock(Of T), Expression(Of Func(Of T, TResult)))
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(FastMoq.Providers.IFastMock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  name: VerifyLogger(IFastMock<ILogger>, LogLevel, string, Exception?, int?, int)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger_FastMoq_Providers_IFastMock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(FastMoq.Providers.IFastMock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  name.vb: VerifyLogger(IFastMock(Of ILogger), LogLevel, String, Exception, Integer?, Integer)
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(FastMoq.Providers.IFastMock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, System.Exception?, int?, int)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(FastMoq.Providers.IFastMock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, System.Exception, Integer?, Integer)
+  nameWithType: IFastMockMoqExtensions.VerifyLogger(IFastMock<ILogger>, LogLevel, string, Exception?, int?, int)
+  nameWithType.vb: IFastMockMoqExtensions.VerifyLogger(IFastMock(Of ILogger), LogLevel, String, Exception, Integer?, Integer)
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(FastMoq.Providers.IFastMock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  name: VerifyLogger(IFastMock<ILogger>, LogLevel, string, int)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger_FastMoq_Providers_IFastMock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(FastMoq.Providers.IFastMock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  name.vb: VerifyLogger(IFastMock(Of ILogger), LogLevel, String, Integer)
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(FastMoq.Providers.IFastMock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, int)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(FastMoq.Providers.IFastMock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, Integer)
+  nameWithType: IFastMockMoqExtensions.VerifyLogger(IFastMock<ILogger>, LogLevel, string, int)
+  nameWithType.vb: IFastMockMoqExtensions.VerifyLogger(IFastMock(Of ILogger), LogLevel, String, Integer)
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger*
+  name: VerifyLogger
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger_
+  commentId: Overload:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger
+  isSpec: "True"
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger
+  nameWithType: IFastMockMoqExtensions.VerifyLogger
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger``1(FastMoq.Providers.IFastMock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  name: VerifyLogger<TLogger>(IFastMock<TLogger>, LogLevel, string, Exception?, int?, int)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger__1_FastMoq_Providers_IFastMock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger``1(FastMoq.Providers.IFastMock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  name.vb: VerifyLogger(Of TLogger)(IFastMock(Of TLogger), LogLevel, String, Exception, Integer?, Integer)
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger<TLogger>(FastMoq.Providers.IFastMock<TLogger>, Microsoft.Extensions.Logging.LogLevel, string, System.Exception?, int?, int)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(Of TLogger)(FastMoq.Providers.IFastMock(Of TLogger), Microsoft.Extensions.Logging.LogLevel, String, System.Exception, Integer?, Integer)
+  nameWithType: IFastMockMoqExtensions.VerifyLogger<TLogger>(IFastMock<TLogger>, LogLevel, string, Exception?, int?, int)
+  nameWithType.vb: IFastMockMoqExtensions.VerifyLogger(Of TLogger)(IFastMock(Of TLogger), LogLevel, String, Exception, Integer?, Integer)
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger``1(FastMoq.Providers.IFastMock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  name: VerifyLogger<TLogger>(IFastMock<TLogger>, LogLevel, string, int)
+  href: api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger__1_FastMoq_Providers_IFastMock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger``1(FastMoq.Providers.IFastMock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  name.vb: VerifyLogger(Of TLogger)(IFastMock(Of TLogger), LogLevel, String, Integer)
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger<TLogger>(FastMoq.Providers.IFastMock<TLogger>, Microsoft.Extensions.Logging.LogLevel, string, int)
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(Of TLogger)(FastMoq.Providers.IFastMock(Of TLogger), Microsoft.Extensions.Logging.LogLevel, String, Integer)
+  nameWithType: IFastMockMoqExtensions.VerifyLogger<TLogger>(IFastMock<TLogger>, LogLevel, string, int)
+  nameWithType.vb: IFastMockMoqExtensions.VerifyLogger(Of TLogger)(IFastMock(Of TLogger), LogLevel, String, Integer)
 - uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
   name: MoqLoggerCompatibility
   href: api/FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.html
@@ -6201,6 +6553,22 @@ references:
   commentId: T:FastMoq.Providers.MoqProvider.MoqMockingProvider
   fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider
   nameWithType: MoqMockingProvider
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.BuildExpression*
+  name: BuildExpression
+  href: api/FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_BuildExpression_
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.BuildExpression
+  isSpec: "True"
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.BuildExpression
+  nameWithType: MoqMockingProvider.BuildExpression
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.BuildExpression``1
+  name: BuildExpression<T>()
+  href: api/FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_BuildExpression__1
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.BuildExpression``1
+  name.vb: BuildExpression(Of T)()
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.BuildExpression<T>()
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqMockingProvider.BuildExpression(Of T)()
+  nameWithType: MoqMockingProvider.BuildExpression<T>()
+  nameWithType.vb: MoqMockingProvider.BuildExpression(Of T)()
 - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.Capabilities
   name: Capabilities
   href: api/FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_Capabilities
@@ -6381,6 +6749,22 @@ references:
   isSpec: "True"
   fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryGetLegacy
   nameWithType: MoqMockingProvider.TryGetLegacy
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryWrapLegacy(System.Object,System.Type)
+  name: TryWrapLegacy(object, Type)
+  href: api/FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_TryWrapLegacy_System_Object_System_Type_
+  commentId: M:FastMoq.Providers.MoqProvider.MoqMockingProvider.TryWrapLegacy(System.Object,System.Type)
+  name.vb: TryWrapLegacy(Object, Type)
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryWrapLegacy(object, System.Type)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryWrapLegacy(Object, System.Type)
+  nameWithType: MoqMockingProvider.TryWrapLegacy(object, Type)
+  nameWithType.vb: MoqMockingProvider.TryWrapLegacy(Object, Type)
+- uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryWrapLegacy*
+  name: TryWrapLegacy
+  href: api/FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_TryWrapLegacy_
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqMockingProvider.TryWrapLegacy
+  isSpec: "True"
+  fullName: FastMoq.Providers.MoqProvider.MoqMockingProvider.TryWrapLegacy
+  nameWithType: MoqMockingProvider.TryWrapLegacy
 - uid: FastMoq.Providers.MoqProvider.MoqMockingProvider.Verify*
   name: Verify
   href: api/FastMoq.Providers.MoqProvider.MoqMockingProvider.html#FastMoq_Providers_MoqProvider_MoqMockingProvider_Verify_
@@ -6416,12 +6800,139 @@ references:
   commentId: N:FastMoq.Providers.NSubstituteProvider
   fullName: FastMoq.Providers.NSubstituteProvider
   nameWithType: FastMoq.Providers.NSubstituteProvider
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions
+  name: IFastMockNSubstituteExtensions
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html
+  commentId: T:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions
+  nameWithType: IFastMockNSubstituteExtensions
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute*
+  name: AsNSubstitute
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_AsNSubstitute_
+  commentId: Overload:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute
+  isSpec: "True"
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute
+  nameWithType: IFastMockNSubstituteExtensions.AsNSubstitute
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute``1(FastMoq.Providers.IFastMock{``0})
+  name: AsNSubstitute<T>(IFastMock<T>)
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_AsNSubstitute__1_FastMoq_Providers_IFastMock___0__
+  commentId: M:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute``1(FastMoq.Providers.IFastMock{``0})
+  name.vb: AsNSubstitute(Of T)(IFastMock(Of T))
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute<T>(FastMoq.Providers.IFastMock<T>)
+  fullName.vb: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute(Of T)(FastMoq.Providers.IFastMock(Of T))
+  nameWithType: IFastMockNSubstituteExtensions.AsNSubstitute<T>(IFastMock<T>)
+  nameWithType.vb: IFastMockNSubstituteExtensions.AsNSubstitute(Of T)(IFastMock(Of T))
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ClearReceivedCalls*
+  name: ClearReceivedCalls
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_ClearReceivedCalls_
+  commentId: Overload:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ClearReceivedCalls
+  isSpec: "True"
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ClearReceivedCalls
+  nameWithType: IFastMockNSubstituteExtensions.ClearReceivedCalls
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ClearReceivedCalls``1(FastMoq.Providers.IFastMock{``0})
+  name: ClearReceivedCalls<T>(IFastMock<T>)
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_ClearReceivedCalls__1_FastMoq_Providers_IFastMock___0__
+  commentId: M:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ClearReceivedCalls``1(FastMoq.Providers.IFastMock{``0})
+  name.vb: ClearReceivedCalls(Of T)(IFastMock(Of T))
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ClearReceivedCalls<T>(FastMoq.Providers.IFastMock<T>)
+  fullName.vb: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ClearReceivedCalls(Of T)(FastMoq.Providers.IFastMock(Of T))
+  nameWithType: IFastMockNSubstituteExtensions.ClearReceivedCalls<T>(IFastMock<T>)
+  nameWithType.vb: IFastMockNSubstituteExtensions.ClearReceivedCalls(Of T)(IFastMock(Of T))
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceive*
+  name: DidNotReceive
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_DidNotReceive_
+  commentId: Overload:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceive
+  isSpec: "True"
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceive
+  nameWithType: IFastMockNSubstituteExtensions.DidNotReceive
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceiveWithAnyArgs*
+  name: DidNotReceiveWithAnyArgs
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_DidNotReceiveWithAnyArgs_
+  commentId: Overload:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceiveWithAnyArgs
+  isSpec: "True"
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceiveWithAnyArgs
+  nameWithType: IFastMockNSubstituteExtensions.DidNotReceiveWithAnyArgs
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceiveWithAnyArgs``1(FastMoq.Providers.IFastMock{``0})
+  name: DidNotReceiveWithAnyArgs<T>(IFastMock<T>)
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_DidNotReceiveWithAnyArgs__1_FastMoq_Providers_IFastMock___0__
+  commentId: M:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceiveWithAnyArgs``1(FastMoq.Providers.IFastMock{``0})
+  name.vb: DidNotReceiveWithAnyArgs(Of T)(IFastMock(Of T))
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceiveWithAnyArgs<T>(FastMoq.Providers.IFastMock<T>)
+  fullName.vb: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceiveWithAnyArgs(Of T)(FastMoq.Providers.IFastMock(Of T))
+  nameWithType: IFastMockNSubstituteExtensions.DidNotReceiveWithAnyArgs<T>(IFastMock<T>)
+  nameWithType.vb: IFastMockNSubstituteExtensions.DidNotReceiveWithAnyArgs(Of T)(IFastMock(Of T))
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceive``1(FastMoq.Providers.IFastMock{``0})
+  name: DidNotReceive<T>(IFastMock<T>)
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_DidNotReceive__1_FastMoq_Providers_IFastMock___0__
+  commentId: M:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceive``1(FastMoq.Providers.IFastMock{``0})
+  name.vb: DidNotReceive(Of T)(IFastMock(Of T))
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceive<T>(FastMoq.Providers.IFastMock<T>)
+  fullName.vb: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.DidNotReceive(Of T)(FastMoq.Providers.IFastMock(Of T))
+  nameWithType: IFastMockNSubstituteExtensions.DidNotReceive<T>(IFastMock<T>)
+  nameWithType.vb: IFastMockNSubstituteExtensions.DidNotReceive(Of T)(IFastMock(Of T))
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received*
+  name: Received
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_Received_
+  commentId: Overload:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received
+  isSpec: "True"
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received
+  nameWithType: IFastMockNSubstituteExtensions.Received
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ReceivedWithAnyArgs*
+  name: ReceivedWithAnyArgs
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_ReceivedWithAnyArgs_
+  commentId: Overload:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ReceivedWithAnyArgs
+  isSpec: "True"
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ReceivedWithAnyArgs
+  nameWithType: IFastMockNSubstituteExtensions.ReceivedWithAnyArgs
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ReceivedWithAnyArgs``1(FastMoq.Providers.IFastMock{``0})
+  name: ReceivedWithAnyArgs<T>(IFastMock<T>)
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_ReceivedWithAnyArgs__1_FastMoq_Providers_IFastMock___0__
+  commentId: M:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ReceivedWithAnyArgs``1(FastMoq.Providers.IFastMock{``0})
+  name.vb: ReceivedWithAnyArgs(Of T)(IFastMock(Of T))
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ReceivedWithAnyArgs<T>(FastMoq.Providers.IFastMock<T>)
+  fullName.vb: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ReceivedWithAnyArgs(Of T)(FastMoq.Providers.IFastMock(Of T))
+  nameWithType: IFastMockNSubstituteExtensions.ReceivedWithAnyArgs<T>(IFastMock<T>)
+  nameWithType.vb: IFastMockNSubstituteExtensions.ReceivedWithAnyArgs(Of T)(IFastMock(Of T))
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received``1(FastMoq.Providers.IFastMock{``0})
+  name: Received<T>(IFastMock<T>)
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_Received__1_FastMoq_Providers_IFastMock___0__
+  commentId: M:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received``1(FastMoq.Providers.IFastMock{``0})
+  name.vb: Received(Of T)(IFastMock(Of T))
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received<T>(FastMoq.Providers.IFastMock<T>)
+  fullName.vb: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received(Of T)(FastMoq.Providers.IFastMock(Of T))
+  nameWithType: IFastMockNSubstituteExtensions.Received<T>(IFastMock<T>)
+  nameWithType.vb: IFastMockNSubstituteExtensions.Received(Of T)(IFastMock(Of T))
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received``1(FastMoq.Providers.IFastMock{``0},System.Int32)
+  name: Received<T>(IFastMock<T>, int)
+  href: api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_Received__1_FastMoq_Providers_IFastMock___0__System_Int32_
+  commentId: M:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received``1(FastMoq.Providers.IFastMock{``0},System.Int32)
+  name.vb: Received(Of T)(IFastMock(Of T), Integer)
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received<T>(FastMoq.Providers.IFastMock<T>, int)
+  fullName.vb: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.Received(Of T)(FastMoq.Providers.IFastMock(Of T), Integer)
+  nameWithType: IFastMockNSubstituteExtensions.Received<T>(IFastMock<T>, int)
+  nameWithType.vb: IFastMockNSubstituteExtensions.Received(Of T)(IFastMock(Of T), Integer)
 - uid: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
   name: NSubstituteMockingProvider
   href: api/FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.html
   commentId: T:FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
   fullName: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
   nameWithType: NSubstituteMockingProvider
+- uid: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.BuildExpression*
+  name: BuildExpression
+  href: api/FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.html#FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_BuildExpression_
+  commentId: Overload:FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.BuildExpression
+  isSpec: "True"
+  fullName: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.BuildExpression
+  nameWithType: NSubstituteMockingProvider.BuildExpression
+- uid: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.BuildExpression``1
+  name: BuildExpression<T>()
+  href: api/FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.html#FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_BuildExpression__1
+  commentId: M:FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.BuildExpression``1
+  name.vb: BuildExpression(Of T)()
+  fullName: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.BuildExpression<T>()
+  fullName.vb: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.BuildExpression(Of T)()
+  nameWithType: NSubstituteMockingProvider.BuildExpression<T>()
+  nameWithType.vb: NSubstituteMockingProvider.BuildExpression(Of T)()
 - uid: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.Capabilities
   name: Capabilities
   href: api/FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.html#FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_Capabilities
@@ -6602,6 +7113,22 @@ references:
   isSpec: "True"
   fullName: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryGetLegacy
   nameWithType: NSubstituteMockingProvider.TryGetLegacy
+- uid: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryWrapLegacy(System.Object,System.Type)
+  name: TryWrapLegacy(object, Type)
+  href: api/FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.html#FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_TryWrapLegacy_System_Object_System_Type_
+  commentId: M:FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryWrapLegacy(System.Object,System.Type)
+  name.vb: TryWrapLegacy(Object, Type)
+  fullName: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryWrapLegacy(object, System.Type)
+  fullName.vb: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryWrapLegacy(Object, System.Type)
+  nameWithType: NSubstituteMockingProvider.TryWrapLegacy(object, Type)
+  nameWithType.vb: NSubstituteMockingProvider.TryWrapLegacy(Object, Type)
+- uid: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryWrapLegacy*
+  name: TryWrapLegacy
+  href: api/FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.html#FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_TryWrapLegacy_
+  commentId: Overload:FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryWrapLegacy
+  isSpec: "True"
+  fullName: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryWrapLegacy
+  nameWithType: NSubstituteMockingProvider.TryWrapLegacy
 - uid: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.Verify*
   name: Verify
   href: api/FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.html#FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_Verify_
@@ -7175,6 +7702,12 @@ references:
   fullName.vb: FastMoq.ScenarioBuilder(Of T).With
   nameWithType: ScenarioBuilder<T>.With
   nameWithType.vb: ScenarioBuilder(Of T).With
+- uid: FastMoq.Web
+  name: FastMoq.Web
+  href: api/FastMoq.Web.html
+  commentId: N:FastMoq.Web
+  fullName: FastMoq.Web
+  nameWithType: FastMoq.Web
 - uid: FastMoq.Web.Blazor
   name: FastMoq.Web.Blazor
   href: api/FastMoq.Web.Blazor.html
@@ -8783,12 +9316,45 @@ references:
   isSpec: "True"
   fullName: FastMoq.Web.Extensions.TestWebExtensions.AddRequestDelegate
   nameWithType: TestWebExtensions.AddRequestDelegate
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  name: CreateControllerContext(Mocker, TestClaimsPrincipalOptions, params string[])
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_FastMoq_Web_TestClaimsPrincipalOptions_System_String___
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  name.vb: CreateControllerContext(Mocker, TestClaimsPrincipalOptions, ParamArray String())
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, params string[])
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, ParamArray String())
+  nameWithType: TestWebExtensions.CreateControllerContext(Mocker, TestClaimsPrincipalOptions, params string[])
+  nameWithType.vb: TestWebExtensions.CreateControllerContext(Mocker, TestClaimsPrincipalOptions, ParamArray String())
 - uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext)
   name: CreateControllerContext(Mocker, HttpContext)
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_Microsoft_AspNetCore_Http_HttpContext_
   commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext)
   fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, Microsoft.AspNetCore.Http.HttpContext)
   nameWithType: TestWebExtensions.CreateControllerContext(Mocker, HttpContext)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  name: CreateControllerContext(Mocker, IEnumerable<Claim>)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  name.vb: CreateControllerContext(Mocker, IEnumerable(Of Claim))
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim))
+  nameWithType: TestWebExtensions.CreateControllerContext(Mocker, IEnumerable<Claim>)
+  nameWithType.vb: TestWebExtensions.CreateControllerContext(Mocker, IEnumerable(Of Claim))
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  name: CreateControllerContext(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__FastMoq_Web_TestClaimsPrincipalOptions_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  name.vb: CreateControllerContext(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>, FastMoq.Web.TestClaimsPrincipalOptions)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim), FastMoq.Web.TestClaimsPrincipalOptions)
+  nameWithType: TestWebExtensions.CreateControllerContext(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  nameWithType.vb: TestWebExtensions.CreateControllerContext(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
+  name: CreateControllerContext(Mocker, ClaimsPrincipal)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_Security_Claims_ClaimsPrincipal_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal)
+  nameWithType: TestWebExtensions.CreateControllerContext(Mocker, ClaimsPrincipal)
 - uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.String[])
   name: CreateControllerContext(Mocker, params string[])
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_String___
@@ -8805,6 +9371,39 @@ references:
   isSpec: "True"
   fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext
   nameWithType: TestWebExtensions.CreateControllerContext
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  name: CreateHttpContext(Mocker, TestClaimsPrincipalOptions, params string[])
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_FastMoq_Web_TestClaimsPrincipalOptions_System_String___
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  name.vb: CreateHttpContext(Mocker, TestClaimsPrincipalOptions, ParamArray String())
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, params string[])
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, ParamArray String())
+  nameWithType: TestWebExtensions.CreateHttpContext(Mocker, TestClaimsPrincipalOptions, params string[])
+  nameWithType.vb: TestWebExtensions.CreateHttpContext(Mocker, TestClaimsPrincipalOptions, ParamArray String())
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  name: CreateHttpContext(Mocker, IEnumerable<Claim>)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  name.vb: CreateHttpContext(Mocker, IEnumerable(Of Claim))
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim))
+  nameWithType: TestWebExtensions.CreateHttpContext(Mocker, IEnumerable<Claim>)
+  nameWithType.vb: TestWebExtensions.CreateHttpContext(Mocker, IEnumerable(Of Claim))
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  name: CreateHttpContext(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__FastMoq_Web_TestClaimsPrincipalOptions_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  name.vb: CreateHttpContext(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>, FastMoq.Web.TestClaimsPrincipalOptions)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim), FastMoq.Web.TestClaimsPrincipalOptions)
+  nameWithType: TestWebExtensions.CreateHttpContext(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  nameWithType.vb: TestWebExtensions.CreateHttpContext(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
+  name: CreateHttpContext(Mocker, ClaimsPrincipal)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_Security_Claims_ClaimsPrincipal_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal)
+  nameWithType: TestWebExtensions.CreateHttpContext(Mocker, ClaimsPrincipal)
 - uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.String[])
   name: CreateHttpContext(Mocker, params string[])
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_String___
@@ -8991,6 +9590,33 @@ references:
   isSpec: "True"
   fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestHeaders
   nameWithType: TestWebExtensions.SetRequestHeaders
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  name: SetupClaimsPrincipal(Mocker, TestClaimsPrincipalOptions, params string[])
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_FastMoq_Mocker_FastMoq_Web_TestClaimsPrincipalOptions_System_String___
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  name.vb: SetupClaimsPrincipal(Mocker, TestClaimsPrincipalOptions, ParamArray String())
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, params string[])
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, ParamArray String())
+  nameWithType: TestWebExtensions.SetupClaimsPrincipal(Mocker, TestClaimsPrincipalOptions, params string[])
+  nameWithType.vb: TestWebExtensions.SetupClaimsPrincipal(Mocker, TestClaimsPrincipalOptions, ParamArray String())
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  name: SetupClaimsPrincipal(Mocker, IEnumerable<Claim>)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  name.vb: SetupClaimsPrincipal(Mocker, IEnumerable(Of Claim))
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim))
+  nameWithType: TestWebExtensions.SetupClaimsPrincipal(Mocker, IEnumerable<Claim>)
+  nameWithType.vb: TestWebExtensions.SetupClaimsPrincipal(Mocker, IEnumerable(Of Claim))
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  name: SetupClaimsPrincipal(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__FastMoq_Web_TestClaimsPrincipalOptions_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  name.vb: SetupClaimsPrincipal(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>, FastMoq.Web.TestClaimsPrincipalOptions)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim), FastMoq.Web.TestClaimsPrincipalOptions)
+  nameWithType: TestWebExtensions.SetupClaimsPrincipal(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  nameWithType.vb: TestWebExtensions.SetupClaimsPrincipal(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
 - uid: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.String[])
   name: SetupClaimsPrincipal(Mocker, params string[])
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_FastMoq_Mocker_System_String___
@@ -9007,3 +9633,126 @@ references:
   isSpec: "True"
   fullName: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal
   nameWithType: TestWebExtensions.SetupClaimsPrincipal
+- uid: FastMoq.Web.TestClaimsPrincipalOptions
+  name: TestClaimsPrincipalOptions
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html
+  commentId: T:FastMoq.Web.TestClaimsPrincipalOptions
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions
+  nameWithType: TestClaimsPrincipalOptions
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.AdditionalClaims
+  name: AdditionalClaims
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_AdditionalClaims
+  commentId: P:FastMoq.Web.TestClaimsPrincipalOptions.AdditionalClaims
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.AdditionalClaims
+  nameWithType: TestClaimsPrincipalOptions.AdditionalClaims
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.AdditionalClaims*
+  name: AdditionalClaims
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_AdditionalClaims_
+  commentId: Overload:FastMoq.Web.TestClaimsPrincipalOptions.AdditionalClaims
+  isSpec: "True"
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.AdditionalClaims
+  nameWithType: TestClaimsPrincipalOptions.AdditionalClaims
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.AuthenticationType
+  name: AuthenticationType
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_AuthenticationType
+  commentId: P:FastMoq.Web.TestClaimsPrincipalOptions.AuthenticationType
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.AuthenticationType
+  nameWithType: TestClaimsPrincipalOptions.AuthenticationType
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.AuthenticationType*
+  name: AuthenticationType
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_AuthenticationType_
+  commentId: Overload:FastMoq.Web.TestClaimsPrincipalOptions.AuthenticationType
+  isSpec: "True"
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.AuthenticationType
+  nameWithType: TestClaimsPrincipalOptions.AuthenticationType
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.DisplayName
+  name: DisplayName
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_DisplayName
+  commentId: P:FastMoq.Web.TestClaimsPrincipalOptions.DisplayName
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.DisplayName
+  nameWithType: TestClaimsPrincipalOptions.DisplayName
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.DisplayName*
+  name: DisplayName
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_DisplayName_
+  commentId: Overload:FastMoq.Web.TestClaimsPrincipalOptions.DisplayName
+  isSpec: "True"
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.DisplayName
+  nameWithType: TestClaimsPrincipalOptions.DisplayName
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.Email
+  name: Email
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_Email
+  commentId: P:FastMoq.Web.TestClaimsPrincipalOptions.Email
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.Email
+  nameWithType: TestClaimsPrincipalOptions.Email
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.Email*
+  name: Email
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_Email_
+  commentId: Overload:FastMoq.Web.TestClaimsPrincipalOptions.Email
+  isSpec: "True"
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.Email
+  nameWithType: TestClaimsPrincipalOptions.Email
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.IncludeDefaultIdentityClaims
+  name: IncludeDefaultIdentityClaims
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_IncludeDefaultIdentityClaims
+  commentId: P:FastMoq.Web.TestClaimsPrincipalOptions.IncludeDefaultIdentityClaims
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.IncludeDefaultIdentityClaims
+  nameWithType: TestClaimsPrincipalOptions.IncludeDefaultIdentityClaims
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.IncludeDefaultIdentityClaims*
+  name: IncludeDefaultIdentityClaims
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_IncludeDefaultIdentityClaims_
+  commentId: Overload:FastMoq.Web.TestClaimsPrincipalOptions.IncludeDefaultIdentityClaims
+  isSpec: "True"
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.IncludeDefaultIdentityClaims
+  nameWithType: TestClaimsPrincipalOptions.IncludeDefaultIdentityClaims
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.Name
+  name: Name
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_Name
+  commentId: P:FastMoq.Web.TestClaimsPrincipalOptions.Name
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.Name
+  nameWithType: TestClaimsPrincipalOptions.Name
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.Name*
+  name: Name
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_Name_
+  commentId: Overload:FastMoq.Web.TestClaimsPrincipalOptions.Name
+  isSpec: "True"
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.Name
+  nameWithType: TestClaimsPrincipalOptions.Name
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.ObjectId
+  name: ObjectId
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_ObjectId
+  commentId: P:FastMoq.Web.TestClaimsPrincipalOptions.ObjectId
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.ObjectId
+  nameWithType: TestClaimsPrincipalOptions.ObjectId
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.ObjectId*
+  name: ObjectId
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_ObjectId_
+  commentId: Overload:FastMoq.Web.TestClaimsPrincipalOptions.ObjectId
+  isSpec: "True"
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.ObjectId
+  nameWithType: TestClaimsPrincipalOptions.ObjectId
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.PreferredUserName
+  name: PreferredUserName
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_PreferredUserName
+  commentId: P:FastMoq.Web.TestClaimsPrincipalOptions.PreferredUserName
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.PreferredUserName
+  nameWithType: TestClaimsPrincipalOptions.PreferredUserName
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.PreferredUserName*
+  name: PreferredUserName
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_PreferredUserName_
+  commentId: Overload:FastMoq.Web.TestClaimsPrincipalOptions.PreferredUserName
+  isSpec: "True"
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.PreferredUserName
+  nameWithType: TestClaimsPrincipalOptions.PreferredUserName
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.TenantId
+  name: TenantId
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_TenantId
+  commentId: P:FastMoq.Web.TestClaimsPrincipalOptions.TenantId
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.TenantId
+  nameWithType: TestClaimsPrincipalOptions.TenantId
+- uid: FastMoq.Web.TestClaimsPrincipalOptions.TenantId*
+  name: TenantId
+  href: api/FastMoq.Web.TestClaimsPrincipalOptions.html#FastMoq_Web_TestClaimsPrincipalOptions_TenantId_
+  commentId: Overload:FastMoq.Web.TestClaimsPrincipalOptions.TenantId
+  isSpec: "True"
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions.TenantId
+  nameWithType: TestClaimsPrincipalOptions.TenantId

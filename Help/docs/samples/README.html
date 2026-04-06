@@ -106,7 +106,8 @@
 <h3 id="http--external-api">HTTP / External API</h3>
 <ul>
 <li><code>CreateHttpClient()</code> to quickly register an <code>HttpClient</code> and (if needed) an <code>IHttpClientFactory</code> with a default response.</li>
-<li><code>SetupHttpMessage(...)</code> for per‑test customization (status codes, payloads, sequences).</li>
+<li>Prefer <code>WhenHttpRequest(...)</code> and <code>WhenHttpRequestJson(...)</code> for provider-neutral request matching and response setup.</li>
+<li>Use <code>SetupHttpMessage(...)</code> only when you intentionally need Moq-specific protected <code>SendAsync</code> behavior from the Moq provider package. Keep <code>using FastMoq.Extensions;</code>, add <code>FastMoq.Provider.Moq</code>, and select the Moq provider for the test assembly when you use that compatibility path.</li>
 <li>Content helpers: <code>GetStringContent</code>, <code>GetContentBytesAsync()</code>, <code>GetContentStreamAsync()</code> for asserting raw payloads.</li>
 </ul>
 <h3 id="entity-framework-core">Entity Framework Core</h3>
@@ -117,7 +118,7 @@
 <h3 id="logging-verification">Logging Verification</h3>
 <ul>
 <li>Prefer <code>Mocks.VerifyLogged(LogLevel.Information, &quot;Message&quot;)</code> for provider-safe logger assertions.</li>
-<li>Use <code>GetMock&lt;ILogger&lt;T&gt;&gt;().VerifyLogger(...)</code> only when you intentionally want the legacy Moq-specific compatibility API during the v4 transition.</li>
+<li>Use <code>GetOrCreateMock&lt;ILogger&lt;T&gt;&gt;().AsMoq().VerifyLogger(...)</code> only when you intentionally need the legacy Moq-specific compatibility behavior, such as minimizing churn in older Moq-shaped tests during the v4 transition. It is not the preferred path for new assertions just because you want more control; prefer <code>VerifyLogged(...)</code> unless you specifically need the old Moq-only assertion surface.</li>
 </ul>
 <h3 id="constructor--dependency-injection">Constructor &amp; Dependency Injection</h3>
 <ul>
@@ -135,7 +136,7 @@
 <ol>
 <li>Build the request: supply method, route values, headers, and JSON body.</li>
 <li>Provide dependency injection values using <code>AddType</code> (e.g., configuration, services).</li>
-<li>Use <code>SetupHttpMessage</code> for outbound <code>HttpClient</code> calls triggered inside the function.</li>
+<li>Use <code>WhenHttpRequest(...)</code> or <code>WhenHttpRequestJson(...)</code> for outbound <code>HttpClient</code> calls triggered inside the function.</li>
 <li>Assert:
 <ul>
 <li>Outbound calls (verify <code>SendAsync</code>)</li>
@@ -160,7 +161,7 @@ Mocks.VerifyLogged(LogLevel.Information, &quot;Processed event&quot;);
 <h2 id="sample-enhancement-ideas">Sample enhancement ideas</h2>
 <p>The current samples are intentionally focused. Consider extending locally with:</p>
 <ul>
-<li>Adding a payment gateway client abstraction and testing retry/backoff logic via <code>SetupHttpMessage</code> sequences.</li>
+<li>Adding a payment gateway client abstraction and testing retry/backoff logic via provider-neutral request helpers for happy-path routing, then Moq <code>SetupSequence(...)</code> only when you intentionally need provider-specific call sequencing.</li>
 <li>Adding blob metadata assertions using a mocked <code>BlobClient</code>.</li>
 <li>Introducing an options reload test using <code>IOptionsMonitor&lt;T&gt;</code> + updated values via <code>AddType</code>.</li>
 </ul>
@@ -180,9 +181,9 @@ Mocks.VerifyLogged(LogLevel.Information, &quot;Processed event&quot;);
 <td>Registers handler + factory if missing</td>
 </tr>
 <tr>
-<td>Custom per‑test response</td>
-<td><code>SetupHttpMessage()</code></td>
-<td>Use multiple calls for sequential responses</td>
+<td>Custom per‑test HTTP behavior</td>
+<td><code>WhenHttpRequest()</code> / <code>WhenHttpRequestJson()</code></td>
+<td>Provider-neutral request matching and response setup</td>
 </tr>
 <tr>
 <td>Mock EF Core context</td>
@@ -207,7 +208,7 @@ Mocks.VerifyLogged(LogLevel.Information, &quot;Processed event&quot;);
 </tbody>
 </table>
 <blockquote>
-<p>Tip: Prefer the extension helpers first; drop down to raw Moq setup only for edge cases.</p>
+<p>Tip: Prefer the provider-neutral HTTP helpers first; drop down to Moq-specific setup only for protected-member or sequencing edge cases.</p>
 </blockquote>
 <h2 id="getting-started">Getting started</h2>
 <p>Start with <a href="testing-examples.html">Executable Testing Examples</a> if you want the quickest path to real, runnable tests in this repository. Use <a href="ecommerce-orders/README.html">E-Commerce Order Processing</a> when you want a larger sample walkthrough.</p>
@@ -272,7 +273,7 @@ dotnet test
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

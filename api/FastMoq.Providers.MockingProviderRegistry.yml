@@ -13,6 +13,7 @@ items:
   - FastMoq.Providers.MockingProviderRegistry.RegisteredProviderNames
   - FastMoq.Providers.MockingProviderRegistry.SetDefault(System.String)
   - FastMoq.Providers.MockingProviderRegistry.TryGet(System.String,FastMoq.Providers.IMockingProvider@)
+  - FastMoq.Providers.MockingProviderRegistry.WrapLegacy(System.Object,System.Type)
   langs:
   - csharp
   - vb
@@ -176,6 +177,42 @@ items:
       type: FastMoq.Providers.IMockingProvider
     content.vb: Public Shared ReadOnly Property [Default] As IMockingProvider
   overload: FastMoq.Providers.MockingProviderRegistry.Default*
+- uid: FastMoq.Providers.MockingProviderRegistry.WrapLegacy(System.Object,System.Type)
+  commentId: M:FastMoq.Providers.MockingProviderRegistry.WrapLegacy(System.Object,System.Type)
+  id: WrapLegacy(System.Object,System.Type)
+  parent: FastMoq.Providers.MockingProviderRegistry
+  langs:
+  - csharp
+  - vb
+  name: WrapLegacy(object, Type)
+  nameWithType: MockingProviderRegistry.WrapLegacy(object, Type)
+  fullName: FastMoq.Providers.MockingProviderRegistry.WrapLegacy(object, System.Type)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Providers/MockingProviderRegistry.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WrapLegacy
+    path: FastMoq.Core/Providers/MockingProviderRegistry.cs
+    startLine: 44
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Providers
+  syntax:
+    content: public static IFastMock WrapLegacy(object legacyMock, Type mockedType)
+    parameters:
+    - id: legacyMock
+      type: System.Object
+    - id: mockedType
+      type: System.Type
+    return:
+      type: FastMoq.Providers.IFastMock
+    content.vb: Public Shared Function WrapLegacy(legacyMock As Object, mockedType As Type) As IFastMock
+  overload: FastMoq.Providers.MockingProviderRegistry.WrapLegacy*
+  nameWithType.vb: MockingProviderRegistry.WrapLegacy(Object, Type)
+  fullName.vb: FastMoq.Providers.MockingProviderRegistry.WrapLegacy(Object, System.Type)
+  name.vb: WrapLegacy(Object, Type)
 - uid: FastMoq.Providers.MockingProviderRegistry.SetDefault(System.String)
   commentId: M:FastMoq.Providers.MockingProviderRegistry.SetDefault(System.String)
   id: SetDefault(System.String)
@@ -194,7 +231,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetDefault
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 44
+    startLine: 76
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -226,7 +263,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 59
+    startLine: 91
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -259,7 +296,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 66
+    startLine: 98
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -293,7 +330,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Clear
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 78
+    startLine: 110
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -714,6 +751,27 @@ references:
   name: Default
   nameWithType: MockingProviderRegistry.Default
   fullName: FastMoq.Providers.MockingProviderRegistry.Default
+- uid: FastMoq.Providers.MockingProviderRegistry.WrapLegacy*
+  commentId: Overload:FastMoq.Providers.MockingProviderRegistry.WrapLegacy
+  href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_WrapLegacy_System_Object_System_Type_
+  name: WrapLegacy
+  nameWithType: MockingProviderRegistry.WrapLegacy
+  fullName: FastMoq.Providers.MockingProviderRegistry.WrapLegacy
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: FastMoq.Providers.IFastMock
+  commentId: T:FastMoq.Providers.IFastMock
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IFastMock.html
+  name: IFastMock
+  nameWithType: IFastMock
+  fullName: FastMoq.Providers.IFastMock
 - uid: FastMoq.Providers.MockingProviderRegistry.SetDefault*
   commentId: Overload:FastMoq.Providers.MockingProviderRegistry.SetDefault
   href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_SetDefault_System_String_

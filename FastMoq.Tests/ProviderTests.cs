@@ -9,6 +9,7 @@ using FastMoq.Providers.NSubstituteProvider;
 using FastMoq.Providers.ReflectionProvider;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -66,6 +67,20 @@ namespace FastMoq.Tests
 
             mocker.Verify<IProviderDependency>(x => x.Run("alpha"), TimesSpec.Once);
             mocker.VerifyNoOtherCalls<IProviderDependency>();
+        }
+
+        [Fact]
+        public void GetOrCreateMock_Instance_ShouldBeUsable_WithReflectionProvider()
+        {
+            using var providerScope = PushProvider("reflection");
+            var mocker = new Mocker();
+
+            var dependency = mocker.GetOrCreateMock<IProviderDependency>();
+            var consumer = new ProviderConsumer(dependency.Instance);
+
+            consumer.Dependency.Run("alpha");
+
+            mocker.Verify<IProviderDependency>(x => x.Run("alpha"), TimesSpec.Once);
         }
 
         [Theory]
@@ -343,6 +358,48 @@ namespace FastMoq.Tests
             var resolved = mocker.GetObject<IFileSystem>();
 
             resolved.Should().BeSameAs(tracked.Instance);
+        }
+
+        [Theory]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void GetOrCreateMock_IFileSystem_ShouldUseBuiltInManagedInstance_ForProvidersWithoutPropertySetup(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+
+            var tracked = mocker.GetOrCreateMock<IFileSystem>();
+
+            tracked.Instance.Should().BeSameAs(mocker.fileSystem);
+            tracked.NativeMock.Should().BeSameAs(mocker.fileSystem);
+        }
+
+        [Theory]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void GetObject_IHttpContextAccessor_ShouldUseConcreteBuiltInAccessor_ForProvidersWithoutPropertySetup(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+
+            var accessor = mocker.GetObject<IHttpContextAccessor>();
+
+            accessor.Should().NotBeNull();
+            accessor.Should().BeOfType<HttpContextAccessor>();
+            accessor!.HttpContext.Should().NotBeNull();
+            accessor.HttpContext.Should().BeSameAs(mocker.GetObject<HttpContext>());
+        }
+
+        [Fact]
+        public void CreateHttpClient_ShouldUseTrackedHandlerInstance_WhenNSubstituteProviderIsActive()
+        {
+            using var providerScope = PushProvider("nsubstitute");
+            var mocker = new Mocker();
+            _ = mocker.GetOrCreateMock<HttpMessageHandler>();
+
+            using var client = mocker.CreateHttpClient();
+
+            client.Should().NotBeNull();
         }
 
         [Theory]

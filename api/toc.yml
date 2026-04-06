@@ -52,13 +52,6 @@ items:
   - uid: FastMoq.ScenarioBuilder`1
     name: ScenarioBuilder<T>
     type: Class
-- uid: FastMoq.Core.Providers
-  name: FastMoq.Core.Providers
-  type: Namespace
-  items:
-  - uid: FastMoq.Core.Providers.MockWrapper`1
-    name: MockWrapper<T>
-    type: Class
 - uid: FastMoq.Extensions
   name: FastMoq.Extensions
   type: Namespace
@@ -74,6 +67,9 @@ items:
     type: Class
   - uid: FastMoq.Extensions.MockerHttpExtensions
     name: MockerHttpExtensions
+    type: Class
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions
+    name: MockerHttpMoqExtensions
     type: Class
   - uid: FastMoq.Extensions.ObjectExtensions
     name: ObjectExtensions
@@ -183,6 +179,9 @@ items:
   name: FastMoq.Providers.MoqProvider
   type: Namespace
   items:
+  - uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions
+    name: IFastMockMoqExtensions
+    type: Class
   - uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
     name: MoqLoggerCompatibility
     type: Class
@@ -199,8 +198,18 @@ items:
   name: FastMoq.Providers.NSubstituteProvider
   type: Namespace
   items:
+  - uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions
+    name: IFastMockNSubstituteExtensions
+    type: Class
   - uid: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider
     name: NSubstituteMockingProvider
+    type: Class
+- uid: FastMoq.Web
+  name: FastMoq.Web
+  type: Namespace
+  items:
+  - uid: FastMoq.Web.TestClaimsPrincipalOptions
+    name: TestClaimsPrincipalOptions
     type: Class
 - uid: FastMoq.Web.Blazor
   name: FastMoq.Web.Blazor

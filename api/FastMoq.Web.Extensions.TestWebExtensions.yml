@@ -8,8 +8,16 @@ items:
   - FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext,System.Boolean,System.String[])
   - FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext,System.Boolean,System.String[])
   - FastMoq.Web.Extensions.TestWebExtensions.AddRequestDelegate(FastMoq.Mocker,Microsoft.AspNetCore.Http.RequestDelegate,System.Boolean)
+  - FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
   - FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext)
+  - FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  - FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  - FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
   - FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.String[])
+  - FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  - FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  - FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  - FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
   - FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.String[])
   - FastMoq.Web.Extensions.TestWebExtensions.GetBadRequestObjectResult(Microsoft.AspNetCore.Mvc.IActionResult)
   - FastMoq.Web.Extensions.TestWebExtensions.GetConflictObjectResult(Microsoft.AspNetCore.Mvc.IActionResult)
@@ -23,6 +31,9 @@ items:
   - FastMoq.Web.Extensions.TestWebExtensions.SetQueryString(Microsoft.AspNetCore.Http.HttpContext,System.String)
   - FastMoq.Web.Extensions.TestWebExtensions.SetRequestHeader(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String[])
   - FastMoq.Web.Extensions.TestWebExtensions.SetRequestHeaders(Microsoft.AspNetCore.Http.HttpContext,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String[]}})
+  - FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  - FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  - FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
   - FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.String[])
   langs:
   - csharp
@@ -76,11 +87,11 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupClaimsPrincipal
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 15
+    startLine: 20
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
-  summary: Creates an authenticated <xref href="System.Security.Claims.ClaimsPrincipal" data-throw-if-not-resolved="false"></xref> with role claims and a default name claim.
+  summary: Creates an authenticated <xref href="System.Security.Claims.ClaimsPrincipal" data-throw-if-not-resolved="false"></xref> with compatibility-focused default claims.
   example: []
   syntax:
     content: public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, params string[] roleNames)
@@ -96,6 +107,133 @@ items:
   nameWithType.vb: TestWebExtensions.SetupClaimsPrincipal(Mocker, ParamArray String())
   fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, ParamArray String())
   name.vb: SetupClaimsPrincipal(Mocker, ParamArray String())
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  id: SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetupClaimsPrincipal(Mocker, IEnumerable<Claim>)
+  nameWithType: TestWebExtensions.SetupClaimsPrincipal(Mocker, IEnumerable<Claim>)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupClaimsPrincipal
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 29
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: >-
+    Creates an authenticated <xref href="System.Security.Claims.ClaimsPrincipal" data-throw-if-not-resolved="false"></xref> by combining custom claims with compatibility defaults.
+
+    Existing custom claim types are preserved.
+  example: []
+  syntax:
+    content: public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, IEnumerable<Claim> claims)
+    parameters:
+    - id: _
+      type: FastMoq.Mocker
+    - id: claims
+      type: System.Collections.Generic.IEnumerable{System.Security.Claims.Claim}
+    return:
+      type: System.Security.Claims.ClaimsPrincipal
+    content.vb: Public Shared Function SetupClaimsPrincipal(_ As Mocker, claims As IEnumerable(Of Claim)) As ClaimsPrincipal
+  overload: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal*
+  nameWithType.vb: TestWebExtensions.SetupClaimsPrincipal(Mocker, IEnumerable(Of Claim))
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim))
+  name.vb: SetupClaimsPrincipal(Mocker, IEnumerable(Of Claim))
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  id: SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetupClaimsPrincipal(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  nameWithType: TestWebExtensions.SetupClaimsPrincipal(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>, FastMoq.Web.TestClaimsPrincipalOptions)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupClaimsPrincipal
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 38
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: >-
+    Creates an authenticated <xref href="System.Security.Claims.ClaimsPrincipal" data-throw-if-not-resolved="false"></xref> by combining custom claims with compatibility defaults.
+
+    Existing custom claim types are preserved.
+  example: []
+  syntax:
+    content: public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, IEnumerable<Claim> claims, TestClaimsPrincipalOptions principalOptions)
+    parameters:
+    - id: _
+      type: FastMoq.Mocker
+    - id: claims
+      type: System.Collections.Generic.IEnumerable{System.Security.Claims.Claim}
+    - id: principalOptions
+      type: FastMoq.Web.TestClaimsPrincipalOptions
+    return:
+      type: System.Security.Claims.ClaimsPrincipal
+    content.vb: Public Shared Function SetupClaimsPrincipal(_ As Mocker, claims As IEnumerable(Of Claim), principalOptions As TestClaimsPrincipalOptions) As ClaimsPrincipal
+  overload: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal*
+  nameWithType.vb: TestWebExtensions.SetupClaimsPrincipal(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim), FastMoq.Web.TestClaimsPrincipalOptions)
+  name.vb: SetupClaimsPrincipal(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  id: SetupClaimsPrincipal(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetupClaimsPrincipal(Mocker, TestClaimsPrincipalOptions, params string[])
+  nameWithType: TestWebExtensions.SetupClaimsPrincipal(Mocker, TestClaimsPrincipalOptions, params string[])
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, params string[])
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupClaimsPrincipal
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 69
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Creates an authenticated <xref href="System.Security.Claims.ClaimsPrincipal" data-throw-if-not-resolved="false"></xref> using the provided identity options and roles.
+  example: []
+  syntax:
+    content: public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, TestClaimsPrincipalOptions principalOptions, params string[] roleNames)
+    parameters:
+    - id: _
+      type: FastMoq.Mocker
+    - id: principalOptions
+      type: FastMoq.Web.TestClaimsPrincipalOptions
+    - id: roleNames
+      type: System.String[]
+    return:
+      type: System.Security.Claims.ClaimsPrincipal
+    content.vb: Public Shared Function SetupClaimsPrincipal(_ As Mocker, principalOptions As TestClaimsPrincipalOptions, ParamArray roleNames As String()) As ClaimsPrincipal
+  overload: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal*
+  nameWithType.vb: TestWebExtensions.SetupClaimsPrincipal(Mocker, TestClaimsPrincipalOptions, ParamArray String())
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, ParamArray String())
+  name.vb: SetupClaimsPrincipal(Mocker, TestClaimsPrincipalOptions, ParamArray String())
 - uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.String[])
   commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.String[])
   id: CreateControllerContext(FastMoq.Mocker,System.String[])
@@ -115,7 +253,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 29
+    startLine: 83
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -135,6 +273,163 @@ items:
   nameWithType.vb: TestWebExtensions.CreateControllerContext(Mocker, ParamArray String())
   fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, ParamArray String())
   name.vb: CreateControllerContext(Mocker, ParamArray String())
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  id: CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateControllerContext(Mocker, IEnumerable<Claim>)
+  nameWithType: TestWebExtensions.CreateControllerContext(Mocker, IEnumerable<Claim>)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateControllerContext
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 91
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Creates a <xref href="Microsoft.AspNetCore.Mvc.ControllerContext" data-throw-if-not-resolved="false"></xref> with a principal composed from the supplied claims and compatibility defaults.
+  example: []
+  syntax:
+    content: public static ControllerContext CreateControllerContext(this Mocker mocker, IEnumerable<Claim> claims)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+    - id: claims
+      type: System.Collections.Generic.IEnumerable{System.Security.Claims.Claim}
+    return:
+      type: Microsoft.AspNetCore.Mvc.ControllerContext
+    content.vb: Public Shared Function CreateControllerContext(mocker As Mocker, claims As IEnumerable(Of Claim)) As ControllerContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext*
+  nameWithType.vb: TestWebExtensions.CreateControllerContext(Mocker, IEnumerable(Of Claim))
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim))
+  name.vb: CreateControllerContext(Mocker, IEnumerable(Of Claim))
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  id: CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateControllerContext(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  nameWithType: TestWebExtensions.CreateControllerContext(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>, FastMoq.Web.TestClaimsPrincipalOptions)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateControllerContext
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 99
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Creates a <xref href="Microsoft.AspNetCore.Mvc.ControllerContext" data-throw-if-not-resolved="false"></xref> with a principal composed from the supplied claims and compatibility defaults.
+  example: []
+  syntax:
+    content: public static ControllerContext CreateControllerContext(this Mocker mocker, IEnumerable<Claim> claims, TestClaimsPrincipalOptions principalOptions)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+    - id: claims
+      type: System.Collections.Generic.IEnumerable{System.Security.Claims.Claim}
+    - id: principalOptions
+      type: FastMoq.Web.TestClaimsPrincipalOptions
+    return:
+      type: Microsoft.AspNetCore.Mvc.ControllerContext
+    content.vb: Public Shared Function CreateControllerContext(mocker As Mocker, claims As IEnumerable(Of Claim), principalOptions As TestClaimsPrincipalOptions) As ControllerContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext*
+  nameWithType.vb: TestWebExtensions.CreateControllerContext(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim), FastMoq.Web.TestClaimsPrincipalOptions)
+  name.vb: CreateControllerContext(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
+  id: CreateControllerContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateControllerContext(Mocker, ClaimsPrincipal)
+  nameWithType: TestWebExtensions.CreateControllerContext(Mocker, ClaimsPrincipal)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateControllerContext
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 107
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Creates a <xref href="Microsoft.AspNetCore.Mvc.ControllerContext" data-throw-if-not-resolved="false"></xref> from an existing principal.
+  example: []
+  syntax:
+    content: public static ControllerContext CreateControllerContext(this Mocker mocker, ClaimsPrincipal principal)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+    - id: principal
+      type: System.Security.Claims.ClaimsPrincipal
+    return:
+      type: Microsoft.AspNetCore.Mvc.ControllerContext
+    content.vb: Public Shared Function CreateControllerContext(mocker As Mocker, principal As ClaimsPrincipal) As ControllerContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext*
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  id: CreateControllerContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateControllerContext(Mocker, TestClaimsPrincipalOptions, params string[])
+  nameWithType: TestWebExtensions.CreateControllerContext(Mocker, TestClaimsPrincipalOptions, params string[])
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, params string[])
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateControllerContext
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 124
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Creates a <xref href="Microsoft.AspNetCore.Mvc.ControllerContext" data-throw-if-not-resolved="false"></xref> with an authenticated test user using the provided identity options.
+  example: []
+  syntax:
+    content: public static ControllerContext CreateControllerContext(this Mocker mocker, TestClaimsPrincipalOptions principalOptions, params string[] roleNames)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+    - id: principalOptions
+      type: FastMoq.Web.TestClaimsPrincipalOptions
+    - id: roleNames
+      type: System.String[]
+    return:
+      type: Microsoft.AspNetCore.Mvc.ControllerContext
+    content.vb: Public Shared Function CreateControllerContext(mocker As Mocker, principalOptions As TestClaimsPrincipalOptions, ParamArray roleNames As String()) As ControllerContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext*
+  nameWithType.vb: TestWebExtensions.CreateControllerContext(Mocker, TestClaimsPrincipalOptions, ParamArray String())
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, ParamArray String())
+  name.vb: CreateControllerContext(Mocker, TestClaimsPrincipalOptions, ParamArray String())
 - uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext)
   commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext)
   id: CreateControllerContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext)
@@ -154,7 +449,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 45
+    startLine: 140
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -190,7 +485,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 59
+    startLine: 154
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -210,6 +505,163 @@ items:
   nameWithType.vb: TestWebExtensions.CreateHttpContext(Mocker, ParamArray String())
   fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, ParamArray String())
   name.vb: CreateHttpContext(Mocker, ParamArray String())
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  id: CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateHttpContext(Mocker, IEnumerable<Claim>)
+  nameWithType: TestWebExtensions.CreateHttpContext(Mocker, IEnumerable<Claim>)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateHttpContext
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 162
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Creates an <xref href="Microsoft.AspNetCore.Http.HttpContext" data-throw-if-not-resolved="false"></xref> with a principal composed from the supplied claims and compatibility defaults.
+  example: []
+  syntax:
+    content: public static HttpContext CreateHttpContext(this Mocker mocker, IEnumerable<Claim> claims)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+    - id: claims
+      type: System.Collections.Generic.IEnumerable{System.Security.Claims.Claim}
+    return:
+      type: Microsoft.AspNetCore.Http.HttpContext
+    content.vb: Public Shared Function CreateHttpContext(mocker As Mocker, claims As IEnumerable(Of Claim)) As HttpContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext*
+  nameWithType.vb: TestWebExtensions.CreateHttpContext(Mocker, IEnumerable(Of Claim))
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim))
+  name.vb: CreateHttpContext(Mocker, IEnumerable(Of Claim))
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  id: CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateHttpContext(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  nameWithType: TestWebExtensions.CreateHttpContext(Mocker, IEnumerable<Claim>, TestClaimsPrincipalOptions)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>, FastMoq.Web.TestClaimsPrincipalOptions)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateHttpContext
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 170
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Creates an <xref href="Microsoft.AspNetCore.Http.HttpContext" data-throw-if-not-resolved="false"></xref> with a principal composed from the supplied claims and compatibility defaults.
+  example: []
+  syntax:
+    content: public static HttpContext CreateHttpContext(this Mocker mocker, IEnumerable<Claim> claims, TestClaimsPrincipalOptions principalOptions)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+    - id: claims
+      type: System.Collections.Generic.IEnumerable{System.Security.Claims.Claim}
+    - id: principalOptions
+      type: FastMoq.Web.TestClaimsPrincipalOptions
+    return:
+      type: Microsoft.AspNetCore.Http.HttpContext
+    content.vb: Public Shared Function CreateHttpContext(mocker As Mocker, claims As IEnumerable(Of Claim), principalOptions As TestClaimsPrincipalOptions) As HttpContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext*
+  nameWithType.vb: TestWebExtensions.CreateHttpContext(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim), FastMoq.Web.TestClaimsPrincipalOptions)
+  name.vb: CreateHttpContext(Mocker, IEnumerable(Of Claim), TestClaimsPrincipalOptions)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
+  id: CreateHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateHttpContext(Mocker, ClaimsPrincipal)
+  nameWithType: TestWebExtensions.CreateHttpContext(Mocker, ClaimsPrincipal)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateHttpContext
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 178
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Creates an <xref href="Microsoft.AspNetCore.Http.HttpContext" data-throw-if-not-resolved="false"></xref> from an existing principal.
+  example: []
+  syntax:
+    content: public static HttpContext CreateHttpContext(this Mocker mocker, ClaimsPrincipal principal)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+    - id: principal
+      type: System.Security.Claims.ClaimsPrincipal
+    return:
+      type: Microsoft.AspNetCore.Http.HttpContext
+    content.vb: Public Shared Function CreateHttpContext(mocker As Mocker, principal As ClaimsPrincipal) As HttpContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext*
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  id: CreateHttpContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateHttpContext(Mocker, TestClaimsPrincipalOptions, params string[])
+  nameWithType: TestWebExtensions.CreateHttpContext(Mocker, TestClaimsPrincipalOptions, params string[])
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, params string[])
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateHttpContext
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 192
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Creates an <xref href="Microsoft.AspNetCore.Http.HttpContext" data-throw-if-not-resolved="false"></xref> with an authenticated test user using the provided identity options.
+  example: []
+  syntax:
+    content: public static HttpContext CreateHttpContext(this Mocker mocker, TestClaimsPrincipalOptions principalOptions, params string[] roleNames)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+    - id: principalOptions
+      type: FastMoq.Web.TestClaimsPrincipalOptions
+    - id: roleNames
+      type: System.String[]
+    return:
+      type: Microsoft.AspNetCore.Http.HttpContext
+    content.vb: Public Shared Function CreateHttpContext(mocker As Mocker, principalOptions As TestClaimsPrincipalOptions, ParamArray roleNames As String()) As HttpContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext*
+  nameWithType.vb: TestWebExtensions.CreateHttpContext(Mocker, TestClaimsPrincipalOptions, ParamArray String())
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, ParamArray String())
+  name.vb: CreateHttpContext(Mocker, TestClaimsPrincipalOptions, ParamArray String())
 - uid: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext,System.Boolean,System.String[])
   commentId: M:FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext,System.Boolean,System.String[])
   id: AddHttpContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext,System.Boolean,System.String[])
@@ -229,7 +681,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 72
+    startLine: 205
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -272,7 +724,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddHttpContextAccessor
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 82
+    startLine: 215
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -315,7 +767,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddRequestDelegate
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 100
+    startLine: 233
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -356,7 +808,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetRequestHeader
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 110
+    startLine: 243
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -397,7 +849,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetRequestHeaders
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 122
+    startLine: 255
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -436,7 +888,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetQueryString
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 138
+    startLine: 271
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -475,7 +927,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetQueryParameters
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 158
+    startLine: 291
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -514,7 +966,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetQueryParameter
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 177
+    startLine: 310
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -555,7 +1007,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObjectResultContent
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 196
+    startLine: 329
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -597,7 +1049,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObjectResultContent
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 209
+    startLine: 342
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -636,7 +1088,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 223
+    startLine: 356
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -670,7 +1122,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOkObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 232
+    startLine: 365
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -704,7 +1156,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetBadRequestObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 241
+    startLine: 374
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -738,7 +1190,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetConflictObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 250
+    startLine: 383
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -772,7 +1224,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNoContentResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 259
+    startLine: 392
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1142,6 +1594,135 @@ references:
   name: FastMoq
   nameWithType: FastMoq
   fullName: FastMoq
+- uid: System.Collections.Generic.IEnumerable{System.Security.Claims.Claim}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Security.Claims.Claim}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Claim>
+  nameWithType: IEnumerable<Claim>
+  fullName: System.Collections.Generic.IEnumerable<System.Security.Claims.Claim>
+  nameWithType.vb: IEnumerable(Of Claim)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Security.Claims.Claim)
+  name.vb: IEnumerable(Of Claim)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Security.Claims.Claim
+    name: Claim
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.claims.claim
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Security.Claims.Claim
+    name: Claim
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.claims.claim
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FastMoq.Web.TestClaimsPrincipalOptions
+  commentId: T:FastMoq.Web.TestClaimsPrincipalOptions
+  parent: FastMoq.Web
+  href: FastMoq.Web.TestClaimsPrincipalOptions.html
+  name: TestClaimsPrincipalOptions
+  nameWithType: TestClaimsPrincipalOptions
+  fullName: FastMoq.Web.TestClaimsPrincipalOptions
+- uid: FastMoq.Web
+  commentId: N:FastMoq.Web
+  href: FastMoq.html
+  name: FastMoq.Web
+  nameWithType: FastMoq.Web
+  fullName: FastMoq.Web
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Web
+    name: Web
+    href: FastMoq.Web.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Web
+    name: Web
+    href: FastMoq.Web.html
 - uid: Microsoft.AspNetCore.Mvc.ControllerContext
   commentId: T:Microsoft.AspNetCore.Mvc.ControllerContext
   parent: Microsoft.AspNetCore.Mvc
@@ -1376,71 +1957,6 @@ references:
   - name: )
   - name: )
   - name: )
-- uid: System.Collections.Generic.IEnumerable`1
-  commentId: T:System.Collections.Generic.IEnumerable`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  name: IEnumerable<T>
-  nameWithType: IEnumerable<T>
-  fullName: System.Collections.Generic.IEnumerable<T>
-  nameWithType.vb: IEnumerable(Of T)
-  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
-  name.vb: IEnumerable(Of T)
-  spec.csharp:
-  - uid: System.Collections.Generic.IEnumerable`1
-    name: IEnumerable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: System.Collections.Generic.IEnumerable`1
-    name: IEnumerable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-- uid: System.Collections.Generic
-  commentId: N:System.Collections.Generic
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Collections.Generic
-  nameWithType: System.Collections.Generic
-  fullName: System.Collections.Generic
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Collections
-    name: Collections
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Collections
-    name: Collections
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
-  - name: .
-  - uid: System.Collections.Generic
-    name: Generic
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
 - uid: FastMoq.Web.Extensions.TestWebExtensions.SetQueryString*
   commentId: Overload:FastMoq.Web.Extensions.TestWebExtensions.SetQueryString
   href: FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetQueryString_Microsoft_AspNetCore_Http_HttpContext_System_String_

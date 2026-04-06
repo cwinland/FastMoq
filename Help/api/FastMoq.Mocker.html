@@ -148,7 +148,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
 </h3>
   <a id="FastMoq_Mocker__ctor_" data-uid="FastMoq.Mocker.#ctor*"></a>
   <h4 id="FastMoq_Mocker__ctor" data-uid="FastMoq.Mocker.#ctor">Mocker()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes a new <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance with a no-op external logging callback.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -156,7 +157,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </div>
   <a id="FastMoq_Mocker__ctor_" data-uid="FastMoq.Mocker.#ctor*"></a>
   <h4 id="FastMoq_Mocker__ctor_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__" data-uid="FastMoq.Mocker.#ctor(System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})">Mocker(Action&lt;LogLevel, EventId, string, Exception?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes a new <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance with an exception-aware logging callback.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -175,13 +177,42 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-4">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a>&gt;</td>
         <td><span class="parametername">loggingCallback</span></td>
-        <td></td>
+        <td><p>Callback invoked for log entries emitted by this mocker.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker__ctor_" data-uid="FastMoq.Mocker.#ctor*"></a>
+  <h4 id="FastMoq_Mocker__ctor_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String__" data-uid="FastMoq.Mocker.#ctor(System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})">Mocker(Action&lt;LogLevel, EventId, string&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance with a three-parameter logging callback.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Mocker(Action&lt;LogLevel, EventId, string&gt; loggingCallback)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><span class="parametername">loggingCallback</span></td>
+        <td><p>Callback invoked for log entries emitted by this mocker.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Mocker__ctor_" data-uid="FastMoq.Mocker.#ctor*"></a>
   <h4 id="FastMoq_Mocker__ctor_System_Collections_Generic_Dictionary_System_Type_FastMoq_Models_IInstanceModel__" data-uid="FastMoq.Mocker.#ctor(System.Collections.Generic.Dictionary{System.Type,FastMoq.Models.IInstanceModel})">Mocker(Dictionary&lt;Type, IInstanceModel&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes a new <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance with an existing type map.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -200,13 +231,15 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="FastMoq.Models.IInstanceModel.html">IInstanceModel</a>&gt;</td>
         <td><span class="parametername">map</span></td>
-        <td></td>
+        <td><p>The preconfigured type registrations to seed into the mocker.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Mocker__ctor_" data-uid="FastMoq.Mocker.#ctor*"></a>
   <h4 id="FastMoq_Mocker__ctor_System_Collections_Generic_Dictionary_System_Type_FastMoq_Models_IInstanceModel__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__" data-uid="FastMoq.Mocker.#ctor(System.Collections.Generic.Dictionary{System.Type,FastMoq.Models.IInstanceModel},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})">Mocker(Dictionary&lt;Type, IInstanceModel&gt;, Action&lt;LogLevel, EventId, string, Exception?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes a new <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance with an existing type map and an exception-aware logging callback.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -225,19 +258,55 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="FastMoq.Models.IInstanceModel.html">IInstanceModel</a>&gt;</td>
         <td><span class="parametername">map</span></td>
-        <td></td>
+        <td><p>The preconfigured type registrations to seed into the mocker.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-4">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a>&gt;</td>
         <td><span class="parametername">loggingCallback</span></td>
-        <td></td>
+        <td><p>Callback invoked for log entries emitted by this mocker.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker__ctor_" data-uid="FastMoq.Mocker.#ctor*"></a>
+  <h4 id="FastMoq_Mocker__ctor_System_Collections_Generic_Dictionary_System_Type_FastMoq_Models_IInstanceModel__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String__" data-uid="FastMoq.Mocker.#ctor(System.Collections.Generic.Dictionary{System.Type,FastMoq.Models.IInstanceModel},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})">Mocker(Dictionary&lt;Type, IInstanceModel&gt;, Action&lt;LogLevel, EventId, string&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance with an existing type map and a three-parameter logging callback.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Mocker(Dictionary&lt;Type, IInstanceModel&gt; map, Action&lt;LogLevel, EventId, string&gt; loggingCallback)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="FastMoq.Models.IInstanceModel.html">IInstanceModel</a>&gt;</td>
+        <td><span class="parametername">map</span></td>
+        <td><p>The preconfigured type registrations to seed into the mocker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><span class="parametername">loggingCallback</span></td>
+        <td><p>Callback invoked for log entries emitted by this mocker.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h3 id="fields">Fields
 </h3>
   <h4 id="FastMoq_Mocker_SETUP" data-uid="FastMoq.Mocker.SETUP">SETUP</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Name of the legacy Moq setup method used by compatibility helpers.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -259,7 +328,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
     </tbody>
   </table>
   <h4 id="FastMoq_Mocker_SETUP_ALL_PROPERTIES_METHOD_NAME" data-uid="FastMoq.Mocker.SETUP_ALL_PROPERTIES_METHOD_NAME">SETUP_ALL_PROPERTIES_METHOD_NAME</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Name of the legacy Moq setup-all-properties method used by compatibility helpers.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -303,7 +373,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
     </tbody>
   </table>
   <h4 id="FastMoq_Mocker_fileSystem" data-uid="FastMoq.Mocker.fileSystem">fileSystem</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The shared in-memory file system used by built-in file-system resolution helpers.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -374,7 +445,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_ConstructorHistory_" data-uid="FastMoq.Mocker.ConstructorHistory*"></a>
   <h4 id="FastMoq_Mocker_ConstructorHistory" data-uid="FastMoq.Mocker.ConstructorHistory">ConstructorHistory</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Tracks constructor-selection history for created instances.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -397,7 +469,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_ExceptionLog_" data-uid="FastMoq.Mocker.ExceptionLog*"></a>
   <h4 id="FastMoq_Mocker_ExceptionLog" data-uid="FastMoq.Mocker.ExceptionLog">ExceptionLog</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Captured exception messages observed during resolution and invocation helper flows.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -420,7 +493,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_HttpClient_" data-uid="FastMoq.Mocker.HttpClient*"></a>
   <h4 id="FastMoq_Mocker_HttpClient" data-uid="FastMoq.Mocker.HttpClient">HttpClient</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The shared <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpclient">HttpClient</a> created for this mocker instance.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -443,7 +517,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_InnerMockResolution_" data-uid="FastMoq.Mocker.InnerMockResolution*"></a>
   <h4 id="FastMoq_Mocker_InnerMockResolution" data-uid="FastMoq.Mocker.InnerMockResolution">InnerMockResolution</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Controls whether nested property and injection resolution should run while creating instances and tracked mocks.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -466,7 +541,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_LogEntries_" data-uid="FastMoq.Mocker.LogEntries*"></a>
   <h4 id="FastMoq_Mocker_LogEntries" data-uid="FastMoq.Mocker.LogEntries">LogEntries</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Captured log entries observed through this mocker instance.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -489,7 +565,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_LoggingCallback_" data-uid="FastMoq.Mocker.LoggingCallback*"></a>
   <h4 id="FastMoq_Mocker_LoggingCallback" data-uid="FastMoq.Mocker.LoggingCallback">LoggingCallback</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Callback invoked when FastMoq captures a log entry through this mocker instance.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -512,7 +589,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_OptionalParameterResolution_" data-uid="FastMoq.Mocker.OptionalParameterResolution*"></a>
   <h4 id="FastMoq_Mocker_OptionalParameterResolution" data-uid="FastMoq.Mocker.OptionalParameterResolution">OptionalParameterResolution</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Controls how optional constructor and invocation parameters are resolved when values are not supplied explicitly.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -535,7 +613,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_Policy_" data-uid="FastMoq.Mocker.Policy*"></a>
   <h4 id="FastMoq_Mocker_Policy" data-uid="FastMoq.Mocker.Policy">Policy</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Policy settings that control built-in type resolution and constructor fallback behavior.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -583,7 +662,8 @@ public bool Strict { get; set; }</code></pre>
   </table>
   <a id="FastMoq_Mocker_Uri_" data-uid="FastMoq.Mocker.Uri*"></a>
   <h4 id="FastMoq_Mocker_Uri" data-uid="FastMoq.Mocker.Uri">Uri</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The base URI associated with the shared <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_HttpClient">HttpClient</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -608,7 +688,8 @@ public bool Strict { get; set; }</code></pre>
 </h3>
   <a id="FastMoq_Mocker_AddFileSystemAbstractionMapping_" data-uid="FastMoq.Mocker.AddFileSystemAbstractionMapping*"></a>
   <h4 id="FastMoq_Mocker_AddFileSystemAbstractionMapping" data-uid="FastMoq.Mocker.AddFileSystemAbstractionMapping">AddFileSystemAbstractionMapping()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers the standard System.IO.Abstractions mappings backed by the current mock file system.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -616,7 +697,8 @@ public bool Strict { get; set; }</code></pre>
   </div>
   <a id="FastMoq_Mocker_AddInjections_" data-uid="FastMoq.Mocker.AddInjections*"></a>
   <h4 id="FastMoq_Mocker_AddInjections__1___0_System_Type_" data-uid="FastMoq.Mocker.AddInjections``1(``0,System.Type)">AddInjections&lt;T&gt;(T, Type?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Populates injectable fields and properties on the supplied object using the current resolution pipeline.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -635,12 +717,14 @@ public bool Strict { get; set; }</code></pre>
       <tr>
         <td><span class="xref">T</span></td>
         <td><span class="parametername">obj</span></td>
-        <td></td>
+        <td><p>The object whose injectable members should be populated.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">referenceType</span></td>
-        <td></td>
+        <td><p>Optional type used to discover injectable members instead of the runtime type.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -655,7 +739,8 @@ public bool Strict { get; set; }</code></pre>
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td></td>
+        <td><p>The same object instance after injection.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -670,7 +755,8 @@ public bool Strict { get; set; }</code></pre>
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The object type to update.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1152,11 +1238,13 @@ This is the extensibility point for framework-like types that need special resol
   </table>
   <a id="FastMoq_Mocker_AddMock_" data-uid="FastMoq.Mocker.AddMock*"></a>
   <h4 id="FastMoq_Mocker_AddMock__1_Moq_Mock___0__System_Boolean_System_Boolean_" data-uid="FastMoq.Mocker.AddMock``1(Moq.Mock{``0},System.Boolean,System.Boolean)">AddMock&lt;T&gt;(Mock&lt;T&gt;, bool, bool)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Adds an existing legacy Moq mock to the tracked mock collection.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MockModel&lt;T&gt; AddMock&lt;T&gt;(Mock&lt;T&gt; mock, bool overwrite = false, bool nonPublic = false) where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock&lt;T&gt;(...) for tracked mocks or AddType&lt;T&gt;(...) for concrete instances. This legacy Moq compatibility API will be removed in v5.&quot;)]
+public MockModel&lt;T&gt; AddMock&lt;T&gt;(Mock&lt;T&gt; mock, bool overwrite = false, bool nonPublic = false) where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -1217,7 +1305,8 @@ This is the extensibility point for framework-like types that need special resol
   </table>
   <a id="FastMoq_Mocker_AddProperties_" data-uid="FastMoq.Mocker.AddProperties*"></a>
   <h4 id="FastMoq_Mocker_AddProperties_System_Type_System_Object_System_Collections_Generic_KeyValuePair_System_String_System_Object____" data-uid="FastMoq.Mocker.AddProperties(System.Type,System.Object,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">AddProperties(Type, object?, params KeyValuePair&lt;string, object&gt;[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Populates readable properties on an object using either explicit values or resolved dependencies.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1267,7 +1356,8 @@ This is the extensibility point for framework-like types that need special resol
   </table>
   <a id="FastMoq_Mocker_AddProperties_" data-uid="FastMoq.Mocker.AddProperties*"></a>
   <h4 id="FastMoq_Mocker_AddProperties__1___0_System_Collections_Generic_KeyValuePair_System_String_System_Object____" data-uid="FastMoq.Mocker.AddProperties``1(``0,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">AddProperties&lt;T&gt;(T, params KeyValuePair&lt;string, object&gt;[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Populates readable properties on an object using either explicit values or resolved dependencies.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1327,7 +1417,8 @@ This is the extensibility point for framework-like types that need special resol
   </table>
   <a id="FastMoq_Mocker_AddType_" data-uid="FastMoq.Mocker.AddType*"></a>
   <h4 id="FastMoq_Mocker_AddType_System_Func_FastMoq_Mocker_System_Object_System_Object__System_Boolean_System_Object___" data-uid="FastMoq.Mocker.AddType(System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])">AddType(Func&lt;Mocker, object?, object?&gt;, bool, params object?[]?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers a compatibility string mapping that uses the requested resolution context.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1378,7 +1469,8 @@ public Mocker AddType(Func&lt;Mocker, object?, object?&gt; createFunc, bool repl
   </table>
   <a id="FastMoq_Mocker_AddType_" data-uid="FastMoq.Mocker.AddType*"></a>
   <h4 id="FastMoq_Mocker_AddType_System_Type_System_Type_System_Func_FastMoq_Mocker_System_Object_System_Object__System_Boolean_System_Object___" data-uid="FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])">AddType(Type, Type, Func&lt;Mocker, object, object&gt;?, bool, params object?[]?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers an interface-to-concrete mapping using a context-aware compatibility factory.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1398,27 +1490,32 @@ public Mocker AddType(Type tInterface, Type tClass, Func&lt;Mocker, object, obje
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">tInterface</span></td>
-        <td></td>
+        <td><p>The service or abstraction type to resolve.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">tClass</span></td>
-        <td></td>
+        <td><p>The concrete implementation type to construct.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
         <td><span class="parametername">createFunc</span></td>
-        <td></td>
+        <td><p>Compatibility factory that receives the requested resolution context.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">replace</span></td>
-        <td></td>
+        <td><p>True to replace an existing registration for the same service type.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
         <td><span class="parametername">args</span></td>
-        <td></td>
+        <td><p>Optional constructor or factory arguments associated with the registration.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1433,13 +1530,15 @@ public Mocker AddType(Type tInterface, Type tClass, Func&lt;Mocker, object, obje
     <tbody>
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
-        <td></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Mocker_AddType_" data-uid="FastMoq.Mocker.AddType*"></a>
   <h4 id="FastMoq_Mocker_AddType_System_Type_System_Type_System_Func_FastMoq_Mocker_System_Object__System_Boolean_System_Object___" data-uid="FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object},System.Boolean,System.Object[])">AddType(Type, Type, Func&lt;Mocker, object&gt;?, bool, params object?[]?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers an interface-to-concrete mapping for object resolution.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1458,27 +1557,32 @@ public Mocker AddType(Type tInterface, Type tClass, Func&lt;Mocker, object, obje
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">tInterface</span></td>
-        <td></td>
+        <td><p>The service or abstraction type to resolve.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">tClass</span></td>
-        <td></td>
+        <td><p>The concrete implementation type to construct.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
         <td><span class="parametername">createFunc</span></td>
-        <td></td>
+        <td><p>Optional factory used instead of the default constructor path.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">replace</span></td>
-        <td></td>
+        <td><p>True to replace an existing registration for the same service type.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
         <td><span class="parametername">args</span></td>
-        <td></td>
+        <td><p>Optional constructor or factory arguments associated with the registration.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1493,13 +1597,15 @@ public Mocker AddType(Type tInterface, Type tClass, Func&lt;Mocker, object, obje
     <tbody>
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
-        <td></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Mocker_AddType_" data-uid="FastMoq.Mocker.AddType*"></a>
   <h4 id="FastMoq_Mocker_AddType__1_System_Func_FastMoq_Mocker___0__System_Boolean_System_Object___" data-uid="FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])">AddType&lt;T&gt;(Func&lt;Mocker, T&gt;?, bool, params object?[]?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers a concrete type using an optional typed factory.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1633,7 +1739,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
 
   <a id="FastMoq_Mocker_AddType_" data-uid="FastMoq.Mocker.AddType*"></a>
   <h4 id="FastMoq_Mocker_AddType__2_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.AddType``2(System.Boolean,System.Object[])">AddType&lt;TInterface, TClass&gt;(bool, params object?[]?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers a type as its own implementation for future resolution.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1697,7 +1804,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_AddType_" data-uid="FastMoq.Mocker.AddType*"></a>
   <h4 id="FastMoq_Mocker_AddType__2_System_Func_FastMoq_Mocker___1__System_Boolean_System_Object___" data-uid="FastMoq.Mocker.AddType``2(System.Func{FastMoq.Mocker,``1},System.Boolean,System.Object[])">AddType&lt;TInterface, TClass&gt;(Func&lt;Mocker, TClass&gt;?, bool, params object?[]?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers a type mapping that uses a typed factory during resolution.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1764,9 +1872,49 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
       </tr>
     </tbody>
   </table>
+  <a id="FastMoq_Mocker_BuildExpression_" data-uid="FastMoq.Mocker.BuildExpression*"></a>
+  <h4 id="FastMoq_Mocker_BuildExpression__1" data-uid="FastMoq.Mocker.BuildExpression``1">BuildExpression&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Builds a wildcard predicate expression using the active mocking provider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Expression&lt;Func&lt;T, bool&gt;&gt; BuildExpression&lt;T&gt;()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="FastMoq_Mocker_CallMethod_" data-uid="FastMoq.Mocker.CallMethod*"></a>
   <h4 id="FastMoq_Mocker_CallMethod_FastMoq_InvocationOptions_System_Action_System_Object___" data-uid="FastMoq.Mocker.CallMethod(FastMoq.InvocationOptions,System.Action,System.Object[])">CallMethod(InvocationOptions?, Action, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes an action using the supplied invocation options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1801,7 +1949,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_CallMethod_" data-uid="FastMoq.Mocker.CallMethod*"></a>
   <h4 id="FastMoq_Mocker_CallMethod_FastMoq_InvocationOptions_System_Delegate_System_Object___" data-uid="FastMoq.Mocker.CallMethod(FastMoq.InvocationOptions,System.Delegate,System.Object[])">CallMethod(InvocationOptions?, Delegate, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a delegate without using its return value and with explicit invocation options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1836,7 +1985,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_CallMethod_" data-uid="FastMoq.Mocker.CallMethod*"></a>
   <h4 id="FastMoq_Mocker_CallMethod_System_Action_System_Object___" data-uid="FastMoq.Mocker.CallMethod(System.Action,System.Object[])">CallMethod(Action, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes an action using the mocker's current invocation defaults.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1866,7 +2016,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_CallMethod_" data-uid="FastMoq.Mocker.CallMethod*"></a>
   <h4 id="FastMoq_Mocker_CallMethod_System_Delegate_System_Object___" data-uid="FastMoq.Mocker.CallMethod(System.Delegate,System.Object[])">CallMethod(Delegate, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a delegate without using its return value.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1896,7 +2047,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_CallMethodAsync_" data-uid="FastMoq.Mocker.CallMethodAsync*"></a>
   <h4 id="FastMoq_Mocker_CallMethodAsync__1_FastMoq_InvocationOptions_System_Delegate_System_Object___" data-uid="FastMoq.Mocker.CallMethodAsync``1(FastMoq.InvocationOptions,System.Delegate,System.Object[])">CallMethodAsync&lt;TReturn&gt;(InvocationOptions?, Delegate, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a delegate and awaits a task result using the supplied invocation options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1961,7 +2113,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_CallMethodAsync_" data-uid="FastMoq.Mocker.CallMethodAsync*"></a>
   <h4 id="FastMoq_Mocker_CallMethodAsync__1_System_Delegate_System_Object___" data-uid="FastMoq.Mocker.CallMethodAsync``1(System.Delegate,System.Object[])">CallMethodAsync&lt;TReturn&gt;(Delegate, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a delegate and awaits a task result using the mocker's current invocation defaults.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -2021,7 +2174,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_CallMethod_" data-uid="FastMoq.Mocker.CallMethod*"></a>
   <h4 id="FastMoq_Mocker_CallMethod__1_FastMoq_InvocationOptions_System_Delegate_System_Object___" data-uid="FastMoq.Mocker.CallMethod``1(FastMoq.InvocationOptions,System.Delegate,System.Object[])">CallMethod&lt;TReturn&gt;(InvocationOptions?, Delegate, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a delegate and returns its result using the supplied invocation options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -2086,7 +2240,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_CallMethod_" data-uid="FastMoq.Mocker.CallMethod*"></a>
   <h4 id="FastMoq_Mocker_CallMethod__1_FastMoq_InvocationOptions_System_Func___0__System_Object___" data-uid="FastMoq.Mocker.CallMethod``1(FastMoq.InvocationOptions,System.Func{``0},System.Object[])">CallMethod&lt;TReturn&gt;(InvocationOptions?, Func&lt;TReturn&gt;, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a function and returns its result using the supplied invocation options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -2151,7 +2306,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_CallMethod_" data-uid="FastMoq.Mocker.CallMethod*"></a>
   <h4 id="FastMoq_Mocker_CallMethod__1_System_Delegate_System_Object___" data-uid="FastMoq.Mocker.CallMethod``1(System.Delegate,System.Object[])">CallMethod&lt;TReturn&gt;(Delegate, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a delegate and returns its result using the mocker's current invocation defaults.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -2211,7 +2367,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_CallMethod_" data-uid="FastMoq.Mocker.CallMethod*"></a>
   <h4 id="FastMoq_Mocker_CallMethod__1_System_Func___0__System_Object___" data-uid="FastMoq.Mocker.CallMethod``1(System.Func{``0},System.Object[])">CallMethod&lt;TReturn&gt;(Func&lt;TReturn&gt;, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a function and returns its result using the mocker's current invocation defaults.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -2277,7 +2434,8 @@ Useful when the same interface is needed multiple times without constructor inje
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Mock CreateDetachedMock(Type type, bool nonPublic = false, params object?[] args)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock(Type, ...) on a dedicated Mocker instance when possible. This legacy Moq compatibility API will be removed in v5.&quot;)]
+public Mock CreateDetachedMock(Type type, bool nonPublic = false, params object?[] args)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -2329,7 +2487,8 @@ Useful when the same interface is needed multiple times without constructor inje
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Mock&lt;T&gt; CreateDetachedMock&lt;T&gt;(bool nonPublic = false, params object?[] args) where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock&lt;T&gt;(...) on a dedicated Mocker instance when possible. This legacy Moq compatibility API will be removed in v5.&quot;)]
+public Mock&lt;T&gt; CreateDetachedMock&lt;T&gt;(bool nonPublic = false, params object?[] args) where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -2441,7 +2600,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_CreateInstanceByType_" data-uid="FastMoq.Mocker.CreateInstanceByType*"></a>
   <h4 id="FastMoq_Mocker_CreateInstanceByType__1_FastMoq_InstanceCreationFlags_System_Type___" data-uid="FastMoq.Mocker.CreateInstanceByType``1(FastMoq.InstanceCreationFlags,System.Type[])">CreateInstanceByType&lt;T&gt;(InstanceCreationFlags, params Type?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of <code class="typeparamref">T</code> by selecting a constructor that matches the supplied parameter types and creation flags.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -2501,7 +2661,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_CreateInstanceByType_" data-uid="FastMoq.Mocker.CreateInstanceByType*"></a>
   <h4 id="FastMoq_Mocker_CreateInstanceByType__1_System_Type___" data-uid="FastMoq.Mocker.CreateInstanceByType``1(System.Type[])">CreateInstanceByType&lt;T&gt;(params Type?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of <code class="typeparamref">T</code> by selecting a constructor that matches the supplied parameter types.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -2617,7 +2778,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_CreateInstance_" data-uid="FastMoq.Mocker.CreateInstance*"></a>
   <h4 id="FastMoq_Mocker_CreateInstance__1_System_Object___" data-uid="FastMoq.Mocker.CreateInstance``1(System.Object[])">CreateInstance&lt;T&gt;(params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of <code class="typeparamref">T</code> using the current component-construction defaults.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -2672,11 +2834,13 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_CreateMock_" data-uid="FastMoq.Mocker.CreateMock*"></a>
   <h4 id="FastMoq_Mocker_CreateMock_System_Type_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.CreateMock(System.Type,System.Boolean,System.Object[])">CreateMock(Type, bool, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates and tracks a legacy Moq-compatible mock for the supplied runtime type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;MockModel&gt; CreateMock(Type type, bool nonPublic = false, params object?[] args)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock(Type, ...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.&quot;)]
+public List&lt;MockModel&gt; CreateMock(Type type, bool nonPublic = false, params object?[] args)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -2722,11 +2886,13 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_CreateMockInstance_" data-uid="FastMoq.Mocker.CreateMockInstance*"></a>
   <h4 id="FastMoq_Mocker_CreateMockInstance_System_Type_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.CreateMockInstance(System.Type,System.Boolean,System.Object[])">CreateMockInstance(Type, bool, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a detached legacy <span class="xref">Moq.Mock</span> for the supplied runtime type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Mock CreateMockInstance(Type type, bool nonPublic = false, params object?[] args)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock(Type, ...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.&quot;)]
+public Mock CreateMockInstance(Type type, bool nonPublic = false, params object?[] args)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -2772,11 +2938,13 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_CreateMockInstance_" data-uid="FastMoq.Mocker.CreateMockInstance*"></a>
   <h4 id="FastMoq_Mocker_CreateMockInstance__1_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.CreateMockInstance``1(System.Boolean,System.Object[])">CreateMockInstance&lt;T&gt;(bool, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a detached legacy <span class="xref">Moq.Mock&lt;T&gt;</span> for the supplied type parameter.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Mock&lt;T&gt; CreateMockInstance&lt;T&gt;(bool nonPublic = false, params object?[] args) where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock&lt;T&gt;(...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.&quot;)]
+public Mock&lt;T&gt; CreateMockInstance&lt;T&gt;(bool nonPublic = false, params object?[] args) where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -2832,11 +3000,13 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_CreateMock_" data-uid="FastMoq.Mocker.CreateMock*"></a>
   <h4 id="FastMoq_Mocker_CreateMock__1_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.CreateMock``1(System.Boolean,System.Object[])">CreateMock&lt;T&gt;(bool, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates and tracks a legacy Moq-compatible mock for the supplied type parameter.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;MockModel&gt; CreateMock&lt;T&gt;(bool nonPublic = false, params object?[] args) where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock&lt;T&gt;(...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.&quot;)]
+public List&lt;MockModel&gt; CreateMock&lt;T&gt;(bool nonPublic = false, params object?[] args) where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -2892,7 +3062,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetArgData_" data-uid="FastMoq.Mocker.GetArgData*"></a>
   <h4 id="FastMoq_Mocker_GetArgData__1" data-uid="FastMoq.Mocker.GetArgData``1">GetArgData&lt;T&gt;()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Builds constructor argument data for <code class="typeparamref">T</code> using the mocker's current optional-parameter policy.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -2930,7 +3101,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetArgData_" data-uid="FastMoq.Mocker.GetArgData*"></a>
   <h4 id="FastMoq_Mocker_GetArgData__1_FastMoq_InstanceCreationFlags_" data-uid="FastMoq.Mocker.GetArgData``1(FastMoq.InstanceCreationFlags)">GetArgData&lt;T&gt;(InstanceCreationFlags)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Builds constructor argument data for <code class="typeparamref">T</code> using the supplied creation flags.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -2985,7 +3157,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetArgData_" data-uid="FastMoq.Mocker.GetArgData*"></a>
   <h4 id="FastMoq_Mocker_GetArgData__1_FastMoq_OptionalParameterResolutionMode_" data-uid="FastMoq.Mocker.GetArgData``1(FastMoq.OptionalParameterResolutionMode)">GetArgData&lt;T&gt;(OptionalParameterResolutionMode)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Builds constructor argument data for <code class="typeparamref">T</code> using the supplied optional-parameter policy.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3040,7 +3213,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetFileSystem_" data-uid="FastMoq.Mocker.GetFileSystem*"></a>
   <h4 id="FastMoq_Mocker_GetFileSystem" data-uid="FastMoq.Mocker.GetFileSystem">GetFileSystem()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns the shared mock file system.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3063,7 +3237,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetFileSystem_" data-uid="FastMoq.Mocker.GetFileSystem*"></a>
   <h4 id="FastMoq_Mocker_GetFileSystem_System_Action_System_IO_Abstractions_TestingHelpers_MockFileSystem__" data-uid="FastMoq.Mocker.GetFileSystem(System.Action{System.IO.Abstractions.TestingHelpers.MockFileSystem})">GetFileSystem(Action&lt;MockFileSystem&gt;?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns the shared mock file system after optionally applying additional configuration.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3154,7 +3329,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetKeyedObject_" data-uid="FastMoq.Mocker.GetKeyedObject*"></a>
   <h4 id="FastMoq_Mocker_GetKeyedObject__1_System_Object_" data-uid="FastMoq.Mocker.GetKeyedObject``1(System.Object)">GetKeyedObject&lt;T&gt;(object)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Resolves a keyed object using the supplied service key.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3209,7 +3385,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetKeyedObject_" data-uid="FastMoq.Mocker.GetKeyedObject*"></a>
   <h4 id="FastMoq_Mocker_GetKeyedObject__1_System_Object_System_Action___0__" data-uid="FastMoq.Mocker.GetKeyedObject``1(System.Object,System.Action{``0})">GetKeyedObject&lt;T&gt;(object, Action&lt;T?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Resolves a keyed object and invokes an initialization callback with the typed result.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3269,7 +3446,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetList_" data-uid="FastMoq.Mocker.GetList*"></a>
   <h4 id="FastMoq_Mocker_GetList__1_System_Int32_System_Func_System_Int32___0__" data-uid="FastMoq.Mocker.GetList``1(System.Int32,System.Func{System.Int32,``0})">GetList&lt;T&gt;(int, Func&lt;int, T&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a list by invoking the supplied indexed factory a fixed number of times.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3329,7 +3507,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetList_" data-uid="FastMoq.Mocker.GetList*"></a>
   <h4 id="FastMoq_Mocker_GetList__1_System_Int32_System_Func_System_Int32___0__System_Action_System_Int32___0__" data-uid="FastMoq.Mocker.GetList``1(System.Int32,System.Func{System.Int32,``0},System.Action{System.Int32,``0})">GetList&lt;T&gt;(int, Func&lt;int, T&gt;, Action&lt;int, T&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a list by invoking the supplied indexed factory and initializer a fixed number of times.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3394,7 +3573,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetList_" data-uid="FastMoq.Mocker.GetList*"></a>
   <h4 id="FastMoq_Mocker_GetList__1_System_Int32_System_Func___0__" data-uid="FastMoq.Mocker.GetList``1(System.Int32,System.Func{``0})">GetList&lt;T&gt;(int, Func&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a list by invoking the supplied factory a fixed number of times.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3454,7 +3634,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetMethodArgData_" data-uid="FastMoq.Mocker.GetMethodArgData*"></a>
   <h4 id="FastMoq_Mocker_GetMethodArgData_System_Reflection_MethodBase_" data-uid="FastMoq.Mocker.GetMethodArgData(System.Reflection.MethodBase)">GetMethodArgData(MethodBase?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Builds invocation arguments for a method using the mocker's current optional-parameter policy.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3494,7 +3675,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetMethodArgData_" data-uid="FastMoq.Mocker.GetMethodArgData*"></a>
   <h4 id="FastMoq_Mocker_GetMethodArgData_System_Reflection_MethodBase_FastMoq_InvocationOptions_" data-uid="FastMoq.Mocker.GetMethodArgData(System.Reflection.MethodBase,FastMoq.InvocationOptions)">GetMethodArgData(MethodBase?, InvocationOptions?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Builds invocation arguments for a method using the supplied invocation options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3539,7 +3721,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetMethodDefaultData_" data-uid="FastMoq.Mocker.GetMethodDefaultData*"></a>
   <h4 id="FastMoq_Mocker_GetMethodDefaultData_System_Reflection_MethodBase_" data-uid="FastMoq.Mocker.GetMethodDefaultData(System.Reflection.MethodBase)">GetMethodDefaultData(MethodBase?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Builds invocation arguments that contain only default values for the supplied method.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3579,11 +3762,13 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetMock_" data-uid="FastMoq.Mocker.GetMock*"></a>
   <h4 id="FastMoq_Mocker_GetMock_System_Type_System_Object___" data-uid="FastMoq.Mocker.GetMock(System.Type,System.Object[])">GetMock(Type, params object?[]?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a tracked legacy Moq mock for the supplied runtime type, creating it if needed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Mock GetMock(Type type, params object?[]? args)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock(Type, ...) for provider-neutral retrieval. Keep GetMock(Type, ...) only for legacy Moq-specific setup/access. This API will be removed in v5.&quot;)]
+public Mock GetMock(Type type, params object?[]? args)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -3624,7 +3809,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetMockModelIndexOf_" data-uid="FastMoq.Mocker.GetMockModelIndexOf*"></a>
   <h4 id="FastMoq_Mocker_GetMockModelIndexOf_System_Type_System_Boolean_" data-uid="FastMoq.Mocker.GetMockModelIndexOf(System.Type,System.Boolean)">GetMockModelIndexOf(Type, bool)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the index of the tracked mock model for the supplied runtime type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3669,7 +3855,8 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetMockModel_" data-uid="FastMoq.Mocker.GetMockModel*"></a>
   <h4 id="FastMoq_Mocker_GetMockModel__1" data-uid="FastMoq.Mocker.GetMockModel``1">GetMockModel&lt;T&gt;()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the tracked mock model for the supplied type parameter.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3707,11 +3894,13 @@ Useful when the same interface is needed multiple times without constructor inje
   </table>
   <a id="FastMoq_Mocker_GetMock_" data-uid="FastMoq.Mocker.GetMock*"></a>
   <h4 id="FastMoq_Mocker_GetMock__1_System_Action_Moq_Mock___0___System_Object___" data-uid="FastMoq.Mocker.GetMock``1(System.Action{Moq.Mock{``0}},System.Object[])">GetMock&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt;, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a tracked legacy Moq mock and applies an initialization callback to it.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Mock&lt;T&gt; GetMock&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt; action, params object?[] args) where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock&lt;T&gt;(...) for provider-neutral retrieval. Keep GetMock&lt;T&gt;(...) only for legacy Moq-specific setup/access. This API will be removed in v5.&quot;)]
+public Mock&lt;T&gt; GetMock&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt; action, params object?[] args) where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -3772,7 +3961,8 @@ Useful when the same interface is needed multiple times without constructor inje
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Mock&lt;T&gt; GetMock&lt;T&gt;(params object?[] args) where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock&lt;T&gt;(...) for provider-neutral retrieval. Keep GetMock&lt;T&gt;(...) only for legacy Moq-specific setup/access. This API will be removed in v5.&quot;)]
+public Mock&lt;T&gt; GetMock&lt;T&gt;(params object?[] args) where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -3822,18 +4012,20 @@ Useful when the same interface is needed multiple times without constructor inje
     </tbody>
   </table>
   <h5 id="FastMoq_Mocker_GetMock__1_System_Object____examples">Examples</h5>
-  <p>Use the callback overload when you want mock creation and setup in one place.</p>
+  <p><code>GetMock&lt;T&gt;()</code> remains the Moq-compatibility path. For new examples, prefer <code>GetOrCreateMock&lt;T&gt;()</code> for provider-neutral retrieval, and use <code>GetMock&lt;T&gt;()</code> only when the test intentionally relies on Moq-specific setup APIs.</p>
 <pre><code class="lang-csharp">var mocker = new Mocker();
-<p>mocker.GetMock&lt;IPaymentGateway&gt;(gateway =&gt;
-gateway.Setup(x =&gt; x.Charge(125.50m)).Returns(true));</p>
+<p>mocker.GetMock&lt;IPaymentGateway&gt;()
+.Setup(x =&gt; x.Charge(125.50m))
+.Returns(true);</p>
 <p>var service = mocker.GetRequiredObject&lt;CheckoutService&gt;();
 var approved = service.SubmitPayment(125.50m);</p>
 <p>approved.Should().BeTrue();
-mocker.GetMock&lt;IPaymentGateway&gt;().Verify(x =&gt; x.Charge(125.50m), Times.Once);</p></code></pre>
+mocker.Verify&lt;IPaymentGateway&gt;(x =&gt; x.Charge(125.50m), TimesSpec.Once);</p></code></pre>
 
   <a id="FastMoq_Mocker_GetNativeMock_" data-uid="FastMoq.Mocker.GetNativeMock*"></a>
   <h4 id="FastMoq_Mocker_GetNativeMock_System_Type_" data-uid="FastMoq.Mocker.GetNativeMock(System.Type)">GetNativeMock(Type)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the provider-native mock object for the supplied runtime type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3873,7 +4065,8 @@ mocker.GetMock&lt;IPaymentGateway&gt;().Verify(x =&gt; x.Charge(125.50m), Times.
   </table>
   <a id="FastMoq_Mocker_GetNativeMock_" data-uid="FastMoq.Mocker.GetNativeMock*"></a>
   <h4 id="FastMoq_Mocker_GetNativeMock__1_System_Object___" data-uid="FastMoq.Mocker.GetNativeMock``1(System.Object[])">GetNativeMock&lt;T&gt;(params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the provider-native mock object for the supplied type parameter.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3928,7 +4121,8 @@ mocker.GetMock&lt;IPaymentGateway&gt;().Verify(x =&gt; x.Charge(125.50m), Times.
   </table>
   <a id="FastMoq_Mocker_GetObject_" data-uid="FastMoq.Mocker.GetObject*"></a>
   <h4 id="FastMoq_Mocker_GetObject_System_Reflection_ParameterInfo_" data-uid="FastMoq.Mocker.GetObject(System.Reflection.ParameterInfo)">GetObject(ParameterInfo)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Resolves a value for the supplied parameter using the mocker's constructor and object-resolution rules.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3947,7 +4141,8 @@ mocker.GetMock&lt;IPaymentGateway&gt;().Verify(x =&gt; x.Charge(125.50m), Times.
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a></td>
         <td><span class="parametername">info</span></td>
-        <td></td>
+        <td><p>The parameter to resolve.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -3962,13 +4157,15 @@ mocker.GetMock&lt;IPaymentGateway&gt;().Verify(x =&gt; x.Charge(125.50m), Times.
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td></td>
+        <td><p>The resolved value, or the parameter type default when resolution fails.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Mocker_GetObject_" data-uid="FastMoq.Mocker.GetObject*"></a>
   <h4 id="FastMoq_Mocker_GetObject_System_Type_System_Action_System_Object__" data-uid="FastMoq.Mocker.GetObject(System.Type,System.Action{System.Object})">GetObject(Type, Action&lt;object?&gt;?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Resolves an object using custom registrations, known types, tracked mocks, and default fallbacks.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -3987,12 +4184,14 @@ mocker.GetMock&lt;IPaymentGateway&gt;().Verify(x =&gt; x.Charge(125.50m), Times.
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">type</span></td>
-        <td></td>
+        <td><p>The requested service or concrete type.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
         <td><span class="parametername">initAction</span></td>
-        <td></td>
+        <td><p>Optional callback invoked with the resolved value before it is returned.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -4007,7 +4206,8 @@ mocker.GetMock&lt;IPaymentGateway&gt;().Verify(x =&gt; x.Charge(125.50m), Times.
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td></td>
+        <td><p>The resolved object instance, or the type default when no value can be created.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -4061,7 +4261,8 @@ fileSystem.AddDirectory(@"c:\exports");
 
   <a id="FastMoq_Mocker_GetObject_" data-uid="FastMoq.Mocker.GetObject*"></a>
   <h4 id="FastMoq_Mocker_GetObject__1_System_Action___0__" data-uid="FastMoq.Mocker.GetObject``1(System.Action{``0})">GetObject&lt;T&gt;(Action&lt;T?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Resolves an object and invokes an initialization callback with the typed result.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4116,7 +4317,8 @@ fileSystem.AddDirectory(@"c:\exports");
   </table>
   <a id="FastMoq_Mocker_GetObject_" data-uid="FastMoq.Mocker.GetObject*"></a>
   <h4 id="FastMoq_Mocker_GetObject__1_System_Object___" data-uid="FastMoq.Mocker.GetObject``1(System.Object[])">GetObject&lt;T&gt;(object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of <code class="typeparamref">T</code> using the supplied constructor arguments.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4273,21 +4475,31 @@ fileSystem.AddDirectory(@"c:\exports");
   </table>
   <h5 id="FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions__examples">Examples</h5>
   <p>Use <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;(MockRequestOptions?)</a> when the test needs the tracked mock handle itself, not just automatic constructor resolution.</p>
+<p><code>GetOrCreateMock</code> uses the active FastMoq provider. It does not require the Moq provider to be selected unless the test later calls Moq-specific extensions such as <code>AsMoq()</code>, <code>Setup(...)</code>, or <code>Protected()</code>.</p>
 <pre><code class="lang-csharp">var mocker = new Mocker();
 var gateway = mocker.GetOrCreateMock&lt;IOrderGateway&gt;();
 <p>var submitter = new OrderSubmitter(gateway.Instance);
 submitter.Submit(42);</p>
 <p>mocker.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(42), TimesSpec.Once);
 mocker.VerifyNoOtherCalls&lt;IOrderGateway&gt;();</p></code></pre>
-<p>Typical reasons to call it explicitly are: passing <code>Instance</code> into custom component construction, reusing the same tracked mock across calls, resetting it, or using keyed <a class="xref" href="FastMoq.MockRequestOptions.html">MockRequestOptions</a>.</p>
+<p>Provider-neutral usage works the same way under the reflection provider because the tracked handle is still an <a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock&lt;T&gt;</a>.</p>
+<pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push("reflection");
+<p>var mocker = new Mocker();
+var dependency = mocker.GetOrCreateMock&lt;IOrderGateway&gt;();</p>
+<p>var submitter = new OrderSubmitter(dependency.Instance);
+submitter.Submit(42);</p>
+<p>mocker.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(42), TimesSpec.Once);</p></code></pre>
+<p>Typical reasons to call it explicitly are: passing <code>Instance</code> into custom component construction, reusing the same tracked mock across calls, resetting it, or using keyed <a class="xref" href="FastMoq.MockRequestOptions.html">MockRequestOptions</a>. If the test needs Moq-specific setup or verification APIs, select the Moq provider for that test assembly before calling those extensions.</p>
 
   <a id="FastMoq_Mocker_GetRequiredMock_" data-uid="FastMoq.Mocker.GetRequiredMock*"></a>
   <h4 id="FastMoq_Mocker_GetRequiredMock_System_Type_" data-uid="FastMoq.Mocker.GetRequiredMock(System.Type)">GetRequiredMock(Type)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets an already tracked legacy Moq mock for the supplied runtime type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Mock GetRequiredMock(Type type)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock(Type, ...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock(Type) only for legacy Moq-specific access. This API will be removed in v5.&quot;)]
+public Mock GetRequiredMock(Type type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -4323,11 +4535,13 @@ mocker.VerifyNoOtherCalls&lt;IOrderGateway&gt;();</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_GetRequiredMock_" data-uid="FastMoq.Mocker.GetRequiredMock*"></a>
   <h4 id="FastMoq_Mocker_GetRequiredMock__1" data-uid="FastMoq.Mocker.GetRequiredMock``1">GetRequiredMock&lt;T&gt;()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets an already tracked legacy Moq mock for the supplied type parameter.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Mock&lt;T&gt; GetRequiredMock&lt;T&gt;() where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetOrCreateMock&lt;T&gt;(...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock&lt;T&gt;() only for legacy Moq-specific access. This API will be removed in v5.&quot;)]
+public Mock&lt;T&gt; GetRequiredMock&lt;T&gt;() where T : class</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-condensed">
@@ -4361,7 +4575,8 @@ mocker.VerifyNoOtherCalls&lt;IOrderGateway&gt;();</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_GetRequiredObject_" data-uid="FastMoq.Mocker.GetRequiredObject*"></a>
   <h4 id="FastMoq_Mocker_GetRequiredObject__1" data-uid="FastMoq.Mocker.GetRequiredObject``1">GetRequiredObject&lt;T&gt;()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Resolves a required object and throws when no instance can be produced.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4399,7 +4614,8 @@ mocker.VerifyNoOtherCalls&lt;IOrderGateway&gt;();</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_GetStringContent_" data-uid="FastMoq.Mocker.GetStringContent*"></a>
   <h4 id="FastMoq_Mocker_GetStringContent_System_Net_Http_HttpContent_" data-uid="FastMoq.Mocker.GetStringContent(System.Net.Http.HttpContent)">GetStringContent(HttpContent?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Reads the string content from an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpcontent">HttpContent</a> instance, returning an empty string when the content is null.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4439,7 +4655,8 @@ mocker.VerifyNoOtherCalls&lt;IOrderGateway&gt;();</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_HasParameterlessConstructor_" data-uid="FastMoq.Mocker.HasParameterlessConstructor*"></a>
   <h4 id="FastMoq_Mocker_HasParameterlessConstructor_System_Type_System_Boolean_" data-uid="FastMoq.Mocker.HasParameterlessConstructor(System.Type,System.Boolean)">HasParameterlessConstructor(Type, bool)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Determines whether the supplied type exposes a parameterless constructor.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4484,7 +4701,8 @@ mocker.VerifyNoOtherCalls&lt;IOrderGateway&gt;();</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_Initialize_" data-uid="FastMoq.Mocker.Initialize*"></a>
   <h4 id="FastMoq_Mocker_Initialize__1_System_Action_Moq_Mock___0___" data-uid="FastMoq.Mocker.Initialize``1(System.Action{Moq.Mock{``0}})">Initialize&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes a tracked legacy Moq mock by invoking the supplied setup callback.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4525,7 +4743,8 @@ public void Initialize&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt; init) where T : clas
   </table>
   <a id="FastMoq_Mocker_InvokeMethod_" data-uid="FastMoq.Mocker.InvokeMethod*"></a>
   <h4 id="FastMoq_Mocker_InvokeMethod_FastMoq_InvocationOptions_System_Object_System_String_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.InvokeMethod(FastMoq.InvocationOptions,System.Object,System.String,System.Boolean,System.Object[])">InvokeMethod(InvocationOptions?, object?, string, bool, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a method on the supplied instance using the supplied invocation options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4585,7 +4804,8 @@ public void Initialize&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt; init) where T : clas
   </table>
   <a id="FastMoq_Mocker_InvokeMethod_" data-uid="FastMoq.Mocker.InvokeMethod*"></a>
   <h4 id="FastMoq_Mocker_InvokeMethod_System_Object_System_String_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.InvokeMethod(System.Object,System.String,System.Boolean,System.Object[])">InvokeMethod(object?, string, bool, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a method on the supplied instance using the mocker's current invocation defaults.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4640,7 +4860,8 @@ public void Initialize&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt; init) where T : clas
   </table>
   <a id="FastMoq_Mocker_InvokeMethod_" data-uid="FastMoq.Mocker.InvokeMethod*"></a>
   <h4 id="FastMoq_Mocker_InvokeMethod__1_FastMoq_InvocationOptions_System_Object_System_String_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.InvokeMethod``1(FastMoq.InvocationOptions,System.Object,System.String,System.Boolean,System.Object[])">InvokeMethod&lt;T&gt;(InvocationOptions?, object?, string, bool, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a method declared on <code class="typeparamref">T</code> using the supplied invocation options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4715,7 +4936,8 @@ public void Initialize&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt; init) where T : clas
   </table>
   <a id="FastMoq_Mocker_InvokeMethod_" data-uid="FastMoq.Mocker.InvokeMethod*"></a>
   <h4 id="FastMoq_Mocker_InvokeMethod__1_FastMoq_InvocationOptions_System_String_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.InvokeMethod``1(FastMoq.InvocationOptions,System.String,System.Boolean,System.Object[])">InvokeMethod&lt;T&gt;(InvocationOptions?, string, bool, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a method declared on <code class="typeparamref">T</code> without an explicit instance parameter using the supplied invocation options.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4785,7 +5007,8 @@ public void Initialize&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt; init) where T : clas
   </table>
   <a id="FastMoq_Mocker_InvokeMethod_" data-uid="FastMoq.Mocker.InvokeMethod*"></a>
   <h4 id="FastMoq_Mocker_InvokeMethod__1_System_Object_System_String_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.InvokeMethod``1(System.Object,System.String,System.Boolean,System.Object[])">InvokeMethod&lt;T&gt;(object?, string, bool, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a method declared on <code class="typeparamref">T</code> using the mocker's current invocation defaults.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4855,7 +5078,8 @@ public void Initialize&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt; init) where T : clas
   </table>
   <a id="FastMoq_Mocker_InvokeMethod_" data-uid="FastMoq.Mocker.InvokeMethod*"></a>
   <h4 id="FastMoq_Mocker_InvokeMethod__1_System_String_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.InvokeMethod``1(System.String,System.Boolean,System.Object[])">InvokeMethod&lt;T&gt;(string, bool, params object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes a method declared on <code class="typeparamref">T</code> without an explicit instance parameter.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -4920,11 +5144,13 @@ public void Initialize&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt; init) where T : clas
   </table>
   <a id="FastMoq_Mocker_RemoveMock_" data-uid="FastMoq.Mocker.RemoveMock*"></a>
   <h4 id="FastMoq_Mocker_RemoveMock_Moq_Mock_" data-uid="FastMoq.Mocker.RemoveMock(Moq.Mock)">RemoveMock(Mock)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Removes a tracked legacy Moq mock from the mock collection.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool RemoveMock(Mock mock)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use provider-neutral mock lifecycle APIs instead. This legacy Moq compatibility API will be removed in v5.&quot;)]
+public bool RemoveMock(Mock mock)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -5160,19 +5386,13 @@ This is broader than <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_St
       <a class="xref" href="FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_CreateHttpClient_FastMoq_Mocker_System_String_System_String_System_Net_HttpStatusCode_System_String_">MockerHttpExtensions.CreateHttpClient(Mocker, string, string, HttpStatusCode, string)</a>
   </div>
   <div>
-      <a class="xref" href="FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupHttpMessage_FastMoq_Mocker_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_">MockerHttpExtensions.SetupHttpMessage(Mocker, Func&lt;HttpResponseMessage&gt;, Expression?, Expression?)</a>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_FastMoq_Mocker_System_Func_System_Net_Http_HttpRequestMessage_System_Boolean__System_Func_System_Net_Http_HttpResponseMessage__">MockerHttpExtensions.WhenHttpRequest(Mocker, Func&lt;HttpRequestMessage, bool&gt;, Func&lt;HttpResponseMessage&gt;)</a>
   </div>
   <div>
-      <a class="xref" href="FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageAsync__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__">MockerHttpExtensions.SetupMessageAsync&lt;TMock, TReturn&gt;(Mocker, Expression&lt;Func&lt;TMock, Task&lt;TReturn&gt;&gt;&gt;, Func&lt;TReturn&gt;)</a>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_FastMoq_Mocker_System_Net_Http_HttpMethod_System_String_System_Func_System_Net_Http_HttpResponseMessage__">MockerHttpExtensions.WhenHttpRequest(Mocker, HttpMethod, string, Func&lt;HttpResponseMessage&gt;)</a>
   </div>
   <div>
-      <a class="xref" href="FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtectedAsync__2_FastMoq_Mocker_System_String_System_Func___1__System_Object___">MockerHttpExtensions.SetupMessageProtectedAsync&lt;TMock, TReturn&gt;(Mocker, string, Func&lt;TReturn&gt;, params object?[]?)</a>
-  </div>
-  <div>
-      <a class="xref" href="FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtected__2_FastMoq_Mocker_System_String_System_Func___1__System_Object___">MockerHttpExtensions.SetupMessageProtected&lt;TMock, TReturn&gt;(Mocker, string, Func&lt;TReturn&gt;, params object?[]?)</a>
-  </div>
-  <div>
-      <a class="xref" href="FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_SetupMessage__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__">MockerHttpExtensions.SetupMessage&lt;TMock, TReturn&gt;(Mocker, Expression&lt;Func&lt;TMock, TReturn&gt;&gt;, Func&lt;TReturn&gt;)</a>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequestJson_FastMoq_Mocker_System_Net_Http_HttpMethod_System_String_System_String_System_Net_HttpStatusCode_">MockerHttpExtensions.WhenHttpRequestJson(Mocker, HttpMethod, string, string, HttpStatusCode)</a>
   </div>
   <div>
       <a class="xref" href="FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_">ObjectExtensions.RaiseIfNull&lt;T&gt;(T?, string?, string?, int?, string?)</a>
@@ -5220,10 +5440,37 @@ This is broader than <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_St
       <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.SetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
   </div>
   <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_">TestClassExtensions.VerifyLogged(Mocker, LogLevel, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_FastMoq_Providers_TimesSpec_">TestClassExtensions.VerifyLogged(Mocker, LogLevel, string, TimesSpec)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__">TestClassExtensions.VerifyLogged(Mocker, LogLevel, string, Exception?, int?)</a>
+  </div>
+  <div>
       <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_">TestClassExtensions.VerifyLogged(Mocker, LogLevel, string, Exception?, int?, int)</a>
   </div>
   <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Nullable_FastMoq_Providers_TimesSpec__">TestClassExtensions.VerifyLogged(Mocker, LogLevel, string, Exception?, int?, TimesSpec?)</a>
+  </div>
+  <div>
       <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_">TestClassExtensions.VerifyLogged(Mocker, LogLevel, string, int)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_">MockerHttpMoqExtensions.SetupHttpMessage(object, Func&lt;HttpResponseMessage&gt;, Expression?, Expression?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__">MockerHttpMoqExtensions.SetupMessageAsync&lt;TMock, TReturn&gt;(object, Expression&lt;Func&lt;TMock, Task&lt;TReturn&gt;&gt;&gt;, Func&lt;TReturn&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___">MockerHttpMoqExtensions.SetupMessageProtectedAsync&lt;TMock, TReturn&gt;(object, string, Func&lt;TReturn&gt;, params object?[]?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___">MockerHttpMoqExtensions.SetupMessageProtected&lt;TMock, TReturn&gt;(object, string, Func&lt;TReturn&gt;, params object?[]?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__">MockerHttpMoqExtensions.SetupMessage&lt;TMock, TReturn&gt;(object, Expression&lt;Func&lt;TMock, TReturn&gt;&gt;, Func&lt;TReturn&gt;)</a>
   </div>
   <div>
       <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_">TestClassExtensions.GetFieldInfo&lt;TType&gt;(object, string)</a>
@@ -5256,7 +5503,7 @@ This is broader than <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_St
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

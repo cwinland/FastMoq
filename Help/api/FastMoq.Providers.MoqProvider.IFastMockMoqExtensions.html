@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class IFastMockMoqExtensions | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class IFastMockMoqExtensions | FastMoq ">
+    
+    <meta name="description" content="Moq-specific convenience extensions for  and . These stay in the provider package so the core abstractions remain provider agnostic.">
+      <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+      <link rel="shortcut icon" href="../favicon.svg">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <link rel="stylesheet" href="../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions">
+
+
+
+  <h1 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions" class="text-break">Class IFastMockMoqExtensions</h1>
+  <div class="markdown level0 summary"><p>Moq-specific convenience extensions for <a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a> and <a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock&lt;T&gt;</a>.
+These stay in the provider package so the core abstractions remain provider agnostic.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">IFastMockMoqExtensions</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a>.<a class="xref" href="FastMoq.Providers.html">Providers</a>.<a class="xref" href="FastMoq.Providers.MoqProvider.html">MoqProvider</a></h6>
+  <h6><strong>Assembly</strong>: FastMoq.Provider.Moq.dll</h6>
+  <h5 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class IFastMockMoqExtensions</code></pre>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq_FastMoq_Providers_IFastMock_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq(FastMoq.Providers.IFastMock)">AsMoq(IFastMock)</h4>
+  <div class="markdown level1 summary"><p>Returns the provider-native non-generic <span class="xref">Moq.Mock</span> instance for a tracked FastMoq mock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Mock AsMoq(this IFastMock fastMock)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td><span class="parametername">fastMock</span></td>
+        <td><p>Tracked FastMoq mock.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Mock</span></td>
+        <td><p>The underlying non-generic <span class="xref">Moq.Mock</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when <code class="paramref">fastMock</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>Thrown when the active provider is not Moq.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq__1_FastMoq_Providers_IFastMock___0__" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq``1(FastMoq.Providers.IFastMock{``0})">AsMoq&lt;T&gt;(IFastMock&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Returns the provider-native <span class="xref">Moq.Mock&lt;T&gt;</span> instance for a tracked FastMoq mock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Mock&lt;T&gt; AsMoq&lt;T&gt;(this IFastMock&lt;T&gt; fastMock) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td><p>Tracked FastMoq mock.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Mock</span>&lt;T&gt;</td>
+        <td><p>The underlying <span class="xref">Moq.Mock&lt;T&gt;</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Mocked type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when <code class="paramref">fastMock</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>Thrown when the active provider is not Moq.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Protected_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Protected*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Protected__1_FastMoq_Providers_IFastMock___0__" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Protected``1(FastMoq.Providers.IFastMock{``0})">Protected&lt;T&gt;(IFastMock&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Moq convenience shortcut for <code>fastMock.AsMoq().Protected()</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IProtectedMock&lt;T&gt; Protected&lt;T&gt;(this IFastMock&lt;T&gt; fastMock) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IProtectedMock</span>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupGet_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupGet*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupGet__2_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Func___0___1___" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupGet``2(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">SetupGet&lt;T, TProperty&gt;(IFastMock&lt;T&gt;, Expression&lt;Func&lt;T, TProperty&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Moq convenience shortcut for <code>fastMock.AsMoq().SetupGet(...)</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ISetupGetter&lt;T, TProperty&gt; SetupGet&lt;T, TProperty&gt;(this IFastMock&lt;T&gt; fastMock, Expression&lt;Func&lt;T, TProperty&gt;&gt; expression) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TProperty&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISetupGetter</span>&lt;T, TProperty&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TProperty</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupLoggerCallback_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupLoggerCallback_FastMoq_Providers_IFastMock_Microsoft_Extensions_Logging_ILogger__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback(FastMoq.Providers.IFastMock{Microsoft.Extensions.Logging.ILogger},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})">SetupLoggerCallback(IFastMock&lt;ILogger&gt;, Action&lt;LogLevel, EventId, string, Exception?&gt;)</h4>
+  <div class="markdown level1 summary"><p>Moq logger compatibility shortcut for <code>fastMock.AsMoq().SetupLoggerCallback(...)</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetupLoggerCallback(this IFastMock&lt;ILogger&gt; fastMock, Action&lt;LogLevel, EventId, string, Exception?&gt; callback)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a>&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-4">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a>&gt;</td>
+        <td><span class="parametername">callback</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupLoggerCallback_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupLoggerCallback__1_FastMoq_Providers_IFastMock___0__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupLoggerCallback``1(FastMoq.Providers.IFastMock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})">SetupLoggerCallback&lt;TLogger&gt;(IFastMock&lt;TLogger&gt;, Action&lt;LogLevel, EventId, string, Exception?&gt;)</h4>
+  <div class="markdown level1 summary"><p>Moq logger compatibility shortcut for <code>fastMock.AsMoq().SetupLoggerCallback(...)</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetupLoggerCallback&lt;TLogger&gt;(this IFastMock&lt;TLogger&gt; fastMock, Action&lt;LogLevel, EventId, string, Exception?&gt; callback) where TLogger : class, ILogger</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;TLogger&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-4">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a>&gt;</td>
+        <td><span class="parametername">callback</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TLogger</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupSequence_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupSequence*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_SetupSequence__2_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Func___0___1___" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.SetupSequence``2(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">SetupSequence&lt;T, TResult&gt;(IFastMock&lt;T&gt;, Expression&lt;Func&lt;T, TResult&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Moq convenience shortcut for <code>fastMock.AsMoq().SetupSequence(...)</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ISetupSequentialResult&lt;TResult&gt; SetupSequence&lt;T, TResult&gt;(this IFastMock&lt;T&gt; fastMock, Expression&lt;Func&lt;T, TResult&gt;&gt; expression) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TResult&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISetupSequentialResult</span>&lt;TResult&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TResult</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Setup_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Setup__1_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Action___0___" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}})">Setup&lt;T&gt;(IFastMock&lt;T&gt;, Expression&lt;Action&lt;T&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Moq convenience shortcut for <code>fastMock.AsMoq().Setup(...)</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ISetup&lt;T&gt; Setup&lt;T&gt;(this IFastMock&lt;T&gt; fastMock, Expression&lt;Action&lt;T&gt;&gt; expression) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISetup</span>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Setup_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_Setup__2_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Func___0___1___" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.Setup``2(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Func{``0,``1}})">Setup&lt;T, TResult&gt;(IFastMock&lt;T&gt;, Expression&lt;Func&lt;T, TResult&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Moq convenience shortcut for <code>fastMock.AsMoq().Setup(...)</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ISetup&lt;T, TResult&gt; Setup&lt;T, TResult&gt;(this IFastMock&lt;T&gt; fastMock, Expression&lt;Func&lt;T, TResult&gt;&gt; expression) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TResult&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISetup</span>&lt;T, TResult&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TResult</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger_FastMoq_Providers_IFastMock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(FastMoq.Providers.IFastMock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)">VerifyLogger(IFastMock&lt;ILogger&gt;, LogLevel, string, Exception?, int?, int)</h4>
+  <div class="markdown level1 summary"><p>Moq logger compatibility shortcut for <code>fastMock.AsMoq().VerifyLogger(...)</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogger(this IFastMock&lt;ILogger&gt; fastMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null, int times = 1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a>&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</td>
+        <td><span class="parametername">eventId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger_FastMoq_Providers_IFastMock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger(FastMoq.Providers.IFastMock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)">VerifyLogger(IFastMock&lt;ILogger&gt;, LogLevel, string, int)</h4>
+  <div class="markdown level1 summary"><p>Moq logger compatibility shortcut for <code>fastMock.AsMoq().VerifyLogger(...)</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogger(this IFastMock&lt;ILogger&gt; fastMock, LogLevel logLevel, string message, int times = 1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a>&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger__1_FastMoq_Providers_IFastMock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger``1(FastMoq.Providers.IFastMock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)">VerifyLogger&lt;TLogger&gt;(IFastMock&lt;TLogger&gt;, LogLevel, string, Exception?, int?, int)</h4>
+  <div class="markdown level1 summary"><p>Moq logger compatibility shortcut for <code>fastMock.AsMoq().VerifyLogger(...)</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogger&lt;TLogger&gt;(this IFastMock&lt;TLogger&gt; fastMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null, int times = 1) where TLogger : class, ILogger</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;TLogger&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</td>
+        <td><span class="parametername">eventId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TLogger</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger*"></a>
+  <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_VerifyLogger__1_FastMoq_Providers_IFastMock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.VerifyLogger``1(FastMoq.Providers.IFastMock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)">VerifyLogger&lt;TLogger&gt;(IFastMock&lt;TLogger&gt;, LogLevel, string, int)</h4>
+  <div class="markdown level1 summary"><p>Moq logger compatibility shortcut for <code>fastMock.AsMoq().VerifyLogger(...)</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogger&lt;TLogger&gt;(this IFastMock&lt;TLogger&gt; fastMock, LogLevel logLevel, string message, int times = 1) where TLogger : class, ILogger</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;TLogger&gt;</td>
+        <td><span class="parametername">fastMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TLogger</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

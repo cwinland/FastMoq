@@ -12,6 +12,7 @@ namespace FastMoq
         /// </summary>
         /// <example>
         /// <para>Use <see cref="GetOrCreateMock{T}(MockRequestOptions?)"/> when the test needs the tracked mock handle itself, not just automatic constructor resolution.</para>
+        /// <para><c>GetOrCreateMock</c> uses the active FastMoq provider. It does not require the Moq provider to be selected unless the test later calls Moq-specific extensions such as <c>AsMoq()</c>, <c>Setup(...)</c>, or <c>Protected()</c>.</para>
         /// <code language="csharp"><![CDATA[
         /// var mocker = new Mocker();
         /// var gateway = mocker.GetOrCreateMock<IOrderGateway>();
@@ -22,7 +23,19 @@ namespace FastMoq
         /// mocker.Verify<IOrderGateway>(x => x.Publish(42), TimesSpec.Once);
         /// mocker.VerifyNoOtherCalls<IOrderGateway>();
         /// ]]></code>
-        /// <para>Typical reasons to call it explicitly are: passing <c>Instance</c> into custom component construction, reusing the same tracked mock across calls, resetting it, or using keyed <see cref="MockRequestOptions"/>.</para>
+        /// <para>Provider-neutral usage works the same way under the reflection provider because the tracked handle is still an <see cref="IFastMock{T}"/>.</para>
+        /// <code language="csharp"><![CDATA[
+        /// using var providerScope = MockingProviderRegistry.Push("reflection");
+        ///
+        /// var mocker = new Mocker();
+        /// var dependency = mocker.GetOrCreateMock<IOrderGateway>();
+        ///
+        /// var submitter = new OrderSubmitter(dependency.Instance);
+        /// submitter.Submit(42);
+        ///
+        /// mocker.Verify<IOrderGateway>(x => x.Publish(42), TimesSpec.Once);
+        /// ]]></code>
+        /// <para>Typical reasons to call it explicitly are: passing <c>Instance</c> into custom component construction, reusing the same tracked mock across calls, resetting it, or using keyed <see cref="MockRequestOptions"/>. If the test needs Moq-specific setup or verification APIs, select the Moq provider for that test assembly before calling those extensions.</para>
         /// </example>
         public IFastMock<T> GetOrCreateMock<T>(MockRequestOptions? options = null) where T : class
         {

@@ -123,7 +123,7 @@
 </h3>
   <a id="FastMoq_Extensions_MockerHttpExtensions_CreateHttpClient_" data-uid="FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient*"></a>
   <h4 id="FastMoq_Extensions_MockerHttpExtensions_CreateHttpClient_FastMoq_Mocker_System_String_System_String_System_Net_HttpStatusCode_System_String_" data-uid="FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(FastMoq.Mocker,System.String,System.String,System.Net.HttpStatusCode,System.String)">CreateHttpClient(Mocker, string, string, HttpStatusCode, string)</h4>
-  <div class="markdown level1 summary"><p>Creates the HTTP client using a mock IHttpClientFactory.</p>
+  <div class="markdown level1 summary"><p>Creates an HTTP client backed by FastMoq-managed HTTP dependencies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -182,6 +182,11 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Extensions_MockerHttpExtensions_CreateHttpClient_FastMoq_Mocker_System_String_System_String_System_Net_HttpStatusCode_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This entry point remains supported after v5.
+New tests should prefer the provider-neutral request helpers in this class for HTTP behavior.
+Advanced protected-member setups remain available from the Moq provider package for migration scenarios.</p>
+</div>
   <a id="FastMoq_Extensions_MockerHttpExtensions_GetContentBytesAsync_" data-uid="FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync*"></a>
   <h4 id="FastMoq_Extensions_MockerHttpExtensions_GetContentBytesAsync_System_Net_Http_HttpContent_" data-uid="FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync(System.Net.Http.HttpContent)">GetContentBytesAsync(HttpContent)</h4>
   <div class="markdown level1 summary"><p>Gets the content bytes.</p>
@@ -268,14 +273,14 @@
       </tr>
     </tbody>
   </table>
-  <a id="FastMoq_Extensions_MockerHttpExtensions_SetupHttpMessage_" data-uid="FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage*"></a>
-  <h4 id="FastMoq_Extensions_MockerHttpExtensions_SetupHttpMessage_FastMoq_Mocker_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_" data-uid="FastMoq.Extensions.MockerHttpExtensions.SetupHttpMessage(FastMoq.Mocker,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)">SetupHttpMessage(Mocker, Func&lt;HttpResponseMessage&gt;, Expression?, Expression?)</h4>
-  <div class="markdown level1 summary"><p>Setups the HTTP message.</p>
+  <a id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*"></a>
+  <h4 id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_FastMoq_Mocker_System_Func_System_Net_Http_HttpRequestMessage_System_Boolean__System_Func_System_Net_Http_HttpResponseMessage__" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})">WhenHttpRequest(Mocker, Func&lt;HttpRequestMessage, bool&gt;, Func&lt;HttpResponseMessage&gt;)</h4>
+  <div class="markdown level1 summary"><p>Configures a provider-neutral HTTP response for requests that match the supplied predicate.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void SetupHttpMessage(this Mocker mocker, Func&lt;HttpResponseMessage&gt; messageFunc, Expression? request = null, Expression? cancellationToken = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void WhenHttpRequest(this Mocker mocker, Func&lt;HttpRequestMessage, bool&gt; requestPredicate, Func&lt;HttpResponseMessage&gt; responseFactory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -291,36 +296,30 @@
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocker</span></td>
         <td><p>The mocker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httprequestmessage">HttpRequestMessage</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</td>
+        <td><span class="parametername">requestPredicate</span></td>
+        <td><p>Predicate used to match an outgoing request.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage">HttpResponseMessage</a>&gt;</td>
-        <td><span class="parametername">messageFunc</span></td>
-        <td><p>The message function.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></td>
-        <td><span class="parametername">request</span></td>
-        <td><p>The request.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token.</p>
+        <td><span class="parametername">responseFactory</span></td>
+        <td><p>Factory used to create the HTTP response for a matching request.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <a id="FastMoq_Extensions_MockerHttpExtensions_SetupMessageAsync_" data-uid="FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync*"></a>
-  <h4 id="FastMoq_Extensions_MockerHttpExtensions_SetupMessageAsync__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__" data-uid="FastMoq.Extensions.MockerHttpExtensions.SetupMessageAsync``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})">SetupMessageAsync&lt;TMock, TReturn&gt;(Mocker, Expression&lt;Func&lt;TMock, Task&lt;TReturn&gt;&gt;&gt;, Func&lt;TReturn&gt;)</h4>
-  <div class="markdown level1 summary"><p>Setups the message asynchronous.</p>
+  <a id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*"></a>
+  <h4 id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_FastMoq_Mocker_System_Net_Http_HttpMethod_System_String_System_Func_System_Net_Http_HttpResponseMessage__" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})">WhenHttpRequest(Mocker, HttpMethod, string, Func&lt;HttpResponseMessage&gt;)</h4>
+  <div class="markdown level1 summary"><p>Configures a provider-neutral HTTP response for a specific method and request URI or path.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void SetupMessageAsync&lt;TMock, TReturn&gt;(this Mocker mocker, Expression&lt;Func&lt;TMock, Task&lt;TReturn&gt;&gt;&gt; expression, Func&lt;TReturn&gt; messageFunc) where TMock : class</code></pre>
+    <pre><code class="lang-csharp hljs">public static void WhenHttpRequest(this Mocker mocker, HttpMethod method, string requestUriOrPath, Func&lt;HttpResponseMessage&gt; responseFactory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -339,130 +338,33 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TMock, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TReturn&gt;&gt;&gt;</td>
-        <td><span class="parametername">expression</span></td>
-        <td><p>The expression.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TReturn&gt;</td>
-        <td><span class="parametername">messageFunc</span></td>
-        <td><p>The message function.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TMock</span></td>
-        <td><p>The type of the mock.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="parametername">TReturn</span></td>
-        <td><p>The type of the return value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.invaliddataexception">InvalidDataException</a></td>
-        <td><p>Unable to setup '{typeof(TMock)}'.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtectedAsync_" data-uid="FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync*"></a>
-  <h4 id="FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtectedAsync__2_FastMoq_Mocker_System_String_System_Func___1__System_Object___" data-uid="FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtectedAsync``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])">SetupMessageProtectedAsync&lt;TMock, TReturn&gt;(Mocker, string, Func&lt;TReturn&gt;, params object?[]?)</h4>
-  <div class="markdown level1 summary"><p>Setups the message protected asynchronous.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void SetupMessageProtectedAsync&lt;TMock, TReturn&gt;(this Mocker mocker, string methodOrPropertyName, Func&lt;TReturn&gt; messageFunc, params object?[]? args) where TMock : class</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
-        <td><span class="parametername">mocker</span></td>
-        <td><p>The mocker.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpmethod">HttpMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>The expected HTTP method.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">methodOrPropertyName</span></td>
-        <td><p>Name of the method or property.</p>
+        <td><span class="parametername">requestUriOrPath</span></td>
+        <td><p>The absolute URI or relative path to match.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TReturn&gt;</td>
-        <td><span class="parametername">messageFunc</span></td>
-        <td><p>The message function.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
-        <td><span class="parametername">args</span></td>
-        <td><p>The arguments.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage">HttpResponseMessage</a>&gt;</td>
+        <td><span class="parametername">responseFactory</span></td>
+        <td><p>Factory used to create the HTTP response for a matching request.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TMock</span></td>
-        <td><p>The type of the mock.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="parametername">TReturn</span></td>
-        <td><p>The type of the return value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtected_" data-uid="FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected*"></a>
-  <h4 id="FastMoq_Extensions_MockerHttpExtensions_SetupMessageProtected__2_FastMoq_Mocker_System_String_System_Func___1__System_Object___" data-uid="FastMoq.Extensions.MockerHttpExtensions.SetupMessageProtected``2(FastMoq.Mocker,System.String,System.Func{``1},System.Object[])">SetupMessageProtected&lt;TMock, TReturn&gt;(Mocker, string, Func&lt;TReturn&gt;, params object?[]?)</h4>
-  <div class="markdown level1 summary"><p>Setups the message protected.</p>
+  <a id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequestJson_" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson*"></a>
+  <h4 id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequestJson_FastMoq_Mocker_System_Net_Http_HttpMethod_System_String_System_String_System_Net_HttpStatusCode_" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)">WhenHttpRequestJson(Mocker, HttpMethod, string, string, HttpStatusCode)</h4>
+  <div class="markdown level1 summary"><p>Configures a provider-neutral JSON response for a specific method and request URI or path.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void SetupMessageProtected&lt;TMock, TReturn&gt;(this Mocker mocker, string methodOrPropertyName, Func&lt;TReturn&gt; messageFunc, params object?[]? args) where TMock : class</code></pre>
+    <pre><code class="lang-csharp hljs">public static void WhenHttpRequestJson(this Mocker mocker, HttpMethod method, string requestUriOrPath, string json, HttpStatusCode statusCode = HttpStatusCode.OK)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -478,105 +380,30 @@
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocker</span></td>
         <td><p>The mocker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpmethod">HttpMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>The expected HTTP method.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">methodOrPropertyName</span></td>
-        <td><p>Name of the method or property.</p>
+        <td><span class="parametername">requestUriOrPath</span></td>
+        <td><p>The absolute URI or relative path to match.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TReturn&gt;</td>
-        <td><span class="parametername">messageFunc</span></td>
-        <td><p>The message function.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">json</span></td>
+        <td><p>The JSON payload returned to matching requests.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
-        <td><span class="parametername">args</span></td>
-        <td><p>The arguments.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TMock</span></td>
-        <td><p>The type of the mock.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="parametername">TReturn</span></td>
-        <td><p>The type of the return value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <a id="FastMoq_Extensions_MockerHttpExtensions_SetupMessage_" data-uid="FastMoq.Extensions.MockerHttpExtensions.SetupMessage*"></a>
-  <h4 id="FastMoq_Extensions_MockerHttpExtensions_SetupMessage__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__" data-uid="FastMoq.Extensions.MockerHttpExtensions.SetupMessage``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})">SetupMessage&lt;TMock, TReturn&gt;(Mocker, Expression&lt;Func&lt;TMock, TReturn&gt;&gt;, Func&lt;TReturn&gt;)</h4>
-  <div class="markdown level1 summary"><p>Setups the message.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void SetupMessage&lt;TMock, TReturn&gt;(this Mocker mocker, Expression&lt;Func&lt;TMock, TReturn&gt;&gt; expression, Func&lt;TReturn&gt; messageFunc) where TMock : class</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
-        <td><span class="parametername">mocker</span></td>
-        <td><p>The mocker.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TMock, TReturn&gt;&gt;</td>
-        <td><span class="parametername">expression</span></td>
-        <td><p>The expression.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TReturn&gt;</td>
-        <td><span class="parametername">messageFunc</span></td>
-        <td><p>The message function.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TMock</span></td>
-        <td><p>The type of the mock.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="parametername">TReturn</span></td>
-        <td><p>The type of the return value.</p>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode">HttpStatusCode</a></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The response status code.</p>
 </td>
       </tr>
     </tbody>
@@ -603,7 +430,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

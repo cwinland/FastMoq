@@ -124,6 +124,7 @@
 <ul>
 <li><code>GetMock&lt;T&gt;()</code> throws because the active provider does not expose a legacy <code>Moq.Mock</code></li>
 <li><code>VerifyLogger(...)</code> still exists, but it remains a Moq compatibility API rather than a provider-neutral one</li>
+<li><code>SetupHttpMessage(...)</code> is available from the Moq compatibility package, but it also requires the Moq provider to be active for that test assembly</li>
 <li>tests that previously assumed Moq was the implicit default start failing even though no test code was changed</li>
 </ul>
 <p>If you want the shortest v4 compatibility fix for an older test assembly, set Moq as the assembly default:</p>
@@ -146,6 +147,7 @@ public static class TestAssemblyProviderBootstrap
 <ul>
 <li>use <code>GetOrCreateMock(...)</code> when you do not specifically need raw <code>Moq.Mock</code></li>
 <li>use <code>Mocks.VerifyLogged(...)</code> instead of <code>VerifyLogger(...)</code></li>
+<li>use <code>WhenHttpRequest(...)</code> or <code>WhenHttpRequestJson(...)</code> instead of <code>SetupHttpMessage(...)</code> unless the test intentionally depends on the Moq compatibility path</li>
 </ul>
 <p>See also:</p>
 <ul>
@@ -364,7 +366,7 @@ var service = mocker.CreateInstance&lt;MyService&gt;();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

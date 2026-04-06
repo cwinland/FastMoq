@@ -140,7 +140,7 @@ namespace FastMoq.Extensions
         {
             if (mocker.Contains<HttpMessageHandler>())
             {
-                return mocker.GetMock<HttpMessageHandler>().Object;
+                return mocker.GetMockModel(typeof(HttpMessageHandler)).Instance as HttpMessageHandler;
             }
 
             return mocker.GetObject<HttpMessageHandler>();

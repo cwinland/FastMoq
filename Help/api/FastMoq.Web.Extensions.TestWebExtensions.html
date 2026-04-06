@@ -285,6 +285,57 @@
     </tbody>
   </table>
   <a id="FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_FastMoq_Web_TestClaimsPrincipalOptions_System_String___" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])">CreateControllerContext(Mocker, TestClaimsPrincipalOptions, params string[])</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.controllercontext">ControllerContext</a> with an authenticated test user using the provided identity options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ControllerContext CreateControllerContext(this Mocker mocker, TestClaimsPrincipalOptions principalOptions, params string[] roleNames)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Web.TestClaimsPrincipalOptions.html">TestClaimsPrincipalOptions</a></td>
+        <td><span class="parametername">principalOptions</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">roleNames</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.controllercontext">ControllerContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext*"></a>
   <h4 id="FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_Microsoft_AspNetCore_Http_HttpContext_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext)">CreateControllerContext(Mocker, HttpContext)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.controllercontext">ControllerContext</a> from an existing <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a>.</p>
 </div>
@@ -311,6 +362,149 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a></td>
         <td><span class="parametername">httpContext</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.controllercontext">ControllerContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})">CreateControllerContext(Mocker, IEnumerable&lt;Claim&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.controllercontext">ControllerContext</a> with a principal composed from the supplied claims and compatibility defaults.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ControllerContext CreateControllerContext(this Mocker mocker, IEnumerable&lt;Claim&gt; claims)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claim">Claim</a>&gt;</td>
+        <td><span class="parametername">claims</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.controllercontext">ControllerContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__FastMoq_Web_TestClaimsPrincipalOptions_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)">CreateControllerContext(Mocker, IEnumerable&lt;Claim&gt;, TestClaimsPrincipalOptions)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.controllercontext">ControllerContext</a> with a principal composed from the supplied claims and compatibility defaults.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ControllerContext CreateControllerContext(this Mocker mocker, IEnumerable&lt;Claim&gt; claims, TestClaimsPrincipalOptions principalOptions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claim">Claim</a>&gt;</td>
+        <td><span class="parametername">claims</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Web.TestClaimsPrincipalOptions.html">TestClaimsPrincipalOptions</a></td>
+        <td><span class="parametername">principalOptions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.controllercontext">ControllerContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_Security_Claims_ClaimsPrincipal_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)">CreateControllerContext(Mocker, ClaimsPrincipal)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.controllercontext">ControllerContext</a> from an existing principal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ControllerContext CreateControllerContext(this Mocker mocker, ClaimsPrincipal principal)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a></td>
+        <td><span class="parametername">principal</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -372,6 +566,200 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.controllercontext">ControllerContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_FastMoq_Web_TestClaimsPrincipalOptions_System_String___" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])">CreateHttpContext(Mocker, TestClaimsPrincipalOptions, params string[])</h4>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a> with an authenticated test user using the provided identity options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpContext CreateHttpContext(this Mocker mocker, TestClaimsPrincipalOptions principalOptions, params string[] roleNames)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Web.TestClaimsPrincipalOptions.html">TestClaimsPrincipalOptions</a></td>
+        <td><span class="parametername">principalOptions</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">roleNames</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})">CreateHttpContext(Mocker, IEnumerable&lt;Claim&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a> with a principal composed from the supplied claims and compatibility defaults.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpContext CreateHttpContext(this Mocker mocker, IEnumerable&lt;Claim&gt; claims)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claim">Claim</a>&gt;</td>
+        <td><span class="parametername">claims</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__FastMoq_Web_TestClaimsPrincipalOptions_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)">CreateHttpContext(Mocker, IEnumerable&lt;Claim&gt;, TestClaimsPrincipalOptions)</h4>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a> with a principal composed from the supplied claims and compatibility defaults.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpContext CreateHttpContext(this Mocker mocker, IEnumerable&lt;Claim&gt; claims, TestClaimsPrincipalOptions principalOptions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claim">Claim</a>&gt;</td>
+        <td><span class="parametername">claims</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Web.TestClaimsPrincipalOptions.html">TestClaimsPrincipalOptions</a></td>
+        <td><span class="parametername">principalOptions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_Security_Claims_ClaimsPrincipal_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)">CreateHttpContext(Mocker, ClaimsPrincipal)</h4>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a> from an existing principal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpContext CreateHttpContext(this Mocker mocker, ClaimsPrincipal principal)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a></td>
+        <td><span class="parametername">principal</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.http.httpcontext">HttpContext</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -982,8 +1370,158 @@
     </tbody>
   </table>
   <a id="FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_FastMoq_Mocker_FastMoq_Web_TestClaimsPrincipalOptions_System_String___" data-uid="FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])">SetupClaimsPrincipal(Mocker, TestClaimsPrincipalOptions, params string[])</h4>
+  <div class="markdown level1 summary"><p>Creates an authenticated <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a> using the provided identity options and roles.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, TestClaimsPrincipalOptions principalOptions, params string[] roleNames)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">_</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Web.TestClaimsPrincipalOptions.html">TestClaimsPrincipalOptions</a></td>
+        <td><span class="parametername">principalOptions</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">roleNames</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__" data-uid="FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})">SetupClaimsPrincipal(Mocker, IEnumerable&lt;Claim&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates an authenticated <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a> by combining custom claims with compatibility defaults.
+Existing custom claim types are preserved.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, IEnumerable&lt;Claim&gt; claims)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">_</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claim">Claim</a>&gt;</td>
+        <td><span class="parametername">claims</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal*"></a>
+  <h4 id="FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__FastMoq_Web_TestClaimsPrincipalOptions_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)">SetupClaimsPrincipal(Mocker, IEnumerable&lt;Claim&gt;, TestClaimsPrincipalOptions)</h4>
+  <div class="markdown level1 summary"><p>Creates an authenticated <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a> by combining custom claims with compatibility defaults.
+Existing custom claim types are preserved.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ClaimsPrincipal SetupClaimsPrincipal(this Mocker _, IEnumerable&lt;Claim&gt; claims, TestClaimsPrincipalOptions principalOptions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">_</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claim">Claim</a>&gt;</td>
+        <td><span class="parametername">claims</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Web.TestClaimsPrincipalOptions.html">TestClaimsPrincipalOptions</a></td>
+        <td><span class="parametername">principalOptions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_" data-uid="FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal*"></a>
   <h4 id="FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_FastMoq_Mocker_System_String___" data-uid="FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.String[])">SetupClaimsPrincipal(Mocker, params string[])</h4>
-  <div class="markdown level1 summary"><p>Creates an authenticated <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a> with role claims and a default name claim.</p>
+  <div class="markdown level1 summary"><p>Creates an authenticated <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a> with compatibility-focused default claims.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1049,7 +1587,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

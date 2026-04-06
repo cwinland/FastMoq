@@ -91,6 +91,30 @@
 <li>Use the executable examples in <code>FastMoq.TestingExample</code> as the best repo-backed reference for current patterns.</li>
 <li>Treat DbContext helpers as an optional database-package concern when consuming <code>FastMoq.Core</code> directly.</li>
 </ol>
+<h2 id="recommended-api-ladder">Recommended API ladder</h2>
+<p>To keep the migration path easy to follow, treat the public testing surface as a three-step ladder instead of a set of competing APIs.</p>
+<h3 id="v3-baseline">v3 baseline</h3>
+<ul>
+<li><code>GetMock&lt;T&gt;()</code></li>
+<li>direct <code>Moq.Mock&lt;T&gt;</code> setup and verification</li>
+<li><code>VerifyLogger(...)</code></li>
+</ul>
+<p>This is the old Moq-first shape.</p>
+<h3 id="v4-transition">v4 transition</h3>
+<ul>
+<li>keep <code>GetMock&lt;T&gt;()</code> when the goal is minimal churn from v3</li>
+<li>use <code>GetOrCreateMock&lt;T&gt;()</code> for the provider-first tracked mock handle</li>
+<li>use provider-package extensions such as <code>AsMoq()</code>, direct <code>Setup(...)</code> on <code>IFastMock&lt;T&gt;</code>, or <code>AsNSubstitute()</code> when a test still needs provider-specific arrangement behavior</li>
+<li>use provider-neutral verification such as <code>Verify(...)</code>, <code>VerifyNoOtherCalls(...)</code>, <code>VerifyLogged(...)</code>, and <code>TimesSpec</code></li>
+</ul>
+<p>This is the preferred v4 migration story because it lets old Moq-shaped tests stay stable while giving touched tests a forward-compatible path.</p>
+<h3 id="v5-direction">v5 direction</h3>
+<ul>
+<li><code>FastMoq.Core</code> stays provider agnostic</li>
+<li>provider packages are installed explicitly</li>
+<li>provider-specific setup continues to live in provider packages, not in core wrappers</li>
+</ul>
+<p>That means new transition surfaces should build on <code>IFastMock&lt;T&gt;</code> plus provider-package extensions rather than introducing a separate wrapper layer in core.</p>
 <p>In this guide, &quot;previous FastMoq versions&quot; means tests and helpers written against the public <code>3.0.0</code> package or against pre-v4 assumptions, especially code that assumes:</p>
 <ul>
 <li>Moq is the implicit default surface</li>
@@ -197,9 +221,16 @@ public static class TestAssemblyProviderBootstrap
 </ul>
 <p>If you are already refactoring the test and do not specifically need a raw <code>Moq.Mock&lt;T&gt;</code>, prefer moving toward provider-neutral retrieval and verification instead of expanding direct <code>GetMock&lt;T&gt;()</code> usage further.</p>
 <p>There is not yet a single provider-neutral drop-in replacement for <code>Initialize&lt;T&gt;(...)</code>, because <code>Initialize&lt;T&gt;(...)</code> wraps a Moq <code>Setup(...)</code> callback.</p>
+<p>In the v4 transition, the preferred provider-package shortcut for Moq-specific setup is now:</p>
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IOrderRepository&gt;()
+    .Setup(x =&gt; x.Load(123))
+    .Returns(order);
+</code></pre>
+<p>That shortcut comes from <code>FastMoq.Provider.Moq</code> and forwards to <code>AsMoq()</code> internally. It keeps the core abstractions provider agnostic while giving Moq-based test suites a smoother migration path.</p>
 <p>Practical rule:</p>
 <ul>
-<li>use <code>GetMock&lt;T&gt;()</code> when the test still depends on Moq <code>Setup(...)</code>, <code>Protected()</code>, or direct <code>Mock&lt;T&gt;</code> access during the v4 transition</li>
+<li>use <code>GetMock&lt;T&gt;()</code> when the test still depends on older direct <code>Mock&lt;T&gt;</code>-shaped compatibility code and you are minimizing churn during the v4 transition</li>
+<li>use <code>GetOrCreateMock&lt;T&gt;()</code> plus the Moq provider extensions when you want tracked provider-first access with Moq-specific setup convenience in v4</li>
 <li>use <code>GetOrCreateMock(...)</code>, <code>Verify(...)</code>, and <code>VerifyLogged(...)</code> when the test can move forward without Moq-specific setup semantics</li>
 <li>use <code>AddType(...)</code> when the cleaner provider-neutral move is to supply a fake, stub, factory, or fixed instance rather than configure a mocking-library setup chain</li>
 </ul>
@@ -207,8 +238,32 @@ public static class TestAssemblyProviderBootstrap
 <ul>
 <li>if the old code mainly existed to verify later calls, start from <code>GetOrCreateMock&lt;T&gt;()</code> and provider-neutral verification</li>
 <li>if the old code mainly existed to supply behavior, prefer <code>AddType(...)</code> with a fake, stub, or fixed instance when practical</li>
-<li>if the old code still needs Moq <code>Setup(...)</code> semantics, keep it on <code>GetMock&lt;T&gt;()</code> for the v4 transition and isolate that test area behind explicit Moq selection</li>
+<li>if the old code still needs Moq <code>Setup(...)</code> semantics, either keep it on <code>GetMock&lt;T&gt;()</code> for minimal churn or move it to <code>GetOrCreateMock&lt;T&gt;()</code> with the Moq provider extensions while keeping explicit Moq selection for that test area</li>
 </ul>
+<h3 id="setuphttpmessage-and-http-helpers"><code>SetupHttpMessage(...)</code> and HTTP helpers</h3>
+<p>Old Moq-oriented pattern:</p>
+<pre><code class="lang-csharp">Mocks.SetupHttpMessage(HttpStatusCode.OK, &quot;{\&quot;id\&quot;:42}&quot;);
+</code></pre>
+<p>Current guidance for new or refactored tests:</p>
+<pre><code class="lang-csharp">Mocks.WhenHttpRequestJson(HttpMethod.Get, &quot;/orders/42&quot;, &quot;{\&quot;id\&quot;:42}&quot;);
+</code></pre>
+<p>Or, when the response needs full control:</p>
+<pre><code class="lang-csharp">Mocks.WhenHttpRequest(HttpMethod.Get, &quot;/orders/42&quot;, () =&gt;
+    new HttpResponseMessage(HttpStatusCode.OK));
+</code></pre>
+<p>Why:</p>
+<ul>
+<li>the provider-neutral HTTP behavior helpers now live in core and are the preferred long-term path</li>
+<li>the older Moq-shaped HTTP setup helpers are compatibility APIs for suites that still depend on Moq-specific behavior such as protected <code>SendAsync</code> setups</li>
+<li>the migration concern is package ownership, not namespace churn</li>
+</ul>
+<p>Compatibility detail:</p>
+<ul>
+<li>keep <code>using FastMoq.Extensions;</code></li>
+<li>keep or add the <code>FastMoq.Provider.Moq</code> package when you still need <code>SetupHttpMessage(...)</code></li>
+<li>prefer <code>WhenHttpRequest(...)</code> and <code>WhenHttpRequestJson(...)</code> for newly written tests and while refactoring existing ones</li>
+</ul>
+<p>That means existing source often does not need a namespace rewrite for the older HTTP helpers. The moved compatibility methods intentionally remain in <code>FastMoq.Extensions</code>; they are simply provided by the Moq package now instead of core.</p>
 <h3 id="verifylogger-vs-verifylogged"><code>VerifyLogger(...)</code> vs <code>VerifyLogged(...)</code></h3>
 <p>Old Moq-oriented pattern:</p>
 <pre><code class="lang-csharp">Mocks.GetMock&lt;ILogger&lt;MyComponent&gt;&gt;()
@@ -416,13 +471,19 @@ var component = Mocks.CreateInstance&lt;MyComponent&gt;();
 <p>Tests carried forward from previous FastMoq versions often assumed <code>Moq.Mock</code> was the only meaningful tracked artifact.</p>
 <p>Current guidance:</p>
 <pre><code class="lang-csharp">var fastMock = Mocks.GetOrCreateMock&lt;IOrderRepository&gt;();
-var providerObject = fastMock.NativeMock;
+var moqMock = fastMock.AsMoq();
 </code></pre>
-<p>You can also inspect tracked models through <code>MockModel.NativeMock</code> or <code>GetNativeMock(...)</code>.</p>
+<p>If you want the shortest Moq-specific form in v4, use the provider-package shortcut methods directly on <code>IFastMock&lt;T&gt;</code>:</p>
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IOrderRepository&gt;()
+    .Setup(x =&gt; x.Load(123))
+    .Returns(order);
+</code></pre>
+<p>You can still inspect tracked models through <code>MockModel.NativeMock</code> or <code>GetNativeMock(...)</code> when you truly need the raw provider object.</p>
 <p>Why:</p>
 <ul>
 <li>FastMoq is moving toward a provider-neutral core</li>
-<li>provider-first access is now a first-class path instead of an afterthought</li>
+<li>provider-specific convenience now belongs in provider packages instead of core</li>
+<li>raw <code>NativeMock</code> access is still available, but it is no longer the best primary guidance when a typed provider extension exists</li>
 </ul>
 <h3 id="known-type-extensibility">Known-type extensibility</h3>
 <p>Current guidance for framework-heavy types:</p>
@@ -493,7 +554,7 @@ Use <code>ExecuteThrows&lt;TException&gt;()</code> or <code>ExecuteThrowsAsync&l
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

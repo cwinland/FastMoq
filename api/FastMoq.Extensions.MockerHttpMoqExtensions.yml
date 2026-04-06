@@ -1,0 +1,867 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions
+  commentId: T:FastMoq.Extensions.MockerHttpMoqExtensions
+  id: MockerHttpMoqExtensions
+  parent: FastMoq.Extensions
+  children:
+  - FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  - FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+  - FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+  - FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+  - FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  langs:
+  - csharp
+  - vb
+  name: MockerHttpMoqExtensions
+  nameWithType: MockerHttpMoqExtensions
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions
+  type: Class
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: MockerHttpMoqExtensions
+    path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+    startLine: 14
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Extensions
+  summary: >-
+    Moq-specific HTTP setup compatibility helpers that remain available from the provider package.
+
+    These helpers intentionally stay in the FastMoq.Extensions namespace for low-churn migration,
+
+    while new tests prefer the provider-neutral HTTP helpers in FastMoq.Core.
+  example: []
+  syntax:
+    content: public static class MockerHttpMoqExtensions
+    content.vb: Public Module MockerHttpMoqExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  id: SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpMoqExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetupHttpMessage(object, Func<HttpResponseMessage>, Expression?, Expression?)
+  nameWithType: MockerHttpMoqExtensions.SetupHttpMessage(object, Func<HttpResponseMessage>, Expression?, Expression?)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(object, System.Func<System.Net.Http.HttpResponseMessage>, System.Linq.Expressions.Expression?, System.Linq.Expressions.Expression?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupHttpMessage
+    path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+    startLine: 20
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Extensions
+  summary: >-
+    Sets up an HTTP message handler using Moq compatibility behavior.
+
+    Prefer <code>WhenHttpRequest(...)</code> or <code>WhenHttpRequestJson(...)</code> in new tests when protected-member setup is not required.
+  example: []
+  syntax:
+    content: public static void SetupHttpMessage(this object mocker, Func<HttpResponseMessage> messageFunc, Expression? request = null, Expression? cancellationToken = null)
+    parameters:
+    - id: mocker
+      type: System.Object
+    - id: messageFunc
+      type: System.Func{System.Net.Http.HttpResponseMessage}
+    - id: request
+      type: System.Linq.Expressions.Expression
+    - id: cancellationToken
+      type: System.Linq.Expressions.Expression
+    content.vb: Public Shared Sub SetupHttpMessage(mocker As Object, messageFunc As Func(Of HttpResponseMessage), request As Expression = Nothing, cancellationToken As Expression = Nothing)
+  overload: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage*
+  nameWithType.vb: MockerHttpMoqExtensions.SetupHttpMessage(Object, Func(Of HttpResponseMessage), Expression, Expression)
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(Object, System.Func(Of System.Net.Http.HttpResponseMessage), System.Linq.Expressions.Expression, System.Linq.Expressions.Expression)
+  name.vb: SetupHttpMessage(Object, Func(Of HttpResponseMessage), Expression, Expression)
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  id: SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpMoqExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetupMessage<TMock, TReturn>(object, Expression<Func<TMock, TReturn>>, Func<TReturn>)
+  nameWithType: MockerHttpMoqExtensions.SetupMessage<TMock, TReturn>(object, Expression<Func<TMock, TReturn>>, Func<TReturn>)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage<TMock, TReturn>(object, System.Linq.Expressions.Expression<System.Func<TMock, TReturn>>, System.Func<TReturn>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupMessage
+    path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+    startLine: 43
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Extensions
+  summary: Sets up a synchronous member using Moq compatibility behavior.
+  example: []
+  syntax:
+    content: 'public static void SetupMessage<TMock, TReturn>(this object mocker, Expression<Func<TMock, TReturn>> expression, Func<TReturn> messageFunc) where TMock : class'
+    parameters:
+    - id: mocker
+      type: System.Object
+    - id: expression
+      type: System.Linq.Expressions.Expression{System.Func{{TMock},{TReturn}}}
+    - id: messageFunc
+      type: System.Func{{TReturn}}
+    typeParameters:
+    - id: TMock
+    - id: TReturn
+    content.vb: Public Shared Sub SetupMessage(Of TMock As Class, TReturn)(mocker As Object, expression As Expression(Of Func(Of TMock, TReturn)), messageFunc As Func(Of TReturn))
+  overload: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage*
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessage(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage(Of TMock, TReturn)(Object, System.Linq.Expressions.Expression(Of System.Func(Of TMock, TReturn)), System.Func(Of TReturn))
+  name.vb: SetupMessage(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+  id: SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpMoqExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetupMessageAsync<TMock, TReturn>(object, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
+  nameWithType: MockerHttpMoqExtensions.SetupMessageAsync<TMock, TReturn>(object, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync<TMock, TReturn>(object, System.Linq.Expressions.Expression<System.Func<TMock, System.Threading.Tasks.Task<TReturn>>>, System.Func<TReturn>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupMessageAsync
+    path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+    startLine: 59
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Extensions
+  summary: Sets up an asynchronous member using Moq compatibility behavior.
+  example: []
+  syntax:
+    content: 'public static void SetupMessageAsync<TMock, TReturn>(this object mocker, Expression<Func<TMock, Task<TReturn>>> expression, Func<TReturn> messageFunc) where TMock : class'
+    parameters:
+    - id: mocker
+      type: System.Object
+    - id: expression
+      type: System.Linq.Expressions.Expression{System.Func{{TMock},System.Threading.Tasks.Task{{TReturn}}}}
+    - id: messageFunc
+      type: System.Func{{TReturn}}
+    typeParameters:
+    - id: TMock
+    - id: TReturn
+    content.vb: Public Shared Sub SetupMessageAsync(Of TMock As Class, TReturn)(mocker As Object, expression As Expression(Of Func(Of TMock, Task(Of TReturn))), messageFunc As Func(Of TReturn))
+  overload: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync*
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageAsync(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync(Of TMock, TReturn)(Object, System.Linq.Expressions.Expression(Of System.Func(Of TMock, System.Threading.Tasks.Task(Of TReturn))), System.Func(Of TReturn))
+  name.vb: SetupMessageAsync(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+  id: SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpMoqExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetupMessageProtected<TMock, TReturn>(object, string, Func<TReturn>, params object?[]?)
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtected<TMock, TReturn>(object, string, Func<TReturn>, params object?[]?)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected<TMock, TReturn>(object, string, System.Func<TReturn>, params object?[]?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupMessageProtected
+    path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+    startLine: 75
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Extensions
+  summary: Sets up a protected member using Moq compatibility behavior.
+  example: []
+  syntax:
+    content: 'public static void SetupMessageProtected<TMock, TReturn>(this object mocker, string methodOrPropertyName, Func<TReturn> messageFunc, params object?[]? args) where TMock : class'
+    parameters:
+    - id: mocker
+      type: System.Object
+    - id: methodOrPropertyName
+      type: System.String
+    - id: messageFunc
+      type: System.Func{{TReturn}}
+    - id: args
+      type: System.Object[]
+    typeParameters:
+    - id: TMock
+    - id: TReturn
+    content.vb: Public Shared Sub SetupMessageProtected(Of TMock As Class, TReturn)(mocker As Object, methodOrPropertyName As String, messageFunc As Func(Of TReturn), ParamArray args As Object())
+  overload: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected*
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageProtected(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected(Of TMock, TReturn)(Object, String, System.Func(Of TReturn), ParamArray Object())
+  name.vb: SetupMessageProtected(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+  id: SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpMoqExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetupMessageProtectedAsync<TMock, TReturn>(object, string, Func<TReturn>, params object?[]?)
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtectedAsync<TMock, TReturn>(object, string, Func<TReturn>, params object?[]?)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync<TMock, TReturn>(object, string, System.Func<TReturn>, params object?[]?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupMessageProtectedAsync
+    path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
+    startLine: 91
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Extensions
+  summary: Sets up an asynchronous protected member using Moq compatibility behavior.
+  example: []
+  syntax:
+    content: 'public static void SetupMessageProtectedAsync<TMock, TReturn>(this object mocker, string methodOrPropertyName, Func<TReturn> messageFunc, params object?[]? args) where TMock : class'
+    parameters:
+    - id: mocker
+      type: System.Object
+    - id: methodOrPropertyName
+      type: System.String
+    - id: messageFunc
+      type: System.Func{{TReturn}}
+    - id: args
+      type: System.Object[]
+    typeParameters:
+    - id: TMock
+    - id: TReturn
+    content.vb: Public Shared Sub SetupMessageProtectedAsync(Of TMock As Class, TReturn)(mocker As Object, methodOrPropertyName As String, messageFunc As Func(Of TReturn), ParamArray args As Object())
+  overload: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync*
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, System.Func(Of TReturn), ParamArray Object())
+  name.vb: SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+references:
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage*
+  commentId: Overload:FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_
+  name: SetupHttpMessage
+  nameWithType: MockerHttpMoqExtensions.SetupHttpMessage
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage
+- uid: System.Func{System.Net.Http.HttpResponseMessage}
+  commentId: T:System.Func{System.Net.Http.HttpResponseMessage}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<HttpResponseMessage>
+  nameWithType: Func<HttpResponseMessage>
+  fullName: System.Func<System.Net.Http.HttpResponseMessage>
+  nameWithType.vb: Func(Of HttpResponseMessage)
+  fullName.vb: System.Func(Of System.Net.Http.HttpResponseMessage)
+  name.vb: Func(Of HttpResponseMessage)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Net.Http.HttpResponseMessage
+    name: HttpResponseMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Net.Http.HttpResponseMessage
+    name: HttpResponseMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  - name: )
+- uid: System.Linq.Expressions.Expression
+  commentId: T:System.Linq.Expressions.Expression
+  parent: System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  name: Expression
+  nameWithType: Expression
+  fullName: System.Linq.Expressions.Expression
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Linq.Expressions
+  commentId: N:System.Linq.Expressions
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Linq.Expressions
+  nameWithType: System.Linq.Expressions
+  fullName: System.Linq.Expressions
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Linq
+    name: Linq
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq
+  - name: .
+  - uid: System.Linq.Expressions
+    name: Expressions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage*
+  commentId: Overload:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__
+  name: SetupMessage
+  nameWithType: MockerHttpMoqExtensions.SetupMessage
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage
+- uid: System.Linq.Expressions.Expression{System.Func{{TMock},{TReturn}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,``1}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<TMock, TReturn>>
+  nameWithType: Expression<Func<TMock, TReturn>>
+  fullName: System.Linq.Expressions.Expression<System.Func<TMock, TReturn>>
+  nameWithType.vb: Expression(Of Func(Of TMock, TReturn))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TMock, TReturn))
+  name.vb: Expression(Of Func(Of TMock, TReturn))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: )
+- uid: System.Func{{TReturn}}
+  commentId: T:System.Func{``0}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TReturn>
+  nameWithType: Func<TReturn>
+  fullName: System.Func<TReturn>
+  nameWithType.vb: Func(Of TReturn)
+  fullName.vb: System.Func(Of TReturn)
+  name.vb: Func(Of TReturn)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+- uid: System.Linq.Expressions.Expression`1
+  commentId: T:System.Linq.Expressions.Expression`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<TDelegate>
+  nameWithType: Expression<TDelegate>
+  fullName: System.Linq.Expressions.Expression<TDelegate>
+  nameWithType.vb: Expression(Of TDelegate)
+  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
+  name.vb: Expression(Of TDelegate)
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - name: TDelegate
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TDelegate
+  - name: )
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync*
+  commentId: Overload:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__
+  name: SetupMessageAsync
+  nameWithType: MockerHttpMoqExtensions.SetupMessageAsync
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync
+- uid: System.Linq.Expressions.Expression{System.Func{{TMock},System.Threading.Tasks.Task{{TReturn}}}}
+  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}}
+  parent: System.Linq.Expressions
+  definition: System.Linq.Expressions.Expression`1
+  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  name: Expression<Func<TMock, Task<TReturn>>>
+  nameWithType: Expression<Func<TMock, Task<TReturn>>>
+  fullName: System.Linq.Expressions.Expression<System.Func<TMock, System.Threading.Tasks.Task<TReturn>>>
+  nameWithType.vb: Expression(Of Func(Of TMock, Task(Of TReturn)))
+  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TMock, System.Threading.Tasks.Task(Of TReturn)))
+  name.vb: Expression(Of Func(Of TMock, Task(Of TReturn)))
+  spec.csharp:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected*
+  commentId: Overload:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___
+  name: SetupMessageProtected
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtected
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Object[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object[]
+  nameWithType: object[]
+  fullName: object[]
+  nameWithType.vb: Object()
+  fullName.vb: Object()
+  name.vb: Object()
+  spec.csharp:
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync*
+  commentId: Overload:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___
+  name: SetupMessageProtectedAsync
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtectedAsync
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync

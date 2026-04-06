@@ -8,6 +8,7 @@ items:
   - FastMoq.Extensions.MockerBooleanExtensions
   - FastMoq.Extensions.MockerCreationExtensions
   - FastMoq.Extensions.MockerHttpExtensions
+  - FastMoq.Extensions.MockerHttpMoqExtensions
   - FastMoq.Extensions.ObjectExtensions
   - FastMoq.Extensions.TestClassExtensions
   langs:
@@ -61,6 +62,13 @@ references:
   name: TestClassExtensions
   nameWithType: TestClassExtensions
   fullName: FastMoq.Extensions.TestClassExtensions
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions
+  commentId: T:FastMoq.Extensions.MockerHttpMoqExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html
+  name: MockerHttpMoqExtensions
+  nameWithType: MockerHttpMoqExtensions
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions
 - uid: FastMoq.Extensions
   commentId: N:FastMoq.Extensions
   href: FastMoq.html

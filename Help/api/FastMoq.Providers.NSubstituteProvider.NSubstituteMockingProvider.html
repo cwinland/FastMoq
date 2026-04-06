@@ -286,6 +286,44 @@
   </table>
   <h3 id="methods">Methods
 </h3>
+  <a id="FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_BuildExpression_" data-uid="FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.BuildExpression*"></a>
+  <h4 id="FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_BuildExpression__1" data-uid="FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.BuildExpression``1">BuildExpression&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Expression&lt;Func&lt;T, bool&gt;&gt; BuildExpression&lt;T&gt;()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_ConfigureLogger_" data-uid="FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.ConfigureLogger*"></a>
   <h4 id="FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_ConfigureLogger_FastMoq_Providers_IFastMock_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__" data-uid="FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})">ConfigureLogger(IFastMock, Action&lt;LogLevel, EventId, string, Exception?&gt;)</h4>
   <div class="markdown level1 summary"></div>
@@ -536,6 +574,51 @@
       </tr>
     </tbody>
   </table>
+  <a id="FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_TryWrapLegacy_" data-uid="FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryWrapLegacy*"></a>
+  <h4 id="FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_TryWrapLegacy_System_Object_System_Type_" data-uid="FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryWrapLegacy(System.Object,System.Type)">TryWrapLegacy(object, Type)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IFastMock? TryWrapLegacy(object legacyMock, Type mockedType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">legacyMock</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">mockedType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_VerifyNoOtherCalls_" data-uid="FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.VerifyNoOtherCalls*"></a>
   <h4 id="FastMoq_Providers_NSubstituteProvider_NSubstituteMockingProvider_VerifyNoOtherCalls_FastMoq_Providers_IFastMock_" data-uid="FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)">VerifyNoOtherCalls(IFastMock)</h4>
   <div class="markdown level1 summary"></div>
@@ -653,6 +736,21 @@
       <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.SetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
   </div>
   <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_">MockerHttpMoqExtensions.SetupHttpMessage(object, Func&lt;HttpResponseMessage&gt;, Expression?, Expression?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__">MockerHttpMoqExtensions.SetupMessageAsync&lt;TMock, TReturn&gt;(object, Expression&lt;Func&lt;TMock, Task&lt;TReturn&gt;&gt;&gt;, Func&lt;TReturn&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___">MockerHttpMoqExtensions.SetupMessageProtectedAsync&lt;TMock, TReturn&gt;(object, string, Func&lt;TReturn&gt;, params object?[]?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___">MockerHttpMoqExtensions.SetupMessageProtected&lt;TMock, TReturn&gt;(object, string, Func&lt;TReturn&gt;, params object?[]?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__">MockerHttpMoqExtensions.SetupMessage&lt;TMock, TReturn&gt;(object, Expression&lt;Func&lt;TMock, TReturn&gt;&gt;, Func&lt;TReturn&gt;)</a>
+  </div>
+  <div>
       <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_">TestClassExtensions.GetFieldInfo&lt;TType&gt;(object, string)</a>
   </div>
   <div>
@@ -683,7 +781,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
       
           </div>
         </div>

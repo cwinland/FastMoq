@@ -4,6 +4,7 @@ items:
   commentId: N:FastMoq.Providers.MoqProvider
   id: FastMoq.Providers.MoqProvider
   children:
+  - FastMoq.Providers.MoqProvider.IFastMockMoqExtensions
   - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
   - FastMoq.Providers.MoqProvider.MoqMockAdapter
   - FastMoq.Providers.MoqProvider.MoqMockAdapter`1
@@ -18,6 +19,13 @@ items:
   assemblies:
   - FastMoq.Provider.Moq
 references:
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions
+  commentId: T:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions
+  parent: FastMoq.Providers.MoqProvider
+  href: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html
+  name: IFastMockMoqExtensions
+  nameWithType: IFastMockMoqExtensions
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions
 - uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
   commentId: T:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
   href: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.html
