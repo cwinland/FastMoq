@@ -32,46 +32,45 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Tests the constructor parameters.
+        /// Tests the active constructor parameters for the current component and lets the test assert what should happen when each parameter is replaced with an invalid value.
         /// </summary>
         /// <param name="createAction">The create action.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <param name="validValue">The valid value.</param>
         /// <example>
-        /// <para>Use TestConstructorParameters to verify null checks with default value generation.</para>
+        /// <para>Use <see cref="TestConstructorParameters(Action{Action, string, string}, Func{ParameterInfo, object?}?, Func{ParameterInfo, object?}?)"/> to verify guard clauses on the constructor that FastMoq actually selected for <typeparamref name="TComponent"/>.</para>
         /// <code language="csharp"><![CDATA[
         /// [Fact]
-        /// public void Service_NullArgChecks() => TestConstructorParameters((action, constructorName, parameterName) =>
-        /// {
-        ///     output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
-        ///
-        ///     action
-        ///         .Should()
-        ///         .Throw<ArgumentNullException>()
-        ///         .WithMessage($"*{parameterName}*");
-        /// });
-        /// ]]></code>
-        /// <para>Provide explicit invalid and valid values when constructor parameter defaults need to vary by type.</para>
-        /// <code language="csharp"><![CDATA[
-        /// [Fact]
-        /// public void Service_NullArgChecks_WithOverrides() => TestConstructorParameters(
+        /// public void CheckoutService_ShouldThrowForNullDependencies() => TestConstructorParameters(
         ///     (action, constructorName, parameterName) =>
         ///     {
         ///         action
         ///             .Should()
         ///             .Throw<ArgumentNullException>()
         ///             .WithMessage($"*{parameterName}*");
-        ///     },
-        ///     info => info.ParameterType.Name switch
+        ///     });
+        /// ]]></code>
+        /// <para>Provide explicit invalid and valid values when constructor arguments need type-specific test data instead of the default FastMoq resolution behavior.</para>
+        /// <code language="csharp"><![CDATA[
+        /// [Fact]
+        /// public void ImportJob_ShouldValidateConstructorArguments() => TestConstructorParameters(
+        ///     (action, constructorName, parameterName) =>
         ///     {
-        ///         "string" => string.Empty,
-        ///         "int" => -1,
+        ///         action
+        ///             .Should()
+        ///             .Throw<ArgumentException>()
+        ///             .WithMessage($"*{parameterName}*");
+        ///     },
+        ///     info => info.Name switch
+        ///     {
+        ///         "tenant" => string.Empty,
+        ///         "batchSize" => 0,
         ///         _ => default,
         ///     },
-        ///     info => info.ParameterType.Name switch
+        ///     info => info.Name switch
         ///     {
-        ///         "string" => "Valid Value",
-        ///         "int" => 22,
+        ///         "tenant" => "contoso",
+        ///         "batchSize" => 50,
         ///         _ => Mocks.GetObject(info.ParameterType),
         ///     });
         /// ]]></code>

@@ -35,7 +35,7 @@ Key additions include:
 
 ### Provider-first mock access
 
-Tracked mocks now expose the active provider object directly.
+Tracked mocks now expose the active provider object directly, and provider packages can layer typed convenience extensions on top of that tracked surface.
 
 Key surfaces include:
 
@@ -43,6 +43,7 @@ Key surfaces include:
 - `GetNativeMock(...)`
 - `GetOrCreateMock<T>()`
 - `GetOrCreateMock(Type, ...)`
+- provider-package bridges such as `AsMoq()` and `AsNSubstitute()`
 
 ### Focused instance creation
 

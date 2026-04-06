@@ -60,46 +60,53 @@ items:
     This class contains the <xref href="FastMoq.MockerTestBase%601.Mocks" data-throw-if-not-resolved="false"></xref> property to create and track all Mocks from creation of the component.
   example:
   - >-
-    <p>Use <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref> when you want the component under test created automatically with constructor dependencies resolved from FastMoq.</p>
+    <p>Use <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref> when you want the component under test created automatically with constructor dependencies resolved from FastMoq's provider-first pipeline.</p>
 
-    <pre><code class="lang-csharp">public class CheckoutServiceTests : MockerTestBase&lt;CheckoutService&gt;
+    <p>The base class auto-resolves constructor dependencies, so you do not need to call <code>GetOrCreateMock</code> just to make a dependency exist before verification. When you do need the tracked mock handle itself, use <xref href="FastMoq.Mocker.GetOrCreateMock%60%601(FastMoq.MockRequestOptions)" data-throw-if-not-resolved="false"></xref> in a custom create path.</p>
+
+    <pre><code class="lang-csharp">public sealed class OrderSubmitterTests : MockerTestBase&lt;OrderSubmitter&gt;
 
     {
-        protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
-        {
-            mocker.GetMock&lt;IPricingClient&gt;()
-                .Setup(x =&gt; x.GetPrice("SKU-42"))
-                .Returns(125.50m);
-
-            mocker.AddType<IClock>(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
-        };
-
         [Fact]
-        public void Calculates_total_using_auto_injected_dependencies()
+        public void Submit_should_publish_the_order_id()
         {
-            var total = Component.CalculateTotal("SKU-42", quantity: 2);
+            Component.Submit(42);
 
-            total.Should().Be(251.00m);
-            Mocks.GetMock<IPricingClient>().Verify(x => x.GetPrice("SKU-42"), Times.Once);
+            Component.LastSubmittedOrderId.Should().Be(42);
+            Mocks.Verify<IOrderGateway>(x => x.Publish(42), TimesSpec.Once);
         }
     }</code></pre>
 
-    <p>The base class creates <code>CheckoutService</code> before the test body runs, so the test can assert directly against <xref href="FastMoq.MockerTestBase%601.Component" data-throw-if-not-resolved="false"></xref>.</p>
+    <p>The base class creates <code>OrderSubmitter</code> before the test body runs, so the test can assert directly against <xref href="FastMoq.MockerTestBase%601.Component" data-throw-if-not-resolved="false"></xref>.</p>
 
-    <pre><code class="lang-csharp">public sealed class CheckoutService
+    <pre><code class="lang-csharp">public interface IOrderGateway
 
     {
-        public CheckoutService(IPricingClient pricingClient, IClock clock)
+        void Publish(int orderId);
+    }
+
+
+    public sealed class OrderSubmitter
+
+    {
+        private readonly IOrderGateway _gateway;
+
+        public OrderSubmitter(IOrderGateway gateway) => _gateway = gateway;
+
+        public int? LastSubmittedOrderId { get; private set; }
+        public string SubmissionChannel { get; set; } = "default";
+
+        public void Submit(int orderId)
         {
-            _pricingClient = pricingClient;
-            _clock = clock;
+            LastSubmittedOrderId = orderId;
+            _gateway.Publish(orderId);
         }
     }</code></pre>
 
-    <p>Use <xref href="FastMoq.MockerTestBase%601.CreatedComponentAction" data-throw-if-not-resolved="false"></xref> when you need a final arrangement step after construction, such as setting mutable state or attaching events.</p>
+    <p>Use <xref href="FastMoq.MockerTestBase%601.CreatedComponentAction" data-throw-if-not-resolved="false"></xref> when you need a final arrangement step after construction, such as setting mutable state that is part of the test context.</p>
 
-    <pre><code class="lang-csharp">protected override Action&lt;CheckoutService&gt; CreatedComponentAction =&gt; component =&gt;
-        component.Currency = "USD";</code></pre>
+    <pre><code class="lang-csharp">protected override Action&lt;OrderSubmitter&gt; CreatedComponentAction =&gt; component =&gt;
+        component.SubmissionChannel = "priority";</code></pre>
   syntax:
     content: 'public abstract class MockerTestBase<TComponent> : IDisposable where TComponent : class'
     typeParameters:
@@ -154,7 +161,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Component
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 69
+    startLine: 73
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -188,7 +195,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CustomMocks
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 79
+    startLine: 83
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -222,7 +229,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateComponentAction
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 85
+    startLine: 89
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -256,7 +263,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMocksAction
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 91
+    startLine: 95
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -290,7 +297,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreatedComponentAction
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 97
+    startLine: 101
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -324,7 +331,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureMockerPolicy
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 102
+    startLine: 106
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -357,7 +364,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Mocks
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 108
+    startLine: 112
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -391,7 +398,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Scenario
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 113
+    startLine: 117
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -424,7 +431,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 127
+    startLine: 131
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -478,7 +485,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 155
+    startLine: 159
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -523,7 +530,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 165
+    startLine: 169
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -571,27 +578,31 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateComponent
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 186
+    startLine: 193
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
   summary: Sets the <xref href="FastMoq.MockerTestBase%601.Component" data-throw-if-not-resolved="false"></xref> property with a new instance while maintaining the constructor setup and any other changes.
   example:
   - >-
-    <p>Use <xref href="FastMoq.MockerTestBase%601.CreateComponent" data-throw-if-not-resolved="false"></xref> when the test needs to change mock behavior first and then rebuild the component with the updated arrangement.</p>
+    <p>Use <xref href="FastMoq.MockerTestBase%601.CreateComponent" data-throw-if-not-resolved="false"></xref> when you need to rebuild the component after changing test-base configuration that affects construction or post-creation state.</p>
 
-    <pre><code class="lang-csharp">[Fact]
+    <pre><code class="lang-csharp">private string CreatedChannel { get; set; } = "default";
 
-    public void Recreates_component_after_overriding_a_dependency()
+
+    protected override Action&lt;OrderSubmitter&gt; CreatedComponentAction =&gt; component =&gt;
+        component.SubmissionChannel = CreatedChannel;
+
+    [Fact]
+
+    public void Recreates_component_after_changing_created_state()
 
     {
-        Mocks.GetMock&lt;IPricingClient&gt;()
-            .Setup(x =&gt; x.GetPrice("SKU-42"))
-            .Returns(99.00m);
+        CreatedChannel = "priority";
 
         CreateComponent();
 
-        Component.CalculateTotal("SKU-42", 1).Should().Be(99.00m);
+        Component.SubmissionChannel.Should().Be("priority");
     }</code></pre>
   syntax:
     content: protected void CreateComponent()
@@ -617,7 +628,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 213
+    startLine: 220
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -654,7 +665,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 231
+    startLine: 238
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -989,12 +1000,37 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 61
+    startLine: 85
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Initializes a new instance of the <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref> class.
-  example: []
+  summary: Initializes a new instance of the <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref> class with explicit hooks for arranging mocks, overriding construction, and applying post-creation setup.
+  example:
+  - >-
+    <p>Use this overload when the test base needs full control over the arrange, create, and post-create phases.</p>
+
+    <p>If the example needs to configure a return value such as <code>GetRate("USD", "EUR")</code>, use the mock-setup API that actually exposes setup semantics today. <code>GetOrCreateMock</code> is for obtaining the tracked provider-backed mock handle, not for provider-neutral setup.</p>
+
+    <pre><code class="lang-csharp">public sealed class InvoiceServiceTests : MockerTestBase&lt;InvoiceService&gt;
+
+    {
+        public InvoiceServiceTests()
+            : base(
+                setupMocksAction: mocker =&gt;
+                {
+                    mocker.GetMock&lt;IExchangeRateClient&gt;()
+                        .Setup(x =&gt; x.GetRate("USD", "EUR"))
+                        .Returns(0.92m);
+                },
+                createComponentAction: mocker =&gt;
+                    new InvoiceService(mocker.GetObject&lt;IExchangeRateClient&gt;(), "EUR"),
+                createdComponentAction: component =&gt;
+                    component.Region = "EMEA")
+        {
+        }
+    }</code></pre>
+
+    <p>Use <code>GetOrCreateMock</code> when you need the tracked mock handle itself, for example to pass <code>Instance</code> into custom construction without relying on automatic resolution, to reuse the same tracked mock across calls, or to use keyed <xref href="FastMoq.MockRequestOptions" data-throw-if-not-resolved="false"></xref>.</p>
   syntax:
     content: protected MockerTestBase(Action<Mocker> setupMocksAction, Func<Mocker, TComponent>? createComponentAction, Action<TComponent> createdComponentAction)
     parameters:
@@ -1030,7 +1066,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 74
+    startLine: 98
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1068,12 +1104,28 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 81
+    startLine: 120
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Create instance using the component constructor that matches the type parameters.
-  example: []
+  summary: Create the component using the constructor whose parameter types match <code class="paramref">createArgumentTypes</code>.
+  example:
+  - >-
+    <p>Use this overload when the component exposes multiple constructors and the test should target a specific signature.</p>
+
+    <pre><code class="lang-csharp">public sealed class ReportExporterTests : MockerTestBase&lt;ReportExporter&gt;
+
+    {
+        public ReportExporterTests()
+            : base(typeof(string), typeof(int))
+        {
+        }
+    }
+
+
+    // FastMoq will choose a constructor such as:
+
+    // ReportExporter(IStorageClient storageClient, string containerName, int retryCount)</code></pre>
   syntax:
     content: protected MockerTestBase(params Type[] createArgumentTypes)
     parameters:
@@ -1102,12 +1154,34 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 91
+    startLine: 152
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Initializes a new instance of the <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref> class.
-  example: []
+  summary: Initializes a new instance of the <xref href="FastMoq.MockerTestBase%601" data-throw-if-not-resolved="false"></xref> class while combining mock setup, post-creation configuration, and explicit constructor selection.
+  example:
+  - >-
+    <p>This overload is useful when a service has several constructors and the selected one needs additional state configured after creation.</p>
+
+    <pre><code class="lang-csharp">public sealed class OrdersImportTests : MockerTestBase&lt;OrdersImporter&gt;
+
+    {
+        public OrdersImportTests()
+            : base(
+                setupMocksAction: mocker =&gt;
+                {
+                    mocker.GetMock&lt;IOrdersApi&gt;()
+                        .Setup(x =&gt; x.FetchPageAsync(1))
+                        .ReturnsAsync(new OrdersPage());
+                },
+                createdComponentAction: component =&gt;
+                    component.BatchName = "nightly-import",
+                createArgumentTypes: typeof(string))
+        {
+        }
+    }</code></pre>
+
+    <p>Use <code>GetOrCreateMock</code> in constructor-focused tests only when you need the returned tracked mock object itself, such as keyed identity, provider options, resetting the tracked mock, or passing <code>Instance</code> into custom construction.</p>
   syntax:
     content: protected MockerTestBase(Action<Mocker> setupMocksAction, Action<TComponent> createdComponentAction, params Type[] createArgumentTypes)
     parameters:
@@ -1224,50 +1298,47 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TestConstructorParameters
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-    startLine: 78
+    startLine: 77
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Tests the constructor parameters.
+  summary: Tests the active constructor parameters for the current component and lets the test assert what should happen when each parameter is replaced with an invalid value.
   example:
   - >-
-    <p>Use TestConstructorParameters to verify null checks with default value generation.</p>
+    <p>Use <xref href="FastMoq.MockerTestBase%601.TestConstructorParameters(System.Action%7bSystem.Action%2cSystem.String%2cSystem.String%7d%2cSystem.Func%7bSystem.Reflection.ParameterInfo%2cSystem.Object%7d%2cSystem.Func%7bSystem.Reflection.ParameterInfo%2cSystem.Object%7d)" data-throw-if-not-resolved="false"></xref> to verify guard clauses on the constructor that FastMoq actually selected for <code class="typeparamref">TComponent</code>.</p>
 
     <pre><code class="lang-csharp">[Fact]
 
-    public void Service_NullArgChecks() =&gt; TestConstructorParameters((action, constructorName, parameterName) =&gt;
-
-    {
-        output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
-
-        action
-            .Should()
-            .Throw<ArgumentNullException>()
-            .WithMessage($"*{parameterName}*");
-    });</code></pre>
-
-    <p>Provide explicit invalid and valid values when constructor parameter defaults need to vary by type.</p>
-
-    <pre><code class="lang-csharp">[Fact]
-
-    public void Service_NullArgChecks_WithOverrides() =&gt; TestConstructorParameters(
+    public void CheckoutService_ShouldThrowForNullDependencies() =&gt; TestConstructorParameters(
         (action, constructorName, parameterName) =&gt;
         {
             action
                 .Should()
                 .Throw&lt;ArgumentNullException&gt;()
                 .WithMessage($"*{parameterName}*");
-        },
-        info =&gt; info.ParameterType.Name switch
+        });</code></pre>
+    <p>Provide explicit invalid and valid values when constructor arguments need type-specific test data instead of the default FastMoq resolution behavior.</p>
+
+    <pre><code class="lang-csharp">[Fact]
+
+    public void ImportJob_ShouldValidateConstructorArguments() =&gt; TestConstructorParameters(
+        (action, constructorName, parameterName) =&gt;
         {
-            "string" =&gt; string.Empty,
-            "int" =&gt; -1,
+            action
+                .Should()
+                .Throw&lt;ArgumentException&gt;()
+                .WithMessage($"*{parameterName}*");
+        },
+        info =&gt; info.Name switch
+        {
+            "tenant" =&gt; string.Empty,
+            "batchSize" =&gt; 0,
             _ =&gt; default,
         },
-        info =&gt; info.ParameterType.Name switch
+        info =&gt; info.Name switch
         {
-            "string" =&gt; "Valid Value",
-            "int" =&gt; 22,
+            "tenant" =&gt; "contoso",
+            "batchSize" =&gt; 50,
             _ =&gt; Mocks.GetObject(info.ParameterType),
         });</code></pre>
   syntax:
@@ -1305,7 +1376,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TestConstructorParameters
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-    startLine: 88
+    startLine: 87
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1371,6 +1442,41 @@ references:
   - name: Of
   - name: " "
   - name: TComponent
+  - name: )
+- uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+  commentId: M:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+  href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
+  name: GetOrCreateMock<T>(MockRequestOptions)
+  nameWithType: Mocker.GetOrCreateMock<T>(MockRequestOptions)
+  fullName: FastMoq.Mocker.GetOrCreateMock<T>(FastMoq.MockRequestOptions)
+  nameWithType.vb: Mocker.GetOrCreateMock(Of T)(MockRequestOptions)
+  fullName.vb: FastMoq.Mocker.GetOrCreateMock(Of T)(FastMoq.MockRequestOptions)
+  name.vb: GetOrCreateMock(Of T)(MockRequestOptions)
+  spec.csharp:
+  - uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+    name: GetOrCreateMock
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockRequestOptions
+    name: MockRequestOptions
+    href: FastMoq.MockRequestOptions.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+    name: GetOrCreateMock
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FastMoq.MockRequestOptions
+    name: MockRequestOptions
+    href: FastMoq.MockRequestOptions.html
   - name: )
 - uid: FastMoq.MockerTestBase`1.Component
   commentId: P:FastMoq.MockerTestBase`1.Component
@@ -4241,6 +4347,13 @@ references:
   nameWithType.vb: MockerTestBase(Of TComponent).New
   fullName.vb: FastMoq.MockerTestBase(Of TComponent).New
   name.vb: New
+- uid: FastMoq.MockRequestOptions
+  commentId: T:FastMoq.MockRequestOptions
+  parent: FastMoq
+  href: FastMoq.MockRequestOptions.html
+  name: MockRequestOptions
+  nameWithType: MockRequestOptions
+  fullName: FastMoq.MockRequestOptions
 - uid: FastMoq.MockerTestBase`1.LoggingCallback*
   commentId: Overload:FastMoq.MockerTestBase`1.LoggingCallback
   href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_LoggingCallback_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception_
@@ -4555,6 +4668,150 @@ references:
   - name: ','
   - name: " "
   - name: T3
+  - name: )
+- uid: FastMoq.MockerTestBase`1.TestConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+  commentId: M:FastMoq.MockerTestBase`1.TestConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+  isExternal: true
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_TestConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__
+  name: TestConstructorParameters(Action<Action, string, string>, Func<ParameterInfo, object>, Func<ParameterInfo, object>)
+  nameWithType: MockerTestBase<TComponent>.TestConstructorParameters(Action<Action, string, string>, Func<ParameterInfo, object>, Func<ParameterInfo, object>)
+  fullName: FastMoq.MockerTestBase<TComponent>.TestConstructorParameters(System.Action<System.Action, string, string>, System.Func<System.Reflection.ParameterInfo, object>, System.Func<System.Reflection.ParameterInfo, object>)
+  nameWithType.vb: MockerTestBase(Of TComponent).TestConstructorParameters(Action(Of Action, String, String), Func(Of ParameterInfo, Object), Func(Of ParameterInfo, Object))
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).TestConstructorParameters(System.Action(Of System.Action, String, String), System.Func(Of System.Reflection.ParameterInfo, Object), System.Func(Of System.Reflection.ParameterInfo, Object))
+  name.vb: TestConstructorParameters(Action(Of Action, String, String), Func(Of ParameterInfo, Object), Func(Of ParameterInfo, Object))
+  spec.csharp:
+  - uid: FastMoq.MockerTestBase`1.TestConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+    name: TestConstructorParameters
+    href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_TestConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__
+  - name: (
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: <
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.MockerTestBase`1.TestConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})
+    name: TestConstructorParameters
+    href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_TestConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__
+  - name: (
+  - uid: System.Action`3
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Action
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
   - name: )
 - uid: FastMoq.MockerTestBase`1.TestConstructorParameters*
   commentId: Overload:FastMoq.MockerTestBase`1.TestConstructorParameters

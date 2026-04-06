@@ -23,5 +23,6 @@ namespace FastMoq.Providers
         void ConfigureProperties(IFastMock mock);
         void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback);
         object? TryGetLegacy(IFastMock mock);
+        IFastMock? TryWrapLegacy(object legacyMock, Type mockedType);
     }
 }

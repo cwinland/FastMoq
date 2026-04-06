@@ -135,15 +135,14 @@ For setup values, use AddMock() or component constructor parameters instead.</p>
 <p>Constructor parameters follow the same hierarchy as GetObject after type mapping.</p>
 </div>
   <h5 id="FastMoq_Mocker_examples"><strong>Examples</strong></h5>
-  <p>Use <a class="xref" href="FastMoq.Mocker.html">Mocker</a> as the main test composition root when you want to mix concrete registrations with mock setup.</p>
-<pre><code class="lang-csharp">var mocker = new Mocker()
-    .AddType&lt;IClock&gt;(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
-<p>mocker.GetMock&lt;IOrderRepository&gt;(repo =&gt;
-repo.Setup(x =&gt; x.GetByIdAsync(42)).ReturnsAsync(new Order { Id = 42, Total = 125.50m }));</p>
-<p>var service = mocker.GetRequiredObject&lt;OrderService&gt;();
-var order = await service.LoadAsync(42);</p>
-<p>order.Total.Should().Be(125.50m);
-mocker.GetMock&lt;IOrderRepository&gt;().Verify(x =&gt; x.GetByIdAsync(42), Times.Once);</p></code></pre>
+  <p>Use <a class="xref" href="FastMoq.Mocker.html">Mocker</a> as the main test composition root when you want provider-first arrangement based on concrete registrations and policy-driven construction.</p>
+<pre><code class="lang-csharp">var fileSystem = new MockFileSystem();
+fileSystem.AddFile(@"c:\orders\42.json", new MockFileData("{ \"id\": 42, \"total\": 125.50 }"));
+<p>var mocker = new Mocker()
+.AddType&lt;IFileSystem&gt;(fileSystem);</p>
+<p>var resolvedFileSystem = mocker.GetRequiredObject&lt;IFileSystem&gt;();</p>
+<p>resolvedFileSystem.File.Exists(@&quot;c:\orders\42.json&quot;).Should().BeTrue();
+resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
 
   <h3 id="constructors">Constructors
 </h3>
@@ -1626,11 +1625,11 @@ public Mocker AddType(Type tInterface, Type tClass, Func&lt;Mocker, object, obje
   </table>
   <h5 id="FastMoq_Mocker_AddType__1___0_System_Boolean__examples">Examples</h5>
   <p>Use this overload when a dependency should be a known runtime object rather than a tracked mock.</p>
-<pre><code class="lang-csharp">var clock = new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero));
+<pre><code class="lang-csharp">var fileSystem = new MockFileSystem();
 <p>var mocker = new Mocker()
-.AddType&lt;IClock&gt;(clock);</p>
-<p>var service = mocker.GetRequiredObject&lt;OrderService&gt;();
-service.Clock.Should().BeSameAs(clock);</p></code></pre>
+.AddType&lt;IFileSystem&gt;(fileSystem);</p>
+<p>var resolvedFileSystem = mocker.GetRequiredObject&lt;IFileSystem&gt;();
+resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
 
   <a id="FastMoq_Mocker_AddType_" data-uid="FastMoq.Mocker.AddType*"></a>
   <h4 id="FastMoq_Mocker_AddType__2_System_Boolean_System_Object___" data-uid="FastMoq.Mocker.AddType``2(System.Boolean,System.Object[])">AddType&lt;TInterface, TClass&gt;(bool, params object?[]?)</h4>
@@ -4052,14 +4051,13 @@ mocker.GetMock&lt;IPaymentGateway&gt;().Verify(x =&gt; x.Charge(125.50m), Times.
     </tbody>
   </table>
   <h5 id="FastMoq_Mocker_GetObject__1_examples">Examples</h5>
-  <p>Resolve the component under test after configuring any concrete registrations and mock behavior.</p>
-<pre><code class="lang-csharp">var mocker = new Mocker();
-<p>mocker.GetMock&lt;IInventoryGateway&gt;()
-.Setup(x =&gt; x.IsInStock(&quot;SKU-42&quot;))
-.Returns(true);</p>
-<p>var service = mocker.GetRequiredObject&lt;CheckoutService&gt;();
-var canShip = service.CanShip(&quot;SKU-42&quot;);</p>
-<p>canShip.Should().BeTrue();</p></code></pre>
+  <p>Resolve a dependency after configuring a concrete registration through the provider-first pipeline.</p>
+<pre><code class="lang-csharp">var fileSystem = new MockFileSystem();
+fileSystem.AddDirectory(@"c:\exports");
+<p>var mocker = new Mocker()
+.AddType&lt;IFileSystem&gt;(fileSystem);</p>
+<p>var resolvedFileSystem = mocker.GetRequiredObject&lt;IFileSystem&gt;();</p>
+<p>resolvedFileSystem.Directory.Exists(@&quot;c:\exports&quot;).Should().BeTrue();</p></code></pre>
 
   <a id="FastMoq_Mocker_GetObject_" data-uid="FastMoq.Mocker.GetObject*"></a>
   <h4 id="FastMoq_Mocker_GetObject__1_System_Action___0__" data-uid="FastMoq.Mocker.GetObject``1(System.Action{``0})">GetObject&lt;T&gt;(Action&lt;T?&gt;)</h4>
@@ -4273,6 +4271,16 @@ var canShip = service.CanShip(&quot;SKU-42&quot;);</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions__examples">Examples</h5>
+  <p>Use <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;(MockRequestOptions?)</a> when the test needs the tracked mock handle itself, not just automatic constructor resolution.</p>
+<pre><code class="lang-csharp">var mocker = new Mocker();
+var gateway = mocker.GetOrCreateMock&lt;IOrderGateway&gt;();
+<p>var submitter = new OrderSubmitter(gateway.Instance);
+submitter.Submit(42);</p>
+<p>mocker.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(42), TimesSpec.Once);
+mocker.VerifyNoOtherCalls&lt;IOrderGateway&gt;();</p></code></pre>
+<p>Typical reasons to call it explicitly are: passing <code>Instance</code> into custom component construction, reusing the same tracked mock across calls, resetting it, or using keyed <a class="xref" href="FastMoq.MockRequestOptions.html">MockRequestOptions</a>.</p>
+
   <a id="FastMoq_Mocker_GetRequiredMock_" data-uid="FastMoq.Mocker.GetRequiredMock*"></a>
   <h4 id="FastMoq_Mocker_GetRequiredMock_System_Type_" data-uid="FastMoq.Mocker.GetRequiredMock(System.Type)">GetRequiredMock(Type)</h4>
   <div class="markdown level1 summary"></div>
@@ -5248,7 +5256,7 @@ This is broader than <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_St
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:24 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
       
           </div>
         </div>

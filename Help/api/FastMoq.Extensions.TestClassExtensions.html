@@ -1815,6 +1815,11 @@ public static void SetupLoggerCallback&lt;TLogger&gt;(this Mock&lt;TLogger&gt; l
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32__examples">Examples</h5>
+  <p>Prefer <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_">VerifyLogged(Mocker, LogLevel, string, int)</a> in general documentation because it works through FastMoq's captured log entries instead of a provider-specific mock API.</p>
+<pre><code class="lang-csharp">Component.Submit(order);
+<p>Mocks.VerifyLogged(LogLevel.Information, &quot;Order submitted&quot;, times: 1);</p></code></pre>
+
   <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogger_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogger*"></a>
   <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogger_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)">VerifyLogger(Mock&lt;ILogger&gt;, LogLevel, string, Exception?, int?, int)</h4>
   <div class="markdown level1 summary"><p>Verifies the Mock ILogger was invoked.</p>
@@ -2260,12 +2265,6 @@ public static void VerifyLogger&lt;TLogger&gt;(this Mock&lt;TLogger&gt; loggerMo
       </tr>
     </tbody>
   </table>
-  <h5 id="FastMoq_Extensions_TestClassExtensions_VerifyLogger__1_Moq_Mock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32__examples">Examples</h5>
-  <p>Verify the important log entry after exercising the component under test.</p>
-<pre><code class="lang-csharp">var logger = Mocks.GetMock&lt;ILogger&lt;CheckoutService&gt;&gt;();
-<p>Component.Submit(order);</p>
-<p>logger.VerifyLogger(LogLevel.Information, &quot;Order submitted&quot;, times: 1);</p></code></pre>
-
   <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogger_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogger*"></a>
   <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogger__2_Moq_Mock___1__Microsoft_Extensions_Logging_LogLevel_System_String___0_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogger``2(Moq.Mock{``1},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)">VerifyLogger&lt;TException, TLogger&gt;(Mock&lt;TLogger&gt;, LogLevel, string, TException?, int?, int)</h4>
   <div class="markdown level1 summary"><p>Verifies the Mock ILogger was invoked.</p>
@@ -2367,7 +2366,7 @@ public static void VerifyLogger&lt;TException, TLogger&gt;(this Mock&lt;TLogger&
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:24 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
       
           </div>
         </div>

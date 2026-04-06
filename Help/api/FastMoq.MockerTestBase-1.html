@@ -141,39 +141,42 @@ This class contains the <a class="xref" href="FastMoq.MockerTestBase-1.html#Fast
     </tbody>
   </table>
   <h5 id="FastMoq_MockerTestBase_1_examples"><strong>Examples</strong></h5>
-  <p>Use <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> when you want the component under test created automatically with constructor dependencies resolved from FastMoq.</p>
-<pre><code class="lang-csharp">public class CheckoutServiceTests : MockerTestBase&lt;CheckoutService&gt;
+  <p>Use <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> when you want the component under test created automatically with constructor dependencies resolved from FastMoq's provider-first pipeline.</p>
+<p>The base class auto-resolves constructor dependencies, so you do not need to call <code>GetOrCreateMock</code> just to make a dependency exist before verification. When you do need the tracked mock handle itself, use <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;(MockRequestOptions?)</a> in a custom create path.</p>
+<pre><code class="lang-csharp">public sealed class OrderSubmitterTests : MockerTestBase&lt;OrderSubmitter&gt;
 {
-    protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
+    [Fact]
+    public void Submit_should_publish_the_order_id()
     {
-        mocker.GetMock&lt;IPricingClient&gt;()
-            .Setup(x =&gt; x.GetPrice("SKU-42"))
-            .Returns(125.50m);
-<pre><code>    mocker.AddType&lt;IClock&gt;(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
-};
-
-[Fact]
-public void Calculates_total_using_auto_injected_dependencies()
-{
-    var total = Component.CalculateTotal(&quot;SKU-42&quot;, quantity: 2);
-
-    total.Should().Be(251.00m);
-    Mocks.GetMock&lt;IPricingClient&gt;().Verify(x =&gt; x.GetPrice(&quot;SKU-42&quot;), Times.Once);
+        Component.Submit(42);
+<pre><code>    Component.LastSubmittedOrderId.Should().Be(42);
+    Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(42), TimesSpec.Once);
 }
 </code></pre>
 <p>}</p></code></pre>
-<p>The base class creates <code>CheckoutService</code> before the test body runs, so the test can assert directly against <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Component">Component</a>.</p>
-<pre><code class="lang-csharp">public sealed class CheckoutService
+<p>The base class creates <code>OrderSubmitter</code> before the test body runs, so the test can assert directly against <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Component">Component</a>.</p>
+<pre><code class="lang-csharp">public interface IOrderGateway
 {
-    public CheckoutService(IPricingClient pricingClient, IClock clock)
-    {
-        _pricingClient = pricingClient;
-        _clock = clock;
-    }
-}</code></pre>
-<p>Use <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreatedComponentAction">CreatedComponentAction</a> when you need a final arrangement step after construction, such as setting mutable state or attaching events.</p>
-<pre><code class="lang-csharp">protected override Action&lt;CheckoutService&gt; CreatedComponentAction =&gt; component =&gt;
-    component.Currency = "USD";</code></pre>
+    void Publish(int orderId);
+}
+<p>public sealed class OrderSubmitter
+{
+private readonly IOrderGateway _gateway;</p>
+<pre><code>public OrderSubmitter(IOrderGateway gateway) =&gt; _gateway = gateway;
+
+public int? LastSubmittedOrderId { get; private set; }
+public string SubmissionChannel { get; set; } = &quot;default&quot;;
+
+public void Submit(int orderId)
+{
+    LastSubmittedOrderId = orderId;
+    _gateway.Publish(orderId);
+}
+</code></pre>
+<p>}</p></code></pre>
+<p>Use <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreatedComponentAction">CreatedComponentAction</a> when you need a final arrangement step after construction, such as setting mutable state that is part of the test context.</p>
+<pre><code class="lang-csharp">protected override Action&lt;OrderSubmitter&gt; CreatedComponentAction =&gt; component =&gt;
+    component.SubmissionChannel = "priority";</code></pre>
 
   <h3 id="constructors">Constructors
 </h3>
@@ -243,7 +246,7 @@ public void Calculates_total_using_auto_injected_dependencies()
   </table>
   <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
   <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Action__0__System_Type___" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Action{`0},System.Type[])">MockerTestBase(Action&lt;Mocker&gt;, Action&lt;TComponent&gt;, params Type[])</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> class.</p>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> class while combining mock setup, post-creation configuration, and explicit constructor selection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -280,6 +283,26 @@ public void Calculates_total_using_auto_injected_dependencies()
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Action__0__System_Type____examples">Examples</h5>
+  <p>This overload is useful when a service has several constructors and the selected one needs additional state configured after creation.</p>
+<pre><code class="lang-csharp">public sealed class OrdersImportTests : MockerTestBase&lt;OrdersImporter&gt;
+{
+    public OrdersImportTests()
+        : base(
+            setupMocksAction: mocker =&gt;
+            {
+                mocker.GetMock&lt;IOrdersApi&gt;()
+                    .Setup(x =&gt; x.FetchPageAsync(1))
+                    .ReturnsAsync(new OrdersPage());
+            },
+            createdComponentAction: component =&gt;
+                component.BatchName = "nightly-import",
+            createArgumentTypes: typeof(string))
+    {
+    }
+}</code></pre>
+<p>Use <code>GetOrCreateMock</code> in constructor-focused tests only when you need the returned tracked mock object itself, such as keyed identity, provider options, resetting the tracked mock, or passing <code>Instance</code> into custom construction.</p>
+
   <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
   <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Func_FastMoq_Mocker__0__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0})">MockerTestBase(Action&lt;Mocker&gt;, Func&lt;Mocker, TComponent&gt;)</h4>
   <div class="markdown level1 summary"></div>
@@ -312,7 +335,7 @@ public void Calculates_total_using_auto_injected_dependencies()
   </table>
   <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
   <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Func_FastMoq_Mocker__0__System_Action__0__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{FastMoq.Mocker},System.Func{FastMoq.Mocker,`0},System.Action{`0})">MockerTestBase(Action&lt;Mocker&gt;, Func&lt;Mocker, TComponent&gt;?, Action&lt;TComponent&gt;)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> class.</p>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> class with explicit hooks for arranging mocks, overriding construction, and applying post-creation setup.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -349,6 +372,28 @@ public void Calculates_total_using_auto_injected_dependencies()
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_MockerTestBase_1__ctor_System_Action_FastMoq_Mocker__System_Func_FastMoq_Mocker__0__System_Action__0___examples">Examples</h5>
+  <p>Use this overload when the test base needs full control over the arrange, create, and post-create phases.</p>
+<p>If the example needs to configure a return value such as <code>GetRate("USD", "EUR")</code>, use the mock-setup API that actually exposes setup semantics today. <code>GetOrCreateMock</code> is for obtaining the tracked provider-backed mock handle, not for provider-neutral setup.</p>
+<pre><code class="lang-csharp">public sealed class InvoiceServiceTests : MockerTestBase&lt;InvoiceService&gt;
+{
+    public InvoiceServiceTests()
+        : base(
+            setupMocksAction: mocker =&gt;
+            {
+                mocker.GetMock&lt;IExchangeRateClient&gt;()
+                    .Setup(x =&gt; x.GetRate("USD", "EUR"))
+                    .Returns(0.92m);
+            },
+            createComponentAction: mocker =&gt;
+                new InvoiceService(mocker.GetObject&lt;IExchangeRateClient&gt;(), "EUR"),
+            createdComponentAction: component =&gt;
+                component.Region = "EMEA")
+    {
+    }
+}</code></pre>
+<p>Use <code>GetOrCreateMock</code> when you need the tracked mock handle itself, for example to pass <code>Instance</code> into custom construction without relying on automatic resolution, to reuse the same tracked mock across calls, or to use keyed <a class="xref" href="FastMoq.MockRequestOptions.html">MockRequestOptions</a>.</p>
+
   <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
   <h4 id="FastMoq_MockerTestBase_1__ctor_System_Action__0__" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Action{`0})">MockerTestBase(Action&lt;TComponent&gt;)</h4>
   <div class="markdown level1 summary"></div>
@@ -458,7 +503,7 @@ When it is off, it may not be able to fill in properties or other injections of 
   </table>
   <a id="FastMoq_MockerTestBase_1__ctor_" data-uid="FastMoq.MockerTestBase`1.#ctor*"></a>
   <h4 id="FastMoq_MockerTestBase_1__ctor_System_Type___" data-uid="FastMoq.MockerTestBase`1.#ctor(System.Type[])">MockerTestBase(params Type[])</h4>
-  <div class="markdown level1 summary"><p>Create instance using the component constructor that matches the type parameters.</p>
+  <div class="markdown level1 summary"><p>Create the component using the constructor whose parameter types match <code class="paramref">createArgumentTypes</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -482,6 +527,18 @@ When it is off, it may not be able to fill in properties or other injections of 
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_MockerTestBase_1__ctor_System_Type____examples">Examples</h5>
+  <p>Use this overload when the component exposes multiple constructors and the test should target a specific signature.</p>
+<pre><code class="lang-csharp">public sealed class ReportExporterTests : MockerTestBase&lt;ReportExporter&gt;
+{
+    public ReportExporterTests()
+        : base(typeof(string), typeof(int))
+    {
+    }
+}
+<p>// FastMoq will choose a constructor such as:
+// ReportExporter(IStorageClient storageClient, string containerName, int retryCount)</p></code></pre>
+
   <h3 id="properties">Properties
 </h3>
   <a id="FastMoq_MockerTestBase_1_Component_" data-uid="FastMoq.MockerTestBase`1.Component*"></a>
@@ -717,16 +774,17 @@ When it is off, it may not be able to fill in properties or other injections of 
     <pre><code class="lang-csharp hljs">protected void CreateComponent()</code></pre>
   </div>
   <h5 id="FastMoq_MockerTestBase_1_CreateComponent_examples">Examples</h5>
-  <p>Use <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreateComponent">CreateComponent()</a> when the test needs to change mock behavior first and then rebuild the component with the updated arrangement.</p>
-<pre><code class="lang-csharp">[Fact]
-public void Recreates_component_after_overriding_a_dependency()
+  <p>Use <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreateComponent">CreateComponent()</a> when you need to rebuild the component after changing test-base configuration that affects construction or post-creation state.</p>
+<pre><code class="lang-csharp">private string CreatedChannel { get; set; } = "default";
+<p>protected override Action&lt;OrderSubmitter&gt; CreatedComponentAction =&gt; component =&gt;
+component.SubmissionChannel = CreatedChannel;</p>
+<p>[Fact]
+public void Recreates_component_after_changing_created_state()
 {
-    Mocks.GetMock&lt;IPricingClient&gt;()
-        .Setup(x =&gt; x.GetPrice("SKU-42"))
-        .Returns(99.00m);
+CreatedChannel = &quot;priority&quot;;</p>
 <pre><code>CreateComponent();
 
-Component.CalculateTotal(&quot;SKU-42&quot;, 1).Should().Be(99.00m);
+Component.SubmissionChannel.Should().Be(&quot;priority&quot;);
 </code></pre>
 <p>}</p></code></pre>
 
@@ -895,7 +953,7 @@ unmanaged resources.</p>
   </table>
   <a id="FastMoq_MockerTestBase_1_TestConstructorParameters_" data-uid="FastMoq.MockerTestBase`1.TestConstructorParameters*"></a>
   <h4 id="FastMoq_MockerTestBase_1_TestConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__" data-uid="FastMoq.MockerTestBase`1.TestConstructorParameters(System.Action{System.Action,System.String,System.String},System.Func{System.Reflection.ParameterInfo,System.Object},System.Func{System.Reflection.ParameterInfo,System.Object})">TestConstructorParameters(Action&lt;Action, string, string&gt;, Func&lt;ParameterInfo, object?&gt;?, Func&lt;ParameterInfo, object?&gt;?)</h4>
-  <div class="markdown level1 summary"><p>Tests the constructor parameters.</p>
+  <div class="markdown level1 summary"><p>Tests the active constructor parameters for the current component and lets the test assert what should happen when each parameter is replaced with an invalid value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -933,37 +991,36 @@ unmanaged resources.</p>
     </tbody>
   </table>
   <h5 id="FastMoq_MockerTestBase_1_TestConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object___examples">Examples</h5>
-  <p>Use TestConstructorParameters to verify null checks with default value generation.</p>
+  <p>Use <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_TestConstructorParameters_System_Action_System_Action_System_String_System_String__System_Func_System_Reflection_ParameterInfo_System_Object__System_Func_System_Reflection_ParameterInfo_System_Object__">TestConstructorParameters(Action&lt;Action, string, string&gt;, Func&lt;ParameterInfo, object?&gt;?, Func&lt;ParameterInfo, object?&gt;?)</a> to verify guard clauses on the constructor that FastMoq actually selected for <code class="typeparamref">TComponent</code>.</p>
 <pre><code class="lang-csharp">[Fact]
-public void Service_NullArgChecks() =&gt; TestConstructorParameters((action, constructorName, parameterName) =&gt;
-{
-    output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
-<pre><code>action
-    .Should()
-    .Throw&lt;ArgumentNullException&gt;()
-    .WithMessage($&quot;*{parameterName}*&quot;);
-</code></pre>
-<p>});</p></code></pre>
-<p>Provide explicit invalid and valid values when constructor parameter defaults need to vary by type.</p>
-<pre><code class="lang-csharp">[Fact]
-public void Service_NullArgChecks_WithOverrides() =&gt; TestConstructorParameters(
+public void CheckoutService_ShouldThrowForNullDependencies() =&gt; TestConstructorParameters(
     (action, constructorName, parameterName) =&gt;
     {
         action
             .Should()
             .Throw&lt;ArgumentNullException&gt;()
             .WithMessage($"*{parameterName}*");
-    },
-    info =&gt; info.ParameterType.Name switch
+    });</code></pre>
+<p>Provide explicit invalid and valid values when constructor arguments need type-specific test data instead of the default FastMoq resolution behavior.</p>
+<pre><code class="lang-csharp">[Fact]
+public void ImportJob_ShouldValidateConstructorArguments() =&gt; TestConstructorParameters(
+    (action, constructorName, parameterName) =&gt;
     {
-        "string" =&gt; string.Empty,
-        "int" =&gt; -1,
+        action
+            .Should()
+            .Throw&lt;ArgumentException&gt;()
+            .WithMessage($"*{parameterName}*");
+    },
+    info =&gt; info.Name switch
+    {
+        "tenant" =&gt; string.Empty,
+        "batchSize" =&gt; 0,
         _ =&gt; default,
     },
-    info =&gt; info.ParameterType.Name switch
+    info =&gt; info.Name switch
     {
-        "string" =&gt; "Valid Value",
-        "int" =&gt; 22,
+        "tenant" =&gt; "contoso",
+        "batchSize" =&gt; 50,
         _ =&gt; Mocks.GetObject(info.ParameterType),
     });</code></pre>
 
@@ -1327,7 +1384,7 @@ public void Service_NullArgChecks_WithOverrides() =&gt; TestConstructorParameter
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-04 18:24 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 13:37 UTC</span></div>
       
           </div>
         </div>

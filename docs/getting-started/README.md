@@ -4,7 +4,53 @@ Welcome to FastMoq. This guide walks through setup and a first test using the cu
 
 ## What is FastMoq?
 
-FastMoq is designed to reduce the boilerplate usually required when setting up unit tests. It automatically creates and injects test doubles, lets you override only the parts that matter, and supports both provider-neutral test patterns and Moq compatibility for migration scenarios.
+FastMoq is designed to reduce the boilerplate usually required when setting up unit tests. It automatically creates and injects test doubles, lets you override only the parts that matter, and supports both provider-neutral test patterns and provider-specific compatibility for migration scenarios.
+
+### Why teams use FastMoq instead of using a mock provider directly
+
+The main value is still less test harness code.
+
+With a mock provider used directly, the test usually needs to do all of this itself:
+
+- declare each dependency mock
+- construct the subject under test manually
+- keep constructor wiring in sync as dependencies change
+- add extra harness code for framework-heavy types and logging
+
+With FastMoq, the test usually only configures the dependencies that matter for the behavior under test.
+
+Side-by-side example:
+
+```csharp
+// Direct mock-provider usage
+var parser = new Mock<ICustomerCsvParser>();
+var repository = new Mock<ICustomerRepository>();
+var logger = new Mock<ILogger<CustomerImportService>>();
+var component = new CustomerImportService(parser.Object, repository.Object, logger.Object);
+
+parser.Setup(x => x.Parse(csv)).Returns(rows);
+
+var importedCount = await component.ImportAsync(filePath, CancellationToken.None);
+
+repository.Verify(x => x.UpsertAsync(It.IsAny<IReadOnlyList<CustomerImportRow>>(), CancellationToken.None), Times.Once);
+```
+
+```csharp
+// FastMoq
+Mocks.GetOrCreateMock<ICustomerCsvParser>()
+    .Setup(x => x.Parse(csv))
+    .Returns(rows);
+
+var importedCount = await Component.ImportAsync(filePath, CancellationToken.None);
+
+Mocks.Verify<ICustomerRepository>(
+    x => x.UpsertAsync(It.IsAny<IReadOnlyList<CustomerImportRow>>(), CancellationToken.None),
+    TimesSpec.Once);
+```
+
+FastMoq is most valuable when the subject has multiple dependencies, when constructor signatures change frequently, or when your tests repeatedly need built-in framework helpers.
+
+This guide is intentionally the "how to" companion to the repo README. The README is the better first read when you are deciding whether FastMoq is the right fit. This guide is the better first read when you already want to write a test.
 
 For the repo-native testing conventions and framework-specific guidance used by this codebase, see the [FastMoq Testing Guide](./testing-guide.md).
 
@@ -21,6 +67,7 @@ If you need to choose or bootstrap a provider explicitly, see the [Provider Sele
 - **Fluent API**: Clean, readable syntax for test setup and verification
 - **Provider Architecture**: Extensible system for custom mock configurations
 - **Built-in Helpers**: Common patterns for EF Core, HttpClient, IFileSystem, and more
+- **Less Constructor Wiring**: The test stays focused on the behavior under test instead of the dependency graph
 
 ## Installation
 
@@ -165,11 +212,11 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
         var fileContent = "hello world";
         var expectedResult = "HELLO WORLD";
 
-        Mocks.GetMock<IFileSystem>()
+        Mocks.GetOrCreateMock<IFileSystem>()
             .Setup(x => x.File.Exists(filePath))
             .Returns(true);
 
-        Mocks.GetMock<IFileSystem>()
+        Mocks.GetOrCreateMock<IFileSystem>()
             .Setup(x => x.File.ReadAllTextAsync(filePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(fileContent);
 
@@ -180,8 +227,9 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
         result.Should().Be(expectedResult);
         
         // Verify interactions
-        Mocks.GetMock<IFileSystem>()
-            .Verify(x => x.File.ReadAllTextAsync(filePath, It.IsAny<CancellationToken>()), Times.Once);
+        Mocks.Verify<IFileSystem>(
+            x => x.File.ReadAllTextAsync(filePath, It.IsAny<CancellationToken>()),
+            TimesSpec.Once);
     }
 
     [Fact]
@@ -190,7 +238,7 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
         // Arrange
         var filePath = "nonexistent.txt";
 
-        Mocks.GetMock<IFileSystem>()
+        Mocks.GetOrCreateMock<IFileSystem>()
             .Setup(x => x.File.Exists(filePath))
             .Returns(false);
 
@@ -204,8 +252,9 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
         Mocks.VerifyLogged(LogLevel.Warning, "not found", 1);
         
         // Verify file was never read
-        Mocks.GetMock<IFileSystem>()
-            .Verify(x => x.File.ReadAllTextAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        Mocks.Verify<IFileSystem>(
+            x => x.File.ReadAllTextAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            TimesSpec.Never());
     }
 }
 ```
@@ -218,7 +267,7 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
 
 1. **Creates your component**: The `Component` property contains an instance of your class under test
 2. **Manages dependencies**: Constructor parameters are resolved automatically using FastMoq's current type-map, known-type, and auto-mock rules
-3. **Provides mock access**: Use `Mocks.GetMock<T>()` to configure mock behavior
+3. **Provides mock access**: Use `Mocks.GetOrCreateMock<T>()` to configure tracked mock behavior
 4. **Handles cleanup**: Mocks are properly disposed after each test
 
 ### Key Properties and Methods
@@ -228,7 +277,7 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
 | `Component` | The instance of your class under test |
 | `MockOptional` | Obsolete compatibility alias for `OptionalParameterResolution`. Prefer explicit `OptionalParameterResolution` or `InvocationOptions` in new code. |
 | `Mocks` | The `Mocker` instance that manages all mocks |
-| `Mocks.GetMock<T>()` | Gets the mock for interface T |
+| `Mocks.GetOrCreateMock<T>()` | Gets the tracked mock handle for interface T |
 | `Mocks.GetObject<T>()` | Gets the mocked object instance |
 
 ### Automatic Dependency Resolution
@@ -252,7 +301,7 @@ public class OrderServiceTests : MockerTestBase<OrderService>
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
         // Configure mock behavior before component creation
-        mocker.GetMock<IPaymentProcessor>()
+        mocker.GetOrCreateMock<IPaymentProcessor>()
             .Setup(x => x.ValidateCard(It.IsAny<string>()))
             .Returns(true);
     };
@@ -278,7 +327,7 @@ public class OrderServiceTests : MockerTestBase<OrderService>
 
     private static void ConfigureMocks(Mocker mocker)
     {
-        mocker.GetMock<IOrderRepository>()
+        mocker.GetOrCreateMock<IOrderRepository>()
             .Setup(x => x.GetOrderAsync(It.IsAny<int>()))
             .ReturnsAsync(new Order());
     }
@@ -316,11 +365,11 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
     var filePath = "data.txt";
     var expectedContent = "PROCESSED DATA";
     
-    Mocks.GetMock<IFileSystem>()
+    Mocks.GetOrCreateMock<IFileSystem>()
         .Setup(x => x.File.Exists(filePath))
         .Returns(true);
     
-    Mocks.GetMock<IFileSystem>()
+    Mocks.GetOrCreateMock<IFileSystem>()
         .Setup(x => x.File.ReadAllTextAsync(filePath, It.IsAny<CancellationToken>()))
         .ReturnsAsync("processed data");
 
@@ -355,7 +404,7 @@ Now that you understand the basics, explore these advanced topics:
 
 Prefer `Mocks.VerifyLogged(...)` for new code. It is provider-safe because FastMoq captures `ILogger` callbacks through the active `IMockingProvider` and verifies the captured entries in core.
 
-Use `GetMock<ILogger<T>>().VerifyLogger(...)` only when you intentionally want the legacy Moq-specific behavior. That API is a compatibility shim and is planned to leave core in v5.
+Use `GetOrCreateMock<ILogger<T>>().AsMoq().VerifyLogger(...)` only when you intentionally want the legacy Moq-specific behavior. That API is a compatibility shim and is planned to leave core in v5.
 
 ## Troubleshooting
 

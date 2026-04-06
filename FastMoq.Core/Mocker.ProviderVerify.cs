@@ -10,6 +10,20 @@ namespace FastMoq
         /// <summary>
         /// Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.
         /// </summary>
+        /// <example>
+        /// <para>Use <see cref="GetOrCreateMock{T}(MockRequestOptions?)"/> when the test needs the tracked mock handle itself, not just automatic constructor resolution.</para>
+        /// <code language="csharp"><![CDATA[
+        /// var mocker = new Mocker();
+        /// var gateway = mocker.GetOrCreateMock<IOrderGateway>();
+        ///
+        /// var submitter = new OrderSubmitter(gateway.Instance);
+        /// submitter.Submit(42);
+        ///
+        /// mocker.Verify<IOrderGateway>(x => x.Publish(42), TimesSpec.Once);
+        /// mocker.VerifyNoOtherCalls<IOrderGateway>();
+        /// ]]></code>
+        /// <para>Typical reasons to call it explicitly are: passing <c>Instance</c> into custom component construction, reusing the same tracked mock across calls, resetting it, or using keyed <see cref="MockRequestOptions"/>.</para>
+        /// </example>
         public IFastMock<T> GetOrCreateMock<T>(MockRequestOptions? options = null) where T : class
         {
             return GetOrCreateTypedFastMock<T>(options);

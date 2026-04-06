@@ -23,6 +23,35 @@ If you are moving tests forward from the public `3.0.0` package or from pre-v4 F
 5. Use the executable examples in `FastMoq.TestingExample` as the best repo-backed reference for current patterns.
 6. Treat DbContext helpers as an optional database-package concern when consuming `FastMoq.Core` directly.
 
+## Recommended API ladder
+
+To keep the migration path easy to follow, treat the public testing surface as a three-step ladder instead of a set of competing APIs.
+
+### v3 baseline
+
+- `GetMock<T>()`
+- direct `Moq.Mock<T>` setup and verification
+- `VerifyLogger(...)`
+
+This is the old Moq-first shape.
+
+### v4 transition
+
+- keep `GetMock<T>()` when the goal is minimal churn from v3
+- use `GetOrCreateMock<T>()` for the provider-first tracked mock handle
+- use provider-package extensions such as `AsMoq()`, direct `Setup(...)` on `IFastMock<T>`, or `AsNSubstitute()` when a test still needs provider-specific arrangement behavior
+- use provider-neutral verification such as `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, and `TimesSpec`
+
+This is the preferred v4 migration story because it lets old Moq-shaped tests stay stable while giving touched tests a forward-compatible path.
+
+### v5 direction
+
+- `FastMoq.Core` stays provider agnostic
+- provider packages are installed explicitly
+- provider-specific setup continues to live in provider packages, not in core wrappers
+
+That means new transition surfaces should build on `IFastMock<T>` plus provider-package extensions rather than introducing a separate wrapper layer in core.
+
 In this guide, "previous FastMoq versions" means tests and helpers written against the public `3.0.0` package or against pre-v4 assumptions, especially code that assumes:
 
 - Moq is the implicit default surface
@@ -151,9 +180,20 @@ If you are already refactoring the test and do not specifically need a raw `Moq.
 
 There is not yet a single provider-neutral drop-in replacement for `Initialize<T>(...)`, because `Initialize<T>(...)` wraps a Moq `Setup(...)` callback.
 
+In the v4 transition, the preferred provider-package shortcut for Moq-specific setup is now:
+
+```csharp
+Mocks.GetOrCreateMock<IOrderRepository>()
+    .Setup(x => x.Load(123))
+    .Returns(order);
+```
+
+That shortcut comes from `FastMoq.Provider.Moq` and forwards to `AsMoq()` internally. It keeps the core abstractions provider agnostic while giving Moq-based test suites a smoother migration path.
+
 Practical rule:
 
-- use `GetMock<T>()` when the test still depends on Moq `Setup(...)`, `Protected()`, or direct `Mock<T>` access during the v4 transition
+- use `GetMock<T>()` when the test still depends on older direct `Mock<T>`-shaped compatibility code and you are minimizing churn during the v4 transition
+- use `GetOrCreateMock<T>()` plus the Moq provider extensions when you want tracked provider-first access with Moq-specific setup convenience in v4
 - use `GetOrCreateMock(...)`, `Verify(...)`, and `VerifyLogged(...)` when the test can move forward without Moq-specific setup semantics
 - use `AddType(...)` when the cleaner provider-neutral move is to supply a fake, stub, factory, or fixed instance rather than configure a mocking-library setup chain
 
@@ -161,7 +201,42 @@ Provider-neutral replacement depends on what the old `Initialize<T>(...)` callba
 
 - if the old code mainly existed to verify later calls, start from `GetOrCreateMock<T>()` and provider-neutral verification
 - if the old code mainly existed to supply behavior, prefer `AddType(...)` with a fake, stub, or fixed instance when practical
-- if the old code still needs Moq `Setup(...)` semantics, keep it on `GetMock<T>()` for the v4 transition and isolate that test area behind explicit Moq selection
+- if the old code still needs Moq `Setup(...)` semantics, either keep it on `GetMock<T>()` for minimal churn or move it to `GetOrCreateMock<T>()` with the Moq provider extensions while keeping explicit Moq selection for that test area
+
+### `SetupHttpMessage(...)` and HTTP helpers
+
+Old Moq-oriented pattern:
+
+```csharp
+Mocks.SetupHttpMessage(HttpStatusCode.OK, "{\"id\":42}");
+```
+
+Current guidance for new or refactored tests:
+
+```csharp
+Mocks.WhenHttpRequestJson(HttpMethod.Get, "/orders/42", "{\"id\":42}");
+```
+
+Or, when the response needs full control:
+
+```csharp
+Mocks.WhenHttpRequest(HttpMethod.Get, "/orders/42", () =>
+    new HttpResponseMessage(HttpStatusCode.OK));
+```
+
+Why:
+
+- the provider-neutral HTTP behavior helpers now live in core and are the preferred long-term path
+- the older Moq-shaped HTTP setup helpers are compatibility APIs for suites that still depend on Moq-specific behavior such as protected `SendAsync` setups
+- the migration concern is package ownership, not namespace churn
+
+Compatibility detail:
+
+- keep `using FastMoq.Extensions;`
+- keep or add the `FastMoq.Provider.Moq` package when you still need `SetupHttpMessage(...)`
+- prefer `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` for newly written tests and while refactoring existing ones
+
+That means existing source often does not need a namespace rewrite for the older HTTP helpers. The moved compatibility methods intentionally remain in `FastMoq.Extensions`; they are simply provided by the Moq package now instead of core.
 
 ### `VerifyLogger(...)` vs `VerifyLogged(...)`
 
@@ -459,15 +534,24 @@ Current guidance:
 
 ```csharp
 var fastMock = Mocks.GetOrCreateMock<IOrderRepository>();
-var providerObject = fastMock.NativeMock;
+var moqMock = fastMock.AsMoq();
 ```
 
-You can also inspect tracked models through `MockModel.NativeMock` or `GetNativeMock(...)`.
+If you want the shortest Moq-specific form in v4, use the provider-package shortcut methods directly on `IFastMock<T>`:
+
+```csharp
+Mocks.GetOrCreateMock<IOrderRepository>()
+    .Setup(x => x.Load(123))
+    .Returns(order);
+```
+
+You can still inspect tracked models through `MockModel.NativeMock` or `GetNativeMock(...)` when you truly need the raw provider object.
 
 Why:
 
 - FastMoq is moving toward a provider-neutral core
-- provider-first access is now a first-class path instead of an afterthought
+- provider-specific convenience now belongs in provider packages instead of core
+- raw `NativeMock` access is still available, but it is no longer the best primary guidance when a typed provider extension exists
 
 ### Known-type extensibility
 

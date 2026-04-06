@@ -161,22 +161,22 @@ items:
     <p>Constructor parameters follow the same hierarchy as GetObject after type mapping.</p>
   example:
   - >-
-    <p>Use <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> as the main test composition root when you want to mix concrete registrations with mock setup.</p>
+    <p>Use <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> as the main test composition root when you want provider-first arrangement based on concrete registrations and policy-driven construction.</p>
 
-    <pre><code class="lang-csharp">var mocker = new Mocker()
-        .AddType&lt;IClock&gt;(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+    <pre><code class="lang-csharp">var fileSystem = new MockFileSystem();
 
-    mocker.GetMock&lt;IOrderRepository&gt;(repo =&gt;
-        repo.Setup(x =&gt; x.GetByIdAsync(42)).ReturnsAsync(new Order { Id = 42, Total = 125.50m }));
-
-    var service = mocker.GetRequiredObject&lt;OrderService&gt;();
-
-    var order = await service.LoadAsync(42);
+    fileSystem.AddFile(@"c:\orders\42.json", new MockFileData("{ \"id\": 42, \"total\": 125.50 }"));
 
 
-    order.Total.Should().Be(125.50m);
+    var mocker = new Mocker()
+        .AddType&lt;IFileSystem&gt;(fileSystem);
 
-    mocker.GetMock&lt;IOrderRepository&gt;().Verify(x =&gt; x.GetByIdAsync(42), Times.Once);</code></pre>
+    var resolvedFileSystem = mocker.GetRequiredObject&lt;IFileSystem&gt;();
+
+
+    resolvedFileSystem.File.Exists(@"c:\orders\42.json").Should().BeTrue();
+
+    resolvedFileSystem.Should().BeSameAs(fileSystem);</code></pre>
   syntax:
     content: public class Mocker
     content.vb: Public Class Mocker
@@ -252,7 +252,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SETUP_ALL_PROPERTIES_METHOD_NAME
     path: FastMoq.Core/Mocker.cs
-    startLine: 71
+    startLine: 70
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -279,7 +279,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SETUP
     path: FastMoq.Core/Mocker.cs
-    startLine: 72
+    startLine: 71
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -306,7 +306,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: fileSystem
     path: FastMoq.Core/Mocker.cs
-    startLine: 79
+    startLine: 78
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -333,7 +333,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: creatingTypeList
     path: FastMoq.Core/Mocker.cs
-    startLine: 80
+    startLine: 79
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -360,7 +360,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: mockCollection
     path: FastMoq.Core/Mocker.cs
-    startLine: 81
+    startLine: 80
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -387,7 +387,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorHistory
     path: FastMoq.Core/Mocker.cs
-    startLine: 89
+    startLine: 88
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -416,7 +416,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/Mocker.cs
-    startLine: 91
+    startLine: 90
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -445,7 +445,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: OptionalParameterResolution
     path: FastMoq.Core/Mocker.cs
-    startLine: 92
+    startLine: 91
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -474,7 +474,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Policy
     path: FastMoq.Core/Mocker.cs
-    startLine: 93
+    startLine: 92
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -503,7 +503,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ExceptionLog
     path: FastMoq.Core/Mocker.cs
-    startLine: 140
+    startLine: 139
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -532,7 +532,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LogEntries
     path: FastMoq.Core/Mocker.cs
-    startLine: 141
+    startLine: 140
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -561,7 +561,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: HttpClient
     path: FastMoq.Core/Mocker.cs
-    startLine: 142
+    startLine: 141
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -590,7 +590,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Core/Mocker.cs
-    startLine: 143
+    startLine: 142
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -619,7 +619,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InnerMockResolution
     path: FastMoq.Core/Mocker.cs
-    startLine: 144
+    startLine: 143
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -648,7 +648,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Behavior
     path: FastMoq.Core/Mocker.cs
-    startLine: 149
+    startLine: 148
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -679,7 +679,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Strict
     path: FastMoq.Core/Mocker.cs
-    startLine: 154
+    startLine: 153
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -722,7 +722,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: UseStrictPreset
     path: FastMoq.Core/Mocker.cs
-    startLine: 177
+    startLine: 176
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -753,7 +753,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: UseLenientPreset
     path: FastMoq.Core/Mocker.cs
-    startLine: 187
+    startLine: 186
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -784,7 +784,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
-    startLine: 194
+    startLine: 193
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -813,7 +813,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
-    startLine: 195
+    startLine: 194
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -845,7 +845,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
-    startLine: 204
+    startLine: 203
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -877,7 +877,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
-    startLine: 205
+    startLine: 204
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -911,7 +911,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 230
+    startLine: 229
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -953,7 +953,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 239
+    startLine: 238
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1007,7 +1007,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 263
+    startLine: 262
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1016,15 +1016,15 @@ items:
   - >-
     <p>Use this overload when a dependency should be a known runtime object rather than a tracked mock.</p>
 
-    <pre><code class="lang-csharp">var clock = new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero));
+    <pre><code class="lang-csharp">var fileSystem = new MockFileSystem();
 
 
     var mocker = new Mocker()
-        .AddType&lt;IClock&gt;(clock);
+        .AddType&lt;IFileSystem&gt;(fileSystem);
 
-    var service = mocker.GetRequiredObject&lt;OrderService&gt;();
+    var resolvedFileSystem = mocker.GetRequiredObject&lt;IFileSystem&gt;();
 
-    service.Clock.Should().BeSameAs(clock);</code></pre>
+    resolvedFileSystem.Should().BeSameAs(fileSystem);</code></pre>
   syntax:
     content: public Mocker AddType<T>(T value, bool replace = false)
     parameters:
@@ -1059,7 +1059,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 278
+    startLine: 277
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1098,7 +1098,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 280
+    startLine: 279
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1139,7 +1139,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 282
+    startLine: 281
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1179,7 +1179,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
-    startLine: 287
+    startLine: 286
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1225,7 +1225,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
-    startLine: 301
+    startLine: 300
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1267,7 +1267,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
-    startLine: 323
+    startLine: 322
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1310,7 +1310,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
-    startLine: 329
+    startLine: 328
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1355,7 +1355,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
-    startLine: 336
+    startLine: 335
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1399,7 +1399,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 339
+    startLine: 338
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1449,7 +1449,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddFileSystemAbstractionMapping
     path: FastMoq.Core/Mocker.cs
-    startLine: 408
+    startLine: 407
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1475,7 +1475,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKnownType
     path: FastMoq.Core/Mocker.cs
-    startLine: 429
+    startLine: 428
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1516,7 +1516,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKnownType
     path: FastMoq.Core/Mocker.cs
-    startLine: 454
+    startLine: 453
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1564,7 +1564,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddInjections
     path: FastMoq.Core/Mocker.cs
-    startLine: 561
+    startLine: 560
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1602,7 +1602,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 580
+    startLine: 579
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1638,7 +1638,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 625
+    startLine: 624
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1678,7 +1678,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 695
+    startLine: 694
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1709,28 +1709,27 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 732
+    startLine: 730
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
   summary: Resolves an object using FastMoq's runtime resolution pipeline.
   example:
   - >-
-    <p>Resolve the component under test after configuring any concrete registrations and mock behavior.</p>
+    <p>Resolve a dependency after configuring a concrete registration through the provider-first pipeline.</p>
 
-    <pre><code class="lang-csharp">var mocker = new Mocker();
+    <pre><code class="lang-csharp">var fileSystem = new MockFileSystem();
 
-
-    mocker.GetMock&lt;IInventoryGateway&gt;()
-        .Setup(x =&gt; x.IsInStock("SKU-42"))
-        .Returns(true);
-
-    var service = mocker.GetRequiredObject&lt;CheckoutService&gt;();
-
-    var canShip = service.CanShip("SKU-42");
+    fileSystem.AddDirectory(@"c:\exports");
 
 
-    canShip.Should().BeTrue();</code></pre>
+    var mocker = new Mocker()
+        .AddType&lt;IFileSystem&gt;(fileSystem);
+
+    var resolvedFileSystem = mocker.GetRequiredObject&lt;IFileSystem&gt;();
+
+
+    resolvedFileSystem.Directory.Exists(@"c:\exports").Should().BeTrue();</code></pre>
   syntax:
     content: 'public T? GetObject<T>() where T : class'
     typeParameters:
@@ -1760,7 +1759,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 733
+    startLine: 731
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1796,7 +1795,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 734
+    startLine: 732
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1832,7 +1831,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 735
+    startLine: 733
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1870,7 +1869,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 736
+    startLine: 734
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1906,7 +1905,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
-    startLine: 769
+    startLine: 767
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1944,7 +1943,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
-    startLine: 815
+    startLine: 813
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1982,7 +1981,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
-    startLine: 819
+    startLine: 817
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2018,7 +2017,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
-    startLine: 825
+    startLine: 823
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2058,7 +2057,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
-    startLine: 872
+    startLine: 870
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2094,7 +2093,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
-    startLine: 877
+    startLine: 875
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2132,7 +2131,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: HasParameterlessConstructor
     path: FastMoq.Core/Mocker.cs
-    startLine: 1208
+    startLine: 1206
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2168,7 +2167,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1285
+    startLine: 1283
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2206,7 +2205,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1305
+    startLine: 1303
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2244,7 +2243,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInstance
     path: FastMoq.Core/Mocker.cs
-    startLine: 1307
+    startLine: 1305
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2282,7 +2281,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInstance
     path: FastMoq.Core/Mocker.cs
-    startLine: 1318
+    startLine: 1316
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2320,7 +2319,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateDetachedMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1352
+    startLine: 1350
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2363,7 +2362,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateDetachedMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1359
+    startLine: 1357
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2406,7 +2405,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1403
+    startLine: 1401
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2446,7 +2445,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1417
+    startLine: 1415
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2482,7 +2481,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1445
+    startLine: 1443
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2537,7 +2536,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1446
+    startLine: 1444
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2575,7 +2574,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1452
+    startLine: 1450
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2606,7 +2605,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1470
+    startLine: 1468
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2639,7 +2638,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1471
+    startLine: 1469
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2670,7 +2669,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1483
+    startLine: 1481
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2706,7 +2705,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockModel
     path: FastMoq.Core/Mocker.cs
-    startLine: 1492
+    startLine: 1490
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2739,7 +2738,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockModelIndexOf
     path: FastMoq.Core/Mocker.cs
-    startLine: 1493
+    startLine: 1491
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2775,7 +2774,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RemoveMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1515
+    startLine: 1513
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2806,7 +2805,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
-    startLine: 1719
+    startLine: 1717
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2840,7 +2839,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
-    startLine: 1724
+    startLine: 1722
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2868,7 +2867,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 1726
+    startLine: 1724
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2906,7 +2905,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 1736
+    startLine: 1734
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2944,7 +2943,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 1746
+    startLine: 1744
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2984,7 +2983,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 1758
+    startLine: 1756
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3018,7 +3017,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 1763
+    startLine: 1761
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3054,7 +3053,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodDefaultData
     path: FastMoq.Core/Mocker.cs
-    startLine: 1777
+    startLine: 1775
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3088,7 +3087,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 1786
+    startLine: 1784
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3121,7 +3120,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 1791
+    startLine: 1789
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3157,7 +3156,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 1794
+    startLine: 1792
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3193,7 +3192,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1839
+    startLine: 1837
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3233,7 +3232,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1845
+    startLine: 1843
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3275,7 +3274,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1872
+    startLine: 1870
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3317,7 +3316,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1878
+    startLine: 1876
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3361,7 +3360,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1906
+    startLine: 1904
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3401,7 +3400,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1908
+    startLine: 1906
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3443,7 +3442,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1914
+    startLine: 1912
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3481,7 +3480,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1920
+    startLine: 1918
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3521,7 +3520,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1938
+    startLine: 1936
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3555,7 +3554,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1939
+    startLine: 1937
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3591,7 +3590,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1940
+    startLine: 1938
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3629,7 +3628,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1941
+    startLine: 1939
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3669,7 +3668,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1942
+    startLine: 1940
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3703,7 +3702,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 1943
+    startLine: 1941
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3739,7 +3738,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
-    startLine: 1944
+    startLine: 1942
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3777,7 +3776,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
-    startLine: 1952
+    startLine: 1950
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3817,7 +3816,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Initialize
     path: FastMoq.Core/Mocker.cs
-    startLine: 1967
+    startLine: 1965
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3863,7 +3862,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetStringContent
     path: FastMoq.Core/Mocker.cs
-    startLine: 1974
+    startLine: 1972
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3897,7 +3896,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 1976
+    startLine: 1974
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3930,12 +3929,30 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 12
+    startLine: 26
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
   summary: Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.
-  example: []
+  example:
+  - >-
+    <p>Use <xref href="FastMoq.Mocker.GetOrCreateMock%60%601(FastMoq.MockRequestOptions)" data-throw-if-not-resolved="false"></xref> when the test needs the tracked mock handle itself, not just automatic constructor resolution.</p>
+
+    <pre><code class="lang-csharp">var mocker = new Mocker();
+
+    var gateway = mocker.GetOrCreateMock&lt;IOrderGateway&gt;();
+
+
+    var submitter = new OrderSubmitter(gateway.Instance);
+
+    submitter.Submit(42);
+
+
+    mocker.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(42), TimesSpec.Once);
+
+    mocker.VerifyNoOtherCalls&lt;IOrderGateway&gt;();</code></pre>
+
+    <p>Typical reasons to call it explicitly are: passing <code>Instance</code> into custom component construction, reusing the same tracked mock across calls, resetting it, or using keyed <xref href="FastMoq.MockRequestOptions" data-throw-if-not-resolved="false"></xref>.</p>
   syntax:
     content: 'public IFastMock<T> GetOrCreateMock<T>(MockRequestOptions? options = null) where T : class'
     parameters:
@@ -3968,7 +3985,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 20
+    startLine: 34
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4006,7 +4023,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 29
+    startLine: 43
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4044,7 +4061,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 44
+    startLine: 58
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4077,7 +4094,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateFastMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 54
+    startLine: 68
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -12837,12 +12854,41 @@ references:
   name: GetRequiredObject
   nameWithType: Mocker.GetRequiredObject
   fullName: FastMoq.Mocker.GetRequiredObject
-- uid: FastMoq.Mocker.GetOrCreateMock*
-  commentId: Overload:FastMoq.Mocker.GetOrCreateMock
+- uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+  commentId: M:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
   href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
-  name: GetOrCreateMock
-  nameWithType: Mocker.GetOrCreateMock
-  fullName: FastMoq.Mocker.GetOrCreateMock
+  name: GetOrCreateMock<T>(MockRequestOptions)
+  nameWithType: Mocker.GetOrCreateMock<T>(MockRequestOptions)
+  fullName: FastMoq.Mocker.GetOrCreateMock<T>(FastMoq.MockRequestOptions)
+  nameWithType.vb: Mocker.GetOrCreateMock(Of T)(MockRequestOptions)
+  fullName.vb: FastMoq.Mocker.GetOrCreateMock(Of T)(FastMoq.MockRequestOptions)
+  name.vb: GetOrCreateMock(Of T)(MockRequestOptions)
+  spec.csharp:
+  - uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+    name: GetOrCreateMock
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockRequestOptions
+    name: MockRequestOptions
+    href: FastMoq.MockRequestOptions.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+    name: GetOrCreateMock
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FastMoq.MockRequestOptions
+    name: MockRequestOptions
+    href: FastMoq.MockRequestOptions.html
+  - name: )
 - uid: FastMoq.MockRequestOptions
   commentId: T:FastMoq.MockRequestOptions
   parent: FastMoq
@@ -12850,6 +12896,12 @@ references:
   name: MockRequestOptions
   nameWithType: MockRequestOptions
   fullName: FastMoq.MockRequestOptions
+- uid: FastMoq.Mocker.GetOrCreateMock*
+  commentId: Overload:FastMoq.Mocker.GetOrCreateMock
+  href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
+  name: GetOrCreateMock
+  nameWithType: Mocker.GetOrCreateMock
+  fullName: FastMoq.Mocker.GetOrCreateMock
 - uid: FastMoq.Providers.IFastMock{{T}}
   commentId: T:FastMoq.Providers.IFastMock{``0}
   parent: FastMoq.Providers

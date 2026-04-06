@@ -15,6 +15,7 @@ Why this matters:
 
 - provider-neutral APIs such as `GetOrCreateMock(...)`, `VerifyLogged(...)`, and the scenario builder can work with any registered provider that supports the needed capability.
 - Moq compatibility APIs such as `GetMock<T>()`, `VerifyLogger(...)`, `Protected()`, and direct `Mock<T>` setup require the Moq provider to be selected.
+- provider-package extensions such as `AsMoq()`, `Setup(...)` on `IFastMock<T>`, and `AsNSubstitute()` also require their corresponding provider package and selected provider.
 
 ## How provider selection works
 

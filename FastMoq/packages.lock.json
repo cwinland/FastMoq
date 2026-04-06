@@ -357,7 +357,6 @@
         "dependencies": {
           "FastMoq.Abstractions": "[1.0.0, )",
           "FastMoq.Provider.Moq": "[1.0.0, )",
-          "FastMoq.Provider.NSubstitute": "[1.0.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, )",
           "xunit.abstractions": "[2.0.3, )"
         }
@@ -367,21 +366,14 @@
         "dependencies": {
           "FastMoq.Core": "[1.0.0, )",
           "Microsoft.EntityFrameworkCore.InMemory": "[10.*, )",
-          "Moq": "[4.18.4, )"
+          "Moq": "[4.18.4, 4.18.4]"
         }
       },
       "fastmoq.provider.moq": {
         "type": "Project",
         "dependencies": {
           "FastMoq.Abstractions": "[1.0.0, )",
-          "Moq": "[4.18.4, )"
-        }
-      },
-      "fastmoq.provider.nsubstitute": {
-        "type": "Project",
-        "dependencies": {
-          "FastMoq.Abstractions": "[1.0.0, )",
-          "NSubstitute": "[5.3.0, )"
+          "Moq": "[4.18.4, 4.18.4]"
         }
       },
       "fastmoq.web": {
@@ -404,18 +396,9 @@
       },
       "Moq": {
         "type": "CentralTransitive",
-        "requested": "[4.18.4, )",
+        "requested": "[4.18.4, 4.18.4]",
         "resolved": "4.18.4",
         "contentHash": "IOo+W51+7Afnb0noltJrKxPBSfsgMzTKCw+Re5AMx8l/vBbAbMDOynLik4+lBYIWDJSO0uV7Zdqt7cNb6RZZ+A==",
-        "dependencies": {
-          "Castle.Core": "5.1.1"
-        }
-      },
-      "NSubstitute": {
-        "type": "CentralTransitive",
-        "requested": "[5.3.0, )",
-        "resolved": "5.3.0",
-        "contentHash": "lJ47Cps5Qzr86N99lcwd+OUvQma7+fBgr8+Mn+aOC0WrlqMNkdivaYD9IvnZ5Mqo6Ky3LS7ZI+tUq1/s9ERd0Q==",
         "dependencies": {
           "Castle.Core": "5.1.1"
         }
@@ -822,7 +805,6 @@
         "dependencies": {
           "FastMoq.Abstractions": "[1.0.0, )",
           "FastMoq.Provider.Moq": "[1.0.0, )",
-          "FastMoq.Provider.NSubstitute": "[1.0.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, )",
           "xunit.abstractions": "[2.0.3, )"
         }
@@ -832,21 +814,14 @@
         "dependencies": {
           "FastMoq.Core": "[1.0.0, )",
           "Microsoft.EntityFrameworkCore.InMemory": "[8.*, )",
-          "Moq": "[4.18.4, )"
+          "Moq": "[4.18.4, 4.18.4]"
         }
       },
       "fastmoq.provider.moq": {
         "type": "Project",
         "dependencies": {
           "FastMoq.Abstractions": "[1.0.0, )",
-          "Moq": "[4.18.4, )"
-        }
-      },
-      "fastmoq.provider.nsubstitute": {
-        "type": "Project",
-        "dependencies": {
-          "FastMoq.Abstractions": "[1.0.0, )",
-          "NSubstitute": "[5.3.0, )"
+          "Moq": "[4.18.4, 4.18.4]"
         }
       },
       "fastmoq.web": {
@@ -869,18 +844,9 @@
       },
       "Moq": {
         "type": "CentralTransitive",
-        "requested": "[4.18.4, )",
+        "requested": "[4.18.4, 4.18.4]",
         "resolved": "4.18.4",
         "contentHash": "IOo+W51+7Afnb0noltJrKxPBSfsgMzTKCw+Re5AMx8l/vBbAbMDOynLik4+lBYIWDJSO0uV7Zdqt7cNb6RZZ+A==",
-        "dependencies": {
-          "Castle.Core": "5.1.1"
-        }
-      },
-      "NSubstitute": {
-        "type": "CentralTransitive",
-        "requested": "[5.3.0, )",
-        "resolved": "5.3.0",
-        "contentHash": "lJ47Cps5Qzr86N99lcwd+OUvQma7+fBgr8+Mn+aOC0WrlqMNkdivaYD9IvnZ5Mqo6Ky3LS7ZI+tUq1/s9ERd0Q==",
         "dependencies": {
           "Castle.Core": "5.1.1"
         }
@@ -1268,7 +1234,6 @@
         "dependencies": {
           "FastMoq.Abstractions": "[1.0.0, )",
           "FastMoq.Provider.Moq": "[1.0.0, )",
-          "FastMoq.Provider.NSubstitute": "[1.0.0, )",
           "TestableIO.System.IO.Abstractions.TestingHelpers": "[21.3.1, )",
           "xunit.abstractions": "[2.0.3, )"
         }
@@ -1278,21 +1243,14 @@
         "dependencies": {
           "FastMoq.Core": "[1.0.0, )",
           "Microsoft.EntityFrameworkCore.InMemory": "[9.*, )",
-          "Moq": "[4.18.4, )"
+          "Moq": "[4.18.4, 4.18.4]"
         }
       },
       "fastmoq.provider.moq": {
         "type": "Project",
         "dependencies": {
           "FastMoq.Abstractions": "[1.0.0, )",
-          "Moq": "[4.18.4, )"
-        }
-      },
-      "fastmoq.provider.nsubstitute": {
-        "type": "Project",
-        "dependencies": {
-          "FastMoq.Abstractions": "[1.0.0, )",
-          "NSubstitute": "[5.3.0, )"
+          "Moq": "[4.18.4, 4.18.4]"
         }
       },
       "fastmoq.web": {
@@ -1315,18 +1273,9 @@
       },
       "Moq": {
         "type": "CentralTransitive",
-        "requested": "[4.18.4, )",
+        "requested": "[4.18.4, 4.18.4]",
         "resolved": "4.18.4",
         "contentHash": "IOo+W51+7Afnb0noltJrKxPBSfsgMzTKCw+Re5AMx8l/vBbAbMDOynLik4+lBYIWDJSO0uV7Zdqt7cNb6RZZ+A==",
-        "dependencies": {
-          "Castle.Core": "5.1.1"
-        }
-      },
-      "NSubstitute": {
-        "type": "CentralTransitive",
-        "requested": "[5.3.0, )",
-        "resolved": "5.3.0",
-        "contentHash": "lJ47Cps5Qzr86N99lcwd+OUvQma7+fBgr8+Mn+aOC0WrlqMNkdivaYD9IvnZ5Mqo6Ky3LS7ZI+tUq1/s9ERd0Q==",
         "dependencies": {
           "Castle.Core": "5.1.1"
         }

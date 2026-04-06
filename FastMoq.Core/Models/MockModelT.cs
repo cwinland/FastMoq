@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using FastMoq.Core.Providers;
 using FastMoq.Providers;
 using Moq; // legacy while migrating
 
@@ -37,7 +38,7 @@ namespace FastMoq.Models
                 throw new ArgumentException($"Expected a Mock<{typeof(T).Name}> instance.", nameof(mock));
             }
 
-            FastMock = new Providers.MoqProvider.MoqMockAdapter<T>(typedMock);
+            FastMock = MockingProviderRegistry.WrapLegacy(typedMock, typeof(T));
         }
         internal MockModel(MockModel baseModel) : base(baseModel.FastMock, baseModel.NonPublic) { }
         #endregion

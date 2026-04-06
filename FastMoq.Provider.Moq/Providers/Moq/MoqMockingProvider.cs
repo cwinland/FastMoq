@@ -181,6 +181,32 @@ namespace FastMoq.Providers.MoqProvider
             return TryGetUnderlyingMock(mock);
         }
 
+        public IFastMock? TryWrapLegacy(object legacyMock, Type mockedType)
+        {
+            ArgumentNullException.ThrowIfNull(legacyMock);
+            ArgumentNullException.ThrowIfNull(mockedType);
+
+            MoqProviderTransitionWarning.EmitOnce();
+
+            if (legacyMock is not Mock mock)
+            {
+                return null;
+            }
+
+            var legacyType = legacyMock.GetType();
+            if (legacyType.IsGenericType && legacyType.GetGenericTypeDefinition() == typeof(Mock<>))
+            {
+                var genericArgument = legacyType.GetGenericArguments()[0];
+                if (genericArgument == mockedType)
+                {
+                    var wrapperType = typeof(MoqFastMockGeneric<>).MakeGenericType(mockedType);
+                    return (IFastMock)Activator.CreateInstance(wrapperType, legacyMock)!;
+                }
+            }
+
+            return new MoqFastMock(mock);
+        }
+
         private static void SetupLoggerCallback(Mock logger, Type mockedType, Action<LogLevel, EventId, string, Exception?> callback)
         {
             var typedMethod = typeof(MoqMockingProvider)

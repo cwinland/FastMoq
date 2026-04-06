@@ -36,7 +36,7 @@ namespace FastMoq.Web.Blazor
     ///
     ///     protected override Action<Mocker> SetupComponent => mocker =>
     ///     {
-    ///         mocker.GetMock<IOrdersClient>()
+    ///         mocker.GetOrCreateMock<IOrdersClient>()
     ///             .Setup(x => x.GetOpenOrdersAsync())
     ///             .ReturnsAsync(new[]
     ///             {
@@ -48,7 +48,7 @@ namespace FastMoq.Web.Blazor
     ///     public void LoadsOpenOrdersOnFirstRender()
     ///     {
     ///         Component.Markup.Should().Contain("Contoso");
-    ///         Mocks.GetMock<IOrdersClient>().Verify(x => x.GetOpenOrdersAsync(), Times.Once);
+    ///         Mocks.Verify<IOrdersClient>(x => x.GetOpenOrdersAsync(), TimesSpec.Once);
     ///     }
     /// }
     /// ]]></code>

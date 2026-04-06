@@ -173,6 +173,8 @@ namespace FastMoq.Providers.NSubstituteProvider
 
         public object? TryGetLegacy(IFastMock mock) => null;
 
+        public IFastMock? TryWrapLegacy(object legacyMock, Type mockedType) => null;
+
         private static void ExecuteWithWrapper<T>(Func<T> wrapperFactory, Expression<Action<T>> expression) where T : class
         {
             var wrapper = wrapperFactory();

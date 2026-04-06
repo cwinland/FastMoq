@@ -135,25 +135,12 @@ namespace FastMoq.Tests
 
             var content = await Mocks.GetStringContent(result.Content);
             content.Should().Be("[{'id':1}]");
-
-            Mock<HttpMessageHandler> handler = Mocks.GetMock<HttpMessageHandler>();
-
-            handler.Protected().Verify("SendAsync",
-                Times.Exactly(1),
-                ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri == new Uri("http://localhost/api/test")),
-                ItExpr.IsAny<CancellationToken>()
-            );
         }
 
         [Fact]
-        public async Task SetupHttpMessage_ShouldOverrideBuiltInHandlerResponse()
+        public async Task WhenHttpRequestJson_ShouldOverrideBuiltInHandlerResponse()
         {
-            Mocks.SetupHttpMessage(() => new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.Accepted,
-                    Content = new StringContent("[{'id':55, 'value':'33'}]"),
-                }
-            );
+            Mocks.WhenHttpRequestJson(HttpMethod.Get, "/api/test", "[{'id':55, 'value':'33'}]", HttpStatusCode.Accepted);
 
             // Execute Http request.
             var result = await Component.http.GetAsync(new Uri("api/test", UriKind.Relative));
@@ -164,14 +151,60 @@ namespace FastMoq.Tests
 
             var content = await Mocks.GetStringContent(result.Content);
             content.Should().Be("[{'id':55, 'value':'33'}]");
+        }
 
-            Mock<HttpMessageHandler> handler = Mocks.GetMock<HttpMessageHandler>();
-
-            handler.Protected().Verify("SendAsync",
-                Times.Exactly(1),
-                ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri == new Uri("http://localhost/api/test")),
-                ItExpr.IsAny<CancellationToken>()
+        [Fact]
+        public async Task SetupHttpMessage_ShouldRemainAvailable_ForAdvancedMoqCompatibility()
+        {
+            Mocks.SetupHttpMessage(
+                () => new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.Accepted,
+                    Content = new StringContent("[{'id':99}]"),
+                },
+                ItExpr.Is<HttpRequestMessage>(request => request.Method == HttpMethod.Get && request.RequestUri!.AbsolutePath == "/api/compat")
             );
+
+            using var client = Mocks.CreateHttpClient();
+            client.BaseAddress = new Uri("http://compat.fastmoq/");
+
+            var matched = await client.GetAsync(new Uri("api/compat", UriKind.Relative));
+
+            matched.StatusCode.Should().Be(HttpStatusCode.Accepted);
+            (await Mocks.GetStringContent(matched.Content)).Should().Be("[{'id':99}]");
+        }
+
+        [Fact]
+        public async Task WhenHttpRequest_ShouldMatchMethodAndPath_AndFallbackToDefaultResponse()
+        {
+            Mocks.WhenHttpRequest(HttpMethod.Get, "/api/orders/42", () =>
+                new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.Accepted,
+                    Content = new StringContent("[{'id':42}]"),
+                });
+
+            var matched = await Component.http.GetAsync(new Uri("api/orders/42", UriKind.Relative));
+            var unmatched = await Component.http.GetAsync(new Uri("api/orders/7", UriKind.Relative));
+
+            matched.StatusCode.Should().Be(HttpStatusCode.Accepted);
+            (await Mocks.GetStringContent(matched.Content)).Should().Be("[{'id':42}]");
+
+            unmatched.StatusCode.Should().Be(HttpStatusCode.OK);
+            (await Mocks.GetStringContent(unmatched.Content)).Should().Be("[{'id':1}]");
+        }
+
+        [Fact]
+        public async Task WhenHttpRequestJson_ShouldReturnJsonContent_WithApplicationJsonMediaType()
+        {
+            Mocks.WhenHttpRequestJson(HttpMethod.Post, "/api/orders", "{\"status\":\"created\"}", HttpStatusCode.Created);
+
+            var result = await Component.http.PostAsync(new Uri("api/orders", UriKind.Relative), new StringContent("{}"));
+
+            result.StatusCode.Should().Be(HttpStatusCode.Created);
+            result.Content.Headers.ContentType.Should().NotBeNull();
+            result.Content.Headers.ContentType!.MediaType.Should().Be("application/json");
+            (await Mocks.GetStringContent(result.Content)).Should().Be("{\"status\":\"created\"}");
         }
 
         [Fact]
@@ -189,10 +222,11 @@ namespace FastMoq.Tests
                     }
                 ).Verifiable();
 
-            Component.http.BaseAddress = new Uri("http://help.fastmoq.com/");
+            using var client = Mocks.CreateHttpClient();
+            client.BaseAddress = new Uri("http://help.fastmoq.com/");
 
             // Execute Http request.
-            var result = await Component.http.GetAsync(new Uri("api/test2", UriKind.Relative));
+            var result = await client.GetAsync(new Uri("api/test2", UriKind.Relative));
 
             // Test Results
             result.Should().NotBeNull();

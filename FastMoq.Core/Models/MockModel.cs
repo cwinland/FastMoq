@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using FastMoq.Core.Providers;
 using FastMoq.Providers;
-using FastMoq.Providers.MoqProvider; // unified adapter path
 using Moq; // legacy (to be removed in future)
 
 namespace FastMoq.Models
@@ -84,14 +84,14 @@ namespace FastMoq.Models
 
         /// <summary>
         /// Legacy constructor used while migration is in progress.
-        /// Wraps provided Moq.Mock inside a unified <see cref="MoqMockAdapter"/>.
+        /// Wraps the provided legacy mock through the registered provider infrastructure.
         /// </summary>
         internal MockModel(Type type, Mock mock, bool nonPublic = false)
         {
             Type = type ?? throw new ArgumentNullException(nameof(type));
             legacyMock = mock ?? throw new ArgumentNullException(nameof(mock));
             NonPublic = nonPublic;
-            FastMock = new MoqMockAdapter(mock); // unified adapter creation
+            FastMock = MockingProviderRegistry.WrapLegacy(mock, type);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace FastMoq.Models
         {
             if (legacyMock != null)
             {
-                FastMock = new MoqMockAdapter(legacyMock);
+                FastMock = MockingProviderRegistry.WrapLegacy(legacyMock, Type);
             }
         }
 

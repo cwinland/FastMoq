@@ -1264,12 +1264,19 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 527
+    startLine: 535
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
   summary: Provider-agnostic logger verification based on captured ILogger callbacks.
-  example: []
+  example:
+  - >-
+    <p>Prefer <xref href="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker%2cMicrosoft.Extensions.Logging.LogLevel%2cSystem.String%2cSystem.Int32)" data-throw-if-not-resolved="false"></xref> in general documentation because it works through FastMoq's captured log entries instead of a provider-specific mock API.</p>
+
+    <pre><code class="lang-csharp">Component.Submit(order);
+
+
+    Mocks.VerifyLogged(LogLevel.Information, "Order submitted", times: 1);</code></pre>
   syntax:
     content: public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, int times = 1)
     parameters:
@@ -1305,7 +1312,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 533
+    startLine: 541
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1350,7 +1357,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 562
+    startLine: 570
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1407,22 +1414,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 584
+    startLine: 582
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
   summary: Verifies that a generic logger mock recorded a message at the expected level.
-  example:
-  - >-
-    <p>Verify the important log entry after exercising the component under test.</p>
-
-    <pre><code class="lang-csharp">var logger = Mocks.GetMock&lt;ILogger&lt;CheckoutService&gt;&gt;();
-
-
-    Component.Submit(order);
-
-
-    logger.VerifyLogger(LogLevel.Information, "Order submitted", times: 1);</code></pre>
+  example: []
   syntax:
     content: >-
       [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
@@ -1477,7 +1474,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 598
+    startLine: 596
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1540,7 +1537,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 612
+    startLine: 610
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1605,7 +1602,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 627
+    startLine: 625
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1671,7 +1668,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 632
+    startLine: 630
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1728,7 +1725,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 637
+    startLine: 635
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1785,7 +1782,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 653
+    startLine: 651
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1853,7 +1850,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupLoggerCallback
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 664
+    startLine: 662
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -3130,6 +3127,70 @@ references:
   name: SetPropertyValue
   nameWithType: TestClassExtensions.SetPropertyValue
   fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue
+- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_
+  name: VerifyLogged(Mocker, LogLevel, string, int)
+  nameWithType: TestClassExtensions.VerifyLogged(Mocker, LogLevel, string, int)
+  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, string, int)
+  nameWithType.vb: TestClassExtensions.VerifyLogged(Mocker, LogLevel, String, Integer)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, String, Integer)
+  name.vb: VerifyLogged(Mocker, LogLevel, String, Integer)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+    name: VerifyLogged
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+    name: VerifyLogged
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
 - uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged*
   commentId: Overload:FastMoq.Extensions.TestClassExtensions.VerifyLogged
   href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_

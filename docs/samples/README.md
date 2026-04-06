@@ -39,7 +39,8 @@ The sample test projects intentionally showcase FastMoq extension helpers so you
 ### HTTP / External API
 
 - `CreateHttpClient()` to quickly register an `HttpClient` and (if needed) an `IHttpClientFactory` with a default response.
-- `SetupHttpMessage(...)` for per‑test customization (status codes, payloads, sequences).
+- Prefer `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` for provider-neutral request matching and response setup.
+- Use `SetupHttpMessage(...)` only when you intentionally need Moq-specific protected `SendAsync` behavior from the Moq provider package. Keep `using FastMoq.Extensions;`, add `FastMoq.Provider.Moq`, and select the Moq provider for the test assembly when you use that compatibility path.
 - Content helpers: `GetStringContent`, `GetContentBytesAsync()`, `GetContentStreamAsync()` for asserting raw payloads.
 
 ### Entity Framework Core
@@ -50,7 +51,7 @@ The sample test projects intentionally showcase FastMoq extension helpers so you
 ### Logging Verification
 
 - Prefer `Mocks.VerifyLogged(LogLevel.Information, "Message")` for provider-safe logger assertions.
-- Use `GetMock<ILogger<T>>().VerifyLogger(...)` only when you intentionally want the legacy Moq-specific compatibility API during the v4 transition.
+- Use `GetOrCreateMock<ILogger<T>>().AsMoq().VerifyLogger(...)` only when you intentionally need the legacy Moq-specific compatibility behavior, such as minimizing churn in older Moq-shaped tests during the v4 transition. It is not the preferred path for new assertions just because you want more control; prefer `VerifyLogged(...)` unless you specifically need the old Moq-only assertion surface.
 
 ### Constructor & Dependency Injection
 
@@ -70,7 +71,7 @@ If you adapt these samples for Azure Functions HTTP triggers, use patterns simil
 
 1. Build the request: supply method, route values, headers, and JSON body.
 2. Provide dependency injection values using `AddType` (e.g., configuration, services).
-3. Use `SetupHttpMessage` for outbound `HttpClient` calls triggered inside the function.
+3. Use `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` for outbound `HttpClient` calls triggered inside the function.
 4. Assert:
    - Outbound calls (verify `SendAsync`)
    - Response status & body (deserialize or use content helpers)
@@ -98,7 +99,7 @@ Some sample categories mentioned elsewhere in the documentation are future sampl
 
 The current samples are intentionally focused. Consider extending locally with:
 
-- Adding a payment gateway client abstraction and testing retry/backoff logic via `SetupHttpMessage` sequences.
+- Adding a payment gateway client abstraction and testing retry/backoff logic via provider-neutral request helpers for happy-path routing, then Moq `SetupSequence(...)` only when you intentionally need provider-specific call sequencing.
 - Adding blob metadata assertions using a mocked `BlobClient`.
 - Introducing an options reload test using `IOptionsMonitor<T>` + updated values via `AddType`.
 
@@ -107,13 +108,13 @@ The current samples are intentionally focused. Consider extending locally with:
 | Goal | Helper | Notes |
 | ---- | ------ | ----- |
 | Fast default HttpClient | `CreateHttpClient()` | Registers handler + factory if missing |
-| Custom per‑test response | `SetupHttpMessage()` | Use multiple calls for sequential responses |
+| Custom per‑test HTTP behavior | `WhenHttpRequest()` / `WhenHttpRequestJson()` | Provider-neutral request matching and response setup |
 | Mock EF Core context | `GetMockDbContext<T>()` | Auto sets up DbSets; seed data before use |
 | Replace concrete dependency | `AddType<T>()` | Pin deterministic instances (e.g., clock) |
 | Verify log message | `VerifyLogged(...)` | Provider-safe assertion over captured `ILogger` entries |
 | Extract HTTP content | `GetStringContent` | Use for string assertions |
 
-> Tip: Prefer the extension helpers first; drop down to raw Moq setup only for edge cases.
+> Tip: Prefer the provider-neutral HTTP helpers first; drop down to Moq-specific setup only for protected-member or sequencing edge cases.
 
 ## Getting started
 

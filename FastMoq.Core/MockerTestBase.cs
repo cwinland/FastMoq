@@ -9,44 +9,48 @@ namespace FastMoq
     ///     This class contains the <see cref="Mocks"/> property to create and track all Mocks from creation of the component.
     /// </summary>
     /// <example>
-    /// <para>Use <see cref="MockerTestBase{TComponent}"/> when you want the component under test created automatically with constructor dependencies resolved from FastMoq.</para>
+    /// <para>Use <see cref="MockerTestBase{TComponent}"/> when you want the component under test created automatically with constructor dependencies resolved from FastMoq's provider-first pipeline.</para>
+    /// <para>The base class auto-resolves constructor dependencies, so you do not need to call <c>GetOrCreateMock</c> just to make a dependency exist before verification. When you do need the tracked mock handle itself, use <see cref="Mocker.GetOrCreateMock{T}(MockRequestOptions?)"/> in a custom create path.</para>
     /// <code language="csharp"><![CDATA[
-    /// public class CheckoutServiceTests : MockerTestBase<CheckoutService>
+    /// public sealed class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
     /// {
-    ///     protected override Action<Mocker> SetupMocksAction => mocker =>
-    ///     {
-    ///         mocker.GetMock<IPricingClient>()
-    ///             .Setup(x => x.GetPrice("SKU-42"))
-    ///             .Returns(125.50m);
-    ///
-    ///         mocker.AddType<IClock>(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
-    ///     };
-    ///
     ///     [Fact]
-    ///     public void Calculates_total_using_auto_injected_dependencies()
+    ///     public void Submit_should_publish_the_order_id()
     ///     {
-    ///         var total = Component.CalculateTotal("SKU-42", quantity: 2);
+    ///         Component.Submit(42);
     ///
-    ///         total.Should().Be(251.00m);
-    ///         Mocks.GetMock<IPricingClient>().Verify(x => x.GetPrice("SKU-42"), Times.Once);
+    ///         Component.LastSubmittedOrderId.Should().Be(42);
+    ///         Mocks.Verify<IOrderGateway>(x => x.Publish(42), TimesSpec.Once);
     ///     }
     /// }
     /// ]]></code>
-    /// <para>The base class creates <c>CheckoutService</c> before the test body runs, so the test can assert directly against <see cref="Component"/>.</para>
+    /// <para>The base class creates <c>OrderSubmitter</c> before the test body runs, so the test can assert directly against <see cref="Component"/>.</para>
     /// <code language="csharp"><![CDATA[
-    /// public sealed class CheckoutService
+    /// public interface IOrderGateway
     /// {
-    ///     public CheckoutService(IPricingClient pricingClient, IClock clock)
+    ///     void Publish(int orderId);
+    /// }
+    ///
+    /// public sealed class OrderSubmitter
+    /// {
+    ///     private readonly IOrderGateway _gateway;
+    ///
+    ///     public OrderSubmitter(IOrderGateway gateway) => _gateway = gateway;
+    ///
+    ///     public int? LastSubmittedOrderId { get; private set; }
+    ///     public string SubmissionChannel { get; set; } = "default";
+    ///
+    ///     public void Submit(int orderId)
     ///     {
-    ///         _pricingClient = pricingClient;
-    ///         _clock = clock;
+    ///         LastSubmittedOrderId = orderId;
+    ///         _gateway.Publish(orderId);
     ///     }
     /// }
     /// ]]></code>
-    /// <para>Use <see cref="CreatedComponentAction"/> when you need a final arrangement step after construction, such as setting mutable state or attaching events.</para>
+    /// <para>Use <see cref="CreatedComponentAction"/> when you need a final arrangement step after construction, such as setting mutable state that is part of the test context.</para>
     /// <code language="csharp"><![CDATA[
-    /// protected override Action<CheckoutService> CreatedComponentAction => component =>
-    ///     component.Currency = "USD";
+    /// protected override Action<OrderSubmitter> CreatedComponentAction => component =>
+    ///     component.SubmissionChannel = "priority";
     /// ]]></code>
     /// </example>
     /// <typeparam name="TComponent">The type of the t component.</typeparam>
@@ -169,18 +173,21 @@ namespace FastMoq
         /// Sets the <see cref="Component" /> property with a new instance while maintaining the constructor setup and any other changes.
         /// </summary>
         /// <example>
-        /// <para>Use <see cref="CreateComponent"/> when the test needs to change mock behavior first and then rebuild the component with the updated arrangement.</para>
+        /// <para>Use <see cref="CreateComponent"/> when you need to rebuild the component after changing test-base configuration that affects construction or post-creation state.</para>
         /// <code language="csharp"><![CDATA[
+        /// private string CreatedChannel { get; set; } = "default";
+        ///
+        /// protected override Action<OrderSubmitter> CreatedComponentAction => component =>
+        ///     component.SubmissionChannel = CreatedChannel;
+        ///
         /// [Fact]
-        /// public void Recreates_component_after_overriding_a_dependency()
+        /// public void Recreates_component_after_changing_created_state()
         /// {
-        ///     Mocks.GetMock<IPricingClient>()
-        ///         .Setup(x => x.GetPrice("SKU-42"))
-        ///         .Returns(99.00m);
+        ///     CreatedChannel = "priority";
         ///
         ///     CreateComponent();
         ///
-        ///     Component.CalculateTotal("SKU-42", 1).Should().Be(99.00m);
+        ///     Component.SubmissionChannel.Should().Be("priority");
         /// }
         /// ]]></code>
         /// </example>

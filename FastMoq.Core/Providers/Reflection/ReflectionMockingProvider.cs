@@ -114,6 +114,8 @@ namespace FastMoq.Providers.ReflectionProvider
 
         public object? TryGetLegacy(IFastMock mock) => null; // No legacy surface
 
+        public IFastMock? TryWrapLegacy(object legacyMock, Type mockedType) => null;
+
         #region Invocation Tracking Helpers
         private static void Track(object target, MethodInfo method, object?[] args)
         {

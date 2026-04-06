@@ -7,7 +7,7 @@ This guide documents the testing patterns that match FastMoq's current behavior 
 Use these rules first:
 
 1. Use `MockerTestBase<TComponent>` when you want FastMoq to create the component under test and manage its dependencies.
-2. Use `Mocks.GetMock<T>()` when you want the normal FastMoq auto-mock path for a dependency.
+2. Use `Mocks.GetOrCreateMock<T>()` when you want the normal FastMoq tracked mock path for a dependency.
 3. Use `AddType(...)` when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.
 4. Use `AddKnownType(...)` when a framework-style type needs special resolution or post-processing behavior.
 5. Use `GetMockDbContext<TContext>()` when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.
@@ -22,18 +22,18 @@ FastMoq has three distinct resolution paths:
 
 That distinction matters because the API choice communicates intent.
 
-## `GetMock<T>()` vs `AddType(...)`
+## `GetOrCreateMock<T>()` vs `AddType(...)`
 
 These are not interchangeable.
 
-### Use `GetMock<T>()` when
+### Use `GetOrCreateMock<T>()` when
 
 - You want the dependency to stay on the default auto-mock path.
 - You only need to arrange or verify behavior.
 - You want the dependency tracked as the mock FastMoq would have created anyway.
 
 ```csharp
-var repoMock = Mocks.GetMock<IOrderRepository>();
+var repoMock = Mocks.GetOrCreateMock<IOrderRepository>();
 repoMock.Setup(x => x.Load(123)).Returns(order);
 ```
 
@@ -50,7 +50,7 @@ Mocks.AddType<IClock>(_ => new FakeClock(DateTimeOffset.Parse("2026-04-01T12:00:
 
 ### Practical rule
 
-If the dependency is still conceptually a mock, prefer `GetMock<T>()`. If you are changing how the type is resolved, prefer `AddType(...)`.
+If the dependency is still conceptually a mock, prefer `GetOrCreateMock<T>()`. If you are changing how the type is resolved, prefer `AddType(...)`.
 
 ## Construction APIs
 
@@ -202,7 +202,7 @@ fileSystem.File.WriteAllText("/tmp/test.txt", "hello");
 If you want mock arrangement and verification instead, stay on the mock path:
 
 ```csharp
-Mocks.GetMock<IFileSystem>()
+Mocks.GetOrCreateMock<IFileSystem>()
     .Setup(x => x.File.Exists("orders.json"))
     .Returns(true);
 ```
@@ -282,7 +282,7 @@ public class OrdersControllerTests : MockerTestBase<OrdersController>
         var requestContext = Mocks.GetObject<HttpContext>();
         Component.ControllerContext = Mocks.CreateControllerContext(requestContext);
 
-        Mocks.GetMock<IOrderService>()
+        Mocks.GetOrCreateMock<IOrderService>()
             .Setup(x => x.GetOrdersAsync(true, It.IsAny<CancellationToken>()))
             .ReturnsAsync([new OrderDto { Id = 42 }]);
 
@@ -401,8 +401,8 @@ Mocks.AddKnownType<IHttpContextAccessor>(
 Mocks.AddKnownType<HttpContext>(
     configureMock: (_, _, fastMock) =>
     {
-        var nativeMock = (Mock<HttpContext>)fastMock.NativeMock;
-        nativeMock.Setup(x => x.TraceIdentifier).Returns("trace-123");
+        var moqMock = fastMock.AsMoq();
+        moqMock.Setup(x => x.TraceIdentifier).Returns("trace-123");
     });
 ```
 
@@ -457,13 +457,26 @@ FastMoq is moving toward a provider-based architecture. The stable guidance for 
 2. Use the provider-native object only when you genuinely need library-specific arrangement behavior.
 3. Assume Moq compatibility is currently strongest, but new extension points should avoid hard-coding Moq assumptions unless the scenario is explicitly Moq-only.
 
-If you need the underlying provider object for a tracked mock, use `GetNativeMock(...)` or `MockModel.NativeMock`.
+`ScenarioBuilder` still works with each registered provider because it only orchestrates arrange, act, and assert steps and forwards provider-first verification through `Mocker.Verify(...)`. The provider-specific part is still the arrangement code you put inside `With(...)` or `When(...)`.
+
+`VerifyLogged(...)` now follows the same default expectation model as provider-first verification: if you do not specify a count, it means at least once. Use `TimesSpec` when you need `Exactly`, `AtLeast`, `AtMost`, or `Never` semantics for captured log entries.
+
+If you need provider-specific behavior for a tracked mock, prefer the typed provider-package extensions first, such as `AsMoq()` or `AsNSubstitute()`.
+
+Use `GetNativeMock(...)` or `MockModel.NativeMock` only when you truly need the raw provider object beyond those typed helpers.
 
 You can also retrieve the provider-first abstraction directly:
 
 ```csharp
 var fastMock = Mocks.GetOrCreateMock<IOrderRepository>();
-var providerObject = fastMock.NativeMock;
+var moqMock = fastMock.AsMoq();
+```
+
+For NSubstitute-backed tests:
+
+```csharp
+var fastMock = Mocks.GetOrCreateMock<IOrderRepository>();
+fastMock.AsNSubstitute().Load(123).Returns(order);
 ```
 
 ## `Strict` vs Presets
@@ -520,14 +533,14 @@ See [Executable Testing Examples](../samples/testing-examples.md).
 For most tests in this repo, this order is the least surprising:
 
 1. Register explicit type overrides with `AddType(...)` only when needed.
-2. Configure default mocks with `GetMock<T>()`.
+2. Configure default mocks with `GetOrCreateMock<T>()`.
 3. Use known-type helpers for `DbContext`, `HttpClient`, `IFileSystem`, and web abstractions.
 4. Create the component through `MockerTestBase<T>` or `CreateInstance(...)`.
 5. Assert behavior and verify the dependency interactions you actually care about.
 
 ## Pitfalls to Avoid
 
-- Do not use `AddType(...)` as a general replacement for `GetMock<T>()`.
+- Do not use `AddType(...)` as a general replacement for `GetOrCreateMock<T>()`.
 - Do not bypass `GetMockDbContext<TContext>()` unless FastMoq's EF Core support is the thing you are explicitly testing around.
 - Do not assume `CreateInstanceByType(...)` alone is the best API for new code. Use `InstanceCreationFlags` when you need to express constructor-selection intent explicitly.
 - Do not make known-type extensions global. Keep them scoped to the `Mocker` used by the test.

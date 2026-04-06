@@ -1625,7 +1625,8 @@ namespace FastMoq.Tests
             logger.LogInformation("test");
             logger.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
 
-            Mocks.VerifyLogged(LogLevel.Information, "test", 1);
+            Mocks.VerifyLogged(LogLevel.Information, "test");
+            Mocks.VerifyLogged(LogLevel.Information, "test", TimesSpec.AtLeast(1));
             Mocks.VerifyLogged(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1, 1);
         }
 
@@ -1637,6 +1638,19 @@ namespace FastMoq.Tests
 
             Assert.Throws<InvalidOperationException>(() => Mocks.VerifyLogged(LogLevel.Information, "other", 1));
             Assert.Throws<InvalidOperationException>(() => Mocks.VerifyLogged(LogLevel.Information, "test", 2));
+            Assert.Throws<InvalidOperationException>(() => Mocks.VerifyLogged(LogLevel.Information, "test", TimesSpec.AtMost(0)));
+        }
+
+        [Fact]
+        public void VerifyLogged_ShouldTreatDefaultAsAtLeastOnce()
+        {
+            var logger = Mocks.GetObject<ILogger<NullLogger>>();
+
+            logger.LogInformation("test");
+            logger.LogInformation("test");
+
+            Mocks.VerifyLogged(LogLevel.Information, "test");
+            Mocks.VerifyLogged(LogLevel.Information, "test", TimesSpec.AtLeast(2));
         }
 
         [Fact]

@@ -52,19 +52,18 @@ namespace FastMoq
     /// <para>Constructor parameters follow the same hierarchy as GetObject after type mapping.</para>
     /// </remarks>
     /// <example>
-    /// <para>Use <see cref="Mocker" /> as the main test composition root when you want to mix concrete registrations with mock setup.</para>
+    /// <para>Use <see cref="Mocker" /> as the main test composition root when you want provider-first arrangement based on concrete registrations and policy-driven construction.</para>
     /// <code language="csharp"><![CDATA[
+    /// var fileSystem = new MockFileSystem();
+    /// fileSystem.AddFile(@"c:\orders\42.json", new MockFileData("{ \"id\": 42, \"total\": 125.50 }"));
+    ///
     /// var mocker = new Mocker()
-    ///     .AddType<IClock>(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+    ///     .AddType<IFileSystem>(fileSystem);
     ///
-    /// mocker.GetMock<IOrderRepository>(repo =>
-    ///     repo.Setup(x => x.GetByIdAsync(42)).ReturnsAsync(new Order { Id = 42, Total = 125.50m }));
+    /// var resolvedFileSystem = mocker.GetRequiredObject<IFileSystem>();
     ///
-    /// var service = mocker.GetRequiredObject<OrderService>();
-    /// var order = await service.LoadAsync(42);
-    ///
-    /// order.Total.Should().Be(125.50m);
-    /// mocker.GetMock<IOrderRepository>().Verify(x => x.GetByIdAsync(42), Times.Once);
+    /// resolvedFileSystem.File.Exists(@"c:\orders\42.json").Should().BeTrue();
+    /// resolvedFileSystem.Should().BeSameAs(fileSystem);
     /// ]]></code>
     /// </example>
     public partial class Mocker
@@ -197,7 +196,7 @@ namespace FastMoq
         {
             ProviderBootstrap.Ensure();
             fileSystem = new MockFileSystem();
-            HttpClient = this.CreateHttpClient();
+            HttpClient = this.CreateHttpClientCore();
             Uri = HttpClient.BaseAddress ?? new Uri("http://localhost");
             externalLoggingCallback = loggingCallback;
             LoggingCallback = CaptureLogEntry;
@@ -252,13 +251,13 @@ namespace FastMoq
         /// <example>
         /// <para>Use this overload when a dependency should be a known runtime object rather than a tracked mock.</para>
         /// <code language="csharp"><![CDATA[
-        /// var clock = new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero));
+        /// var fileSystem = new MockFileSystem();
         ///
         /// var mocker = new Mocker()
-        ///     .AddType<IClock>(clock);
+        ///     .AddType<IFileSystem>(fileSystem);
         ///
-        /// var service = mocker.GetRequiredObject<OrderService>();
-        /// service.Clock.Should().BeSameAs(clock);
+        /// var resolvedFileSystem = mocker.GetRequiredObject<IFileSystem>();
+        /// resolvedFileSystem.Should().BeSameAs(fileSystem);
         /// ]]></code>
         /// </example>
         public Mocker AddType<T>(T value, bool replace = false)
@@ -716,18 +715,17 @@ namespace FastMoq
         /// Resolves an object using FastMoq's runtime resolution pipeline.
         /// </summary>
         /// <example>
-        /// <para>Resolve the component under test after configuring any concrete registrations and mock behavior.</para>
+        /// <para>Resolve a dependency after configuring a concrete registration through the provider-first pipeline.</para>
         /// <code language="csharp"><![CDATA[
-        /// var mocker = new Mocker();
+        /// var fileSystem = new MockFileSystem();
+        /// fileSystem.AddDirectory(@"c:\exports");
         ///
-        /// mocker.GetMock<IInventoryGateway>()
-        ///     .Setup(x => x.IsInStock("SKU-42"))
-        ///     .Returns(true);
+        /// var mocker = new Mocker()
+        ///     .AddType<IFileSystem>(fileSystem);
         ///
-        /// var service = mocker.GetRequiredObject<CheckoutService>();
-        /// var canShip = service.CanShip("SKU-42");
+        /// var resolvedFileSystem = mocker.GetRequiredObject<IFileSystem>();
         ///
-        /// canShip.Should().BeTrue();
+        /// resolvedFileSystem.Directory.Exists(@"c:\exports").Should().BeTrue();
         /// ]]></code>
         /// </example>
         public T? GetObject<T>() where T : class => GetObject(typeof(T)) as T;
@@ -1283,6 +1281,7 @@ namespace FastMoq
             return fast;
         }
 
+        [Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.")]
         public List<MockModel> CreateMock(Type type, bool nonPublic = false, params object?[] args)
         {
             // Legacy Moq-oriented method – now a thin shim over provider-first fast mock creation.
@@ -1303,8 +1302,10 @@ namespace FastMoq
             }
             return mockCollection;
         }
+        [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.")]
         public List<MockModel> CreateMock<T>(bool nonPublic = false, params object?[] args) where T : class => CreateMock(typeof(T), nonPublic, args);
 
+        [Obsolete("Use GetOrCreateMock<T>(...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")]
         public Mock<T> CreateMockInstance<T>(bool nonPublic = false, params object?[] args) where T : class
         {
             var legacy = CreateMockInstance(typeof(T), nonPublic, args);
@@ -1316,6 +1317,7 @@ namespace FastMoq
             throw new NotSupportedException($"Active provider '{MockingProviderRegistry.Default.GetType().Name}' does not expose Moq legacy surface for {typeof(T).Name}.");
         }
 
+        [Obsolete("Use GetOrCreateMock(Type, ...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")]
         public Mock CreateMockInstance(Type type, bool nonPublic = false, params object?[] args)
         {
             if (type == null || (!type.IsClass && !type.IsInterface))
@@ -1350,6 +1352,7 @@ namespace FastMoq
         /// Creates a detached mock instance that is not added to the tracked mock collection.
         /// Useful when the same interface is needed multiple times without constructor injection override.
         /// </summary>
+        [Obsolete("Use GetOrCreateMock<T>(...) on a dedicated Mocker instance when possible. This legacy Moq compatibility API will be removed in v5.")]
         public Mock<T> CreateDetachedMock<T>(bool nonPublic = false, params object?[] args) where T : class =>
             CreateMockInstance<T>(nonPublic, args);
 
@@ -1357,6 +1360,7 @@ namespace FastMoq
         /// Creates a detached mock instance that is not added to the tracked mock collection.
         /// Useful when the same interface is needed multiple times without constructor injection override.
         /// </summary>
+        [Obsolete("Use GetOrCreateMock(Type, ...) on a dedicated Mocker instance when possible. This legacy Moq compatibility API will be removed in v5.")]
         public Mock CreateDetachedMock(Type type, bool nonPublic = false, params object?[] args) =>
             CreateMockInstance(type, nonPublic, args);
 
@@ -1401,6 +1405,7 @@ namespace FastMoq
             mockCollection.Add(new MockModel(type, mock, nonPublic));
             return GetMockModel(type);
         }
+        [Obsolete("Use GetOrCreateMock<T>(...) for tracked mocks or AddType<T>(...) for concrete instances. This legacy Moq compatibility API will be removed in v5.")]
         public MockModel<T> AddMock<T>(Mock<T> mock, bool overwrite = false, bool nonPublic = false) where T : class
             => new MockModel<T>(AddMock((Mock)mock, typeof(T), overwrite, nonPublic));
         private static Mock? TryGetLegacyMock(IFastMock fastMock)
@@ -1415,6 +1420,7 @@ namespace FastMoq
         #endregion
 
         #region Mock Retrieval & Setup
+        [Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral access. This legacy Moq compatibility API will be removed in v5.")]
         public Mock GetMock(Type type, params object?[]? args)
         {
             type = CleanType(type);
@@ -1429,27 +1435,31 @@ namespace FastMoq
         /// Returns a tracked mock for the requested type, creating it if needed.
         /// </summary>
         /// <example>
-        /// <para>Use the callback overload when you want mock creation and setup in one place.</para>
+        /// <para><c>GetMock&lt;T&gt;()</c> remains the Moq-compatibility path. For new examples, prefer <c>GetOrCreateMock&lt;T&gt;()</c> plus provider-neutral verification.</para>
         /// <code language="csharp"><![CDATA[
         /// var mocker = new Mocker();
         ///
-        /// mocker.GetMock<IPaymentGateway>(gateway =>
-        ///     gateway.Setup(x => x.Charge(125.50m)).Returns(true));
+        /// mocker.GetOrCreateMock<IPaymentGateway>()
+        ///     .Setup(x => x.Charge(125.50m))
+        ///     .Returns(true);
         ///
         /// var service = mocker.GetRequiredObject<CheckoutService>();
         /// var approved = service.SubmitPayment(125.50m);
         ///
         /// approved.Should().BeTrue();
-        /// mocker.GetMock<IPaymentGateway>().Verify(x => x.Charge(125.50m), Times.Once);
+        /// mocker.Verify<IPaymentGateway>(x => x.Charge(125.50m), TimesSpec.Once);
         /// ]]></code>
         /// </example>
+        [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral access. This legacy Moq compatibility API will be removed in v5.")]
         public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>)GetMock(typeof(T), args);
+        [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral access. This legacy Moq compatibility API will be removed in v5.")]
         public Mock<T> GetMock<T>(Action<Mock<T>> action, params object?[] args) where T : class
         {
             var m = GetMock<T>(args);
             action?.Invoke(m);
             return m;
         }
+        [Obsolete("Use GetOrCreateMock(Type, ...) with provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")]
         public Mock GetRequiredMock(Type type)
         {
             ArgumentNullException.ThrowIfNull(type);
@@ -1468,6 +1478,7 @@ namespace FastMoq
             mock.RaiseIfNull();
             return mock;
         }
+        [Obsolete("Use GetOrCreateMock<T>(...) with provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")]
         public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>)GetRequiredMock(typeof(T));
         public object GetNativeMock(Type type)
         {
@@ -1476,7 +1487,7 @@ namespace FastMoq
             type = CleanType(type);
             if (!Contains(type))
             {
-                CreateMock(type, false);
+                _ = GetOrCreateFastMock(type);
             }
 
             return GetMockModel(type).NativeMock;
@@ -1485,7 +1496,7 @@ namespace FastMoq
         {
             if (!Contains<T>())
             {
-                CreateMock(typeof(T), false, args ?? Array.Empty<object?>());
+                _ = GetOrCreateFastMock(typeof(T), false, args ?? Array.Empty<object?>());
             }
 
             return GetMockModel(typeof(T)).NativeMock;
@@ -1504,7 +1515,7 @@ namespace FastMoq
                 throw new NotImplementedException("Unable to find the constructor.");
             }
 
-            GetMock(type);
+            _ = GetOrCreateFastMock(type);
             idx = mockCollection.FindIndex(m => m.Type == type);
             if (idx < 0)
             {
@@ -1513,6 +1524,7 @@ namespace FastMoq
 
             return idx;
         }
+        [Obsolete("Use provider-neutral mock lifecycle APIs instead. This legacy Moq compatibility API will be removed in v5.")]
         public bool RemoveMock(Mock mock)
         {
             var model = mockCollection.FirstOrDefault(m => m.TryGetLegacyMock(out var legacyMock) && legacyMock == mock);
@@ -1527,7 +1539,7 @@ namespace FastMoq
 
         internal void SetupMock(Type type, Mock oMock)
         {
-            SetupFastMock(type, new FastMoq.Providers.MoqProvider.MoqMockAdapter(oMock));
+            SetupFastMock(type, MockingProviderRegistry.WrapLegacy(oMock, type));
         }
 
         internal void SetupFastMock(Type type, IFastMock fastMock)
@@ -1583,11 +1595,6 @@ namespace FastMoq
             catch { }
         }
 
-        internal static void SetupLoggerCallback<TLogger>(Mock<TLogger> logger, Action<LogLevel, EventId, string, Exception?> callback) where TLogger : class, ILogger
-        {
-            logger.Setup(x => x.Log(It.IsAny<LogLevel>(), It.IsAny<EventId>(), It.IsAny<It.IsAnyType>(), It.IsAny<Exception>(), (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()))
-                  .Callback((LogLevel level, EventId evt, object state, Exception? ex, object formatter) => callback(level, evt, state?.ToString() ?? string.Empty, ex));
-        }
         #endregion
 
         #region FastMock helpers / collection helpers
@@ -1609,7 +1616,7 @@ namespace FastMoq
             type = CleanType(type);
             if (!Contains(type))
             {
-                CreateMock(type, nonPublic, args);
+                return CreateFastMock(type, nonPublic, args);
             }
 
             return GetMockModel(type).FastMock;
@@ -1643,9 +1650,14 @@ namespace FastMoq
 
             if (model.TryGetLegacyMock(out var legacyMock) && legacyMock is Mock<T> typedLegacyMock)
             {
-                var upgraded = new FastMoq.Providers.MoqProvider.MoqMockAdapter<T>(typedLegacyMock);
-                model.FastMock = upgraded;
-                return upgraded;
+                var upgraded = MockingProviderRegistry.WrapLegacy(typedLegacyMock, typeof(T));
+                if (upgraded is not IFastMock<T> typedUpgraded)
+                {
+                    throw new NotSupportedException($"Stored mock for {typeof(T).Name} could not be rewrapped as a typed provider-first mock.");
+                }
+
+                model.FastMock = typedUpgraded;
+                return typedUpgraded;
             }
 
             throw new NotSupportedException($"Stored mock for {typeof(T).Name} is not available as a typed provider-first mock.");
@@ -1656,7 +1668,7 @@ namespace FastMoq
             type = CleanType(type);
             if (!Contains(type))
             {
-                CreateMock(type, nonPublic, args);
+                _ = CreateFastMock(type, nonPublic, args);
             }
 
             return GetMockModel(type);

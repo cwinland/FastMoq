@@ -42,6 +42,38 @@ namespace FastMoq.Providers
 
         public static IMockingProvider Default => _current.Value ?? _default ?? throw new InvalidOperationException("No mocking provider registered. Register one via MockingProviderRegistry.Register().");
 
+        public static IFastMock WrapLegacy(object legacyMock, Type mockedType)
+        {
+            ArgumentNullException.ThrowIfNull(legacyMock);
+            ArgumentNullException.ThrowIfNull(mockedType);
+
+            var defaultProvider = _current.Value ?? _default;
+            if (defaultProvider != null)
+            {
+                var wrappedByDefault = defaultProvider.TryWrapLegacy(legacyMock, mockedType);
+                if (wrappedByDefault != null)
+                {
+                    return wrappedByDefault;
+                }
+            }
+
+            foreach (var provider in _providers.Values.Distinct())
+            {
+                if (ReferenceEquals(provider, defaultProvider))
+                {
+                    continue;
+                }
+
+                var wrapped = provider.TryWrapLegacy(legacyMock, mockedType);
+                if (wrapped != null)
+                {
+                    return wrapped;
+                }
+            }
+
+            throw new NotSupportedException($"No registered mocking provider can wrap legacy instance '{legacyMock.GetType().FullName}' for mocked type '{mockedType.FullName}'.");
+        }
+
         public static void SetDefault(string name)
         {
             ArgumentNullException.ThrowIfNull(name);

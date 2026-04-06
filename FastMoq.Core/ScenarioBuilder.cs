@@ -11,20 +11,20 @@ namespace FastMoq
     /// </summary>
     /// <example>
     /// <para>In MockerTestBase&lt;TComponent&gt;, prefer the parameterless overloads when Component is already available.</para>
+    /// <para>This example uses the scenario pipeline together with provider-first verification.</para>
     /// <code language="csharp"><![CDATA[
     /// Scenario
-    ///     .With(() => Mocks.GetMock<IInvoiceRepository>()
-    ///         .Setup(x => x.GetPastDueAsync(now, CancellationToken.None))
-    ///         .ReturnsAsync(invoices))
-    ///     .When(async () => reminderCount = await Component.SendRemindersAsync(now, CancellationToken.None))
-    ///     .Then(() => reminderCount.Should().Be(2))
+    ///     .When(() => Component.Submit(42))
+    ///     .Then(() => Component.Channel.Should().Be("priority"))
+    ///     .Verify<IOrderGateway>(x => x.Publish(42), TimesSpec.Once)
+    ///     .VerifyNoOtherCalls<IOrderGateway>()
     ///     .Execute();
     /// ]]></code>
     /// <para>Outside MockerTestBase&lt;TComponent&gt;, use the target-instance overloads.</para>
     /// <code language="csharp"><![CDATA[
     /// await mocker.Scenario(service)
     ///     .When(component => component.RunAsync())
-    ///     .Then(component => component.State.Should().Be(ServiceState.Completed))
+    ///     .Verify<IBackgroundQueue>(x => x.Enqueue("job-42"), TimesSpec.Once)
     ///     .ExecuteAsync();
     /// ]]></code>
     /// </example>

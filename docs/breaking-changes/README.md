@@ -8,6 +8,29 @@ This page tracks intentional v4 breaking changes relative to the last public `3.
 
 ## Current breaking changes
 
+### Moq-specific HTTP setup helpers moved packages
+
+The older Moq-shaped HTTP setup helpers such as `SetupHttpMessage(...)` are no longer provided by `FastMoq.Core`.
+
+What changed:
+
+- provider-neutral HTTP behavior helpers now live in core and are the preferred path for new tests
+- Moq-specific HTTP compatibility helpers now come from `FastMoq.Provider.Moq`
+- the compatibility helpers intentionally remain in `FastMoq.Extensions`, so the source-level namespace usually does not need to change
+
+Migration guidance:
+
+```csharp
+// Preferred for new tests
+Mocks.WhenHttpRequestJson(HttpMethod.Get, "/orders/42", "{\"id\":42}");
+
+// Compatibility path for older Moq-specific tests
+// Keep using FastMoq.Extensions, but ensure FastMoq.Provider.Moq is referenced
+Mocks.SetupHttpMessage(HttpStatusCode.OK, "{\"id\":42}");
+```
+
+Treat this as a package move with a preferred API change, not as a namespace-rename exercise.
+
 ### `Strict` no longer implies the old full strict profile
 
 In `3.0.0`, `Strict` was documented as a broader switch that affected multiple behaviors at once, including preconfigured object substitution, non-public fallback behavior, and strict Moq behavior.

@@ -60,18 +60,19 @@ items:
   - >-
     <p>In MockerTestBase&lt;TComponent&gt;, prefer the parameterless overloads when Component is already available.</p>
 
+    <p>This example uses the scenario pipeline together with provider-first verification.</p>
+
     <pre><code class="lang-csharp">Scenario
-        .With(() =&gt; Mocks.GetMock&lt;IInvoiceRepository&gt;()
-            .Setup(x =&gt; x.GetPastDueAsync(now, CancellationToken.None))
-            .ReturnsAsync(invoices))
-        .When(async () =&gt; reminderCount = await Component.SendRemindersAsync(now, CancellationToken.None))
-        .Then(() =&gt; reminderCount.Should().Be(2))
+        .When(() =&gt; Component.Submit(42))
+        .Then(() =&gt; Component.Channel.Should().Be("priority"))
+        .Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(42), TimesSpec.Once)
+        .VerifyNoOtherCalls&lt;IOrderGateway&gt;()
         .Execute();</code></pre>
     <p>Outside MockerTestBase&lt;TComponent&gt;, use the target-instance overloads.</p>
 
     <pre><code class="lang-csharp">await mocker.Scenario(service)
         .When(component =&gt; component.RunAsync())
-        .Then(component =&gt; component.State.Should().Be(ServiceState.Completed))
+        .Verify&lt;IBackgroundQueue&gt;(x =&gt; x.Enqueue("job-42"), TimesSpec.Once)
         .ExecuteAsync();</code></pre>
   syntax:
     content: 'public sealed class ScenarioBuilder<T> where T : class'

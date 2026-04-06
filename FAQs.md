@@ -74,6 +74,7 @@ Typical symptoms:
 
 - `GetMock<T>()` throws because the active provider does not expose a legacy `Moq.Mock`
 - `VerifyLogger(...)` still exists, but it remains a Moq compatibility API rather than a provider-neutral one
+- `SetupHttpMessage(...)` is available from the Moq compatibility package, but it also requires the Moq provider to be active for that test assembly
 - tests that previously assumed Moq was the implicit default start failing even though no test code was changed
 
 If you want the shortest v4 compatibility fix for an older test assembly, set Moq as the assembly default:
@@ -99,6 +100,7 @@ If you are touching the tests anyway, prefer moving toward the provider-neutral 
 
 - use `GetOrCreateMock(...)` when you do not specifically need raw `Moq.Mock`
 - use `Mocks.VerifyLogged(...)` instead of `VerifyLogger(...)`
+- use `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` instead of `SetupHttpMessage(...)` unless the test intentionally depends on the Moq compatibility path
 
 See also:
 

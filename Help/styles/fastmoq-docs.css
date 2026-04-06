@@ -28,3 +28,17 @@
 .fastmoq-footer-separator {
   opacity: 0.6;
 }
+
+pre {
+  overflow-x: auto;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+pre code {
+  display: block;
+  white-space: inherit;
+  word-break: inherit;
+  overflow-wrap: inherit;
+}

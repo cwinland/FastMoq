@@ -91,8 +91,9 @@ namespace FastMoq.Tests
             logger!.LogInformation("provider info");
             logger.LogError(12, new InvalidOperationException("provider boom"), "provider error");
 
-            mocker.VerifyLogged(LogLevel.Information, "provider info", 1);
-            mocker.VerifyLogged(LogLevel.Error, "provider error", new InvalidOperationException("provider boom"), 12, 1);
+            mocker.VerifyLogged(LogLevel.Information, "provider info");
+            mocker.VerifyLogged(LogLevel.Information, "provider info", TimesSpec.AtLeast(1));
+            mocker.VerifyLogged(LogLevel.Error, "provider error", new InvalidOperationException("provider boom"), 12, TimesSpec.Once);
         }
 
         [Fact]
