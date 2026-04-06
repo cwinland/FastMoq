@@ -192,6 +192,12 @@ namespace FastMoq
 
         #region Ctors
         public Mocker() : this((_, _, _, _) => { }) { }
+
+        public Mocker(Action<LogLevel, EventId, string> loggingCallback)
+            : this((logLevel, eventId, message, _) => loggingCallback(logLevel, eventId, message))
+        {
+        }
+
         public Mocker(Action<LogLevel, EventId, string, Exception?> loggingCallback)
         {
             ProviderBootstrap.Ensure();
@@ -202,6 +208,10 @@ namespace FastMoq
             LoggingCallback = CaptureLogEntry;
         }
         public Mocker(Dictionary<Type, IInstanceModel> map) : this() => typeMap = map;
+
+        public Mocker(Dictionary<Type, IInstanceModel> map, Action<LogLevel, EventId, string> loggingCallback)
+            : this(loggingCallback) => typeMap = map;
+
         public Mocker(Dictionary<Type, IInstanceModel> map, Action<LogLevel, EventId, string, Exception?> loggingCallback) : this(loggingCallback) => typeMap = map;
         #endregion
 
@@ -663,11 +673,6 @@ namespace FastMoq
         {
             var fast = serviceKey == null ? GetOrCreateFastMock(type) : GetOrCreateFastMock(type, serviceKey);
             var provider = MockingProviderRegistry.Default;
-            if (Behavior.Has(MockFeatures.AutoSetupProperties) && provider.Capabilities.SupportsSetupAllProperties)
-            {
-                provider.ConfigureProperties(fast);
-                ReapplyTrackedMockConfiguration(type, fast);
-            }
             if (Behavior.Has(MockFeatures.LoggerCallback))
             {
                 var mockedType = fast.MockedType;
@@ -1269,7 +1274,7 @@ namespace FastMoq
             }
 
             object?[] ctorArgs = Array.Empty<object?>();
-            if (type.IsClass && !type.IsAbstract)
+            if (type.IsClass)
             {
                 var constructor = this.GetTypeConstructor(type, nonPublic, args);
                 ctorArgs = constructor.ParameterList ?? Array.Empty<object?>();
@@ -1341,7 +1346,7 @@ namespace FastMoq
             var provider = MockingProviderRegistry.Default;
             object?[] ctorArgs = Array.Empty<object?>();
 
-            if (type.IsClass && !type.IsAbstract)
+            if (type.IsClass)
             {
                 var constructor = GetTypeConstructor(type, nonPublic, args);
                 ctorArgs = constructor.ParameterList ?? Array.Empty<object?>();
@@ -1439,7 +1444,7 @@ namespace FastMoq
             type = CleanType(type);
             if (!Contains(type))
             {
-                CreateMock(type, false, args ?? Array.Empty<object?>());
+                CreateMock(type, ShouldAllowNonPublicConstructorsForMockRequest(null), args ?? Array.Empty<object?>());
             }
 
             return GetRequiredMock(type);
@@ -1724,7 +1729,7 @@ namespace FastMoq
             var provider = MockingProviderRegistry.Default;
             object?[] ctorArgs = Array.Empty<object?>();
 
-            if (type.IsClass && !type.IsAbstract)
+            if (type.IsClass)
             {
                 var constructor = GetTypeConstructor(type, nonPublic, args);
                 ctorArgs = constructor.ParameterList ?? Array.Empty<object?>();

@@ -740,6 +740,16 @@ namespace FastMoq.Extensions
             CoreMoqLoggerCompatibility.SetupLoggerCallback(logger, callback);
 
         /// <summary>
+        /// Setups the logger callback.
+        /// </summary>
+        /// <typeparam name="TLogger">Class type of ILogger or ILogger{T}</typeparam>
+        /// <param name="logger">The mock logger.</param>
+        /// <param name="callback">The callback action.</param>
+        [Obsolete("Prefer Mocker.LogEntries or Mocks.VerifyLogged(...) for logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
+        public static void SetupLoggerCallback<TLogger>(this Mock<TLogger> logger, Action<LogLevel, EventId, string> callback) where TLogger : class, ILogger =>
+            CoreMoqLoggerCompatibility.SetupLoggerCallback(logger, callback);
+
+        /// <summary>
         ///     Checks the expectedMessage.
         /// </summary>
         /// <param name="verifyMessage">The object.</param>

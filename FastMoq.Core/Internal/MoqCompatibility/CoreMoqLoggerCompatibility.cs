@@ -70,6 +70,13 @@ namespace FastMoq.Internal.MoqCompatibility
                 });
         }
 
+        internal static void SetupLoggerCallback<TLogger>(this Mock<TLogger> logger, Action<LogLevel, EventId, string> callback)
+            where TLogger : class, ILogger
+        {
+            ArgumentNullException.ThrowIfNull(callback);
+            logger.SetupLoggerCallback((logLevel, eventId, message, _) => callback(logLevel, eventId, message));
+        }
+
         private static Expression<Action<TLoggerType>> TestLoggerExpression<TException, TLoggerType>(LogLevel logLevel, string message, TException? exception, int? eventId)
             where TException : Exception
             where TLoggerType : ILogger =>

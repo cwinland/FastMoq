@@ -266,6 +266,24 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetMock_ShouldAllowNonPublicConstructorsByDefault_WhenLenient()
+        {
+            var mock = Mocks.GetMock<NonPublicOnlyMockTarget>();
+
+            mock.Should().NotBeNull();
+            mock.Object.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetMock_ShouldAllowAbstractTypesWithNonPublicConstructors_WhenLenient()
+        {
+            var mock = Mocks.GetMock<AbstractNonPublicOnlyMockTarget>();
+
+            mock.Should().NotBeNull();
+            mock.Object.Should().NotBeNull();
+        }
+
+        [Fact]
         public void GetOrCreateMock_ShouldDisableNonPublicConstructorsByDefault_WhenStrict()
         {
             Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
@@ -1154,6 +1172,22 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetObject_ShouldPreserveConfiguredMockPropertiesAcrossRepeatedResolutions()
+        {
+            var expectedProvider = new Mock<IServiceProvider>().Object;
+
+            _ = Component.GetObject<AbstractServiceProviderHolder>();
+            Component.GetMock<AbstractServiceProviderHolder>()
+                .Setup(x => x.InstanceServices)
+                .Returns(expectedProvider);
+
+            var resolved = Component.GetObject<AbstractServiceProviderHolder>();
+
+            resolved.Should().NotBeNull();
+            resolved!.InstanceServices.Should().BeSameAs(expectedProvider);
+        }
+
+        [Fact]
         public void CreateInstanceByTypedParameterMap_ShouldRespectExplicitOptionalParameterResolution()
         {
             Component.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
@@ -1893,6 +1927,11 @@ namespace FastMoq.Tests
         internal JsonSerializerContext? SerializerContext { get; }
     }
 
+    internal abstract class AbstractServiceProviderHolder
+    {
+        internal abstract IServiceProvider? InstanceServices { get; set; }
+    }
+
     internal sealed class OptionalInvokeTarget
     {
         internal OptionalParameterProbe CreateProbe(ILogger? logger = null, IFileSystem? fileSystem = null)
@@ -1953,5 +1992,15 @@ namespace FastMoq.Tests
         protected NonPublicOnlyMockTarget()
         {
         }
+    }
+
+    public abstract class AbstractNonPublicOnlyMockTarget
+    {
+        protected AbstractNonPublicOnlyMockTarget(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; }
     }
 }

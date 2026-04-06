@@ -87,7 +87,7 @@ namespace FastMoq
             Func<Mocker, TComponent>? createComponentAction,
             Action<TComponent> createdComponentAction)
         {
-            Mocks = new Mocker(LoggingCallback);
+            Mocks = new Mocker((logLevel, eventId, message, exception) => LoggingCallback(logLevel, eventId, message, exception));
             ConfigureMockerPolicy?.Invoke(Mocks.Policy);
 
             SetupMocksAction = setupMocksAction;
@@ -96,9 +96,14 @@ namespace FastMoq
             Component = GetComponent();
         }
 
-        public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message, Exception? exception)
+        public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message)
         {
             Console.WriteLine($"LogLevel: {logLevel}, EventId: {eventId}, Message: {message}");
+        }
+
+        public virtual void LoggingCallback(LogLevel logLevel, EventId eventId, string message, Exception? exception)
+        {
+            LoggingCallback(logLevel, eventId, message);
         }
 
         /// <inheritdoc />
