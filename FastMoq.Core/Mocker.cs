@@ -89,8 +89,17 @@ namespace FastMoq
         /// The shared in-memory file system used by built-in file-system resolution helpers.
         /// </summary>
         public readonly MockFileSystem fileSystem;
+
+        /// <summary>
+        /// Tracks types currently being created so recursive resolution can short-circuit circular member population.
+        /// </summary>
         protected internal readonly List<Type> creatingTypeList = new();
+
+        /// <summary>
+        /// Stores the tracked mock models for this <see cref="Mocker"/> instance.
+        /// </summary>
         protected internal readonly List<MockModel> mockCollection = new();
+
         private readonly List<KnownTypeRegistration> knownTypeRegistrations = new();
         private readonly Dictionary<ServiceRegistrationKey, MockModel> keyedMockCollection = new();
         private readonly Dictionary<ServiceRegistrationKey, IInstanceModel> keyedTypeMap = new();
@@ -206,9 +215,6 @@ namespace FastMoq
         /// </summary>
         public MockBehaviorOptions Behavior { get; set; } = MockBehaviorOptions.LenientPreset.Clone();
 
-        /// <summary>
-        /// Backward compatibility: maps to FailOnUnconfigured flag (Strict semantics) and presets.
-        /// </summary>
         /// <summary>
         /// Obsolete compatibility property that maps to <see cref="MockFeatures.FailOnUnconfigured"/> within <see cref="Behavior"/>.
         /// </summary>
@@ -462,9 +468,6 @@ namespace FastMoq
         public Mocker AddKeyedType<T>(object serviceKey, Func<Mocker, T>? createFunc = null, bool replace = false, params object?[]? args) where T : class =>
             AddKeyedType<T, T>(serviceKey, createFunc, replace, args);
 
-        /// <summary>
-        /// Registers a compatibility string mapping that uses the requested resolution context.
-        /// </summary>
         /// <summary>
         /// Registers a compatibility string mapping that uses the requested resolution context.
         /// </summary>
@@ -1015,10 +1018,6 @@ namespace FastMoq
             CreateInstanceCore<T>(CreateInstanceConstructionRequest(flags, constructorParameterTypes: null), args);
 
         /// <summary>
-        /// Legacy compatibility overload retained for source compatibility.
-        /// File-system resolution now follows <see cref="Policy"/> instead of a per-call flag.
-        /// </summary>
-        /// <summary>
         /// Legacy compatibility overload retained for callers that previously toggled file-system resolution per call.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -1026,10 +1025,6 @@ namespace FastMoq
         public IFileSystem? CreateInstance<T>(bool usePredefinedFileSystem) where T : class, IFileSystem =>
             CreateInstance<T>(usePredefinedFileSystem, Array.Empty<object?>());
 
-        /// <summary>
-        /// Legacy compatibility overload retained for source compatibility.
-        /// File-system resolution now follows <see cref="Policy"/> instead of a per-call flag.
-        /// </summary>
         /// <summary>
         /// Legacy compatibility overload retained for callers that previously toggled file-system resolution per call.
         /// </summary>
@@ -1039,10 +1034,6 @@ namespace FastMoq
             CreateInstance<T>(args);
 
         /// <summary>
-        /// Legacy compatibility alias retained for source compatibility.
-        /// Use <see cref="CreateInstance{T}(InstanceCreationFlags, object?[])"/> with <see cref="InstanceCreationFlags.AllowNonPublicConstructorFallback"/>.
-        /// </summary>
-        /// <summary>
         /// Legacy compatibility alias for creating an instance with non-public constructor fallback enabled.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -1050,10 +1041,6 @@ namespace FastMoq
         public T? CreateInstanceNonPublic<T>(params object?[] args) where T : class =>
             CreateInstance<T>(InstanceCreationFlags.AllowNonPublicConstructorFallback, args);
 
-        /// <summary>
-        /// Legacy compatibility alias retained for source compatibility.
-        /// Public and non-public constructor selection now follows the shared constructor-resolution rules.
-        /// </summary>
         /// <summary>
         /// Legacy compatibility alias for creating an instance by runtime type with non-public constructor fallback enabled.
         /// </summary>

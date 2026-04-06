@@ -351,7 +351,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
     </tbody>
   </table>
   <h4 id="FastMoq_Mocker_creatingTypeList" data-uid="FastMoq.Mocker.creatingTypeList">creatingTypeList</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Tracks types currently being created so recursive resolution can short-circuit circular member population.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -396,7 +397,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
     </tbody>
   </table>
   <h4 id="FastMoq_Mocker_mockCollection" data-uid="FastMoq.Mocker.mockCollection">mockCollection</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Stores the tracked mock models for this <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -637,7 +639,7 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_Strict_" data-uid="FastMoq.Mocker.Strict*"></a>
   <h4 id="FastMoq_Mocker_Strict" data-uid="FastMoq.Mocker.Strict">Strict</h4>
-  <div class="markdown level1 summary"><p>Backward compatibility: maps to FailOnUnconfigured flag (Strict semantics) and presets.</p>
+  <div class="markdown level1 summary"><p>Obsolete compatibility property that maps to <a class="xref" href="FastMoq.MockFeatures.html#FastMoq_MockFeatures_FailOnUnconfigured">FailOnUnconfigured</a> within <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_Behavior">Behavior</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -3956,7 +3958,7 @@ public Mock&lt;T&gt; GetMock&lt;T&gt;(Action&lt;Mock&lt;T&gt;&gt; action, params
   </table>
   <a id="FastMoq_Mocker_GetMock_" data-uid="FastMoq.Mocker.GetMock*"></a>
   <h4 id="FastMoq_Mocker_GetMock__1_System_Object___" data-uid="FastMoq.Mocker.GetMock``1(System.Object[])">GetMock&lt;T&gt;(params object?[])</h4>
-  <div class="markdown level1 summary"><p>Returns a tracked mock for the requested type, creating it if needed.</p>
+  <div class="markdown level1 summary"><p>Gets a tracked legacy Moq mock for the supplied type parameter, creating it if needed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -5503,7 +5505,7 @@ This is broader than <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_St
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:53 UTC</span></div>
       
           </div>
         </div>

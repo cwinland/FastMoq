@@ -43,8 +43,8 @@ When generating code:
    - Example: Use `using System.Runtime;` then reference `AmbiguousImplementationException` instead of `System.Runtime.AmbiguousImplementationException`.
    - Keep using statements organized and remove unused ones.
 6. **Document new APIs**  
-    - Add XML doc comments for all public and protected members you touch, including obsolete compatibility APIs that still appear in the public surface.
-    - When doing a documentation cleanup pass, finish by re-checking the touched file for any remaining undocumented public/protected members instead of assuming the patch caught them all.
+    - Add XML doc comments for all public, protected, and protected internal members you touch, including obsolete compatibility APIs that still appear in the public surface.
+    - When doing a documentation cleanup pass, finish by re-checking the touched file for any remaining undocumented public, protected, or protected internal members instead of assuming the patch caught them all.
    - Include usage examples in Milestone docs.
 7. **Static Analysis (Sonar) Compliance**  
    - Honor the rules in the "Static Analysis Rules" section below (S121, S122, S6608) when generating or refactoring code.
@@ -68,7 +68,7 @@ Notes:
 - Duplicating constructor resolution logic — always centralize in `MockerConstructionHelper`.
 - Adding provider‑specific logic to `MockerTestBase` classes.
 - Breaking existing public API signatures.
-- Leaving touched public/protected members undocumented because they are obsolete or compatibility-only.
+- Leaving touched public, protected, or protected internal members undocumented because they are obsolete or compatibility-only.
 - Posting unrelated status text while working; every progress update should reflect the active task.
 
 ## 📚 Reference Examples

@@ -5,6 +5,7 @@ using FastMoq.Providers;
 namespace FastMoq
 {
     // Provider-first verification + fast mock creation conveniences (Moq-disconnected core surface).
+    /// <inheritdoc />
     public partial class Mocker
     {
         /// <summary>

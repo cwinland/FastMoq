@@ -4,6 +4,7 @@ using FastMoq.Providers;
 
 namespace FastMoq
 {
+    /// <inheritdoc />
     public partial class Mocker
     {
         /// <summary>

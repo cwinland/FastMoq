@@ -4,6 +4,7 @@ using FastMoq.Providers;
 
 namespace FastMoq
 {
+    /// <inheritdoc />
     public partial class Mocker
     {
         private static IFastMock CreateManagedFastMock(Type type, object instance)
@@ -25,10 +26,18 @@ namespace FastMoq
 
         private sealed class ManagedFastMock<T>(T instance) : IFastMock<T> where T : class
         {
+            /// <inheritdoc />
             public Type MockedType => typeof(T);
+
+            /// <inheritdoc />
             public T Instance { get; } = instance;
+
             object IFastMock.Instance => Instance;
+
+            /// <inheritdoc />
             public object NativeMock => Instance;
+
+            /// <inheritdoc />
             public void Reset() { }
         }
     }
