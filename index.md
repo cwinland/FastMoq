@@ -12,6 +12,9 @@ This site combines generated API reference with real-world example documentation
 
 ## Upgrading to v4
 
+- The release delta from `3.0.0` is centered on provider-first architecture, the new package split, explicit policy surfaces, provider-neutral verification, and the scenario builder.
+- Start with the release summary, then use the breaking-change and migration pages to decide how much compatibility behavior your test suites still need.
+
 - [Migration guide](docs/migration/README.md)
 - [What's new since 3.0.0](docs/whats-new/README.md)
 - [Breaking changes](docs/breaking-changes/README.md)

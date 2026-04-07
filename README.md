@@ -8,6 +8,15 @@ FastMoq is a .NET testing framework for auto-mocking, dependency injection, and 
 - If you want the shortest path to writing a test, go straight to [Getting Started Guide](./docs/getting-started).
 - If you are upgrading from the `3.0.0` line, go straight to [Migration Guide](./docs/migration).
 
+## Release Highlights Since 3.0.0
+
+- provider-first architecture built around `IMockingProvider`, `IFastMock<T>`, and `MockingProviderRegistry`
+- new package split with `FastMoq.Abstractions`, `FastMoq.Database`, `FastMoq.Provider.Moq`, and `FastMoq.Provider.NSubstitute`
+- provider-neutral verification with `Verify(...)`, `VerifyLogged(...)`, and `TimesSpec`
+- fluent scenario building through `Scenario.With(...).When(...).Then(...).Verify(...)`
+- explicit construction, invocation, and known-type policies instead of older coupled option bags
+- expanded migration docs, executable examples, and generated API coverage
+
 ## Why FastMoq
 
 FastMoq is still intended to remove boilerplate compared with using a mock provider directly.
@@ -113,7 +122,7 @@ The FastMoq version removes explicit mock declarations, subject construction, an
 
 - **📖 [Complete Documentation](./docs)** - All guides and references in one place
 - **🗺️ [Roadmap Notes](./docs/roadmap)** - Current provider-first direction and deferred backlog items
-- **🆕 [What's New Since 3.0.0](./docs/whats-new)** - Summary of the v4 release line relative to the last public `3.0.0` package
+- **🆕 [What's New Since 3.0.0](./docs/whats-new)** - Summary of the major post-`3.0.0` architecture, packaging, and API changes
 - **⚠️ [Breaking Changes](./docs/breaking-changes)** - Intentional v4 behavior changes relative to the `3.0.0` public release
 - **🔄 [Migration Guide](./docs/migration)** - Practical old-to-new guidance from `3.0.0` to the current repo direction
 - **❓ [FAQs](./FAQs.md)** - Frequently asked questions and troubleshooting
@@ -141,10 +150,13 @@ The FastMoq version removes explicit mock declarations, subject construction, an
 
 ## Packages
 
-- FastMoq - Aggregate package that combines FastMoq.Core, FastMoq.Database, and FastMoq.Web.
+- FastMoq - Aggregate package that combines the primary FastMoq runtime, database helpers, and web support.
+- FastMoq.Abstractions - Shared provider contracts used by core and provider packages.
 - FastMoq.Core - Core testing Mocker and provider-first resolution pipeline.
 - FastMoq.Database - Entity Framework and DbContext-focused helpers.
-- FastMoq.Web - Blazor and Web support.
+- FastMoq.Provider.Moq - Moq compatibility provider and Moq-specific convenience extensions for v4 migration.
+- FastMoq.Provider.NSubstitute - Optional NSubstitute provider package.
+- FastMoq.Web - Blazor and web support.
 
 In the current v4 layout, `FastMoq.Core` bundles the internal `reflection` provider and the bundled `moq` compatibility provider. The default provider is `reflection`. Additional providers such as `nsubstitute` can be added explicitly.
 

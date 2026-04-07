@@ -2,6 +2,17 @@
 
 Welcome to the comprehensive FastMoq documentation! This documentation is designed to help you get the most out of FastMoq, from your first test to advanced enterprise scenarios.
 
+## 🆕 Release Highlights Since 3.0.0
+
+If you are coming from the last public `3.0.0` package, the biggest changes in the current line are:
+
+- provider-first architecture with explicit provider registration and selection
+- new package split across abstractions, database helpers, and provider-specific adapters
+- provider-neutral verification with `TimesSpec`, `Verify(...)`, and `VerifyLogged(...)`
+- fluent `Scenario.With(...).When(...).Then(...).Verify(...)` support
+- explicit policy surfaces for constructor fallback, method fallback, known-type resolution, and optional-parameter behavior
+- expanded migration guidance, executable examples, and generated API coverage
+
 ## 📚 Documentation Structure
 
 ### 🚀 [Getting Started](./getting-started/README.md)
@@ -62,7 +73,7 @@ Current provider-first direction, active architectural work, and intentionally d
 
 ### 🆕 [What's New Since 3.0.0](./whats-new/README.md)
 
-Summary of the v4 release line relative to the May 12, 2025 `3.0.0` release baseline.
+Summary of the major architecture, packaging, API, and documentation changes after the May 12, 2025 `3.0.0` baseline.
 
 ### ⚠️ [Breaking Changes](./breaking-changes/README.md)
 
@@ -92,7 +103,7 @@ Practical guidance for moving from the `3.0.0` public release toward the current
 | **Background Jobs** | [Background Services](./cookbook/README.md#background-services-testing) | [Executable Testing Examples](./samples/testing-examples.md) |
 | **Blazor Apps** | [Getting Started](./getting-started/README.md) | [Executable Testing Examples](./samples/testing-examples.md) |
 
-Package note: `FastMoq` is the aggregate package. `FastMoq.Core` is intentionally lighter, EF-specific helpers live in `FastMoq.Database`, and web helpers live in `FastMoq.Web` while the primary calls stay in the `FastMoq` namespace.
+Package note: `FastMoq` is the aggregate package. Provider contracts live in `FastMoq.Abstractions`, `FastMoq.Core` stays lighter, EF-specific helpers live in `FastMoq.Database`, provider-specific adapters live in `FastMoq.Provider.*`, and web helpers live in `FastMoq.Web` while the primary calls stay in the `FastMoq` namespace.
 
 ## 🏆 Key Advantages
 
@@ -182,7 +193,7 @@ We welcome contributions! See our:
 
 ## 🏷️ Version Information
 
-This documentation tracks the current repository direction after **FastMoq 3.0.0**.
+This documentation tracks the current post-`3.0.0` FastMoq v4 release line.
 
 ---
 
