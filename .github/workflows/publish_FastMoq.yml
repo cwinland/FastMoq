@@ -49,6 +49,11 @@ jobs:
   tests:
     name: Reusable test matrix (net8/net9)
     needs: verify
+    permissions:
+      actions: read
+      contents: read
+      packages: read
+      security-events: write
     uses: ./.github/workflows/template_ci.yml
     with:
       projects: "FastMoq.Tests/FastMoq.Tests.csproj FastMoq.Tests.Web/FastMoq.Tests.Web.csproj"
