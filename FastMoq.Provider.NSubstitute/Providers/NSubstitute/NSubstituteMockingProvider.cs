@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Concurrent;
-using System.Linq;
 using System.Linq.Expressions;
-using FastMoq.Providers;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.Core;

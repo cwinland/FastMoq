@@ -1,4 +1,3 @@
-using FastMoq.Extensions;
 using FastMoq.Models;
 using Microsoft.EntityFrameworkCore;
 using Moq;

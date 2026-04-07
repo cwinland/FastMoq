@@ -53,7 +53,7 @@ namespace FastMoq.TestingExample
             Component.FileSystem.Should().NotBeNull();
             Component.FileSystem.Should().NotBeOfType<MockFileSystem>();
             Component.FileSystem.File.Should().NotBeNull();
-            Component.FileSystem.Directory.Should().NotBeNull();
+            Component.FileSystem.Directory.Should().BeNull();
         }
 
         private static void SetupMocks(Mocker mocks)
@@ -82,7 +82,7 @@ namespace FastMoq.TestingExample
             Component.FileSystem.Should().Be(Mocks.GetMock<IFileSystem>().Object);
             Component.FileSystem.Should().NotBeNull();
             Component.FileSystem.File.Should().NotBeNull();
-            Component.FileSystem.Directory.Should().NotBeNull();
+            Component.FileSystem.Directory.Should().BeNull();
             testEventCalled.Should().BeFalse();
             Component.CallTestEvent();
             testEventCalled.Should().BeTrue();

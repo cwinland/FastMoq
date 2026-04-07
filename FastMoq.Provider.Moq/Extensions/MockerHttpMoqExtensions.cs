@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using System.Net.Http;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
 using Moq;

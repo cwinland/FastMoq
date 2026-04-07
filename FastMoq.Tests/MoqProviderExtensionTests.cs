@@ -7,7 +7,6 @@ using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
 using Moq.Protected;
 
 namespace FastMoq.Tests

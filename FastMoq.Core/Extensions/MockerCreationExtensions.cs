@@ -1,10 +1,7 @@
 ﻿using FastMoq.Models;
-using Microsoft.AspNetCore.Http;
 using Moq;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Security.Claims;
 
 namespace FastMoq.Extensions
 {

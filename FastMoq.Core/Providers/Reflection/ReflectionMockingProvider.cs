@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using FastMoq.Providers;
 using Microsoft.Extensions.Logging;
 
 namespace FastMoq.Providers.ReflectionProvider
@@ -155,21 +151,32 @@ namespace FastMoq.Providers.ReflectionProvider
         private sealed class ReflectionFastMock<T> : IFastMock<T> where T : class
         {
             private readonly Action<MethodInfo, object?[], object?> _tracker;
+
             public ReflectionFastMock(T instance, Action<MethodInfo, object?[], object?> tracker)
             {
                 Instance = instance;
                 _tracker = tracker;
             }
+
             public ReflectionFastMock(T instance, Action<object, MethodInfo, object?[]> tracker)
             {
                 Instance = instance;
                 _tracker = (m, a, r) => tracker(instance!, m, a);
             }
+
             public Type MockedType => typeof(T);
+
             public T Instance { get; }
+
             public object NativeMock => Instance;
+
             object IFastMock.Instance => Instance!;
-            public void Reset() { }
+
+            public void Reset()
+            {
+                _invocations.TryRemove(Instance, out _);
+            }
+
             public void Track(MethodInfo method, object?[] args, object? returnValue) => _tracker(method, args, returnValue);
         }
 

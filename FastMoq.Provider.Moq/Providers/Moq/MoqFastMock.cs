@@ -1,5 +1,3 @@
-using System;
-using FastMoq.Providers;
 using Moq;
 
 namespace FastMoq.Providers.MoqProvider

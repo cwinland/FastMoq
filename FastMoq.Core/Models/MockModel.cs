@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using FastMoq.Core.Providers;
+﻿using System.Diagnostics.CodeAnalysis;
 using FastMoq.Providers;
 using Moq; // legacy (to be removed in future)
 

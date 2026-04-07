@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Net.Http;
+﻿using System.ComponentModel;
 using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.IO.Abstractions;
@@ -736,18 +729,26 @@ namespace FastMoq
             var m = GetTypeModel(type);
             if (m.CreateFunc != null)
             {
-                return AddInjections(m.CreateFunc.Invoke(this, m.InstanceType), m.InstanceType);
+                var created = AddInjections(m.CreateFunc.Invoke(this, m.InstanceType), m.InstanceType);
+                initAction?.Invoke(created);
+                return created;
             }
             if (KnownTypeRegistry.TryGetDirectInstance(this, type, out var knownInstance))
             {
-                initAction?.Invoke(knownInstance);
-                return knownInstance;
+                if (IsCompatibleResolvedObject(type, knownInstance))
+                {
+                    initAction?.Invoke(knownInstance);
+                    return knownInstance;
+                }
             }
 
             if (KnownTypeRegistry.TryGetCustomManagedInstance(this, type, out var customManagedInstance))
             {
-                initAction?.Invoke(customManagedInstance);
-                return customManagedInstance;
+                if (IsCompatibleResolvedObject(type, customManagedInstance))
+                {
+                    initAction?.Invoke(customManagedInstance);
+                    return customManagedInstance;
+                }
             }
 
             if ((type.IsClass || type.IsInterface) && !type.IsSealed)
@@ -759,8 +760,11 @@ namespace FastMoq
 
                 if (KnownTypeRegistry.TryGetBuiltInManagedInstance(this, type, out var builtInManagedInstance))
                 {
-                    initAction?.Invoke(builtInManagedInstance);
-                    return builtInManagedInstance;
+                    if (IsCompatibleResolvedObject(type, builtInManagedInstance))
+                    {
+                        initAction?.Invoke(builtInManagedInstance);
+                        return builtInManagedInstance;
+                    }
                 }
 
                 return ResolveTrackedMockObject(type, initAction);
@@ -808,6 +812,11 @@ namespace FastMoq
             ArgumentNullException.ThrowIfNull(serviceKey);
 
             return !HasKeyedTypeModel(type, serviceKey) && !Contains(type, serviceKey);
+        }
+
+        private static bool IsCompatibleResolvedObject(Type requestedType, object? resolvedObject)
+        {
+            return resolvedObject == null || requestedType.IsInstanceOfType(resolvedObject);
         }
 
         private object? ResolveTrackedMockObject(Type type, Action<object?>? initAction, object? serviceKey = null)
@@ -1760,6 +1769,8 @@ namespace FastMoq
 
         /// <summary>
         /// Gets the index of the tracked mock model for the supplied runtime type.
+        /// When <paramref name="throwIfMissing"/> is <see langword="true"/>, this legacy helper preserves historical behavior by auto-creating the tracked mock before returning its index.
+        /// When <paramref name="throwIfMissing"/> is <see langword="false"/>, it throws if the tracked mock does not already exist.
         /// </summary>
         public int GetMockModelIndexOf(Type type, bool throwIfMissing = true)
         {

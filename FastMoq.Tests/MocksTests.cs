@@ -138,6 +138,20 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetObject_WithCreateFunc_ShouldInvokeInitAction_AfterInjection()
+        {
+            Mocks.AddType<TestCreateFuncTarget>(_ => new TestCreateFuncTarget(), replace: true);
+
+            TestCreateFuncTarget? callbackValue = null;
+            var resolved = Mocks.GetObject<TestCreateFuncTarget>(value => callbackValue = value);
+
+            resolved.Should().NotBeNull();
+            callbackValue.Should().BeSameAs(resolved);
+            resolved!.FileSystem.Should().NotBeNull();
+            callbackValue!.FileSystem.Should().BeSameAs(resolved.FileSystem);
+        }
+
+        [Fact]
         public void GetMockModel_NativeMock_ShouldMatchCurrentProviderObject()
         {
             Mocks.GetMock<IFileSystem>();
@@ -2002,5 +2016,11 @@ namespace FastMoq.Tests
         }
 
         public string Name { get; }
+    }
+
+    public sealed class TestCreateFuncTarget
+    {
+        [Inject]
+        public IFileSystem? FileSystem { get; set; }
     }
 }

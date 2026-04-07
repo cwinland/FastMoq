@@ -1,5 +1,3 @@
-using System;
-
 namespace FastMoq.Providers.MoqProvider
 {
     public sealed class MoqMockAdapter<T> : global::FastMoq.Providers.IFastMock<T> where T : class

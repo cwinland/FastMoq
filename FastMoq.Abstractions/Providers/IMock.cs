@@ -1,5 +1,3 @@
-using System;
-
 namespace FastMoq.Providers
 {
     /// <summary>

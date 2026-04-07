@@ -1,7 +1,5 @@
 ﻿using System.Net;
-using System.Net.Http;
 using System.Text;
-using FastMoq.Providers;
 
 namespace FastMoq.Extensions
 {

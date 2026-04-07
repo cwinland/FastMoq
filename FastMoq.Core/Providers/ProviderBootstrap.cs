@@ -1,4 +1,3 @@
-using System.Threading;
 using System.Runtime.CompilerServices;
 using FastMoq.Providers;
 

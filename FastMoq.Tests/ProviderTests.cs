@@ -7,13 +7,11 @@ using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
 using FastMoq.Providers.NSubstituteProvider;
 using FastMoq.Providers.ReflectionProvider;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
 
 namespace FastMoq.Tests
 {
@@ -81,6 +79,22 @@ namespace FastMoq.Tests
             consumer.Dependency.Run("alpha");
 
             mocker.Verify<IProviderDependency>(x => x.Run("alpha"), TimesSpec.Once);
+        }
+
+        [Fact]
+        public void ReflectionProvider_Reset_ShouldClearTrackedInvocations()
+        {
+            using var providerScope = PushProvider("reflection");
+            var mocker = new Mocker();
+
+            var dependency = mocker.GetOrCreateMock<IProviderDependency>();
+            dependency.Instance.Run("alpha");
+
+            dependency.Reset();
+
+            Action verify = () => mocker.Verify<IProviderDependency>(x => x.Run("alpha"), TimesSpec.Once);
+            verify.Should().Throw<InvalidOperationException>();
+            mocker.VerifyNoOtherCalls<IProviderDependency>();
         }
 
         [Theory]

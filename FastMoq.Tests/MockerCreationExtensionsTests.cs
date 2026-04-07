@@ -1,7 +1,6 @@
 ﻿using FastMoq.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Moq;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 
