@@ -110,8 +110,27 @@ jobs:
           dotnet pack FastMoq-Release.sln -c Release -o ./artifacts --no-build /p:PackageVersion=$VERSION
       - name: Verify embedded package version
         run: |
-          PKG=$(ls artifacts/FastMoq.*.nupkg | head -n1)
-          unzip -p "$PKG" FastMoq.nuspec | grep -Eq "<version>${VERSION}</version>" || { echo "Package nuspec version mismatch" >&2; exit 1; }
+          set -euo pipefail
+          found=0
+          for pkg in artifacts/*.nupkg; do
+            found=1
+            package_id=$(basename "$pkg")
+            nuspec_name=$(unzip -Z1 "$pkg" '*.nuspec' | head -n1)
+            if [[ -z "$nuspec_name" ]]; then
+              echo "No nuspec found in $package_id" >&2
+              exit 1
+            fi
+
+            unzip -p "$pkg" "$nuspec_name" | grep -Eq "<version>${VERSION}</version>" || {
+              echo "Package nuspec version mismatch in $package_id" >&2
+              exit 1
+            }
+          done
+
+          if [[ "$found" -eq 0 ]]; then
+            echo "No packages were generated." >&2
+            exit 1
+          fi
       - name: List packages
         run: ls -1 artifacts
       - uses: actions/upload-artifact@v7
