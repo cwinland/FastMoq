@@ -97,6 +97,9 @@ jobs:
             9.0.x
             10.0.x
           cache: true
+          cache-dependency-path: |
+            **/*.csproj
+            **/*.sln
       - name: Restore
         run: dotnet restore FastMoq-Release.sln
       - name: Build (Release)
