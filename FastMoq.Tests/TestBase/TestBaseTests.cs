@@ -39,6 +39,29 @@ namespace FastMoq.Tests.TestBase
         [Fact]
         public void CustomMocksTest()
         {
+            static int GetTrackedMockIndex(Mocker mocker, Type type, bool autoCreate = true)
+            {
+                var index = mocker.mockCollection.FindIndex(model => model.Type == type);
+                if (index >= 0)
+                {
+                    return index;
+                }
+
+                if (!autoCreate)
+                {
+                    throw new NotImplementedException("Unable to find the constructor.");
+                }
+
+                _ = mocker.GetOrCreateFastMock(type);
+                index = mocker.mockCollection.FindIndex(model => model.Type == type);
+                if (index < 0)
+                {
+                    throw new NotImplementedException("Unable to find the constructor.");
+                }
+
+                return index;
+            }
+
             var mock = new Mock<IFileSystem>();
             var mock2 = new Mock<IFile>();
             var mockModel = new MockModel<IFileSystem>(mock);
@@ -49,8 +72,8 @@ namespace FastMoq.Tests.TestBase
 
             var count = Mocks.mockCollection.Count;
             CreateComponent();
-            Mocks.GetMockModelIndexOf(typeof(IFile), false).Should().Be(count + 1);
-            Mocks.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(count);
+            GetTrackedMockIndex(Mocks, typeof(IFile), false).Should().Be(count + 1);
+            GetTrackedMockIndex(Mocks, typeof(IFileSystem), false).Should().Be(count);
         }
 
         [Fact]

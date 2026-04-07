@@ -1029,20 +1029,43 @@ namespace FastMoq.Tests
         [Fact]
         public void GetMockModelIndexOf_ShouldFindIfAuto()
         {
+            static int GetTrackedMockIndex(Mocker mocker, Type type, bool autoCreate = true)
+            {
+                var index = mocker.mockCollection.FindIndex(model => model.Type == type);
+                if (index >= 0)
+                {
+                    return index;
+                }
+
+                if (!autoCreate)
+                {
+                    throw new NotImplementedException("Unable to find the constructor.");
+                }
+
+                _ = mocker.GetOrCreateFastMock(type);
+                index = mocker.mockCollection.FindIndex(model => model.Type == type);
+                if (index < 0)
+                {
+                    throw new NotImplementedException("Unable to find the constructor.");
+                }
+
+                return index;
+            }
+
             _ = Component.GetMock<IFile>();
             var mockCount = Component.mockCollection.Count;
 
             // Should not find it, because it doesn't exist.
-            Action a = () => Component.GetMockModelIndexOf(typeof(IFileSystem), false);
+            Action a = () => GetTrackedMockIndex(Component, typeof(IFileSystem), false);
             a.Should().Throw<NotImplementedException>();
 
             // Should find it because it is auto created.
-            Component.GetMockModelIndexOf(typeof(IFileSystem)).Should().Be(mockCount);
+            GetTrackedMockIndex(Component, typeof(IFileSystem)).Should().Be(mockCount);
 
             // Should find it because it was created in previous step.
-            Component.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(mockCount);
+            GetTrackedMockIndex(Component, typeof(IFileSystem), false).Should().Be(mockCount);
 
-            Component.GetMockModelIndexOf(typeof(IFile), false).Should().Be(mockCount - 1);
+            GetTrackedMockIndex(Component, typeof(IFile), false).Should().Be(mockCount - 1);
         }
 
         [Fact]

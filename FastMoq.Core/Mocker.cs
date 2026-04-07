@@ -64,11 +64,15 @@ namespace FastMoq
         /// <summary>
         /// Name of the legacy Moq setup-all-properties method used by compatibility helpers.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Unused legacy Moq compatibility constant. This field will be removed in v5.")]
         public const string SETUP_ALL_PROPERTIES_METHOD_NAME = "SetupAllProperties";
 
         /// <summary>
         /// Name of the legacy Moq setup method used by compatibility helpers.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Unused legacy Moq compatibility constant. This field will be removed in v5.")]
         public const string SETUP = "Setup";
 
         private static readonly NullabilityInfoContext NullabilityContext = new();
@@ -1768,33 +1772,6 @@ namespace FastMoq
         public MockModel<T> GetMockModel<T>() where T : class => new(GetMockModel(typeof(T)));
 
         /// <summary>
-        /// Gets the index of the tracked mock model for the supplied runtime type.
-        /// When <paramref name="throwIfMissing"/> is <see langword="true"/>, this legacy helper preserves historical behavior by auto-creating the tracked mock before returning its index.
-        /// When <paramref name="throwIfMissing"/> is <see langword="false"/>, it throws if the tracked mock does not already exist.
-        /// </summary>
-        public int GetMockModelIndexOf(Type type, bool throwIfMissing = true)
-        {
-            var idx = mockCollection.FindIndex(m => m.Type == type);
-            if (idx >= 0)
-            {
-                return idx;
-            }
-
-            if (!throwIfMissing)
-            {
-                throw new NotImplementedException("Unable to find the constructor.");
-            }
-
-            _ = GetOrCreateFastMock(type);
-            idx = mockCollection.FindIndex(m => m.Type == type);
-            if (idx < 0)
-            {
-                throw new NotImplementedException("Unable to find the constructor.");
-            }
-
-            return idx;
-        }
-        /// <summary>
         /// Removes a tracked legacy Moq mock from the mock collection.
         /// </summary>
         [Obsolete("Use provider-neutral mock lifecycle APIs instead. This legacy Moq compatibility API will be removed in v5.")]
@@ -1843,29 +1820,6 @@ namespace FastMoq
             }
 
             KnownTypeRegistry.ApplyObjectDefaults(this, fastMock.Instance);
-        }
-
-        private static void TrySetupAllProperties(Mock mock)
-        {
-            var t = mock.GetType();
-            if (!t.IsGenericType)
-            {
-                return;
-            }
-
-            try
-            {
-                var ext = typeof(MockExtensions).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
-                    .FirstOrDefault(m => m.Name == "SetupAllProperties" && m.GetParameters().Length == 1);
-                if (ext == null)
-                {
-                    return;
-                }
-
-                var gm = ext.MakeGenericMethod(t.GetGenericArguments()[0]);
-                gm.Invoke(null, new object[] { mock });
-            }
-            catch { }
         }
 
         #endregion
