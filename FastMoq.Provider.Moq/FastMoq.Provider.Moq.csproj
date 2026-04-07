@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <DebugType>portable</DebugType>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Authors>Winland, $(AssemblyName)</Authors>
+    <Company>$(Authors)</Company>
+    <Copyright>Copyright(c) 2026 Christopher Winland</Copyright>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Description>Moq provider package for FastMoq v4 transition. This bundled dependency will be removed from FastMoq.Core in v5.</Description>
+    <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>FastMoq;Moq;provider;testing;mocking</PackageTags>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FastMoq.Abstractions\FastMoq.Abstractions.csproj" />
+  </ItemGroup>
+</Project>

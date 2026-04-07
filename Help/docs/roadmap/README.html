@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>FastMoq Roadmap Notes | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="FastMoq Roadmap Notes | FastMoq ">
+    
+    
+      <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+      <link rel="shortcut icon" href="../../favicon.svg">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="fastmoq-roadmap-notes">FastMoq Roadmap Notes</h1>
+
+<p>This document captures the current provider-first direction for FastMoq. It is not a marketing roadmap. It is a working backlog note for contributors and maintainers.</p>
+<h2 id="current-direction">Current Direction</h2>
+<p>FastMoq is moving toward a provider-based architecture where:</p>
+<ol>
+<li>FastMoq core owns creation, injection, lifecycle, and portable helpers.</li>
+<li>Provider-native arrangement and advanced mocking behavior stay with the active mocking library.</li>
+<li>Moq-specific backward compatibility is preserved where needed, but it should live in Moq-oriented layers rather than defining all provider behavior.</li>
+</ol>
+<h2 id="recently-completed-foundation">Recently Completed Foundation</h2>
+<ul>
+<li>Native provider objects are now surfaced through tracked mocks.</li>
+<li>Instance creation now uses focused APIs with policy-driven defaults plus explicit public-only and constructor-fallback entry points.</li>
+<li>Known framework-style types now have a per-<code>Mocker</code> extension point through <code>AddKnownType(...)</code>.</li>
+<li>A repo-native testing guide now documents the current recommended patterns.</li>
+<li>DbContext helpers now expose explicit mocked-sets versus real in-memory modes through <code>GetDbContextHandle(...)</code> and <code>DbContextTestMode</code>.</li>
+</ul>
+<h2 id="active-work">Active Work</h2>
+<h3 id="provider-boundary-cleanup">Provider boundary cleanup</h3>
+<p>The main remaining architectural work is continuing to isolate shared FastMoq behavior from Moq-specific compatibility behavior.</p>
+<p>Areas still in motion:</p>
+<ul>
+<li>Reducing reliance on legacy Moq-oriented surfaces in core paths.</li>
+<li>Keeping provider-native interactions available without forcing all providers to emulate Moq.</li>
+<li>Preserving compatibility where it is useful while keeping the long-term API shape provider-neutral.</li>
+</ul>
+<h3 id="release-hardening-and-packaging">Release hardening and packaging</h3>
+<p>The main remaining release-facing work is no longer about inventing large new features. It is about freezing the transition contract cleanly for the next major line.</p>
+<p>Current release-hardening focus:</p>
+<ul>
+<li>Finalize the packaging and provider-selection story for the built-in Moq, NSubstitute, and reflection providers.</li>
+<li>Keep the remaining Moq compatibility shims explicit so they do not look like provider-neutral core behavior.</li>
+<li>Tighten migration notes for obsolete or compatibility-only surfaces that will move in <code>v5</code>.</li>
+<li>Validate docs and executable examples against the release candidate behavior.</li>
+</ul>
+<p>The DbContext mode split itself is now in place. The remaining work there is release hardening, test coverage, and documentation accuracy rather than surface design.</p>
+<h2 id="deferred-work">Deferred Work</h2>
+<p>These items are intentionally deferred until the provider boundary is more settled.</p>
+<h3 id="broader-web-support-beyond-blazor">Broader web support beyond Blazor</h3>
+<p>FastMoq currently has meaningful web support, especially around Blazor and common ASP.NET abstractions. Broader web-framework coverage beyond the current Blazor-centered surface is deferred until the core/provider contracts stabilize.</p>
+<p>Examples of deferred expansion work:</p>
+<ul>
+<li>Larger ASP.NET integration helpers beyond the current HttpContext and HttpClient patterns.</li>
+<li>Broader MVC, minimal API, and non-Blazor web testing convenience layers.</li>
+<li>Additional public web abstractions that would otherwise hard-code current framework assumptions too early.</li>
+</ul>
+<h3 id="provider-specific-convenience-layers">Provider-specific convenience layers</h3>
+<p>Non-Moq providers may eventually gain richer convenience layers, but that should happen after the shared provider contract is stable enough to support them cleanly.</p>
+<h3 id="obsolete-surface-cleanup">Obsolete-surface cleanup</h3>
+<p>Several Moq-oriented compatibility members remain intentionally available. Removing or reshaping them is deferred to a future major-version cleanup once provider migration guidance is ready.</p>
+<h3 id="mockoptional-replacement"><code>MockOptional</code> replacement</h3>
+<p>The first replacement pass is now in place.</p>
+<p><code>MockOptional</code> is obsolete and retained only as a compatibility alias. The runtime now prefers explicit optional-parameter controls through <code>Mocker.OptionalParameterResolution</code>, <code>InvocationOptions</code>, and focused <code>MockerTestBase&lt;TComponent&gt;</code> component-construction overrides.</p>
+<p>The remaining cleanup direction is to continue reducing older <code>MockOptional</code> examples and remove the alias in <code>v5</code>, after <code>v4</code> ships with the explicit migration path.</p>
+<p>Future work should evaluate:</p>
+<ul>
+<li>whether any remaining compatibility-only <code>MockOptional</code> examples should be rewritten immediately</li>
+<li>whether more helper APIs should expose the explicit options model directly</li>
+<li>whether any <code>v4</code> release notes need stronger migration guidance before the planned <code>v5</code> removal</li>
+</ul>
+<h2 id="documentation-follow-ups">Documentation Follow-Ups</h2>
+<p>Documentation now covers the testing decision points and known-type behavior, but more sample updates are still desirable later:</p>
+<ul>
+<li>Provider-native examples once additional provider work lands.</li>
+<li>Focused migration notes for older Moq-heavy test suites.</li>
+<li>Expanded web samples if broader web support moves out of the deferred bucket.</li>
+<li>Additional DbContext examples now that mock-mode versus real-mode options are explicit.</li>
+</ul>
+<h2 id="decision-rules">Decision Rules</h2>
+<p>When choosing what to do next, use these rules:</p>
+<ol>
+<li>Prefer provider-boundary work over adding new provider-specific surface area.</li>
+<li>Prefer per-<code>Mocker</code> extension points over global mutable registries.</li>
+<li>Prefer compatibility shims in provider-specific layers over pushing Moq behavior into all providers.</li>
+<li>Defer new web-framework breadth until the core/provider split is clearer.</li>
+</ol>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -7,14 +7,8 @@ namespace FastMoq.Tests
 {
     public class BlogRepoTests : MockerTestBase<BlogRepo>
     {
-        protected override Action<Mocker> SetupMocksAction => mocker =>
-        {
-            var dbContextMock = mocker.GetMockDbContext<ApplicationDbContext>();
-            mocker.AddType(_ => dbContextMock.Object);
-        };
-
         [Fact]
-        public void GetBlog_ShouldReturnBlog_WhenPassedId()
+        public void GetBlogById_ShouldReturnMatchingBlog_WhenIdExists()
         {
             // Arrange
             const int ID = 1234;
@@ -31,11 +25,41 @@ namespace FastMoq.Tests
             Assert.NotNull(result);
             Assert.True(result.Id.Equals(ID));
         }
+
+        [Fact]
+        public void Component_ShouldUseBuiltInTrackedDbContext_WhenNoExplicitRegistrationExists()
+        {
+            Component.DbContext.Should().BeSameAs(Mocks.GetMockDbContext<ApplicationDbContext>().Object);
+        }
+
+        [Fact]
+        public void CreateInstance_ShouldPreferCustomManagedDbContext_OverTrackedMock()
+        {
+            var mocker = new Mocker();
+            var expected = new ApplicationDbContext(
+                new DbContextOptionsBuilder<ApplicationDbContext>()
+                    .UseInMemoryDatabase($"FastMoq_{nameof(ApplicationDbContext)}_{Guid.NewGuid():N}")
+                    .Options);
+
+            mocker.AddKnownType<DbContext>(
+                managedInstanceFactory: (_, requestedType) =>
+                    requestedType == typeof(ApplicationDbContext) ? expected : null,
+                includeDerivedTypes: true);
+
+            var trackedMock = mocker.GetMockDbContext<ApplicationDbContext>();
+            var repo = mocker.CreateInstance<BlogRepo>();
+
+            repo.Should().NotBeNull();
+            repo!.DbContext.Should().BeSameAs(expected);
+            repo.DbContext.Should().NotBeSameAs(trackedMock.Object);
+        }
     }
 
     public class BlogRepo(ApplicationDbContext dbContext)
     {
-        public Blog? GetBlogById(int id) => dbContext.Blogs.AsEnumerable().FirstOrDefault(x => x.Id == id);
+        public ApplicationDbContext DbContext { get; } = dbContext;
+
+        public Blog? GetBlogById(int id) => DbContext.Blogs.AsEnumerable().FirstOrDefault(x => x.Id == id);
     }
 
     public class ApplicationDbContext : DbContext

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
@@ -11,7 +11,7 @@
     <Company>$(Authors)</Company>
     <Copyright>Copyright(c) 2021-2022 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
-    <Description>Encapsulates all of FastMoq Core and extensions Blazor/Web Support. Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing. Now with Blazor support.</Description>
+    <Description>Complete FastMoq package for automatic test double creation, constructor injection, EF testing helpers, and Blazor/web testing support. Includes the core runtime plus database and web integrations.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -19,10 +19,6 @@
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IsPackable>true</IsPackable>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn)</GenerateNuspecDependsOn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -41,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
+    <ProjectReference Include="..\FastMoq.Database\FastMoq.Database.csproj" />
     <ProjectReference Include="..\FastMoq.Web\FastMoq.Web.csproj" />
   </ItemGroup>
 </Project>

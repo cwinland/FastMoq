@@ -1,0 +1,42 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Core.Providers
+  commentId: N:FastMoq.Core.Providers
+  id: FastMoq.Core.Providers
+  children:
+  - FastMoq.Core.Providers.MockWrapper`1
+  langs:
+  - csharp
+  - vb
+  name: FastMoq.Core.Providers
+  nameWithType: FastMoq.Core.Providers
+  fullName: FastMoq.Core.Providers
+  type: Namespace
+  assemblies:
+  - FastMoq.Core
+references:
+- uid: FastMoq.Core.Providers.MockWrapper`1
+  commentId: T:FastMoq.Core.Providers.MockWrapper`1
+  href: FastMoq.Core.Providers.MockWrapper-1.html
+  name: MockWrapper<T>
+  nameWithType: MockWrapper<T>
+  fullName: FastMoq.Core.Providers.MockWrapper<T>
+  nameWithType.vb: MockWrapper(Of T)
+  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T)
+  name.vb: MockWrapper(Of T)
+  spec.csharp:
+  - uid: FastMoq.Core.Providers.MockWrapper`1
+    name: MockWrapper
+    href: FastMoq.Core.Providers.MockWrapper-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Core.Providers.MockWrapper`1
+    name: MockWrapper
+    href: FastMoq.Core.Providers.MockWrapper-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

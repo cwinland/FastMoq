@@ -1,15 +1,25 @@
 # FastMoq Sample Applications
 
-This directory contains complete sample applications demonstrating FastMoq's capabilities in real-world scenarios, particularly focusing on modern .NET and Azure integration patterns.
+This directory contains the sample documentation and executable examples that currently exist in this repository.
 
-## Sample Applications
+## Available samples in this repository
 
-1. **[E-Commerce Order Processing](./ecommerce-orders/)** - Complete order processing system with Azure integration
-2. **[Microservices Communication](./microservices/)** - Service-to-service communication patterns
-3. **[Background Processing](./background-services/)** - Queue processing and background jobs
-4. **[Blazor Web Application](./blazor-webapp/)** - Full-stack Blazor application with testing
+1. **[E-Commerce Order Processing](./ecommerce-orders/README.md)** - Full sample documentation for an order-processing workflow
+2. **[Executable Testing Examples](./testing-examples.md)** - Smaller repo-local service examples backed by the `FastMoq.TestingExample` project
 
-## Common Patterns Demonstrated
+## Repo-local executable examples
+
+If you want smaller service-focused examples that compile and run directly in this repository, start with [Executable Testing Examples](./testing-examples.md).
+
+Those examples are backed by the `FastMoq.TestingExample` project and currently show:
+
+- `MockerTestBase<TComponent>` in realistic service tests
+- built-in `IFileSystem` behavior with `MockFileSystem`
+- `VerifyLogged(...)` assertions
+- fluent `Scenario.With(...).When(...).Then(...).Verify(...)` usage inside `MockerTestBase<TComponent>`
+- provider-first verification with `TimesSpec.Once`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, `TimesSpec.AtMost(...)`, and `TimesSpec.Never()`
+
+## Common patterns demonstrated
 
 - **Azure Service Bus** integration and testing
 - **Azure Blob Storage** operations
@@ -29,22 +39,24 @@ The sample test projects intentionally showcase FastMoq extension helpers so you
 ### HTTP / External API
 
 - `CreateHttpClient()` to quickly register an `HttpClient` and (if needed) an `IHttpClientFactory` with a default response.
-- `SetupHttpMessage(...)` for per‑test customization (status codes, payloads, sequences).
+- Prefer `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` for provider-neutral request matching and response setup.
+- Use `SetupHttpMessage(...)` only when you intentionally need Moq-specific protected `SendAsync` behavior from the Moq provider package. Keep `using FastMoq.Extensions;`, add `FastMoq.Provider.Moq`, and select the Moq provider for the test assembly when you use that compatibility path.
 - Content helpers: `GetStringContent`, `GetContentBytesAsync()`, `GetContentStreamAsync()` for asserting raw payloads.
 
 ### Entity Framework Core
 
 - `GetMockDbContext<TContext>()` to obtain a mock context with DbSets auto‑prepared.
-- Add the real in‑memory variant via `AddType` if you want a lightweight functional test using SQLite in memory.
+- Add a custom variant via `AddType` if you want to pin a specific test-time implementation.
 
 ### Logging Verification
 
-- Use `Mocks.GetMock<ILogger<T>>() .VerifyLogger(LogLevel.Information, "Message")` instead of direct invocation inspection.
+- Prefer `Mocks.VerifyLogged(LogLevel.Information, "Message")` for provider-safe logger assertions.
+- Use `GetOrCreateMock<ILogger<T>>().AsMoq().VerifyLogger(...)` only when you intentionally need the legacy Moq-specific compatibility behavior, such as minimizing churn in older Moq-shaped tests during the v4 transition. It is not the preferred path for new assertions just because you want more control; prefer `VerifyLogged(...)` unless you specifically need the old Moq-only assertion surface.
 
 ### Constructor & Dependency Injection
 
 - `CreateInstance<T>()` / typed overloads pick the correct constructor and auto‑inject mocks.
-- `AddType<TAbstraction>(factory)` to pin specific concrete/instance values (e.g., seeded `DbConnection`, `Uri`, or options).
+- `AddType<TAbstraction>(factory)` to pin specific concrete/instance values (e.g., seeded `Uri` or options).
 
 ### Azure Service Patterns
 
@@ -53,25 +65,24 @@ Even when not running in Azure, the samples demonstrate how you would substitute
 - Wrap Azure SDK clients with interfaces in your application layer and mock those interfaces in tests.
 - Use consistent naming for senders/processors so verification (e.g., Service Bus send) is easy.
 
-## Azure Function Style Testing (Guidance)
+## Azure Function style testing guidance
 
 If you adapt these samples for Azure Functions HTTP triggers, use patterns similar to (conceptually) `MockedHttpRequestData` and `MockedHttpResponseData` helpers (as seen in other internal solution test utilities):
 
 1. Build the request: supply method, route values, headers, and JSON body.
 2. Provide dependency injection values using `AddType` (e.g., configuration, services).
-3. Use `SetupHttpMessage` for outbound `HttpClient` calls triggered inside the function.
+3. Use `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` for outbound `HttpClient` calls triggered inside the function.
 4. Assert:
    - Outbound calls (verify `SendAsync`)
    - Response status & body (deserialize or use content helpers)
-   - Logs via `VerifyLogger`
+   - Logs via `VerifyLogged`
 
 Recommended layering:
 
 ```csharp
 var request = TestUtils.CreateHttpRequest(jsonBody, queryParams);
 var result = await Component.RunAsync(request, CancellationToken.None);
-Mocks.GetMock<ILogger<MyFunction>>()
-   .VerifyLogger(LogLevel.Information, "Processed event");
+Mocks.VerifyLogged(LogLevel.Information, "Processed event");
 ```
 
 While FastMoq does not ship Azure Functions request/response shims directly, it complements such utilities by supplying:
@@ -80,38 +91,34 @@ While FastMoq does not ship Azure Functions request/response shims directly, it 
 - Consistent `HttpClient` mocking for downstream REST calls.
 - Simplified DI graph creation so only function inputs need explicit arrangement.
 
-## Sample Enhancement Ideas
+## Notes about repository scope
 
-The current samples are intentionally minimal. Consider extending locally with:
+Some sample categories mentioned elsewhere in the documentation are future sample directions rather than folders that currently exist in this repository. Use this page and the linked directories above as the source of truth for what is available today.
 
-- Adding a payment gateway client abstraction and testing retry/backoff logic via `SetupHttpMessage` sequences.
+## Sample enhancement ideas
+
+The current samples are intentionally focused. Consider extending locally with:
+
+- Adding a payment gateway client abstraction and testing retry/backoff logic via provider-neutral request helpers for happy-path routing, then Moq `SetupSequence(...)` only when you intentionally need provider-specific call sequencing.
 - Adding blob metadata assertions using a mocked `BlobClient`.
 - Introducing an options reload test using `IOptionsMonitor<T>` + updated values via `AddType`.
 
 ## Quick Reference: Which Helper to Choose?
 
 | Goal | Helper | Notes |
-|------|--------|-------|
+| ---- | ------ | ----- |
 | Fast default HttpClient | `CreateHttpClient()` | Registers handler + factory if missing |
-| Custom per‑test response | `SetupHttpMessage()` | Use multiple calls for sequential responses |
+| Custom per‑test HTTP behavior | `WhenHttpRequest()` / `WhenHttpRequestJson()` | Provider-neutral request matching and response setup |
 | Mock EF Core context | `GetMockDbContext<T>()` | Auto sets up DbSets; seed data before use |
 | Replace concrete dependency | `AddType<T>()` | Pin deterministic instances (e.g., clock) |
-| Verify log message | `VerifyLogger(...)` | Works on `ILogger` or `ILogger<T>` mocks |
+| Verify log message | `VerifyLogged(...)` | Provider-safe assertion over captured `ILogger` entries |
 | Extract HTTP content | `GetStringContent` | Use for string assertions |
 
-> Tip: Prefer the extension helpers first; drop down to raw Moq setup only for edge cases.
+> Tip: Prefer the provider-neutral HTTP helpers first; drop down to Moq-specific setup only for protected-member or sequencing edge cases.
 
-## Getting Started
+## Getting started
 
-Each sample application includes:
-
-- Complete source code
-- Comprehensive test suite using FastMoq
-- Docker configuration for local development
-- README with setup instructions
-- Azure deployment templates
-
-Choose a sample based on your use case and follow the individual README files for setup instructions.
+Start with [Executable Testing Examples](./testing-examples.md) if you want the quickest path to real, runnable tests in this repository. Use [E-Commerce Order Processing](./ecommerce-orders/README.md) when you want a larger sample walkthrough.
 
 ## Prerequisites
 
@@ -133,6 +140,12 @@ dotnet restore
 dotnet test
 ```
 
+For the smaller executable examples instead:
+
+```bash
+dotnet test .\FastMoq.TestingExample\FastMoq.TestingExample.csproj
+```
+
 ## Learning Objectives
 
 After exploring these samples, you'll understand how to:
@@ -150,5 +163,5 @@ After exploring these samples, you'll understand how to:
 If you have questions about the samples or need help adapting them to your specific use case, please:
 
 1. Check the individual sample README files
-2. Review the [main documentation](../../README.md)
+2. Review the [main documentation](../../index.md)
 3. Open an issue on the [FastMoq repository](https://github.com/cwinland/FastMoq/issues)

@@ -2,6 +2,8 @@
 
 This cookbook contains practical recipes for common testing scenarios using FastMoq. Each recipe includes complete, runnable examples that you can adapt to your specific needs.
 
+Most recipes here focus on common test shapes and readability first. Some examples still use `GetMock<T>()` because that remains a useful v4 compatibility path. When you are writing new tests or actively modernizing existing ones, prefer provider-neutral APIs such as `GetOrCreateMock(...)`, provider-safe `Verify(...)`, `Mocks.VerifyLogged(...)`, `WhenHttpRequest(...)`, and `WhenHttpRequestJson(...)` where they fit the test intent. When a recipe intentionally uses Moq-only helpers such as `SetupHttpMessage(...)`, it is called out explicitly.
+
 ## Table of Contents
 
 1. [API Controller Testing](#api-controller-testing)
@@ -10,10 +12,6 @@ This cookbook contains practical recipes for common testing scenarios using Fast
 4. [HttpClient and External API Testing](#httpclient-and-external-api-testing)
 5. [Configuration and Options Testing](#configuration-and-options-testing)
 6. [Logging Verification](#logging-verification)
-7. [Azure Services Testing](#azure-services-testing)
-8. [Fluent Validation Testing](#fluent-validation-testing)
-9. [Event-Driven Architecture Testing](#event-driven-architecture-testing)
-10. [File System Operations](#file-system-operations)
 
 ---
 
@@ -21,9 +19,11 @@ This cookbook contains practical recipes for common testing scenarios using Fast
 
 Testing ASP.NET Core controllers with dependency injection and various scenarios.
 
+These controller examples use the Moq compatibility path for brevity because they demonstrate familiar `Setup(...)`-style arrangements. If you want the lowest-churn v4 migration path, that is still valid. If you are building new tests and do not specifically need Moq-shaped setup, prefer the provider-first guidance in the [Testing Guide](../getting-started/testing-guide.md) and [Provider Selection Guide](../getting-started/provider-selection.md).
+
 ### Basic Controller Test
 
-**Controller Example**
+#### Controller Example
 
 ```csharp
 [ApiController]
@@ -69,11 +69,12 @@ public class UsersController : ControllerBase
 }
 ```
 
-**Test Example**
+#### Test Example
 
 ```csharp
 using FastMoq;
 using FastMoq.Extensions;
+using Microsoft.Extensions.Options;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -81,19 +82,17 @@ using Moq;
 using Xunit;
 
 public class UsersControllerTests : MockerTestBase<UsersController>
+using Microsoft.Extensions.Options;
 {
     [Fact]
     public async Task GetUser_ShouldReturnOkResult_WhenUserExists()
     {
         // Arrange
-        var userId = 1;
-        var expectedUser = new UserDto { Id = userId, Name = "John Doe" };
-        
-        Mocks.GetMock<IUserService>()
-            .Setup(x => x.GetUserAsync(userId))
+        mocker.AddType<IOptions<WeatherApiOptions>>(() =>
+            Options.Create(new WeatherApiOptions { ApiKey = "test-api-key" }));
             .ReturnsAsync(expectedUser);
 
-        // Act
+        mocker.CreateHttpClient(
         var result = await Component.GetUser(userId);
 
         // Assert
@@ -132,8 +131,7 @@ public class UsersControllerTests : MockerTestBase<UsersController>
         statusResult.StatusCode.Should().Be(500);
         
         // Verify logging
-        Mocks.GetMock<ILogger<UsersController>>()
-            .VerifyLogger(LogLevel.Error, Times.Once());
+        Mocks.VerifyLogged(LogLevel.Error, "Database error", 1);
     }
 
     [Fact]
@@ -411,7 +409,7 @@ public class UsersControllerHelperAuthTests : MockerTestBase<UsersController>
 FastMoq provides these built-in identity helper methods from `IdentityHelperExtensions.cs`:
 
 | Method | Description | Example Usage |
-|--------|-------------|---------------|
+| ------ | ----------- | ------------- |
 | `CreateClaim(type, value, properties, allowCustomType)` | Creates a validated claim | `IdentityHelperExtensions.CreateClaim(ClaimTypes.NameIdentifier, "user123")` |
 | `CreatePrincipal(claims, authenticationType)` | Creates a ClaimsPrincipal from claims | `IdentityHelperExtensions.CreatePrincipal(claims, "TestAuth")` |
 | `SetUser(context, principal)` | Sets user on HttpContext | `context.SetUser(principal)` |
@@ -525,9 +523,8 @@ public class BlogServiceTests : MockerTestBase<BlogService>
         dbContext.Blogs.Should().Contain(result);
         
         // Verify logging
-        Mocks.GetMock<ILogger<BlogService>>()
-            .VerifyLogger(LogLevel.Information, 
-            "Created blog {BlogId} with title {Title}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Created blog", 1);
     }
 
     [Fact]
@@ -707,12 +704,10 @@ public class EmailProcessingServiceTests : MockerTestBase<EmailProcessingService
         Mocks.GetMock<IEmailSender>()
             .Verify(x => x.SendAsync(emailMessage), Times.Once);
             
-        Mocks.GetMock<ILogger<EmailProcessingService>>()
-            .VerifyLogger(LogLevel.Information,
-            "Processing email to {Recipient}", Times.Once());
-        Mocks.GetMock<ILogger<EmailProcessingService>>()
-            .VerifyLogger(LogLevel.Information,
-            "Email sent successfully to {Recipient}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Processing email", 1);
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Email sent successfully", 1);
     }
 
     [Fact]
@@ -737,8 +732,7 @@ public class EmailProcessingServiceTests : MockerTestBase<EmailProcessingService
         await executeTask;
 
         // Assert
-        Mocks.GetMock<ILogger<EmailProcessingService>>()
-            .VerifyLogger(LogLevel.Error, Times.AtLeastOnce());
+        Mocks.VerifyLogged(LogLevel.Error, "SMTP error", 1);
     }
 
     [Fact]
@@ -818,24 +812,24 @@ public class WeatherService
 
 FastMoq provides built-in **HTTP extension helpers** from `MockerHttpExtensions.cs` that simplify HTTP client testing. There are two main approaches:
 
+Use the provider-neutral helpers first. Reach for `SetupHttpMessage(...)` only when you intentionally need the Moq compatibility path, such as protected `SendAsync` setups.
+
 #### Quick Setup with CreateHttpClient (Best for Simple Scenarios)
 
 ```csharp
 using FastMoq;
 using FastMoq.Extensions;
+using Microsoft.Extensions.Options;
 
 public class WeatherServiceQuickTests : MockerTestBase<WeatherService>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        // Setup options
-        var options = new WeatherApiOptions { ApiKey = "test-api-key" };
-        mocker.GetMock<IOptions<WeatherApiOptions>>()
-            .Setup(x => x.Value)
-            .Returns(options);
+        mocker.AddType<IOptions<WeatherApiOptions>>(() =>
+            Options.Create(new WeatherApiOptions { ApiKey = "test-api-key" }));
         
         // ✅ EASIEST - CreateHttpClient with defaults (auto-registers HttpClient)
-        var httpClient = mocker.CreateHttpClient(
+        mocker.CreateHttpClient(
             clientName: "WeatherApiClient",
             baseAddress: "https://api.openweathermap.org/data/2.5/",
             statusCode: HttpStatusCode.OK,
@@ -858,17 +852,6 @@ public class WeatherServiceQuickTests : MockerTestBase<WeatherService>
         result.Should().NotBeNull();
         result.Temperature.Should().Be(20.5);
         result.Description.Should().Be("Partly cloudy");
-
-        // Verify HttpClient was used with correct base address
-        Mocks.GetMock<HttpMessageHandler>()
-            .Protected()
-            .Verify("SendAsync",
-                Times.Once(),
-                ItExpr.Is<HttpRequestMessage>(req => 
-                    req.RequestUri!.ToString().StartsWith("https://api.openweathermap.org/data/2.5/")
-                ),
-                ItExpr.IsAny<CancellationToken>()
-            );
     }
 
     [Fact]
@@ -888,22 +871,21 @@ public class WeatherServiceQuickTests : MockerTestBase<WeatherService>
 }
 ```
 
-#### Advanced Setup with SetupHttpMessage (Best for Complex Scenarios)
+#### Custom Request Matching with WhenHttpRequest (Preferred for Most Custom Scenarios)
 
 ```csharp
+using Microsoft.Extensions.Options;
+
 public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        // Setup options
-        var options = new WeatherApiOptions { ApiKey = "test-api-key" };
-        mocker.GetMock<IOptions<WeatherApiOptions>>()
-            .Setup(x => x.Value)
-            .Returns(options);
+        mocker.AddType<IOptions<WeatherApiOptions>>(() =>
+            Options.Create(new WeatherApiOptions { ApiKey = "test-api-key" }));
     };
 
     [Fact]
-    public async Task GetWeatherAsync_ShouldReturnWeatherData_WithSetupHttpMessage()
+    public async Task GetWeatherAsync_ShouldReturnWeatherData_WithWhenHttpRequest()
     {
         // Arrange
         var city = "London";
@@ -915,12 +897,10 @@ public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
         };
 
         var responseContent = JsonSerializer.Serialize(expectedWeatherData);
-        
-        // ✅ ADVANCED - SetupHttpMessage for fine-grained control
-        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.OK)
+
+        Mocks.WhenHttpRequest(HttpMethod.Get, "/weather", () => new HttpResponseMessage(HttpStatusCode.OK)
         {
-            Content = new StringContent(responseContent, Encoding.UTF8, "application/json"),
-            Headers = { { "X-API-Version", "1.0" } }
+            Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         });
 
         // Act
@@ -930,10 +910,8 @@ public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
         result.Should().BeEquivalentTo(expectedWeatherData);
         
         // Verify logging
-        Mocks.GetMock<ILogger<WeatherService>>()
-            .VerifyLogger(LogLevel.Information, "Fetching weather for {City}", Times.Once());
-        Mocks.GetMock<ILogger<WeatherService>>()
-            .VerifyLogger(LogLevel.Information, "Successfully retrieved weather for {City}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information, "Fetching weather", 1);
+        Mocks.VerifyLogged(LogLevel.Information, "Successfully retrieved weather", 1);
     }
 
     [Fact]
@@ -941,9 +919,8 @@ public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
     {
         // Arrange
         var city = "InvalidCity";
-        
-        // Override setup for error scenario
-        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.NotFound)
+
+        Mocks.WhenHttpRequest(HttpMethod.Get, "/weather", () => new HttpResponseMessage(HttpStatusCode.NotFound)
         {
             Content = new StringContent("City not found", Encoding.UTF8, "text/plain")
         });
@@ -954,8 +931,7 @@ public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
             
         exception.Message.Should().Contain(city);
         
-        Mocks.GetMock<ILogger<WeatherService>>()
-            .VerifyLogger(LogLevel.Error, Times.Once());
+        Mocks.VerifyLogged(LogLevel.Error, "City not found", 1);
     }
 
     [Fact]
@@ -964,11 +940,8 @@ public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
         // Arrange
         var city = "Tokyo";
         var expectedJson = JsonSerializer.Serialize(new { temperature = 18, description = "Cloudy" });
-        
-        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.OK)
-        {
-            Content = new StringContent(expectedJson, Encoding.UTF8, "application/json")
-        });
+
+        Mocks.WhenHttpRequestJson(HttpMethod.Get, "/weather", expectedJson);
 
         // Act
         var response = await Mocks.HttpClient.GetAsync($"weather?q={city}&appid=test-api-key");
@@ -980,20 +953,54 @@ public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
 }
 ```
 
+#### Moq Compatibility with SetupHttpMessage (Only When You Need It)
+
+Use this path only when the test intentionally depends on Moq-specific handler setup behavior. Keep `using FastMoq.Extensions;`, add the `FastMoq.Provider.Moq` package, and select the Moq provider for the test assembly. See the [Provider Selection Guide](../getting-started/provider-selection.md).
+
+```csharp
+using Microsoft.Extensions.Options;
+
+public class WeatherServiceMoqCompatibilityTests : MockerTestBase<WeatherService>
+{
+    protected override Action<Mocker> SetupMocksAction => mocker =>
+    {
+        mocker.AddType<IOptions<WeatherApiOptions>>(() =>
+            Options.Create(new WeatherApiOptions { ApiKey = "test-api-key" }));
+    };
+
+    [Fact]
+    public async Task GetWeatherAsync_ShouldSupportAdvancedHandlerSetup_WhenUsingMoqCompatibility()
+    {
+        var expectedJson = JsonSerializer.Serialize(new { temperature = 18, description = "Cloudy" });
+
+        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(expectedJson, Encoding.UTF8, "application/json"),
+            Headers = { { "X-API-Version", "1.0" } }
+        });
+
+        var response = await Mocks.HttpClient.GetAsync("weather?q=Tokyo&appid=test-api-key");
+        var content = await Mocks.GetStringContent(response.Content);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        content.Should().Be(expectedJson);
+    }
+}
+```
+
 ### Advanced HTTP Testing Scenarios
 
 #### Combining CreateHttpClient with IHttpClientFactory
 
 ```csharp
+using Microsoft.Extensions.Options;
+
 public class WeatherServiceFactoryTests : MockerTestBase<WeatherService>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        // Setup options
-        var options = new WeatherApiOptions { ApiKey = "test-api-key" };
-        mocker.GetMock<IOptions<WeatherApiOptions>>()
-            .Setup(x => x.Value)
-            .Returns(options);
+        mocker.AddType<IOptions<WeatherApiOptions>>(() =>
+            Options.Create(new WeatherApiOptions { ApiKey = "test-api-key" }));
         
         // ✅ CreateHttpClient automatically sets up IHttpClientFactory
         mocker.CreateHttpClient(
@@ -1040,11 +1047,7 @@ public class WeatherServiceContentTests : MockerTestBase<WeatherService>
         var weatherData = new WeatherData { Temperature = 20 };
         var responseContent = JsonSerializer.Serialize(weatherData);
 
-        // Test JSON content
-        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.OK)
-        {
-            Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
-        });
+        Mocks.WhenHttpRequestJson(HttpMethod.Get, "/weather", responseContent);
 
         // Act
         var result = await Component.GetWeatherAsync(city);
@@ -1058,8 +1061,8 @@ public class WeatherServiceContentTests : MockerTestBase<WeatherService>
     {
         // Arrange
         var binaryData = Encoding.UTF8.GetBytes("Binary weather data");
-        
-        Mocks.SetupHttpMessage(() => new HttpResponseMessage(HttpStatusCode.OK)
+
+        Mocks.WhenHttpRequest(HttpMethod.Get, "/weather", () => new HttpResponseMessage(HttpStatusCode.OK)
         {
             Content = new ByteArrayContent(binaryData)
         });
@@ -1083,9 +1086,9 @@ public class WeatherServiceContentTests : MockerTestBase<WeatherService>
         var weatherData = new WeatherData { Temperature = 20 };
         var responseContent = JsonSerializer.Serialize(weatherData);
 
-        // Setup sequence of responses using SetupHttpMessage
+        // Advanced custom response sequencing through provider-neutral request matching
         var callCount = 0;
-        Mocks.SetupHttpMessage(() =>
+        Mocks.WhenHttpRequest(HttpMethod.Get, "/weather", () =>
         {
             callCount++;
             return callCount == 1 
@@ -1114,9 +1117,10 @@ public class WeatherServiceContentTests : MockerTestBase<WeatherService>
 FastMoq provides several convenient methods for HTTP testing:
 
 | Method | Purpose | Best For |
-|--------|---------|----------|
+| ------ | ------- | -------- |
 | `CreateHttpClient()` | Quick setup with defaults | Simple scenarios with standard responses |
-| `SetupHttpMessage()` | Fine-grained response control | Complex scenarios, custom headers, error cases |
+| `WhenHttpRequest()` / `WhenHttpRequestJson()` | Provider-neutral request matching and response setup | New tests, per-route behavior, readable response setup |
+| `SetupHttpMessage()` *(Moq provider only)* | Moq compatibility for advanced handler setup | Protected `SendAsync` setups and incremental migration |
 | `GetStringContent()` | Extract string from HttpContent | Reading response content in tests |
 | `GetContentBytesAsync()` | Extract bytes from HttpContent | Binary content testing |
 | `GetContentStreamAsync()` | Extract stream from HttpContent | Stream-based content testing |
@@ -1125,15 +1129,16 @@ FastMoq provides several convenient methods for HTTP testing:
 
 - **Auto-Registration**: `CreateHttpClient` automatically registers `HttpClient` and `IHttpClientFactory`
 - **Default Values**: Provides sensible defaults (localhost, OK status, JSON response)
-- **Flexible Setup**: `SetupHttpMessage` allows custom response creation
+- **Flexible Setup**: `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` keep most HTTP customization provider-neutral
 - **Content Helpers**: Built-in methods for content extraction
 - **Built-in HttpClient**: `Mocks.HttpClient` always available with default configuration
 
 **Pattern Recommendations:**
 
 - Use `CreateHttpClient` for simple test setups with consistent responses
-- Use `SetupHttpMessage` when you need different responses per test or custom headers
-- Combine both approaches: `CreateHttpClient` in setup, `SetupHttpMessage` for specific test cases
+- Use `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` for per-test or per-route behavior in new tests
+- Use `SetupHttpMessage(...)` only when you intentionally need the Moq compatibility path
+- Combine `CreateHttpClient` with provider-neutral request helpers for the clearest default setup
 - Always use `GetStringContent()` and other helpers instead of manual content reading
 
 ---
@@ -1247,10 +1252,10 @@ public class EmailServiceTests : MockerTestBase<EmailService>
         // Assert
         result.Should().BeTrue();
         
-        Mocks.VerifyLogger<EmailService>(LogLevel.Information,
-            "Sending email to {Recipient} via {SmtpHost}:{SmtpPort}", Times.Once());
-        Mocks.VerifyLogger<EmailService>(LogLevel.Information,
-            "Email sent successfully to {Recipient}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Sending email", 1);
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Email sent successfully", 1);
     }
 
     [Fact]
@@ -1267,7 +1272,7 @@ public class EmailServiceTests : MockerTestBase<EmailService>
 
         // Assert
         result.Should().BeFalse();
-        Mocks.VerifyLogger<EmailService>(LogLevel.Error, "SMTP host not configured", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Error, "SMTP host not configured", 1);
     }
 
     [Fact]
@@ -1324,9 +1329,8 @@ public class EmailServiceWithMonitorTests : MockerTestBase<EmailService>
         await Component.SendEmailAsync("test@example.com", "Subject", "Body");
 
         // Assert
-        Mocks.VerifyLogger<EmailService>(LogLevel.Information,
-            "Sending email to {Recipient} via {SmtpHost}:{SmtpPort}",
-            Times.Exactly(2));
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Sending email", 2);
     }
 }
 ```
@@ -1339,20 +1343,22 @@ FastMoq provides powerful helpers for testing logging behavior through the `Fast
 
 ### Proper Logger Verification Pattern
 
-Always use the `VerifyLogger` extension method on the mock logger:
+Prefer the provider-safe `VerifyLogged` helper on `Mocks`:
 
 ```csharp
-// ✅ CORRECT - Use extension method on mock
-Mocks.GetMock<ILogger<MyService>>()
-    .VerifyLogger(LogLevel.Information, "Processing complete", Times.Once());
+// ✅ CORRECT - Provider-safe assertion through captured ILogger entries
+Mocks.VerifyLogged(LogLevel.Information, "Processing complete", 1);
 
 // ✅ CORRECT - With exception verification
-Mocks.GetMock<ILogger<MyService>>()
-    .VerifyLogger(LogLevel.Error, "Error occurred", exception, Times.Once());
+Mocks.VerifyLogged(LogLevel.Error, "Error occurred", exception, times: 1);
 
-// ❌ INCORRECT - Old pattern (deprecated)
-Mocks.VerifyLogger<MyService>(LogLevel.Information, "Processing complete", Times.Once());
+// ⚠️ COMPATIBILITY ONLY - Moq-specific legacy helper
+// Use only when you intentionally want the legacy Moq-specific surface.
+Mocks.GetMock<ILogger<MyService>>()
+    .VerifyLogger(LogLevel.Information, "Processing complete", 1);
 ```
+
+`VerifyLogged(...)` is provider-safe because the active provider is responsible for wiring `ILogger` capture through `IMockingProvider.ConfigureLogger(...)`, while FastMoq core owns the assertion semantics. Providers that cannot capture logger callbacks advertise that through capabilities and FastMoq fails fast instead of silently giving a false negative.
 
 ### Service with Logging
 
@@ -1441,17 +1447,17 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         result.IsSuccess.Should().BeTrue();
 
         // Verify logging sequence
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Information,
-            "Starting order processing for order {OrderId}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information,
+            "Starting order processing for order", 1);
         
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Debug,
-            "Order {OrderId} retrieved: {OrderTotal:C}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Debug,
+            "retrieved", 1);
             
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Information,
-            "Order {OrderId} processed successfully", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Information,
+            "processed successfully", 1);
 
         // Verify no error logging
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Error, Times.Never());
+        Mocks.VerifyLogged(LogLevel.Error, "Unexpected error", 0);
     }
 
     [Fact]
@@ -1470,8 +1476,8 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         // Assert
         result.IsNotFound.Should().BeTrue();
         
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Warning,
-            "Order {OrderId} not found", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Warning,
+            "not found", 1);
     }
 
     [Fact]
@@ -1500,8 +1506,8 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         // Assert
         result.IsPaymentFailed.Should().BeTrue();
         
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Error,
-            "Payment failed for order {OrderId}: {ErrorMessage}", Times.Once());
+        Mocks.VerifyLogged(LogLevel.Error,
+            "Payment failed for order", 1);
     }
 
     [Fact]
@@ -1521,9 +1527,10 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
 
         thrownException.Should().Be(expectedException);
         
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Error,
-            "Unexpected error processing order {OrderId}", 
-            expectedException, Times.Once());
+        Mocks.VerifyLogged(LogLevel.Error,
+            "Unexpected error processing order",
+            expectedException,
+            times: 1);
     }
 
     [Fact]
@@ -1626,7 +1633,7 @@ public class LoggingAdvancedTests : MockerTestBase<OrderProcessingService>
         // Assert
         stopwatch.ElapsedMilliseconds.Should().BeLessThan(5000); // Performance assertion
         
-        Mocks.VerifyLogger<OrderProcessingService>(LogLevel.Information, Times.Exactly(200)); // 2 info logs per order
+        Mocks.VerifyLogged(LogLevel.Information, "order", 200); // 2 info logs per order
     }
 }
 ```

@@ -1,0 +1,997 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Extensions.MockerHttpExtensions
+  commentId: T:FastMoq.Extensions.MockerHttpExtensions
+  id: MockerHttpExtensions
+  parent: FastMoq.Extensions
+  children:
+  - FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(FastMoq.Mocker,System.String,System.String,System.Net.HttpStatusCode,System.String)
+  - FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync(System.Net.Http.HttpContent)
+  - FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync(System.Net.Http.HttpContent)
+  - FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})
+  - FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
+  - FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
+  langs:
+  - csharp
+  - vb
+  name: MockerHttpExtensions
+  nameWithType: MockerHttpExtensions
+  fullName: FastMoq.Extensions.MockerHttpExtensions
+  type: Class
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: MockerHttpExtensions
+    path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+    startLine: 8
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Mocker Http Extensions Class.
+  example: []
+  syntax:
+    content: public static class MockerHttpExtensions
+    content.vb: Public Module MockerHttpExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(FastMoq.Mocker,System.String,System.String,System.Net.HttpStatusCode,System.String)
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(FastMoq.Mocker,System.String,System.String,System.Net.HttpStatusCode,System.String)
+  id: CreateHttpClient(FastMoq.Mocker,System.String,System.String,System.Net.HttpStatusCode,System.String)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateHttpClient(Mocker, string, string, HttpStatusCode, string)
+  nameWithType: MockerHttpExtensions.CreateHttpClient(Mocker, string, string, HttpStatusCode, string)
+  fullName: FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(FastMoq.Mocker, string, string, System.Net.HttpStatusCode, string)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateHttpClient
+    path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+    startLine: 18
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Creates an HTTP client backed by FastMoq-managed HTTP dependencies.
+  remarks: >-
+    This entry point remains supported after v5.
+
+    New tests should prefer the provider-neutral request helpers in this class for HTTP behavior.
+
+    Advanced protected-member setups remain available from the Moq provider package for migration scenarios.
+  example: []
+  syntax:
+    content: public static HttpClient CreateHttpClient(this Mocker mocker, string clientName = "FastMoqHttpClient", string baseAddress = "http://localhost", HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1}]")
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+    - id: clientName
+      type: System.String
+    - id: baseAddress
+      type: System.String
+    - id: statusCode
+      type: System.Net.HttpStatusCode
+    - id: stringContent
+      type: System.String
+    return:
+      type: System.Net.Http.HttpClient
+    content.vb: Public Shared Function CreateHttpClient(mocker As Mocker, clientName As String = "FastMoqHttpClient", baseAddress As String = "http://localhost", statusCode As HttpStatusCode = HttpStatusCode.OK, stringContent As String = "[{'id':1}]") As HttpClient
+  overload: FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient*
+  nameWithType.vb: MockerHttpExtensions.CreateHttpClient(Mocker, String, String, HttpStatusCode, String)
+  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(FastMoq.Mocker, String, String, System.Net.HttpStatusCode, String)
+  name.vb: CreateHttpClient(Mocker, String, String, HttpStatusCode, String)
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})
+  id: WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpExtensions
+  langs:
+  - csharp
+  - vb
+  name: WhenHttpRequest(Mocker, Func<HttpRequestMessage, bool>, Func<HttpResponseMessage>)
+  nameWithType: MockerHttpExtensions.WhenHttpRequest(Mocker, Func<HttpRequestMessage, bool>, Func<HttpResponseMessage>)
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Func<System.Net.Http.HttpRequestMessage, bool>, System.Func<System.Net.Http.HttpResponseMessage>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WhenHttpRequest
+    path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+    startLine: 30
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Configures a provider-neutral HTTP response for requests that match the supplied predicate.
+  example: []
+  syntax:
+    content: public static void WhenHttpRequest(this Mocker mocker, Func<HttpRequestMessage, bool> requestPredicate, Func<HttpResponseMessage> responseFactory)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The mocker.
+    - id: requestPredicate
+      type: System.Func{System.Net.Http.HttpRequestMessage,System.Boolean}
+      description: Predicate used to match an outgoing request.
+    - id: responseFactory
+      type: System.Func{System.Net.Http.HttpResponseMessage}
+      description: Factory used to create the HTTP response for a matching request.
+    content.vb: Public Shared Sub WhenHttpRequest(mocker As Mocker, requestPredicate As Func(Of HttpRequestMessage, Boolean), responseFactory As Func(Of HttpResponseMessage))
+  overload: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*
+  nameWithType.vb: MockerHttpExtensions.WhenHttpRequest(Mocker, Func(Of HttpRequestMessage, Boolean), Func(Of HttpResponseMessage))
+  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Func(Of System.Net.Http.HttpRequestMessage, Boolean), System.Func(Of System.Net.Http.HttpResponseMessage))
+  name.vb: WhenHttpRequest(Mocker, Func(Of HttpRequestMessage, Boolean), Func(Of HttpResponseMessage))
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
+  id: WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpExtensions
+  langs:
+  - csharp
+  - vb
+  name: WhenHttpRequest(Mocker, HttpMethod, string, Func<HttpResponseMessage>)
+  nameWithType: MockerHttpExtensions.WhenHttpRequest(Mocker, HttpMethod, string, Func<HttpResponseMessage>)
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Net.Http.HttpMethod, string, System.Func<System.Net.Http.HttpResponseMessage>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WhenHttpRequest
+    path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+    startLine: 46
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Configures a provider-neutral HTTP response for a specific method and request URI or path.
+  example: []
+  syntax:
+    content: public static void WhenHttpRequest(this Mocker mocker, HttpMethod method, string requestUriOrPath, Func<HttpResponseMessage> responseFactory)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The mocker.
+    - id: method
+      type: System.Net.Http.HttpMethod
+      description: The expected HTTP method.
+    - id: requestUriOrPath
+      type: System.String
+      description: The absolute URI or relative path to match.
+    - id: responseFactory
+      type: System.Func{System.Net.Http.HttpResponseMessage}
+      description: Factory used to create the HTTP response for a matching request.
+    content.vb: Public Shared Sub WhenHttpRequest(mocker As Mocker, method As HttpMethod, requestUriOrPath As String, responseFactory As Func(Of HttpResponseMessage))
+  overload: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*
+  nameWithType.vb: MockerHttpExtensions.WhenHttpRequest(Mocker, HttpMethod, String, Func(Of HttpResponseMessage))
+  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker, System.Net.Http.HttpMethod, String, System.Func(Of System.Net.Http.HttpResponseMessage))
+  name.vb: WhenHttpRequest(Mocker, HttpMethod, String, Func(Of HttpResponseMessage))
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
+  id: WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpExtensions
+  langs:
+  - csharp
+  - vb
+  name: WhenHttpRequestJson(Mocker, HttpMethod, string, string, HttpStatusCode)
+  nameWithType: MockerHttpExtensions.WhenHttpRequestJson(Mocker, HttpMethod, string, string, HttpStatusCode)
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker, System.Net.Http.HttpMethod, string, string, System.Net.HttpStatusCode)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: WhenHttpRequestJson
+    path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+    startLine: 64
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Configures a provider-neutral JSON response for a specific method and request URI or path.
+  example: []
+  syntax:
+    content: public static void WhenHttpRequestJson(this Mocker mocker, HttpMethod method, string requestUriOrPath, string json, HttpStatusCode statusCode = HttpStatusCode.OK)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The mocker.
+    - id: method
+      type: System.Net.Http.HttpMethod
+      description: The expected HTTP method.
+    - id: requestUriOrPath
+      type: System.String
+      description: The absolute URI or relative path to match.
+    - id: json
+      type: System.String
+      description: The JSON payload returned to matching requests.
+    - id: statusCode
+      type: System.Net.HttpStatusCode
+      description: The response status code.
+    content.vb: Public Shared Sub WhenHttpRequestJson(mocker As Mocker, method As HttpMethod, requestUriOrPath As String, json As String, statusCode As HttpStatusCode = HttpStatusCode.OK)
+  overload: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson*
+  nameWithType.vb: MockerHttpExtensions.WhenHttpRequestJson(Mocker, HttpMethod, String, String, HttpStatusCode)
+  fullName.vb: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker, System.Net.Http.HttpMethod, String, String, System.Net.HttpStatusCode)
+  name.vb: WhenHttpRequestJson(Mocker, HttpMethod, String, String, HttpStatusCode)
+- uid: FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync(System.Net.Http.HttpContent)
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync(System.Net.Http.HttpContent)
+  id: GetContentBytesAsync(System.Net.Http.HttpContent)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpExtensions
+  langs:
+  - csharp
+  - vb
+  name: GetContentBytesAsync(HttpContent)
+  nameWithType: MockerHttpExtensions.GetContentBytesAsync(HttpContent)
+  fullName: FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync(System.Net.Http.HttpContent)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: GetContentBytesAsync
+    path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+    startLine: 102
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Gets the content bytes.
+  example: []
+  syntax:
+    content: public static Task<byte[]> GetContentBytesAsync(this HttpContent content)
+    parameters:
+    - id: content
+      type: System.Net.Http.HttpContent
+      description: The content.
+    return:
+      type: System.Threading.Tasks.Task{System.Byte[]}
+      description: byte[].
+    content.vb: Public Shared Function GetContentBytesAsync(content As HttpContent) As Task(Of Byte())
+  overload: FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync*
+- uid: FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync(System.Net.Http.HttpContent)
+  commentId: M:FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync(System.Net.Http.HttpContent)
+  id: GetContentStreamAsync(System.Net.Http.HttpContent)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerHttpExtensions
+  langs:
+  - csharp
+  - vb
+  name: GetContentStreamAsync(HttpContent)
+  nameWithType: MockerHttpExtensions.GetContentStreamAsync(HttpContent)
+  fullName: FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync(System.Net.Http.HttpContent)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: GetContentStreamAsync
+    path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
+    startLine: 110
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Gets the content stream.
+  example: []
+  syntax:
+    content: public static Task<Stream> GetContentStreamAsync(this HttpContent content)
+    parameters:
+    - id: content
+      type: System.Net.Http.HttpContent
+      description: The content.
+    return:
+      type: System.Threading.Tasks.Task{System.IO.Stream}
+      description: System.IO.Stream.
+    content.vb: Public Shared Function GetContentStreamAsync(content As HttpContent) As Task(Of Stream)
+  overload: FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync*
+references:
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient*
+  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient
+  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_CreateHttpClient_FastMoq_Mocker_System_String_System_String_System_Net_HttpStatusCode_System_String_
+  name: CreateHttpClient
+  nameWithType: MockerHttpExtensions.CreateHttpClient
+  fullName: FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Net.HttpStatusCode
+  commentId: T:System.Net.HttpStatusCode
+  parent: System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode
+  name: HttpStatusCode
+  nameWithType: HttpStatusCode
+  fullName: System.Net.HttpStatusCode
+- uid: System.Net.Http.HttpClient
+  commentId: T:System.Net.Http.HttpClient
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpclient
+  name: HttpClient
+  nameWithType: HttpClient
+  fullName: System.Net.Http.HttpClient
+- uid: FastMoq
+  commentId: N:FastMoq
+  href: FastMoq.html
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq
+- uid: System.Net
+  commentId: N:System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net
+  nameWithType: System.Net
+  fullName: System.Net
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+- uid: System.Net.Http
+  commentId: N:System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Http
+  nameWithType: System.Net.Http
+  fullName: System.Net.Http
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*
+  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest
+  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_FastMoq_Mocker_System_Func_System_Net_Http_HttpRequestMessage_System_Boolean__System_Func_System_Net_Http_HttpResponseMessage__
+  name: WhenHttpRequest
+  nameWithType: MockerHttpExtensions.WhenHttpRequest
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest
+- uid: System.Func{System.Net.Http.HttpRequestMessage,System.Boolean}
+  commentId: T:System.Func{System.Net.Http.HttpRequestMessage,System.Boolean}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<HttpRequestMessage, bool>
+  nameWithType: Func<HttpRequestMessage, bool>
+  fullName: System.Func<System.Net.Http.HttpRequestMessage, bool>
+  nameWithType.vb: Func(Of HttpRequestMessage, Boolean)
+  fullName.vb: System.Func(Of System.Net.Http.HttpRequestMessage, Boolean)
+  name.vb: Func(Of HttpRequestMessage, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Net.Http.HttpRequestMessage
+    name: HttpRequestMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httprequestmessage
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Net.Http.HttpRequestMessage
+    name: HttpRequestMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httprequestmessage
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Func{System.Net.Http.HttpResponseMessage}
+  commentId: T:System.Func{System.Net.Http.HttpResponseMessage}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<HttpResponseMessage>
+  nameWithType: Func<HttpResponseMessage>
+  fullName: System.Func<System.Net.Http.HttpResponseMessage>
+  nameWithType.vb: Func(Of HttpResponseMessage)
+  fullName.vb: System.Func(Of System.Net.Http.HttpResponseMessage)
+  name.vb: Func(Of HttpResponseMessage)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Net.Http.HttpResponseMessage
+    name: HttpResponseMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Net.Http.HttpResponseMessage
+    name: HttpResponseMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Net.Http.HttpMethod
+  commentId: T:System.Net.Http.HttpMethod
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpmethod
+  name: HttpMethod
+  nameWithType: HttpMethod
+  fullName: System.Net.Http.HttpMethod
+- uid: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson*
+  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson
+  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequestJson_FastMoq_Mocker_System_Net_Http_HttpMethod_System_String_System_String_System_Net_HttpStatusCode_
+  name: WhenHttpRequestJson
+  nameWithType: MockerHttpExtensions.WhenHttpRequestJson
+  fullName: FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson
+- uid: FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync*
+  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync
+  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_GetContentBytesAsync_System_Net_Http_HttpContent_
+  name: GetContentBytesAsync
+  nameWithType: MockerHttpExtensions.GetContentBytesAsync
+  fullName: FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync
+- uid: System.Net.Http.HttpContent
+  commentId: T:System.Net.Http.HttpContent
+  parent: System.Net.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.http.httpcontent
+  name: HttpContent
+  nameWithType: HttpContent
+  fullName: System.Net.Http.HttpContent
+- uid: System.Threading.Tasks.Task{System.Byte[]}
+  commentId: T:System.Threading.Tasks.Task{System.Byte[]}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<byte[]>
+  nameWithType: Task<byte[]>
+  fullName: System.Threading.Tasks.Task<byte[]>
+  nameWithType.vb: Task(Of Byte())
+  fullName.vb: System.Threading.Tasks.Task(Of Byte())
+  name.vb: Task(Of Byte())
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync*
+  commentId: Overload:FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync
+  href: FastMoq.Extensions.MockerHttpExtensions.html#FastMoq_Extensions_MockerHttpExtensions_GetContentStreamAsync_System_Net_Http_HttpContent_
+  name: GetContentStreamAsync
+  nameWithType: MockerHttpExtensions.GetContentStreamAsync
+  fullName: FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync
+- uid: System.Threading.Tasks.Task{System.IO.Stream}
+  commentId: T:System.Threading.Tasks.Task{System.IO.Stream}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Stream>
+  nameWithType: Task<Stream>
+  fullName: System.Threading.Tasks.Task<System.IO.Stream>
+  nameWithType.vb: Task(Of Stream)
+  fullName.vb: System.Threading.Tasks.Task(Of System.IO.Stream)
+  name.vb: Task(Of Stream)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.IO.Stream
+    name: Stream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  - name: )

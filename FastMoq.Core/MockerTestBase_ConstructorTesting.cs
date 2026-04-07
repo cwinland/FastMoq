@@ -32,55 +32,49 @@ namespace FastMoq
         }
 
         /// <summary>
-        ///     Tests the constructor parameters.
+        /// Tests the active constructor parameters for the current component and lets the test assert what should happen when each parameter is replaced with an invalid value.
         /// </summary>
         /// <param name="createAction">The create action.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <param name="validValue">The valid value.</param>
         /// <example>
-        /// CreateComponent allows creating the component when desired, instead of in the base class constructor.
-        /// <code><![CDATA[
+        /// <para>Use <see cref="TestConstructorParameters(Action{Action, string, string}, Func{ParameterInfo, object?}?, Func{ParameterInfo, object?}?)"/> to verify guard clauses on the constructor that FastMoq actually selected for <typeparamref name="TComponent"/>.</para>
+        /// <code language="csharp"><![CDATA[
         /// [Fact]
-        /// public void Service_NullArgChecks() => TestConstructorParameters((action, constructorName, parameterName) =>
-        /// {
-        ///     output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
-        ///
-        ///     action
-        ///         .Should()
-        ///         .Throw<ArgumentNullException>()
-        ///         .WithMessage($"*{parameterName}*");
-        /// });
-        ///
-        /// [Fact]
-        /// public void Service_NullArgChecks() => TestConstructorParameters((action, constructorName, parameterName) =>
+        /// public void CheckoutService_ShouldThrowForNullDependencies() => TestConstructorParameters(
+        ///     (action, constructorName, parameterName) =>
         ///     {
-        ///         output?.WriteLine($"Testing {constructorName}\n - {parameterName}");
-        ///
         ///         action
         ///             .Should()
         ///             .Throw<ArgumentNullException>()
         ///             .WithMessage($"*{parameterName}*");
-        ///     },
-        ///     info =>
+        ///     });
+        /// ]]></code>
+        /// <para>Provide explicit invalid and valid values when constructor arguments need type-specific test data instead of the default FastMoq resolution behavior.</para>
+        /// <code language="csharp"><![CDATA[
+        /// [Fact]
+        /// public void ImportJob_ShouldValidateConstructorArguments() => TestConstructorParameters(
+        ///     (action, constructorName, parameterName) =>
         ///     {
-        ///         return info switch
-        ///         {
-        ///             { ParameterType: { Name: "string" }} => string.Empty,
-        ///             { ParameterType: { Name: "int" }} => -1,
-        ///             _ => default,
-        ///         };
+        ///         action
+        ///             .Should()
+        ///             .Throw<ArgumentException>()
+        ///             .WithMessage($"*{parameterName}*");
         ///     },
-        ///     info =>
+        ///     info => info.Name switch
         ///     {
-        ///         return info switch
-        ///         {
-        ///             { ParameterType: { Name: "string" }} => "Valid Value",
-        ///             { ParameterType: { Name: "int" }} => 22,
-        ///             _ => Mocks.GetObject(info.ParameterType),
-        ///         };
-        ///     }
-        /// );
-        /// ]]></code></example>
+        ///         "tenant" => string.Empty,
+        ///         "batchSize" => 0,
+        ///         _ => default,
+        ///     },
+        ///     info => info.Name switch
+        ///     {
+        ///         "tenant" => "contoso",
+        ///         "batchSize" => 50,
+        ///         _ => Mocks.GetObject(info.ParameterType),
+        ///     });
+        /// ]]></code>
+        /// </example>
         protected void TestConstructorParameters(Action<Action, string, string> createAction, Func<ParameterInfo, object?>? defaultValue = null, Func<ParameterInfo, object?>? validValue = null) =>
             TestConstructorParameters(GetConstructor(), createAction, defaultValue, validValue);
 

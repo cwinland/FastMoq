@@ -9,27 +9,49 @@ namespace FastMoq
     ///     This class contains the <see cref="Mocks"/> property to create and track all Mocks from creation of the component.
     /// </summary>
     /// <example>
-    ///     Test example of the base class creating the Car class and auto mocking ICarService.
-    ///     Start by creating the test class that inherits <see cref="MockerTestBase{TComponent}"/>. The object that is passed is the concrete class being tested.
-    ///     Use <see cref="Component" /> Property to access the test object.
-    ///     <code>
-    /// <![CDATA[public class CarTest : MockerTestBase<Car> {]]>
-    ///      public void TestCar() {
-    ///          Component.CarService.Should().NotBeNull();
-    ///      }
-    /// </code>
-    /// ICarService is automatically injected into the Car object when created by the base class.
-    /// <code>
-    /// public partial class Car {
-    ///      public Car(ICarService carService) => CarService = carService;
+    /// <para>Use <see cref="MockerTestBase{TComponent}"/> when you want the component under test created automatically with constructor dependencies resolved from FastMoq's provider-first pipeline.</para>
+    /// <para>The base class auto-resolves constructor dependencies, so you do not need to call <c>GetOrCreateMock</c> just to make a dependency exist before verification. When you do need the tracked mock handle itself, use <see cref="Mocker.GetOrCreateMock{T}(MockRequestOptions?)"/> in a custom create path.</para>
+    /// <code language="csharp"><![CDATA[
+    /// public sealed class OrderSubmitterTests : MockerTestBase<OrderSubmitter>
+    /// {
+    ///     [Fact]
+    ///     public void Submit_should_publish_the_order_id()
+    ///     {
+    ///         Component.Submit(42);
+    ///
+    ///         Component.LastSubmittedOrderId.Should().Be(42);
+    ///         Mocks.Verify<IOrderGateway>(x => x.Publish(42), TimesSpec.Once);
+    ///     }
     /// }
-    ///  </code>
-    ///     When needing to set up mocks before the component is created, use the <see cref="get_SetupMocksAction"/> property or the base class constructor.
-    ///     This example shows creating a database context and adding it to the Type Map for resolution during creation of objects.
-    ///     <code>
-    /// <![CDATA[protected override Action<Mocker>]]> SetupMocksAction => mocker =>
-    ///     mocker.AddType(_ => <![CDATA[mocker.GetMockDbContext<ApplicationDbContext>().Object);]]>
-    ///  </code>
+    /// ]]></code>
+    /// <para>The base class creates <c>OrderSubmitter</c> before the test body runs, so the test can assert directly against <see cref="Component"/>.</para>
+    /// <code language="csharp"><![CDATA[
+    /// public interface IOrderGateway
+    /// {
+    ///     void Publish(int orderId);
+    /// }
+    ///
+    /// public sealed class OrderSubmitter
+    /// {
+    ///     private readonly IOrderGateway _gateway;
+    ///
+    ///     public OrderSubmitter(IOrderGateway gateway) => _gateway = gateway;
+    ///
+    ///     public int? LastSubmittedOrderId { get; private set; }
+    ///     public string SubmissionChannel { get; set; } = "default";
+    ///
+    ///     public void Submit(int orderId)
+    ///     {
+    ///         LastSubmittedOrderId = orderId;
+    ///         _gateway.Publish(orderId);
+    ///     }
+    /// }
+    /// ]]></code>
+    /// <para>Use <see cref="CreatedComponentAction"/> when you need a final arrangement step after construction, such as setting mutable state that is part of the test context.</para>
+    /// <code language="csharp"><![CDATA[
+    /// protected override Action<OrderSubmitter> CreatedComponentAction => component =>
+    ///     component.SubmissionChannel = "priority";
+    /// ]]></code>
     /// </example>
     /// <typeparam name="TComponent">The type of the t component.</typeparam>
     /// <inheritdoc />
@@ -80,10 +102,20 @@ namespace FastMoq
         protected virtual Action<TComponent>? CreatedComponentAction { get; }
 
         /// <summary>
+        ///     Allows a test base to configure grouped <see cref="Mocker"/> policy defaults before the component is created.
+        /// </summary>
+        protected virtual Action<MockerPolicyOptions>? ConfigureMockerPolicy { get; }
+
+        /// <summary>
         ///     Gets the <see cref="Mocker" />.
         /// </summary>
         /// <value>The mocks.</value>
         protected Mocker Mocks { get; }
+
+        /// <summary>
+        /// Gets a fluent scenario builder for the current component.
+        /// </summary>
+        protected ScenarioBuilder<TComponent> Scenario => Mocks.Scenario(Component);
 
         #endregion
 
@@ -138,17 +170,27 @@ namespace FastMoq
         public static T WaitFor<T>(Func<T> logic, TimeSpan timespan) => WaitFor(logic, timespan, TimeSpan.FromMilliseconds(100));
 
         /// <summary>
-        ///     Sets the <see cref="Component" /> property with a new instance while maintaining the constructor setup and any
-        /// other changes.
+        /// Sets the <see cref="Component" /> property with a new instance while maintaining the constructor setup and any other changes.
         /// </summary>
         /// <example>
-        /// CreateComponent allows creating the component when desired, instead of in the base class constructor.
-        /// <code><![CDATA[
-        /// public void Test() {
-        ///     Mocks.Initialize<ICarService>(mock => mock.Setup(x => x.StartCar).Returns(true));
+        /// <para>Use <see cref="CreateComponent"/> when you need to rebuild the component after changing test-base configuration that affects construction or post-creation state.</para>
+        /// <code language="csharp"><![CDATA[
+        /// private string CreatedChannel { get; set; } = "default";
+        ///
+        /// protected override Action<OrderSubmitter> CreatedComponentAction => component =>
+        ///     component.SubmissionChannel = CreatedChannel;
+        ///
+        /// [Fact]
+        /// public void Recreates_component_after_changing_created_state()
+        /// {
+        ///     CreatedChannel = "priority";
+        ///
         ///     CreateComponent();
+        ///
+        ///     Component.SubmissionChannel.Should().Be("priority");
         /// }
-        /// ]]></code></example>
+        /// ]]></code>
+        /// </example>
         protected void CreateComponent()
         {
             GetComponent();
@@ -159,7 +201,7 @@ namespace FastMoq
         {
             foreach (var customMock in CustomMocks)
             {
-                Mocks.AddMock(customMock.Mock, customMock.Type, true);
+                Mocks.AddFastMock(customMock.FastMock, customMock.Type, true, customMock.NonPublic);
             }
 
             SetupMocksAction?.Invoke(Mocks);

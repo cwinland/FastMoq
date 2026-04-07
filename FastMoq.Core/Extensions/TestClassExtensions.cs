@@ -1,4 +1,6 @@
 ﻿using FastMoq.Models;
+using FastMoq.Internal.MoqCompatibility;
+using FastMoq.Providers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -16,8 +18,18 @@ using Xunit.Abstractions;
 namespace FastMoq.Extensions
 {
     /// <summary>
-    ///     Helper Methods for testing.
+    /// Helper methods for reflection-based assertions, constructor-guard verification, and logger verification helpers used in tests.
     /// </summary>
+    /// <example>
+    /// <para>The logger helpers are commonly used to keep tests focused on intent instead of verbose Moq verification expressions.</para>
+    /// <code language="csharp"><![CDATA[
+    /// Mocks.GetOrCreateMock<ILogger<CheckoutService>>();
+    ///
+    /// Component.Submit(order);
+    ///
+    /// Mocks.VerifyLogged(LogLevel.Information, "Order submitted", TimesSpec.Once);
+    /// ]]></code>
+    /// </example>
     public static class TestClassExtensions
     {
         /// <summary>
@@ -511,25 +523,142 @@ namespace FastMoq.Extensions
             obj.GetProperty(name)?.SetValue(obj, value);
 
         /// <summary>
+        /// Provider-agnostic logger verification based on captured ILogger callbacks.
+        /// </summary>
+        /// <example>
+        /// <para>Prefer <see cref="VerifyLogged(Mocker, LogLevel, string)"/> in general documentation because it works through FastMoq's captured log entries instead of a provider-specific mock API.</para>
+        /// <code language="csharp"><![CDATA[
+        /// Component.Submit(order);
+        ///
+        /// Mocks.VerifyLogged(LogLevel.Information, "Order submitted");
+        /// ]]></code>
+        /// </example>
+        public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message) =>
+            mocker.VerifyLogged(logLevel, message, null, null, null);
+
+        /// <summary>
+        /// Provider-agnostic logger verification based on captured ILogger callbacks using an exact match count.
+        /// </summary>
+        public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, int times) =>
+            mocker.VerifyLogged(logLevel, message, null, null, TimesSpec.Exactly(times));
+
+        /// <summary>
+        /// Provider-agnostic logger verification based on captured ILogger callbacks using a provider-neutral count specification.
+        /// </summary>
+        public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, TimesSpec times) =>
+            mocker.VerifyLogged(logLevel, message, null, null, times);
+
+        /// <summary>
+        /// Provider-agnostic logger verification based on captured ILogger callbacks.
+        /// Defaults to at least one matching log entry when no explicit count specification is supplied.
+        /// </summary>
+        public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId = null) =>
+            mocker.VerifyLogged(logLevel, message, exception, eventId, null);
+
+        /// <summary>
+        /// Provider-agnostic logger verification based on captured ILogger callbacks using an exact match count.
+        /// </summary>
+        public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId, int times) =>
+            mocker.VerifyLogged(logLevel, message, exception, eventId, TimesSpec.Exactly(times));
+
+        /// <summary>
+        /// Provider-agnostic logger verification based on captured ILogger callbacks.
+        /// </summary>
+        public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId, TimesSpec? times)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+
+            var provider = MockingProviderRegistry.Default;
+            if (!provider.Capabilities.SupportsLoggerCapture)
+            {
+                throw new NotSupportedException($"Active provider '{provider.GetType().Name}' does not support ILogger capture required for Mocks.VerifyLogged(...). Use a provider that supports logger capture or verify through provider-specific APIs.");
+            }
+
+            var matches = mocker.LogEntries.Count(entry =>
+                entry.LogLevel == logLevel &&
+                CheckEventId(entry.EventId, eventId) &&
+                CheckMessage(entry.Message, typeof(string), message, typeof(string)) &&
+                CheckException(entry.Exception, exception));
+
+            AssertMatchesTimesSpec(matches, times, logLevel, message);
+        }
+
+        private static void AssertMatchesTimesSpec(int matches, TimesSpec? times, LogLevel logLevel, string message)
+        {
+            times ??= default;
+
+            if (times.Value.Mode == TimesSpecMode.Never)
+            {
+                if (matches > 0)
+                {
+                    throw new InvalidOperationException($"Expected no log entries matching level '{logLevel}' and message '{message}', but found {matches}.");
+                }
+
+                return;
+            }
+
+            if (times.Value.Mode == TimesSpecMode.Exactly)
+            {
+                var exactly = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.");
+                if (matches != exactly)
+                {
+                    throw new InvalidOperationException($"Expected exactly {exactly} log entr{(exactly == 1 ? "y" : "ies")} matching level '{logLevel}' and message '{message}', but found {matches}.");
+                }
+
+                return;
+            }
+
+            if (times.Value.Mode == TimesSpecMode.AtLeast)
+            {
+                var atLeast = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.");
+                if (matches < atLeast)
+                {
+                    throw new InvalidOperationException($"Expected at least {atLeast} log entr{(atLeast == 1 ? "y" : "ies")} matching level '{logLevel}' and message '{message}', but found {matches}.");
+                }
+
+                return;
+            }
+
+            if (times.Value.Mode == TimesSpecMode.AtMost)
+            {
+                var atMost = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.");
+                if (matches > atMost)
+                {
+                    throw new InvalidOperationException($"Expected at most {atMost} log entr{(atMost == 1 ? "y" : "ies")} matching level '{logLevel}' and message '{message}', but found {matches}.");
+                }
+
+                return;
+            }
+
+            if (matches == 0)
+            {
+                throw new InvalidOperationException($"Expected at least one log entry matching level '{logLevel}' and message '{message}', but found none.");
+            }
+        }
+
+        /// <summary>
         ///     Verifies the Mock ILogger was invoked.
         /// </summary>
         /// <param name="loggerMock">The logger mock.</param>
         /// <param name="logLevel">The expected log level.</param>
         /// <param name="message">The expected message.</param>
         /// <param name="times">The expected number of invocations.</param>
-        public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, int times = 1) => loggerMock.VerifyLogger(logLevel, message, null, null, times);
+        [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
+        public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, int times = 1) =>
+            CoreMoqLoggerCompatibility.VerifyLogger(loggerMock, logLevel, message, times);
 
         /// <summary>
-        ///     Verifies the Mock ILogger of T was invoked.
+        /// Verifies that a generic logger mock recorded a message at the expected level.
         /// </summary>
-        /// <typeparam name="TLogger"></typeparam>
+        /// <typeparam name="TLogger">The logger type, typically <c>ILogger&lt;TCategory&gt;</c>.</typeparam>
         /// <param name="loggerMock">The logger mock.</param>
         /// <param name="logLevel">The expected log level.</param>
         /// <param name="message">The expected message.</param>
         /// <param name="times">The expected number of invocations.</param>
+        [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
         public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, int times = 1)
-        where TLogger : class, ILogger
-            => loggerMock.VerifyLogger(logLevel, message, null, null, times);
+        where TLogger : class, ILogger =>
+            CoreMoqLoggerCompatibility.VerifyLogger(loggerMock, logLevel, message, times);
 
         /// <summary>
         ///     Verifies the Mock ILogger was invoked.
@@ -540,8 +669,10 @@ namespace FastMoq.Extensions
         /// <param name="exception">The exception.</param>
         /// <param name="eventId">The event identifier.</param>
         /// <param name="times">The expected number of invocations.</param>
+        [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
         public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null,
-                                        int times = 1) => loggerMock.VerifyLogger<Exception>(logLevel, message, exception, eventId, times);
+                                        int times = 1) =>
+            CoreMoqLoggerCompatibility.VerifyLogger(loggerMock, logLevel, message, exception, eventId, times);
 
         /// <summary>
         ///     Verifies the Mock ILogger was invoked.
@@ -552,8 +683,10 @@ namespace FastMoq.Extensions
         /// <param name="exception">The exception.</param>
         /// <param name="eventId">The event identifier.</param>
         /// <param name="times">The expected number of invocations.</param>
+        [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
         public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null,
-                                           int times = 1) where TLogger : class, ILogger => loggerMock.VerifyLogger<Exception, TLogger>(logLevel, message, exception, eventId, times);
+                                           int times = 1) where TLogger : class, ILogger =>
+            CoreMoqLoggerCompatibility.VerifyLogger(loggerMock, logLevel, message, exception, eventId, times);
 
         /// <summary>
         ///     Verifies the Mock ILogger was invoked.
@@ -565,26 +698,20 @@ namespace FastMoq.Extensions
         /// <param name="exception">The exception.</param>
         /// <param name="eventId">The event identifier.</param>
         /// <param name="times">The expected number of invocations.</param>
+        [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1)
-                where TException : Exception
-        {
-            loggerMock.RaiseIfNull();
-            loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), Times.Exactly(times));
-        }
+                where TException : Exception =>
+            CoreMoqLoggerCompatibility.VerifyLogger(loggerMock, logLevel, message, exception, eventId, times);
 
+        [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Times times)
-            where TException : Exception
-        {
-            loggerMock.RaiseIfNull();
-            loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), times);
-        }
+            where TException : Exception =>
+            CoreMoqLoggerCompatibility.VerifyLogger(loggerMock, logLevel, message, exception, eventId, times);
 
+        [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Func<Times> times)
-            where TException : Exception
-        {
-            loggerMock.RaiseIfNull();
-            loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), times);
-        }
+            where TException : Exception =>
+            CoreMoqLoggerCompatibility.VerifyLogger(loggerMock, logLevel, message, exception, eventId, times);
 
         /// <summary>
         ///     Verifies the Mock ILogger was invoked.
@@ -597,12 +724,10 @@ namespace FastMoq.Extensions
         /// <param name="exception">The exception.</param>
         /// <param name="eventId">The event identifier.</param>
         /// <param name="times">The expected number of invocations.</param>
+        [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
         public static void VerifyLogger<TException, TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1)
-            where TException : Exception where TLogger : class, ILogger
-        {
-            loggerMock.RaiseIfNull();
-            loggerMock.Verify(TestLoggerExpression<TException, TLogger>(logLevel, message, exception, eventId), Times.Exactly(times));
-        }
+            where TException : Exception where TLogger : class, ILogger =>
+            CoreMoqLoggerCompatibility.VerifyLogger<TException, TLogger>(loggerMock, logLevel, message, exception, eventId, times);
 
         /// <summary>
         /// Setups the logger callback.
@@ -610,45 +735,19 @@ namespace FastMoq.Extensions
         /// <typeparam name="TLogger">Class type of ILogger or ILogger{T}</typeparam>
         /// <param name="logger">The mock logger.</param>
         /// <param name="callback">The callback action.</param>
-        public static void SetupLoggerCallback<TLogger>(this Mock<TLogger> logger, Action<LogLevel, EventId, string> callback) where TLogger : class, ILogger
-        {
-            ArgumentNullException.ThrowIfNull(logger);
-            ArgumentNullException.ThrowIfNull(callback);
-
-            logger
-               .Setup(x => x.Log(
-                    It.IsAny<LogLevel>(),
-                    It.IsAny<EventId>(),
-                    It.IsAny<It.IsAnyType>(),
-                    It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception?, string>) It.IsAny<object>()))
-               .Callback((LogLevel logLevel, EventId eventId, object state, Exception? exception, Delegate formatter) =>
-                {
-                    // Optional: Capture or inspect log messages here
-                    var message = formatter.DynamicInvoke(state, exception);
-                    callback.Invoke(logLevel, eventId, message?.ToString() ?? string.Empty);
-                });
-        }
+        [Obsolete("Prefer Mocker.LogEntries or Mocks.VerifyLogged(...) for logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
+        public static void SetupLoggerCallback<TLogger>(this Mock<TLogger> logger, Action<LogLevel, EventId, string, Exception?> callback) where TLogger : class, ILogger =>
+            CoreMoqLoggerCompatibility.SetupLoggerCallback(logger, callback);
 
         /// <summary>
-        ///     Tests the logger expression2.
+        /// Setups the logger callback.
         /// </summary>
-        /// <typeparam name="TException">The type of the exception.</typeparam>
-        /// <typeparam name="TLoggerType">The ILogger type.</typeparam>
-        /// <param name="logLevel">The log level.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="eventId">The event identifier.</param>
-        /// <returns>System.Linq.Expressions.Expression&lt;System.Action&lt;T&gt;&gt;.</returns>
-        internal static Expression<Action<TLoggerType>> TestLoggerExpression<TException, TLoggerType>(LogLevel logLevel, string message, TException? exception,
-                                                                                             int? eventId) where TException : Exception where TLoggerType : ILogger =>
-            logger =>
-            logger.Log(
-                logLevel,
-                It.Is<EventId>(e => CheckEventId(e, eventId)),
-                It.Is<It.IsAnyType>((o, t) => CheckMessage(o.ToString() ?? string.Empty, t, message, t)),
-                It.Is<Exception>(e => CheckException(e, exception)),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
+        /// <typeparam name="TLogger">Class type of ILogger or ILogger{T}</typeparam>
+        /// <param name="logger">The mock logger.</param>
+        /// <param name="callback">The callback action.</param>
+        [Obsolete("Prefer Mocker.LogEntries or Mocks.VerifyLogged(...) for logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
+        public static void SetupLoggerCallback<TLogger>(this Mock<TLogger> logger, Action<LogLevel, EventId, string> callback) where TLogger : class, ILogger =>
+            CoreMoqLoggerCompatibility.SetupLoggerCallback(logger, callback);
 
         /// <summary>
         ///     Checks the expectedMessage.
@@ -676,9 +775,9 @@ namespace FastMoq.Extensions
         /// <param name="verifyException">The expectedException.</param>
         /// <param name="expectedException">The expected expectedException.</param>
         /// <returns>System.Boolean.</returns>
-        internal static bool CheckException(Exception verifyException, Exception? expectedException) => expectedException == null ||
-            (verifyException.Message.Contains(
-                 expectedException.Message, StringComparison.OrdinalIgnoreCase) &&
+        internal static bool CheckException(Exception? verifyException, Exception? expectedException) => expectedException == null ||
+            (verifyException != null &&
+             verifyException.Message.Contains(expectedException.Message, StringComparison.OrdinalIgnoreCase) &&
              verifyException.GetType().IsAssignableTo(expectedException.GetType()));
 
         /// <summary>
@@ -696,13 +795,16 @@ namespace FastMoq.Extensions
         /// <param name="method">The method.</param>
         /// <param name="data">The data.</param>
         /// <returns>object?[] of the argument data.</returns>
-        internal static object?[] GetArgData(this Mocker mocker, MethodBase? method, Dictionary<Type, object?>? data)
+        internal static object?[] GetArgData(this Mocker mocker, MethodBase? method, Dictionary<Type, object?>? data) =>
+            mocker.GetArgData(method, mocker.OptionalParameterResolution, data);
+
+        internal static object?[] GetArgData(this Mocker mocker, MethodBase? method, OptionalParameterResolutionMode optionalParameterResolution, Dictionary<Type, object?>? data)
         {
             var args = new List<object?>();
 
             method?.GetParameters().ToList().ForEach(p => args.Add(data?.Any(x => x.Key == p.ParameterType) ?? false
                     ? data.First(x => x.Key == p.ParameterType).Value
-                    : mocker.GetParameter(p)
+                    : mocker.ResolveParameter(p, optionalParameterResolution)
                 )
             );
 

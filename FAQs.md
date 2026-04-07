@@ -10,6 +10,7 @@
 
 ### Writing Tests
 
+- [I upgraded to v4 and did not change my tests. Why are `GetMock<T>()` or `VerifyLogger(...)` now failing?](#i-upgraded-to-v4-and-did-not-change-my-tests-why-are-getmockt-or-verifylogger-now-failing)
 - [Where do I setup my mocks? Constructor, SetupMocksAction, or test method?](#where-do-i-setup-my-mocks-constructor-setupmocksaction-or-test-method)
 - [Why is the constructor parameter null instead of containing a Mock?](#why-is-the-constructor-parameter-null-instead-of-containing-a-mock)
 - [The Mocks exist, but they are not setup while running in the constructor?](#the-mocks-exist-but-they-are-not-setup-while-running-in-the-constructor)
@@ -17,7 +18,7 @@
 - [Are there additional ways to debug FastMoq or the Mock itself?](#are-there-additional-ways-to-debug-fastmoq-or-the-mock-itself)
 - [What helpers are available in MockerTestBase&lt;T&gt;?](#what-helpers-are-available-in-mockertestbaset)
 - [What helpers are available in Mocker?](#what-helpers-are-available-in-mocker)
-- [What are some settings Mocker providers to alter the way Mocker works?](#what-are-some-settings-mocker-providers-to-alter-the-way-mocker-works)
+- [What are some settings on `Mocker` that alter the way FastMoq works?](#what-are-some-settings-on-mocker-that-alter-the-way-fastmoq-works)
 
 ### More Information
 
@@ -29,7 +30,7 @@
 
 ## What is FastMoq?
 
-FastMoq is a flexible and powerful mocking library designed for .NET developers to simplify the creation and configuration of mock objects in unit tests. It aims to enhance productivity and maintainability in your testing framework. The FastMoq GitHub Repository is located at <https://github.com/cwinland/FastMoq>. The Nuget feed is located at <https://www.nuget.org/packages/FastMoq.Web/>.
+FastMoq is a .NET testing framework focused on automatic dependency injection, tracked test doubles, and test-friendly object creation. It helps reduce boilerplate while still letting you drop into compatibility or provider-specific behavior when a test needs it. The GitHub repository is located at <https://github.com/cwinland/FastMoq>. NuGet packages are available at <https://www.nuget.org/packages/FastMoq.Web/>.
 
 ## How do I install FastMoq?
 
@@ -53,13 +54,58 @@ Absolutely! FastMoq is designed to integrate seamlessly with popular .NET testin
 
 ## How do I create my mocks?
 
-Think of Mocks as they already exist. In general, you do not need to create Mocks. FastMoq creates and manages all the mocks for you. To get a mock (new or existing), use:
+In many FastMoq tests, tracked mocks already exist by the time you need them. FastMoq creates and manages those test doubles for you. A common compatibility-style entry point is:
 
 ```cs
 Mocks.GetMock<TInterface>();
 ```
 
-```Mocks``` (referenced above) is the name of the property in ```MockerTestBase<T>``` for ```FastMoq.Mocker```.
+`Mocks` is the `FastMoq.Mocker` property exposed by `MockerTestBase<T>`.
+
+For new or actively refactored tests in v4, prefer the provider-neutral APIs when possible. `GetMock<T>()` remains available as the Moq compatibility path.
+
+## I upgraded to v4 and did not change my tests. Why are `GetMock<T>()` or `VerifyLogger(...)` now failing?
+
+In v4, `FastMoq.Core` still bundles Moq for compatibility, but the default active provider is now `reflection`.
+
+If an older test suite upgrades packages but keeps the old Moq-shaped APIs without selecting Moq explicitly, the code will usually still compile, but Moq-specific calls can fail at runtime.
+
+Typical symptoms:
+
+- `GetMock<T>()` throws because the active provider does not expose a legacy `Moq.Mock`
+- `VerifyLogger(...)` still exists, but it remains a Moq compatibility API rather than a provider-neutral one
+- `SetupHttpMessage(...)` is available from the Moq compatibility package, but it also requires the Moq provider to be active for that test assembly
+- tests that previously assumed Moq was the implicit default start failing even though no test code was changed
+
+If you want the shortest v4 compatibility fix for an older test assembly, set Moq as the assembly default:
+
+```csharp
+using System.Runtime.CompilerServices;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+namespace MyTests;
+
+public static class TestAssemblyProviderBootstrap
+{
+    [ModuleInitializer]
+    public static void Initialize()
+    {
+        MockingProviderRegistry.Register("moq", MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+```
+
+If you are touching the tests anyway, prefer moving toward the provider-neutral APIs instead:
+
+- use `GetOrCreateMock(...)` when you do not specifically need raw `Moq.Mock`
+- use `Mocks.VerifyLogged(...)` instead of `VerifyLogger(...)`
+- use `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` instead of `SetupHttpMessage(...)` unless the test intentionally depends on the Moq compatibility path
+
+See also:
+
+- [Provider Selection Guide](./docs/getting-started/provider-selection.md)
+- [Migration Guide](./docs/migration/README.md)
 
 ## Where do I setup my mocks? Constructor, SetupMocksAction, or test method?
 
@@ -67,12 +113,12 @@ Placement of the code that sets up the mock depends on the scope of the mock and
 
 ### FastMoq Locations and Scopes
 
-| **Location**         | **Scope**                                                                                                                | **Can Use Instance Data** | **Pros / Cons**                                                                                                                     |
-|----------------------|--------------------------------------------------------------------------------------------------------------------------|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| Test Constructor     | All test methods *(available for all class test methods, but after the test component is created)*         | Yes                       | Used for default setup that either doesn't change or changes for only specific tests. |
-| Test Method          | Current test method | Yes                       | Use for test-specific setup. |
-| SetupMocksAction**   | Test component constructor, Test class constructor, and all test methods                | Yes                       | Use for class component setup needed for constructor. The setup can change based on a class variable or property. [Example](#option-2-override-setupmocksaction)                 |
-| Base Constructor**   | Test component constructor, Test class constructor, and all test methods                | No                        | Use for class component setup; the code does not need to change based on a variable or property of the class. [Example](#option-1-base-class-constructor) |
+| **Location** | **Scope** | **Can Use Instance Data** | **Pros / Cons** |
+| --- | --- | --- | --- |
+| Test Constructor | All test methods *(available for all class test methods, but after the test component is created)* | Yes | Used for default setup that either doesn't change or changes for only specific tests. |
+| Test Method | Current test method | Yes | Use for test-specific setup. |
+| SetupMocksAction** | Test component constructor, test class constructor, and all test methods | Yes | Use for class component setup needed for constructor. The setup can change based on a class variable or property. [Example](#option-2-override-setupmocksaction) |
+| Base Constructor** | Test component constructor, test class constructor, and all test methods | No | Use for class component setup; the code does not need to change based on a variable or property of the class. [Example](#option-1-base-class-constructor) |
 
 **Note:** The global methods MUST be used if the data is required for the parameters of the component or used in the constructor's code.
 
@@ -89,22 +135,30 @@ public class MyService
 }
 ```
 
-If the constructor has an optional or nullable parameter, FastMoq assumes that the parameter should stay null or the default.
+If the constructor has an optional or nullable parameter, FastMoq assumes that the parameter should stay null or the declared default unless you opt into optional-parameter resolution.
 
-In this example, someService will be mocked and someOtherService will be null. In order to mock optional parameters, specify ```c# Mocker.MockOptional = true;```. If the constructor is run when the MockOptional is set to true, then all services should have mocks.
+In this example, someService will be mocked and someOtherService will be null by default. For new code, prefer explicit optional-parameter resolution on the mocker:
+
+```c#
+mocker.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+var service = mocker.CreateInstance<MyService>();
+```
+
+`Mocker.MockOptional = true` still works, but it is now obsolete and retained only as a compatibility alias over the same behavior.
 
 ## The Mocks exist, but they are not setup while running in the constructor?
 
-The component under test is created before the constructor in the test class. In order to specify options and Mock setups before creating the component, you'll need to add code to the setup.  There are two methods for adding setup code, the base constructor or the SetupMocksAction override.
+The component under test is created before the test-class constructor body finishes. If you need configuration or test-double setup before the component is created, put it in the base constructor callback or the `SetupMocksAction` override.
 
 ### Option 1: Base Class Constructor
 
-This example shows putting mocker setup in the constructor. The code must be static and cannot access non-static members.
+This example shows setup in the base constructor callback. The code cannot depend on instance state from the test class.
 
 ```c#
     public class TestMyService : MockerTestBase<MyService> {
         public TestMyService() : base(setupMocksAction: m => { 
-            m.MockOptional = true;
+            m.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
             
             m.GetMock<IProfileRepo>().Setup(x => x.GetProfileAsync(It.IsAny<string>()))
                 .ReturnsAsync(() => [new ProfileEntity { ProfileType = "test" }]);
@@ -137,12 +191,12 @@ This example shows putting mocker setup in the constructor. The code must be sta
 
 ### Option 2: Override SetupMocksAction
 
-This example shows putting mocker setup in the SetupMocksAction property. The code can access static and non-static members.
+This example shows setup in the `SetupMocksAction` property. The code can use instance state from the test class.
 
 ```c#
 protected override Action<Mocker> SetupMocksAction => m =>
 {
-    m.MockOptional = true;
+    m.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
     
     m.GetMock<IProfileRepo>().Setup(x => x.GetProfileAsync(It.IsAny<string>()))
         .ReturnsAsync(() => [new ProfileEntity { ProfileType = "test" }]);
@@ -182,10 +236,10 @@ Add the following InternalsVisibleTo line to the AssemblyInfo file.
 
 ## Are there additional ways to debug FastMoq or the Mock itself?
 
-Yes, the Mocker class provides properties to track which constructors are called, error messages, etc.
+Yes. `Mocker` exposes useful state for troubleshooting constructor selection, intercepted exceptions, and tracked mocks.
 
 - ```ConstructorHistory``` tracks the constructors that are called.
-- ```ExceptionLog``` tracks any exceptions that are intercepted by FastMoq, whether they are ignored or bubbled to the test, they should listed in this log.
+- ```ExceptionLog``` tracks exceptions intercepted by FastMoq, whether they were ignored or bubbled to the test.
 - ```mockCollection``` tracks all the existing Mocks that the framework can see.
 
 ## What helpers are available in MockerTestBase&lt;T&gt;?
@@ -200,7 +254,6 @@ Properties:
 
 - ```fileSystem``` gets an internal ```MockFileSystem``` for IFileSystem injections.
 - ```HttpClient``` gets the client used for injections.
-- ```DbConnection``` gets the connection used for DbContext injections.
 
 Methods:
 
@@ -208,19 +261,32 @@ Methods:
 - ```GetMock``` gets the Mock used in the tested component.
 - ```GetObject``` gets the object of the Mock used in the tested component.
 - ```CreateInstance``` creates an instance of a public Type without the need of specifying the injected parameters.
-- ```CreateInstanceNonPublic``` creates an instance of a Type without the need of specifying the injected parameters.
-- ```GetDbContext``` gets the DbContext used in the tested component.
+- ```CreateInstance``` also accepts ```InstanceCreationFlags``` when constructor fallback or optional-parameter behavior should be overridden explicitly.
+- ```GetMockDbContext``` gets the mocked DbContext used in the tested component.
 - ```GetFileSystem```gets the file system used in the tested component.
 - ```GetHttpHandlerSetup``` assists in setting up HttpClient calls.
 - ```GetMockDbContext``` gets a Mock DbContext.
 - ```Initialize``` clears the mock and groups the mock into a callback method for easy setup.
 - ```CallMethod``` calls a method and injects mocks and parameters as required.
 
-## What are some settings Mocker providers to alter the way Mocker works?
+## What are some settings on `Mocker` that alter the way FastMoq works?
+
+- `Strict` is a backward-compatible alias for fail-on-unconfigured behavior.
+- `Behavior` is the full feature-flag model that controls FastMoq runtime behavior.
+- `UseStrictPreset()` applies the predefined strict profile.
+- `UseLenientPreset()` applies the predefined lenient profile.
+
+If you only want the old "fail when not configured" behavior, use `Strict = true` or enable `MockFeatures.FailOnUnconfigured` directly. If you want the full strict preset, use `UseStrictPreset()`.
 
 - ```InnerMockResolution``` indicates that the Mock should attempt to resolve child mocks and injections. Default is True.
-- ```MockOptional``` allows mocks to be injected into optional or nullable parameters. Default is False.
-- ```Strict``` alters the way that FastMoq uses HttpClient and FileSystems. Strict prevents using the internal versions and pure mocks are used. Default is False.
+- ```OptionalParameterResolution``` controls whether optional or nullable parameters use declared defaults or are resolved through FastMoq. Default is `UseDefaultOrNull`.
+- ```MockOptional``` is obsolete and remains only as a compatibility alias for `OptionalParameterResolution == ResolveViaMocker`.
+- `Strict` is still available as a compatibility switch, but new code should treat it as the narrower fail-on-unconfigured path rather than the full strict profile.
+
+For fuller guidance on these settings, see:
+
+- [Testing Guide](./docs/getting-started/testing-guide.md)
+- [Migration Guide](./docs/migration/README.md)
 
 ## Where can I find more documentation and support for FastMoq?
 

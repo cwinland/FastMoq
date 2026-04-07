@@ -1,0 +1,46 @@
+- name: Home
+  href: index.md
+- name: Quick Reference
+  href: docs/api/quick-reference.md
+- name: Getting Started
+  items:
+    - name: Overview
+      href: docs/getting-started/README.md
+    - name: Provider selection
+      href: docs/getting-started/provider-selection.md
+    - name: Testing guide
+      href: docs/getting-started/testing-guide.md
+- name: Examples
+  items:
+    - name: Executable testing examples
+      href: docs/samples/testing-examples.md
+    - name: Sample applications
+      href: docs/samples/README.md
+    - name: TestingExample project
+      href: FastMoq.TestingExample/README.md
+- name: Migration and release notes
+  items:
+    - name: What's new
+      href: docs/whats-new/README.md
+    - name: Migration guide
+      href: docs/migration/README.md
+    - name: Breaking changes
+      href: docs/breaking-changes/README.md
+    - name: Roadmap notes
+      href: docs/roadmap/README.md
+- name: API Reference
+  items:
+    - name: Quick reference
+      href: docs/api/quick-reference.md
+    - name: API overview
+      href: docs/api/index.md
+    - name: Core namespace
+      href: api/FastMoq.yml
+    - name: Provider APIs
+      href: api/FastMoq.Providers.yml
+    - name: Extension methods
+      href: api/FastMoq.Extensions.yml
+    - name: Models
+      href: api/FastMoq.Models.yml
+    - name: Blazor and web APIs
+      href: api/FastMoq.Web.Blazor.yml

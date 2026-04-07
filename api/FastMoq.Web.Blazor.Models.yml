@@ -1,0 +1,88 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Web.Blazor.Models
+  commentId: N:FastMoq.Web.Blazor.Models
+  id: FastMoq.Web.Blazor.Models
+  children:
+  - FastMoq.Web.Blazor.Models.ComponentState
+  - FastMoq.Web.Blazor.Models.ComponentState`1
+  langs:
+  - csharp
+  - vb
+  name: FastMoq.Web.Blazor.Models
+  nameWithType: FastMoq.Web.Blazor.Models
+  fullName: FastMoq.Web.Blazor.Models
+  type: Namespace
+  assemblies:
+  - FastMoq.Web
+references:
+- uid: FastMoq.Web.Blazor.Models.ComponentState`1
+  commentId: T:FastMoq.Web.Blazor.Models.ComponentState`1
+  href: FastMoq.Web.Blazor.Models.ComponentState-1.html
+  name: ComponentState<T>
+  nameWithType: ComponentState<T>
+  fullName: FastMoq.Web.Blazor.Models.ComponentState<T>
+  nameWithType.vb: ComponentState(Of T)
+  fullName.vb: FastMoq.Web.Blazor.Models.ComponentState(Of T)
+  name.vb: ComponentState(Of T)
+  spec.csharp:
+  - uid: FastMoq.Web.Blazor.Models.ComponentState`1
+    name: ComponentState
+    href: FastMoq.Web.Blazor.Models.ComponentState-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Web.Blazor.Models.ComponentState`1
+    name: ComponentState
+    href: FastMoq.Web.Blazor.Models.ComponentState-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: FastMoq.Web.Blazor.Models.ComponentState
+  commentId: T:FastMoq.Web.Blazor.Models.ComponentState
+  parent: FastMoq.Web.Blazor.Models
+  href: FastMoq.Web.Blazor.Models.ComponentState.html
+  name: ComponentState
+  nameWithType: ComponentState
+  fullName: FastMoq.Web.Blazor.Models.ComponentState
+- uid: FastMoq.Web.Blazor.Models
+  commentId: N:FastMoq.Web.Blazor.Models
+  href: FastMoq.html
+  name: FastMoq.Web.Blazor.Models
+  nameWithType: FastMoq.Web.Blazor.Models
+  fullName: FastMoq.Web.Blazor.Models
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Web
+    name: Web
+    href: FastMoq.Web.html
+  - name: .
+  - uid: FastMoq.Web.Blazor
+    name: Blazor
+    href: FastMoq.Web.Blazor.html
+  - name: .
+  - uid: FastMoq.Web.Blazor.Models
+    name: Models
+    href: FastMoq.Web.Blazor.Models.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Web
+    name: Web
+    href: FastMoq.Web.html
+  - name: .
+  - uid: FastMoq.Web.Blazor
+    name: Blazor
+    href: FastMoq.Web.Blazor.html
+  - name: .
+  - uid: FastMoq.Web.Blazor.Models
+    name: Models
+    href: FastMoq.Web.Blazor.Models.html

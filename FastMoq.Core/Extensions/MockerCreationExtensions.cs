@@ -1,5 +1,4 @@
 ﻿using FastMoq.Models;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -7,21 +6,57 @@ using System.Reflection;
 namespace FastMoq.Extensions
 {
     /// <summary>
-    ///     Mocker Create Extensions
+    /// Helpers for creating components or raw mocks when you need constructor selection to be explicit in a test.
     /// </summary>
+    /// <example>
+    /// <para>Use these overloads when the constructor choice matters and you want to supply only a subset of arguments explicitly.</para>
+    /// <code language="csharp"><![CDATA[
+    /// var mocker = new Mocker();
+    ///
+    /// var processor = mocker.CreateInstance<OrderProcessor, string>(
+    ///     new Dictionary<Type, object?>
+    ///     {
+    ///         [typeof(string)] = "orders-eu"
+    ///     });
+    ///
+    /// processor.Should().NotBeNull();
+    /// ]]></code>
+    /// </example>
     public static class MockerCreationExtensions
     {
         /// <summary>
-        ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
+        /// Creates an instance of <c>T</c> by selecting the constructor that matches <typeparamref name="TParam1"/> and injecting the supplied value from <paramref name="data"/>.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The concrete type to create.</typeparam>
         /// <typeparam name="TParam1">The type of the t param1.</typeparam>
         /// <param name="mocker">The mocker.</param>
         /// <param name="data">The data.</param>
-        /// <returns>T.</returns>
-        public static T? CreateInstance<T, TParam1>(this Mocker mocker, Dictionary<Type, object?> data) where T : class => mocker.CreateInstanceInternal<T>(
-            model => mocker.FindConstructorByType(model.InstanceType, true, typeof(TParam1)), data
-        );
+        /// <returns>The created instance or <see langword="null"/> when resolution cannot produce one.</returns>
+        /// <example>
+        /// <para>This is useful when a component has multiple constructors and your test needs to target the overload that accepts a tenant or region value.</para>
+        /// <code language="csharp"><![CDATA[
+        /// var mocker = new Mocker();
+        ///
+        /// var handler = mocker.CreateInstance<InvoiceHandler, string>(
+        ///     new Dictionary<Type, object?>
+        ///     {
+        ///         [typeof(string)] = "contoso"
+        ///     });
+        ///
+        /// handler.Should().NotBeNull();
+        /// handler!.TenantName.Should().Be("contoso");
+        /// ]]></code>
+        /// </example>
+        public static T? CreateInstance<T, TParam1>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstance<T, TParam1>(InstanceCreationFlags.None, data);
+
+        public static T? CreateInstance<T, TParam1>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstanceInternal<T>(
+                model => mocker.FindConstructorByType(model.InstanceType, ResolvePublicOnlyOverride(flags), typeof(TParam1)),
+                ResolvePublicOnlyOverride(flags),
+                ResolveOptionalParameterResolution(mocker, flags),
+                data
+            );
 
         /// <summary>
         ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
@@ -32,10 +67,16 @@ namespace FastMoq.Extensions
         /// <param name="mocker">The mocker.</param>
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
-        public static T? CreateInstance<T, TParam1, TParam2>(this Mocker mocker, Dictionary<Type, object?> data) where T : class => mocker.CreateInstanceInternal<T>(
-            model => mocker.FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2)),
-            data
-        );
+        public static T? CreateInstance<T, TParam1, TParam2>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstance<T, TParam1, TParam2>(InstanceCreationFlags.None, data);
+
+        public static T? CreateInstance<T, TParam1, TParam2>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstanceInternal<T>(
+                model => mocker.FindConstructorByType(model.InstanceType, ResolvePublicOnlyOverride(flags), typeof(TParam1), typeof(TParam2)),
+                ResolvePublicOnlyOverride(flags),
+                ResolveOptionalParameterResolution(mocker, flags),
+                data
+            );
 
         /// <summary>
         ///     Creates an instance of <c>T</c>. Parameter data allows matching of constructors by type and uses those values in the creation of the instance.
@@ -48,8 +89,13 @@ namespace FastMoq.Extensions
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
         public static T? CreateInstance<T, TParam1, TParam2, TParam3>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstance<T, TParam1, TParam2, TParam3>(InstanceCreationFlags.None, data);
+
+        public static T? CreateInstance<T, TParam1, TParam2, TParam3>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
-                model => mocker.FindConstructorByType(model.InstanceType, true, typeof(TParam1), typeof(TParam2), typeof(TParam3)),
+                model => mocker.FindConstructorByType(model.InstanceType, ResolvePublicOnlyOverride(flags), typeof(TParam1), typeof(TParam2), typeof(TParam3)),
+                ResolvePublicOnlyOverride(flags),
+                ResolveOptionalParameterResolution(mocker, flags),
                 data
             );
 
@@ -65,14 +111,13 @@ namespace FastMoq.Extensions
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
         public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(InstanceCreationFlags.None, data);
+
+        public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
-                model => mocker.FindConstructorByType(model.InstanceType,
-                    true,
-                    typeof(TParam1),
-                    typeof(TParam2),
-                    typeof(TParam3),
-                    typeof(TParam4)
-                ),
+                model => mocker.FindConstructorByType(model.InstanceType, ResolvePublicOnlyOverride(flags), typeof(TParam1), typeof(TParam2), typeof(TParam3), typeof(TParam4)),
+                ResolvePublicOnlyOverride(flags),
+                ResolveOptionalParameterResolution(mocker, flags),
                 data
             );
 
@@ -89,17 +134,61 @@ namespace FastMoq.Extensions
         /// <param name="data">The data.</param>
         /// <returns>T.</returns>
         public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
+            mocker.CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(InstanceCreationFlags.None, data);
+
+        public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
-                model => mocker.FindConstructorByType(model.InstanceType,
-                    true,
-                    typeof(TParam1),
-                    typeof(TParam2),
-                    typeof(TParam3),
-                    typeof(TParam4),
-                    typeof(TParam5)
-                ),
+                model => mocker.FindConstructorByType(model.InstanceType, ResolvePublicOnlyOverride(flags), typeof(TParam1), typeof(TParam2), typeof(TParam3), typeof(TParam4), typeof(TParam5)),
+                ResolvePublicOnlyOverride(flags),
+                ResolveOptionalParameterResolution(mocker, flags),
                 data
             );
+
+        private static bool? ResolvePublicOnlyOverride(InstanceCreationFlags flags)
+        {
+            var publicOnly = flags.HasFlag(InstanceCreationFlags.PublicConstructorsOnly);
+            var allowNonPublicFallback = flags.HasFlag(InstanceCreationFlags.AllowNonPublicConstructorFallback);
+
+            if (publicOnly && allowNonPublicFallback)
+            {
+                throw new ArgumentException("InstanceCreationFlags cannot combine PublicConstructorsOnly with AllowNonPublicConstructorFallback.", nameof(flags));
+            }
+
+            if (publicOnly)
+            {
+                return true;
+            }
+
+            if (allowNonPublicFallback)
+            {
+                return false;
+            }
+
+            return null;
+        }
+
+        private static OptionalParameterResolutionMode ResolveOptionalParameterResolution(Mocker mocker, InstanceCreationFlags flags)
+        {
+            var resolveViaMocker = flags.HasFlag(InstanceCreationFlags.ResolveOptionalParametersViaMocker);
+            var useDefaultOrNull = flags.HasFlag(InstanceCreationFlags.UseDefaultOrNullOptionalParameters);
+
+            if (resolveViaMocker && useDefaultOrNull)
+            {
+                throw new ArgumentException("InstanceCreationFlags cannot combine ResolveOptionalParametersViaMocker with UseDefaultOrNullOptionalParameters.", nameof(flags));
+            }
+
+            if (resolveViaMocker)
+            {
+                return OptionalParameterResolutionMode.ResolveViaMocker;
+            }
+
+            if (useDefaultOrNull)
+            {
+                return OptionalParameterResolutionMode.UseDefaultOrNull;
+            }
+
+            return mocker.OptionalParameterResolution;
+        }
 
         /// <summary>
         ///     Creates a mock given the Type of Mock. Properties will be stubbed and have default setups.
@@ -128,22 +217,33 @@ namespace FastMoq.Extensions
                 ? BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.CreateInstance
                 : BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance;
 
-            var isDbContext = type.IsAssignableTo(typeof(DbContext));
-            var newType = isDbContext ? typeof(DbContextMock<>).MakeGenericType(type) : typeof(Mock<>).MakeGenericType(type);
-
             // Execute new Mock with Loose Behavior and arguments from constructor, if applicable.
-            var parameters = new List<object?> { mocker.Strict ? MockBehavior.Strict : MockBehavior.Loose };
+            var parameters = new List<object?>
+            {
+                mocker.ShouldCreateStrictMocks() ? MockBehavior.Strict : MockBehavior.Loose,
+            };
             parameterList ??= new List<object>();
             parameterList.ForEach(parameters.Add);
 
-            var instance = Activator.CreateInstance(newType,
-                               flags,
-                               null,
-                               parameters.ToArray(),
-                               null,
-                               null
-                           ) as Mock ??
-                           throw CannotCreateMock(type);
+            Mock? instance = null;
+            var isEntityFrameworkDbContextType = DatabaseSupportBridge.IsEntityFrameworkDbContextType(type);
+            if (!isEntityFrameworkDbContextType ||
+                !DatabaseSupportBridge.TryCreateLegacyDbContextMock(type, (MockBehavior)parameters[0]!, parameterList, out instance))
+            {
+                var newType = typeof(Mock<>).MakeGenericType(type);
+                instance = Activator.CreateInstance(newType,
+                                   flags,
+                                   null,
+                                   parameters.ToArray(),
+                                   null,
+                                   null
+                               ) as Mock;
+            }
+
+            if (instance == null)
+            {
+                throw CannotCreateMock(type);
+            }
 
             if (setupMock)
             {
@@ -193,10 +293,9 @@ namespace FastMoq.Extensions
                 if (!type.IsInterface)
                 {
                     // Find the best constructor and build the parameters.
-                    constructor = args.Length > 0 ||
-                                  nonPublic
-                        ? mocker.FindConstructor(type, true, args)
-                        : mocker.FindConstructor(true, type, nonPublic);
+                    constructor = args.Length > 0
+                        ? mocker.FindConstructor(type, nonPublic, args)
+                        : mocker.FindPreferredConstructor(type, nonPublic);
                 }
             }
             catch (Exception ex)
@@ -228,7 +327,10 @@ namespace FastMoq.Extensions
         /// <param name="constructorFunc">The constructor function.</param>
         /// <param name="data">The arguments.</param>
         /// <returns>T.</returns>
-        internal static T? CreateInstanceInternal<T>(this Mocker mocker, Func<IInstanceModel, ConstructorInfo> constructorFunc, Dictionary<Type, object?>? data) where T : class
+        internal static T? CreateInstanceInternal<T>(this Mocker mocker, Func<IInstanceModel, ConstructorInfo> constructorFunc, Dictionary<Type, object?>? data) where T : class =>
+            mocker.CreateInstanceInternal<T>(constructorFunc, publicOnly: null, mocker.OptionalParameterResolution, data);
+
+        internal static T? CreateInstanceInternal<T>(this Mocker mocker, Func<IInstanceModel, ConstructorInfo> constructorFunc, bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution, Dictionary<Type, object?>? data) where T : class
         {
             var type = typeof(T).IsInterface ? mocker.GetTypeFromInterface<T>() : new InstanceModel<T>();
 
@@ -240,7 +342,7 @@ namespace FastMoq.Extensions
             data ??= new();
             var constructor = constructorFunc(type);
 
-            var args = mocker.GetArgData(constructor, data);
+            var args = mocker.GetArgData(constructor, optionalParameterResolution, data);
 
             return mocker.CreateInstanceInternal<T>(constructor, args);
         }
@@ -285,12 +387,12 @@ namespace FastMoq.Extensions
                 for (var i = args.Length; i < paramList.Count; i++)
                 {
                     var p = paramList[i];
-                    newArgs.Add(p.IsOptional ? null : mocker.GetParameter(p));
+                    newArgs.Add(mocker.ResolveParameter(p, mocker.OptionalParameterResolution));
                 }
             }
 
             var obj = mocker.AddInjections(info?.Invoke(newArgs.ToArray()));
-            return mocker.InnerMockResolution ? mocker.AddProperties(type, obj) : obj;
+            return mocker.Behavior.Has(MockFeatures.ResolveNestedMembers) ? mocker.AddProperties(type, obj) : obj;
         }
 
         /// <summary>

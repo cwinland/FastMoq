@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,25 +10,141 @@ namespace FastMoq.Tests
     public class DbContextTests : MockerTestBase<MyDbContext>
     {
         [Fact]
-        public void GetDbContext_WithOptions()
+        public void GetObject_DbContext_ShouldReturnBuiltInMockObject_WhenNoProvidedRegistrationExists()
         {
-            var mockDbContext = Mocks.GetDbContext(options => new MyDbContext((DbContextOptions<MyDbContext>)options));
-            mockDbContext.Certificates.Should().HaveCount(0);
-            mockDbContext.MyDbSetData.Should().HaveCount(0);
-            mockDbContext.MyDbSetData2.Should().HaveCount(0);
+            var dbContext = Mocks.GetObject<MyDbContext>();
+
+            dbContext.Should().NotBeNull();
+            Mocks.Contains<MyDbContext>().Should().BeTrue();
+            Mocks.GetMockDbContext<MyDbContext>().Object.Should().BeSameAs(dbContext);
         }
 
         [Fact]
-        public void GetDbContext_WithoutOptions()
+        public void GetObject_DbContext_ShouldReturnTrackedMockObject_WhenTrackedMockAlreadyExists()
         {
-            var mockDbContext = Mocks.GetDbContext<MyDbContext>();
-            mockDbContext.Certificates.Should().HaveCount(0);
-            mockDbContext.MyDbSetData.Should().HaveCount(0);
-            mockDbContext.MyDbSetData2.Should().HaveCount(0);
+            var trackedMock = Mocks.GetMockDbContext<MyDbContext>();
+
+            var dbContext = Mocks.GetObject<MyDbContext>();
+
+            dbContext.Should().BeSameAs(trackedMock.Object);
         }
 
         [Fact]
-        public void GetMockDbContext_SameAs_Component()
+        public void GetDbContextHandle_ShouldDefaultToMockedSetMode()
+        {
+            var handle = Mocks.GetDbContextHandle<MyDbContext>();
+
+            handle.Mode.Should().Be(DbContextTestMode.MockedSets);
+            handle.Mock.Should().NotBeNull();
+            handle.Context.Should().BeSameAs(handle.Mock!.Object);
+
+            var secondHandle = Mocks.GetDbContextHandle<MyDbContext>();
+            secondHandle.Should().BeSameAs(handle);
+        }
+
+        [Fact]
+        public void GetDbContextHandle_ShouldCreateRealInMemoryContext_WhenRequested()
+        {
+            var mocker = new Mocker();
+
+            var handle = mocker.GetDbContextHandle<RealModeDbContext>(new DbContextHandleOptions<RealModeDbContext>
+            {
+                Mode = DbContextTestMode.RealInMemory,
+            });
+
+            handle.Mode.Should().Be(DbContextTestMode.RealInMemory);
+            handle.Mock.Should().BeNull();
+            handle.Context.Items.Add(new RealModeEntity { Id = 5 });
+            handle.Context.SaveChanges();
+
+            var resolved = mocker.GetObject<RealModeDbContext>();
+            resolved.Should().BeSameAs(handle.Context);
+            resolved!.Items.Should().ContainSingle(x => x.Id == 5);
+
+            var secondHandle = mocker.GetDbContextHandle<RealModeDbContext>(new DbContextHandleOptions<RealModeDbContext>
+            {
+                Mode = DbContextTestMode.RealInMemory,
+            });
+
+            secondHandle.Should().BeSameAs(handle);
+        }
+
+        [Fact]
+        public void GetDbContextHandle_ShouldThrow_WhenDifferentModeAlreadyTracked()
+        {
+            var mocker = new Mocker();
+
+            mocker.GetDbContextHandle<RealModeDbContext>(new DbContextHandleOptions<RealModeDbContext>
+            {
+                Mode = DbContextTestMode.RealInMemory,
+            });
+
+            var action = () => mocker.GetDbContextHandle<RealModeDbContext>();
+
+            action.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*already tracked in RealInMemory mode*");
+        }
+
+        [Fact]
+        public void GetObject_DbContext_ShouldRemainBuiltInManagedInstance_WhenStrictCompatibilityDefaultsAreEnabled()
+        {
+            Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.StrictCompatibilityDefaults;
+
+            var dbContext = Mocks.GetObject<MyDbContext>();
+
+            dbContext.Should().NotBeNull();
+            Mocks.Contains<MyDbContext>().Should().BeTrue();
+            Mocks.GetMockDbContext<MyDbContext>().Object.Should().BeSameAs(dbContext);
+        }
+
+        [Fact]
+        public void GetObject_DbContext_ShouldAllowDisablingBuiltInManagedResolution_Explicitly()
+        {
+            Mocks.Policy.EnabledBuiltInTypeResolutions &= ~BuiltInTypeResolutionFlags.DbContext;
+
+            var dbContext = Mocks.GetObject<MyDbContext>();
+
+            dbContext.Should().NotBeNull();
+            Mocks.Contains<MyDbContext>().Should().BeTrue();
+            Mocks.GetMock<MyDbContext>().Object.Should().BeSameAs(dbContext);
+        }
+
+        [Fact]
+        public void GetMockDbContext_ShouldRemainUsable_WhenDefaultStrictMockCreationIsEnabled()
+        {
+            using var fixture = new StrictMockCreationDbContextFixture();
+
+            var mockDbContext = fixture.TestMocks.GetMockDbContext<MyDbContext>();
+
+            mockDbContext.Behavior.Should().Be(MockBehavior.Default);
+        }
+
+        [Fact]
+        public void GetObject_DbContext_ShouldReturnCustomManagedInstance_BeforeTrackedAndBuiltIn()
+        {
+            var expected = new CustomManagedDbContext(
+                new DbContextOptionsBuilder<CustomManagedDbContext>()
+                    .UseInMemoryDatabase($"FastMoq_{nameof(CustomManagedDbContext)}_{System.Guid.NewGuid():N}")
+                    .Options);
+
+            Mocks.AddKnownType<DbContext>(
+                managedInstanceFactory: (_, requestedType) =>
+                    requestedType == typeof(CustomManagedDbContext) ? expected : null,
+                includeDerivedTypes: true);
+
+            var trackedMock = Mocks.GetMockDbContext<CustomManagedDbContext>();
+            trackedMock.Should().NotBeNull();
+
+            var dbContext = Mocks.GetObject<CustomManagedDbContext>();
+
+            dbContext.Should().BeSameAs(expected);
+            dbContext.Should().NotBeSameAs(trackedMock.Object);
+        }
+
+        [Fact]
+        public void GetMockDbContext_ShouldReturnSameInstanceAsComponent()
         {
             var mockDbContext = Mocks.GetMockDbContext(typeof(MyDbContext));
             mockDbContext.Object.Should().BeSameAs(Component);
@@ -38,7 +155,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void TestComponent_SetAdd()
+        public void Component_DbSetOperations_ShouldTrackAddedEntitiesAcrossNamedSets()
         {
             Component.MyDbUpdateMethod();
             Component.Set<MockDataModel>().Add(new() { Name="test1" }); // This brings back the second one because it was set twice and last one wins.
@@ -48,7 +165,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void TestDbContext()
+        public void GetMockDbContext_ShouldSupportDbSetOperationsOnTrackedMock()
         {
             var mockDbContext = Mocks.GetMockDbContext<MyDbContext>();
 
@@ -60,7 +177,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void TestCustomProp()
+        public void Component_ShouldPersistCustomPropertyChangesOnDbContextMock()
         {
             Component.CustomProp.Should().BeFalse();
             Component.MyDbUpdateMethod();
@@ -68,7 +185,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void TestSetByName()
+        public void SetByName_ShouldResolveConfiguredDbSetProperties()
         {
             Component.Set<MockDataModel>("MyDbSetData").Should().BeSameAs(Component.MyDbSetData);
             Component.Set<MockDataModel>("MyDbSetData2").Should().BeSameAs(Component.MyDbSetData2);
@@ -79,7 +196,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public async Task TestAsync_AddAsync()
+        public async Task DbSet_AddAsync_ShouldAppendEntityToTrackedSet()
         {
             var dbSet = Component.Set<MockDataModel>("MyDbSetData");
 
@@ -89,7 +206,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public async Task TestAsync_GetAllToList()
+        public async Task QueryableDbSet_ShouldEnumerateToList()
         {
             var dbSet = Component.Set<MockDataModel>("MyDbSetData");
             dbSet.Add(new MockDataModel());
@@ -100,7 +217,7 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public async Task TestAsync_GetAllToListAsync()
+        public async Task AsyncEnumerableDbSet_ShouldEnumerateToListAsync()
         {
             var dbSet = Component.Set<MockDataModel>("MyDbSetData");
             dbSet.Add(new MockDataModel());
@@ -158,5 +275,40 @@ namespace FastMoq.Tests
         protected MyDbContext()
         {
         }
+    }
+
+    public class CustomManagedDbContext : DbContext
+    {
+        public CustomManagedDbContext(DbContextOptions<CustomManagedDbContext> options) : base(options)
+        {
+        }
+
+        protected CustomManagedDbContext()
+        {
+        }
+    }
+
+    public class RealModeDbContext : DbContext
+    {
+        public RealModeDbContext(DbContextOptions<RealModeDbContext> options) : base(options)
+        {
+        }
+
+        public DbSet<RealModeEntity> Items { get; set; }
+    }
+
+    public class RealModeEntity
+    {
+        public int Id { get; set; }
+    }
+
+    internal sealed class StrictMockCreationDbContextFixture : MockerTestBase<MyDbContext>
+    {
+        public Mocker TestMocks => Mocks;
+
+        protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy =>
+        {
+            policy.DefaultStrictMockCreation = true;
+        };
     }
 }

@@ -1,0 +1,452 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Extensions.MockerBooleanExtensions
+  commentId: T:FastMoq.Extensions.MockerBooleanExtensions
+  id: MockerBooleanExtensions
+  parent: FastMoq.Extensions
+  children:
+  - FastMoq.Extensions.MockerBooleanExtensions.Contains(FastMoq.Mocker,System.Type)
+  - FastMoq.Extensions.MockerBooleanExtensions.Contains``1(FastMoq.Mocker)
+  langs:
+  - csharp
+  - vb
+  name: MockerBooleanExtensions
+  nameWithType: MockerBooleanExtensions
+  fullName: FastMoq.Extensions.MockerBooleanExtensions
+  type: Class
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: MockerBooleanExtensions
+    path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
+    startLine: 5
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Mocker Boolean Extensions Class.
+  example: []
+  syntax:
+    content: public static class MockerBooleanExtensions
+    content.vb: Public Module MockerBooleanExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FastMoq.Extensions.MockerBooleanExtensions.Contains``1(FastMoq.Mocker)
+  commentId: M:FastMoq.Extensions.MockerBooleanExtensions.Contains``1(FastMoq.Mocker)
+  id: Contains``1(FastMoq.Mocker)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerBooleanExtensions
+  langs:
+  - csharp
+  - vb
+  name: Contains<T>(Mocker)
+  nameWithType: MockerBooleanExtensions.Contains<T>(Mocker)
+  fullName: FastMoq.Extensions.MockerBooleanExtensions.Contains<T>(FastMoq.Mocker)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Contains
+    path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
+    startLine: 15
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Determines whether this instance contains a Mock of <code>T</code>.
+  example: []
+  syntax:
+    content: 'public static bool Contains<T>(this Mocker mocker) where T : class'
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The mocker.
+    typeParameters:
+    - id: T
+      description: The Mock <xref href="Type" data-throw-if-not-resolved="false"></xref>, usually an interface.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if the Mock exists for the given type; otherwise, <code>false</code>.
+    content.vb: Public Shared Function Contains(Of T As Class)(mocker As Mocker) As Boolean
+  overload: FastMoq.Extensions.MockerBooleanExtensions.Contains*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: type is null.
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: type must be a class. - type
+  nameWithType.vb: MockerBooleanExtensions.Contains(Of T)(Mocker)
+  fullName.vb: FastMoq.Extensions.MockerBooleanExtensions.Contains(Of T)(FastMoq.Mocker)
+  name.vb: Contains(Of T)(Mocker)
+- uid: FastMoq.Extensions.MockerBooleanExtensions.Contains(FastMoq.Mocker,System.Type)
+  commentId: M:FastMoq.Extensions.MockerBooleanExtensions.Contains(FastMoq.Mocker,System.Type)
+  id: Contains(FastMoq.Mocker,System.Type)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.MockerBooleanExtensions
+  langs:
+  - csharp
+  - vb
+  name: Contains(Mocker, Type)
+  nameWithType: MockerBooleanExtensions.Contains(Mocker, Type)
+  fullName: FastMoq.Extensions.MockerBooleanExtensions.Contains(FastMoq.Mocker, System.Type)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: Contains
+    path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
+    startLine: 25
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Determines whether this instance contains the object.
+  example: []
+  syntax:
+    content: public static bool Contains(this Mocker mocker, Type type)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The mocker.
+    - id: type
+      type: System.Type
+      description: The type.
+    return:
+      type: System.Boolean
+      description: <code>true</code> if [contains] [the specified type]; otherwise, <code>false</code>.
+    content.vb: Public Shared Function Contains(mocker As Mocker, type As Type) As Boolean
+  overload: FastMoq.Extensions.MockerBooleanExtensions.Contains*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: ''
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: type must be a class. - type
+references:
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Type
+  commentId: T:Type
+  isExternal: true
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: FastMoq.Extensions.MockerBooleanExtensions.Contains*
+  commentId: Overload:FastMoq.Extensions.MockerBooleanExtensions.Contains
+  href: FastMoq.Extensions.MockerBooleanExtensions.html#FastMoq_Extensions_MockerBooleanExtensions_Contains__1_FastMoq_Mocker_
+  name: Contains
+  nameWithType: MockerBooleanExtensions.Contains
+  fullName: FastMoq.Extensions.MockerBooleanExtensions.Contains
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FastMoq
+  commentId: N:FastMoq
+  href: FastMoq.html
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type

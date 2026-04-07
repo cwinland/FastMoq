@@ -20,77 +20,51 @@ using System.Security.Claims;
 namespace FastMoq.Web.Blazor
 {
     /// <summary>
-    ///     Class MockerBlazorTestBase.
-    ///     Implements the <see cref="TestContext" />
-    ///     Implements the <see cref="IMockerBlazorTestHelpers{T}" />
+    /// Base class for bUnit component tests that integrates FastMoq auto-mocking, service setup, and helper methods for Blazor interaction.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The Blazor component under test.</typeparam>
     /// <seealso cref="IMockerBlazorTestHelpers{T}" />
     /// <seealso cref="ComponentBase" />
     /// <inheritdoc cref="TestContext" />
-    /// <inheritdoc cref="IMockerBlazorTestHelpers{T}" />
     /// <example>
-    ///     Basic Example
-    ///     <code language="cs"><![CDATA[
-    /// public class IndexTests : MockerBlazorTestBase<Index>
+    /// <para>Start with a realistic page-level test that configures services, mocks, and assertions in one place.</para>
+    /// <code language="csharp"><![CDATA[
+    /// public class OrdersPageTests : MockerBlazorTestBase<OrdersPage>
     /// {
+    ///     protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices => (services, _, _) =>
+    ///         services.AddSingleton<IClock>(new FixedClock(new DateTimeOffset(2026, 4, 4, 12, 0, 0, TimeSpan.Zero)));
+    ///
+    ///     protected override Action<Mocker> SetupComponent => mocker =>
+    ///     {
+    ///         mocker.GetOrCreateMock<IOrdersClient>()
+    ///             .Setup(x => x.GetOpenOrdersAsync())
+    ///             .ReturnsAsync(new[]
+    ///             {
+    ///                 new OrderSummary { Id = 42, CustomerName = "Contoso", Total = 125.50m }
+    ///             });
+    ///     };
+    ///
     ///     [Fact]
-    ///     public void Create() => Component.Should().NotBeNull();
+    ///     public void LoadsOpenOrdersOnFirstRender()
+    ///     {
+    ///         Component.Markup.Should().Contain("Contoso");
+    ///         Mocks.Verify<IOrdersClient>(x => x.GetOpenOrdersAsync(), TimesSpec.Once);
+    ///     }
     /// }
     /// ]]></code>
     /// </example>
     /// <example>
-    ///     Setup Services
-    ///     <code language="cs"><![CDATA[
-    /// protected override Action<TestServiceProvider, IConfiguration, Mocker> ConfigureServices => (services, c, m) => services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
-    /// ]]></code>
-    /// </example>
-    /// <example>
-    ///     Setup Roles.
-    ///     <code language="cs"><![CDATA[
-    /// protected override MockerObservableCollection<string> AuthorizedRoles => new MockerObservableCollection<string>() { "Role1", "Role2"}
-    /// ]]></code>
-    /// </example>
-    /// <example>
-    ///     Setup Http Response Message
-    ///     <code language="cs"><![CDATA[
-    /// protected override Action<Mocker> SetupComponent => mocker =>
-    /// mocker.SetupHttpMessage(() => new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent("ContextGoesHere")});
-    /// ]]></code>
-    /// </example>
-    /// <example>
-    ///     Setup Mocks
-    ///     <code language="cs"><![CDATA[
-    /// protected override Action<Mocker> SetupComponent => mocker =>
+    /// <para>Use authorization and navigation helpers together when a component renders actions conditionally.</para>
+    /// <code language="csharp"><![CDATA[
+    /// protected override MockerObservableCollection<string> AuthorizedRoles => new() { "Orders.Read", "Orders.Submit" };
+    ///
+    /// [Fact]
+    /// public void ClickingSubmitNavigatesToReview()
     /// {
-    ///     mocker.GetMock<IFile>().Setup(f => f.Exists(It.IsAny<string>())).Returns(true);                     // Add setup to mock.
-    ///     mocker.Initialize<IDirectory>(mock => mock.Setup(d => d.Exists(It.IsAny<string>())).Returns(true)); // Clears existing mocks and set new mock.
-    ///     mocker.GetMock<IDirectory>().Setup(d=>d.Exists("C:\\testfile.txt")).Returns(false);                 // add setup to existing mock.
-    /// };
-    /// ]]></code>
-    /// </example>
-    /// <example>
-    ///     Click Button by class, tag, or id and check the navigation manager for changes.
-    ///     <code language="cs"><![CDATA[
-    /// NavigationManager.History.Count.Should().Be(0);
-    /// 
-    /// ClickButton("button", () => NavigationManager.History.Count == 1);
-    /// NavigationManager.History.Count.Should().Be(1);
-    /// 
-    /// ClickButton("button[id='testbutton']", () => NavigationManager.History.Count == 2);
-    /// NavigationManager.History.Count.Should().Be(2);
-    /// 
-    /// ClickButton(FindAllByTag("button").First(x => x.Id == "testbutton"), () => NavigationManager.History.Count == 3);
-    /// NavigationManager.History.Count.Should().Be(3);
-    /// 
-    /// ClickButton(FindById("testbutton"), () => NavigationManager.History.Count == 4);
-    /// NavigationManager.History.Count.Should().Be(4);
-    /// 
-    /// ClickButton("button", () => NavigationManager.History.Count == 5, Component, TimeSpan.FromSeconds(5));
-    /// NavigationManager.History.Count.Should().Be(5);
-    /// 
-    /// ClickButton(e => e.Id == "testbutton", () => NavigationManager.History.Count == 6);
-    /// NavigationManager.History.Count.Should().Be(6);
+    ///     ClickButton("button[type='submit']", () => NavigationManager.History.Count == 1);
+    ///
+    ///     NavigationManager.Uri.Should().Contain("/orders/review");
+    /// }
     /// ]]></code>
     /// </example>
     public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHelpers<T> where T : ComponentBase

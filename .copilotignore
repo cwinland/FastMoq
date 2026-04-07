@@ -1,0 +1,70 @@
+# Ignore build artifacts and binaries
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.lib
+*.obj
+
+# Ignore user-specific and temp files
+*.user
+*.suo
+*.cache
+*.log
+.vs/
+*.DotSettings.user
+
+# Ignore test snapshots and coverage
+__snapshots__/
+coverage/
+*.testresults
+TestResults/
+
+# Ignore generated files and intermediate outputs
+*.g.cs
+*.designer.cs
+*.generated.cs
+AssemblyInfo.cs
+
+# Ignore large or noisy folders
+node_modules/
+packages/
+wwwroot/lib/
+dist/
+
+# Ignore specific config files not relevant to code suggestions
+Web.Config
+*.DotSettings
+packages.lock.json
+
+# Ignore NuGet packaging artifacts
+*.nupkg
+*.snupkg
+
+# Ignore documentation artifacts that may be large/noisy
+Help/
+docs/benchmarks/
+*.GhostDoc.xml
+
+# Additional IDE files
+.idea/
+*.sln.docstates
+*.sln.cache
+*.csproj.user
+
+# Documentation and design files
+docs/architecture/
+docs/diagrams/
+*.vsdx
+*.drawio
+*.md.backup
+*.sln.GhostDoc.xml
+
+# Blazor test assets
+FastMoq.Tests.Blazor/wwwroot/
+
+# Copilot-specific files
+.copilot/
+copilot.log
+copilot_suggestions/

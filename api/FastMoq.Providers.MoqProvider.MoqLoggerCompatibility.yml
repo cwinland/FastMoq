@@ -1,0 +1,1124 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  commentId: T:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  id: MoqLoggerCompatibility
+  parent: FastMoq.Providers.MoqProvider
+  children:
+  - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},Moq.Times)
+  - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Func{Moq.Times})
+  - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
+  - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  - FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``2(Moq.Mock{``1},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: MoqLoggerCompatibility
+  nameWithType: MoqLoggerCompatibility
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  type: Class
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: MoqLoggerCompatibility
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+    startLine: 6
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: public static class MoqLoggerCompatibility
+    content.vb: Public Module MoqLoggerCompatibility
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  id: VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  isExtensionMethod: true
+  parent: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  langs:
+  - csharp
+  - vb
+  name: VerifyLogger(Mock<ILogger>, LogLevel, string, int)
+  nameWithType: MoqLoggerCompatibility.VerifyLogger(Mock<ILogger>, LogLevel, string, int)
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, int)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: VerifyLogger
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+    startLine: 8
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, int times = 1)
+    parameters:
+    - id: loggerMock
+      type: Moq.Mock{Microsoft.Extensions.Logging.ILogger}
+    - id: logLevel
+      type: Microsoft.Extensions.Logging.LogLevel
+    - id: message
+      type: System.String
+    - id: times
+      type: System.Int32
+    content.vb: Public Shared Sub VerifyLogger(loggerMock As Mock(Of ILogger), logLevel As LogLevel, message As String, times As Integer = 1)
+  overload: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*
+  nameWithType.vb: MoqLoggerCompatibility.VerifyLogger(Mock(Of ILogger), LogLevel, String, Integer)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, Integer)
+  name.vb: VerifyLogger(Mock(Of ILogger), LogLevel, String, Integer)
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  id: VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
+  isExtensionMethod: true
+  parent: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  langs:
+  - csharp
+  - vb
+  name: VerifyLogger<TLogger>(Mock<TLogger>, LogLevel, string, int)
+  nameWithType: MoqLoggerCompatibility.VerifyLogger<TLogger>(Mock<TLogger>, LogLevel, string, int)
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger<TLogger>(Moq.Mock<TLogger>, Microsoft.Extensions.Logging.LogLevel, string, int)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: VerifyLogger
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+    startLine: 11
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: 'public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, int times = 1) where TLogger : class, ILogger'
+    parameters:
+    - id: loggerMock
+      type: Moq.Mock{{TLogger}}
+    - id: logLevel
+      type: Microsoft.Extensions.Logging.LogLevel
+    - id: message
+      type: System.String
+    - id: times
+      type: System.Int32
+    typeParameters:
+    - id: TLogger
+    content.vb: Public Shared Sub VerifyLogger(Of TLogger As {Class, ILogger})(loggerMock As Mock(Of TLogger), logLevel As LogLevel, message As String, times As Integer = 1)
+  overload: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*
+  nameWithType.vb: MoqLoggerCompatibility.VerifyLogger(Of TLogger)(Mock(Of TLogger), LogLevel, String, Integer)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Of TLogger)(Moq.Mock(Of TLogger), Microsoft.Extensions.Logging.LogLevel, String, Integer)
+  name.vb: VerifyLogger(Of TLogger)(Mock(Of TLogger), LogLevel, String, Integer)
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  id: VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  isExtensionMethod: true
+  parent: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  langs:
+  - csharp
+  - vb
+  name: VerifyLogger(Mock<ILogger>, LogLevel, string, Exception?, int?, int)
+  nameWithType: MoqLoggerCompatibility.VerifyLogger(Mock<ILogger>, LogLevel, string, Exception?, int?, int)
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, System.Exception?, int?, int)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: VerifyLogger
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+    startLine: 15
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null, int times = 1)
+    parameters:
+    - id: loggerMock
+      type: Moq.Mock{Microsoft.Extensions.Logging.ILogger}
+    - id: logLevel
+      type: Microsoft.Extensions.Logging.LogLevel
+    - id: message
+      type: System.String
+    - id: exception
+      type: System.Exception
+    - id: eventId
+      type: System.Nullable{System.Int32}
+    - id: times
+      type: System.Int32
+    content.vb: Public Shared Sub VerifyLogger(loggerMock As Mock(Of ILogger), logLevel As LogLevel, message As String, exception As Exception, eventId As Integer? = Nothing, times As Integer = 1)
+  overload: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*
+  nameWithType.vb: MoqLoggerCompatibility.VerifyLogger(Mock(Of ILogger), LogLevel, String, Exception, Integer?, Integer)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, System.Exception, Integer?, Integer)
+  name.vb: VerifyLogger(Mock(Of ILogger), LogLevel, String, Exception, Integer?, Integer)
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  id: VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
+  isExtensionMethod: true
+  parent: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  langs:
+  - csharp
+  - vb
+  name: VerifyLogger<TLogger>(Mock<TLogger>, LogLevel, string, Exception?, int?, int)
+  nameWithType: MoqLoggerCompatibility.VerifyLogger<TLogger>(Mock<TLogger>, LogLevel, string, Exception?, int?, int)
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger<TLogger>(Moq.Mock<TLogger>, Microsoft.Extensions.Logging.LogLevel, string, System.Exception?, int?, int)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: VerifyLogger
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+    startLine: 18
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: 'public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null, int times = 1) where TLogger : class, ILogger'
+    parameters:
+    - id: loggerMock
+      type: Moq.Mock{{TLogger}}
+    - id: logLevel
+      type: Microsoft.Extensions.Logging.LogLevel
+    - id: message
+      type: System.String
+    - id: exception
+      type: System.Exception
+    - id: eventId
+      type: System.Nullable{System.Int32}
+    - id: times
+      type: System.Int32
+    typeParameters:
+    - id: TLogger
+    content.vb: Public Shared Sub VerifyLogger(Of TLogger As {Class, ILogger})(loggerMock As Mock(Of TLogger), logLevel As LogLevel, message As String, exception As Exception, eventId As Integer? = Nothing, times As Integer = 1)
+  overload: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*
+  nameWithType.vb: MoqLoggerCompatibility.VerifyLogger(Of TLogger)(Mock(Of TLogger), LogLevel, String, Exception, Integer?, Integer)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Of TLogger)(Moq.Mock(Of TLogger), Microsoft.Extensions.Logging.LogLevel, String, System.Exception, Integer?, Integer)
+  name.vb: VerifyLogger(Of TLogger)(Mock(Of TLogger), LogLevel, String, Exception, Integer?, Integer)
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
+  id: VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
+  isExtensionMethod: true
+  parent: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  langs:
+  - csharp
+  - vb
+  name: VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, int)
+  nameWithType: MoqLoggerCompatibility.VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, int)
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger<TException>(Moq.Mock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, TException?, int?, int)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: VerifyLogger
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+    startLine: 22
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: 'public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1) where TException : Exception'
+    parameters:
+    - id: loggerMock
+      type: Moq.Mock{Microsoft.Extensions.Logging.ILogger}
+    - id: logLevel
+      type: Microsoft.Extensions.Logging.LogLevel
+    - id: message
+      type: System.String
+    - id: exception
+      type: '{TException}'
+    - id: eventId
+      type: System.Nullable{System.Int32}
+    - id: times
+      type: System.Int32
+    typeParameters:
+    - id: TException
+    content.vb: Public Shared Sub VerifyLogger(Of TException As Exception)(loggerMock As Mock(Of ILogger), logLevel As LogLevel, message As String, exception As TException, eventId As Integer? = Nothing, times As Integer = 1)
+  overload: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*
+  nameWithType.vb: MoqLoggerCompatibility.VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Integer)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Of TException)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, TException, Integer?, Integer)
+  name.vb: VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Integer)
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},Moq.Times)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},Moq.Times)
+  id: VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},Moq.Times)
+  isExtensionMethod: true
+  parent: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  langs:
+  - csharp
+  - vb
+  name: VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, Times)
+  nameWithType: MoqLoggerCompatibility.VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, Times)
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger<TException>(Moq.Mock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, TException?, int?, Moq.Times)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: VerifyLogger
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+    startLine: 29
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: 'public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Times times) where TException : Exception'
+    parameters:
+    - id: loggerMock
+      type: Moq.Mock{Microsoft.Extensions.Logging.ILogger}
+    - id: logLevel
+      type: Microsoft.Extensions.Logging.LogLevel
+    - id: message
+      type: System.String
+    - id: exception
+      type: '{TException}'
+    - id: eventId
+      type: System.Nullable{System.Int32}
+    - id: times
+      type: Moq.Times
+    typeParameters:
+    - id: TException
+    content.vb: Public Shared Sub VerifyLogger(Of TException As Exception)(loggerMock As Mock(Of ILogger), logLevel As LogLevel, message As String, exception As TException, eventId As Integer?, times As Times)
+  overload: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*
+  nameWithType.vb: MoqLoggerCompatibility.VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Times)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Of TException)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, TException, Integer?, Moq.Times)
+  name.vb: VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Times)
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Func{Moq.Times})
+  commentId: M:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Func{Moq.Times})
+  id: VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Func{Moq.Times})
+  isExtensionMethod: true
+  parent: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  langs:
+  - csharp
+  - vb
+  name: VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, Func<Times>)
+  nameWithType: MoqLoggerCompatibility.VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, Func<Times>)
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger<TException>(Moq.Mock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, TException?, int?, System.Func<Moq.Times>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: VerifyLogger
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+    startLine: 36
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: 'public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Func<Times> times) where TException : Exception'
+    parameters:
+    - id: loggerMock
+      type: Moq.Mock{Microsoft.Extensions.Logging.ILogger}
+    - id: logLevel
+      type: Microsoft.Extensions.Logging.LogLevel
+    - id: message
+      type: System.String
+    - id: exception
+      type: '{TException}'
+    - id: eventId
+      type: System.Nullable{System.Int32}
+    - id: times
+      type: System.Func{Moq.Times}
+    typeParameters:
+    - id: TException
+    content.vb: Public Shared Sub VerifyLogger(Of TException As Exception)(loggerMock As Mock(Of ILogger), logLevel As LogLevel, message As String, exception As TException, eventId As Integer?, times As Func(Of Times))
+  overload: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*
+  nameWithType.vb: MoqLoggerCompatibility.VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Func(Of Times))
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Of TException)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, TException, Integer?, System.Func(Of Moq.Times))
+  name.vb: VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Func(Of Times))
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``2(Moq.Mock{``1},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
+  commentId: M:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``2(Moq.Mock{``1},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
+  id: VerifyLogger``2(Moq.Mock{``1},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
+  isExtensionMethod: true
+  parent: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  langs:
+  - csharp
+  - vb
+  name: VerifyLogger<TException, TLogger>(Mock<TLogger>, LogLevel, string, TException?, int?, int)
+  nameWithType: MoqLoggerCompatibility.VerifyLogger<TException, TLogger>(Mock<TLogger>, LogLevel, string, TException?, int?, int)
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger<TException, TLogger>(Moq.Mock<TLogger>, Microsoft.Extensions.Logging.LogLevel, string, TException?, int?, int)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: VerifyLogger
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+    startLine: 43
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: 'public static void VerifyLogger<TException, TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1) where TException : Exception where TLogger : class, ILogger'
+    parameters:
+    - id: loggerMock
+      type: Moq.Mock{{TLogger}}
+    - id: logLevel
+      type: Microsoft.Extensions.Logging.LogLevel
+    - id: message
+      type: System.String
+    - id: exception
+      type: '{TException}'
+    - id: eventId
+      type: System.Nullable{System.Int32}
+    - id: times
+      type: System.Int32
+    typeParameters:
+    - id: TException
+    - id: TLogger
+    content.vb: Public Shared Sub VerifyLogger(Of TException As Exception, TLogger As {Class, ILogger})(loggerMock As Mock(Of TLogger), logLevel As LogLevel, message As String, exception As TException, eventId As Integer? = Nothing, times As Integer = 1)
+  overload: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*
+  nameWithType.vb: MoqLoggerCompatibility.VerifyLogger(Of TException, TLogger)(Mock(Of TLogger), LogLevel, String, TException, Integer?, Integer)
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Of TException, TLogger)(Moq.Mock(Of TLogger), Microsoft.Extensions.Logging.LogLevel, String, TException, Integer?, Integer)
+  name.vb: VerifyLogger(Of TException, TLogger)(Mock(Of TLogger), LogLevel, String, TException, Integer?, Integer)
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  commentId: M:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  id: SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
+  isExtensionMethod: true
+  parent: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility
+  langs:
+  - csharp
+  - vb
+  name: SetupLoggerCallback<TLogger>(Mock<TLogger>, Action<LogLevel, EventId, string, Exception?>)
+  nameWithType: MoqLoggerCompatibility.SetupLoggerCallback<TLogger>(Mock<TLogger>, Action<LogLevel, EventId, string, Exception?>)
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback<TLogger>(Moq.Mock<TLogger>, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception?>)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: SetupLoggerCallback
+    path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
+    startLine: 51
+  assemblies:
+  - FastMoq.Provider.Moq
+  namespace: FastMoq.Providers.MoqProvider
+  syntax:
+    content: 'public static void SetupLoggerCallback<TLogger>(this Mock<TLogger> logger, Action<LogLevel, EventId, string, Exception?> callback) where TLogger : class, ILogger'
+    parameters:
+    - id: logger
+      type: Moq.Mock{{TLogger}}
+    - id: callback
+      type: System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+    typeParameters:
+    - id: TLogger
+    content.vb: Public Shared Sub SetupLoggerCallback(Of TLogger As {Class, ILogger})(logger As Mock(Of TLogger), callback As Action(Of LogLevel, EventId, String, Exception))
+  overload: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback*
+  nameWithType.vb: MoqLoggerCompatibility.SetupLoggerCallback(Of TLogger)(Mock(Of TLogger), Action(Of LogLevel, EventId, String, Exception))
+  fullName.vb: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback(Of TLogger)(Moq.Mock(Of TLogger), System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception))
+  name.vb: SetupLoggerCallback(Of TLogger)(Mock(Of TLogger), Action(Of LogLevel, EventId, String, Exception))
+references:
+- uid: FastMoq.Providers.MoqProvider
+  commentId: N:FastMoq.Providers.MoqProvider
+  href: FastMoq.html
+  name: FastMoq.Providers.MoqProvider
+  nameWithType: FastMoq.Providers.MoqProvider
+  fullName: FastMoq.Providers.MoqProvider
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  - name: .
+  - uid: FastMoq.Providers.MoqProvider
+    name: MoqProvider
+    href: FastMoq.Providers.MoqProvider.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  - name: .
+  - uid: FastMoq.Providers.MoqProvider
+    name: MoqProvider
+    href: FastMoq.Providers.MoqProvider.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger
+  href: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.html#FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_
+  name: VerifyLogger
+  nameWithType: MoqLoggerCompatibility.VerifyLogger
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger
+- uid: Moq.Mock{Microsoft.Extensions.Logging.ILogger}
+  commentId: T:Moq.Mock{Microsoft.Extensions.Logging.ILogger}
+  parent: Moq
+  definition: Moq.Mock`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: Mock<ILogger>
+  nameWithType: Mock<ILogger>
+  fullName: Moq.Mock<Microsoft.Extensions.Logging.ILogger>
+  nameWithType.vb: Mock(Of ILogger)
+  fullName.vb: Moq.Mock(Of Microsoft.Extensions.Logging.ILogger)
+  name.vb: Mock(Of ILogger)
+  spec.csharp:
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILogger
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  - name: '>'
+  spec.vb:
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILogger
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  - name: )
+- uid: Microsoft.Extensions.Logging.LogLevel
+  commentId: T:Microsoft.Extensions.Logging.LogLevel
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  name: LogLevel
+  nameWithType: LogLevel
+  fullName: Microsoft.Extensions.Logging.LogLevel
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Moq.Mock`1
+  commentId: T:Moq.Mock`1
+  isExternal: true
+  name: Mock<T>
+  nameWithType: Mock<T>
+  fullName: Moq.Mock<T>
+  nameWithType.vb: Mock(Of T)
+  fullName.vb: Moq.Mock(Of T)
+  name.vb: Mock(Of T)
+  spec.csharp:
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Moq
+  commentId: N:Moq
+  isExternal: true
+  name: Moq
+  nameWithType: Moq
+  fullName: Moq
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: Moq.Mock{{TLogger}}
+  commentId: T:Moq.Mock{``0}
+  parent: Moq
+  definition: Moq.Mock`1
+  name: Mock<TLogger>
+  nameWithType: Mock<TLogger>
+  fullName: Moq.Mock<TLogger>
+  nameWithType.vb: Mock(Of TLogger)
+  fullName.vb: Moq.Mock(Of TLogger)
+  name.vb: Mock(Of TLogger)
+  spec.csharp:
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: <
+  - name: TLogger
+  - name: '>'
+  spec.vb:
+  - uid: Moq.Mock`1
+    name: Mock
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TLogger
+  - name: )
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: '{TException}'
+  commentId: '!:TException'
+  definition: TException
+  name: TException
+  nameWithType: TException
+  fullName: TException
+- uid: TException
+  name: TException
+  nameWithType: TException
+  fullName: TException
+- uid: Moq.Times
+  commentId: T:Moq.Times
+  parent: Moq
+  isExternal: true
+  name: Times
+  nameWithType: Times
+  fullName: Moq.Times
+- uid: System.Func{Moq.Times}
+  commentId: T:System.Func{Moq.Times}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<Times>
+  nameWithType: Func<Times>
+  fullName: System.Func<Moq.Times>
+  nameWithType.vb: Func(Of Times)
+  fullName.vb: System.Func(Of Moq.Times)
+  name.vb: Func(Of Times)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Moq.Times
+    name: Times
+    isExternal: true
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback*
+  commentId: Overload:FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback
+  href: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.html#FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_SetupLoggerCallback__1_Moq_Mock___0__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__
+  name: SetupLoggerCallback
+  nameWithType: MoqLoggerCompatibility.SetupLoggerCallback
+  fullName: FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback
+- uid: System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+  commentId: T:System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+  parent: System
+  definition: System.Action`4
+  href: https://learn.microsoft.com/dotnet/api/system.action-4
+  name: Action<LogLevel, EventId, string, Exception>
+  nameWithType: Action<LogLevel, EventId, string, Exception>
+  fullName: System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception>
+  nameWithType.vb: Action(Of LogLevel, EventId, String, Exception)
+  fullName.vb: System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception)
+  name.vb: Action(Of LogLevel, EventId, String, Exception)
+  spec.csharp:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: <
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.EventId
+    name: EventId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.EventId
+    name: EventId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+- uid: System.Action`4
+  commentId: T:System.Action`4
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-4
+  name: Action<T1, T2, T3, T4>
+  nameWithType: Action<T1, T2, T3, T4>
+  fullName: System.Action<T1, T2, T3, T4>
+  nameWithType.vb: Action(Of T1, T2, T3, T4)
+  fullName.vb: System.Action(Of T1, T2, T3, T4)
+  name.vb: Action(Of T1, T2, T3, T4)
+  spec.csharp:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )

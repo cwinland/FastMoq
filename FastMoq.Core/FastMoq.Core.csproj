@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
@@ -11,19 +11,15 @@
     <Company>$(Authors)</Company>
     <Copyright>Copyright(c) 2023 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
-    <Description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing.</Description>
+    <Description>Core FastMoq runtime for automatic test double creation, constructor injection, and provider-neutral testing helpers. Uses reflection by default in v4, includes Moq compatibility, and supports additional providers when added explicitly.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>Easy;fast;injection;inject;mock;extension;Moq;framework;mocking;class</PackageTags>
+    <PackageTags>Easy;fast;injection;inject;mock;extension;Moq;framework;mocking;class;provider</PackageTags>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IsPackable>true</IsPackable>
     <NoWarn>1701;1702;S1309;S4018;S2436</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateNuspecDependsOn>$(GenerateNuspecDependsOn)</GenerateNuspecDependsOn>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -48,38 +44,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers">
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'">
-      <ExcludeAssets>analyzers</ExcludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.*" Condition="'$(TargetFramework)' == 'net9.0'">
-      <ExcludeAssets>analyzers</ExcludeAssets>
-    </PackageReference>
-    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="[17.2.3]" Condition="'$(TargetFramework)' == 'net6.0'">
-      <ExcludeAssets>analyzers</ExcludeAssets>
-    </PackageReference>
-    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="[21.3.1]" Condition="'$(TargetFramework)' == 'net8.0'">
-      <ExcludeAssets>analyzers</ExcludeAssets>
-    </PackageReference>
-    <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="[21.3.1]" Condition="'$(TargetFramework)' == 'net9.0'">
-      <ExcludeAssets>analyzers</ExcludeAssets>
-    </PackageReference>
+    <PackageReference Include="xunit.abstractions" />
+  </ItemGroup>
 
-    <!-- Will never upgrade over 4.18.* -->
-    <PackageReference Include="Moq" Version="[4.18.4]" />
-
-    <PackageReference Include="NuGet.Build.Tasks.Pack" Version="6.13.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; buildtransitive</IncludeAssets>
-      <ExcludeAssets>analyzers</ExcludeAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="6.0.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; buildtransitive</IncludeAssets>
-      <ExcludeAssets>analyzers</ExcludeAssets>
-    </PackageReference>
-    <PackageReference Include="xunit.abstractions" Version="2.0.3" />
+  <ItemGroup>
+    <ProjectReference Include="..\FastMoq.Abstractions\FastMoq.Abstractions.csproj" />
+    <ProjectReference Include="..\FastMoq.Provider.Moq\FastMoq.Provider.Moq.csproj" />
   </ItemGroup>
 </Project>

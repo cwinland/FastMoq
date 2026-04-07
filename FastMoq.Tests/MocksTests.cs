@@ -1,7 +1,9 @@
 using FastMoq.Extensions;
 using FastMoq.Models;
+using FastMoq.Providers;
 using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
@@ -14,6 +16,7 @@ using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
@@ -41,7 +44,7 @@ namespace FastMoq.Tests
         }
 
         /// <inheritdoc />
-        public override void LoggingCallback(LogLevel logLevel, EventId eventId, string message) =>
+        public override void LoggingCallback(LogLevel logLevel, EventId eventId, string message, Exception? exception) =>
             output.WriteLine($"{logLevel} {eventId} {message}");
 
         [Fact]
@@ -71,8 +74,8 @@ namespace FastMoq.Tests
 
             MockModel<IFileSystemInfo> mockResult = Mocks.AddMock(mock, false);
             MockModel<IFileSystemInfo> mockModel = Mocks.GetMockModel<IFileSystemInfo>();
-            mockResult.Mock.Should().Be(mockModel.Mock);
-            mockModel.Mock.Name.Should().Be("First");
+            mockResult.NativeMock.Should().BeSameAs(mockModel.NativeMock);
+            mockModel.NativeMock.Should().BeSameAs(mock);
         }
 
         [Fact]
@@ -83,7 +86,7 @@ namespace FastMoq.Tests
                 Name = "First",
             };
 
-            Mocks.AddMock(mock, false).Mock.Should().Be(mock);
+            Mocks.AddMock(mock, false).NativeMock.Should().BeSameAs(mock);
 
             Action a = () => Mocks.AddMock(mock, false);
             a.Should().Throw<ArgumentException>();
@@ -97,14 +100,12 @@ namespace FastMoq.Tests
                 Name = "First",
             };
 
-            Mock<IFileSystemInfo> mock1 = Mocks.AddMock(mock, false).Mock;
-            mock1.Should().Be(mock);
-            mock1.Name.Should().Be("First");
+            var mock1 = Mocks.AddMock(mock, false).NativeMock;
+            mock1.Should().BeSameAs(mock);
 
             mock.Name = "test";
-            Mock<IFileSystemInfo> mock2 = Mocks.AddMock(mock, true).Mock;
-            mock2.Should().Be(mock);
-            mock2.Name.Should().Be("test");
+            var mock2 = Mocks.AddMock(mock, true).NativeMock;
+            mock2.Should().BeSameAs(mock);
         }
 
         [Fact]
@@ -115,6 +116,49 @@ namespace FastMoq.Tests
 
             Action b = () => Mocks.AddMock(new Mock<IFileSystem>(), null);
             b.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void GetNativeMock_ShouldReturnProviderNativeObject()
+        {
+            var nativeMock = Mocks.GetNativeMock<IFileSystemInfo>();
+
+            nativeMock.Should().BeOfType<Mock<IFileSystemInfo>>();
+            nativeMock.Should().BeSameAs(Mocks.GetMock<IFileSystemInfo>());
+        }
+
+        [Fact]
+        public void GetOrCreateMock_ShouldReturnProviderFirstMock()
+        {
+            var fastMock = Mocks.GetOrCreateMock<IFileSystemInfo>();
+
+            fastMock.MockedType.Should().Be(typeof(IFileSystemInfo));
+            fastMock.NativeMock.Should().BeOfType<Mock<IFileSystemInfo>>();
+            fastMock.Instance.Should().BeSameAs(Mocks.GetObject<IFileSystemInfo>());
+        }
+
+        [Fact]
+        public void GetObject_WithCreateFunc_ShouldInvokeInitAction_AfterInjection()
+        {
+            Mocks.AddType<TestCreateFuncTarget>(_ => new TestCreateFuncTarget(), replace: true);
+
+            TestCreateFuncTarget? callbackValue = null;
+            var resolved = Mocks.GetObject<TestCreateFuncTarget>(value => callbackValue = value);
+
+            resolved.Should().NotBeNull();
+            callbackValue.Should().BeSameAs(resolved);
+            resolved!.FileSystem.Should().NotBeNull();
+            callbackValue!.FileSystem.Should().BeSameAs(resolved.FileSystem);
+        }
+
+        [Fact]
+        public void GetMockModel_NativeMock_ShouldMatchCurrentProviderObject()
+        {
+            Mocks.GetMock<IFileSystem>();
+            var mockModel = Mocks.GetMockModel<IFileSystem>();
+
+            mockModel.NativeMock.Should().BeOfType<Mock<IFileSystem>>();
+            mockModel.NativeMock.Should().BeSameAs(Mocks.GetNativeMock<IFileSystem>());
         }
 
         [Fact]
@@ -205,28 +249,284 @@ namespace FastMoq.Tests
             Mocks.CreateInstance<TestClassOne>().Should().NotBeNull();
 
             Mocks.CreateInstance<TestClassNormal>().Should().NotBeNull();
-            Mocks.CreateInstance<IFileSystem>(true).Should().NotBeNull();
+            Mocks.CreateInstance<IFileSystem>().Should().NotBeNull();
         }
 
         [Fact]
         public void CreateBest_Should_ThrowAmbiguous()
         {
-            // Ambiguous constructors.
-            new Action(() => Mocks.CreateInstance<TestClassMany>()).Should().Throw<AmbiguousImplementationException>();
-            new Action(() => Mocks.CreateInstanceNonPublic<TestClassOne>().Should().NotBeNull()).Should().Throw<AmbiguousImplementationException>();
+            Mocks.CreateInstance<TestClassMany>().Should().NotBeNull();
+            new Action(() => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback).Should().NotBeNull()).Should().NotThrow();
+            new Action(() => Mocks.CreateInstance<SameArityPublicConstructors>()).Should().Throw<AmbiguousImplementationException>();
 
-            Mocks.Strict = true;
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+            Mocks.Policy.EnabledBuiltInTypeResolutions &= ~BuiltInTypeResolutionFlags.FileSystem;
             // No Constructor.
-            new Action(() => Mocks.CreateInstance<IFileSystem>(false).Should().NotBeNull()).Should().Throw<NotImplementedException>();
+            new Action(() => Mocks.CreateInstance<IFileSystem>().Should().NotBeNull()).Should().Throw<NotImplementedException>();
 
-            // Valid Constructor.
-            new Action(() => Mocks.CreateInstance<IFileSystem>(true).Should().NotBeNull()).Should().NotThrow();
+            // Built-in file-system resolution resumes on the normal lenient path.
+            Mocks.Policy.EnabledBuiltInTypeResolutions |= BuiltInTypeResolutionFlags.FileSystem;
+            Mocks.Behavior.Disable(MockFeatures.FailOnUnconfigured);
+            new Action(() => Mocks.CreateInstance<IFileSystem>().Should().NotBeNull()).Should().NotThrow();
         }
 
         [Fact]
-        public void CreateClassWithInjectParameters()
+        public void GetOrCreateMock_ShouldAllowNonPublicConstructorsByDefault_WhenLenient()
         {
-            Mocks.MockOptional = true;
+            var fastMock = Mocks.GetOrCreateMock<NonPublicOnlyMockTarget>();
+
+            fastMock.Should().NotBeNull();
+            fastMock.Instance.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetMock_ShouldAllowNonPublicConstructorsByDefault_WhenLenient()
+        {
+            var mock = Mocks.GetMock<NonPublicOnlyMockTarget>();
+
+            mock.Should().NotBeNull();
+            mock.Object.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetMock_ShouldAllowAbstractTypesWithNonPublicConstructors_WhenLenient()
+        {
+            var mock = Mocks.GetMock<AbstractNonPublicOnlyMockTarget>();
+
+            mock.Should().NotBeNull();
+            mock.Object.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetOrCreateMock_ShouldDisableNonPublicConstructorsByDefault_WhenStrict()
+        {
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+
+            Mocks.ShouldAllowNonPublicConstructorsForMockRequest(null).Should().BeFalse();
+        }
+
+        [Fact]
+        public void CreateDetachedMock_ShouldCreateMultipleDifferentInstances()
+        {
+            // Arrange & Act
+            var detachedMock1 = Mocks.CreateDetachedMock<IFileInfo>();
+            var detachedMock2 = Mocks.CreateDetachedMock<IFileInfo>();
+
+            // Assert - detached mocks should be different instances
+            detachedMock1.Should().NotBeSameAs(detachedMock2);
+
+            // Assert - detached mocks should both be valid Mock types
+            detachedMock1.Should().BeOfType<Mock<IFileInfo>>();
+            detachedMock2.Should().BeOfType<Mock<IFileInfo>>();
+        }
+
+        [Fact]
+        public void CreateDetachedMock_UsingNonGeneric_ShouldWork()
+        {
+            // Arrange & Act
+            var detachedMock = Mocks.CreateDetachedMock(typeof(IFileInfo));
+
+            // Assert
+            detachedMock.Should().NotBeNull();
+            detachedMock.Should().BeOfType<Mock<IFileInfo>>();
+        }
+
+        [Fact]
+        public void GetObject_IFileSystem_ShouldReturnBuiltInWhenNoTrackedMock()
+        {
+            // Arrange & Act
+            var fileSystem = Mocks.GetObject<IFileSystem>();
+
+            // Assert - should return a non-null IFileSystem instance (MockFileSystem from FastMoq)
+            fileSystem.Should().NotBeNull();
+            fileSystem.Should().BeAssignableTo<IFileSystem>();
+            Mocks.Contains<IFileSystem>().Should().BeFalse();
+        }
+
+        [Fact]
+        public void GetObject_IFileSystem_ShouldReturnTrackedMockWhenExists()
+        {
+            // Arrange
+            var trackedMock = Mocks.GetMock<IFileSystem>();
+
+            // Act
+            var result = Mocks.GetObject<IFileSystem>();
+
+            // Assert - should return the tracked mock, not the built-in
+            result.Should().BeSameAs(trackedMock.Object);
+            Mocks.Contains<IFileSystem>().Should().BeTrue();
+        }
+
+        [Fact]
+        public void GetObject_IFileSystem_ShouldUseCustomRegistration()
+        {
+            // Arrange
+            var customFileSystem = new Mock<IFileSystem>();
+            Mocks.AddKnownType<IFileSystem>(
+                directInstanceFactory: (mocker, type) => customFileSystem.Object);
+
+            // Act
+            var result = Mocks.GetObject<IFileSystem>();
+
+            // Assert - should use custom registration
+            result.Should().BeSameAs(customFileSystem.Object);
+        }
+
+        [Fact]
+        public void GetMock_IFileSystem_ShouldCreatePreconfiguredMock()
+        {
+            // Arrange & Act
+            var fileSystemMock = Mocks.GetMock<IFileSystem>();
+            var fileSystemObject = fileSystemMock.Object;
+
+            // Assert - mock should be set up with delegated properties
+            fileSystemObject.File.Should().NotBeNull();
+            fileSystemObject.Directory.Should().NotBeNull();
+            fileSystemObject.Path.Should().NotBeNull();
+            fileSystemObject.FileInfo.Should().NotBeNull();
+            fileSystemObject.FileStream.Should().NotBeNull();
+            fileSystemObject.DriveInfo.Should().NotBeNull();
+            fileSystemObject.DirectoryInfo.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetMock_IFileSystem_ShouldRemainPreconfigured_WhenFailOnUnconfiguredIsEnabled()
+        {
+            Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+
+            var fileSystemMock = Mocks.GetMock<IFileSystem>();
+            var fileSystemObject = fileSystemMock.Object;
+
+            fileSystemObject.File.Should().NotBeNull();
+            fileSystemObject.Directory.Should().NotBeNull();
+            fileSystemObject.Path.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetObject_IFileSystem_ShouldAllowExplicitBuiltInOverride_WhenStrictCompatibilityDefaultsAreEnabled()
+        {
+            Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.StrictCompatibilityDefaults;
+            Mocks.Policy.EnabledBuiltInTypeResolutions |= BuiltInTypeResolutionFlags.FileSystem;
+
+            var fileSystem = Mocks.GetObject<IFileSystem>();
+
+            fileSystem.Should().BeSameAs(Mocks.fileSystem);
+        }
+
+        [Fact]
+        public void FailOnUnconfigured_ShouldNotChangeDefaultMethodFallback_WhenEnabledDirectly()
+        {
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+
+            var result = Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
+
+            result.Should().BeNull();
+            Mocks.Policy.DefaultFallbackToNonPublicMethods.Should().BeTrue();
+        }
+
+        [Fact]
+#pragma warning disable CS0618
+        public void Strict_ShouldApplyCompatibilityDefaults()
+        {
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.All;
+            Mocks.Policy.DefaultFallbackToNonPublicConstructors = true;
+            Mocks.Policy.DefaultFallbackToNonPublicMethods = true;
+            Mocks.Policy.DefaultStrictMockCreation = false;
+
+            Mocks.Strict = true;
+
+            Mocks.Policy.EnabledBuiltInTypeResolutions.Should().Be(BuiltInTypeResolutionFlags.StrictCompatibilityDefaults);
+            Mocks.Policy.DefaultFallbackToNonPublicConstructors.Should().BeFalse();
+            Mocks.Policy.DefaultFallbackToNonPublicMethods.Should().BeFalse();
+            Mocks.Policy.DefaultStrictMockCreation.Should().BeTrue();
+        }
+#pragma warning restore CS0618
+
+        [Fact]
+        public void DefaultStrictMockCreation_ShouldOverrideFailOnUnconfigured_WhenDisabledExplicitly()
+        {
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+            Mocks.Policy.DefaultStrictMockCreation = false;
+
+            var mock = Mocks.CreateDetachedMock<ITestClassOne>();
+
+            mock.Behavior.Should().Be(MockBehavior.Loose);
+        }
+
+        [Fact]
+        public void AutoSetupProperties_ShouldRemainAvailable_WhenDefaultStrictMockCreationIsEnabled()
+        {
+            Mocks.Policy.DefaultStrictMockCreation = true;
+            Mocks.Behavior.Enable(MockFeatures.AutoSetupProperties);
+            Mocks.Behavior.Disable(MockFeatures.AutoInjectDependencies);
+
+            var mock = Mocks.CreateDetachedMock<ITestClassOne>();
+            var fileSystem = new MockFileSystem();
+
+            mock.Object.FileSystem = fileSystem;
+
+            mock.Object.FileSystem.Should().BeSameAs(fileSystem);
+        }
+
+        [Fact]
+        public void Strict_ShouldOnlyToggleFailOnUnconfigured()
+        {
+            Mocks.Behavior = MockBehaviorOptions.LenientPreset.Clone().Disable(MockFeatures.AutoInjectDependencies);
+
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+
+            Mocks.Behavior.Has(MockFeatures.FailOnUnconfigured).Should().BeTrue();
+            Mocks.Behavior.Has(MockFeatures.AutoInjectDependencies).Should().BeFalse();
+            Mocks.Behavior.Has(MockFeatures.AutoSetupProperties).Should().BeTrue();
+            Mocks.Behavior.Has(MockFeatures.LoggerCallback).Should().BeTrue();
+
+            Mocks.Behavior.Disable(MockFeatures.FailOnUnconfigured);
+
+            Mocks.Behavior.Has(MockFeatures.FailOnUnconfigured).Should().BeFalse();
+            Mocks.Behavior.Has(MockFeatures.AutoInjectDependencies).Should().BeFalse();
+            Mocks.Behavior.Has(MockFeatures.AutoSetupProperties).Should().BeTrue();
+            Mocks.Behavior.Has(MockFeatures.ResolveNestedMembers).Should().BeTrue();
+        }
+
+        [Fact]
+        public void InnerMockResolution_ShouldMapToResolveNestedMembersBehaviorFlag()
+        {
+            Mocks.Behavior.Enable(MockFeatures.ResolveNestedMembers);
+            Mocks.InnerMockResolution.Should().BeTrue();
+
+            Mocks.InnerMockResolution = false;
+
+            Mocks.Behavior.Has(MockFeatures.ResolveNestedMembers).Should().BeFalse();
+
+            Mocks.InnerMockResolution = true;
+
+            Mocks.Behavior.Has(MockFeatures.ResolveNestedMembers).Should().BeTrue();
+        }
+
+        [Fact]
+        public void UseStrictPreset_ShouldApplyStrictPreset()
+        {
+            Mocks.UseStrictPreset();
+
+            Mocks.Behavior.Enabled.Should().Be(MockBehaviorOptions.StrictPreset.Enabled);
+        }
+
+        [Fact]
+        public void UseLenientPreset_ShouldApplyLenientPreset()
+        {
+            Mocks.UseStrictPreset();
+
+            Mocks.UseLenientPreset();
+
+            Mocks.Behavior.Enabled.Should().Be(MockBehaviorOptions.LenientPreset.Enabled);
+        }
+
+        [Fact]
+        public void CreateClassWithInjectParameters_WhenOptionalResolutionResolvesViaMocker()
+        {
+            Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
             var m = Mocks.CreateInstance<TestClassParameters>();
             m.Should().NotBeNull();
             m.anotherFileSystem.Should().NotBeNull();
@@ -244,18 +544,46 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateInstance_ShouldResolveOptionalParameters_WhenMockerRequestsMocking()
+        {
+            Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+            var service = Mocks.CreateInstance<OptionalParameterService>();
+
+            service.Should().NotBeNull();
+            service.Logger.Should().NotBeNull();
+            service.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInstance_ShouldPreferOptionalParameterResolution_OverLegacyMockOptional()
+        {
+#pragma warning disable CS0618 // Compatibility coverage for MockOptional bridge.
+            Mocks.MockOptional = true;
+#pragma warning restore CS0618
+
+            Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.UseDefaultOrNull;
+
+            var service = Mocks.CreateInstance<OptionalParameterService>();
+
+            service.Should().NotBeNull();
+            service.Logger.Should().BeNull();
+            service.FileSystem.Should().BeNull();
+        }
+
+        [Fact]
         public void CreateExact_WithMultiClass()
         {
             Mocks.CreateInstance<TestClassMany>(4).Should().NotBeNull();
             Mocks.CreateInstance<TestClassMany>("str").Should().NotBeNull();
-            Mocks.CreateInstance<TestClassMany>(true, 4, "str").Should().NotBeNull();
+            Mocks.CreateInstance<TestClassMany>(4, "str").Should().NotBeNull();
 
             Action a = () => Mocks.CreateInstance<TestClassMany>("4", "str").Should().NotBeNull();
             a.Should().Throw<NotImplementedException>();
             IFile file = new FileWrapper(new FileSystem());
-            Mocks.CreateInstanceNonPublic<TestClassOne>(file).Should().NotBeNull();
-            Mocks.CreateInstanceNonPublic<TestClassOne>(new FileSystem()).Should().NotBeNull();
-            Action b = () => Mocks.CreateInstanceNonPublic<TestClassOne>("4", "str").Should().NotBeNull();
+            Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, file).Should().NotBeNull();
+            Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, new FileSystem()).Should().NotBeNull();
+            Action b = () => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, "4", "str").Should().NotBeNull();
             b.Should().Throw<NotImplementedException>();
         }
 
@@ -267,6 +595,46 @@ namespace FastMoq.Tests
             Mocks.CreateInstanceByType<TestClassMany>(new Type[] { typeof(int), typeof(string) }).Should().NotBeNull();
             Action a = () => Mocks.CreateInstance<TestClassMany>(new Type[] { typeof(string), typeof(string) }).Should().NotBeNull();
             a.Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
+        public void CreateInstance_ShouldExposeFlagsBasedConstructorOverrides()
+        {
+            var byDefault = Mocks.CreateInstance<TestClassNormal>();
+            byDefault.Should().NotBeNull();
+
+            var byNonPublic = Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, new FileSystem().File);
+
+            byNonPublic.Should().NotBeNull();
+
+            var act = () => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.PublicConstructorsOnly, new FileSystem().File);
+            act.Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
+        public void CreateInstanceByType_ShouldMatchTypedConstructorSelection()
+        {
+            var instance = Mocks.CreateInstanceByType<TestClassMany>(InstanceCreationFlags.AllowNonPublicConstructorFallback, typeof(int), typeof(string));
+
+            instance.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInstance_ShouldAllowExplicitNonPublicFallbackOverride_WhenPolicyDisablesFallback()
+        {
+            Mocks.Policy.DefaultFallbackToNonPublicConstructors = false;
+
+            var instance = Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, new FileSystem().File);
+
+            instance.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateInstance_ShouldAllowExplicitPublicOnlyOverride_WhenPolicyAllowsFallback()
+        {
+            var act = () => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.PublicConstructorsOnly, new FileSystem().File);
+
+            act.Should().Throw<NotImplementedException>();
         }
 
         [Fact]
@@ -427,8 +795,63 @@ namespace FastMoq.Tests
             Mocks.fileSystem.FileSystem.Should().NotBeNull();
             typeof(IFileSystem).IsAssignableFrom(Mocks.fileSystem.FileSystem.GetType()).Should().BeTrue();
             Mocks.GetObject<IFileSystem>().Should().Be(Mocks.fileSystem.FileSystem);
-            Mocks.Strict = true;
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+            Mocks.GetObject<IFileSystem>().Should().Be(Mocks.fileSystem.FileSystem);
+            Mocks.Policy.EnabledBuiltInTypeResolutions = BuiltInTypeResolutionFlags.StrictCompatibilityDefaults;
             Mocks.GetObject<IFileSystem>().Should().NotBe(Mocks.fileSystem.FileSystem);
+        }
+
+        [Fact]
+        public void AddKnownType_ShouldOverrideBuiltInDirectInstance()
+        {
+            var customFileSystem = new MockFileSystem().FileSystem;
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+
+            Mocks.AddKnownType<IFileSystem>(directInstanceFactory: (_, _) => customFileSystem);
+
+            Mocks.GetObject<IFileSystem>().Should().BeSameAs(customFileSystem);
+        }
+
+        [Fact]
+        public void AddKnownType_ShouldConfigureMockAndApplyObjectDefaults()
+        {
+            var configureCalled = false;
+
+            Mocks.AddKnownType<IKnownTypeContract>(
+                configureMock: (_, _, mock) =>
+                {
+                    configureCalled = true;
+
+                    if (mock.NativeMock is Mock<IKnownTypeContract> typedMock)
+                    {
+                        typedMock.SetupMockProperty(x => x.Configured!, "configured");
+                    }
+                },
+                applyObjectDefaults: (_, contract) =>
+                {
+                    contract.Applied = "applied";
+                },
+                includeDerivedTypes: true);
+
+            var instance = Mocks.GetObject<IKnownTypeContract>();
+
+            configureCalled.Should().BeTrue();
+            instance.Applied.Should().Be("applied");
+        }
+
+        [Fact]
+        public void AddKnownType_ShouldSupportDerivedManagedInstanceResolution()
+        {
+            var expected = new KnownTypeManagedDbContext();
+
+            Mocks.AddKnownType<DbContext>(
+                managedInstanceFactory: (_, requestedType) =>
+                    requestedType == typeof(KnownTypeManagedDbContext) ? expected : null,
+                includeDerivedTypes: true);
+
+            var instance = Mocks.CreateInstance<KnownTypeManagedDbContext>();
+
+            instance.Should().BeSameAs(expected);
         }
 
         [Fact]
@@ -436,6 +859,16 @@ namespace FastMoq.Tests
         {
             var m = Mocks.FindConstructor(typeof(TestClassMany), false, 4, "");
             m.Should().NotBeNull();
+        }
+
+        public interface IKnownTypeContract
+        {
+            string Applied { get; set; }
+            string Configured { get; set; }
+        }
+
+        public class KnownTypeManagedDbContext : DbContext
+        {
         }
 
         [Fact]
@@ -612,20 +1045,43 @@ namespace FastMoq.Tests
         [Fact]
         public void GetMockModelIndexOf_ShouldFindIfAuto()
         {
+            static int GetTrackedMockIndex(Mocker mocker, Type type, bool autoCreate = true)
+            {
+                var index = mocker.mockCollection.FindIndex(model => model.Type == type);
+                if (index >= 0)
+                {
+                    return index;
+                }
+
+                if (!autoCreate)
+                {
+                    throw new NotImplementedException("Unable to find the constructor.");
+                }
+
+                _ = mocker.GetOrCreateFastMock(type);
+                index = mocker.mockCollection.FindIndex(model => model.Type == type);
+                if (index < 0)
+                {
+                    throw new NotImplementedException("Unable to find the constructor.");
+                }
+
+                return index;
+            }
+
             _ = Component.GetMock<IFile>();
             var mockCount = Component.mockCollection.Count;
 
             // Should not find it, because it doesn't exist.
-            Action a = () => Component.GetMockModelIndexOf(typeof(IFileSystem), false);
+            Action a = () => GetTrackedMockIndex(Component, typeof(IFileSystem), false);
             a.Should().Throw<NotImplementedException>();
 
             // Should find it because it is auto created.
-            Component.GetMockModelIndexOf(typeof(IFileSystem)).Should().Be(mockCount);
+            GetTrackedMockIndex(Component, typeof(IFileSystem)).Should().Be(mockCount);
 
             // Should find it because it was created in previous step.
-            Component.GetMockModelIndexOf(typeof(IFileSystem), false).Should().Be(mockCount);
+            GetTrackedMockIndex(Component, typeof(IFileSystem), false).Should().Be(mockCount);
 
-            Component.GetMockModelIndexOf(typeof(IFile), false).Should().Be(mockCount - 1);
+            GetTrackedMockIndex(Component, typeof(IFile), false).Should().Be(mockCount - 1);
         }
 
         [Fact]
@@ -701,7 +1157,7 @@ namespace FastMoq.Tests
         public void CreateObjectWithCustomData()
         {
             // Get argument data or create your own array
-            var args = Component.GetArgData<TestClassParameters>();
+            var args = Component.GetArgData<TestClassParameters>(OptionalParameterResolutionMode.ResolveViaMocker);
 
             // Set custom values
             args[0] = 34;
@@ -738,10 +1194,62 @@ namespace FastMoq.Tests
             test2.Fs.Should().BeNull();
             test2.F.Should().NotBeNull();
 
-            args = Component.GetArgData<TestClassParameters>();
+            args = Component.GetArgData<TestClassParameters>(OptionalParameterResolutionMode.ResolveViaMocker);
             Component.GetObject<TestClassParameters>(args);
             Component.CreateInstance<TestClassParameters>();
             Component.CreateInstance<TestClassParameters>(args);
+        }
+
+        [Fact]
+        public void GetArgData_ShouldRespectOptionalParameterResolution()
+        {
+            var defaultArgs = Component.GetArgData<OptionalParameterService>();
+            defaultArgs[0].Should().BeNull();
+            defaultArgs[1].Should().BeNull();
+
+            var resolvedArgs = Component.GetArgData<OptionalParameterService>(OptionalParameterResolutionMode.ResolveViaMocker);
+
+            resolvedArgs[0].Should().NotBeNull();
+            resolvedArgs[1].Should().NotBeNull();
+        }
+
+        [Fact]
+        public void GetArgData_ShouldPreferNonPublicConstructorUnlessPublicOnlyIsRequested()
+        {
+            var defaultArgs = Component.GetArgData<NonPublicArgDataPreferenceType>();
+            defaultArgs.Should().HaveCount(1);
+            defaultArgs[0].Should().BeNull();
+
+            var publicOnlyArgs = Component.GetArgData<NonPublicArgDataPreferenceType>(InstanceCreationFlags.PublicConstructorsOnly);
+            publicOnlyArgs.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void GetObject_ShouldPreserveConfiguredMockPropertiesAcrossRepeatedResolutions()
+        {
+            var expectedProvider = new Mock<IServiceProvider>().Object;
+
+            _ = Component.GetObject<AbstractServiceProviderHolder>();
+            Component.GetMock<AbstractServiceProviderHolder>()
+                .Setup(x => x.InstanceServices)
+                .Returns(expectedProvider);
+
+            var resolved = Component.GetObject<AbstractServiceProviderHolder>();
+
+            resolved.Should().NotBeNull();
+            resolved!.InstanceServices.Should().BeSameAs(expectedProvider);
+        }
+
+        [Fact]
+        public void CreateInstanceByTypedParameterMap_ShouldRespectExplicitOptionalParameterResolution()
+        {
+            Component.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+            var service = Component.CreateInstance<OptionalParameterService, ILogger, IFileSystem>(new Dictionary<Type, object?>());
+
+            service.Should().NotBeNull();
+            service!.Logger.Should().NotBeNull();
+            service.FileSystem.Should().NotBeNull();
         }
 
         [Fact]
@@ -900,9 +1408,127 @@ namespace FastMoq.Tests
             Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestInt", true, 2).Should().Be(2);
             Mocks.InvokeMethod(Mocks.CreateInstance<TestClassOne>(), "TestInt", true, 2).Should().Be(2);
 
-            Mocks.Strict = true;
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+            Mocks.Policy.DefaultFallbackToNonPublicMethods = false;
+
             Action a = () => Mocks.InvokeMethod(Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
             a.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Specified argument was out of the range of valid values.*");
+        }
+
+        [Fact]
+        public void MockerTestBase_ComponentConstructionOverrides_ShouldBeSeparate_FromDirectCreateInstanceDefaults()
+        {
+            using var testBase = new NonPublicComponentCreationTestBase();
+
+            testBase.Sut.Should().NotBeNull();
+
+            var act = () => testBase.TestMocks.CreateInstance<TestClassOne>(new FileSystem().File);
+
+            act.Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
+        public void CallMethod_ShouldResolveOptionalParameters_WhenExplicitOptionsRequestMocking()
+        {
+            var probe = Mocks.CallMethod<OptionalParameterProbe>(new InvocationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+            }, (Func<ILogger?, IFileSystem?, OptionalParameterProbe>)CreateOptionalParameterProbe);
+
+            probe.Logger.Should().NotBeNull();
+            probe.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CallMethod_ShouldPreferExplicitOptionalResolution_OverLegacyMockOptional()
+        {
+#pragma warning disable CS0618 // Compatibility coverage for MockOptional bridge.
+            Mocks.MockOptional = true;
+#pragma warning restore CS0618
+
+            var probe = Mocks.CallMethod<OptionalParameterProbe>(new InvocationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.UseDefaultOrNull,
+            }, (Func<ILogger?, IFileSystem?, OptionalParameterProbe>)CreateOptionalParameterProbe);
+
+            probe.Logger.Should().BeNull();
+            probe.FileSystem.Should().BeNull();
+        }
+
+        [Fact]
+        public void InvokeMethod_ShouldResolveOptionalParameters_WhenExplicitOptionsRequestMocking()
+        {
+            var target = new OptionalInvokeTarget();
+
+            var probe = Mocks.InvokeMethod(new InvocationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+            }, target, nameof(OptionalInvokeTarget.CreateProbe)) as OptionalParameterProbe;
+
+            probe.Should().NotBeNull();
+            probe!.Logger.Should().NotBeNull();
+            probe.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void InvokeMethod_ShouldPreferExplicitOptionalResolution_OverLegacyMockOptional()
+        {
+            var target = new OptionalInvokeTarget();
+
+#pragma warning disable CS0618 // Compatibility coverage for MockOptional bridge.
+            Mocks.MockOptional = true;
+#pragma warning restore CS0618
+
+            var probe = Mocks.InvokeMethod(new InvocationOptions
+            {
+                OptionalParameterResolution = OptionalParameterResolutionMode.UseDefaultOrNull,
+            }, target, nameof(OptionalInvokeTarget.CreateProbe)) as OptionalParameterProbe;
+
+            probe.Should().NotBeNull();
+            probe!.Logger.Should().BeNull();
+            probe.FileSystem.Should().BeNull();
+        }
+
+        [Fact]
+        public void InvokeMethod_ShouldAllowExplicitNonPublicFallback_WhenFailOnUnconfiguredIsEnabled()
+        {
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+
+            var act = () => Mocks.InvokeMethod(new InvocationOptions
+            {
+                FallbackToNonPublicMethods = true,
+            }, Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
+
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void InvokeMethod_ShouldAllowDisablingNonPublicFallback_IndependentlyOfFailOnUnconfigured()
+        {
+            var act = () => Mocks.InvokeMethod(new InvocationOptions
+            {
+                FallbackToNonPublicMethods = false,
+            }, Mocks.CreateInstance<ITestClassOne>(), "TestVoid");
+
+            act.Should().Throw<ArgumentOutOfRangeException>();
+        }
+
+        [Fact]
+        public void MockerTestBase_ShouldUseComponentCreationFlags_ForOptionalParameters()
+        {
+            using var testBase = new OptionalParameterServiceConfiguredTestBase();
+
+            testBase.Sut.Logger.Should().NotBeNull();
+            testBase.Sut.FileSystem.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void MockerTestBase_ShouldHonorLegacyMockOptional_InSetupAction()
+        {
+            using var testBase = new OptionalParameterServiceLegacyMockOptionalTestBase();
+
+            testBase.Sut.Logger.Should().NotBeNull();
+            testBase.Sut.FileSystem.Should().NotBeNull();
         }
 
         [Fact]
@@ -1091,59 +1717,47 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void VerifyLogger_ShouldPass_WhenMatches()
+        public void VerifyLogged_ShouldPass_WhenMatchesCapturedILoggerEntries()
         {
-            var mLogger = Mocks.GetMock<ILogger>();
-            mLogger.VerifyLogger(LogLevel.Information, "test", 0);
+            var logger = Mocks.GetObject<ILogger<NullLogger>>();
 
-            mLogger.Object.LogInformation("test");
-            mLogger.VerifyLogger(LogLevel.Information, "test");
+            logger.LogInformation("test");
+            logger.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
 
-            mLogger.Object.LogInformation("test");
-            mLogger.VerifyLogger(LogLevel.Information, "test", 2);
-            mLogger.VerifyLogger(LogLevel.Information, "test", null, null, 2);
-
-            mLogger.Invocations.Clear();
-            mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
-            mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
-            mLogger.VerifyLogger<Exception>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
-            mLogger.VerifyLogger<Exception>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), null, Times.AtLeastOnce);
-            mLogger.VerifyLogger<Exception>(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), null, Times.AtLeastOnce());
+            Mocks.VerifyLogged(LogLevel.Information, "test");
+            Mocks.VerifyLogged(LogLevel.Information, "test", TimesSpec.AtLeast(1));
+            Mocks.VerifyLogged(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1, 1);
         }
 
         [Fact]
-        public void VerifyLogger_ShouldPass_WhenMatchesILoggerSubtype()
+        public void VerifyLogged_ShouldThrow_WhenCapturedILoggerEntriesDoNotMatch()
         {
-            var mLogger = Mocks.GetMock<ILogger<NullLogger>>();
-            mLogger.VerifyLogger(LogLevel.Information, "test", 0);
+            var logger = Mocks.GetObject<ILogger<NullLogger>>();
+            logger.LogInformation("test");
 
-            mLogger.Object.LogInformation("test");
-            mLogger.VerifyLogger(LogLevel.Information, "test");
-
-            mLogger.Object.LogInformation("test");
-            mLogger.VerifyLogger(LogLevel.Information, "test", 2);
-            mLogger.VerifyLogger(LogLevel.Information, "test", null, null, 2);
-
-            mLogger.Invocations.Clear();
-            mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
-            mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 1);
+            Assert.Throws<InvalidOperationException>(() => Mocks.VerifyLogged(LogLevel.Information, "other", 1));
+            Assert.Throws<InvalidOperationException>(() => Mocks.VerifyLogged(LogLevel.Information, "test", 2));
+            Assert.Throws<InvalidOperationException>(() => Mocks.VerifyLogged(LogLevel.Information, "test", TimesSpec.AtMost(0)));
         }
 
         [Fact]
-        public void VerifyLogger_ShouldThrow_WhenNotMatches()
+        public void VerifyLogged_ShouldTreatDefaultAsAtLeastOnce()
         {
-            var mLogger = Mocks.GetMock<ILogger<NullLogger>>();
-            mLogger.VerifyLogger(LogLevel.Information, "test", 0);
+            var logger = Mocks.GetObject<ILogger<NullLogger>>();
 
-            mLogger.Object.LogInformation("test");
-            Assert.Throws<MockException>(() => mLogger.VerifyLogger(LogLevel.Information, "test2")); // Wrong Message.
+            logger.LogInformation("test");
+            logger.LogInformation("test");
 
-            mLogger.Object.LogInformation("test");
-            Assert.Throws<MockException>(() => mLogger.VerifyLogger(LogLevel.Information, "test")); // Wrong number of times.
+            Mocks.VerifyLogged(LogLevel.Information, "test");
+            Mocks.VerifyLogged(LogLevel.Information, "test", TimesSpec.AtLeast(2));
+        }
 
-            mLogger.Invocations.Clear();
-            mLogger.Object.LogError(1, new AmbiguousImplementationException("Test Exception"), "test message");
-            Assert.Throws<MockException>(() => mLogger.VerifyLogger(LogLevel.Error, "test", new AmbiguousImplementationException("Test Exception"), 0)); // Wrong eventId.
+        [Fact]
+        public void TimesSpec_ShouldThrow_WhenFactoryArgumentsAreInvalid()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => TimesSpec.Exactly(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => TimesSpec.AtLeast(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => TimesSpec.AtMost(-1));
         }
 
         [Fact]
@@ -1214,8 +1828,9 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void AddType_ShouldHaveValues3_WhenMockOptional()
+        public void AddType_ShouldHaveValues3_WhenOptionalResolutionResolvesViaMocker()
         {
+#pragma warning disable CS0618 // Intentional compatibility coverage for deprecated context-based AddType overload.
             Mocks.AddType((a,b) =>
             {
                 if (b is ParameterInfo info)
@@ -1232,7 +1847,7 @@ namespace FastMoq.Tests
             });
             Mocks.AddType(Guid.NewGuid() as Guid?);
             Mocks.AddType(Guid.NewGuid());
-            Mocks.MockOptional = true;
+            Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
             var mock = Mocks.GetMock<SubscriptionData>();
             var obj = mock.Object;
             obj.DisplayName.Should().Be("Test1");
@@ -1240,11 +1855,13 @@ namespace FastMoq.Tests
             obj.TenantId.Should().NotBeNull();
             obj.TenantId.Should().NotBeEmpty();
             obj.TenantId2.Should().NotBeEmpty();
+#pragma warning restore CS0618
         }
 
         [Fact]
-        public void AddType_ShouldHaveValues3_WhenNotMockOptional()
+        public void AddType_ShouldHaveValues3_WhenOptionalResolutionUsesDefaults()
         {
+#pragma warning disable CS0618 // Intentional compatibility coverage for deprecated context-based AddType overload.
             Mocks.AddType((a, b) =>
             {
                 if (b is ParameterInfo info)
@@ -1268,6 +1885,7 @@ namespace FastMoq.Tests
             obj.TenantId.Should().NotBeNull();
             obj.TenantId.Should().NotBeEmpty();
             obj.TenantId2.Should().NotBeEmpty();
+#pragma warning restore CS0618
         }
 
         private static void LogException(Exception ex, ILogger log, string customMessage = "", [CallerMemberName] string caller = "")
@@ -1286,7 +1904,7 @@ namespace FastMoq.Tests
 
         private void CheckBestConstructor(object data, bool expected, bool nonPublic)
         {
-            var constructor = Mocks.FindConstructor(true, typeof(TestClassNormal), nonPublic);
+            var constructor = Mocks.FindPreferredConstructor(typeof(TestClassNormal), nonPublic);
             var isValid = typeof(IFileSystem).IsValidConstructor(constructor.ConstructorInfo, data);
             isValid.Should().Be(expected);
         }
@@ -1312,8 +1930,136 @@ namespace FastMoq.Tests
 
         private static void SetupAction(Mocker mocks)
         {
-            mocks.Initialize<IDirectory>(mock => mock.SetupAllProperties());
-            mocks.Initialize<IFileInfo>(mock => mock.SetupAllProperties());
+            mocks.GetMock<IDirectory>().SetupAllProperties();
+            mocks.GetMock<IFileInfo>().SetupAllProperties();
         }
+
+        private static OptionalParameterProbe CreateOptionalParameterProbe(ILogger? logger = null, IFileSystem? fileSystem = null)
+        {
+            return new OptionalParameterProbe(logger, fileSystem);
+        }
+    }
+
+    internal sealed class OptionalParameterService
+    {
+        internal OptionalParameterService(ILogger? logger = null, IFileSystem? fileSystem = null)
+        {
+            Logger = logger;
+            FileSystem = fileSystem;
+        }
+
+        internal ILogger? Logger { get; }
+
+        internal IFileSystem? FileSystem { get; }
+    }
+
+    internal sealed class OptionalParameterProbe
+    {
+        internal OptionalParameterProbe(ILogger? logger, IFileSystem? fileSystem)
+        {
+            Logger = logger;
+            FileSystem = fileSystem;
+        }
+
+        internal ILogger? Logger { get; }
+
+        internal IFileSystem? FileSystem { get; }
+    }
+
+    internal sealed class NonPublicArgDataPreferenceType
+    {
+        public NonPublicArgDataPreferenceType()
+        {
+        }
+
+        internal NonPublicArgDataPreferenceType(JsonSerializerContext? serializerContext)
+        {
+            SerializerContext = serializerContext;
+        }
+
+        internal JsonSerializerContext? SerializerContext { get; }
+    }
+
+    internal abstract class AbstractServiceProviderHolder
+    {
+        internal abstract IServiceProvider? InstanceServices { get; set; }
+    }
+
+    internal sealed class OptionalInvokeTarget
+    {
+        internal OptionalParameterProbe CreateProbe(ILogger? logger = null, IFileSystem? fileSystem = null)
+        {
+            return new OptionalParameterProbe(logger, fileSystem);
+        }
+    }
+
+    internal sealed class OptionalParameterServiceConfiguredTestBase : MockerTestBase<OptionalParameterService>
+    {
+        protected override InstanceCreationFlags ComponentCreationFlags => InstanceCreationFlags.ResolveOptionalParametersViaMocker;
+
+        internal OptionalParameterService Sut => Component;
+    }
+
+    internal sealed class OptionalParameterServiceLegacyMockOptionalTestBase : MockerTestBase<OptionalParameterService>
+    {
+        internal OptionalParameterServiceLegacyMockOptionalTestBase() : base(mocker =>
+        {
+#pragma warning disable CS0618 // Compatibility coverage for MockOptional bridge.
+            mocker.MockOptional = true;
+#pragma warning restore CS0618
+        })
+        {
+        }
+
+        internal OptionalParameterService Sut => Component;
+    }
+
+    internal sealed class NonPublicComponentCreationTestBase : MockerTestBase<SubscriptionData>
+    {
+        protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy =>
+        {
+            policy.DefaultFallbackToNonPublicConstructors = false;
+        };
+
+        protected override InstanceCreationFlags ComponentCreationFlags => InstanceCreationFlags.AllowNonPublicConstructorFallback;
+
+        internal SubscriptionData Sut => Component;
+        internal Mocker TestMocks => Mocks;
+    }
+
+    internal sealed class SameArityPublicConstructors
+    {
+        public SameArityPublicConstructors(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+        }
+
+        public SameArityPublicConstructors(IFile file)
+        {
+            ArgumentNullException.ThrowIfNull(file);
+        }
+    }
+
+    public class NonPublicOnlyMockTarget
+    {
+        protected NonPublicOnlyMockTarget()
+        {
+        }
+    }
+
+    public abstract class AbstractNonPublicOnlyMockTarget
+    {
+        protected AbstractNonPublicOnlyMockTarget(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; }
+    }
+
+    public sealed class TestCreateFuncTarget
+    {
+        [Inject]
+        public IFileSystem? FileSystem { get; set; }
     }
 }

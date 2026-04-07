@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class TestClassExtensions | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class TestClassExtensions | FastMoq ">
+    
+    <meta name="description" content="Helper methods for reflection-based assertions, constructor-guard verification, and logger verification helpers used in tests.">
+      <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+      <link rel="shortcut icon" href="../favicon.svg">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <link rel="stylesheet" href="../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="FastMoq.Extensions.TestClassExtensions">
+
+
+
+  <h1 id="FastMoq_Extensions_TestClassExtensions" data-uid="FastMoq.Extensions.TestClassExtensions" class="text-break">Class TestClassExtensions</h1>
+  <div class="markdown level0 summary"><p>Helper methods for reflection-based assertions, constructor-guard verification, and logger verification helpers used in tests.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">TestClassExtensions</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a>.<a class="xref" href="FastMoq.Extensions.html">Extensions</a></h6>
+  <h6><strong>Assembly</strong>: FastMoq.Core.dll</h6>
+  <h5 id="FastMoq_Extensions_TestClassExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class TestClassExtensions</code></pre>
+  </div>
+  <h5 id="FastMoq_Extensions_TestClassExtensions_examples"><strong>Examples</strong></h5>
+  <p>The logger helpers are commonly used to keep tests focused on intent instead of verbose Moq verification expressions.</p>
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;ILogger&lt;CheckoutService&gt;&gt;();
+<p>Component.Submit(order);</p>
+<p>Mocks.VerifyLogged(LogLevel.Information, &quot;Order submitted&quot;, TimesSpec.Once);</p></code></pre>
+
+  <h3 id="methods">Methods
+</h3>
+  <a id="FastMoq_Extensions_TestClassExtensions_AddFiles_" data-uid="FastMoq.Extensions.TestClassExtensions.AddFiles*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_AddFiles_System_IO_Abstractions_TestingHelpers_MockFileSystem_System_Collections_Generic_IDictionary_System_String_System_IO_Abstractions_TestingHelpers_MockFileData__" data-uid="FastMoq.Extensions.TestClassExtensions.AddFiles(System.IO.Abstractions.TestingHelpers.MockFileSystem,System.Collections.Generic.IDictionary{System.String,System.IO.Abstractions.TestingHelpers.MockFileData})">AddFiles(MockFileSystem, IDictionary&lt;string, MockFileData&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddFiles(this MockFileSystem fileSystem, IDictionary&lt;string, MockFileData&gt; files)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MockFileSystem</span></td>
+        <td><span class="parametername">fileSystem</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <span class="xref">MockFileData</span>&gt;</td>
+        <td><span class="parametername">files</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_CallGenericMethod_" data-uid="FastMoq.Extensions.TestClassExtensions.CallGenericMethod*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_CallGenericMethod_System_Type_System_Object_System_String_System_Type___System_Object___" data-uid="FastMoq.Extensions.TestClassExtensions.CallGenericMethod(System.Type,System.Object,System.String,System.Type[],System.Object[])">CallGenericMethod(Type, object, string?, Type[]?, object[]?)</h4>
+  <div class="markdown level1 summary"><p>Calls the generic method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object? CallGenericMethod(this Type typeParameter, object obj, string? methodName = null, Type[]? parameterTypes = null, object[]? parameters = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">typeParameter</span></td>
+        <td><p>The type parameter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">methodName</span></td>
+        <td><p>Name of the method.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>[]</td>
+        <td><span class="parametername">parameterTypes</span></td>
+        <td><p>The parameter types.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td><p>The parameters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><p>Calls the generic method.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.missingmethodexception">MissingMethodException</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_EnsureNullCheckThrown_" data-uid="FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_EnsureNullCheckThrown_System_Action_System_String_System_String_System_Action_System_String__" data-uid="FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action,System.String,System.String,System.Action{System.String})">EnsureNullCheckThrown(Action, string, string?, Action&lt;string&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Ensures the null check thrown.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void EnsureNullCheckThrown(this Action action, string parameterName, string? constructorName = &quot;&quot;, Action&lt;string&gt;? output = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td><span class="parametername">action</span></td>
+        <td><p>The action.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">parameterName</span></td>
+        <td><p>Name of the parameter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">constructorName</span></td>
+        <td><p>Name of the constructor.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The output.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_EnsureNullCheckThrown_" data-uid="FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_EnsureNullCheckThrown_System_Action_System_String_System_String_Xunit_Abstractions_ITestOutputHelper_" data-uid="FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action,System.String,System.String,Xunit.Abstractions.ITestOutputHelper)">EnsureNullCheckThrown(Action, string, string?, ITestOutputHelper?)</h4>
+  <div class="markdown level1 summary"><p>Ensures the null check thrown.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void EnsureNullCheckThrown(this Action action, string parameterName, string? constructorName, ITestOutputHelper? output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action">Action</a></td>
+        <td><span class="parametername">action</span></td>
+        <td><p>The action.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">parameterName</span></td>
+        <td><p>Name of the parameter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">constructorName</span></td>
+        <td><p>Name of the constructor.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">ITestOutputHelper</span></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The output.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetAmbiguousConstructorImplementationException_" data-uid="FastMoq.Extensions.TestClassExtensions.GetAmbiguousConstructorImplementationException*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetAmbiguousConstructorImplementationException_FastMoq_Mocker_System_Type_" data-uid="FastMoq.Extensions.TestClassExtensions.GetAmbiguousConstructorImplementationException(FastMoq.Mocker,System.Type)">GetAmbiguousConstructorImplementationException(Mocker, Type)</h4>
+  <div class="markdown level1 summary"><p>Throws the ambiguous constructor implementation exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static AmbiguousImplementationException GetAmbiguousConstructorImplementationException(this Mocker mocker, Type tType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The mocker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">tType</span></td>
+        <td><p>Type of the t.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.ambiguousimplementationexception">AmbiguousImplementationException</a></td>
+        <td><p>System.Runtime.AmbiguousImplementationException.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetAmbiguousImplementationException_" data-uid="FastMoq.Extensions.TestClassExtensions.GetAmbiguousImplementationException*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetAmbiguousImplementationException_FastMoq_Mocker_System_String_" data-uid="FastMoq.Extensions.TestClassExtensions.GetAmbiguousImplementationException(FastMoq.Mocker,System.String)">GetAmbiguousImplementationException(Mocker, string)</h4>
+  <div class="markdown level1 summary"><p>Throws the ambiguous implementation exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static AmbiguousImplementationException GetAmbiguousImplementationException(this Mocker mocker, string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The mocker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.ambiguousimplementationexception">AmbiguousImplementationException</a></td>
+        <td><p>System.Runtime.AmbiguousImplementationException.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetAmbiguousImplementationException_" data-uid="FastMoq.Extensions.TestClassExtensions.GetAmbiguousImplementationException*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetAmbiguousImplementationException_FastMoq_Mocker_System_Type_System_Collections_Generic_ICollection_System_Type__" data-uid="FastMoq.Extensions.TestClassExtensions.GetAmbiguousImplementationException(FastMoq.Mocker,System.Type,System.Collections.Generic.ICollection{System.Type})">GetAmbiguousImplementationException(Mocker, Type, ICollection&lt;Type&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Gets the ambiguous implementation exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static AmbiguousImplementationException GetAmbiguousImplementationException(this Mocker mocker, Type tType, ICollection&lt;Type&gt;? types = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The mocker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">tType</span></td>
+        <td><p>Type of the t.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>&gt;</td>
+        <td><span class="parametername">types</span></td>
+        <td><p>The types.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.ambiguousimplementationexception">AmbiguousImplementationException</a></td>
+        <td><p>System.Runtime.AmbiguousImplementationException.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetDefaultValue_" data-uid="FastMoq.Extensions.TestClassExtensions.GetDefaultValue*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetDefaultValue_System_Type_" data-uid="FastMoq.Extensions.TestClassExtensions.GetDefaultValue(System.Type)">GetDefaultValue(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets the default value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object? GetDefaultValue(this Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><p><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetFieldInfo_" data-uid="FastMoq.Extensions.TestClassExtensions.GetFieldInfo*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_" data-uid="FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)">GetFieldInfo&lt;TType&gt;(object, string)</h4>
+  <div class="markdown level1 summary"><p>Gets the field information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static FieldInfo GetFieldInfo&lt;TType&gt;(this object _, string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">_</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo">FieldInfo</a></td>
+        <td><p>System.Nullable&lt;FieldInfo&gt;.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TType</span></td>
+        <td><p>The type of the t type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetFieldValue_" data-uid="FastMoq.Extensions.TestClassExtensions.GetFieldValue*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_" data-uid="FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)">GetFieldValue&lt;T&gt;(object?, FieldInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the field value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T? GetFieldValue&lt;T&gt;(this object? obj, FieldInfo field)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo">FieldInfo</a></td>
+        <td><span class="parametername">field</span></td>
+        <td><p>The field.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>System.Nullable&lt;T&gt;.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetFieldValue_" data-uid="FastMoq.Extensions.TestClassExtensions.GetFieldValue*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_" data-uid="FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)">GetFieldValue&lt;TObject&gt;(TObject, string, TObject?)</h4>
+  <div class="markdown level1 summary"><p>Gets the field value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object? GetFieldValue&lt;TObject&gt;(this TObject obj, string name, TObject? defaultValue = null) where TObject : class?</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">defaultValue</span></td>
+        <td><p>The default value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><p><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TObject</span></td>
+        <td><p>The type of the t object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetFieldValue_" data-uid="FastMoq.Extensions.TestClassExtensions.GetFieldValue*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_" data-uid="FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)">GetFieldValue&lt;T, TType&gt;(object, string)</h4>
+  <div class="markdown level1 summary"><p>Gets the field value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T? GetFieldValue&lt;T, TType&gt;(this object obj, string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>System.Nullable&lt;T&gt;.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TType</span></td>
+        <td><p>The type of the t type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetField_" data-uid="FastMoq.Extensions.TestClassExtensions.GetField*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_" data-uid="FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)">GetField&lt;TObject&gt;(TObject, string)</h4>
+  <div class="markdown level1 summary"><p>Gets the field.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static FieldInfo? GetField&lt;TObject&gt;(this TObject obj, string name) where TObject : class?</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo">FieldInfo</a></td>
+        <td><p><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TObject</span></td>
+        <td><p>The type of the t object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetMemberExpression_" data-uid="FastMoq.Extensions.TestClassExtensions.GetMemberExpression*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetMemberExpression_System_Linq_Expressions_Expression_" data-uid="FastMoq.Extensions.TestClassExtensions.GetMemberExpression(System.Linq.Expressions.Expression)">GetMemberExpression(Expression)</h4>
+  <div class="markdown level1 summary"><p>Gets the member expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MemberExpression GetMemberExpression(this Expression method)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>The method.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberexpression">MemberExpression</a></td>
+        <td><p>MemberExpression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetMemberExpression_" data-uid="FastMoq.Extensions.TestClassExtensions.GetMemberExpression*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetMemberExpression__1_System_Linq_Expressions_Expression___0__" data-uid="FastMoq.Extensions.TestClassExtensions.GetMemberExpression``1(System.Linq.Expressions.Expression{``0})">GetMemberExpression&lt;T&gt;(Expression&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the member expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MemberExpression GetMemberExpression&lt;T&gt;(this Expression&lt;T&gt; method)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;T&gt;</td>
+        <td><span class="parametername">method</span></td>
+        <td><p>The method.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.memberexpression">MemberExpression</a></td>
+        <td><p>MemberExpression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetMemberName_" data-uid="FastMoq.Extensions.TestClassExtensions.GetMemberName*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetMemberName_System_Linq_Expressions_Expression_" data-uid="FastMoq.Extensions.TestClassExtensions.GetMemberName(System.Linq.Expressions.Expression)">GetMemberName(Expression)</h4>
+  <div class="markdown level1 summary"><p>Gets the name of the member.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetMemberName(this Expression memberLambda)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression">Expression</a></td>
+        <td><span class="parametername">memberLambda</span></td>
+        <td><p>The member lambda.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>System.String.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetMemberName_" data-uid="FastMoq.Extensions.TestClassExtensions.GetMemberName*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___" data-uid="FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">GetMemberName&lt;T, TValue&gt;(T, Expression&lt;Func&lt;T, TValue&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the name of the member.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetMemberName&lt;T, TValue&gt;(this T _, Expression&lt;Func&lt;T, TValue&gt;&gt; memberLambda)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">_</span></td>
+        <td><p>The .</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TValue&gt;&gt;</td>
+        <td><span class="parametername">memberLambda</span></td>
+        <td><p>The member lambda.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>System.String.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TValue</span></td>
+        <td><p>The type of the t value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetMember_" data-uid="FastMoq.Extensions.TestClassExtensions.GetMember*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___" data-uid="FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">GetMember&lt;T, TValue&gt;(T, Expression&lt;Func&lt;T, TValue&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the property value based on lambda.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MemberInfo GetMember&lt;T, TValue&gt;(this T _, Expression&lt;Func&lt;T, TValue&gt;&gt; memberLambda)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">_</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, TValue&gt;&gt;</td>
+        <td><span class="parametername">memberLambda</span></td>
+        <td><p>The member lambda.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.memberinfo">MemberInfo</a></td>
+        <td><p>System.Nullable&lt;TValue&gt;.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TValue</span></td>
+        <td><p>The type of the t value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetMethodValue_" data-uid="FastMoq.Extensions.TestClassExtensions.GetMethodValue*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___" data-uid="FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])">GetMethodValue&lt;TObject&gt;(TObject, string, object?, params object[])</h4>
+  <div class="markdown level1 summary"><p>Gets the method value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object? GetMethodValue&lt;TObject&gt;(this TObject obj, string name, object? defaultValue = null, params object[] args) where TObject : class?</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">defaultValue</span></td>
+        <td><p>The default value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
+        <td><span class="parametername">args</span></td>
+        <td><p>The arguments.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><p>System.Nullable&lt;System.Object&gt;.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TObject</span></td>
+        <td><p>The type of the t object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetMethod_" data-uid="FastMoq.Extensions.TestClassExtensions.GetMethod*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_" data-uid="FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)">GetMethod&lt;TObject&gt;(TObject, string)</h4>
+  <div class="markdown level1 summary"><p>Gets the method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MethodInfo? GetMethod&lt;TObject&gt;(this TObject obj, string name) where TObject : class?</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a></td>
+        <td><p><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TObject</span></td>
+        <td><p>The type of the t object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetPropertyValue_" data-uid="FastMoq.Extensions.TestClassExtensions.GetPropertyValue*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_" data-uid="FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)">GetPropertyValue&lt;TObject&gt;(TObject, string, object?)</h4>
+  <div class="markdown level1 summary"><p>Gets the property value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object? GetPropertyValue&lt;TObject&gt;(this TObject obj, string name, object? defaultValue = null) where TObject : class?</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">defaultValue</span></td>
+        <td><p>The default value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><p><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TObject</span></td>
+        <td><p>The type of the t object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetProperty_" data-uid="FastMoq.Extensions.TestClassExtensions.GetProperty*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_" data-uid="FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)">GetProperty&lt;TObject&gt;(TObject, string)</h4>
+  <div class="markdown level1 summary"><p>Gets the property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PropertyInfo? GetProperty&lt;TObject&gt;(this TObject obj, string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a></td>
+        <td><p><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.nullable-1">Nullable&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TObject</span></td>
+        <td><p>The type of the t object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetTestData_" data-uid="FastMoq.Extensions.TestClassExtensions.GetTestData*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetTestData_System_Collections_Generic_IReadOnlyList_System_Object__System_Int32_System_Reflection_ParameterInfo_" data-uid="FastMoq.Extensions.TestClassExtensions.GetTestData(System.Collections.Generic.IReadOnlyList{System.Object},System.Int32,System.Reflection.ParameterInfo)">GetTestData(IReadOnlyList&lt;object&gt;?, int, ParameterInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the test data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object? GetTestData(this IReadOnlyList&lt;object&gt;? testData, int i, ParameterInfo p)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
+        <td><span class="parametername">testData</span></td>
+        <td><p>The test data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">i</span></td>
+        <td><p>The i.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.parameterinfo">ParameterInfo</a></td>
+        <td><span class="parametername">p</span></td>
+        <td><p>The p.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><p>object of the test data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_GetTypeFromInterface_" data-uid="FastMoq.Extensions.TestClassExtensions.GetTypeFromInterface*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_GetTypeFromInterface_FastMoq_Mocker_System_Type_System_Collections_Generic_List_System_Type__" data-uid="FastMoq.Extensions.TestClassExtensions.GetTypeFromInterface(FastMoq.Mocker,System.Type,System.Collections.Generic.List{System.Type})">GetTypeFromInterface(Mocker, Type, List&lt;Type&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Gets the type from interface.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type GetTypeFromInterface(this Mocker mocker, Type tType, List&lt;Type&gt;? typeList = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The mocker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">tType</span></td>
+        <td><p>Type of the t.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>&gt;</td>
+        <td><span class="parametername">typeList</span></td>
+        <td><p>The type list.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><p>Type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.runtime.ambiguousimplementationexception">AmbiguousImplementationException</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_SetFieldValue_" data-uid="FastMoq.Extensions.TestClassExtensions.SetFieldValue*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_" data-uid="FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)">SetFieldValue&lt;TObject&gt;(TObject, string, object?)</h4>
+  <div class="markdown level1 summary"><p>Sets the field value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetFieldValue&lt;TObject&gt;(this TObject obj, string name, object? value) where TObject : class?</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TObject</span></td>
+        <td><p>The type of the t object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_SetPropertyValue_" data-uid="FastMoq.Extensions.TestClassExtensions.SetPropertyValue*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_" data-uid="FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)">SetPropertyValue&lt;TObject&gt;(TObject, string, object?)</h4>
+  <div class="markdown level1 summary"><p>Sets the property value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetPropertyValue&lt;TObject&gt;(this TObject obj, string name, object? value) where TObject : class?</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObject</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TObject</span></td>
+        <td><p>The type of the t object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String)">VerifyLogged(Mocker, LogLevel, string)</h4>
+  <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String__examples">Examples</h5>
+  <p>Prefer <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_">VerifyLogged(Mocker, LogLevel, string)</a> in general documentation because it works through FastMoq's captured log entries instead of a provider-specific mock API.</p>
+<pre><code class="lang-csharp">Component.Submit(order);
+<p>Mocks.VerifyLogged(LogLevel.Information, &quot;Order submitted&quot;);</p></code></pre>
+
+  <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_FastMoq_Providers_TimesSpec_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,FastMoq.Providers.TimesSpec)">VerifyLogged(Mocker, LogLevel, string, TimesSpec)</h4>
+  <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks using a provider-neutral count specification.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, TimesSpec times)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.TimesSpec.html">TimesSpec</a></td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32})">VerifyLogged(Mocker, LogLevel, string, Exception?, int?)</h4>
+  <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks.
+Defaults to at least one matching log entry when no explicit count specification is supplied.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</td>
+        <td><span class="parametername">eventId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)">VerifyLogged(Mocker, LogLevel, string, Exception?, int?, int)</h4>
+  <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks using an exact match count.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId, int times)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</td>
+        <td><span class="parametername">eventId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Nullable_FastMoq_Providers_TimesSpec__" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Nullable{FastMoq.Providers.TimesSpec})">VerifyLogged(Mocker, LogLevel, string, Exception?, int?, TimesSpec?)</h4>
+  <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, Exception? exception, int? eventId, TimesSpec? times)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></td>
+        <td><span class="parametername">exception</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</td>
+        <td><span class="parametername">eventId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.TimesSpec.html">TimesSpec</a>?</td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged*"></a>
+  <h4 id="FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_" data-uid="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)">VerifyLogged(Mocker, LogLevel, string, int)</h4>
+  <div class="markdown level1 summary"><p>Provider-agnostic logger verification based on captured ILogger callbacks using an exact match count.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void VerifyLogged(this Mocker mocker, LogLevel logLevel, string message, int times)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a></td>
+        <td><span class="parametername">logLevel</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">message</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">times</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

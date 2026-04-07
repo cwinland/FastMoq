@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>FastMoq Sample Applications | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="FastMoq Sample Applications | FastMoq ">
+    
+    
+      <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+      <link rel="shortcut icon" href="../../favicon.svg">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="fastmoq-sample-applications">FastMoq Sample Applications</h1>
+
+<p>This directory contains the sample documentation and executable examples that currently exist in this repository.</p>
+<h2 id="available-samples-in-this-repository">Available samples in this repository</h2>
+<ol>
+<li><strong><a href="ecommerce-orders/README.html">E-Commerce Order Processing</a></strong> - Full sample documentation for an order-processing workflow</li>
+<li><strong><a href="testing-examples.html">Executable Testing Examples</a></strong> - Smaller repo-local service examples backed by the <code>FastMoq.TestingExample</code> project</li>
+</ol>
+<h2 id="repo-local-executable-examples">Repo-local executable examples</h2>
+<p>If you want smaller service-focused examples that compile and run directly in this repository, start with <a href="testing-examples.html">Executable Testing Examples</a>.</p>
+<p>Those examples are backed by the <code>FastMoq.TestingExample</code> project and currently show:</p>
+<ul>
+<li><code>MockerTestBase&lt;TComponent&gt;</code> in realistic service tests</li>
+<li>built-in <code>IFileSystem</code> behavior with <code>MockFileSystem</code></li>
+<li><code>VerifyLogged(...)</code> assertions</li>
+<li>fluent <code>Scenario.With(...).When(...).Then(...).Verify(...)</code> usage inside <code>MockerTestBase&lt;TComponent&gt;</code></li>
+<li>provider-first verification with <code>TimesSpec.Once</code>, <code>TimesSpec.Exactly(...)</code>, <code>TimesSpec.AtLeast(...)</code>, <code>TimesSpec.AtMost(...)</code>, and <code>TimesSpec.Never()</code></li>
+</ul>
+<h2 id="common-patterns-demonstrated">Common patterns demonstrated</h2>
+<ul>
+<li><strong>Azure Service Bus</strong> integration and testing</li>
+<li><strong>Azure Blob Storage</strong> operations</li>
+<li><strong>Azure Key Vault</strong> configuration</li>
+<li><strong>Entity Framework Core</strong> with Azure SQL</li>
+<li><strong>HttpClient</strong> and external API integration</li>
+<li><strong>Background Services</strong> and hosted services</li>
+<li><strong>Blazor Components</strong> testing</li>
+<li><strong>API Controllers</strong> with complex dependencies</li>
+<li><strong>Configuration and Options</strong> patterns</li>
+<li><strong>Logging and Monitoring</strong> integration</li>
+</ul>
+<h2 id="fastmoq-extension-usage-in-samples">FastMoq Extension Usage in Samples</h2>
+<p>The sample test projects intentionally showcase FastMoq extension helpers so you can apply them directly:</p>
+<h3 id="http--external-api">HTTP / External API</h3>
+<ul>
+<li><code>CreateHttpClient()</code> to quickly register an <code>HttpClient</code> and (if needed) an <code>IHttpClientFactory</code> with a default response.</li>
+<li>Prefer <code>WhenHttpRequest(...)</code> and <code>WhenHttpRequestJson(...)</code> for provider-neutral request matching and response setup.</li>
+<li>Use <code>SetupHttpMessage(...)</code> only when you intentionally need Moq-specific protected <code>SendAsync</code> behavior from the Moq provider package. Keep <code>using FastMoq.Extensions;</code>, add <code>FastMoq.Provider.Moq</code>, and select the Moq provider for the test assembly when you use that compatibility path.</li>
+<li>Content helpers: <code>GetStringContent</code>, <code>GetContentBytesAsync()</code>, <code>GetContentStreamAsync()</code> for asserting raw payloads.</li>
+</ul>
+<h3 id="entity-framework-core">Entity Framework Core</h3>
+<ul>
+<li><code>GetMockDbContext&lt;TContext&gt;()</code> to obtain a mock context with DbSets auto‑prepared.</li>
+<li>Add a custom variant via <code>AddType</code> if you want to pin a specific test-time implementation.</li>
+</ul>
+<h3 id="logging-verification">Logging Verification</h3>
+<ul>
+<li>Prefer <code>Mocks.VerifyLogged(LogLevel.Information, &quot;Message&quot;)</code> for provider-safe logger assertions.</li>
+<li>Use <code>GetOrCreateMock&lt;ILogger&lt;T&gt;&gt;().AsMoq().VerifyLogger(...)</code> only when you intentionally need the legacy Moq-specific compatibility behavior, such as minimizing churn in older Moq-shaped tests during the v4 transition. It is not the preferred path for new assertions just because you want more control; prefer <code>VerifyLogged(...)</code> unless you specifically need the old Moq-only assertion surface.</li>
+</ul>
+<h3 id="constructor--dependency-injection">Constructor &amp; Dependency Injection</h3>
+<ul>
+<li><code>CreateInstance&lt;T&gt;()</code> / typed overloads pick the correct constructor and auto‑inject mocks.</li>
+<li><code>AddType&lt;TAbstraction&gt;(factory)</code> to pin specific concrete/instance values (e.g., seeded <code>Uri</code> or options).</li>
+</ul>
+<h3 id="azure-service-patterns">Azure Service Patterns</h3>
+<p>Even when not running in Azure, the samples demonstrate how you would substitute Azure types:</p>
+<ul>
+<li>Wrap Azure SDK clients with interfaces in your application layer and mock those interfaces in tests.</li>
+<li>Use consistent naming for senders/processors so verification (e.g., Service Bus send) is easy.</li>
+</ul>
+<h2 id="azure-function-style-testing-guidance">Azure Function style testing guidance</h2>
+<p>If you adapt these samples for Azure Functions HTTP triggers, use patterns similar to (conceptually) <code>MockedHttpRequestData</code> and <code>MockedHttpResponseData</code> helpers (as seen in other internal solution test utilities):</p>
+<ol>
+<li>Build the request: supply method, route values, headers, and JSON body.</li>
+<li>Provide dependency injection values using <code>AddType</code> (e.g., configuration, services).</li>
+<li>Use <code>WhenHttpRequest(...)</code> or <code>WhenHttpRequestJson(...)</code> for outbound <code>HttpClient</code> calls triggered inside the function.</li>
+<li>Assert:
+<ul>
+<li>Outbound calls (verify <code>SendAsync</code>)</li>
+<li>Response status &amp; body (deserialize or use content helpers)</li>
+<li>Logs via <code>VerifyLogged</code></li>
+</ul>
+</li>
+</ol>
+<p>Recommended layering:</p>
+<pre><code class="lang-csharp">var request = TestUtils.CreateHttpRequest(jsonBody, queryParams);
+var result = await Component.RunAsync(request, CancellationToken.None);
+Mocks.VerifyLogged(LogLevel.Information, &quot;Processed event&quot;);
+</code></pre>
+<p>While FastMoq does not ship Azure Functions request/response shims directly, it complements such utilities by supplying:</p>
+<ul>
+<li>Automatic logger mocks with capture/verification.</li>
+<li>Consistent <code>HttpClient</code> mocking for downstream REST calls.</li>
+<li>Simplified DI graph creation so only function inputs need explicit arrangement.</li>
+</ul>
+<h2 id="notes-about-repository-scope">Notes about repository scope</h2>
+<p>Some sample categories mentioned elsewhere in the documentation are future sample directions rather than folders that currently exist in this repository. Use this page and the linked directories above as the source of truth for what is available today.</p>
+<h2 id="sample-enhancement-ideas">Sample enhancement ideas</h2>
+<p>The current samples are intentionally focused. Consider extending locally with:</p>
+<ul>
+<li>Adding a payment gateway client abstraction and testing retry/backoff logic via provider-neutral request helpers for happy-path routing, then Moq <code>SetupSequence(...)</code> only when you intentionally need provider-specific call sequencing.</li>
+<li>Adding blob metadata assertions using a mocked <code>BlobClient</code>.</li>
+<li>Introducing an options reload test using <code>IOptionsMonitor&lt;T&gt;</code> + updated values via <code>AddType</code>.</li>
+</ul>
+<h2 id="quick-reference-which-helper-to-choose">Quick Reference: Which Helper to Choose?</h2>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Helper</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fast default HttpClient</td>
+<td><code>CreateHttpClient()</code></td>
+<td>Registers handler + factory if missing</td>
+</tr>
+<tr>
+<td>Custom per‑test HTTP behavior</td>
+<td><code>WhenHttpRequest()</code> / <code>WhenHttpRequestJson()</code></td>
+<td>Provider-neutral request matching and response setup</td>
+</tr>
+<tr>
+<td>Mock EF Core context</td>
+<td><code>GetMockDbContext&lt;T&gt;()</code></td>
+<td>Auto sets up DbSets; seed data before use</td>
+</tr>
+<tr>
+<td>Replace concrete dependency</td>
+<td><code>AddType&lt;T&gt;()</code></td>
+<td>Pin deterministic instances (e.g., clock)</td>
+</tr>
+<tr>
+<td>Verify log message</td>
+<td><code>VerifyLogged(...)</code></td>
+<td>Provider-safe assertion over captured <code>ILogger</code> entries</td>
+</tr>
+<tr>
+<td>Extract HTTP content</td>
+<td><code>GetStringContent</code></td>
+<td>Use for string assertions</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Tip: Prefer the provider-neutral HTTP helpers first; drop down to Moq-specific setup only for protected-member or sequencing edge cases.</p>
+</blockquote>
+<h2 id="getting-started">Getting started</h2>
+<p>Start with <a href="testing-examples.html">Executable Testing Examples</a> if you want the quickest path to real, runnable tests in this repository. Use <a href="ecommerce-orders/README.html">E-Commerce Order Processing</a> when you want a larger sample walkthrough.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>.NET 8.0 or later</li>
+<li>Azure subscription (for cloud features)</li>
+<li>Docker Desktop (optional, for containerized development)</li>
+<li>Visual Studio 2022 or VS Code</li>
+</ul>
+<h2 id="quick-start">Quick Start</h2>
+<ol>
+<li>Clone the repository</li>
+<li>Navigate to a sample directory</li>
+<li>Follow the sample-specific README</li>
+<li>Run the tests to see FastMoq in action</li>
+</ol>
+<pre><code class="lang-bash">cd docs/samples/ecommerce-orders
+dotnet restore
+dotnet test
+</code></pre>
+<p>For the smaller executable examples instead:</p>
+<pre><code class="lang-bash">dotnet test .\FastMoq.TestingExample\FastMoq.TestingExample.csproj
+</code></pre>
+<h2 id="learning-objectives">Learning Objectives</h2>
+<p>After exploring these samples, you'll understand how to:</p>
+<ul>
+<li>Structure tests for complex, real-world applications</li>
+<li>Mock Azure services and external dependencies</li>
+<li>Test asynchronous and background operations</li>
+<li>Verify logging and monitoring behavior</li>
+<li>Handle configuration and secrets in tests</li>
+<li>Test web applications and APIs comprehensively</li>
+<li>Implement integration testing strategies</li>
+</ul>
+<h2 id="support">Support</h2>
+<p>If you have questions about the samples or need help adapting them to your specific use case, please:</p>
+<ol>
+<li>Check the individual sample README files</li>
+<li>Review the <a href="../../index.html">main documentation</a></li>
+<li>Open an issue on the <a href="https://github.com/cwinland/FastMoq/issues">FastMoq repository</a></li>
+</ol>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

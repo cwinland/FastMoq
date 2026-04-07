@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Provider Selection and Setup | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Provider Selection and Setup | FastMoq ">
+    
+    
+      <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+      <link rel="shortcut icon" href="../../favicon.svg">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="provider-selection-and-setup">Provider Selection and Setup</h1>
+
+<p>This guide explains how FastMoq chooses a mocking provider, how to set an app-wide default for a test assembly, and when to use scoped overrides.</p>
+<h2 id="current-defaults">Current defaults</h2>
+<p>For the current v4 release line:</p>
+<ul>
+<li><code>FastMoq.Core</code> bundles the internal <code>reflection</code> provider and the bundled <code>moq</code> provider.</li>
+<li><code>reflection</code> is the default provider if you do nothing.</li>
+<li><code>moq</code> is still available without adding another package.</li>
+<li>optional providers such as <code>nsubstitute</code> must be added explicitly and registered with <code>MockingProviderRegistry</code>.</li>
+</ul>
+<p>Why this matters:</p>
+<ul>
+<li>provider-neutral APIs such as <code>GetOrCreateMock(...)</code>, <code>VerifyLogged(...)</code>, and the scenario builder can work with any registered provider that supports the needed capability.</li>
+<li>Moq compatibility APIs such as <code>GetMock&lt;T&gt;()</code>, <code>VerifyLogger(...)</code>, <code>Protected()</code>, and direct <code>Mock&lt;T&gt;</code> setup require the Moq provider to be selected.</li>
+<li>provider-package extensions such as <code>AsMoq()</code>, <code>Setup(...)</code> on <code>IFastMock&lt;T&gt;</code>, and <code>AsNSubstitute()</code> also require their corresponding provider package and selected provider.</li>
+</ul>
+<h2 id="how-provider-selection-works">How provider selection works</h2>
+<p>The selection code lives in <code>MockingProviderRegistry</code>.</p>
+<p>Resolution order:</p>
+<ol>
+<li>Use the current async-scoped override set by <code>Push(...)</code> if one exists.</li>
+<li>Otherwise use the app-wide default provider.</li>
+</ol>
+<p>The important methods are:</p>
+<ul>
+<li><code>MockingProviderRegistry.Register(name, provider, setAsDefault: false)</code></li>
+<li><code>MockingProviderRegistry.SetDefault(name)</code></li>
+<li><code>MockingProviderRegistry.Push(name)</code></li>
+<li><code>MockingProviderRegistry.Default</code></li>
+</ul>
+<h2 id="recommended-pattern-app-wide-default-for-the-test-assembly">Recommended pattern: app-wide default for the test assembly</h2>
+<p>If a whole test project should use one provider, register it once at assembly startup and set it as the default.</p>
+<p>For the bundled Moq provider in v4:</p>
+<pre><code class="lang-csharp">using System.Runtime.CompilerServices;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+namespace MyTests;
+
+public static class TestAssemblyProviderBootstrap
+{
+    [ModuleInitializer]
+    public static void Initialize()
+    {
+        MockingProviderRegistry.Register(&quot;moq&quot;, MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+</code></pre>
+<p>That runs once for the test assembly and makes Moq the default for all <code>Mocker</code> instances created afterward.</p>
+<p>Use the two-step form only when registration and default selection happen in different places:</p>
+<pre><code class="lang-csharp">MockingProviderRegistry.Register(&quot;moq&quot;, MoqMockingProvider.Instance);
+MockingProviderRegistry.SetDefault(&quot;moq&quot;);
+</code></pre>
+<h2 id="optional-providers">Optional providers</h2>
+<p>Optional providers are not available until you add their package and register them.</p>
+<p>Example package reference for NSubstitute:</p>
+<pre><code class="lang-xml">&lt;PackageReference Include=&quot;FastMoq.Provider.NSubstitute&quot; Version=&quot;4.*&quot; /&gt;
+</code></pre>
+<p>Then register it:</p>
+<pre><code class="lang-csharp">using System.Runtime.CompilerServices;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+
+namespace MyTests;
+
+public static class TestAssemblyProviderBootstrap
+{
+    [ModuleInitializer]
+    public static void Initialize()
+    {
+        MockingProviderRegistry.Register(&quot;nsubstitute&quot;, NSubstituteMockingProvider.Instance, setAsDefault: true);
+    }
+}
+</code></pre>
+<h2 id="scoped-override">Scoped override</h2>
+<p>If most of the assembly should use one provider but a specific test needs another, use a scoped override:</p>
+<pre><code class="lang-csharp">using var _ = MockingProviderRegistry.Push(&quot;reflection&quot;);
+var mocker = new Mocker();
+</code></pre>
+<p>That override applies only to the current async flow and is restored when the <code>IDisposable</code> is disposed.</p>
+<h2 id="real-executable-example-in-this-repo">Real executable example in this repo</h2>
+<p>The repo now includes an executable provider bootstrap example in:</p>
+<ul>
+<li><code>FastMoq.TestingExample/ProviderSelectionBootstrap.cs</code></li>
+<li><code>FastMoq.TestingExample/ProviderSelectionExampleTests.cs</code></li>
+</ul>
+<p>That example sets Moq as the app-wide default for the example test assembly and then uses the Moq compatibility surface in a real xUnit test.</p>
+<h2 id="when-to-choose-which-provider-in-v4">When to choose which provider in v4</h2>
+<ul>
+<li>Leave the default as <code>reflection</code> if you want the provider-neutral baseline and do not need Moq-specific APIs.</li>
+<li>Set the default to <code>moq</code> if your test assembly relies on <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>Protected()</code>, or other Moq compatibility behavior.</li>
+<li>Add and set another provider such as <code>nsubstitute</code> only when that test assembly is intentionally written against that provider's behavior.</li>
+</ul>
+<h2 id="v5-direction">v5 direction</h2>
+<p>The planned v5 direction is:</p>
+<ul>
+<li><code>FastMoq.Core</code> keeps <code>reflection</code> as the default provider.</li>
+<li>bundled Moq compatibility is removed from core.</li>
+<li>provider packages such as Moq or NSubstitute are added explicitly and registered by the consuming test assembly.</li>
+</ul>
+<p>That means the app-wide bootstrap pattern shown above is the forward-compatible way to select a provider.</p>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

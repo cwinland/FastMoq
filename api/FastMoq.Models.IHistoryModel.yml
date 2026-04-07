@@ -1,0 +1,2922 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Models.IHistoryModel
+  commentId: T:FastMoq.Models.IHistoryModel
+  id: IHistoryModel
+  parent: FastMoq.Models
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IHistoryModel
+  nameWithType: IHistoryModel
+  fullName: FastMoq.Models.IHistoryModel
+  type: Interface
+  source:
+    remote:
+      path: FastMoq.Core/Models/IHistoryModel.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: IHistoryModel
+    path: FastMoq.Core/Models/IHistoryModel.cs
+    startLine: 9
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Models
+  summary: Interface IHistoryModel used for identifying objects that can be put in the history model.
+  example: []
+  syntax:
+    content: public interface IHistoryModel
+    content.vb: Public Interface IHistoryModel
+  seealso:
+  - linkId: FastMoq.Models.IInstanceModel
+    commentId: T:FastMoq.Models.IInstanceModel
+  - linkId: FastMoq.Models.InstanceModel`1
+    commentId: T:FastMoq.Models.InstanceModel`1
+  - linkId: FastMoq.Models.InstanceModel
+    commentId: T:FastMoq.Models.InstanceModel
+  - linkId: FastMoq.Models.ConstructorModel
+    commentId: T:FastMoq.Models.ConstructorModel
+  derivedClasses:
+  - FastMoq.Models.ConstructorModel
+  - FastMoq.Models.InstanceModel
+  - FastMoq.Models.InstanceModel`1
+  extensionMethods:
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.Models.IHistoryModel)
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Models.IHistoryModel,{TValue}}})
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Models.IHistoryModel,{TValue}}})
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(System.String,System.Object,System.Object[])
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetMethod``1(System.String)
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(System.String,System.Object)
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(System.String,System.Object)
+  - FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(System.String,System.Object)
+  - System.Object.FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  - System.Object.FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Linq.Expressions.Expression{System.Func{{TMock},System.Threading.Tasks.Task{{TReturn}}}},System.Func{{TReturn}})
+  - System.Object.FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.String,System.Func{{TReturn}},System.Object[])
+  - System.Object.FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.String,System.Func{{TReturn}},System.Object[])
+  - System.Object.FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Linq.Expressions.Expression{System.Func{{TMock},{TReturn}}},System.Func{{TReturn}})
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+references:
+- uid: FastMoq.Models.IInstanceModel
+  commentId: T:FastMoq.Models.IInstanceModel
+  parent: FastMoq.Models
+  href: FastMoq.Models.IInstanceModel.html
+  name: IInstanceModel
+  nameWithType: IInstanceModel
+  fullName: FastMoq.Models.IInstanceModel
+- uid: FastMoq.Models.InstanceModel`1
+  commentId: T:FastMoq.Models.InstanceModel`1
+  href: FastMoq.Models.InstanceModel-1.html
+  name: InstanceModel<TClass>
+  nameWithType: InstanceModel<TClass>
+  fullName: FastMoq.Models.InstanceModel<TClass>
+  nameWithType.vb: InstanceModel(Of TClass)
+  fullName.vb: FastMoq.Models.InstanceModel(Of TClass)
+  name.vb: InstanceModel(Of TClass)
+  spec.csharp:
+  - uid: FastMoq.Models.InstanceModel`1
+    name: InstanceModel
+    href: FastMoq.Models.InstanceModel-1.html
+  - name: <
+  - name: TClass
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.InstanceModel`1
+    name: InstanceModel
+    href: FastMoq.Models.InstanceModel-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TClass
+  - name: )
+- uid: FastMoq.Models.InstanceModel
+  commentId: T:FastMoq.Models.InstanceModel
+  parent: FastMoq.Models
+  href: FastMoq.Models.InstanceModel.html
+  name: InstanceModel
+  nameWithType: InstanceModel
+  fullName: FastMoq.Models.InstanceModel
+- uid: FastMoq.Models.ConstructorModel
+  commentId: T:FastMoq.Models.ConstructorModel
+  parent: FastMoq.Models
+  href: FastMoq.Models.ConstructorModel.html
+  name: ConstructorModel
+  nameWithType: ConstructorModel
+  fullName: FastMoq.Models.ConstructorModel
+- uid: FastMoq.Models
+  commentId: N:FastMoq.Models
+  href: FastMoq.html
+  name: FastMoq.Models
+  nameWithType: FastMoq.Models
+  fullName: FastMoq.Models
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Models
+    name: Models
+    href: FastMoq.Models.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Models
+    name: Models
+    href: FastMoq.Models.html
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  parent: FastMoq.Extensions.ObjectExtensions
+  definition: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull<IHistoryModel>(IHistoryModel, string, string, int?, string)
+  nameWithType: ObjectExtensions.RaiseIfNull<IHistoryModel>(IHistoryModel, string, string, int?, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<FastMoq.Models.IHistoryModel>(FastMoq.Models.IHistoryModel, string, string, int?, string)
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of IHistoryModel)(IHistoryModel, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of FastMoq.Models.IHistoryModel)(FastMoq.Models.IHistoryModel, String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of IHistoryModel)(IHistoryModel, String, String, Integer?, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(FastMoq.Models.IHistoryModel,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(FastMoq.Models.IHistoryModel,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.Models.IHistoryModel)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  name: GetFieldValue<IHistoryModel>(IHistoryModel, string, IHistoryModel)
+  nameWithType: TestClassExtensions.GetFieldValue<IHistoryModel>(IHistoryModel, string, IHistoryModel)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<FastMoq.Models.IHistoryModel>(FastMoq.Models.IHistoryModel, string, FastMoq.Models.IHistoryModel)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of IHistoryModel)(IHistoryModel, String, IHistoryModel)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of FastMoq.Models.IHistoryModel)(FastMoq.Models.IHistoryModel, String, FastMoq.Models.IHistoryModel)
+  name.vb: GetFieldValue(Of IHistoryModel)(IHistoryModel, String, IHistoryModel)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(FastMoq.Models.IHistoryModel,System.String,FastMoq.Models.IHistoryModel)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(FastMoq.Models.IHistoryModel,System.String,FastMoq.Models.IHistoryModel)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  name: GetField<IHistoryModel>(IHistoryModel, string)
+  nameWithType: TestClassExtensions.GetField<IHistoryModel>(IHistoryModel, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetField<FastMoq.Models.IHistoryModel>(FastMoq.Models.IHistoryModel, string)
+  nameWithType.vb: TestClassExtensions.GetField(Of IHistoryModel)(IHistoryModel, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetField(Of FastMoq.Models.IHistoryModel)(FastMoq.Models.IHistoryModel, String)
+  name.vb: GetField(Of IHistoryModel)(IHistoryModel, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(FastMoq.Models.IHistoryModel,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(FastMoq.Models.IHistoryModel,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetMemberName``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Models.IHistoryModel,{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<IHistoryModel, TValue>(IHistoryModel, Expression<Func<IHistoryModel, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<IHistoryModel, TValue>(IHistoryModel, Expression<Func<IHistoryModel, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<FastMoq.Models.IHistoryModel, TValue>(FastMoq.Models.IHistoryModel, System.Linq.Expressions.Expression<System.Func<FastMoq.Models.IHistoryModel, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of IHistoryModel, TValue)(IHistoryModel, Expression(Of Func(Of IHistoryModel, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of FastMoq.Models.IHistoryModel, TValue)(FastMoq.Models.IHistoryModel, System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.Models.IHistoryModel, TValue)))
+  name.vb: GetMemberName(Of IHistoryModel, TValue)(IHistoryModel, Expression(Of Func(Of IHistoryModel, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.Models.IHistoryModel,System.Linq.Expressions.Expression{System.Func{FastMoq.Models.IHistoryModel,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(FastMoq.Models.IHistoryModel,System.Linq.Expressions.Expression{System.Func{FastMoq.Models.IHistoryModel,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetMember``2(System.Linq.Expressions.Expression{System.Func{FastMoq.Models.IHistoryModel,{TValue}}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<IHistoryModel, TValue>(IHistoryModel, Expression<Func<IHistoryModel, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<IHistoryModel, TValue>(IHistoryModel, Expression<Func<IHistoryModel, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<FastMoq.Models.IHistoryModel, TValue>(FastMoq.Models.IHistoryModel, System.Linq.Expressions.Expression<System.Func<FastMoq.Models.IHistoryModel, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of IHistoryModel, TValue)(IHistoryModel, Expression(Of Func(Of IHistoryModel, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of FastMoq.Models.IHistoryModel, TValue)(FastMoq.Models.IHistoryModel, System.Linq.Expressions.Expression(Of System.Func(Of FastMoq.Models.IHistoryModel, TValue)))
+  name.vb: GetMember(Of IHistoryModel, TValue)(IHistoryModel, Expression(Of Func(Of IHistoryModel, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.Models.IHistoryModel,System.Linq.Expressions.Expression{System.Func{FastMoq.Models.IHistoryModel,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(FastMoq.Models.IHistoryModel,System.Linq.Expressions.Expression{System.Func{FastMoq.Models.IHistoryModel,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(System.String,System.Object,System.Object[])
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  name: GetMethodValue<IHistoryModel>(IHistoryModel, string, object, params object[])
+  nameWithType: TestClassExtensions.GetMethodValue<IHistoryModel>(IHistoryModel, string, object, params object[])
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethodValue<FastMoq.Models.IHistoryModel>(FastMoq.Models.IHistoryModel, string, object, params object[])
+  nameWithType.vb: TestClassExtensions.GetMethodValue(Of IHistoryModel)(IHistoryModel, String, Object, ParamArray Object())
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethodValue(Of FastMoq.Models.IHistoryModel)(FastMoq.Models.IHistoryModel, String, Object, ParamArray Object())
+  name.vb: GetMethodValue(Of IHistoryModel)(IHistoryModel, String, Object, ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(FastMoq.Models.IHistoryModel,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(FastMoq.Models.IHistoryModel,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetMethod``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  name: GetMethod<IHistoryModel>(IHistoryModel, string)
+  nameWithType: TestClassExtensions.GetMethod<IHistoryModel>(IHistoryModel, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethod<FastMoq.Models.IHistoryModel>(FastMoq.Models.IHistoryModel, string)
+  nameWithType.vb: TestClassExtensions.GetMethod(Of IHistoryModel)(IHistoryModel, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethod(Of FastMoq.Models.IHistoryModel)(FastMoq.Models.IHistoryModel, String)
+  name.vb: GetMethod(Of IHistoryModel)(IHistoryModel, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(FastMoq.Models.IHistoryModel,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(FastMoq.Models.IHistoryModel,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  name: GetPropertyValue<IHistoryModel>(IHistoryModel, string, object)
+  nameWithType: TestClassExtensions.GetPropertyValue<IHistoryModel>(IHistoryModel, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetPropertyValue<FastMoq.Models.IHistoryModel>(FastMoq.Models.IHistoryModel, string, object)
+  nameWithType.vb: TestClassExtensions.GetPropertyValue(Of IHistoryModel)(IHistoryModel, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetPropertyValue(Of FastMoq.Models.IHistoryModel)(FastMoq.Models.IHistoryModel, String, Object)
+  name.vb: GetPropertyValue(Of IHistoryModel)(IHistoryModel, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(FastMoq.Models.IHistoryModel,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(FastMoq.Models.IHistoryModel,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.GetProperty``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<IHistoryModel>(IHistoryModel, string)
+  nameWithType: TestClassExtensions.GetProperty<IHistoryModel>(IHistoryModel, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<FastMoq.Models.IHistoryModel>(FastMoq.Models.IHistoryModel, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of IHistoryModel)(IHistoryModel, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of FastMoq.Models.IHistoryModel)(FastMoq.Models.IHistoryModel, String)
+  name.vb: GetProperty(Of IHistoryModel)(IHistoryModel, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.Models.IHistoryModel,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(FastMoq.Models.IHistoryModel,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  name: SetFieldValue<IHistoryModel>(IHistoryModel, string, object)
+  nameWithType: TestClassExtensions.SetFieldValue<IHistoryModel>(IHistoryModel, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetFieldValue<FastMoq.Models.IHistoryModel>(FastMoq.Models.IHistoryModel, string, object)
+  nameWithType.vb: TestClassExtensions.SetFieldValue(Of IHistoryModel)(IHistoryModel, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetFieldValue(Of FastMoq.Models.IHistoryModel)(FastMoq.Models.IHistoryModel, String, Object)
+  name.vb: SetFieldValue(Of IHistoryModel)(IHistoryModel, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(FastMoq.Models.IHistoryModel,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(FastMoq.Models.IHistoryModel,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Models.IHistoryModel.FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  name: SetPropertyValue<IHistoryModel>(IHistoryModel, string, object)
+  nameWithType: TestClassExtensions.SetPropertyValue<IHistoryModel>(IHistoryModel, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue<FastMoq.Models.IHistoryModel>(FastMoq.Models.IHistoryModel, string, object)
+  nameWithType.vb: TestClassExtensions.SetPropertyValue(Of IHistoryModel)(IHistoryModel, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of FastMoq.Models.IHistoryModel)(FastMoq.Models.IHistoryModel, String, Object)
+  name.vb: SetPropertyValue(Of IHistoryModel)(IHistoryModel, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(FastMoq.Models.IHistoryModel,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(FastMoq.Models.IHistoryModel,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: )
+  - name: (
+  - uid: FastMoq.Models.IHistoryModel
+    name: IHistoryModel
+    href: FastMoq.Models.IHistoryModel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  parent: FastMoq.Extensions.MockerHttpMoqExtensions
+  definition: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_
+  name: SetupHttpMessage(object, Func<HttpResponseMessage>, Expression, Expression)
+  nameWithType: MockerHttpMoqExtensions.SetupHttpMessage(object, Func<HttpResponseMessage>, Expression, Expression)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(object, System.Func<System.Net.Http.HttpResponseMessage>, System.Linq.Expressions.Expression, System.Linq.Expressions.Expression)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupHttpMessage(Object, Func(Of HttpResponseMessage), Expression, Expression)
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(Object, System.Func(Of System.Net.Http.HttpResponseMessage), System.Linq.Expressions.Expression, System.Linq.Expressions.Expression)
+  name.vb: SetupHttpMessage(Object, Func(Of HttpResponseMessage), Expression, Expression)
+  spec.csharp:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+    name: SetupHttpMessage
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Net.Http.HttpResponseMessage
+    name: HttpResponseMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+    name: SetupHttpMessage
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Net.Http.HttpResponseMessage
+    name: HttpResponseMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+- uid: System.Object.FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Linq.Expressions.Expression{System.Func{{TMock},System.Threading.Tasks.Task{{TReturn}}}},System.Func{{TReturn}})
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+  parent: FastMoq.Extensions.MockerHttpMoqExtensions
+  definition: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__
+  name: SetupMessageAsync<TMock, TReturn>(object, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
+  nameWithType: MockerHttpMoqExtensions.SetupMessageAsync<TMock, TReturn>(object, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync<TMock, TReturn>(object, System.Linq.Expressions.Expression<System.Func<TMock, System.Threading.Tasks.Task<TReturn>>>, System.Func<TReturn>)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageAsync(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync(Of TMock, TReturn)(Object, System.Linq.Expressions.Expression(Of System.Func(Of TMock, System.Threading.Tasks.Task(Of TReturn))), System.Func(Of TReturn))
+  name.vb: SetupMessageAsync(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
+  spec.csharp:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+    name: SetupMessageAsync
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+    name: SetupMessageAsync
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: )
+- uid: System.Object.FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.String,System.Func{{TReturn}},System.Object[])
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+  parent: FastMoq.Extensions.MockerHttpMoqExtensions
+  definition: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___
+  name: SetupMessageProtectedAsync<TMock, TReturn>(object, string, Func<TReturn>, params object[])
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtectedAsync<TMock, TReturn>(object, string, Func<TReturn>, params object[])
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync<TMock, TReturn>(object, string, System.Func<TReturn>, params object[])
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, System.Func(Of TReturn), ParamArray Object())
+  name.vb: SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+    name: SetupMessageProtectedAsync
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+    name: SetupMessageProtectedAsync
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Object.FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.String,System.Func{{TReturn}},System.Object[])
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+  parent: FastMoq.Extensions.MockerHttpMoqExtensions
+  definition: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___
+  name: SetupMessageProtected<TMock, TReturn>(object, string, Func<TReturn>, params object[])
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtected<TMock, TReturn>(object, string, Func<TReturn>, params object[])
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected<TMock, TReturn>(object, string, System.Func<TReturn>, params object[])
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageProtected(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected(Of TMock, TReturn)(Object, String, System.Func(Of TReturn), ParamArray Object())
+  name.vb: SetupMessageProtected(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+    name: SetupMessageProtected
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+    name: SetupMessageProtected
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Object.FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Linq.Expressions.Expression{System.Func{{TMock},{TReturn}}},System.Func{{TReturn}})
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  parent: FastMoq.Extensions.MockerHttpMoqExtensions
+  definition: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__
+  name: SetupMessage<TMock, TReturn>(object, Expression<Func<TMock, TReturn>>, Func<TReturn>)
+  nameWithType: MockerHttpMoqExtensions.SetupMessage<TMock, TReturn>(object, Expression<Func<TMock, TReturn>>, Func<TReturn>)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage<TMock, TReturn>(object, System.Linq.Expressions.Expression<System.Func<TMock, TReturn>>, System.Func<TReturn>)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessage(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage(Of TMock, TReturn)(Object, System.Linq.Expressions.Expression(Of System.Func(Of TMock, TReturn)), System.Func(Of TReturn))
+  name.vb: SetupMessage(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
+  spec.csharp:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+    name: SetupMessage
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+    name: SetupMessage
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  parent: FastMoq.Extensions.TestClassExtensions
+  definition: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+  isExternal: true
+  href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  name: RaiseIfNull<T>(T, string, string, int?, string)
+  nameWithType: ObjectExtensions.RaiseIfNull<T>(T, string, string, int?, string)
+  fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNull<T>(T, string, string, int?, string)
+  nameWithType.vb: ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  name.vb: RaiseIfNull(Of T)(T, String, String, Integer?, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
+    name: RaiseIfNull
+    href: FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.ObjectExtensions
+  commentId: T:FastMoq.Extensions.ObjectExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.ObjectExtensions.html
+  name: ObjectExtensions
+  nameWithType: ObjectExtensions
+  fullName: FastMoq.Extensions.ObjectExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  name: GetFieldValue<TObject>(TObject, string, TObject)
+  nameWithType: TestClassExtensions.GetFieldValue<TObject>(TObject, string, TObject)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<TObject>(TObject, string, TObject)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of TObject)(TObject, String, TObject)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of TObject)(TObject, String, TObject)
+  name.vb: GetFieldValue(Of TObject)(TObject, String, TObject)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TObject
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(``0,System.String,``0)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TObject
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions
+  commentId: T:FastMoq.Extensions.TestClassExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.TestClassExtensions.html
+  name: TestClassExtensions
+  nameWithType: TestClassExtensions
+  fullName: FastMoq.Extensions.TestClassExtensions
+- uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  name: GetField<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetField<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetField<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetField(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetField(Of TObject)(TObject, String)
+  name.vb: GetField(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetField``1(``0,System.String)
+    name: GetField
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMemberName<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMemberName<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMemberName(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMemberName(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMemberName``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMemberName
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  name: GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  nameWithType: TestClassExtensions.GetMember<T, TValue>(T, Expression<Func<T, TValue>>)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMember<T, TValue>(T, System.Linq.Expressions.Expression<System.Func<T, TValue>>)
+  nameWithType.vb: TestClassExtensions.GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMember(Of T, TValue)(T, System.Linq.Expressions.Expression(Of System.Func(Of T, TValue)))
+  name.vb: GetMember(Of T, TValue)(T, Expression(Of Func(Of T, TValue)))
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMember``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: GetMember
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  name: GetMethodValue<TObject>(TObject, string, object, params object[])
+  nameWithType: TestClassExtensions.GetMethodValue<TObject>(TObject, string, object, params object[])
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethodValue<TObject>(TObject, string, object, params object[])
+  nameWithType.vb: TestClassExtensions.GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  name.vb: GetMethodValue(Of TObject)(TObject, String, Object, ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethodValue``1(``0,System.String,System.Object,System.Object[])
+    name: GetMethodValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  name: GetMethod<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetMethod<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetMethod<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetMethod(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetMethod(Of TObject)(TObject, String)
+  name.vb: GetMethod(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetMethod``1(``0,System.String)
+    name: GetMethod
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  name: GetPropertyValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.GetPropertyValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetPropertyValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.GetPropertyValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetPropertyValue(Of TObject)(TObject, String, Object)
+  name.vb: GetPropertyValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetPropertyValue``1(``0,System.String,System.Object)
+    name: GetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  name: GetProperty<TObject>(TObject, string)
+  nameWithType: TestClassExtensions.GetProperty<TObject>(TObject, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetProperty<TObject>(TObject, string)
+  nameWithType.vb: TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetProperty(Of TObject)(TObject, String)
+  name.vb: GetProperty(Of TObject)(TObject, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetProperty``1(``0,System.String)
+    name: GetProperty
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  name: SetFieldValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.SetFieldValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetFieldValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.SetFieldValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetFieldValue(Of TObject)(TObject, String, Object)
+  name.vb: SetFieldValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetFieldValue``1(``0,System.String,System.Object)
+    name: SetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  name: SetPropertyValue<TObject>(TObject, string, object)
+  nameWithType: TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object)
+  fullName: FastMoq.Extensions.TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object)
+  nameWithType.vb: TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
+  name.vb: SetPropertyValue(Of TObject)(TObject, String, Object)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: <
+  - name: TObject
+  - name: '>'
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.SetPropertyValue``1(``0,System.String,System.Object)
+    name: SetPropertyValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TObject
+  - name: )
+  - name: (
+  - name: TObject
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+  isExternal: true
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_
+  name: SetupHttpMessage(object, Func<HttpResponseMessage>, Expression, Expression)
+  nameWithType: MockerHttpMoqExtensions.SetupHttpMessage(object, Func<HttpResponseMessage>, Expression, Expression)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(object, System.Func<System.Net.Http.HttpResponseMessage>, System.Linq.Expressions.Expression, System.Linq.Expressions.Expression)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupHttpMessage(Object, Func(Of HttpResponseMessage), Expression, Expression)
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(Object, System.Func(Of System.Net.Http.HttpResponseMessage), System.Linq.Expressions.Expression, System.Linq.Expressions.Expression)
+  name.vb: SetupHttpMessage(Object, Func(Of HttpResponseMessage), Expression, Expression)
+  spec.csharp:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+    name: SetupHttpMessage
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Net.Http.HttpResponseMessage
+    name: HttpResponseMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupHttpMessage(System.Object,System.Func{System.Net.Http.HttpResponseMessage},System.Linq.Expressions.Expression,System.Linq.Expressions.Expression)
+    name: SetupHttpMessage
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Net.Http.HttpResponseMessage
+    name: HttpResponseMessage
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression
+  - name: )
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions
+  commentId: T:FastMoq.Extensions.MockerHttpMoqExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html
+  name: MockerHttpMoqExtensions
+  nameWithType: MockerHttpMoqExtensions
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+  isExternal: true
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__
+  name: SetupMessageAsync<TMock, TReturn>(object, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
+  nameWithType: MockerHttpMoqExtensions.SetupMessageAsync<TMock, TReturn>(object, Expression<Func<TMock, Task<TReturn>>>, Func<TReturn>)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync<TMock, TReturn>(object, System.Linq.Expressions.Expression<System.Func<TMock, System.Threading.Tasks.Task<TReturn>>>, System.Func<TReturn>)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageAsync(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync(Of TMock, TReturn)(Object, System.Linq.Expressions.Expression(Of System.Func(Of TMock, System.Threading.Tasks.Task(Of TReturn))), System.Func(Of TReturn))
+  name.vb: SetupMessageAsync(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, Task(Of TReturn))), Func(Of TReturn))
+  spec.csharp:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+    name: SetupMessageAsync
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageAsync``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,System.Threading.Tasks.Task{``1}}},System.Func{``1})
+    name: SetupMessageAsync
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+  isExternal: true
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___
+  name: SetupMessageProtectedAsync<TMock, TReturn>(object, string, Func<TReturn>, params object[])
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtectedAsync<TMock, TReturn>(object, string, Func<TReturn>, params object[])
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync<TMock, TReturn>(object, string, System.Func<TReturn>, params object[])
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, System.Func(Of TReturn), ParamArray Object())
+  name.vb: SetupMessageProtectedAsync(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+    name: SetupMessageProtectedAsync
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync``2(System.Object,System.String,System.Func{``1},System.Object[])
+    name: SetupMessageProtectedAsync
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+  isExternal: true
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___
+  name: SetupMessageProtected<TMock, TReturn>(object, string, Func<TReturn>, params object[])
+  nameWithType: MockerHttpMoqExtensions.SetupMessageProtected<TMock, TReturn>(object, string, Func<TReturn>, params object[])
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected<TMock, TReturn>(object, string, System.Func<TReturn>, params object[])
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessageProtected(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected(Of TMock, TReturn)(Object, String, System.Func(Of TReturn), ParamArray Object())
+  name.vb: SetupMessageProtected(Of TMock, TReturn)(Object, String, Func(Of TReturn), ParamArray Object())
+  spec.csharp:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+    name: SetupMessageProtected
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtected``2(System.Object,System.String,System.Func{``1},System.Object[])
+    name: SetupMessageProtected
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  commentId: M:FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+  isExternal: true
+  href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__
+  name: SetupMessage<TMock, TReturn>(object, Expression<Func<TMock, TReturn>>, Func<TReturn>)
+  nameWithType: MockerHttpMoqExtensions.SetupMessage<TMock, TReturn>(object, Expression<Func<TMock, TReturn>>, Func<TReturn>)
+  fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage<TMock, TReturn>(object, System.Linq.Expressions.Expression<System.Func<TMock, TReturn>>, System.Func<TReturn>)
+  nameWithType.vb: MockerHttpMoqExtensions.SetupMessage(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
+  fullName.vb: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage(Of TMock, TReturn)(Object, System.Linq.Expressions.Expression(Of System.Func(Of TMock, TReturn)), System.Func(Of TReturn))
+  name.vb: SetupMessage(Of TMock, TReturn)(Object, Expression(Of Func(Of TMock, TReturn)), Func(Of TReturn))
+  spec.csharp:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+    name: SetupMessage
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: '>'
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TReturn
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessage``2(System.Object,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Func{``1})
+    name: SetupMessage
+    href: FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMock
+  - name: ','
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TReturn
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  name: GetFieldInfo<TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldInfo<TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldInfo<TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldInfo(Of TType)(Object, String)
+  name.vb: GetFieldInfo(Of TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: <
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.Object,System.String)
+    name: GetFieldInfo
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  name: GetFieldValue<T>(object, FieldInfo)
+  nameWithType: TestClassExtensions.GetFieldValue<T>(object, FieldInfo)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T>(object, System.Reflection.FieldInfo)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T)(Object, FieldInfo)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T)(Object, System.Reflection.FieldInfo)
+  name.vb: GetFieldValue(Of T)(Object, FieldInfo)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Object,System.Reflection.FieldInfo)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.FieldInfo
+    name: FieldInfo
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.fieldinfo
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  name: GetFieldValue<T, TType>(object, string)
+  nameWithType: TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.GetFieldValue<T, TType>(object, string)
+  nameWithType.vb: TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.GetFieldValue(Of T, TType)(Object, String)
+  name.vb: GetFieldValue(Of T, TType)(Object, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.Object,System.String)
+    name: GetFieldValue
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TType
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html

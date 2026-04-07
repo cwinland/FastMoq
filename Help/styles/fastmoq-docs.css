@@ -1,0 +1,44 @@
+.navbar-brand.fastmoq-brand {
+  color: #ffffff !important;
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.navbar-brand.fastmoq-brand:hover,
+.navbar-brand.fastmoq-brand:focus {
+  color: #ffffff !important;
+  text-decoration: none;
+}
+
+.fastmoq-brand-text {
+  display: inline-block;
+  line-height: 1;
+}
+
+.fastmoq-footer-meta {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fastmoq-footer-separator {
+  opacity: 0.6;
+}
+
+pre {
+  overflow-x: auto;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+pre code {
+  display: block;
+  white-space: inherit;
+  word-break: inherit;
+  overflow-wrap: inherit;
+}

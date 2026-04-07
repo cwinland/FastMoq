@@ -59,8 +59,9 @@ namespace FastMoq.TestingExample
         private static void SetupMocks(Mocker mocks)
         {
             var iFile = new FileSystem().File;
-            mocks.Strict = true; // Indicates to use an empty mock instead of predefined IFileSystem (FileSystemMock).
-            mocks.Initialize<IFileSystem>(mock => mock.Setup(x => x.File).Returns(iFile));
+            mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+            mocks.GetMock<IFileSystem>().Setup(x => x.File).Returns(iFile);
+            mocks.GetMock<IFileSystem>().Setup(x => x.Directory).Returns((IDirectory)null!);
         }
     }
 
@@ -86,7 +87,7 @@ namespace FastMoq.TestingExample
             Component.CallTestEvent();
             testEventCalled.Should().BeTrue();
 
-            Mocks.Initialize<IFileSystem>(mock => mock.Setup(x => x.Directory).Returns(new FileSystem().Directory));
+            Mocks.GetMock<IFileSystem>().Setup(x => x.Directory).Returns(new FileSystem().Directory);
             Component.FileSystem.Directory.Should().NotBeNull();
         }
 
@@ -97,9 +98,9 @@ namespace FastMoq.TestingExample
         {
             var mock = new Mock<IFileSystem>();
             var iFile = new FileSystem().File;
-            mocks.Strict = true; // Indicates to use an empty mock instead of predefined IFileSystem (FileSystemMock).
+            mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
             mocks.AddMock(mock, true);
-            mocks.Initialize<IFileSystem>(xMock => xMock.Setup(x => x.File).Returns(iFile));
+            mocks.GetMock<IFileSystem>().Setup(x => x.File).Returns(iFile);
         }
     }
 }

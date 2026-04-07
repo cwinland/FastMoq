@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>What&#39;s New Since 3.0.0 | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="What&#39;s New Since 3.0.0 | FastMoq ">
+    
+    
+      <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+      <link rel="shortcut icon" href="../../favicon.svg">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="whats-new-since-300">What's New Since 3.0.0</h1>
+
+<p>This page summarizes the changes in the current v4 release line relative to the last public FastMoq release.</p>
+<h2 id="release-baseline">Release baseline</h2>
+<ul>
+<li>Last public release: <code>3.0.0</code></li>
+<li>Release date: May 12, 2025</li>
+<li>Release baseline commit: <code>4035d0d</code></li>
+</ul>
+<p>This document describes the release delta after that baseline.</p>
+<h2 id="release-status">Release status</h2>
+<p>The current repository work became the v4 release line.</p>
+<p>At a high level:</p>
+<ul>
+<li><code>3.0.0</code> is the last public baseline before the provider-first architecture</li>
+<li>v4 introduces explicit provider selection, a bundled reflection default, and clearer migration paths for Moq compatibility</li>
+<li>this document focuses on what changed, while the migration guide explains how to move existing tests forward</li>
+</ul>
+<h2 id="major-changes-since-300">Major changes since 3.0.0</h2>
+<h3 id="provider-architecture-foundation">Provider architecture foundation</h3>
+<p>FastMoq core is being refactored around provider-neutral abstractions instead of assuming Moq everywhere internally.</p>
+<p>Key additions include:</p>
+<ul>
+<li><code>IMockingProvider</code></li>
+<li><code>IFastMock</code> and <code>IFastMock&lt;T&gt;</code></li>
+<li><code>MockingProviderRegistry</code></li>
+<li>provider implementations for Moq, NSubstitute, and reflection-based fallback behavior</li>
+</ul>
+<h3 id="provider-first-mock-access">Provider-first mock access</h3>
+<p>Tracked mocks now expose the active provider object directly, and provider packages can layer typed convenience extensions on top of that tracked surface.</p>
+<p>Key surfaces include:</p>
+<ul>
+<li><code>MockModel.NativeMock</code></li>
+<li><code>GetNativeMock(...)</code></li>
+<li><code>GetOrCreateMock&lt;T&gt;()</code></li>
+<li><code>GetOrCreateMock(Type, ...)</code></li>
+<li>provider-package bridges such as <code>AsMoq()</code> and <code>AsNSubstitute()</code></li>
+</ul>
+<h3 id="focused-instance-creation">Focused instance creation</h3>
+<p>The older options bag has been removed in favor of focused creation APIs.</p>
+<p>Newer code can use:</p>
+<pre><code class="lang-csharp">var component = Mocks.CreateInstanceByType&lt;MyComponent&gt;(
+    InstanceCreationFlags.AllowNonPublicConstructorFallback,
+    typeof(int),
+    typeof(string));
+</code></pre>
+<p>Constructor visibility is now expressed directly by <code>InstanceCreationFlags</code>:</p>
+<ul>
+<li><code>CreateInstance&lt;T&gt;(...)</code> follows <code>Mocks.Policy.DefaultFallbackToNonPublicConstructors</code></li>
+<li><code>CreateInstance&lt;T&gt;(InstanceCreationFlags.PublicConstructorsOnly, ...)</code> restricts selection to public constructors</li>
+<li><code>CreateInstance&lt;T&gt;(InstanceCreationFlags.AllowNonPublicConstructorFallback, ...)</code> explicitly allows fallback to non-public constructors</li>
+</ul>
+<p><code>MockerTestBase&lt;TComponent&gt;</code> now exposes focused component-construction hooks instead of a shared options object.</p>
+<h3 id="explicit-optional-parameter-resolution">Explicit optional-parameter resolution</h3>
+<p><code>MockOptional</code> is now obsolete and retained only as a compatibility alias rather than a primary API.</p>
+<p>Current guidance is:</p>
+<ul>
+<li>set <code>Mocks.OptionalParameterResolution</code> for SUT creation defaults</li>
+<li>use <code>InvocationOptions.OptionalParameterResolution</code> for <code>CallMethod(...)</code> and <code>InvokeMethod(...)</code></li>
+<li>use <code>ComponentCreationFlags</code> when the SUT is created by <code>MockerTestBase&lt;TComponent&gt;</code></li>
+</ul>
+<p>This brings constructor creation and helper invocation onto the same policy model instead of having different hidden rules for optional parameters.</p>
+<p>Method invocation now also has an explicit <code>InvocationOptions.FallbackToNonPublicMethods</code> setting for reflected method fallback.</p>
+<h3 id="known-type-extensibility">Known-type extensibility</h3>
+<p>Current repo work adds a per-<code>Mocker</code> registration path through <code>AddKnownType(...)</code> so tests can override or extend behavior for framework-heavy types like <code>IFileSystem</code>, <code>HttpClient</code>, <code>DbContext</code>, and <code>HttpContext</code> patterns.</p>
+<p>Built-in known-type resolution is now also explicitly controllable through <code>BuiltInTypeResolutionFlags</code>, instead of remaining implicitly tied to <code>FailOnUnconfigured</code>.</p>
+<h3 id="database-package-boundary">Database package boundary</h3>
+<p>The repository now separates EF-specific helpers from the lighter core package.</p>
+<p>What changed:</p>
+<ul>
+<li><code>FastMoq.Core</code> no longer carries the EF-specific package references and helper model types.</li>
+<li><code>FastMoq.Database</code> now owns the <code>DbContextMock&lt;TContext&gt;</code> implementation and related DbSet async-query helpers.</li>
+<li>the main <code>GetMockDbContext&lt;TContext&gt;()</code> call shape remains in the <code>FastMoq</code> namespace so aggregate-package consumers keep the same primary API surface.</li>
+</ul>
+<p>What did not change yet:</p>
+<ul>
+<li>the mocked-sets helper path still relies on the existing Moq-based implementation moved into <code>FastMoq.Database</code></li>
+<li>the real in-memory path is now explicitly available through <code>GetDbContextHandle&lt;TContext&gt;(...)</code> and <code>DbContextTestMode.RealInMemory</code></li>
+<li>core currently uses a small runtime bridge so built-in DbContext resolution can stay optional without taking a compile-time EF dependency</li>
+</ul>
+<p>The intended user-facing direction is not to split DbContext behavior by separate top-level helper methods again. The better direction is one primary DbContext helper surface with explicit mode or option selection so tests can choose between:</p>
+<ul>
+<li>pure mock-oriented behavior for mocked DbSet and query interactions</li>
+<li>real EF-backed behavior for in-memory provider scenarios</li>
+</ul>
+<p>That distinction is now explicit in the public helper surface, while the mocked-sets internals remain intentionally Moq-based for the v4 transition.</p>
+<p>Longer term, this likely needs a small EF-specific abstraction instead of treating DbContext support as just another plain provider mock. DbContext has extra behavior beyond generic mock creation:</p>
+<ul>
+<li>DbSet property wiring</li>
+<li>async query support</li>
+<li>named set behavior</li>
+<li>real provider-backed context creation when mock-only behavior is not enough</li>
+</ul>
+<p>That EF abstraction is the more realistic path for separating pure mocks from real EF behavior without forcing the split through package choice alone.</p>
+<h3 id="behavior-model-cleanup">Behavior model cleanup</h3>
+<p><code>Strict</code> no longer acts like a hidden preset switch.</p>
+<p>Current semantics:</p>
+<ul>
+<li><code>Strict</code> is a backward-compatible alias for <code>MockFeatures.FailOnUnconfigured</code></li>
+<li><code>Behavior</code> is the full feature-flag surface</li>
+<li><code>UseStrictPreset()</code> and <code>UseLenientPreset()</code> control the broader preset profiles</li>
+<li>built-in type resolution and non-public fallback defaults now live on explicit <code>Mocker</code> policy properties</li>
+</ul>
+<p>Breaking-change note:</p>
+<ul>
+<li><code>Strict</code> should no longer be treated as the single switch for the whole strict behavior profile</li>
+<li>code that depended on the old monolithic interpretation should move to <code>UseStrictPreset()</code> when the broader preset is actually intended</li>
+<li><code>FailOnUnconfigured</code> is now narrower by design: it controls mock strictness, while compatibility defaults are carried by <code>Strict</code> / preset application or explicit policy settings</li>
+</ul>
+<p>New explicit policy surfaces include:</p>
+<ul>
+<li><code>Mocker.Policy.EnabledBuiltInTypeResolutions</code></li>
+<li><code>Mocker.Policy.DefaultFallbackToNonPublicConstructors</code></li>
+<li><code>Mocker.Policy.DefaultFallbackToNonPublicMethods</code></li>
+<li><code>Mocker.Policy.DefaultStrictMockCreation</code></li>
+<li><code>InvocationOptions.FallbackToNonPublicMethods</code></li>
+</ul>
+<p><code>MockerTestBase&lt;TComponent&gt;</code> also now exposes a policy hook so those defaults can be set before component creation without instantiating a separate <code>Mocker</code>.</p>
+<p><code>GetMockDbContext&lt;TContext&gt;()</code> remains intentionally excluded from the strict-mock creation override because the EF-oriented helper must stay on its supported creation path.</p>
+<h3 id="breaking-change-strict-ifilesystem-mock-enrichment">Breaking change: strict <code>IFileSystem</code> mock enrichment</h3>
+<p>Current repo behavior keeps tracked <code>IFileSystem</code> mocks preconfigured against FastMoq's built-in in-memory file system even when <code>Strict</code> or <code>MockFeatures.FailOnUnconfigured</code> is enabled.</p>
+<p>This is a breaking change from the <code>3.0.0</code> expectation that strict <code>IFileSystem</code> behaved like a raw Moq mock without built-in <code>MockFileSystem</code> defaults.</p>
+<p>If older tests asserted null members such as <code>Directory</code> on strict <code>IFileSystem</code>, they now need to override those members explicitly.</p>
+<p>This note is currently specific to <code>IFileSystem</code>. Adjacent built-ins such as <code>HttpClient</code> and <code>DbContext</code> do not use the same breaking path.</p>
+<p>For the dedicated compatibility note, see <a href="../breaking-changes/README.html">Breaking Changes</a>.</p>
+<h3 id="scenario-builder-and-provider-first-verification">Scenario builder and provider-first verification</h3>
+<p>The repository now includes a minimal fluent scenario builder:</p>
+<ul>
+<li><code>Scenario.With(...).When(...).Then(...).Verify(...)</code> inside <code>MockerTestBase&lt;TComponent&gt;</code></li>
+<li><code>WhenThrows&lt;TException&gt;(...)</code> for expected-failure act steps that still continue to <code>Then(...)</code></li>
+<li><code>ExecuteThrows&lt;TException&gt;()</code> and <code>ExecuteThrowsAsync&lt;TException&gt;()</code> for cases where the thrown exception is the primary assertion target</li>
+</ul>
+<p>Verification also has a portable times model through <code>TimesSpec</code>, including <code>TimesSpec.Once</code>, <code>TimesSpec.Exactly(count)</code>, <code>TimesSpec.AtLeast(count)</code>, <code>TimesSpec.AtMost(count)</code>, and <code>TimesSpec.Never()</code>.</p>
+<p>Inside <code>MockerTestBase&lt;TComponent&gt;</code>, the preferred current pattern is the <code>Scenario</code> property plus parameterless <code>With</code> / <code>When</code> / <code>Then</code> overloads when <code>Component</code> is already in scope.</p>
+<p>Provider selection is also explicit through <code>MockingProviderRegistry</code>, with the v4 transition packages currently auto-registering <code>reflection</code> as default plus the bundled <code>moq</code> compatibility provider. Optional providers such as <code>nsubstitute</code> can be installed and registered explicitly.</p>
+<h3 id="improved-docs-and-executable-examples">Improved docs and executable examples</h3>
+<p>Repository documentation has expanded substantially since <code>3.0.0</code>, including a repo-native testing guide, roadmap notes, richer sample documentation, and executable real-world examples in <code>FastMoq.TestingExample</code>.</p>
+<h2 id="new-executable-examples-in-the-repo">New executable examples in the repo</h2>
+<p>The example project now contains service-style samples that demonstrate current FastMoq guidance rather than only minimal constructor demos.</p>
+<p>New examples cover:</p>
+<ul>
+<li>order processing with repository, inventory, payment, and logging</li>
+<li>customer import using the predefined <code>MockFileSystem</code></li>
+<li>invoice reminders using the fluent <code>Scenario</code> API, <code>TimesSpec</code>, <code>WhenThrows</code>, and <code>ExecuteThrows</code></li>
+</ul>
+<p>For those examples, see <a href="../samples/testing-examples.html">Executable Testing Examples</a>.</p>
+<h2 id="what-is-still-intentionally-not-done">What is still intentionally not done</h2>
+<p>This repository work is still in progress.</p>
+<p>Areas intentionally deferred or still evolving include:</p>
+<ul>
+<li>broader web-framework convenience layers beyond the current Blazor-centered support</li>
+<li>additional provider-specific convenience layers beyond the shared provider contract</li>
+<li>full cleanup of all obsolete Moq compatibility surfaces</li>
+<li>release packaging and migration guidance for the eventual major-version cut</li>
+</ul>
+<p>For the maintainer backlog view, see <a href="../roadmap/README.html">Roadmap Notes</a>.</p>
+<h2 id="practical-guidance-for-readers">Practical guidance for readers</h2>
+<p>If you are consuming the public NuGet package today, treat <code>3.0.0</code> as the released contract.</p>
+<p>If you are working in this repository, use the current repo-native docs and executable examples as the source of truth for ongoing v4 behavior.</p>
+<p>For old-to-new API guidance, see <a href="../migration/README.html">Migration Guide: 3.0.0 To Current Repo</a>.</p>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

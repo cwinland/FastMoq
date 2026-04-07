@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class MockerHttpExtensions | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class MockerHttpExtensions | FastMoq ">
+    
+    <meta name="description" content="Mocker Http Extensions Class.">
+      <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+      <link rel="shortcut icon" href="../favicon.svg">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <link rel="stylesheet" href="../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="FastMoq.Extensions.MockerHttpExtensions">
+
+
+
+  <h1 id="FastMoq_Extensions_MockerHttpExtensions" data-uid="FastMoq.Extensions.MockerHttpExtensions" class="text-break">Class MockerHttpExtensions</h1>
+  <div class="markdown level0 summary"><p>Mocker Http Extensions Class.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">MockerHttpExtensions</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a>.<a class="xref" href="FastMoq.Extensions.html">Extensions</a></h6>
+  <h6><strong>Assembly</strong>: FastMoq.Core.dll</h6>
+  <h5 id="FastMoq_Extensions_MockerHttpExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class MockerHttpExtensions</code></pre>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <a id="FastMoq_Extensions_MockerHttpExtensions_CreateHttpClient_" data-uid="FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient*"></a>
+  <h4 id="FastMoq_Extensions_MockerHttpExtensions_CreateHttpClient_FastMoq_Mocker_System_String_System_String_System_Net_HttpStatusCode_System_String_" data-uid="FastMoq.Extensions.MockerHttpExtensions.CreateHttpClient(FastMoq.Mocker,System.String,System.String,System.Net.HttpStatusCode,System.String)">CreateHttpClient(Mocker, string, string, HttpStatusCode, string)</h4>
+  <div class="markdown level1 summary"><p>Creates an HTTP client backed by FastMoq-managed HTTP dependencies.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpClient CreateHttpClient(this Mocker mocker, string clientName = &quot;FastMoqHttpClient&quot;, string baseAddress = &quot;http://localhost&quot;, HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = &quot;[{&#39;id&#39;:1}]&quot;)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">clientName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">baseAddress</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode">HttpStatusCode</a></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">stringContent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpclient">HttpClient</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Extensions_MockerHttpExtensions_CreateHttpClient_FastMoq_Mocker_System_String_System_String_System_Net_HttpStatusCode_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This entry point remains supported after v5.
+New tests should prefer the provider-neutral request helpers in this class for HTTP behavior.
+Advanced protected-member setups remain available from the Moq provider package for migration scenarios.</p>
+</div>
+  <a id="FastMoq_Extensions_MockerHttpExtensions_GetContentBytesAsync_" data-uid="FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync*"></a>
+  <h4 id="FastMoq_Extensions_MockerHttpExtensions_GetContentBytesAsync_System_Net_Http_HttpContent_" data-uid="FastMoq.Extensions.MockerHttpExtensions.GetContentBytesAsync(System.Net.Http.HttpContent)">GetContentBytesAsync(HttpContent)</h4>
+  <div class="markdown level1 summary"><p>Gets the content bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;byte[]&gt; GetContentBytesAsync(this HttpContent content)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpcontent">HttpContent</a></td>
+        <td><span class="parametername">content</span></td>
+        <td><p>The content.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]&gt;</td>
+        <td><p>byte[].</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_MockerHttpExtensions_GetContentStreamAsync_" data-uid="FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync*"></a>
+  <h4 id="FastMoq_Extensions_MockerHttpExtensions_GetContentStreamAsync_System_Net_Http_HttpContent_" data-uid="FastMoq.Extensions.MockerHttpExtensions.GetContentStreamAsync(System.Net.Http.HttpContent)">GetContentStreamAsync(HttpContent)</h4>
+  <div class="markdown level1 summary"><p>Gets the content stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;Stream&gt; GetContentStreamAsync(this HttpContent content)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpcontent">HttpContent</a></td>
+        <td><span class="parametername">content</span></td>
+        <td><p>The content.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a>&gt;</td>
+        <td><p>System.IO.Stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*"></a>
+  <h4 id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_FastMoq_Mocker_System_Func_System_Net_Http_HttpRequestMessage_System_Boolean__System_Func_System_Net_Http_HttpResponseMessage__" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Func{System.Net.Http.HttpRequestMessage,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage})">WhenHttpRequest(Mocker, Func&lt;HttpRequestMessage, bool&gt;, Func&lt;HttpResponseMessage&gt;)</h4>
+  <div class="markdown level1 summary"><p>Configures a provider-neutral HTTP response for requests that match the supplied predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void WhenHttpRequest(this Mocker mocker, Func&lt;HttpRequestMessage, bool&gt; requestPredicate, Func&lt;HttpResponseMessage&gt; responseFactory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The mocker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httprequestmessage">HttpRequestMessage</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</td>
+        <td><span class="parametername">requestPredicate</span></td>
+        <td><p>Predicate used to match an outgoing request.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage">HttpResponseMessage</a>&gt;</td>
+        <td><span class="parametername">responseFactory</span></td>
+        <td><p>Factory used to create the HTTP response for a matching request.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest*"></a>
+  <h4 id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequest_FastMoq_Mocker_System_Net_Http_HttpMethod_System_String_System_Func_System_Net_Http_HttpResponseMessage__" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})">WhenHttpRequest(Mocker, HttpMethod, string, Func&lt;HttpResponseMessage&gt;)</h4>
+  <div class="markdown level1 summary"><p>Configures a provider-neutral HTTP response for a specific method and request URI or path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void WhenHttpRequest(this Mocker mocker, HttpMethod method, string requestUriOrPath, Func&lt;HttpResponseMessage&gt; responseFactory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The mocker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpmethod">HttpMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>The expected HTTP method.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">requestUriOrPath</span></td>
+        <td><p>The absolute URI or relative path to match.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpresponsemessage">HttpResponseMessage</a>&gt;</td>
+        <td><span class="parametername">responseFactory</span></td>
+        <td><p>Factory used to create the HTTP response for a matching request.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequestJson_" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson*"></a>
+  <h4 id="FastMoq_Extensions_MockerHttpExtensions_WhenHttpRequestJson_FastMoq_Mocker_System_Net_Http_HttpMethod_System_String_System_String_System_Net_HttpStatusCode_" data-uid="FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(FastMoq.Mocker,System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)">WhenHttpRequestJson(Mocker, HttpMethod, string, string, HttpStatusCode)</h4>
+  <div class="markdown level1 summary"><p>Configures a provider-neutral JSON response for a specific method and request URI or path.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void WhenHttpRequestJson(this Mocker mocker, HttpMethod method, string requestUriOrPath, string json, HttpStatusCode statusCode = HttpStatusCode.OK)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The mocker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpmethod">HttpMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>The expected HTTP method.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">requestUriOrPath</span></td>
+        <td><p>The absolute URI or relative path to match.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">json</span></td>
+        <td><p>The JSON payload returned to matching requests.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode">HttpStatusCode</a></td>
+        <td><span class="parametername">statusCode</span></td>
+        <td><p>The response status code.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

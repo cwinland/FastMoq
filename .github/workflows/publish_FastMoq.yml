@@ -52,7 +52,7 @@ jobs:
     uses: ./.github/workflows/template_ci.yml
     with:
       projects: "FastMoq.Tests/FastMoq.Tests.csproj FastMoq.Tests.Web/FastMoq.Tests.Web.csproj"
-      frameworks: '["8.0.x","9.0.x"]'
+      frameworks: '["8.0.x","9.0.x","10.0.x"]'
 
   package:
     name: Build & Pack (multi-TFM)
@@ -71,9 +71,9 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
-            6.0.x
             8.0.x
             9.0.x
+            10.0.x
           cache: true
       - name: Restore
         run: dotnet restore FastMoq-Release.sln
