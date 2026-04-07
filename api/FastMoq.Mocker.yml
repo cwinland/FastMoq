@@ -20,11 +20,8 @@ items:
   - FastMoq.Mocker.AddKeyedType``2(System.Object,System.Func{FastMoq.Mocker,``1},System.Boolean,System.Object[])
   - FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)
   - FastMoq.Mocker.AddKnownType``1(System.Func{FastMoq.Mocker,System.Type,``0},System.Func{FastMoq.Mocker,System.Type,``0},System.Action{FastMoq.Mocker,System.Type,FastMoq.Providers.IFastMock},System.Action{FastMoq.Mocker,``0},System.Boolean,System.Boolean)
-  - FastMoq.Mocker.AddMock``1(Moq.Mock{``0},System.Boolean,System.Boolean)
   - FastMoq.Mocker.AddProperties(System.Type,System.Object,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])
   - FastMoq.Mocker.AddProperties``1(``0,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])
-  - FastMoq.Mocker.AddType(System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  - FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
   - FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object},System.Boolean,System.Object[])
   - FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])
   - FastMoq.Mocker.AddType``1(``0,System.Boolean)
@@ -43,17 +40,11 @@ items:
   - FastMoq.Mocker.CallMethod``1(System.Delegate,System.Object[])
   - FastMoq.Mocker.CallMethod``1(System.Func{``0},System.Object[])
   - FastMoq.Mocker.ConstructorHistory
-  - FastMoq.Mocker.CreateDetachedMock(System.Type,System.Boolean,System.Object[])
-  - FastMoq.Mocker.CreateDetachedMock``1(System.Boolean,System.Object[])
   - FastMoq.Mocker.CreateFastMock``1(FastMoq.Providers.MockCreationOptions)
   - FastMoq.Mocker.CreateInstanceByType``1(FastMoq.InstanceCreationFlags,System.Type[])
   - FastMoq.Mocker.CreateInstanceByType``1(System.Type[])
   - FastMoq.Mocker.CreateInstance``1(FastMoq.InstanceCreationFlags,System.Object[])
   - FastMoq.Mocker.CreateInstance``1(System.Object[])
-  - FastMoq.Mocker.CreateMock(System.Type,System.Boolean,System.Object[])
-  - FastMoq.Mocker.CreateMockInstance(System.Type,System.Boolean,System.Object[])
-  - FastMoq.Mocker.CreateMockInstance``1(System.Boolean,System.Object[])
-  - FastMoq.Mocker.CreateMock``1(System.Boolean,System.Object[])
   - FastMoq.Mocker.ExceptionLog
   - FastMoq.Mocker.GetArgData``1
   - FastMoq.Mocker.GetArgData``1(FastMoq.InstanceCreationFlags)
@@ -69,11 +60,7 @@ items:
   - FastMoq.Mocker.GetMethodArgData(System.Reflection.MethodBase)
   - FastMoq.Mocker.GetMethodArgData(System.Reflection.MethodBase,FastMoq.InvocationOptions)
   - FastMoq.Mocker.GetMethodDefaultData(System.Reflection.MethodBase)
-  - FastMoq.Mocker.GetMock(System.Type,System.Object[])
-  - FastMoq.Mocker.GetMockModelIndexOf(System.Type,System.Boolean)
   - FastMoq.Mocker.GetMockModel``1
-  - FastMoq.Mocker.GetMock``1(System.Action{Moq.Mock{``0}},System.Object[])
-  - FastMoq.Mocker.GetMock``1(System.Object[])
   - FastMoq.Mocker.GetNativeMock(System.Type)
   - FastMoq.Mocker.GetNativeMock``1(System.Object[])
   - FastMoq.Mocker.GetObject(System.Reflection.ParameterInfo)
@@ -83,14 +70,10 @@ items:
   - FastMoq.Mocker.GetObject``1(System.Object[])
   - FastMoq.Mocker.GetOrCreateMock(System.Type,FastMoq.MockRequestOptions)
   - FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
-  - FastMoq.Mocker.GetRequiredMock(System.Type)
-  - FastMoq.Mocker.GetRequiredMock``1
   - FastMoq.Mocker.GetRequiredObject``1
   - FastMoq.Mocker.GetStringContent(System.Net.Http.HttpContent)
   - FastMoq.Mocker.HasParameterlessConstructor(System.Type,System.Boolean)
   - FastMoq.Mocker.HttpClient
-  - FastMoq.Mocker.Initialize``1(System.Action{Moq.Mock{``0}})
-  - FastMoq.Mocker.InnerMockResolution
   - FastMoq.Mocker.InvokeMethod(FastMoq.InvocationOptions,System.Object,System.String,System.Boolean,System.Object[])
   - FastMoq.Mocker.InvokeMethod(System.Object,System.String,System.Boolean,System.Object[])
   - FastMoq.Mocker.InvokeMethod``1(FastMoq.InvocationOptions,System.Object,System.String,System.Boolean,System.Object[])
@@ -101,11 +84,7 @@ items:
   - FastMoq.Mocker.LoggingCallback
   - FastMoq.Mocker.OptionalParameterResolution
   - FastMoq.Mocker.Policy
-  - FastMoq.Mocker.RemoveMock(Moq.Mock)
-  - FastMoq.Mocker.SETUP
-  - FastMoq.Mocker.SETUP_ALL_PROPERTIES_METHOD_NAME
   - FastMoq.Mocker.Scenario``1(``0)
-  - FastMoq.Mocker.Strict
   - FastMoq.Mocker.Uri
   - FastMoq.Mocker.UseLenientPreset
   - FastMoq.Mocker.UseStrictPreset
@@ -128,7 +107,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Mocker
     path: FastMoq.Core/Mocker.Supplemental.cs
-    startLine: 7
+    startLine: 6
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -244,64 +223,6 @@ items:
   - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldInfo``1(System.String)
   - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.Reflection.FieldInfo)
   - System.Object.FastMoq.Extensions.TestClassExtensions.GetFieldValue``2(System.String)
-- uid: FastMoq.Mocker.SETUP_ALL_PROPERTIES_METHOD_NAME
-  commentId: F:FastMoq.Mocker.SETUP_ALL_PROPERTIES_METHOD_NAME
-  id: SETUP_ALL_PROPERTIES_METHOD_NAME
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: SETUP_ALL_PROPERTIES_METHOD_NAME
-  nameWithType: Mocker.SETUP_ALL_PROPERTIES_METHOD_NAME
-  fullName: FastMoq.Mocker.SETUP_ALL_PROPERTIES_METHOD_NAME
-  type: Field
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: SETUP_ALL_PROPERTIES_METHOD_NAME
-    path: FastMoq.Core/Mocker.cs
-    startLine: 73
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Name of the legacy Moq setup-all-properties method used by compatibility helpers.
-  example: []
-  syntax:
-    content: public const string SETUP_ALL_PROPERTIES_METHOD_NAME = "SetupAllProperties"
-    return:
-      type: System.String
-    content.vb: Public Const SETUP_ALL_PROPERTIES_METHOD_NAME As String = "SetupAllProperties"
-- uid: FastMoq.Mocker.SETUP
-  commentId: F:FastMoq.Mocker.SETUP
-  id: SETUP
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: SETUP
-  nameWithType: Mocker.SETUP
-  fullName: FastMoq.Mocker.SETUP
-  type: Field
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: SETUP
-    path: FastMoq.Core/Mocker.cs
-    startLine: 78
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Name of the legacy Moq setup method used by compatibility helpers.
-  example: []
-  syntax:
-    content: public const string SETUP = "Setup"
-    return:
-      type: System.String
-    content.vb: Public Const SETUP As String = "Setup"
 - uid: FastMoq.Mocker.fileSystem
   commentId: F:FastMoq.Mocker.fileSystem
   id: fileSystem
@@ -320,7 +241,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: fileSystem
     path: FastMoq.Core/Mocker.cs
-    startLine: 90
+    startLine: 87
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -349,7 +270,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: creatingTypeList
     path: FastMoq.Core/Mocker.cs
-    startLine: 95
+    startLine: 92
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -378,7 +299,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: mockCollection
     path: FastMoq.Core/Mocker.cs
-    startLine: 100
+    startLine: 97
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -407,7 +328,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorHistory
     path: FastMoq.Core/Mocker.cs
-    startLine: 112
+    startLine: 109
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -438,7 +359,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/Mocker.cs
-    startLine: 117
+    startLine: 114
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -469,7 +390,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: OptionalParameterResolution
     path: FastMoq.Core/Mocker.cs
-    startLine: 122
+    startLine: 119
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -500,7 +421,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Policy
     path: FastMoq.Core/Mocker.cs
-    startLine: 127
+    startLine: 124
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -531,7 +452,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ExceptionLog
     path: FastMoq.Core/Mocker.cs
-    startLine: 190
+    startLine: 187
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -562,7 +483,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LogEntries
     path: FastMoq.Core/Mocker.cs
-    startLine: 195
+    startLine: 192
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -593,7 +514,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: HttpClient
     path: FastMoq.Core/Mocker.cs
-    startLine: 200
+    startLine: 197
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -624,7 +545,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Core/Mocker.cs
-    startLine: 205
+    startLine: 202
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -637,37 +558,6 @@ items:
       type: System.Uri
     content.vb: Public ReadOnly Property Uri As Uri
   overload: FastMoq.Mocker.Uri*
-- uid: FastMoq.Mocker.InnerMockResolution
-  commentId: P:FastMoq.Mocker.InnerMockResolution
-  id: InnerMockResolution
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: InnerMockResolution
-  nameWithType: Mocker.InnerMockResolution
-  fullName: FastMoq.Mocker.InnerMockResolution
-  type: Property
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: InnerMockResolution
-    path: FastMoq.Core/Mocker.cs
-    startLine: 210
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Controls whether nested property and injection resolution should run while creating instances and tracked mocks.
-  example: []
-  syntax:
-    content: public bool InnerMockResolution { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: Public Property InnerMockResolution As Boolean
-  overload: FastMoq.Mocker.InnerMockResolution*
 - uid: FastMoq.Mocker.Behavior
   commentId: P:FastMoq.Mocker.Behavior
   id: Behavior
@@ -686,11 +576,11 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Behavior
     path: FastMoq.Core/Mocker.cs
-    startLine: 215
+    startLine: 207
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Feature flag container controlling behavior (replaces monolithic Strict boolean).
+  summary: Feature flag container controlling behavior such as base-call usage, dependency injection, nested member population, logging capture, and strict verification.
   example: []
   syntax:
     content: public MockBehaviorOptions Behavior { get; set; }
@@ -699,49 +589,6 @@ items:
       type: FastMoq.MockBehaviorOptions
     content.vb: Public Property Behavior As MockBehaviorOptions
   overload: FastMoq.Mocker.Behavior*
-- uid: FastMoq.Mocker.Strict
-  commentId: P:FastMoq.Mocker.Strict
-  id: Strict
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: Strict
-  nameWithType: Mocker.Strict
-  fullName: FastMoq.Mocker.Strict
-  type: Property
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: Strict
-    path: FastMoq.Core/Mocker.cs
-    startLine: 220
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Obsolete compatibility property that maps to <xref href="FastMoq.MockFeatures.FailOnUnconfigured" data-throw-if-not-resolved="false"></xref> within <xref href="FastMoq.Mocker.Behavior" data-throw-if-not-resolved="false"></xref>.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use Behavior.Enabled flags instead (FailOnUnconfigured -> Strict semantics).")]
-
-      public bool Strict { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: >-
-      <Obsolete("Use Behavior.Enabled flags instead (FailOnUnconfigured -> Strict semantics).")>
-
-      Public Property Strict As Boolean
-  overload: FastMoq.Mocker.Strict*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use Behavior.Enabled flags instead (FailOnUnconfigured -> Strict semantics).
 - uid: FastMoq.Mocker.UseStrictPreset
   commentId: M:FastMoq.Mocker.UseStrictPreset
   id: UseStrictPreset
@@ -760,7 +607,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: UseStrictPreset
     path: FastMoq.Core/Mocker.cs
-    startLine: 243
+    startLine: 256
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -791,7 +638,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: UseLenientPreset
     path: FastMoq.Core/Mocker.cs
-    startLine: 253
+    startLine: 266
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -822,7 +669,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
-    startLine: 263
+    startLine: 276
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -853,7 +700,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
-    startLine: 269
+    startLine: 282
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -888,7 +735,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
-    startLine: 278
+    startLine: 291
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -923,7 +770,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
-    startLine: 292
+    startLine: 305
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -958,7 +805,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
-    startLine: 299
+    startLine: 312
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -996,7 +843,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
-    startLine: 307
+    startLine: 320
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1034,7 +881,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 341
+    startLine: 354
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1066,68 +913,6 @@ items:
   nameWithType.vb: Mocker.AddType(Type, Type, Func(Of Mocker, Object), Boolean, ParamArray Object())
   fullName.vb: FastMoq.Mocker.AddType(System.Type, System.Type, System.Func(Of FastMoq.Mocker, Object), Boolean, ParamArray Object())
   name.vb: AddType(Type, Type, Func(Of Mocker, Object), Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  commentId: M:FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  id: AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: AddType(Type, Type, Func<Mocker, object, object>?, bool, params object?[]?)
-  nameWithType: Mocker.AddType(Type, Type, Func<Mocker, object, object>?, bool, params object?[]?)
-  fullName: FastMoq.Mocker.AddType(System.Type, System.Type, System.Func<FastMoq.Mocker, object, object>?, bool, params object?[]?)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: AddType
-    path: FastMoq.Core/Mocker.cs
-    startLine: 359
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Registers an interface-to-concrete mapping using a context-aware compatibility factory.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use the explicit AddType(...) overloads for normal type mapping. Use AddKnownType(...) when resolution depends on framework-style requested-type/context behavior. This context-aware AddType overload is retained for compatibility only.")]
-
-      public Mocker AddType(Type tInterface, Type tClass, Func<Mocker, object, object>? createFunc, bool replace = false, params object?[]? args)
-    parameters:
-    - id: tInterface
-      type: System.Type
-      description: The service or abstraction type to resolve.
-    - id: tClass
-      type: System.Type
-      description: The concrete implementation type to construct.
-    - id: createFunc
-      type: System.Func{FastMoq.Mocker,System.Object,System.Object}
-      description: Compatibility factory that receives the requested resolution context.
-    - id: replace
-      type: System.Boolean
-      description: True to replace an existing registration for the same service type.
-    - id: args
-      type: System.Object[]
-      description: Optional constructor or factory arguments associated with the registration.
-    return:
-      type: FastMoq.Mocker
-      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
-    content.vb: >-
-      <Obsolete("Use the explicit AddType(...) overloads for normal type mapping. Use AddKnownType(...) when resolution depends on framework-style requested-type/context behavior. This context-aware AddType overload is retained for compatibility only.")>
-
-      Public Function AddType(tInterface As Type, tClass As Type, createFunc As Func(Of Mocker, Object, Object), replace As Boolean = False, ParamArray args As Object()) As Mocker
-  overload: FastMoq.Mocker.AddType*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use the explicit AddType(...) overloads for normal type mapping. Use AddKnownType(...) when resolution depends on framework-style requested-type/context behavior. This context-aware AddType overload is retained for compatibility only.
-  nameWithType.vb: Mocker.AddType(Type, Type, Func(Of Mocker, Object, Object), Boolean, ParamArray Object())
-  fullName.vb: FastMoq.Mocker.AddType(System.Type, System.Type, System.Func(Of FastMoq.Mocker, Object, Object), Boolean, ParamArray Object())
-  name.vb: AddType(Type, Type, Func(Of Mocker, Object, Object), Boolean, ParamArray Object())
 - uid: FastMoq.Mocker.AddType``1(``0,System.Boolean)
   commentId: M:FastMoq.Mocker.AddType``1(``0,System.Boolean)
   id: AddType``1(``0,System.Boolean)
@@ -1146,7 +931,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 383
+    startLine: 396
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1198,7 +983,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 401
+    startLine: 414
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1239,7 +1024,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 407
+    startLine: 420
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1282,7 +1067,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
-    startLine: 413
+    startLine: 426
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1324,7 +1109,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
-    startLine: 418
+    startLine: 431
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1370,7 +1155,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
-    startLine: 432
+    startLine: 445
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1412,7 +1197,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
-    startLine: 454
+    startLine: 467
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1455,7 +1240,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
-    startLine: 460
+    startLine: 473
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1500,7 +1285,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
-    startLine: 467
+    startLine: 480
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1526,58 +1311,6 @@ items:
   nameWithType.vb: Mocker.AddKeyedType(Of T)(Object, Func(Of Mocker, T), Boolean, ParamArray Object())
   fullName.vb: FastMoq.Mocker.AddKeyedType(Of T)(Object, System.Func(Of FastMoq.Mocker, T), Boolean, ParamArray Object())
   name.vb: AddKeyedType(Of T)(Object, Func(Of Mocker, T), Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.AddType(System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  commentId: M:FastMoq.Mocker.AddType(System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  id: AddType(System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: AddType(Func<Mocker, object?, object?>, bool, params object?[]?)
-  nameWithType: Mocker.AddType(Func<Mocker, object?, object?>, bool, params object?[]?)
-  fullName: FastMoq.Mocker.AddType(System.Func<FastMoq.Mocker, object?, object?>, bool, params object?[]?)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: AddType
-    path: FastMoq.Core/Mocker.cs
-    startLine: 473
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Registers a compatibility string mapping that uses the requested resolution context.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use AddType<string>(...) or AddType(value) for ordinary type mapping. Use AddKnownType(...) for framework-style special handling. This context-driven string AddType overload is retained for compatibility only.")]
-
-      public Mocker AddType(Func<Mocker, object?, object?> createFunc, bool replace = false, params object?[]? args)
-    parameters:
-    - id: createFunc
-      type: System.Func{FastMoq.Mocker,System.Object,System.Object}
-    - id: replace
-      type: System.Boolean
-    - id: args
-      type: System.Object[]
-    return:
-      type: FastMoq.Mocker
-    content.vb: >-
-      <Obsolete("Use AddType<string>(...) or AddType(value) for ordinary type mapping. Use AddKnownType(...) for framework-style special handling. This context-driven string AddType overload is retained for compatibility only.")>
-
-      Public Function AddType(createFunc As Func(Of Mocker, Object, Object), replace As Boolean = False, ParamArray args As Object()) As Mocker
-  overload: FastMoq.Mocker.AddType*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use AddType<string>(...) or AddType(value) for ordinary type mapping. Use AddKnownType(...) for framework-style special handling. This context-driven string AddType overload is retained for compatibility only.
-  nameWithType.vb: Mocker.AddType(Func(Of Mocker, Object, Object), Boolean, ParamArray Object())
-  fullName.vb: FastMoq.Mocker.AddType(System.Func(Of FastMoq.Mocker, Object, Object), Boolean, ParamArray Object())
-  name.vb: AddType(Func(Of Mocker, Object, Object), Boolean, ParamArray Object())
 - uid: FastMoq.Mocker.AddFileSystemAbstractionMapping
   commentId: M:FastMoq.Mocker.AddFileSystemAbstractionMapping
   id: AddFileSystemAbstractionMapping
@@ -1596,7 +1329,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddFileSystemAbstractionMapping
     path: FastMoq.Core/Mocker.cs
-    startLine: 545
+    startLine: 558
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1624,7 +1357,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKnownType
     path: FastMoq.Core/Mocker.cs
-    startLine: 566
+    startLine: 579
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1665,7 +1398,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKnownType
     path: FastMoq.Core/Mocker.cs
-    startLine: 591
+    startLine: 604
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1713,7 +1446,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddInjections
     path: FastMoq.Core/Mocker.cs
-    startLine: 705
+    startLine: 718
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1757,7 +1490,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 730
+    startLine: 743
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1798,7 +1531,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 775
+    startLine: 799
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1838,7 +1571,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 863
+    startLine: 892
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1873,7 +1606,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 899
+    startLine: 928
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1923,7 +1656,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 903
+    startLine: 932
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1961,7 +1694,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 908
+    startLine: 937
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1999,7 +1732,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 913
+    startLine: 942
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2039,7 +1772,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 918
+    startLine: 947
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2077,7 +1810,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
-    startLine: 954
+    startLine: 983
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2117,7 +1850,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
-    startLine: 1003
+    startLine: 1032
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2157,7 +1890,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
-    startLine: 1010
+    startLine: 1039
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2195,7 +1928,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
-    startLine: 1016
+    startLine: 1045
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2235,7 +1968,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
-    startLine: 1062
+    startLine: 1091
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2273,7 +2006,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
-    startLine: 1070
+    startLine: 1099
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2313,7 +2046,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: HasParameterlessConstructor
     path: FastMoq.Core/Mocker.cs
-    startLine: 1404
+    startLine: 1433
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2333,640 +2066,6 @@ items:
   nameWithType.vb: Mocker.HasParameterlessConstructor(Type, Boolean)
   fullName.vb: FastMoq.Mocker.HasParameterlessConstructor(System.Type, Boolean)
   name.vb: HasParameterlessConstructor(Type, Boolean)
-- uid: FastMoq.Mocker.CreateMock(System.Type,System.Boolean,System.Object[])
-  commentId: M:FastMoq.Mocker.CreateMock(System.Type,System.Boolean,System.Object[])
-  id: CreateMock(System.Type,System.Boolean,System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: CreateMock(Type, bool, params object?[])
-  nameWithType: Mocker.CreateMock(Type, bool, params object?[])
-  fullName: FastMoq.Mocker.CreateMock(System.Type, bool, params object?[])
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: CreateMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1495
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Creates and tracks a legacy Moq-compatible mock for the supplied runtime type.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.")]
-
-      public List<MockModel> CreateMock(Type type, bool nonPublic = false, params object?[] args)
-    parameters:
-    - id: type
-      type: System.Type
-    - id: nonPublic
-      type: System.Boolean
-    - id: args
-      type: System.Object[]
-    return:
-      type: System.Collections.Generic.List{FastMoq.Models.MockModel}
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.")>
-
-      Public Function CreateMock(type As Type, nonPublic As Boolean = False, ParamArray args As Object()) As List(Of MockModel)
-  overload: FastMoq.Mocker.CreateMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock(Type, ...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.
-  nameWithType.vb: Mocker.CreateMock(Type, Boolean, ParamArray Object())
-  fullName.vb: FastMoq.Mocker.CreateMock(System.Type, Boolean, ParamArray Object())
-  name.vb: CreateMock(Type, Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.CreateMock``1(System.Boolean,System.Object[])
-  commentId: M:FastMoq.Mocker.CreateMock``1(System.Boolean,System.Object[])
-  id: CreateMock``1(System.Boolean,System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: CreateMock<T>(bool, params object?[])
-  nameWithType: Mocker.CreateMock<T>(bool, params object?[])
-  fullName: FastMoq.Mocker.CreateMock<T>(bool, params object?[])
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: CreateMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1519
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Creates and tracks a legacy Moq-compatible mock for the supplied type parameter.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.")]
-
-      public List<MockModel> CreateMock<T>(bool nonPublic = false, params object?[] args) where T : class
-    parameters:
-    - id: nonPublic
-      type: System.Boolean
-    - id: args
-      type: System.Object[]
-    typeParameters:
-    - id: T
-    return:
-      type: System.Collections.Generic.List{FastMoq.Models.MockModel}
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.")>
-
-      Public Function CreateMock(Of T As Class)(nonPublic As Boolean = False, ParamArray args As Object()) As List(Of MockModel)
-  overload: FastMoq.Mocker.CreateMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock<T>(...) for provider-neutral mock creation. This legacy Moq compatibility API will be removed in v5.
-  nameWithType.vb: Mocker.CreateMock(Of T)(Boolean, ParamArray Object())
-  fullName.vb: FastMoq.Mocker.CreateMock(Of T)(Boolean, ParamArray Object())
-  name.vb: CreateMock(Of T)(Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.CreateMockInstance``1(System.Boolean,System.Object[])
-  commentId: M:FastMoq.Mocker.CreateMockInstance``1(System.Boolean,System.Object[])
-  id: CreateMockInstance``1(System.Boolean,System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: CreateMockInstance<T>(bool, params object?[])
-  nameWithType: Mocker.CreateMockInstance<T>(bool, params object?[])
-  fullName: FastMoq.Mocker.CreateMockInstance<T>(bool, params object?[])
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: CreateMockInstance
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1525
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Creates a detached legacy <xref href="Moq.Mock%601" data-throw-if-not-resolved="false"></xref> for the supplied type parameter.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock<T>(...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")]
-
-      public Mock<T> CreateMockInstance<T>(bool nonPublic = false, params object?[] args) where T : class
-    parameters:
-    - id: nonPublic
-      type: System.Boolean
-    - id: args
-      type: System.Object[]
-    typeParameters:
-    - id: T
-    return:
-      type: Moq.Mock{{T}}
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock<T>(...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")>
-
-      Public Function CreateMockInstance(Of T As Class)(nonPublic As Boolean = False, ParamArray args As Object()) As Mock(Of T)
-  overload: FastMoq.Mocker.CreateMockInstance*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock<T>(...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.
-  nameWithType.vb: Mocker.CreateMockInstance(Of T)(Boolean, ParamArray Object())
-  fullName.vb: FastMoq.Mocker.CreateMockInstance(Of T)(Boolean, ParamArray Object())
-  name.vb: CreateMockInstance(Of T)(Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.CreateMockInstance(System.Type,System.Boolean,System.Object[])
-  commentId: M:FastMoq.Mocker.CreateMockInstance(System.Type,System.Boolean,System.Object[])
-  id: CreateMockInstance(System.Type,System.Boolean,System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: CreateMockInstance(Type, bool, params object?[])
-  nameWithType: Mocker.CreateMockInstance(Type, bool, params object?[])
-  fullName: FastMoq.Mocker.CreateMockInstance(System.Type, bool, params object?[])
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: CreateMockInstance
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1540
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Creates a detached legacy <xref href="Moq.Mock" data-throw-if-not-resolved="false"></xref> for the supplied runtime type.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock(Type, ...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")]
-
-      public Mock CreateMockInstance(Type type, bool nonPublic = false, params object?[] args)
-    parameters:
-    - id: type
-      type: System.Type
-    - id: nonPublic
-      type: System.Boolean
-    - id: args
-      type: System.Object[]
-    return:
-      type: Moq.Mock
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock(Type, ...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.")>
-
-      Public Function CreateMockInstance(type As Type, nonPublic As Boolean = False, ParamArray args As Object()) As Mock
-  overload: FastMoq.Mocker.CreateMockInstance*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock(Type, ...) and provider-neutral verification instead. This legacy Moq compatibility API will be removed in v5.
-  nameWithType.vb: Mocker.CreateMockInstance(Type, Boolean, ParamArray Object())
-  fullName.vb: FastMoq.Mocker.CreateMockInstance(System.Type, Boolean, ParamArray Object())
-  name.vb: CreateMockInstance(Type, Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.CreateDetachedMock``1(System.Boolean,System.Object[])
-  commentId: M:FastMoq.Mocker.CreateDetachedMock``1(System.Boolean,System.Object[])
-  id: CreateDetachedMock``1(System.Boolean,System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: CreateDetachedMock<T>(bool, params object?[])
-  nameWithType: Mocker.CreateDetachedMock<T>(bool, params object?[])
-  fullName: FastMoq.Mocker.CreateDetachedMock<T>(bool, params object?[])
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: CreateDetachedMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1575
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: >-
-    Creates a detached mock instance that is not added to the tracked mock collection.
-
-    Useful when the same interface is needed multiple times without constructor injection override.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock<T>(...) on a dedicated Mocker instance when possible. This legacy Moq compatibility API will be removed in v5.")]
-
-      public Mock<T> CreateDetachedMock<T>(bool nonPublic = false, params object?[] args) where T : class
-    parameters:
-    - id: nonPublic
-      type: System.Boolean
-    - id: args
-      type: System.Object[]
-    typeParameters:
-    - id: T
-    return:
-      type: Moq.Mock{{T}}
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock<T>(...) on a dedicated Mocker instance when possible. This legacy Moq compatibility API will be removed in v5.")>
-
-      Public Function CreateDetachedMock(Of T As Class)(nonPublic As Boolean = False, ParamArray args As Object()) As Mock(Of T)
-  overload: FastMoq.Mocker.CreateDetachedMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock<T>(...) on a dedicated Mocker instance when possible. This legacy Moq compatibility API will be removed in v5.
-  nameWithType.vb: Mocker.CreateDetachedMock(Of T)(Boolean, ParamArray Object())
-  fullName.vb: FastMoq.Mocker.CreateDetachedMock(Of T)(Boolean, ParamArray Object())
-  name.vb: CreateDetachedMock(Of T)(Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.CreateDetachedMock(System.Type,System.Boolean,System.Object[])
-  commentId: M:FastMoq.Mocker.CreateDetachedMock(System.Type,System.Boolean,System.Object[])
-  id: CreateDetachedMock(System.Type,System.Boolean,System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: CreateDetachedMock(Type, bool, params object?[])
-  nameWithType: Mocker.CreateDetachedMock(Type, bool, params object?[])
-  fullName: FastMoq.Mocker.CreateDetachedMock(System.Type, bool, params object?[])
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: CreateDetachedMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1583
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: >-
-    Creates a detached mock instance that is not added to the tracked mock collection.
-
-    Useful when the same interface is needed multiple times without constructor injection override.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock(Type, ...) on a dedicated Mocker instance when possible. This legacy Moq compatibility API will be removed in v5.")]
-
-      public Mock CreateDetachedMock(Type type, bool nonPublic = false, params object?[] args)
-    parameters:
-    - id: type
-      type: System.Type
-    - id: nonPublic
-      type: System.Boolean
-    - id: args
-      type: System.Object[]
-    return:
-      type: Moq.Mock
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock(Type, ...) on a dedicated Mocker instance when possible. This legacy Moq compatibility API will be removed in v5.")>
-
-      Public Function CreateDetachedMock(type As Type, nonPublic As Boolean = False, ParamArray args As Object()) As Mock
-  overload: FastMoq.Mocker.CreateDetachedMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock(Type, ...) on a dedicated Mocker instance when possible. This legacy Moq compatibility API will be removed in v5.
-  nameWithType.vb: Mocker.CreateDetachedMock(Type, Boolean, ParamArray Object())
-  fullName.vb: FastMoq.Mocker.CreateDetachedMock(System.Type, Boolean, ParamArray Object())
-  name.vb: CreateDetachedMock(Type, Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.AddMock``1(Moq.Mock{``0},System.Boolean,System.Boolean)
-  commentId: M:FastMoq.Mocker.AddMock``1(Moq.Mock{``0},System.Boolean,System.Boolean)
-  id: AddMock``1(Moq.Mock{``0},System.Boolean,System.Boolean)
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: AddMock<T>(Mock<T>, bool, bool)
-  nameWithType: Mocker.AddMock<T>(Mock<T>, bool, bool)
-  fullName: FastMoq.Mocker.AddMock<T>(Moq.Mock<T>, bool, bool)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: AddMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1631
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Adds an existing legacy Moq mock to the tracked mock collection.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock<T>(...) for tracked mocks or AddType<T>(...) for concrete instances. This legacy Moq compatibility API will be removed in v5.")]
-
-      public MockModel<T> AddMock<T>(Mock<T> mock, bool overwrite = false, bool nonPublic = false) where T : class
-    parameters:
-    - id: mock
-      type: Moq.Mock{{T}}
-    - id: overwrite
-      type: System.Boolean
-    - id: nonPublic
-      type: System.Boolean
-    typeParameters:
-    - id: T
-    return:
-      type: FastMoq.Models.MockModel{{T}}
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock<T>(...) for tracked mocks or AddType<T>(...) for concrete instances. This legacy Moq compatibility API will be removed in v5.")>
-
-      Public Function AddMock(Of T As Class)(mock As Mock(Of T), overwrite As Boolean = False, nonPublic As Boolean = False) As MockModel(Of T)
-  overload: FastMoq.Mocker.AddMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock<T>(...) for tracked mocks or AddType<T>(...) for concrete instances. This legacy Moq compatibility API will be removed in v5.
-  nameWithType.vb: Mocker.AddMock(Of T)(Mock(Of T), Boolean, Boolean)
-  fullName.vb: FastMoq.Mocker.AddMock(Of T)(Moq.Mock(Of T), Boolean, Boolean)
-  name.vb: AddMock(Of T)(Mock(Of T), Boolean, Boolean)
-- uid: FastMoq.Mocker.GetMock(System.Type,System.Object[])
-  commentId: M:FastMoq.Mocker.GetMock(System.Type,System.Object[])
-  id: GetMock(System.Type,System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: GetMock(Type, params object?[]?)
-  nameWithType: Mocker.GetMock(Type, params object?[]?)
-  fullName: FastMoq.Mocker.GetMock(System.Type, params object?[]?)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: GetMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1657
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Gets a tracked legacy Moq mock for the supplied runtime type, creating it if needed.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral retrieval. Keep GetMock(Type, ...) only for legacy Moq-specific setup/access. This API will be removed in v5.")]
-
-      public Mock GetMock(Type type, params object?[]? args)
-    parameters:
-    - id: type
-      type: System.Type
-    - id: args
-      type: System.Object[]
-    return:
-      type: Moq.Mock
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral retrieval. Keep GetMock(Type, ...) only for legacy Moq-specific setup/access. This API will be removed in v5.")>
-
-      Public Function GetMock(type As Type, ParamArray args As Object()) As Mock
-  overload: FastMoq.Mocker.GetMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock(Type, ...) for provider-neutral retrieval. Keep GetMock(Type, ...) only for legacy Moq-specific setup/access. This API will be removed in v5.
-  nameWithType.vb: Mocker.GetMock(Type, ParamArray Object())
-  fullName.vb: FastMoq.Mocker.GetMock(System.Type, ParamArray Object())
-  name.vb: GetMock(Type, ParamArray Object())
-- uid: FastMoq.Mocker.GetMock``1(System.Object[])
-  commentId: M:FastMoq.Mocker.GetMock``1(System.Object[])
-  id: GetMock``1(System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: GetMock<T>(params object?[])
-  nameWithType: Mocker.GetMock<T>(params object?[])
-  fullName: FastMoq.Mocker.GetMock<T>(params object?[])
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: GetMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1687
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Gets a tracked legacy Moq mock for the supplied type parameter, creating it if needed.
-  example:
-  - >-
-    <p><code>GetMock&lt;T&gt;()</code> remains the Moq-compatibility path. For new examples, prefer <code>GetOrCreateMock&lt;T&gt;()</code> for provider-neutral retrieval, and use <code>GetMock&lt;T&gt;()</code> only when the test intentionally relies on Moq-specific setup APIs.</p>
-
-    <pre><code class="lang-csharp">var mocker = new Mocker();
-
-
-    mocker.GetMock&lt;IPaymentGateway&gt;()
-        .Setup(x =&gt; x.Charge(125.50m))
-        .Returns(true);
-
-    var service = mocker.GetRequiredObject&lt;CheckoutService&gt;();
-
-    var approved = service.SubmitPayment(125.50m);
-
-
-    approved.Should().BeTrue();
-
-    mocker.Verify&lt;IPaymentGateway&gt;(x =&gt; x.Charge(125.50m), TimesSpec.Once);</code></pre>
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval. Keep GetMock<T>(...) only for legacy Moq-specific setup/access. This API will be removed in v5.")]
-
-      public Mock<T> GetMock<T>(params object?[] args) where T : class
-    parameters:
-    - id: args
-      type: System.Object[]
-    typeParameters:
-    - id: T
-    return:
-      type: Moq.Mock{{T}}
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval. Keep GetMock<T>(...) only for legacy Moq-specific setup/access. This API will be removed in v5.")>
-
-      Public Function GetMock(Of T As Class)(ParamArray args As Object()) As Mock(Of T)
-  overload: FastMoq.Mocker.GetMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock<T>(...) for provider-neutral retrieval. Keep GetMock<T>(...) only for legacy Moq-specific setup/access. This API will be removed in v5.
-  nameWithType.vb: Mocker.GetMock(Of T)(ParamArray Object())
-  fullName.vb: FastMoq.Mocker.GetMock(Of T)(ParamArray Object())
-  name.vb: GetMock(Of T)(ParamArray Object())
-- uid: FastMoq.Mocker.GetMock``1(System.Action{Moq.Mock{``0}},System.Object[])
-  commentId: M:FastMoq.Mocker.GetMock``1(System.Action{Moq.Mock{``0}},System.Object[])
-  id: GetMock``1(System.Action{Moq.Mock{``0}},System.Object[])
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: GetMock<T>(Action<Mock<T>>, params object?[])
-  nameWithType: Mocker.GetMock<T>(Action<Mock<T>>, params object?[])
-  fullName: FastMoq.Mocker.GetMock<T>(System.Action<Moq.Mock<T>>, params object?[])
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: GetMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1693
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Gets a tracked legacy Moq mock and applies an initialization callback to it.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval. Keep GetMock<T>(...) only for legacy Moq-specific setup/access. This API will be removed in v5.")]
-
-      public Mock<T> GetMock<T>(Action<Mock<T>> action, params object?[] args) where T : class
-    parameters:
-    - id: action
-      type: System.Action{Moq.Mock{{T}}}
-    - id: args
-      type: System.Object[]
-    typeParameters:
-    - id: T
-    return:
-      type: Moq.Mock{{T}}
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval. Keep GetMock<T>(...) only for legacy Moq-specific setup/access. This API will be removed in v5.")>
-
-      Public Function GetMock(Of T As Class)(action As Action(Of Mock(Of T)), ParamArray args As Object()) As Mock(Of T)
-  overload: FastMoq.Mocker.GetMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock<T>(...) for provider-neutral retrieval. Keep GetMock<T>(...) only for legacy Moq-specific setup/access. This API will be removed in v5.
-  nameWithType.vb: Mocker.GetMock(Of T)(Action(Of Mock(Of T)), ParamArray Object())
-  fullName.vb: FastMoq.Mocker.GetMock(Of T)(System.Action(Of Moq.Mock(Of T)), ParamArray Object())
-  name.vb: GetMock(Of T)(Action(Of Mock(Of T)), ParamArray Object())
-- uid: FastMoq.Mocker.GetRequiredMock(System.Type)
-  commentId: M:FastMoq.Mocker.GetRequiredMock(System.Type)
-  id: GetRequiredMock(System.Type)
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: GetRequiredMock(Type)
-  nameWithType: Mocker.GetRequiredMock(Type)
-  fullName: FastMoq.Mocker.GetRequiredMock(System.Type)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: GetRequiredMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1703
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Gets an already tracked legacy Moq mock for the supplied runtime type.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock(Type) only for legacy Moq-specific access. This API will be removed in v5.")]
-
-      public Mock GetRequiredMock(Type type)
-    parameters:
-    - id: type
-      type: System.Type
-    return:
-      type: Moq.Mock
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock(Type, ...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock(Type) only for legacy Moq-specific access. This API will be removed in v5.")>
-
-      Public Function GetRequiredMock(type As Type) As Mock
-  overload: FastMoq.Mocker.GetRequiredMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock(Type, ...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock(Type) only for legacy Moq-specific access. This API will be removed in v5.
-- uid: FastMoq.Mocker.GetRequiredMock``1
-  commentId: M:FastMoq.Mocker.GetRequiredMock``1
-  id: GetRequiredMock``1
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: GetRequiredMock<T>()
-  nameWithType: Mocker.GetRequiredMock<T>()
-  fullName: FastMoq.Mocker.GetRequiredMock<T>()
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: GetRequiredMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1725
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Gets an already tracked legacy Moq mock for the supplied type parameter.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock<T>() only for legacy Moq-specific access. This API will be removed in v5.")]
-
-      public Mock<T> GetRequiredMock<T>() where T : class
-    typeParameters:
-    - id: T
-    return:
-      type: Moq.Mock{{T}}
-    content.vb: >-
-      <Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock<T>() only for legacy Moq-specific access. This API will be removed in v5.")>
-
-      Public Function GetRequiredMock(Of T As Class)() As Mock(Of T)
-  overload: FastMoq.Mocker.GetRequiredMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetOrCreateMock<T>(...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock<T>() only for legacy Moq-specific access. This API will be removed in v5.
-  nameWithType.vb: Mocker.GetRequiredMock(Of T)()
-  fullName.vb: FastMoq.Mocker.GetRequiredMock(Of T)()
-  name.vb: GetRequiredMock(Of T)()
 - uid: FastMoq.Mocker.GetNativeMock(System.Type)
   commentId: M:FastMoq.Mocker.GetNativeMock(System.Type)
   id: GetNativeMock(System.Type)
@@ -2985,7 +2084,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1731
+    startLine: 1760
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3018,7 +2117,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1746
+    startLine: 1775
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3056,7 +2155,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockModel
     path: FastMoq.Core/Mocker.cs
-    startLine: 1758
+    startLine: 1787
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3073,89 +2172,6 @@ items:
   nameWithType.vb: Mocker.GetMockModel(Of T)()
   fullName.vb: FastMoq.Mocker.GetMockModel(Of T)()
   name.vb: GetMockModel(Of T)()
-- uid: FastMoq.Mocker.GetMockModelIndexOf(System.Type,System.Boolean)
-  commentId: M:FastMoq.Mocker.GetMockModelIndexOf(System.Type,System.Boolean)
-  id: GetMockModelIndexOf(System.Type,System.Boolean)
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: GetMockModelIndexOf(Type, bool)
-  nameWithType: Mocker.GetMockModelIndexOf(Type, bool)
-  fullName: FastMoq.Mocker.GetMockModelIndexOf(System.Type, bool)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: GetMockModelIndexOf
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1763
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Gets the index of the tracked mock model for the supplied runtime type.
-  example: []
-  syntax:
-    content: public int GetMockModelIndexOf(Type type, bool throwIfMissing = true)
-    parameters:
-    - id: type
-      type: System.Type
-    - id: throwIfMissing
-      type: System.Boolean
-    return:
-      type: System.Int32
-    content.vb: Public Function GetMockModelIndexOf(type As Type, throwIfMissing As Boolean = True) As Integer
-  overload: FastMoq.Mocker.GetMockModelIndexOf*
-  nameWithType.vb: Mocker.GetMockModelIndexOf(Type, Boolean)
-  fullName.vb: FastMoq.Mocker.GetMockModelIndexOf(System.Type, Boolean)
-  name.vb: GetMockModelIndexOf(Type, Boolean)
-- uid: FastMoq.Mocker.RemoveMock(Moq.Mock)
-  commentId: M:FastMoq.Mocker.RemoveMock(Moq.Mock)
-  id: RemoveMock(Moq.Mock)
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: RemoveMock(Mock)
-  nameWithType: Mocker.RemoveMock(Mock)
-  fullName: FastMoq.Mocker.RemoveMock(Moq.Mock)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: RemoveMock
-    path: FastMoq.Core/Mocker.cs
-    startLine: 1788
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Removes a tracked legacy Moq mock from the mock collection.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use provider-neutral mock lifecycle APIs instead. This legacy Moq compatibility API will be removed in v5.")]
-
-      public bool RemoveMock(Mock mock)
-    parameters:
-    - id: mock
-      type: Moq.Mock
-    return:
-      type: System.Boolean
-    content.vb: >-
-      <Obsolete("Use provider-neutral mock lifecycle APIs instead. This legacy Moq compatibility API will be removed in v5.")>
-
-      Public Function RemoveMock(mock As Mock) As Boolean
-  overload: FastMoq.Mocker.RemoveMock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use provider-neutral mock lifecycle APIs instead. This legacy Moq compatibility API will be removed in v5.
 - uid: FastMoq.Mocker.GetFileSystem(System.Action{System.IO.Abstractions.TestingHelpers.MockFileSystem})
   commentId: M:FastMoq.Mocker.GetFileSystem(System.Action{System.IO.Abstractions.TestingHelpers.MockFileSystem})
   id: GetFileSystem(System.Action{System.IO.Abstractions.TestingHelpers.MockFileSystem})
@@ -3174,7 +2190,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
-    startLine: 1996
+    startLine: 1977
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3210,7 +2226,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
-    startLine: 2005
+    startLine: 1986
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3240,7 +2256,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 2010
+    startLine: 1991
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3280,7 +2296,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 2024
+    startLine: 2005
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3320,7 +2336,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 2038
+    startLine: 2019
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3362,7 +2378,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2053
+    startLine: 2034
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3398,7 +2414,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2061
+    startLine: 2042
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3436,7 +2452,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodDefaultData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2079
+    startLine: 2060
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3472,7 +2488,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2092
+    startLine: 2073
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3507,7 +2523,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2100
+    startLine: 2081
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3545,7 +2561,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2106
+    startLine: 2087
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3583,7 +2599,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2195
+    startLine: 2176
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3625,7 +2641,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2204
+    startLine: 2185
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3669,7 +2685,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2235
+    startLine: 2216
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3713,7 +2729,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2244
+    startLine: 2225
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3759,7 +2775,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2276
+    startLine: 2257
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3801,7 +2817,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2282
+    startLine: 2263
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3845,7 +2861,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2291
+    startLine: 2272
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3885,7 +2901,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2300
+    startLine: 2281
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3927,7 +2943,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2322
+    startLine: 2303
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3963,7 +2979,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2327
+    startLine: 2308
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4001,7 +3017,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2332
+    startLine: 2313
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4041,7 +3057,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2337
+    startLine: 2318
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4083,7 +3099,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2342
+    startLine: 2323
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4119,7 +3135,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2347
+    startLine: 2328
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4157,7 +3173,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
-    startLine: 2352
+    startLine: 2333
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4197,7 +3213,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
-    startLine: 2363
+    startLine: 2344
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4221,54 +3237,6 @@ items:
   nameWithType.vb: Mocker.CallMethodAsync(Of TReturn)(InvocationOptions, Delegate, ParamArray Object())
   fullName.vb: FastMoq.Mocker.CallMethodAsync(Of TReturn)(FastMoq.InvocationOptions, System.Delegate, ParamArray Object())
   name.vb: CallMethodAsync(Of TReturn)(InvocationOptions, Delegate, ParamArray Object())
-- uid: FastMoq.Mocker.Initialize``1(System.Action{Moq.Mock{``0}})
-  commentId: M:FastMoq.Mocker.Initialize``1(System.Action{Moq.Mock{``0}})
-  id: Initialize``1(System.Action{Moq.Mock{``0}})
-  parent: FastMoq.Mocker
-  langs:
-  - csharp
-  - vb
-  name: Initialize<T>(Action<Mock<T>>)
-  nameWithType: Mocker.Initialize<T>(Action<Mock<T>>)
-  fullName: FastMoq.Mocker.Initialize<T>(System.Action<Moq.Mock<T>>)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Mocker.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: Initialize
-    path: FastMoq.Core/Mocker.cs
-    startLine: 2381
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq
-  summary: Initializes a tracked legacy Moq mock by invoking the supplied setup callback.
-  example: []
-  syntax:
-    content: >-
-      [Obsolete("Use GetMock<T>() and configure the returned mock directly. Initialize<T>() is a compatibility wrapper and may be removed in a future major version.")]
-
-      public void Initialize<T>(Action<Mock<T>> init) where T : class
-    parameters:
-    - id: init
-      type: System.Action{Moq.Mock{{T}}}
-    typeParameters:
-    - id: T
-    content.vb: >-
-      <Obsolete("Use GetMock<T>() and configure the returned mock directly. Initialize<T>() is a compatibility wrapper and may be removed in a future major version.")>
-
-      Public Sub Initialize(Of T As Class)(init As Action(Of Mock(Of T)))
-  overload: FastMoq.Mocker.Initialize*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use GetMock<T>() and configure the returned mock directly. Initialize<T>() is a compatibility wrapper and may be removed in a future major version.
-  nameWithType.vb: Mocker.Initialize(Of T)(Action(Of Mock(Of T)))
-  fullName.vb: FastMoq.Mocker.Initialize(Of T)(System.Action(Of Moq.Mock(Of T)))
-  name.vb: Initialize(Of T)(Action(Of Mock(Of T)))
 - uid: FastMoq.Mocker.GetStringContent(System.Net.Http.HttpContent)
   commentId: M:FastMoq.Mocker.GetStringContent(System.Net.Http.HttpContent)
   id: GetStringContent(System.Net.Http.HttpContent)
@@ -4287,7 +3255,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetStringContent
     path: FastMoq.Core/Mocker.cs
-    startLine: 2391
+    startLine: 2372
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4323,7 +3291,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 2396
+    startLine: 2377
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4358,7 +3326,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 40
+    startLine: 39
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4433,7 +3401,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 48
+    startLine: 47
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4471,7 +3439,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 57
+    startLine: 56
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4509,7 +3477,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 72
+    startLine: 71
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4542,7 +3510,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateFastMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 82
+    startLine: 81
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4580,7 +3548,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Core/Mocker.Supplemental.cs
-    startLine: 12
+    startLine: 11
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -4615,7 +3583,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Scenario
     path: FastMoq.Core/Mocker.Supplemental.cs
-    startLine: 17
+    startLine: 16
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -12282,17 +11250,6 @@ references:
   - uid: FastMoq.Extensions
     name: Extensions
     href: FastMoq.Extensions.html
-- uid: System.String
-  commentId: T:System.String
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.string
-  name: string
-  nameWithType: string
-  fullName: string
-  nameWithType.vb: String
-  fullName.vb: String
-  name.vb: String
 - uid: System.IO.Abstractions.TestingHelpers.MockFileSystem
   commentId: T:System.IO.Abstractions.TestingHelpers.MockFileSystem
   parent: System.IO.Abstractions.TestingHelpers
@@ -12752,23 +11709,6 @@ references:
   name: Uri
   nameWithType: Uri
   fullName: System.Uri
-- uid: FastMoq.Mocker.InnerMockResolution*
-  commentId: Overload:FastMoq.Mocker.InnerMockResolution
-  href: FastMoq.Mocker.html#FastMoq_Mocker_InnerMockResolution
-  name: InnerMockResolution
-  nameWithType: Mocker.InnerMockResolution
-  fullName: FastMoq.Mocker.InnerMockResolution
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.boolean
-  name: bool
-  nameWithType: bool
-  fullName: bool
-  nameWithType.vb: Boolean
-  fullName.vb: Boolean
-  name.vb: Boolean
 - uid: FastMoq.Mocker.Behavior*
   commentId: Overload:FastMoq.Mocker.Behavior
   href: FastMoq.Mocker.html#FastMoq_Mocker_Behavior
@@ -12782,27 +11722,8 @@ references:
   name: MockBehaviorOptions
   nameWithType: MockBehaviorOptions
   fullName: FastMoq.MockBehaviorOptions
-- uid: FastMoq.MockFeatures.FailOnUnconfigured
-  commentId: F:FastMoq.MockFeatures.FailOnUnconfigured
-  href: FastMoq.MockFeatures.html#FastMoq_MockFeatures_FailOnUnconfigured
-  name: FailOnUnconfigured
-  nameWithType: MockFeatures.FailOnUnconfigured
-  fullName: FastMoq.MockFeatures.FailOnUnconfigured
-- uid: FastMoq.Mocker.Behavior
-  commentId: P:FastMoq.Mocker.Behavior
-  href: FastMoq.Mocker.html#FastMoq_Mocker_Behavior
-  name: Behavior
-  nameWithType: Mocker.Behavior
-  fullName: FastMoq.Mocker.Behavior
-- uid: FastMoq.Mocker.Strict*
-  commentId: Overload:FastMoq.Mocker.Strict
-  href: FastMoq.Mocker.html#FastMoq_Mocker_Strict
-  name: Strict
-  nameWithType: Mocker.Strict
-  fullName: FastMoq.Mocker.Strict
 - uid: FastMoq.Mocker.Strict
   commentId: P:FastMoq.Mocker.Strict
-  href: FastMoq.Mocker.html#FastMoq_Mocker_Strict
   name: Strict
   nameWithType: Mocker.Strict
   fullName: FastMoq.Mocker.Strict
@@ -12812,6 +11733,12 @@ references:
   name: UseStrictPreset
   nameWithType: Mocker.UseStrictPreset
   fullName: FastMoq.Mocker.UseStrictPreset
+- uid: FastMoq.MockFeatures.FailOnUnconfigured
+  commentId: F:FastMoq.MockFeatures.FailOnUnconfigured
+  href: FastMoq.MockFeatures.html#FastMoq_MockFeatures_FailOnUnconfigured
+  name: FailOnUnconfigured
+  nameWithType: MockFeatures.FailOnUnconfigured
+  fullName: FastMoq.MockFeatures.FailOnUnconfigured
 - uid: FastMoq.Mocker.UseLenientPreset*
   commentId: Overload:FastMoq.Mocker.UseLenientPreset
   href: FastMoq.Mocker.html#FastMoq_Mocker_UseLenientPreset
@@ -13064,6 +11991,17 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: System.Object[]
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system.object
@@ -13117,103 +12055,6 @@ references:
   - name: Of
   - name: " "
   - name: T
-  - name: ','
-  - name: " "
-  - name: TResult
-  - name: )
-- uid: System.Func{FastMoq.Mocker,System.Object,System.Object}
-  commentId: T:System.Func{FastMoq.Mocker,System.Object,System.Object}
-  parent: System
-  definition: System.Func`3
-  href: https://learn.microsoft.com/dotnet/api/system.func-3
-  name: Func<Mocker, object, object>
-  nameWithType: Func<Mocker, object, object>
-  fullName: System.Func<FastMoq.Mocker, object, object>
-  nameWithType.vb: Func(Of Mocker, Object, Object)
-  fullName.vb: System.Func(Of FastMoq.Mocker, Object, Object)
-  name.vb: Func(Of Mocker, Object, Object)
-  spec.csharp:
-  - uid: System.Func`3
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-3
-  - name: <
-  - uid: FastMoq.Mocker
-    name: Mocker
-    href: FastMoq.Mocker.html
-  - name: ','
-  - name: " "
-  - uid: System.Object
-    name: object
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.object
-  - name: ','
-  - name: " "
-  - uid: System.Object
-    name: object
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.object
-  - name: '>'
-  spec.vb:
-  - uid: System.Func`3
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-3
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: FastMoq.Mocker
-    name: Mocker
-    href: FastMoq.Mocker.html
-  - name: ','
-  - name: " "
-  - uid: System.Object
-    name: Object
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.object
-  - name: ','
-  - name: " "
-  - uid: System.Object
-    name: Object
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.object
-  - name: )
-- uid: System.Func`3
-  commentId: T:System.Func`3
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.func-3
-  name: Func<T1, T2, TResult>
-  nameWithType: Func<T1, T2, TResult>
-  fullName: System.Func<T1, T2, TResult>
-  nameWithType.vb: Func(Of T1, T2, TResult)
-  fullName.vb: System.Func(Of T1, T2, TResult)
-  name.vb: Func(Of T1, T2, TResult)
-  spec.csharp:
-  - uid: System.Func`3
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-3
-  - name: <
-  - name: T1
-  - name: ','
-  - name: " "
-  - name: T2
-  - name: ','
-  - name: " "
-  - name: TResult
-  - name: '>'
-  spec.vb:
-  - uid: System.Func`3
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-3
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T1
-  - name: ','
-  - name: " "
-  - name: T2
   - name: ','
   - name: " "
   - name: TResult
@@ -13475,6 +12316,46 @@ references:
   - name: ','
   - name: " "
   - name: TKnown
+  - name: )
+- uid: System.Func`3
+  commentId: T:System.Func`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<T1, T2, TResult>
+  nameWithType: Func<T1, T2, TResult>
+  fullName: System.Func<T1, T2, TResult>
+  nameWithType.vb: Func(Of T1, T2, TResult)
+  fullName.vb: System.Func(Of T1, T2, TResult)
+  name.vb: Func(Of T1, T2, TResult)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
   - name: )
 - uid: System.Action`2
   commentId: T:System.Action`2
@@ -13758,94 +12639,18 @@ references:
   name: HasParameterlessConstructor
   nameWithType: Mocker.HasParameterlessConstructor
   fullName: FastMoq.Mocker.HasParameterlessConstructor
-- uid: FastMoq.Mocker.CreateMock*
-  commentId: Overload:FastMoq.Mocker.CreateMock
-  href: FastMoq.Mocker.html#FastMoq_Mocker_CreateMock_System_Type_System_Boolean_System_Object___
-  name: CreateMock
-  nameWithType: Mocker.CreateMock
-  fullName: FastMoq.Mocker.CreateMock
-- uid: Moq.Mock`1
-  commentId: T:Moq.Mock`1
-  isExternal: true
-  name: Mock<T>
-  nameWithType: Mock<T>
-  fullName: Moq.Mock<T>
-  nameWithType.vb: Mock(Of T)
-  fullName.vb: Moq.Mock(Of T)
-  name.vb: Mock(Of T)
-  spec.csharp:
-  - uid: Moq.Mock`1
-    name: Mock
-    isExternal: true
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: Moq.Mock`1
-    name: Mock
-    isExternal: true
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-- uid: FastMoq.Mocker.CreateMockInstance*
-  commentId: Overload:FastMoq.Mocker.CreateMockInstance
-  href: FastMoq.Mocker.html#FastMoq_Mocker_CreateMockInstance__1_System_Boolean_System_Object___
-  name: CreateMockInstance
-  nameWithType: Mocker.CreateMockInstance
-  fullName: FastMoq.Mocker.CreateMockInstance
-- uid: Moq.Mock{{T}}
-  commentId: T:Moq.Mock{``0}
-  parent: Moq
-  definition: Moq.Mock`1
-  name: Mock<T>
-  nameWithType: Mock<T>
-  fullName: Moq.Mock<T>
-  nameWithType.vb: Mock(Of T)
-  fullName.vb: Moq.Mock(Of T)
-  name.vb: Mock(Of T)
-  spec.csharp:
-  - uid: Moq.Mock`1
-    name: Mock
-    isExternal: true
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: Moq.Mock`1
-    name: Mock
-    isExternal: true
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-- uid: Moq
-  commentId: N:Moq
-  isExternal: true
-  name: Moq
-  nameWithType: Moq
-  fullName: Moq
-- uid: Moq.Mock
-  commentId: T:Moq.Mock
-  parent: Moq
-  isExternal: true
-  name: Mock
-  nameWithType: Mock
-  fullName: Moq.Mock
-- uid: FastMoq.Mocker.CreateDetachedMock*
-  commentId: Overload:FastMoq.Mocker.CreateDetachedMock
-  href: FastMoq.Mocker.html#FastMoq_Mocker_CreateDetachedMock__1_System_Boolean_System_Object___
-  name: CreateDetachedMock
-  nameWithType: Mocker.CreateDetachedMock
-  fullName: FastMoq.Mocker.CreateDetachedMock
-- uid: FastMoq.Mocker.AddMock*
-  commentId: Overload:FastMoq.Mocker.AddMock
-  href: FastMoq.Mocker.html#FastMoq_Mocker_AddMock__1_Moq_Mock___0__System_Boolean_System_Boolean_
-  name: AddMock
-  nameWithType: Mocker.AddMock
-  fullName: FastMoq.Mocker.AddMock
+- uid: FastMoq.Mocker.GetNativeMock*
+  commentId: Overload:FastMoq.Mocker.GetNativeMock
+  href: FastMoq.Mocker.html#FastMoq_Mocker_GetNativeMock_System_Type_
+  name: GetNativeMock
+  nameWithType: Mocker.GetNativeMock
+  fullName: FastMoq.Mocker.GetNativeMock
+- uid: FastMoq.Mocker.GetMockModel*
+  commentId: Overload:FastMoq.Mocker.GetMockModel
+  href: FastMoq.Mocker.html#FastMoq_Mocker_GetMockModel__1
+  name: GetMockModel
+  nameWithType: Mocker.GetMockModel
+  fullName: FastMoq.Mocker.GetMockModel
 - uid: FastMoq.Models.MockModel{{T}}
   commentId: T:FastMoq.Models.MockModel{``0}
   parent: FastMoq.Models
@@ -13899,94 +12704,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: FastMoq.Mocker.GetMock*
-  commentId: Overload:FastMoq.Mocker.GetMock
-  href: FastMoq.Mocker.html#FastMoq_Mocker_GetMock_System_Type_System_Object___
-  name: GetMock
-  nameWithType: Mocker.GetMock
-  fullName: FastMoq.Mocker.GetMock
-- uid: System.Action{Moq.Mock{{T}}}
-  commentId: T:System.Action{Moq.Mock{``0}}
-  parent: System
-  definition: System.Action`1
-  href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: Action<Mock<T>>
-  nameWithType: Action<Mock<T>>
-  fullName: System.Action<Moq.Mock<T>>
-  nameWithType.vb: Action(Of Mock(Of T))
-  fullName.vb: System.Action(Of Moq.Mock(Of T))
-  name.vb: Action(Of Mock(Of T))
-  spec.csharp:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - uid: Moq.Mock`1
-    name: Mock
-    isExternal: true
-  - name: <
-  - name: T
-  - name: '>'
-  - name: '>'
-  spec.vb:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: Moq.Mock`1
-    name: Mock
-    isExternal: true
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: )
-- uid: FastMoq.Mocker.GetRequiredMock*
-  commentId: Overload:FastMoq.Mocker.GetRequiredMock
-  href: FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredMock_System_Type_
-  name: GetRequiredMock
-  nameWithType: Mocker.GetRequiredMock
-  fullName: FastMoq.Mocker.GetRequiredMock
-- uid: FastMoq.Mocker.GetNativeMock*
-  commentId: Overload:FastMoq.Mocker.GetNativeMock
-  href: FastMoq.Mocker.html#FastMoq_Mocker_GetNativeMock_System_Type_
-  name: GetNativeMock
-  nameWithType: Mocker.GetNativeMock
-  fullName: FastMoq.Mocker.GetNativeMock
-- uid: FastMoq.Mocker.GetMockModel*
-  commentId: Overload:FastMoq.Mocker.GetMockModel
-  href: FastMoq.Mocker.html#FastMoq_Mocker_GetMockModel__1
-  name: GetMockModel
-  nameWithType: Mocker.GetMockModel
-  fullName: FastMoq.Mocker.GetMockModel
-- uid: FastMoq.Mocker.GetMockModelIndexOf*
-  commentId: Overload:FastMoq.Mocker.GetMockModelIndexOf
-  href: FastMoq.Mocker.html#FastMoq_Mocker_GetMockModelIndexOf_System_Type_System_Boolean_
-  name: GetMockModelIndexOf
-  nameWithType: Mocker.GetMockModelIndexOf
-  fullName: FastMoq.Mocker.GetMockModelIndexOf
-- uid: System.Int32
-  commentId: T:System.Int32
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int32
-  name: int
-  nameWithType: int
-  fullName: int
-  nameWithType.vb: Integer
-  fullName.vb: Integer
-  name.vb: Integer
-- uid: FastMoq.Mocker.RemoveMock*
-  commentId: Overload:FastMoq.Mocker.RemoveMock
-  href: FastMoq.Mocker.html#FastMoq_Mocker_RemoveMock_Moq_Mock_
-  name: RemoveMock
-  nameWithType: Mocker.RemoveMock
-  fullName: FastMoq.Mocker.RemoveMock
 - uid: FastMoq.Mocker.GetFileSystem*
   commentId: Overload:FastMoq.Mocker.GetFileSystem
   href: FastMoq.Mocker.html#FastMoq_Mocker_GetFileSystem_System_Action_System_IO_Abstractions_TestingHelpers_MockFileSystem__
@@ -14069,6 +12786,17 @@ references:
   name: GetList
   nameWithType: Mocker.GetList
   fullName: FastMoq.Mocker.GetList
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
 - uid: System.Func{{T}}
   commentId: T:System.Func{``0}
   parent: System
@@ -14276,6 +13004,17 @@ references:
   name: InvokeMethod
   nameWithType: Mocker.InvokeMethod
   fullName: FastMoq.Mocker.InvokeMethod
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: FastMoq.Mocker.CallMethod*
   commentId: Overload:FastMoq.Mocker.CallMethod
   href: FastMoq.Mocker.html#FastMoq_Mocker_CallMethod__1_System_Delegate_System_Object___
@@ -14437,12 +13176,6 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
-- uid: FastMoq.Mocker.Initialize*
-  commentId: Overload:FastMoq.Mocker.Initialize
-  href: FastMoq.Mocker.html#FastMoq_Mocker_Initialize__1_System_Action_Moq_Mock___0___
-  name: Initialize
-  nameWithType: Mocker.Initialize
-  fullName: FastMoq.Mocker.Initialize
 - uid: System.Net.Http.HttpContent
   commentId: T:System.Net.Http.HttpContent
   parent: System.Net.Http

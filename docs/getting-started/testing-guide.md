@@ -6,27 +6,27 @@ This guide documents the testing patterns that match FastMoq's current behavior 
 
 Use these rules first:
 
-1. Use `MockerTestBase<TComponent>` when you want FastMoq to create the component under test and manage its dependencies.
-2. Use `Mocks.GetOrCreateMock<T>()` when you want the normal FastMoq tracked mock path for a dependency.
-3. Use `AddType(...)` when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.
-4. Use `AddKnownType(...)` when a framework-style type needs special resolution or post-processing behavior.
-5. Use `GetMockDbContext<TContext>()` when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.
+1. Use [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1) when you want FastMoq to create the component under test and manage its dependencies.
+2. Use [Mocks.GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) when you want the normal FastMoq tracked mock path for a dependency.
+3. Use [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.
+4. Use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) when a framework-style type needs special resolution or post-processing behavior.
+5. Use [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.
 
 ## Core Mental Model
 
 FastMoq has three distinct resolution paths:
 
-1. Type mapping: explicit registrations added with `AddType(...)`.
+1. Type mapping: explicit registrations added with [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])).
 2. Known types: built-in framework helpers for things like `IFileSystem`, `HttpClient`, `DbContext`, and `HttpContext` patterns.
 3. Auto-mock / auto-create: default mock creation and constructor injection when no explicit mapping exists.
 
 That distinction matters because the API choice communicates intent.
 
-## `GetOrCreateMock<T>()` vs `AddType(...)`
+## [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) vs [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[]))
 
 These are not interchangeable.
 
-### Use `GetOrCreateMock<T>()` when
+### Use [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) when
 
 - You want the dependency to stay on the default auto-mock path.
 - You only need to arrange or verify behavior.
@@ -37,7 +37,7 @@ var repoMock = Mocks.GetOrCreateMock<IOrderRepository>();
 repoMock.Setup(x => x.Load(123)).Returns(order);
 ```
 
-### When `AddType(...)` is the right tool
+### When [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) is the right tool
 
 - You need a specific implementation rather than a default mock.
 - You need to control constructor arguments or non-public construction.
@@ -50,14 +50,14 @@ Mocks.AddType<IClock>(_ => new FakeClock(DateTimeOffset.Parse("2026-04-01T12:00:
 
 ### Practical rule
 
-If the dependency is still conceptually a mock, prefer `GetOrCreateMock<T>()`. If you are changing how the type is resolved, prefer `AddType(...)`.
+If the dependency is still conceptually a mock, prefer [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)). If you are changing how the type is resolved, prefer [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])).
 
 ## Construction APIs
 
 FastMoq still supports the older entry points:
 
-- `CreateInstance<T>(...)`
-- `CreateInstanceByType<T>(...)`
+- [CreateInstance&lt;T&gt;(...)](xref:FastMoq.Mocker.CreateInstance``1(FastMoq.InstanceCreationFlags,System.Object[]))
+- [CreateInstanceByType&lt;T&gt;(...)](xref:FastMoq.Mocker.CreateInstanceByType``1(FastMoq.InstanceCreationFlags,System.Type[]))
 
 For new code, prefer the flags-based constructor overloads when you need an explicit override:
 
@@ -74,7 +74,7 @@ If constructor selection should be restricted to public constructors, use the ex
 var component = Mocks.CreateInstance<MyComponent>(InstanceCreationFlags.PublicConstructorsOnly);
 ```
 
-If you want to change the default constructor-fallback policy for the whole `Mocker` instance, use:
+If you want to change the default constructor-fallback policy for the whole [Mocker](xref:FastMoq.Mocker) instance, use:
 
 ```csharp
 Mocks.Policy.DefaultFallbackToNonPublicConstructors = false;
@@ -84,7 +84,7 @@ Use the older methods when preserving existing tests or public API compatibility
 
 ## Optional Constructor And Method Parameters
 
-FastMoq now has an explicit option for optional-parameter behavior.
+FastMoq now has an explicit option for [optional-parameter behavior](xref:FastMoq.OptionalParameterResolutionMode).
 
 Default behavior:
 
@@ -101,9 +101,9 @@ Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMo
 var component = Mocks.CreateInstance<MyComponent>();
 ```
 
-### `MockerTestBase<TComponent>`
+### [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1)
 
-For SUT creation through `MockerTestBase<TComponent>`, override `ComponentCreationFlags`:
+For SUT creation through [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1), override `ComponentCreationFlags`:
 
 ```csharp
 protected override InstanceCreationFlags ComponentCreationFlags
@@ -112,7 +112,7 @@ protected override InstanceCreationFlags ComponentCreationFlags
 
 ### Delegate or reflected invocation
 
-Use `InvocationOptions` when calling helpers that fill omitted method parameters:
+Use [InvocationOptions](xref:FastMoq.InvocationOptions) when calling helpers that fill omitted method parameters:
 
 ```csharp
 var result = Mocks.CallMethod<MyResult>(new InvocationOptions
@@ -143,13 +143,13 @@ var result = Mocks.InvokeMethod(
     nameof(TargetType.Run));
 ```
 
-If you want to change the default reflected-method fallback policy for the whole `Mocker` instance, use:
+If you want to change the default reflected-method fallback policy for the whole [Mocker](xref:FastMoq.Mocker) instance, use:
 
 ```csharp
 Mocks.Policy.DefaultFallbackToNonPublicMethods = false;
 ```
 
-`MockOptional` is now obsolete and should be treated only as a compatibility alias for `OptionalParameterResolutionMode.ResolveViaMocker`.
+`MockOptional` is now obsolete and should be treated only as a compatibility alias for [OptionalParameterResolutionMode.ResolveViaMocker](xref:FastMoq.OptionalParameterResolutionMode.ResolveViaMocker).
 
 ## Built-In Known Types
 
@@ -157,7 +157,7 @@ FastMoq includes built-in handling for a small set of framework-heavy types.
 
 That built-in resolution policy is now explicit. `FailOnUnconfigured` no longer silently changes which built-ins are available by itself.
 
-Use `EnabledBuiltInTypeResolutions` when you want to override the built-in defaults for a `Mocker` instance:
+Use [EnabledBuiltInTypeResolutions](xref:FastMoq.MockerPolicyOptions.EnabledBuiltInTypeResolutions) when you want to override the built-in defaults for a [Mocker](xref:FastMoq.Mocker) instance:
 
 ```csharp
 Mocks.Policy.EnabledBuiltInTypeResolutions =
@@ -171,15 +171,15 @@ Mocks.Policy.EnabledBuiltInTypeResolutions =
 
 ## Mock Creation Defaults
 
-For provider-backed mock creation, use the `Mocker`-level default when you want new mocks to be created as strict or loose without depending on the broader compatibility bundle:
+For provider-backed mock creation, use the [Mocker](xref:FastMoq.Mocker)-level default when you want new mocks to be created as strict or loose without depending on the broader compatibility bundle:
 
 ```csharp
 Mocks.Policy.DefaultStrictMockCreation = true;
 ```
 
-This affects provider-backed and legacy mock creation helpers. It does not apply to `GetMockDbContext<TContext>()`, which remains on the supported DbContext helper behavior.
+This affects provider-backed and legacy mock creation helpers. It does not apply to [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)), which remains on the supported DbContext helper behavior.
 
-If you are using `MockerTestBase<TComponent>`, apply the same defaults before component creation with:
+If you are using [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1), apply the same defaults before component creation with:
 
 ```csharp
 protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy =>
@@ -207,7 +207,9 @@ Mocks.GetOrCreateMock<IFileSystem>()
     .Returns(true);
 ```
 
-If you need the filesystem abstraction family (`IFile`, `IPath`, `IDirectory`, and related factories) to resolve coherently, call `AddFileSystemAbstractionMapping()`.
+FastMoq can automatically provide a built-in `IFileSystem` backed by its shared in-memory `MockFileSystem` when the built-in file-system resolution is enabled and you have not already registered `IFileSystem` explicitly.
+
+If you need the wider filesystem abstraction family (`IFile`, `IPath`, `IDirectory`, and related factories) to resolve coherently alongside that shared file system, call [AddFileSystemAbstractionMapping()](../../api/FastMoq.Mocker.yml).
 
 ### `HttpClient`
 
@@ -215,11 +217,11 @@ FastMoq has a built-in `HttpClient` helper path. Use the existing HTTP setup hel
 
 ### `DbContext`
 
-Use `GetMockDbContext<TContext>()` as the default entry point.
+Use [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) as the default entry point.
 
 If you consume the aggregate `FastMoq` package, the database helpers remain available with the same API shape. If you consume `FastMoq.Core` directly, install `FastMoq.Database` for EF-specific helpers.
 
-When you need to choose between pure mock behavior and a real EF in-memory context, use `GetDbContextHandle<TContext>(...)` with `DbContextHandleOptions<TContext>`. The default mode remains `MockedSets`, and `GetMockDbContext<TContext>()` is now the convenience wrapper over that default.
+When you need to choose between pure mock behavior and a real EF in-memory context, use [GetDbContextHandle&lt;TContext&gt;(...)](../../api/FastMoq.DbContextMockerExtensions.yml) with [DbContextHandleOptions&lt;TContext&gt;](../../api/FastMoq.DbContextHandleOptions-1.yml). The default mode remains [MockedSets](../../api/FastMoq.DbContextTestMode.yml), and [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) is now the convenience wrapper over that default.
 
 ```csharp
 protected override Action<Mocker> SetupMocksAction => mocker =>
@@ -231,7 +233,7 @@ protected override Action<Mocker> SetupMocksAction => mocker =>
 
 Recommended pattern:
 
-1. Create the context mock with `GetMockDbContext<TContext>()`.
+1. Create the context mock with [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)).
 2. Add the context object into the type map when the component under test expects the context itself.
 3. Seed test data through the resolved context object before calling the system under test.
 
@@ -298,11 +300,11 @@ public class OrdersControllerTests : MockerTestBase<OrdersController>
 
 Practical rules:
 
-1. Use `CreateHttpContext(...)` when you need a reusable request object for middleware or accessors.
-2. Use `AddHttpContext(...)` or `AddHttpContextAccessor(...)` when the system under test resolves those types from DI.
+1. Use [CreateHttpContext(...)](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) when you need a reusable request object for middleware or accessors.
+2. Use [AddHttpContext(...)](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) or [AddHttpContextAccessor(...)](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) when the system under test resolves those types from DI.
 3. Use `SetRequestHeader(...)`, `SetRequestHeaders(...)`, `SetQueryString(...)`, `SetQueryParameter(...)`, or `SetQueryParameters(...)` to make request intent obvious in the test.
-4. Use `CreateControllerContext(...)` when the controller itself reads from `ControllerContext.HttpContext.User`.
-5. Use `GetOkObjectResult()`, `GetBadRequestObjectResult()`, `GetConflictObjectResult()`, and `GetObjectResultContent<T>()` to keep result assertions short.
+4. Use [CreateControllerContext(...)](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) when the controller itself reads from `ControllerContext.HttpContext.User`.
+5. Use [GetOkObjectResult()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml), [GetBadRequestObjectResult()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml), [GetConflictObjectResult()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml), and [GetObjectResultContent&lt;T&gt;()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) to keep result assertions short.
 
 ## Accessor And Middleware Testing
 
@@ -339,20 +341,20 @@ Use this pattern when the system under test reads directly from `IHttpContextAcc
 
 ## Extending Known Types
 
-Use `AddKnownType(...)` when a framework-style type needs special handling that does not belong in the normal type map.
+Use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) when a framework-style type needs special handling that does not belong in the normal type map.
 
 Custom registrations are scoped to the current `Mocker` instance. They do not mutate global process state.
 
-## `AddKnownType(...)` vs `AddType(...)`
+## [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) vs [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[]))
 
 These APIs are related, but they are not interchangeable.
 
 They can look similar in the simplest case because both can end with "FastMoq returns this object." The important difference is where they plug in:
 
-- `AddType(...)` changes the normal type map for one dependency.
-- `AddKnownType(...)` extends FastMoq's special handling pipeline for a category of framework-heavy types.
+- [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) changes the normal type map for one dependency.
+- [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) extends FastMoq's special handling pipeline for a category of framework-heavy types.
 
-### Use `AddType(...)` when
+### Use [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when
 
 - You want to replace FastMoq's normal resolution for a type.
 - You want a specific concrete implementation, factory result, or fixed instance.
@@ -362,19 +364,19 @@ They can look similar in the simplest case because both can end with "FastMoq re
 Mocks.AddType<IClock>(_ => new FakeClock(DateTimeOffset.Parse("2026-04-01T12:00:00Z")));
 ```
 
-Another `AddType(...)` example that should stay on the normal type-map path:
+Another [AddType(...)](xref:FastMoq.Mocker.AddType``2(System.Func{FastMoq.Mocker,``1},System.Boolean,System.Object[])) example that should stay on the normal type-map path:
 
 ```csharp
 Mocks.AddType<IPaymentGateway, FakePaymentGateway>(_ => new FakePaymentGateway("test-terminal"));
 ```
 
-These are `AddType(...)` examples because:
+These are [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) examples because:
 
 - `IClock` and `IPaymentGateway` are ordinary application dependencies.
 - You are swapping one dependency for a specific implementation.
 - There is no special FastMoq framework lifecycle or post-processing involved.
 
-### When `AddKnownType(...)` is the right tool
+### When [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) is the right tool
 
 - The type is framework-heavy and needs special creation or post-processing behavior.
 - The problem is not only "what object should be returned?" but also "how should FastMoq handle this type whenever it is resolved?"
@@ -386,7 +388,7 @@ Mocks.AddKnownType<IFileSystem>(
     includeDerivedTypes: true);
 ```
 
-Examples that are specific to `AddKnownType(...)` and do not fit ordinary `AddType(...)` usage:
+Examples that are specific to [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) and do not fit ordinary [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) usage:
 
 ```csharp
 Mocks.AddKnownType<IHttpContextAccessor>(
@@ -406,7 +408,7 @@ Mocks.AddKnownType<HttpContext>(
     });
 ```
 
-These are `AddKnownType(...)` examples because:
+These are [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) examples because:
 
 - They are not just returning an object.
 - They modify mock setup or post-creation defaults inside FastMoq's known-type pipeline.
@@ -414,14 +416,14 @@ These are `AddKnownType(...)` examples because:
 
 ### Quick decision rule
 
-If you are overriding one dependency in a test, use `AddType(...)`.
+If you are overriding one dependency in a test, use [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])).
 
-If you are extending FastMoq's built-in handling for a framework-style type such as `IFileSystem`, `HttpClient`, `DbContext`, or `HttpContext`, use `AddKnownType(...)`.
+If you are extending FastMoq's built-in handling for a framework-style type such as `IFileSystem`, `HttpClient`, `DbContext`, or `HttpContext`, use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)).
 
 If the two APIs still look similar, ask this question:
 
-- "Am I replacing one dependency?" -> `AddType(...)`
-- "Am I teaching FastMoq how to treat this kind of framework-heavy type?" -> `AddKnownType(...)`
+- "Am I replacing one dependency?" -> [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[]))
+- "Am I teaching FastMoq how to treat this kind of framework-heavy type?" -> [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean))
 
 ### Example: override a built-in direct instance
 
@@ -457,13 +459,13 @@ FastMoq is moving toward a provider-based architecture. The stable guidance for 
 2. Use the provider-native object only when you genuinely need library-specific arrangement behavior.
 3. Assume Moq compatibility is currently strongest, but new extension points should avoid hard-coding Moq assumptions unless the scenario is explicitly Moq-only.
 
-`ScenarioBuilder` still works with each registered provider because it only orchestrates arrange, act, and assert steps and forwards provider-first verification through `Mocker.Verify(...)`. The provider-specific part is still the arrangement code you put inside `With(...)` or `When(...)`.
+[ScenarioBuilder](xref:FastMoq.ScenarioBuilder`1) still works with each registered provider because it only orchestrates arrange, act, and assert steps and forwards provider-first verification through [Mocker.Verify(...)](xref:FastMoq.Mocker.Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})). The provider-specific part is still the arrangement code you put inside `With(...)` or `When(...)`.
 
-`VerifyLogged(...)` now follows the same default expectation model as provider-first verification: if you do not specify a count, it means at least once. Use `TimesSpec` when you need `Exactly`, `AtLeast`, `AtMost`, or `Never` semantics for captured log entries.
+[VerifyLogged(...)](../../api/FastMoq.Extensions.TestClassExtensions.yml) now follows the same default expectation model as provider-first verification: if you do not specify a count, it means at least once. Use [TimesSpec](../../api/FastMoq.Providers.TimesSpec.yml) when you need [Exactly](../../api/FastMoq.Providers.TimesSpec.yml), [AtLeast](../../api/FastMoq.Providers.TimesSpec.yml), [AtMost](../../api/FastMoq.Providers.TimesSpec.yml), or [Never](../../api/FastMoq.Providers.TimesSpec.yml) semantics for captured log entries.
 
-If you need provider-specific behavior for a tracked mock, prefer the typed provider-package extensions first, such as `AsMoq()` or `AsNSubstitute()`.
+If you need provider-specific behavior for a tracked mock, prefer the typed provider-package extensions first, such as [AsMoq()](../../api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.yml) or [AsNSubstitute()](../../api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.yml).
 
-Use `GetNativeMock(...)` or `MockModel.NativeMock` only when you truly need the raw provider object beyond those typed helpers.
+Use [GetNativeMock(...)](../../api/FastMoq.Mocker.yml) or [MockModel.NativeMock](../../api/FastMoq.Models.MockModel.yml) only when you truly need the raw provider object beyond those typed helpers.
 
 You can also retrieve the provider-first abstraction directly:
 
@@ -481,7 +483,7 @@ fastMock.AsNSubstitute().Load(123).Returns(order);
 
 ## `Strict` vs Presets
 
-`Strict` is now best understood as a compatibility alias for `MockFeatures.FailOnUnconfigured`.
+`Strict` is now best understood as a compatibility alias for [MockFeatures.FailOnUnconfigured](../../api/FastMoq.MockFeatures.yml).
 
 That means:
 
@@ -489,11 +491,11 @@ That means:
 Mocks.Strict = true;
 ```
 
-turns on fail-on-unconfigured behavior, but it does not replace the rest of the current `Behavior` flags.
+turns on fail-on-unconfigured behavior, but it does not replace the rest of the current [Behavior](../../api/FastMoq.Mocker.yml) flags.
 
 It also still influences some compatibility-era fallback rules, such as whether FastMoq falls back to non-public constructors or methods when public resolution fails.
 
-If you want to switch the whole behavior profile, use the explicit helpers instead:
+If you want to switch the whole behavior profile, use the explicit [UseStrictPreset()](../../api/FastMoq.Mocker.yml) and [UseLenientPreset()](../../api/FastMoq.Mocker.yml) helpers instead:
 
 ```csharp
 Mocks.UseStrictPreset();
@@ -505,7 +507,7 @@ Use the preset helpers when you want a complete behavior profile. Use `Strict` o
 Breaking-change note:
 
 - In `3.0.0`, `Strict` was often treated as a broader all-in-one switch.
-- In the current repo, `UseStrictPreset()` is the explicit way to request the broader strict profile.
+- In the current repo, [UseStrictPreset()](../../api/FastMoq.Mocker.yml) is the explicit way to request the broader strict profile.
 - `Strict` remains available, but it should now be read as the narrower compatibility path rather than the full profile selector.
 
 Separate compatibility note for known types:
@@ -524,7 +526,7 @@ Start there if you want repo-backed samples for:
 - built-in `IFileSystem` behavior
 - logger verification
 - fluent `Scenario` usage with parameterless arrange/act/assert overloads
-- provider-first verification with `TimesSpec.Once`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, `TimesSpec.AtMost(...)`, and `TimesSpec.Never()`
+- provider-first verification with [TimesSpec.Once](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.Exactly(...)](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.AtLeast(...)](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.AtMost(...)](../../api/FastMoq.Providers.TimesSpec.yml), and [TimesSpec.Never()](../../api/FastMoq.Providers.TimesSpec.yml)
 
 See [Executable Testing Examples](../samples/testing-examples.md).
 
@@ -532,16 +534,16 @@ See [Executable Testing Examples](../samples/testing-examples.md).
 
 For most tests in this repo, this order is the least surprising:
 
-1. Register explicit type overrides with `AddType(...)` only when needed.
-2. Configure default mocks with `GetOrCreateMock<T>()`.
+1. Register explicit type overrides with [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) only when needed.
+2. Configure default mocks with [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)).
 3. Use known-type helpers for `DbContext`, `HttpClient`, `IFileSystem`, and web abstractions.
-4. Create the component through `MockerTestBase<T>` or `CreateInstance(...)`.
+4. Create the component through [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1) or [CreateInstance(...)](xref:FastMoq.Mocker.CreateInstance``1(FastMoq.InstanceCreationFlags,System.Object[])).
 5. Assert behavior and verify the dependency interactions you actually care about.
 
 ## Pitfalls to Avoid
 
-- Do not use `AddType(...)` as a general replacement for `GetOrCreateMock<T>()`.
-- Do not bypass `GetMockDbContext<TContext>()` unless FastMoq's EF Core support is the thing you are explicitly testing around.
+- Do not use [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) as a general replacement for [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)).
+- Do not bypass [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) unless FastMoq's EF Core support is the thing you are explicitly testing around.
 - Do not assume `CreateInstanceByType(...)` alone is the best API for new code. Use `InstanceCreationFlags` when you need to express constructor-selection intent explicitly.
 - Do not make known-type extensions global. Keep them scoped to the `Mocker` used by the test.
 

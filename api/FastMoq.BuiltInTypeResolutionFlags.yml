@@ -27,7 +27,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: BuiltInTypeResolutionFlags
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 4
+    startLine: 2
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -74,7 +74,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: None
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 7
+    startLine: 5
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -100,7 +100,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: FileSystem
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 8
+    startLine: 6
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -126,7 +126,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: HttpClient
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 9
+    startLine: 7
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -152,7 +152,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 10
+    startLine: 8
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -178,7 +178,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContext
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 11
+    startLine: 9
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -204,7 +204,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: All
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 12
+    startLine: 10
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -231,7 +231,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: StrictCompatibilityDefaults
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 13
+    startLine: 11
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -257,7 +257,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LenientDefaults
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 14
+    startLine: 12
   assemblies:
   - FastMoq.Core
   namespace: FastMoq

@@ -294,7 +294,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.MockBehaviorOptions",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.MockBehaviorOptions.yml\" sourcestartlinenumber=\"1\">Mutable container for the enabled <xref href=\"FastMoq.MockFeatures\" data-throw-if-not-resolved=\"false\"></xref> on a <xref href=\"FastMoq.Mocker\" data-throw-if-not-resolved=\"false\"></xref> instance.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -308,7 +308,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.MockFeatures",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.MockFeatures.yml\" sourcestartlinenumber=\"1\">Feature flags that control optional FastMoq runtime behaviors.</p>\n"
     },
     {
       "type": "ManagedReference",

@@ -37,7 +37,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: NSubstituteMockingProvider
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 11
+    startLine: 8
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -94,7 +94,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 16
+    startLine: 13
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -121,7 +121,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Capabilities
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 22
+    startLine: 19
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -153,7 +153,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsCallBase
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 23
+    startLine: 20
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -185,7 +185,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsSetupAllProperties
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 24
+    startLine: 21
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -217,7 +217,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsProtectedMembers
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 25
+    startLine: 22
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -249,7 +249,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsInvocationTracking
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 26
+    startLine: 23
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -281,7 +281,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsLoggerCapture
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 27
+    startLine: 24
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -313,7 +313,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 29
+    startLine: 26
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -349,7 +349,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 34
+    startLine: 31
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -388,7 +388,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 50
+    startLine: 47
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -427,7 +427,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAllProperties
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 60
+    startLine: 57
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -459,7 +459,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetCallBase
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 65
+    startLine: 62
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -496,7 +496,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 70
+    startLine: 67
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -537,7 +537,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 142
+    startLine: 139
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -569,7 +569,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureProperties
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 160
+    startLine: 157
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -601,7 +601,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureLogger
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 165
+    startLine: 162
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -638,7 +638,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetLegacy
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 178
+    startLine: 175
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -672,7 +672,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TryWrapLegacy
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 180
+    startLine: 177
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider

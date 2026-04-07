@@ -34,7 +34,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerCreationExtensions
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 27
+    startLine: 24
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -85,7 +85,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 52
+    startLine: 49
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -147,7 +147,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 55
+    startLine: 52
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -189,7 +189,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 72
+    startLine: 69
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -238,7 +238,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 75
+    startLine: 72
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -281,7 +281,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 93
+    startLine: 90
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -332,7 +332,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 96
+    startLine: 93
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -376,7 +376,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 115
+    startLine: 112
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -429,7 +429,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 118
+    startLine: 115
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -474,7 +474,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 138
+    startLine: 135
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -529,7 +529,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 141
+    startLine: 138
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -575,7 +575,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInternal
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 203
+    startLine: 200
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -624,7 +624,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInternal
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 216
+    startLine: 213
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -679,7 +679,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 407
+    startLine: 404
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -724,7 +724,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 420
+    startLine: 417
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -769,7 +769,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 436
+    startLine: 433
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions

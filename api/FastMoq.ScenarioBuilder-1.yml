@@ -51,7 +51,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ScenarioBuilder
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 30
+    startLine: 27
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -129,7 +129,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 48
+    startLine: 45
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -162,7 +162,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 54
+    startLine: 51
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -200,7 +200,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 63
+    startLine: 60
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -235,7 +235,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 76
+    startLine: 73
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -271,7 +271,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 86
+    startLine: 83
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -307,7 +307,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 100
+    startLine: 97
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -343,7 +343,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 110
+    startLine: 107
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -379,7 +379,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: With
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 119
+    startLine: 116
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -415,7 +415,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 128
+    startLine: 125
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -451,7 +451,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 138
+    startLine: 135
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -486,7 +486,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 151
+    startLine: 148
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -522,7 +522,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 161
+    startLine: 158
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -558,7 +558,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 175
+    startLine: 172
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -594,7 +594,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: When
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 184
+    startLine: 181
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -630,7 +630,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 202
+    startLine: 199
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -675,7 +675,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 223
+    startLine: 220
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -718,7 +718,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 253
+    startLine: 250
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -756,7 +756,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 262
+    startLine: 259
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -794,7 +794,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 271
+    startLine: 268
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -832,7 +832,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 280
+    startLine: 277
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -870,7 +870,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 289
+    startLine: 286
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -905,7 +905,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 302
+    startLine: 299
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -941,7 +941,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 312
+    startLine: 309
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -977,7 +977,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 326
+    startLine: 323
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1013,7 +1013,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 336
+    startLine: 333
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1049,7 +1049,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Then
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 345
+    startLine: 342
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1085,7 +1085,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 354
+    startLine: 351
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1125,7 +1125,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ExecuteAsync
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 368
+    startLine: 365
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1157,7 +1157,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Execute
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 396
+    startLine: 393
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1187,7 +1187,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ExecuteThrows
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 411
+    startLine: 408
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1230,7 +1230,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ExecuteThrowsAsync
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 426
+    startLine: 423
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1269,7 +1269,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Core/ScenarioBuilder.cs
-    startLine: 450
+    startLine: 447
   assemblies:
   - FastMoq.Core
   namespace: FastMoq

@@ -25,7 +25,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerHttpExtensions
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 10
+    startLine: 8
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -63,7 +63,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpClient
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 20
+    startLine: 18
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -114,7 +114,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenHttpRequest
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 32
+    startLine: 30
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -156,7 +156,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenHttpRequest
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 48
+    startLine: 46
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -201,7 +201,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenHttpRequestJson
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 66
+    startLine: 64
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -249,7 +249,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetContentBytesAsync
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 104
+    startLine: 102
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -285,7 +285,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetContentStreamAsync
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-    startLine: 112
+    startLine: 110
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions

@@ -20,7 +20,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMock
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 18
+    startLine: 16
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -92,7 +92,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 20
+    startLine: 18
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers

@@ -26,7 +26,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: KnownTypeRegistration
     path: FastMoq.Core/KnownTypeRegistration.cs
-    startLine: 9
+    startLine: 8
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -85,7 +85,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/KnownTypeRegistration.cs
-    startLine: 14
+    startLine: 13
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -119,7 +119,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ServiceType
     path: FastMoq.Core/KnownTypeRegistration.cs
-    startLine: 22
+    startLine: 21
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -150,7 +150,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IncludeDerivedTypes
     path: FastMoq.Core/KnownTypeRegistration.cs
-    startLine: 27
+    startLine: 26
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -181,7 +181,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DirectInstanceFactory
     path: FastMoq.Core/KnownTypeRegistration.cs
-    startLine: 33
+    startLine: 32
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -215,7 +215,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ManagedInstanceFactory
     path: FastMoq.Core/KnownTypeRegistration.cs
-    startLine: 39
+    startLine: 38
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -249,7 +249,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureMock
     path: FastMoq.Core/KnownTypeRegistration.cs
-    startLine: 45
+    startLine: 44
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -283,7 +283,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ApplyObjectDefaults
     path: FastMoq.Core/KnownTypeRegistration.cs
-    startLine: 50
+    startLine: 49
   assemblies:
   - FastMoq.Core
   namespace: FastMoq

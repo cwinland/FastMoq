@@ -24,7 +24,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LogEntry
     path: FastMoq.Core/Models/LogEntry.cs
-    startLine: 8
+    startLine: 7
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -82,7 +82,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/LogEntry.cs
-    startLine: 8
+    startLine: 7
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -122,7 +122,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LogLevel
     path: FastMoq.Core/Models/LogEntry.cs
-    startLine: 8
+    startLine: 7
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -151,7 +151,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: EventId
     path: FastMoq.Core/Models/LogEntry.cs
-    startLine: 8
+    startLine: 7
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -180,7 +180,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Message
     path: FastMoq.Core/Models/LogEntry.cs
-    startLine: 8
+    startLine: 7
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -209,7 +209,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Exception
     path: FastMoq.Core/Models/LogEntry.cs
-    startLine: 8
+    startLine: 7
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models

@@ -24,7 +24,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContextMockerExtensions
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 12
+    startLine: 11
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -62,7 +62,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetDbContextHandle
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 17
+    startLine: 16
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -103,7 +103,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockDbContext
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 47
+    startLine: 46
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -142,7 +142,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockDbContext
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 56
+    startLine: 55
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -177,7 +177,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TryCreateManagedDbContextInstance
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 72
+    startLine: 71
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -215,7 +215,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateLegacyDbContextMock
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 146
+    startLine: 145
   assemblies:
   - FastMoq.Database
   namespace: FastMoq

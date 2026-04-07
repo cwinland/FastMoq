@@ -11,6 +11,7 @@ items:
   - FastMoq.MockFeatures.FailOnUnconfigured
   - FastMoq.MockFeatures.LoggerCallback
   - FastMoq.MockFeatures.None
+  - FastMoq.MockFeatures.ResolveNestedMembers
   - FastMoq.MockFeatures.TrackInvocations
   - FastMoq.MockFeatures.VerifyNoUnexpected
   langs:
@@ -27,10 +28,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockFeatures
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 4
+    startLine: 5
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Feature flags that control optional FastMoq runtime behaviors.
+  example: []
   syntax:
     content: >-
       [Flags]
@@ -74,10 +77,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: None
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 7
+    startLine: 11
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: No optional features are enabled.
+  example: []
   syntax:
     content: None = 0
     return:
@@ -100,10 +105,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallBase
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 8
+    startLine: 16
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Allows class-based mocks to call through to their base implementation when supported by the active provider.
+  example: []
   syntax:
     content: CallBase = 1
     return:
@@ -126,10 +133,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AutoSetupProperties
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 9
+    startLine: 21
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Configures supported mocks so writable properties behave like normal auto-properties.
+  example: []
   syntax:
     content: AutoSetupProperties = 2
     return:
@@ -152,12 +161,42 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AutoInjectDependencies
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 10
+    startLine: 26
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Automatically resolves and injects constructor, field, and property dependencies when FastMoq creates or prepares objects.
+  example: []
   syntax:
     content: AutoInjectDependencies = 4
+    return:
+      type: FastMoq.MockFeatures
+- uid: FastMoq.MockFeatures.ResolveNestedMembers
+  commentId: F:FastMoq.MockFeatures.ResolveNestedMembers
+  id: ResolveNestedMembers
+  parent: FastMoq.MockFeatures
+  langs:
+  - csharp
+  - vb
+  name: ResolveNestedMembers
+  nameWithType: MockFeatures.ResolveNestedMembers
+  fullName: FastMoq.MockFeatures.ResolveNestedMembers
+  type: Field
+  source:
+    remote:
+      path: FastMoq.Core/MockFeatures.cs
+      branch: IProvider
+      repo: https://github.com/cwinland/FastMoq.git
+    id: ResolveNestedMembers
+    path: FastMoq.Core/MockFeatures.cs
+    startLine: 31
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Enables recursive nested member population after object creation or mock setup.
+  example: []
+  syntax:
+    content: ResolveNestedMembers = 128
     return:
       type: FastMoq.MockFeatures
 - uid: FastMoq.MockFeatures.LoggerCallback
@@ -178,10 +217,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggerCallback
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 11
+    startLine: 36
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Captures logger invocations into the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance when supported by the active provider.
+  example: []
   syntax:
     content: LoggerCallback = 8
     return:
@@ -204,10 +245,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoUnexpected
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 12
+    startLine: 41
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Enables verification helpers that fail when unexpected calls were recorded.
+  example: []
   syntax:
     content: VerifyNoUnexpected = 16
     return:
@@ -230,10 +273,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TrackInvocations
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 13
+    startLine: 46
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Records invocation history for later verification and diagnostics.
+  example: []
   syntax:
     content: TrackInvocations = 32
     return:
@@ -256,10 +301,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: FailOnUnconfigured
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 14
+    startLine: 51
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Causes unresolved or unconfigured interactions to fail immediately instead of using lenient defaults.
+  example: []
   syntax:
     content: FailOnUnconfigured = 64
     return:
@@ -2057,3 +2104,10 @@ references:
   name: MockFeatures
   nameWithType: MockFeatures
   fullName: FastMoq.MockFeatures
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker

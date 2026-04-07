@@ -23,7 +23,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMock
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 7
+    startLine: 5
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -74,7 +74,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockedType
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 9
+    startLine: 7
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -103,7 +103,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 10
+    startLine: 8
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -132,7 +132,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: NativeMock
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 11
+    startLine: 9
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -161,7 +161,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Reset
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 12
+    startLine: 10
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers

@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Enum MockFeatures | FastMoq ">
     
-    
+    <meta name="description" content="Feature flags that control optional FastMoq runtime behaviors.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -82,7 +82,8 @@
 
 
   <h1 id="FastMoq_MockFeatures" data-uid="FastMoq.MockFeatures" class="text-break">Enum MockFeatures</h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Feature flags that control optional FastMoq runtime behaviors.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a></h6>
   <h6><strong>Assembly</strong>: FastMoq.Core.dll</h6>
@@ -103,35 +104,48 @@ public enum MockFeatures</code></pre>
     </thead></thead><tbody>
       <tr>
         <td id="FastMoq_MockFeatures_AutoInjectDependencies">AutoInjectDependencies</td>
-        <td></td>
+        <td><p>Automatically resolves and injects constructor, field, and property dependencies when FastMoq creates or prepares objects.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_MockFeatures_AutoSetupProperties">AutoSetupProperties</td>
-        <td></td>
+        <td><p>Configures supported mocks so writable properties behave like normal auto-properties.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_MockFeatures_CallBase">CallBase</td>
-        <td></td>
+        <td><p>Allows class-based mocks to call through to their base implementation when supported by the active provider.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_MockFeatures_FailOnUnconfigured">FailOnUnconfigured</td>
-        <td></td>
+        <td><p>Causes unresolved or unconfigured interactions to fail immediately instead of using lenient defaults.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_MockFeatures_LoggerCallback">LoggerCallback</td>
-        <td></td>
+        <td><p>Captures logger invocations into the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance when supported by the active provider.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_MockFeatures_None">None</td>
-        <td></td>
+        <td><p>No optional features are enabled.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="FastMoq_MockFeatures_ResolveNestedMembers">ResolveNestedMembers</td>
+        <td><p>Enables recursive nested member population after object creation or mock setup.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_MockFeatures_TrackInvocations">TrackInvocations</td>
-        <td></td>
+        <td><p>Records invocation history for later verification and diagnostics.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_MockFeatures_VerifyNoUnexpected">VerifyNoUnexpected</td>
-        <td></td>
+        <td><p>Enables verification helpers that fail when unexpected calls were recorded.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -190,7 +204,7 @@ public enum MockFeatures</code></pre>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-06 22:53 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
       
           </div>
         </div>

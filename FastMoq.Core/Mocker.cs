@@ -203,14 +203,30 @@ namespace FastMoq
         public Uri Uri { get; }
 
         /// <summary>
-        /// Controls whether nested property and injection resolution should run while creating instances and tracked mocks.
-        /// </summary>
-        public bool InnerMockResolution { get; set; } = true;
-
-        /// <summary>
-        /// Feature flag container controlling behavior (replaces monolithic Strict boolean).
+        /// Feature flag container controlling behavior such as base-call usage, dependency injection, nested member population, logging capture, and strict verification.
         /// </summary>
         public MockBehaviorOptions Behavior { get; set; } = MockBehaviorOptions.LenientPreset.Clone();
+
+        /// <summary>
+        /// Obsolete compatibility alias for <see cref="MockFeatures.ResolveNestedMembers"/> within <see cref="Behavior"/>.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Use Behavior.Enabled flags instead (ResolveNestedMembers).")]
+        public bool InnerMockResolution
+        {
+            get => Behavior.Has(MockFeatures.ResolveNestedMembers);
+            set
+            {
+                if (value)
+                {
+                    Behavior.Enable(MockFeatures.ResolveNestedMembers);
+                }
+                else
+                {
+                    Behavior.Disable(MockFeatures.ResolveNestedMembers);
+                }
+            }
+        }
 
         /// <summary>
         /// Obsolete compatibility property that maps to <see cref="MockFeatures.FailOnUnconfigured"/> within <see cref="Behavior"/>.
@@ -1450,7 +1466,7 @@ namespace FastMoq
                 }
             }
             var obj = AddInjections(info?.Invoke(newArgs.ToArray()));
-            return InnerMockResolution ? AddProperties(type, obj) : obj;
+            return Behavior.Has(MockFeatures.ResolveNestedMembers) ? AddProperties(type, obj) : obj;
         }
         #endregion
 
@@ -1802,7 +1818,7 @@ namespace FastMoq
                 provider.ConfigureProperties(fastMock);
             }
 
-            if (InnerMockResolution && Behavior.Has(MockFeatures.AutoInjectDependencies))
+            if (Behavior.Has(MockFeatures.ResolveNestedMembers) && Behavior.Has(MockFeatures.AutoInjectDependencies))
             {
                 AddProperties(type, fastMock.Instance);
             }

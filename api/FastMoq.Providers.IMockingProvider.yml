@@ -31,7 +31,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IMockingProvider
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 9
+    startLine: 8
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -81,7 +81,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Capabilities
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 11
+    startLine: 10
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -110,7 +110,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 13
+    startLine: 12
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -143,7 +143,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 15
+    startLine: 14
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -179,7 +179,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 16
+    startLine: 15
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -215,7 +215,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAllProperties
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 18
+    startLine: 17
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -244,7 +244,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetCallBase
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 19
+    startLine: 18
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -278,7 +278,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 21
+    startLine: 20
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -316,7 +316,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 22
+    startLine: 21
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -345,7 +345,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureProperties
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 24
+    startLine: 23
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -374,7 +374,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureLogger
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 25
+    startLine: 24
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -408,7 +408,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetLegacy
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 26
+    startLine: 25
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -439,7 +439,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TryWrapLegacy
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 27
+    startLine: 26
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers

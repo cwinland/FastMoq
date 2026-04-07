@@ -24,7 +24,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceCreationFlags
     path: FastMoq.Core/InstanceCreationFlags.cs
-    startLine: 8
+    startLine: 6
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -76,7 +76,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: None
     path: FastMoq.Core/InstanceCreationFlags.cs
-    startLine: 14
+    startLine: 12
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -104,7 +104,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: PublicConstructorsOnly
     path: FastMoq.Core/InstanceCreationFlags.cs
-    startLine: 19
+    startLine: 17
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -132,7 +132,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AllowNonPublicConstructorFallback
     path: FastMoq.Core/InstanceCreationFlags.cs
-    startLine: 24
+    startLine: 22
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -160,7 +160,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ResolveOptionalParametersViaMocker
     path: FastMoq.Core/InstanceCreationFlags.cs
-    startLine: 29
+    startLine: 27
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -188,7 +188,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: UseDefaultOrNullOptionalParameters
     path: FastMoq.Core/InstanceCreationFlags.cs
-    startLine: 34
+    startLine: 32
   assemblies:
   - FastMoq.Core
   namespace: FastMoq

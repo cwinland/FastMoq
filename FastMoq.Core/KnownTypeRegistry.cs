@@ -272,7 +272,7 @@ namespace FastMoq
 
         private static void ApplyBuiltInHttpContextAccessorDefaults(Mocker mocker, object obj)
         {
-            if (!mocker.InnerMockResolution || !mocker.Behavior.Has(MockFeatures.AutoInjectDependencies))
+            if (!mocker.Behavior.Has(MockFeatures.ResolveNestedMembers) || !mocker.Behavior.Has(MockFeatures.AutoInjectDependencies))
             {
                 return;
             }

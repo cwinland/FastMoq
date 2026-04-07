@@ -1293,31 +1293,6 @@ references:
   fullName.vb: FastMoq.Extensions.TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
   nameWithType: TestClassExtensions.SetPropertyValue<TObject>(TObject, string, object?)
   nameWithType.vb: TestClassExtensions.SetPropertyValue(Of TObject)(TObject, String, Object)
-- uid: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback*
-  name: SetupLoggerCallback
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetupLoggerCallback_
-  commentId: Overload:FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback
-  isSpec: "True"
-  fullName: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback
-  nameWithType: TestClassExtensions.SetupLoggerCallback
-- uid: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
-  name: SetupLoggerCallback<TLogger>(Mock<TLogger>, Action<LogLevel, EventId, string, Exception?>)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetupLoggerCallback__1_Moq_Mock___0__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__
-  commentId: M:FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
-  name.vb: SetupLoggerCallback(Of TLogger)(Mock(Of TLogger), Action(Of LogLevel, EventId, String, Exception))
-  fullName: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback<TLogger>(Moq.Mock<TLogger>, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception?>)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback(Of TLogger)(Moq.Mock(Of TLogger), System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception))
-  nameWithType: TestClassExtensions.SetupLoggerCallback<TLogger>(Mock<TLogger>, Action<LogLevel, EventId, string, Exception?>)
-  nameWithType.vb: TestClassExtensions.SetupLoggerCallback(Of TLogger)(Mock(Of TLogger), Action(Of LogLevel, EventId, String, Exception))
-- uid: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})
-  name: SetupLoggerCallback<TLogger>(Mock<TLogger>, Action<LogLevel, EventId, string>)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetupLoggerCallback__1_Moq_Mock___0__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String__
-  commentId: M:FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String})
-  name.vb: SetupLoggerCallback(Of TLogger)(Mock(Of TLogger), Action(Of LogLevel, EventId, String))
-  fullName: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback<TLogger>(Moq.Mock<TLogger>, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string>)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.SetupLoggerCallback(Of TLogger)(Moq.Mock(Of TLogger), System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String))
-  nameWithType: TestClassExtensions.SetupLoggerCallback<TLogger>(Mock<TLogger>, Action<LogLevel, EventId, string>)
-  nameWithType.vb: TestClassExtensions.SetupLoggerCallback(Of TLogger)(Mock(Of TLogger), Action(Of LogLevel, EventId, String))
 - uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String)
   name: VerifyLogged(Mocker, LogLevel, string)
   href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_
@@ -1379,85 +1354,6 @@ references:
   isSpec: "True"
   fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogged
   nameWithType: TestClassExtensions.VerifyLogged
-- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
-  name: VerifyLogger(Mock<ILogger>, LogLevel, string, Exception?, int?, int)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogger_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_
-  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
-  name.vb: VerifyLogger(Mock(Of ILogger), LogLevel, String, Exception, Integer?, Integer)
-  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Moq.Mock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, System.Exception?, int?, int)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, System.Exception, Integer?, Integer)
-  nameWithType: TestClassExtensions.VerifyLogger(Mock<ILogger>, LogLevel, string, Exception?, int?, int)
-  nameWithType.vb: TestClassExtensions.VerifyLogger(Mock(Of ILogger), LogLevel, String, Exception, Integer?, Integer)
-- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
-  name: VerifyLogger(Mock<ILogger>, LogLevel, string, int)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogger_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_
-  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
-  name.vb: VerifyLogger(Mock(Of ILogger), LogLevel, String, Integer)
-  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Moq.Mock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, int)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, Integer)
-  nameWithType: TestClassExtensions.VerifyLogger(Mock<ILogger>, LogLevel, string, int)
-  nameWithType.vb: TestClassExtensions.VerifyLogger(Mock(Of ILogger), LogLevel, String, Integer)
-- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogger*
-  name: VerifyLogger
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogger_
-  commentId: Overload:FastMoq.Extensions.TestClassExtensions.VerifyLogger
-  isSpec: "True"
-  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogger
-  nameWithType: TestClassExtensions.VerifyLogger
-- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},Moq.Times)
-  name: VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, Times)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogger__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String___0_System_Nullable_System_Int32__Moq_Times_
-  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},Moq.Times)
-  name.vb: VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Times)
-  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogger<TException>(Moq.Mock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, TException?, int?, Moq.Times)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Of TException)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, TException, Integer?, Moq.Times)
-  nameWithType: TestClassExtensions.VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, Times)
-  nameWithType.vb: TestClassExtensions.VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Times)
-- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Func{Moq.Times})
-  name: VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, Func<Times>)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogger__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String___0_System_Nullable_System_Int32__System_Func_Moq_Times__
-  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Func{Moq.Times})
-  name.vb: VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Func(Of Times))
-  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogger<TException>(Moq.Mock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, TException?, int?, System.Func<Moq.Times>)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Of TException)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, TException, Integer?, System.Func(Of Moq.Times))
-  nameWithType: TestClassExtensions.VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, Func<Times>)
-  nameWithType.vb: TestClassExtensions.VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Func(Of Times))
-- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
-  name: VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, int)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogger__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String___0_System_Nullable_System_Int32__System_Int32_
-  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
-  name.vb: VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Integer)
-  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogger<TException>(Moq.Mock<Microsoft.Extensions.Logging.ILogger>, Microsoft.Extensions.Logging.LogLevel, string, TException?, int?, int)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Of TException)(Moq.Mock(Of Microsoft.Extensions.Logging.ILogger), Microsoft.Extensions.Logging.LogLevel, String, TException, Integer?, Integer)
-  nameWithType: TestClassExtensions.VerifyLogger<TException>(Mock<ILogger>, LogLevel, string, TException?, int?, int)
-  nameWithType.vb: TestClassExtensions.VerifyLogger(Of TException)(Mock(Of ILogger), LogLevel, String, TException, Integer?, Integer)
-- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
-  name: VerifyLogger<TLogger>(Mock<TLogger>, LogLevel, string, Exception?, int?, int)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogger__1_Moq_Mock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_
-  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)
-  name.vb: VerifyLogger(Of TLogger)(Mock(Of TLogger), LogLevel, String, Exception, Integer?, Integer)
-  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogger<TLogger>(Moq.Mock<TLogger>, Microsoft.Extensions.Logging.LogLevel, string, System.Exception?, int?, int)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Of TLogger)(Moq.Mock(Of TLogger), Microsoft.Extensions.Logging.LogLevel, String, System.Exception, Integer?, Integer)
-  nameWithType: TestClassExtensions.VerifyLogger<TLogger>(Mock<TLogger>, LogLevel, string, Exception?, int?, int)
-  nameWithType.vb: TestClassExtensions.VerifyLogger(Of TLogger)(Mock(Of TLogger), LogLevel, String, Exception, Integer?, Integer)
-- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
-  name: VerifyLogger<TLogger>(Mock<TLogger>, LogLevel, string, int)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogger__1_Moq_Mock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_
-  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)
-  name.vb: VerifyLogger(Of TLogger)(Mock(Of TLogger), LogLevel, String, Integer)
-  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogger<TLogger>(Moq.Mock<TLogger>, Microsoft.Extensions.Logging.LogLevel, string, int)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Of TLogger)(Moq.Mock(Of TLogger), Microsoft.Extensions.Logging.LogLevel, String, Integer)
-  nameWithType: TestClassExtensions.VerifyLogger<TLogger>(Mock<TLogger>, LogLevel, string, int)
-  nameWithType.vb: TestClassExtensions.VerifyLogger(Of TLogger)(Mock(Of TLogger), LogLevel, String, Integer)
-- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogger``2(Moq.Mock{``1},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
-  name: VerifyLogger<TException, TLogger>(Mock<TLogger>, LogLevel, string, TException?, int?, int)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogger__2_Moq_Mock___1__Microsoft_Extensions_Logging_LogLevel_System_String___0_System_Nullable_System_Int32__System_Int32_
-  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogger``2(Moq.Mock{``1},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)
-  name.vb: VerifyLogger(Of TException, TLogger)(Mock(Of TLogger), LogLevel, String, TException, Integer?, Integer)
-  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogger<TException, TLogger>(Moq.Mock<TLogger>, Microsoft.Extensions.Logging.LogLevel, string, TException?, int?, int)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogger(Of TException, TLogger)(Moq.Mock(Of TLogger), Microsoft.Extensions.Logging.LogLevel, String, TException, Integer?, Integer)
-  nameWithType: TestClassExtensions.VerifyLogger<TException, TLogger>(Mock<TLogger>, LogLevel, string, TException?, int?, int)
-  nameWithType.vb: TestClassExtensions.VerifyLogger(Of TException, TLogger)(Mock(Of TLogger), LogLevel, String, TException, Integer?, Integer)
 - uid: FastMoq.InstanceCreationFlags
   name: InstanceCreationFlags
   href: api/FastMoq.InstanceCreationFlags.html
@@ -1742,6 +1638,12 @@ references:
   commentId: F:FastMoq.MockFeatures.None
   fullName: FastMoq.MockFeatures.None
   nameWithType: MockFeatures.None
+- uid: FastMoq.MockFeatures.ResolveNestedMembers
+  name: ResolveNestedMembers
+  href: api/FastMoq.MockFeatures.html#FastMoq_MockFeatures_ResolveNestedMembers
+  commentId: F:FastMoq.MockFeatures.ResolveNestedMembers
+  fullName: FastMoq.MockFeatures.ResolveNestedMembers
+  nameWithType: MockFeatures.ResolveNestedMembers
 - uid: FastMoq.MockFeatures.TrackInvocations
   name: TrackInvocations
   href: api/FastMoq.MockFeatures.html#FastMoq_MockFeatures_TrackInvocations
@@ -1975,22 +1877,6 @@ references:
   fullName.vb: FastMoq.Mocker.AddKnownType(Of TKnown)(System.Func(Of FastMoq.Mocker, System.Type, TKnown), System.Func(Of FastMoq.Mocker, System.Type, TKnown), System.Action(Of FastMoq.Mocker, System.Type, FastMoq.Providers.IFastMock), System.Action(Of FastMoq.Mocker, TKnown), Boolean, Boolean)
   nameWithType: Mocker.AddKnownType<TKnown>(Func<Mocker, Type, TKnown?>?, Func<Mocker, Type, TKnown?>?, Action<Mocker, Type, IFastMock>?, Action<Mocker, TKnown>?, bool, bool)
   nameWithType.vb: Mocker.AddKnownType(Of TKnown)(Func(Of Mocker, Type, TKnown), Func(Of Mocker, Type, TKnown), Action(Of Mocker, Type, IFastMock), Action(Of Mocker, TKnown), Boolean, Boolean)
-- uid: FastMoq.Mocker.AddMock*
-  name: AddMock
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_AddMock_
-  commentId: Overload:FastMoq.Mocker.AddMock
-  isSpec: "True"
-  fullName: FastMoq.Mocker.AddMock
-  nameWithType: Mocker.AddMock
-- uid: FastMoq.Mocker.AddMock``1(Moq.Mock{``0},System.Boolean,System.Boolean)
-  name: AddMock<T>(Mock<T>, bool, bool)
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_AddMock__1_Moq_Mock___0__System_Boolean_System_Boolean_
-  commentId: M:FastMoq.Mocker.AddMock``1(Moq.Mock{``0},System.Boolean,System.Boolean)
-  name.vb: AddMock(Of T)(Mock(Of T), Boolean, Boolean)
-  fullName: FastMoq.Mocker.AddMock<T>(Moq.Mock<T>, bool, bool)
-  fullName.vb: FastMoq.Mocker.AddMock(Of T)(Moq.Mock(Of T), Boolean, Boolean)
-  nameWithType: Mocker.AddMock<T>(Mock<T>, bool, bool)
-  nameWithType.vb: Mocker.AddMock(Of T)(Mock(Of T), Boolean, Boolean)
 - uid: FastMoq.Mocker.AddProperties(System.Type,System.Object,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])
   name: AddProperties(Type, object?, params KeyValuePair<string, object>[])
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_AddProperties_System_Type_System_Object_System_Collections_Generic_KeyValuePair_System_String_System_Object____
@@ -2016,24 +1902,6 @@ references:
   fullName.vb: FastMoq.Mocker.AddProperties(Of T)(T, ParamArray System.Collections.Generic.KeyValuePair(Of String, Object)())
   nameWithType: Mocker.AddProperties<T>(T, params KeyValuePair<string, object>[])
   nameWithType.vb: Mocker.AddProperties(Of T)(T, ParamArray KeyValuePair(Of String, Object)())
-- uid: FastMoq.Mocker.AddType(System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  name: AddType(Func<Mocker, object?, object?>, bool, params object?[]?)
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_AddType_System_Func_FastMoq_Mocker_System_Object_System_Object__System_Boolean_System_Object___
-  commentId: M:FastMoq.Mocker.AddType(System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  name.vb: AddType(Func(Of Mocker, Object, Object), Boolean, ParamArray Object())
-  fullName: FastMoq.Mocker.AddType(System.Func<FastMoq.Mocker, object?, object?>, bool, params object?[]?)
-  fullName.vb: FastMoq.Mocker.AddType(System.Func(Of FastMoq.Mocker, Object, Object), Boolean, ParamArray Object())
-  nameWithType: Mocker.AddType(Func<Mocker, object?, object?>, bool, params object?[]?)
-  nameWithType.vb: Mocker.AddType(Func(Of Mocker, Object, Object), Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  name: AddType(Type, Type, Func<Mocker, object, object>?, bool, params object?[]?)
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_AddType_System_Type_System_Type_System_Func_FastMoq_Mocker_System_Object_System_Object__System_Boolean_System_Object___
-  commentId: M:FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object,System.Object},System.Boolean,System.Object[])
-  name.vb: AddType(Type, Type, Func(Of Mocker, Object, Object), Boolean, ParamArray Object())
-  fullName: FastMoq.Mocker.AddType(System.Type, System.Type, System.Func<FastMoq.Mocker, object, object>?, bool, params object?[]?)
-  fullName.vb: FastMoq.Mocker.AddType(System.Type, System.Type, System.Func(Of FastMoq.Mocker, Object, Object), Boolean, ParamArray Object())
-  nameWithType: Mocker.AddType(Type, Type, Func<Mocker, object, object>?, bool, params object?[]?)
-  nameWithType.vb: Mocker.AddType(Type, Type, Func(Of Mocker, Object, Object), Boolean, ParamArray Object())
 - uid: FastMoq.Mocker.AddType(System.Type,System.Type,System.Func{FastMoq.Mocker,System.Object},System.Boolean,System.Object[])
   name: AddType(Type, Type, Func<Mocker, object>?, bool, params object?[]?)
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_AddType_System_Type_System_Type_System_Func_FastMoq_Mocker_System_Object__System_Boolean_System_Object___
@@ -2232,31 +2100,6 @@ references:
   isSpec: "True"
   fullName: FastMoq.Mocker.ConstructorHistory
   nameWithType: Mocker.ConstructorHistory
-- uid: FastMoq.Mocker.CreateDetachedMock(System.Type,System.Boolean,System.Object[])
-  name: CreateDetachedMock(Type, bool, params object?[])
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateDetachedMock_System_Type_System_Boolean_System_Object___
-  commentId: M:FastMoq.Mocker.CreateDetachedMock(System.Type,System.Boolean,System.Object[])
-  name.vb: CreateDetachedMock(Type, Boolean, ParamArray Object())
-  fullName: FastMoq.Mocker.CreateDetachedMock(System.Type, bool, params object?[])
-  fullName.vb: FastMoq.Mocker.CreateDetachedMock(System.Type, Boolean, ParamArray Object())
-  nameWithType: Mocker.CreateDetachedMock(Type, bool, params object?[])
-  nameWithType.vb: Mocker.CreateDetachedMock(Type, Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.CreateDetachedMock*
-  name: CreateDetachedMock
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateDetachedMock_
-  commentId: Overload:FastMoq.Mocker.CreateDetachedMock
-  isSpec: "True"
-  fullName: FastMoq.Mocker.CreateDetachedMock
-  nameWithType: Mocker.CreateDetachedMock
-- uid: FastMoq.Mocker.CreateDetachedMock``1(System.Boolean,System.Object[])
-  name: CreateDetachedMock<T>(bool, params object?[])
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateDetachedMock__1_System_Boolean_System_Object___
-  commentId: M:FastMoq.Mocker.CreateDetachedMock``1(System.Boolean,System.Object[])
-  name.vb: CreateDetachedMock(Of T)(Boolean, ParamArray Object())
-  fullName: FastMoq.Mocker.CreateDetachedMock<T>(bool, params object?[])
-  fullName.vb: FastMoq.Mocker.CreateDetachedMock(Of T)(Boolean, ParamArray Object())
-  nameWithType: Mocker.CreateDetachedMock<T>(bool, params object?[])
-  nameWithType.vb: Mocker.CreateDetachedMock(Of T)(Boolean, ParamArray Object())
 - uid: FastMoq.Mocker.CreateFastMock*
   name: CreateFastMock
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateFastMock_
@@ -2323,56 +2166,6 @@ references:
   fullName.vb: FastMoq.Mocker.CreateInstance(Of T)(ParamArray Object())
   nameWithType: Mocker.CreateInstance<T>(params object?[])
   nameWithType.vb: Mocker.CreateInstance(Of T)(ParamArray Object())
-- uid: FastMoq.Mocker.CreateMock(System.Type,System.Boolean,System.Object[])
-  name: CreateMock(Type, bool, params object?[])
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateMock_System_Type_System_Boolean_System_Object___
-  commentId: M:FastMoq.Mocker.CreateMock(System.Type,System.Boolean,System.Object[])
-  name.vb: CreateMock(Type, Boolean, ParamArray Object())
-  fullName: FastMoq.Mocker.CreateMock(System.Type, bool, params object?[])
-  fullName.vb: FastMoq.Mocker.CreateMock(System.Type, Boolean, ParamArray Object())
-  nameWithType: Mocker.CreateMock(Type, bool, params object?[])
-  nameWithType.vb: Mocker.CreateMock(Type, Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.CreateMock*
-  name: CreateMock
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateMock_
-  commentId: Overload:FastMoq.Mocker.CreateMock
-  isSpec: "True"
-  fullName: FastMoq.Mocker.CreateMock
-  nameWithType: Mocker.CreateMock
-- uid: FastMoq.Mocker.CreateMockInstance(System.Type,System.Boolean,System.Object[])
-  name: CreateMockInstance(Type, bool, params object?[])
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateMockInstance_System_Type_System_Boolean_System_Object___
-  commentId: M:FastMoq.Mocker.CreateMockInstance(System.Type,System.Boolean,System.Object[])
-  name.vb: CreateMockInstance(Type, Boolean, ParamArray Object())
-  fullName: FastMoq.Mocker.CreateMockInstance(System.Type, bool, params object?[])
-  fullName.vb: FastMoq.Mocker.CreateMockInstance(System.Type, Boolean, ParamArray Object())
-  nameWithType: Mocker.CreateMockInstance(Type, bool, params object?[])
-  nameWithType.vb: Mocker.CreateMockInstance(Type, Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.CreateMockInstance*
-  name: CreateMockInstance
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateMockInstance_
-  commentId: Overload:FastMoq.Mocker.CreateMockInstance
-  isSpec: "True"
-  fullName: FastMoq.Mocker.CreateMockInstance
-  nameWithType: Mocker.CreateMockInstance
-- uid: FastMoq.Mocker.CreateMockInstance``1(System.Boolean,System.Object[])
-  name: CreateMockInstance<T>(bool, params object?[])
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateMockInstance__1_System_Boolean_System_Object___
-  commentId: M:FastMoq.Mocker.CreateMockInstance``1(System.Boolean,System.Object[])
-  name.vb: CreateMockInstance(Of T)(Boolean, ParamArray Object())
-  fullName: FastMoq.Mocker.CreateMockInstance<T>(bool, params object?[])
-  fullName.vb: FastMoq.Mocker.CreateMockInstance(Of T)(Boolean, ParamArray Object())
-  nameWithType: Mocker.CreateMockInstance<T>(bool, params object?[])
-  nameWithType.vb: Mocker.CreateMockInstance(Of T)(Boolean, ParamArray Object())
-- uid: FastMoq.Mocker.CreateMock``1(System.Boolean,System.Object[])
-  name: CreateMock<T>(bool, params object?[])
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateMock__1_System_Boolean_System_Object___
-  commentId: M:FastMoq.Mocker.CreateMock``1(System.Boolean,System.Object[])
-  name.vb: CreateMock(Of T)(Boolean, ParamArray Object())
-  fullName: FastMoq.Mocker.CreateMock<T>(bool, params object?[])
-  fullName.vb: FastMoq.Mocker.CreateMock(Of T)(Boolean, ParamArray Object())
-  nameWithType: Mocker.CreateMock<T>(bool, params object?[])
-  nameWithType.vb: Mocker.CreateMock(Of T)(Boolean, ParamArray Object())
 - uid: FastMoq.Mocker.ExceptionLog
   name: ExceptionLog
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_ExceptionLog
@@ -2551,22 +2344,6 @@ references:
   isSpec: "True"
   fullName: FastMoq.Mocker.GetMethodDefaultData
   nameWithType: Mocker.GetMethodDefaultData
-- uid: FastMoq.Mocker.GetMock(System.Type,System.Object[])
-  name: GetMock(Type, params object?[]?)
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetMock_System_Type_System_Object___
-  commentId: M:FastMoq.Mocker.GetMock(System.Type,System.Object[])
-  name.vb: GetMock(Type, ParamArray Object())
-  fullName: FastMoq.Mocker.GetMock(System.Type, params object?[]?)
-  fullName.vb: FastMoq.Mocker.GetMock(System.Type, ParamArray Object())
-  nameWithType: Mocker.GetMock(Type, params object?[]?)
-  nameWithType.vb: Mocker.GetMock(Type, ParamArray Object())
-- uid: FastMoq.Mocker.GetMock*
-  name: GetMock
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetMock_
-  commentId: Overload:FastMoq.Mocker.GetMock
-  isSpec: "True"
-  fullName: FastMoq.Mocker.GetMock
-  nameWithType: Mocker.GetMock
 - uid: FastMoq.Mocker.GetMockModel*
   name: GetMockModel
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetMockModel_
@@ -2574,22 +2351,6 @@ references:
   isSpec: "True"
   fullName: FastMoq.Mocker.GetMockModel
   nameWithType: Mocker.GetMockModel
-- uid: FastMoq.Mocker.GetMockModelIndexOf(System.Type,System.Boolean)
-  name: GetMockModelIndexOf(Type, bool)
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetMockModelIndexOf_System_Type_System_Boolean_
-  commentId: M:FastMoq.Mocker.GetMockModelIndexOf(System.Type,System.Boolean)
-  name.vb: GetMockModelIndexOf(Type, Boolean)
-  fullName: FastMoq.Mocker.GetMockModelIndexOf(System.Type, bool)
-  fullName.vb: FastMoq.Mocker.GetMockModelIndexOf(System.Type, Boolean)
-  nameWithType: Mocker.GetMockModelIndexOf(Type, bool)
-  nameWithType.vb: Mocker.GetMockModelIndexOf(Type, Boolean)
-- uid: FastMoq.Mocker.GetMockModelIndexOf*
-  name: GetMockModelIndexOf
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetMockModelIndexOf_
-  commentId: Overload:FastMoq.Mocker.GetMockModelIndexOf
-  isSpec: "True"
-  fullName: FastMoq.Mocker.GetMockModelIndexOf
-  nameWithType: Mocker.GetMockModelIndexOf
 - uid: FastMoq.Mocker.GetMockModel``1
   name: GetMockModel<T>()
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetMockModel__1
@@ -2599,24 +2360,6 @@ references:
   fullName.vb: FastMoq.Mocker.GetMockModel(Of T)()
   nameWithType: Mocker.GetMockModel<T>()
   nameWithType.vb: Mocker.GetMockModel(Of T)()
-- uid: FastMoq.Mocker.GetMock``1(System.Action{Moq.Mock{``0}},System.Object[])
-  name: GetMock<T>(Action<Mock<T>>, params object?[])
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetMock__1_System_Action_Moq_Mock___0___System_Object___
-  commentId: M:FastMoq.Mocker.GetMock``1(System.Action{Moq.Mock{``0}},System.Object[])
-  name.vb: GetMock(Of T)(Action(Of Mock(Of T)), ParamArray Object())
-  fullName: FastMoq.Mocker.GetMock<T>(System.Action<Moq.Mock<T>>, params object?[])
-  fullName.vb: FastMoq.Mocker.GetMock(Of T)(System.Action(Of Moq.Mock(Of T)), ParamArray Object())
-  nameWithType: Mocker.GetMock<T>(Action<Mock<T>>, params object?[])
-  nameWithType.vb: Mocker.GetMock(Of T)(Action(Of Mock(Of T)), ParamArray Object())
-- uid: FastMoq.Mocker.GetMock``1(System.Object[])
-  name: GetMock<T>(params object?[])
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetMock__1_System_Object___
-  commentId: M:FastMoq.Mocker.GetMock``1(System.Object[])
-  name.vb: GetMock(Of T)(ParamArray Object())
-  fullName: FastMoq.Mocker.GetMock<T>(params object?[])
-  fullName.vb: FastMoq.Mocker.GetMock(Of T)(ParamArray Object())
-  nameWithType: Mocker.GetMock<T>(params object?[])
-  nameWithType.vb: Mocker.GetMock(Of T)(ParamArray Object())
 - uid: FastMoq.Mocker.GetNativeMock(System.Type)
   name: GetNativeMock(Type)
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetNativeMock_System_Type_
@@ -2713,28 +2456,6 @@ references:
   fullName.vb: FastMoq.Mocker.GetOrCreateMock(Of T)(FastMoq.MockRequestOptions)
   nameWithType: Mocker.GetOrCreateMock<T>(MockRequestOptions?)
   nameWithType.vb: Mocker.GetOrCreateMock(Of T)(MockRequestOptions)
-- uid: FastMoq.Mocker.GetRequiredMock(System.Type)
-  name: GetRequiredMock(Type)
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredMock_System_Type_
-  commentId: M:FastMoq.Mocker.GetRequiredMock(System.Type)
-  fullName: FastMoq.Mocker.GetRequiredMock(System.Type)
-  nameWithType: Mocker.GetRequiredMock(Type)
-- uid: FastMoq.Mocker.GetRequiredMock*
-  name: GetRequiredMock
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredMock_
-  commentId: Overload:FastMoq.Mocker.GetRequiredMock
-  isSpec: "True"
-  fullName: FastMoq.Mocker.GetRequiredMock
-  nameWithType: Mocker.GetRequiredMock
-- uid: FastMoq.Mocker.GetRequiredMock``1
-  name: GetRequiredMock<T>()
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredMock__1
-  commentId: M:FastMoq.Mocker.GetRequiredMock``1
-  name.vb: GetRequiredMock(Of T)()
-  fullName: FastMoq.Mocker.GetRequiredMock<T>()
-  fullName.vb: FastMoq.Mocker.GetRequiredMock(Of T)()
-  nameWithType: Mocker.GetRequiredMock<T>()
-  nameWithType.vb: Mocker.GetRequiredMock(Of T)()
 - uid: FastMoq.Mocker.GetRequiredObject*
   name: GetRequiredObject
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredObject_
@@ -2796,35 +2517,6 @@ references:
   isSpec: "True"
   fullName: FastMoq.Mocker.HttpClient
   nameWithType: Mocker.HttpClient
-- uid: FastMoq.Mocker.Initialize*
-  name: Initialize
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_Initialize_
-  commentId: Overload:FastMoq.Mocker.Initialize
-  isSpec: "True"
-  fullName: FastMoq.Mocker.Initialize
-  nameWithType: Mocker.Initialize
-- uid: FastMoq.Mocker.Initialize``1(System.Action{Moq.Mock{``0}})
-  name: Initialize<T>(Action<Mock<T>>)
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_Initialize__1_System_Action_Moq_Mock___0___
-  commentId: M:FastMoq.Mocker.Initialize``1(System.Action{Moq.Mock{``0}})
-  name.vb: Initialize(Of T)(Action(Of Mock(Of T)))
-  fullName: FastMoq.Mocker.Initialize<T>(System.Action<Moq.Mock<T>>)
-  fullName.vb: FastMoq.Mocker.Initialize(Of T)(System.Action(Of Moq.Mock(Of T)))
-  nameWithType: Mocker.Initialize<T>(Action<Mock<T>>)
-  nameWithType.vb: Mocker.Initialize(Of T)(Action(Of Mock(Of T)))
-- uid: FastMoq.Mocker.InnerMockResolution
-  name: InnerMockResolution
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_InnerMockResolution
-  commentId: P:FastMoq.Mocker.InnerMockResolution
-  fullName: FastMoq.Mocker.InnerMockResolution
-  nameWithType: Mocker.InnerMockResolution
-- uid: FastMoq.Mocker.InnerMockResolution*
-  name: InnerMockResolution
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_InnerMockResolution_
-  commentId: Overload:FastMoq.Mocker.InnerMockResolution
-  isSpec: "True"
-  fullName: FastMoq.Mocker.InnerMockResolution
-  nameWithType: Mocker.InnerMockResolution
 - uid: FastMoq.Mocker.InvokeMethod(FastMoq.InvocationOptions,System.Object,System.String,System.Boolean,System.Object[])
   name: InvokeMethod(InvocationOptions?, object?, string, bool, params object?[])
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_InvokeMethod_FastMoq_InvocationOptions_System_Object_System_String_System_Boolean_System_Object___
@@ -2938,31 +2630,6 @@ references:
   isSpec: "True"
   fullName: FastMoq.Mocker.Policy
   nameWithType: Mocker.Policy
-- uid: FastMoq.Mocker.RemoveMock(Moq.Mock)
-  name: RemoveMock(Mock)
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_RemoveMock_Moq_Mock_
-  commentId: M:FastMoq.Mocker.RemoveMock(Moq.Mock)
-  fullName: FastMoq.Mocker.RemoveMock(Moq.Mock)
-  nameWithType: Mocker.RemoveMock(Mock)
-- uid: FastMoq.Mocker.RemoveMock*
-  name: RemoveMock
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_RemoveMock_
-  commentId: Overload:FastMoq.Mocker.RemoveMock
-  isSpec: "True"
-  fullName: FastMoq.Mocker.RemoveMock
-  nameWithType: Mocker.RemoveMock
-- uid: FastMoq.Mocker.SETUP
-  name: SETUP
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_SETUP
-  commentId: F:FastMoq.Mocker.SETUP
-  fullName: FastMoq.Mocker.SETUP
-  nameWithType: Mocker.SETUP
-- uid: FastMoq.Mocker.SETUP_ALL_PROPERTIES_METHOD_NAME
-  name: SETUP_ALL_PROPERTIES_METHOD_NAME
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_SETUP_ALL_PROPERTIES_METHOD_NAME
-  commentId: F:FastMoq.Mocker.SETUP_ALL_PROPERTIES_METHOD_NAME
-  fullName: FastMoq.Mocker.SETUP_ALL_PROPERTIES_METHOD_NAME
-  nameWithType: Mocker.SETUP_ALL_PROPERTIES_METHOD_NAME
 - uid: FastMoq.Mocker.Scenario*
   name: Scenario
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_Scenario_
@@ -2979,19 +2646,6 @@ references:
   fullName.vb: FastMoq.Mocker.Scenario(Of T)(T)
   nameWithType: Mocker.Scenario<T>(T?)
   nameWithType.vb: Mocker.Scenario(Of T)(T)
-- uid: FastMoq.Mocker.Strict
-  name: Strict
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_Strict
-  commentId: P:FastMoq.Mocker.Strict
-  fullName: FastMoq.Mocker.Strict
-  nameWithType: Mocker.Strict
-- uid: FastMoq.Mocker.Strict*
-  name: Strict
-  href: api/FastMoq.Mocker.html#FastMoq_Mocker_Strict_
-  commentId: Overload:FastMoq.Mocker.Strict
-  isSpec: "True"
-  fullName: FastMoq.Mocker.Strict
-  nameWithType: Mocker.Strict
 - uid: FastMoq.Mocker.Uri
   name: Uri
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_Uri
@@ -5046,19 +4700,6 @@ references:
   fullName.vb: FastMoq.Models.MockModel.IsEqual(Of TModel)(TModel, TModel)
   nameWithType: MockModel.IsEqual<TModel>(TModel?, TModel?)
   nameWithType.vb: MockModel.IsEqual(Of TModel)(TModel, TModel)
-- uid: FastMoq.Models.MockModel.Mock
-  name: Mock
-  href: api/FastMoq.Models.MockModel.html#FastMoq_Models_MockModel_Mock
-  commentId: P:FastMoq.Models.MockModel.Mock
-  fullName: FastMoq.Models.MockModel.Mock
-  nameWithType: MockModel.Mock
-- uid: FastMoq.Models.MockModel.Mock*
-  name: Mock
-  href: api/FastMoq.Models.MockModel.html#FastMoq_Models_MockModel_Mock_
-  commentId: Overload:FastMoq.Models.MockModel.Mock
-  isSpec: "True"
-  fullName: FastMoq.Models.MockModel.Mock
-  nameWithType: MockModel.Mock
 - uid: FastMoq.Models.MockModel.NativeMock
   name: NativeMock
   href: api/FastMoq.Models.MockModel.html#FastMoq_Models_MockModel_NativeMock
@@ -5264,23 +4905,6 @@ references:
   fullName.vb: FastMoq.Models.MockModel(Of T).Instance
   nameWithType: MockModel<T>.Instance
   nameWithType.vb: MockModel(Of T).Instance
-- uid: FastMoq.Models.MockModel`1.Mock
-  name: Mock
-  href: api/FastMoq.Models.MockModel-1.html#FastMoq_Models_MockModel_1_Mock
-  commentId: P:FastMoq.Models.MockModel`1.Mock
-  fullName: FastMoq.Models.MockModel<T>.Mock
-  fullName.vb: FastMoq.Models.MockModel(Of T).Mock
-  nameWithType: MockModel<T>.Mock
-  nameWithType.vb: MockModel(Of T).Mock
-- uid: FastMoq.Models.MockModel`1.Mock*
-  name: Mock
-  href: api/FastMoq.Models.MockModel-1.html#FastMoq_Models_MockModel_1_Mock_
-  commentId: Overload:FastMoq.Models.MockModel`1.Mock
-  isSpec: "True"
-  fullName: FastMoq.Models.MockModel<T>.Mock
-  fullName.vb: FastMoq.Models.MockModel(Of T).Mock
-  nameWithType: MockModel<T>.Mock
-  nameWithType.vb: MockModel(Of T).Mock
 - uid: FastMoq.Models.MockModel`1.Type
   name: Type
   href: api/FastMoq.Models.MockModel-1.html#FastMoq_Models_MockModel_1_Type

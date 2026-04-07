@@ -25,7 +25,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MoqMockAdapter
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 22
+    startLine: 20
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -82,7 +82,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 24
+    startLine: 22
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -114,7 +114,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Inner
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 29
+    startLine: 27
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -143,7 +143,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockedType
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 30
+    startLine: 28
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -175,7 +175,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 31
+    startLine: 29
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -207,7 +207,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: NativeMock
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 32
+    startLine: 30
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -239,7 +239,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Reset
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 34
+    startLine: 32
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider

@@ -392,7 +392,7 @@ namespace FastMoq.Extensions
             }
 
             var obj = mocker.AddInjections(info?.Invoke(newArgs.ToArray()));
-            return mocker.InnerMockResolution ? mocker.AddProperties(type, obj) : obj;
+            return mocker.Behavior.Has(MockFeatures.ResolveNestedMembers) ? mocker.AddProperties(type, obj) : obj;
         }
 
         /// <summary>

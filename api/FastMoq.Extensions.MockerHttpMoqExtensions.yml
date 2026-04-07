@@ -24,7 +24,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerHttpMoqExtensions
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 14
+    startLine: 13
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions
@@ -67,7 +67,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupHttpMessage
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 20
+    startLine: 19
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions
@@ -111,7 +111,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessage
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 43
+    startLine: 42
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions
@@ -153,7 +153,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageAsync
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 59
+    startLine: 58
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions
@@ -195,7 +195,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageProtected
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 75
+    startLine: 74
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions
@@ -239,7 +239,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageProtectedAsync
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 91
+    startLine: 90
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions

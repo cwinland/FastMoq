@@ -486,6 +486,22 @@ namespace FastMoq.Tests
             Mocks.Behavior.Has(MockFeatures.FailOnUnconfigured).Should().BeFalse();
             Mocks.Behavior.Has(MockFeatures.AutoInjectDependencies).Should().BeFalse();
             Mocks.Behavior.Has(MockFeatures.AutoSetupProperties).Should().BeTrue();
+            Mocks.Behavior.Has(MockFeatures.ResolveNestedMembers).Should().BeTrue();
+        }
+
+        [Fact]
+        public void InnerMockResolution_ShouldMapToResolveNestedMembersBehaviorFlag()
+        {
+            Mocks.Behavior.Enable(MockFeatures.ResolveNestedMembers);
+            Mocks.InnerMockResolution.Should().BeTrue();
+
+            Mocks.InnerMockResolution = false;
+
+            Mocks.Behavior.Has(MockFeatures.ResolveNestedMembers).Should().BeFalse();
+
+            Mocks.InnerMockResolution = true;
+
+            Mocks.Behavior.Has(MockFeatures.ResolveNestedMembers).Should().BeTrue();
         }
 
         [Fact]

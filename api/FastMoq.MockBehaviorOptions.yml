@@ -24,10 +24,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockBehaviorOptions
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 17
+    startLine: 57
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Mutable container for the enabled <xref href="FastMoq.MockFeatures" data-throw-if-not-resolved="false"></xref> on a <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example: []
   syntax:
     content: public sealed class MockBehaviorOptions
     content.vb: Public NotInheritable Class MockBehaviorOptions
@@ -78,10 +80,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Enabled
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 19
+    startLine: 62
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Gets or sets the currently enabled feature flags.
+  example: []
   syntax:
     content: public MockFeatures Enabled { get; set; }
     parameters: []
@@ -107,15 +111,18 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Has
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 20
+    startLine: 68
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the supplied feature flag is enabled.
+  example: []
   syntax:
     content: public bool Has(MockFeatures feature)
     parameters:
     - id: feature
       type: FastMoq.MockFeatures
+      description: The feature flag to test.
     return:
       type: System.Boolean
     content.vb: Public Function Has(feature As MockFeatures) As Boolean
@@ -138,10 +145,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: StrictPreset
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 22
+    startLine: 73
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Gets the predefined strict behavior preset.
+  example: []
   syntax:
     content: public static MockBehaviorOptions StrictPreset { get; }
     parameters: []
@@ -167,10 +176,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LenientPreset
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 27
+    startLine: 81
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Gets the predefined lenient behavior preset.
+  example: []
   syntax:
     content: public static MockBehaviorOptions LenientPreset { get; }
     parameters: []
@@ -196,10 +207,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Clone
     path: FastMoq.Core/MockFeatures.cs
-    startLine: 32
+    startLine: 89
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Creates a copy of the current behavior options.
+  example: []
   syntax:
     content: public MockBehaviorOptions Clone()
     return:
@@ -207,6 +220,20 @@ items:
     content.vb: Public Function Clone() As MockBehaviorOptions
   overload: FastMoq.MockBehaviorOptions.Clone*
 references:
+- uid: FastMoq.MockFeatures
+  commentId: T:FastMoq.MockFeatures
+  parent: FastMoq
+  href: FastMoq.MockFeatures.html
+  name: MockFeatures
+  nameWithType: MockFeatures
+  fullName: FastMoq.MockFeatures
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
 - uid: FastMoq
   commentId: N:FastMoq
   href: FastMoq.html
@@ -3222,13 +3249,6 @@ references:
   name: Enabled
   nameWithType: MockBehaviorOptions.Enabled
   fullName: FastMoq.MockBehaviorOptions.Enabled
-- uid: FastMoq.MockFeatures
-  commentId: T:FastMoq.MockFeatures
-  parent: FastMoq
-  href: FastMoq.MockFeatures.html
-  name: MockFeatures
-  nameWithType: MockFeatures
-  fullName: FastMoq.MockFeatures
 - uid: FastMoq.MockBehaviorOptions.Has*
   commentId: Overload:FastMoq.MockBehaviorOptions.Has
   href: FastMoq.MockBehaviorOptions.html#FastMoq_MockBehaviorOptions_Has_FastMoq_MockFeatures_

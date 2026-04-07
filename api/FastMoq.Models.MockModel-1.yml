@@ -13,7 +13,6 @@ items:
   - FastMoq.Models.MockModel`1.GetHashCode
   - FastMoq.Models.MockModel`1.GetHashCode(FastMoq.Models.MockModel{`0})
   - FastMoq.Models.MockModel`1.Instance
-  - FastMoq.Models.MockModel`1.Mock
   - FastMoq.Models.MockModel`1.Type
   - FastMoq.Models.MockModel`1.TypedFastMock
   - FastMoq.Models.MockModel`1.op_Equality(FastMoq.Models.MockModel{`0},FastMoq.Models.MockModel{`0})
@@ -32,7 +31,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockModel
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 11
+    startLine: 9
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -91,49 +90,6 @@ items:
   nameWithType.vb: MockModel(Of T)
   fullName.vb: FastMoq.Models.MockModel(Of T)
   name.vb: MockModel(Of T)
-- uid: FastMoq.Models.MockModel`1.Mock
-  commentId: P:FastMoq.Models.MockModel`1.Mock
-  id: Mock
-  parent: FastMoq.Models.MockModel`1
-  langs:
-  - csharp
-  - vb
-  name: Mock
-  nameWithType: MockModel<T>.Mock
-  fullName: FastMoq.Models.MockModel<T>.Mock
-  type: Property
-  source:
-    remote:
-      path: FastMoq.Core/Models/MockModelT.cs
-      branch: IProvider
-      repo: https://github.com/cwinland/FastMoq.git
-    id: Mock
-    path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 14
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq.Models
-  syntax:
-    content: >-
-      [Obsolete("Use TypedFastMock / Instance instead. Will be removed in a future major version.")]
-
-      public Mock<T> Mock { get; }
-    parameters: []
-    return:
-      type: Moq.Mock{{T}}
-    content.vb: >-
-      <Obsolete("Use TypedFastMock / Instance instead. Will be removed in a future major version.")>
-
-      Public Property Mock As Mock(Of T)
-  overload: FastMoq.Models.MockModel`1.Mock*
-  attributes:
-  - type: System.ObsoleteAttribute
-    ctor: System.ObsoleteAttribute.#ctor(System.String)
-    arguments:
-    - type: System.String
-      value: Use TypedFastMock / Instance instead. Will be removed in a future major version.
-  nameWithType.vb: MockModel(Of T).Mock
-  fullName.vb: FastMoq.Models.MockModel(Of T).Mock
 - uid: FastMoq.Models.MockModel`1.TypedFastMock
   commentId: P:FastMoq.Models.MockModel`1.TypedFastMock
   id: TypedFastMock
@@ -152,7 +108,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TypedFastMock
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 26
+    startLine: 24
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -183,7 +139,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Type
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 27
+    startLine: 25
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -217,7 +173,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 28
+    startLine: 26
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -248,7 +204,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CompareTo
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 46
+    startLine: 44
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -294,7 +250,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 49
+    startLine: 47
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -333,7 +289,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetHashCode
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 51
+    startLine: 49
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -377,7 +333,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: op_Equality
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 54
+    startLine: 52
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -423,7 +379,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: op_Inequality
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 56
+    startLine: 54
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -469,7 +425,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CompareTo
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 59
+    startLine: 57
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -522,7 +478,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 62
+    startLine: 60
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -575,7 +531,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetHashCode
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 65
+    startLine: 63
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -629,7 +585,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 68
+    startLine: 66
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -4414,71 +4370,6 @@ references:
   - uid: FastMoq.Extensions
     name: Extensions
     href: FastMoq.Extensions.html
-- uid: FastMoq.Models.MockModel`1.Mock*
-  commentId: Overload:FastMoq.Models.MockModel`1.Mock
-  href: FastMoq.Models.MockModel-1.html#FastMoq_Models_MockModel_1_Mock
-  name: Mock
-  nameWithType: MockModel<T>.Mock
-  fullName: FastMoq.Models.MockModel<T>.Mock
-  nameWithType.vb: MockModel(Of T).Mock
-  fullName.vb: FastMoq.Models.MockModel(Of T).Mock
-- uid: Moq.Mock{{T}}
-  commentId: T:Moq.Mock{``0}
-  parent: Moq
-  definition: Moq.Mock`1
-  name: Mock<T>
-  nameWithType: Mock<T>
-  fullName: Moq.Mock<T>
-  nameWithType.vb: Mock(Of T)
-  fullName.vb: Moq.Mock(Of T)
-  name.vb: Mock(Of T)
-  spec.csharp:
-  - uid: Moq.Mock`1
-    name: Mock
-    isExternal: true
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: Moq.Mock`1
-    name: Mock
-    isExternal: true
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-- uid: Moq.Mock`1
-  commentId: T:Moq.Mock`1
-  isExternal: true
-  name: Mock<T>
-  nameWithType: Mock<T>
-  fullName: Moq.Mock<T>
-  nameWithType.vb: Mock(Of T)
-  fullName.vb: Moq.Mock(Of T)
-  name.vb: Mock(Of T)
-  spec.csharp:
-  - uid: Moq.Mock`1
-    name: Mock
-    isExternal: true
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: Moq.Mock`1
-    name: Mock
-    isExternal: true
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-- uid: Moq
-  commentId: N:Moq
-  isExternal: true
-  name: Moq
-  nameWithType: Moq
-  fullName: Moq
 - uid: FastMoq.Models.MockModel`1.TypedFastMock*
   commentId: Overload:FastMoq.Models.MockModel`1.TypedFastMock
   href: FastMoq.Models.MockModel-1.html#FastMoq_Models_MockModel_1_TypedFastMock
