@@ -28,12 +28,12 @@ jobs:
         framework: ${{ fromJSON(inputs.frameworks) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ matrix.framework }}
           cache: true
@@ -115,7 +115,7 @@ jobs:
 
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-results-${{ matrix.framework }}
           path: |
@@ -157,7 +157,7 @@ jobs:
 
       - name: Download test artifacts
         if: steps.aggregate.outputs.matrix-status == 'success'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: test-results-*
           path: test-artifacts

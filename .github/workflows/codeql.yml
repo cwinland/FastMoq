@@ -52,15 +52,16 @@ jobs:
         # your codebase is analyzed, see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Setup .NET SDKs
       if: matrix.language == 'csharp'
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
-          9.0.x
           8.0.x
+          9.0.x
+          10.0.x
 
     - name: Restore .NET (Release solution only)
       if: matrix.language == 'csharp'
@@ -104,13 +105,13 @@ jobs:
       if: matrix.language == 'csharp' && matrix.build-mode == 'manual'
       run: |
         set -euo pipefail
-        echo "Manual build for CodeQL semantic extraction (net9.0) using release solution"
+        echo "Manual build for CodeQL semantic extraction (net10.0) using release solution"
         SLN=FastMoq-Release.sln
         if [ ! -f "$SLN" ]; then
           echo "Release solution not found; falling back to FastMoq.sln"
           SLN=FastMoq.sln
         fi
-        dotnet build "$SLN" -c Release -f net9.0 /p:UseSharedCompilation=false --no-restore
+        dotnet build "$SLN" -c Release -f net10.0 /p:UseSharedCompilation=false --no-restore
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
