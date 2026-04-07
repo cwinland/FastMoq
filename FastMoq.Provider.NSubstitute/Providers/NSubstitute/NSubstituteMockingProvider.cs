@@ -6,29 +6,64 @@ using NSubstitute.Core;
 
 namespace FastMoq.Providers.NSubstituteProvider
 {
+    /// <summary>
+    /// Provider implementation that adapts NSubstitute to the provider-neutral FastMoq abstractions.
+    /// </summary>
     public sealed class NSubstituteMockingProvider : IMockingProvider, IMockingProviderCapabilities
     {
         private static readonly ConcurrentDictionary<object, ConcurrentBag<ICall>> VerifiedCalls = new();
         private static readonly ConcurrentDictionary<object, byte> ConfiguredLoggers = new();
 
+        /// <summary>
+        /// Gets the shared singleton instance of the NSubstitute provider.
+        /// </summary>
         public static readonly NSubstituteMockingProvider Instance = new();
 
         private NSubstituteMockingProvider()
         {
         }
 
+        /// <summary>
+        /// Gets the capability descriptor for this provider.
+        /// </summary>
         public IMockingProviderCapabilities Capabilities => this;
+
+        /// <summary>
+        /// Gets a value indicating whether NSubstitute supports base-call behavior.
+        /// </summary>
         public bool SupportsCallBase => false;
+
+        /// <summary>
+        /// Gets a value indicating whether NSubstitute supports automatic property backing.
+        /// </summary>
         public bool SupportsSetupAllProperties => false;
+
+        /// <summary>
+        /// Gets a value indicating whether NSubstitute supports protected member interception.
+        /// </summary>
         public bool SupportsProtectedMembers => false;
+
+        /// <summary>
+        /// Gets a value indicating whether NSubstitute supports invocation tracking.
+        /// </summary>
         public bool SupportsInvocationTracking => true;
+
+        /// <summary>
+        /// Gets a value indicating whether NSubstitute supports logger capture helpers.
+        /// </summary>
         public bool SupportsLoggerCapture => true;
 
+        /// <summary>
+        /// Builds a predicate expression suitable for provider-neutral matching.
+        /// </summary>
         public Expression<Func<T, bool>> BuildExpression<T>()
         {
             return _ => true;
         }
 
+        /// <summary>
+        /// Creates a typed FastMoq wrapper around a new NSubstitute substitute.
+        /// </summary>
         public IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class
         {
             options ??= new();
@@ -45,6 +80,9 @@ namespace FastMoq.Providers.NSubstituteProvider
             return new NSubFastMock<T>(substitute);
         }
 
+        /// <summary>
+        /// Creates an untyped FastMoq wrapper around a new NSubstitute substitute.
+        /// </summary>
         public IFastMock CreateMock(Type type, MockCreationOptions? options = null)
         {
             ArgumentNullException.ThrowIfNull(type);
@@ -55,16 +93,25 @@ namespace FastMoq.Providers.NSubstituteProvider
             return (IFastMock)Activator.CreateInstance(wrapper, substitute)!;
         }
 
+        /// <summary>
+        /// Requests property auto-configuration on the supplied mock.
+        /// </summary>
         public void SetupAllProperties(IFastMock mock)
         {
             throw CreateUnsupportedFeatureException(nameof(SupportsSetupAllProperties));
         }
 
+        /// <summary>
+        /// Requests base-call behavior on the supplied mock.
+        /// </summary>
         public void SetCallBase(IFastMock mock, bool value)
         {
             throw CreateUnsupportedFeatureException(nameof(SupportsCallBase));
         }
 
+        /// <summary>
+        /// Verifies that the supplied expression was invoked on the wrapped NSubstitute mock.
+        /// </summary>
         public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
         {
             if (expression is null)
@@ -137,6 +184,9 @@ namespace FastMoq.Providers.NSubstituteProvider
             MarkSpecificCallsVerified(target, received);
         }
 
+        /// <summary>
+        /// Verifies that no unverified calls remain on the supplied mock.
+        /// </summary>
         public void VerifyNoOtherCalls(IFastMock mock)
         {
             var target = mock.Instance;
@@ -155,11 +205,17 @@ namespace FastMoq.Providers.NSubstituteProvider
             }
         }
 
+        /// <summary>
+        /// Configures property behavior on the supplied mock when the provider supports it.
+        /// </summary>
         public void ConfigureProperties(IFastMock mock)
         {
             throw CreateUnsupportedFeatureException(nameof(SupportsSetupAllProperties));
         }
 
+        /// <summary>
+        /// Configures logger callback capture on the supplied mock.
+        /// </summary>
         public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback)
         {
             ArgumentNullException.ThrowIfNull(mock);
@@ -173,8 +229,14 @@ namespace FastMoq.Providers.NSubstituteProvider
             SetupLoggerCallback(mock.Instance, callback);
         }
 
+        /// <summary>
+        /// Attempts to expose a provider-specific legacy mock object from a wrapper.
+        /// </summary>
         public object? TryGetLegacy(IFastMock mock) => null;
 
+        /// <summary>
+        /// Attempts to wrap a provider-specific legacy mock object in the FastMoq abstraction.
+        /// </summary>
         public IFastMock? TryWrapLegacy(object legacyMock, Type mockedType) => null;
 
         private static void ExecuteWithWrapper<T>(Func<T> wrapperFactory, Expression<Action<T>> expression) where T : class

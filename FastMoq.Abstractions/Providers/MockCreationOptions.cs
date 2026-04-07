@@ -8,20 +8,20 @@ namespace FastMoq.Providers
         /// <summary>
         /// Initializes a new instance of the <see cref="MockCreationOptions"/> record.
         /// </summary>
-        /// <param name="strict">True to request strict mock behavior; otherwise false.</param>
-        /// <param name="callBase">True to allow base implementation calls when the provider supports it; otherwise false.</param>
-        /// <param name="constructorArgs">Optional constructor arguments to use when creating the mock target.</param>
-        /// <param name="allowNonPublic">True to allow non-public constructors during mock creation; otherwise false.</param>
+        /// <param name="Strict">True to request strict mock behavior; otherwise false.</param>
+        /// <param name="CallBase">True to allow base implementation calls when the provider supports it; otherwise false.</param>
+        /// <param name="ConstructorArgs">Optional constructor arguments to use when creating the mock target.</param>
+        /// <param name="AllowNonPublic">True to allow non-public constructors during mock creation; otherwise false.</param>
         public MockCreationOptions(
-            bool strict = false,
-            bool callBase = true,
-            object?[]? constructorArgs = null,
-            bool allowNonPublic = false)
+            bool Strict = false,
+            bool CallBase = true,
+            object?[]? ConstructorArgs = null,
+            bool AllowNonPublic = false)
         {
-            Strict = strict;
-            CallBase = callBase;
-            ConstructorArgs = constructorArgs;
-            AllowNonPublic = allowNonPublic;
+            this.Strict = Strict;
+            this.CallBase = CallBase;
+            this.ConstructorArgs = ConstructorArgs;
+            this.AllowNonPublic = AllowNonPublic;
         }
 
         /// <summary>

@@ -4,22 +4,40 @@ using Moq;
 
 namespace FastMoq.Providers.MoqProvider
 {
+    /// <summary>
+    /// Provides Moq-based logger verification and callback helpers used by the compatibility layer.
+    /// </summary>
     public static class MoqLoggerCompatibility
     {
+        /// <summary>
+        /// Verifies a non-generic logger mock was written to the expected number of times.
+        /// </summary>
         public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, int times = 1) =>
             loggerMock.VerifyLogger(logLevel, message, null, null, times);
 
+        /// <summary>
+        /// Verifies a generic logger mock was written to the expected number of times.
+        /// </summary>
         public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, int times = 1)
             where TLogger : class, ILogger =>
             loggerMock.VerifyLogger(logLevel, message, null, null, times);
 
+        /// <summary>
+        /// Verifies a non-generic logger mock was written with the expected exception payload.
+        /// </summary>
         public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null, int times = 1) =>
             loggerMock.VerifyLogger<Exception>(logLevel, message, exception, eventId, times);
 
+        /// <summary>
+        /// Verifies a generic logger mock was written with the expected exception payload.
+        /// </summary>
         public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null, int times = 1)
             where TLogger : class, ILogger =>
             loggerMock.VerifyLogger<Exception, TLogger>(logLevel, message, exception, eventId, times);
 
+        /// <summary>
+        /// Verifies a non-generic logger mock using an exception type-specific matcher and an exact call count.
+        /// </summary>
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1)
             where TException : Exception
         {
@@ -27,6 +45,9 @@ namespace FastMoq.Providers.MoqProvider
             loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), Times.Exactly(times));
         }
 
+        /// <summary>
+        /// Verifies a non-generic logger mock using an exception type-specific matcher and a Moq <see cref="Times"/> constraint.
+        /// </summary>
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Times times)
             where TException : Exception
         {
@@ -34,6 +55,9 @@ namespace FastMoq.Providers.MoqProvider
             loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), times);
         }
 
+        /// <summary>
+        /// Verifies a non-generic logger mock using an exception type-specific matcher and a deferred Moq <see cref="Times"/> constraint.
+        /// </summary>
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Func<Times> times)
             where TException : Exception
         {
@@ -41,6 +65,9 @@ namespace FastMoq.Providers.MoqProvider
             loggerMock.Verify(TestLoggerExpression<TException, ILogger>(logLevel, message, exception, eventId), times);
         }
 
+        /// <summary>
+        /// Verifies a generic logger mock using an exception type-specific matcher and an exact call count.
+        /// </summary>
         public static void VerifyLogger<TException, TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1)
             where TException : Exception
             where TLogger : class, ILogger
@@ -49,6 +76,9 @@ namespace FastMoq.Providers.MoqProvider
             loggerMock.Verify(TestLoggerExpression<TException, TLogger>(logLevel, message, exception, eventId), Times.Exactly(times));
         }
 
+        /// <summary>
+        /// Registers a callback that receives normalized logger invocations from a Moq logger mock.
+        /// </summary>
         public static void SetupLoggerCallback<TLogger>(this Mock<TLogger> logger, Action<LogLevel, EventId, string, Exception?> callback)
             where TLogger : class, ILogger
         {
