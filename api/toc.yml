@@ -171,6 +171,12 @@ items:
   name: FastMoq.Providers
   type: Namespace
   items:
+  - uid: FastMoq.Providers.FastMoqDefaultProviderAttribute
+    name: FastMoqDefaultProviderAttribute
+    type: Class
+  - uid: FastMoq.Providers.FastMoqRegisterProviderAttribute
+    name: FastMoqRegisterProviderAttribute
+    type: Class
   - uid: FastMoq.Providers.IFastMock
     name: IFastMock
     type: Interface

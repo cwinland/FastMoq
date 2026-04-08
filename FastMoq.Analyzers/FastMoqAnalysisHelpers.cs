@@ -32,6 +32,7 @@ namespace FastMoq.Analyzers
     internal static class FastMoqAnalysisHelpers
     {
         private const string FASTMOQ_DEFAULT_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqDefaultProviderAttribute";
+        private const string FASTMOQ_REGISTER_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqRegisterProviderAttribute";
 
         private static readonly HashSet<string> DisallowedMixedRetrievalMembers = new(StringComparer.Ordinal)
         {
@@ -517,8 +518,7 @@ namespace FastMoq.Analyzers
 
         public static bool IsProviderSelectedByDefault(Compilation compilation, string providerName, CancellationToken cancellationToken)
         {
-            if (TryGetAssemblyDefaultProviderName(compilation.Assembly, out var assemblyDefaultProvider) &&
-                string.Equals(assemblyDefaultProvider, providerName, StringComparison.OrdinalIgnoreCase))
+            if (HasAssemblyDefaultProvider(compilation.Assembly, providerName))
             {
                 return true;
             }
@@ -541,6 +541,13 @@ namespace FastMoq.Analyzers
             return false;
         }
 
+        public static bool HasAssemblyDefaultProvider(IAssemblySymbol assemblySymbol, string providerName)
+        {
+            return TryGetAssemblyDefaultProviderName(assemblySymbol, out var assemblyDefaultProvider) &&
+                   string.Equals(assemblyDefaultProvider, providerName, StringComparison.OrdinalIgnoreCase)
+                   || HasAssemblyRegisteredDefaultProvider(assemblySymbol, providerName);
+        }
+
         public static bool TryGetAssemblyDefaultProviderName(IAssemblySymbol assemblySymbol, out string providerName)
         {
             foreach (var attribute in assemblySymbol.GetAttributes())
@@ -558,6 +565,32 @@ namespace FastMoq.Analyzers
             }
 
             providerName = string.Empty;
+            return false;
+        }
+
+        public static bool HasAssemblyRegisteredDefaultProvider(IAssemblySymbol assemblySymbol, string providerName)
+        {
+            foreach (var attribute in assemblySymbol.GetAttributes())
+            {
+                if (attribute.AttributeClass?.ToDisplayString() != FASTMOQ_REGISTER_PROVIDER_ATTRIBUTE ||
+                    attribute.ConstructorArguments.Length < 2 ||
+                    attribute.ConstructorArguments[0].Value is not string declaredProvider ||
+                    string.IsNullOrWhiteSpace(declaredProvider))
+                {
+                    continue;
+                }
+
+                var setAsDefault = attribute.NamedArguments.Any(argument =>
+                    argument.Key == "SetAsDefault" &&
+                    argument.Value.Value is bool isDefault &&
+                    isDefault);
+
+                if (setAsDefault && string.Equals(declaredProvider, providerName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
 

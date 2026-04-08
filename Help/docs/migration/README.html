@@ -112,6 +112,7 @@
 <li>migration guidance for mechanical provider-first rewrites and compatibility cleanup</li>
 <li>low-noise authoring guidance for new tests where FastMoq already has a clearer first-party pattern</li>
 </ul>
+<p>Warnings are the default for compatibility and obsolete-surface cleanup that is usually actionable immediately. That includes <code>.Object</code>, provider-native <code>Reset()</code>, <code>VerifyLogger(...)</code>, <code>MockOptional</code>, <code>Initialize&lt;T&gt;(...)</code>, <code>Strict</code>, mixed <code>GetMock&lt;T&gt;()</code> leftovers in files that already use <code>GetOrCreateMock&lt;T&gt;()</code>, and provider-specific FastMoq APIs without an explicit provider selection.</p>
 <p>Current examples include:</p>
 <ul>
 <li><code>FMOQ0010</code> for preferring typed provider escape hatches such as <code>AsMoq()</code> or <code>AsNSubstitute()</code> over raw <code>NativeMock</code> / <code>GetNativeMock(...)</code></li>
@@ -270,7 +271,7 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
 <li>Pick the provider that matches the current suite shape before rewriting arrangements.</li>
 <li>Stabilize the suite first, especially if it still depends on <code>GetMock&lt;T&gt;()</code>, <code>VerifyLogger(...)</code>, <code>Protected()</code>, or other Moq-heavy flows.</li>
 <li>Run tests immediately after each migration batch instead of waiting for a large final rewrite pass.</li>
-<li>Apply FastMoq analyzer fixes where the suggestions are high-confidence, then rerun the affected tests.</li>
+<li>Apply FastMoq analyzer fixes where the warnings or high-confidence suggestions are local and clear, then rerun the affected tests.</li>
 <li>Translate Moq <code>Setup(...)</code> calls into provider-native arrangement syntax only in the tests you are actively modernizing.</li>
 <li>Move asserts toward <code>Verify(...)</code>, <code>VerifyNoOtherCalls(...)</code>, <code>VerifyLogged(...)</code>, and <code>TimesSpec</code> where that improves clarity.</li>
 <li>Keep Moq for the pockets that still depend on Moq-only semantics such as <code>SetupSet(...)</code>, <code>SetupAllProperties()</code>, <code>Protected()</code>, or <code>CallBase</code>.</li>
@@ -290,7 +291,7 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
 <h3 id="stabilize-first-order">Stabilize-first order</h3>
 <ol>
 <li>Upgrade to v4 and run the suite unchanged.</li>
-<li>If legacy Moq-shaped tests fail, select <code>moq</code> explicitly for the test assembly.</li>
+<li>If legacy Moq-shaped tests fail, select <code>moq</code> explicitly for the test assembly, typically with <code>[assembly: FastMoqDefaultProvider(&quot;moq&quot;)]</code>, <code>[assembly: FastMoqRegisterProvider(&quot;moq&quot;, typeof(MoqMockingProvider), SetAsDefault = true)]</code>, or an equivalent bootstrap hook.</li>
 <li>Audit <code>Strict</code> usage and decide whether each case means fail-on-unconfigured only or a full strict preset. Use <a href="api-replacements-and-exceptions.html#strict">API replacements and migration exceptions</a> and <a href="../getting-started/testing-guide.html#strict-vs-presets">Testing Guide: Strict vs Presets</a> when the replacement is unclear.</li>
 <li>Replace new <code>MockOptional</code> usage with explicit <code>OptionalParameterResolution</code>, <code>InvocationOptions</code>, or <code>MockerTestBase&lt;TComponent&gt;</code> component-construction overrides. See <a href="api-replacements-and-exceptions.html#obsolete-mockoptional">API replacements and migration exceptions</a> and <a href="../getting-started/testing-guide.html#optional-constructor-and-method-parameters">Testing Guide: Optional constructor and method parameters</a> when the right replacement is unclear.</li>
 <li>Stop once the suite is stable unless you are already touching tests for other work.</li>
@@ -333,7 +334,7 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 18:59 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 21:12 UTC</span></div>
       
           </div>
         </div>

@@ -4,6 +4,8 @@ items:
   commentId: N:FastMoq.Providers
   id: FastMoq.Providers
   children:
+  - FastMoq.Providers.FastMoqDefaultProviderAttribute
+  - FastMoq.Providers.FastMoqRegisterProviderAttribute
   - FastMoq.Providers.IFastMock
   - FastMoq.Providers.IFastMock`1
   - FastMoq.Providers.IMockingProvider
@@ -23,6 +25,18 @@ items:
   assemblies:
   - FastMoq.Abstractions
 references:
+- uid: FastMoq.Providers.FastMoqDefaultProviderAttribute
+  commentId: T:FastMoq.Providers.FastMoqDefaultProviderAttribute
+  href: FastMoq.Providers.FastMoqDefaultProviderAttribute.html
+  name: FastMoqDefaultProviderAttribute
+  nameWithType: FastMoqDefaultProviderAttribute
+  fullName: FastMoq.Providers.FastMoqDefaultProviderAttribute
+- uid: FastMoq.Providers.FastMoqRegisterProviderAttribute
+  commentId: T:FastMoq.Providers.FastMoqRegisterProviderAttribute
+  href: FastMoq.Providers.FastMoqRegisterProviderAttribute.html
+  name: FastMoqRegisterProviderAttribute
+  nameWithType: FastMoqRegisterProviderAttribute
+  fullName: FastMoq.Providers.FastMoqRegisterProviderAttribute
 - uid: FastMoq.Providers.IFastMock
   commentId: T:FastMoq.Providers.IFastMock
   parent: FastMoq.Providers

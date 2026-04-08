@@ -86,7 +86,7 @@
 <ul>
 <li>installing a provider package gives you its implementation and extension methods</li>
 <li>importing its namespace makes those extension methods visible</li>
-<li>registering it as the default provider is what actually makes FastMoq use it for new mocks</li>
+<li>declaring or setting the default provider is what actually makes FastMoq use it for new mocks</li>
 </ul>
 <h3 id="package-to-namespace-quick-map">Package-to-namespace quick map</h3>
 <p>Use this table when package names and in-editor namespace discovery drift apart during migration.</p>
@@ -127,13 +127,33 @@
 </tbody>
 </table>
 <p>Packages control availability. Namespaces control extension discovery and which APIs light up in the editor.</p>
-<p>Installing <code>FastMoq.Core</code> plus <code>FastMoq.Provider.Moq</code> is not enough by itself. The Moq provider still needs to be registered as the default for that test assembly.</p>
+<p>Installing <code>FastMoq.Core</code> plus <code>FastMoq.Provider.Moq</code> is not enough by itself. The Moq provider still needs to be selected as the default for that test assembly.</p>
 <p>FastMoq is also not limited to the bundled providers. If your suite uses another mocking library, you can implement <code>IMockingProvider</code> and register your own provider instead of adopting <code>moq</code> or <code>nsubstitute</code>.</p>
 <p>If you need a provider-by-provider answer for what is supported today, see <a href="../getting-started/provider-capabilities.html">Provider Capabilities</a>.</p>
-<p>Treat this bootstrap as mandatory whenever the migrated test project still uses the Moq compatibility surface.</p>
-<h3 id="copy-paste-bootstrap-examples">Copy-paste bootstrap examples</h3>
+<p>Treat explicit assembly-default selection as mandatory whenever the migrated test project still uses any non-default provider-specific compatibility or extension surface.</p>
+<p>For example, <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>VerifyLogger(...)</code>, and <code>Protected()</code> still mean <code>moq</code>, while <code>AsNSubstitute()</code> and <code>Received(...)</code> mean <code>nsubstitute</code>.</p>
+<p>For the built-in <code>moq</code> provider, and for <code>nsubstitute</code> after its package is referenced, the shortest path is <a href="../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html">FastMoqDefaultProviderAttribute</a>:</p>
+<pre><code class="lang-csharp">using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider(&quot;moq&quot;)]
+</code></pre>
+<p>That attribute works with xUnit too; it is not tied to a particular test framework. It selects the default provider by canonical name during FastMoq bootstrap.</p>
+<p>When the provider must be registered and selected together at assembly scope, use <a href="../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html">FastMoqRegisterProviderAttribute</a>:</p>
+<pre><code class="lang-csharp">using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider(&quot;moq&quot;, typeof(MoqMockingProvider), SetAsDefault = true)]
+</code></pre>
+<p>That form registers the provider type and makes it the assembly default during FastMoq bootstrap, without depending on a framework-specific startup hook.</p>
+<p>Use the startup-code examples below only when you need more than declarative assembly metadata. Common cases are:</p>
+<ul>
+<li>choosing the provider dynamically at runtime from configuration, environment, or target-specific logic</li>
+<li>combining provider selection with other one-time test bootstrap work in the same startup path</li>
+<li>running custom registration logic that cannot be expressed as a provider type plus <code>SetAsDefault</code></li>
+</ul>
+<h3 id="copy-paste-startup-hook-examples">Copy-paste startup-hook examples</h3>
 <h4 id="xunit">xUnit</h4>
-<p>Use a module initializer because xUnit does not provide an assembly setup hook:</p>
+<p>If you need startup code in xUnit, a module initializer is a portable option that works well for provider registration and default-provider selection. Consumers on xUnit v3 may also choose assembly fixtures or test pipeline startup when those fit their broader test-bootstrap model:</p>
 <pre><code class="lang-csharp">using System.Runtime.CompilerServices;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
@@ -152,7 +172,7 @@ public static class TestAssemblyProviderBootstrap
 <p>Module-initializer note:</p>
 <ul>
 <li>some analyzers warn on <code>[ModuleInitializer]</code> usage in test projects, commonly <code>CA2255</code></li>
-<li>for a dedicated test bootstrap type, a targeted suppression is an expected choice when xUnit is the active framework</li>
+<li>for a dedicated test bootstrap type, a targeted suppression is an expected choice when you intentionally use the module-initializer pattern</li>
 <li>if your framework already offers a one-time assembly startup hook, use that hook instead of forcing the xUnit pattern into every test project</li>
 </ul>
 <h4 id="nunit">NUnit</h4>
@@ -193,7 +213,7 @@ public sealed class TestAssemblyProviderBootstrap
 <ul>
 <li>prefer provider-neutral surfaces such as <code>GetOrCreateMock(...)</code> and <code>VerifyLogged(...)</code> for new or actively refactored tests</li>
 <li>keep using Moq compatibility APIs where they materially reduce migration churn</li>
-<li>isolate Moq-specific usage behind an assembly-level provider selection so the tests that still depend on it are explicit</li>
+<li>isolate Moq-specific usage behind an assembly-level provider selection so the tests that still depend on it are explicit, whether that is the attribute form or a startup hook</li>
 </ul>
 <p>This keeps existing suites stable for v4 while steering new code toward the provider-neutral shape that will carry forward cleanly.</p>
 <p>If you are following the stabilize-first path, the most important action is explicit Moq selection for the test assembly. If you are following the modernization path, treat explicit Moq selection as a narrow compatibility tool rather than the long-term destination.</p>
@@ -285,7 +305,7 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Run(&quot;alpha&quot;), TimesSpec.On
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 18:59 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 21:12 UTC</span></div>
       
           </div>
         </div>

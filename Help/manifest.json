@@ -788,6 +788,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.FastMoqDefaultProviderAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.FastMoqDefaultProviderAttribute",
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.FastMoqDefaultProviderAttribute.yml\" sourcestartlinenumber=\"1\">Declares the default FastMoq provider for the current assembly.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.FastMoqRegisterProviderAttribute",
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml\" sourcestartlinenumber=\"1\">Registers a FastMoq provider for the current assembly.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/FastMoq.Providers.IFastMock-1.yml",
       "output": {
         ".html": {

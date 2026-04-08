@@ -125,13 +125,38 @@ namespace FastMoq.Providers
             _current.Value = null;
         }
 
+        internal static void ApplyAssemblyProviderRegistrations(IEnumerable<Assembly> assemblies)
+        {
+            ArgumentNullException.ThrowIfNull(assemblies);
+
+            var registrations = assemblies
+                .SelectMany(GetAssemblyProviderRegistrations)
+                .GroupBy(registration => registration.ProviderName, StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+
+            foreach (var group in registrations)
+            {
+                var distinctProviderTypes = group
+                    .Select(registration => registration.ProviderType.AssemblyQualifiedName ?? registration.ProviderType.FullName ?? registration.ProviderType.Name)
+                    .Distinct(StringComparer.Ordinal)
+                    .ToArray();
+
+                if (distinctProviderTypes.Length > 1)
+                {
+                    throw new InvalidOperationException($"Multiple FastMoq provider registrations were declared for '{group.Key}': {string.Join(", ", distinctProviderTypes.OrderBy(name => name, StringComparer.Ordinal))}. Declare only one provider type per provider name.");
+                }
+
+                var registration = group.First();
+                Register(registration.ProviderName, CreateProviderInstance(registration.ProviderName, registration.ProviderType), setAsDefault: false);
+            }
+        }
+
         internal static void ApplyAssemblyDefaultProviders(IEnumerable<Assembly> assemblies)
         {
             ArgumentNullException.ThrowIfNull(assemblies);
 
             var declaredProviders = assemblies
-                .Select(assembly => TryGetAssemblyDefaultProviderName(assembly, out var providerName) ? providerName : string.Empty)
-                .Where(providerName => !string.IsNullOrWhiteSpace(providerName))
+                .SelectMany(GetAssemblyDefaultProviderNames)
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToArray();
 
@@ -152,15 +177,72 @@ namespace FastMoq.Providers
         {
             ArgumentNullException.ThrowIfNull(assembly);
 
+            providerName = GetAssemblyDefaultProviderNames(assembly).FirstOrDefault() ?? string.Empty;
+            return !string.IsNullOrWhiteSpace(providerName);
+        }
+
+        private static IEnumerable<string> GetAssemblyDefaultProviderNames(Assembly assembly)
+        {
+            ArgumentNullException.ThrowIfNull(assembly);
+
             var attribute = assembly.GetCustomAttributes<FastMoqDefaultProviderAttribute>().FirstOrDefault();
-            if (attribute is null || string.IsNullOrWhiteSpace(attribute.ProviderName))
+            if (attribute is not null && !string.IsNullOrWhiteSpace(attribute.ProviderName))
             {
-                providerName = string.Empty;
-                return false;
+                yield return attribute.ProviderName;
             }
 
-            providerName = attribute.ProviderName;
-            return true;
+            foreach (var registration in GetAssemblyProviderRegistrations(assembly))
+            {
+                if (registration.SetAsDefault)
+                {
+                    yield return registration.ProviderName;
+                }
+            }
+        }
+
+        private static IEnumerable<AssemblyProviderRegistration> GetAssemblyProviderRegistrations(Assembly assembly)
+        {
+            ArgumentNullException.ThrowIfNull(assembly);
+
+            foreach (var attribute in assembly.GetCustomAttributes<FastMoqRegisterProviderAttribute>())
+            {
+                if (string.IsNullOrWhiteSpace(attribute.ProviderName))
+                {
+                    continue;
+                }
+
+                yield return new AssemblyProviderRegistration(attribute.ProviderName, attribute.ProviderType, attribute.SetAsDefault);
+            }
+        }
+
+        private static IMockingProvider CreateProviderInstance(string providerName, Type providerType)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(providerName);
+            ArgumentNullException.ThrowIfNull(providerType);
+
+            if (!typeof(IMockingProvider).IsAssignableFrom(providerType))
+            {
+                throw new InvalidOperationException($"FastMoq provider registration '{providerName}' references '{providerType.FullName}', which does not implement IMockingProvider.");
+            }
+
+            const BindingFlags STATIC_FLAGS = BindingFlags.Public | BindingFlags.Static;
+            if (providerType.GetField("Instance", STATIC_FLAGS)?.GetValue(null) is IMockingProvider fieldProvider)
+            {
+                return fieldProvider;
+            }
+
+            if (providerType.GetProperty("Instance", STATIC_FLAGS)?.GetValue(null) is IMockingProvider propertyProvider)
+            {
+                return propertyProvider;
+            }
+
+            if (providerType.GetConstructor(Type.EmptyTypes) is not null &&
+                Activator.CreateInstance(providerType) is IMockingProvider createdProvider)
+            {
+                return createdProvider;
+            }
+
+            throw new InvalidOperationException($"FastMoq provider registration '{providerName}' could not create '{providerType.FullName}'. Expose a public static Instance or a public parameterless constructor.");
         }
 
         private static bool TryEnsureOptionalProviderRegistered(string providerName)
@@ -219,5 +301,7 @@ namespace FastMoq.Providers
                 _disposed = true;
             }
         }
+
+        private sealed record AssemblyProviderRegistration(string ProviderName, Type ProviderType, bool SetAsDefault);
     }
 }

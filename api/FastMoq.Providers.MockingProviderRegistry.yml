@@ -28,7 +28,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockingProviderRegistry
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 9
+    startLine: 10
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -65,7 +65,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Register
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 23
+    startLine: 27
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -101,7 +101,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGet
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 34
+    startLine: 38
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -137,7 +137,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RegisteredProviderNames
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 36
+    startLine: 50
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -166,7 +166,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Default
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 38
+    startLine: 52
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -195,7 +195,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WrapLegacy
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 40
+    startLine: 54
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -231,7 +231,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetDefault
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 72
+    startLine: 86
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -263,7 +263,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 87
+    startLine: 101
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -296,7 +296,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 94
+    startLine: 108
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -330,7 +330,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Clear
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 106
+    startLine: 120
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers

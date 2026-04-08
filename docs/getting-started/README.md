@@ -142,7 +142,7 @@ Split-package example:
 > Note: this guide targets the current v4 release line. For the release delta relative to the last public `3.0.0` package, see [What's New Since 3.0.0](../whats-new/README.md).
 > Note: in the current repository, `GetMockDbContext<TContext>()` keeps the same `FastMoq` namespace call shape, but direct `FastMoq.Core` consumers should add `FastMoq.Database` for EF-specific helpers. Direct web-helper consumers should add `FastMoq.Web`.
 
-In the current v4 transition layout, `FastMoq.Core` bundles the built-in `moq` provider and the internal `reflection` fallback. The default provider is `reflection`. Optional providers such as `nsubstitute` can be added explicitly and registered with `MockingProviderRegistry`. You can also register your own provider by implementing `IMockingProvider`; the bundled providers are examples, not the only supported choices.
+In the current v4 transition layout, `FastMoq.Core` bundles the built-in `moq` provider and the internal `reflection` fallback. The default provider is `reflection`. Optional providers such as `nsubstitute` can be added explicitly and then selected by their canonical name once the package is present, or registered manually under a custom alias. You can also register your own provider by implementing `IMockingProvider`; the bundled providers are examples, not the only supported choices.
 
 The DbContext helper path now exposes explicit modes through `GetDbContextHandle<TContext>(...)`. `GetMockDbContext<TContext>()` remains the mocked-sets convenience entry point, and `DbContextTestMode.RealInMemory` is the real EF-backed option. The mocked-sets implementation still uses the existing moved Moq-based `DbContextMock<TContext>` path internally.
 

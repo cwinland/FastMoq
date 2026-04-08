@@ -34,7 +34,7 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.UseProviderFirstObjectAccess, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.UseProviderFirstReset, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.UseVerifyLogged, DiagnosticSeverity.Warning },
-            { DiagnosticDescriptors.UseConsistentMockRetrieval, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.UseConsistentMockRetrieval, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.UseExplicitOptionalParameterResolution, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.ReplaceInitializeCompatibilityWrapper, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.AvoidStrictCompatibilityProperty, DiagnosticSeverity.Warning },
@@ -644,6 +644,34 @@ class Sample
         }
 
         [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenAssemblyRegistersMoqAsDefaultProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider(""moq"", typeof(MoqMockingProvider), SetAsDefault = true)]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
         public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenAssemblyDeclaresNSubstituteDefaultProvider()
         {
             const string SOURCE = @"
@@ -652,6 +680,35 @@ using FastMoq.Providers;
 using FastMoq.Providers.NSubstituteProvider;
 
 [assembly: FastMoqDefaultProvider(""nsubstitute"")]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenAssemblyRegistersNSubstituteAsDefaultProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+
+[assembly: FastMoqRegisterProvider(""nsubstitute"", typeof(NSubstituteMockingProvider), SetAsDefault = true)]
 
 class Sample
 {

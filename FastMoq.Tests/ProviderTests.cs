@@ -232,6 +232,72 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void ApplyAssemblyProviderRegistrations_ShouldRegisterMoq_WhenAssemblyDeclaresProviderRegistration()
+        {
+            ResetRegistry(includeOptionalProviders: false, includeMoqProvider: false);
+
+            try
+            {
+                var assembly = CreateAssemblyWithRegisterProviderAttribute("moq", typeof(MoqMockingProvider));
+
+                MockingProviderRegistry.RegisteredProviderNames.Should().NotContain("moq");
+
+                MockingProviderRegistry.ApplyAssemblyProviderRegistrations([assembly]);
+
+                MockingProviderRegistry.RegisteredProviderNames.Should().Contain("moq");
+                GetProvider("moq").Should().BeSameAs(MoqMockingProvider.Instance);
+                MockingProviderRegistry.Default.Should().BeSameAs(GetProvider("reflection"));
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
+        public void ApplyAssemblyProviderRegistrations_ShouldRegisterNSubstitute_WhenAssemblyDeclaresProviderRegistration()
+        {
+            ResetRegistry(includeOptionalProviders: false);
+
+            try
+            {
+                var assembly = CreateAssemblyWithRegisterProviderAttribute("nsubstitute", typeof(NSubstituteMockingProvider));
+
+                MockingProviderRegistry.RegisteredProviderNames.Should().NotContain("nsubstitute");
+
+                MockingProviderRegistry.ApplyAssemblyProviderRegistrations([assembly]);
+
+                MockingProviderRegistry.RegisteredProviderNames.Should().Contain("nsubstitute");
+                GetProvider("nsubstitute").Should().BeSameAs(NSubstituteMockingProvider.Instance);
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
+        public void ApplyAssemblyProviderRegistrations_ShouldThrow_WhenAssembliesDeclareDifferentTypesForSameProviderName()
+        {
+            ResetRegistry(includeOptionalProviders: false, includeMoqProvider: false);
+
+            try
+            {
+                var moqAssembly = CreateAssemblyWithRegisterProviderAttribute("primary", typeof(MoqMockingProvider));
+                var nsubstituteAssembly = CreateAssemblyWithRegisterProviderAttribute("primary", typeof(NSubstituteMockingProvider));
+
+                Action action = () => MockingProviderRegistry.ApplyAssemblyProviderRegistrations([moqAssembly, nsubstituteAssembly]);
+
+                action.Should().Throw<InvalidOperationException>()
+                    .WithMessage("*Multiple FastMoq provider registrations were declared for 'primary'*");
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
         public void ApplyAssemblyDefaultProviders_ShouldSetDefaultToMoq_WhenAssemblyDeclaresMoq()
         {
             ResetRegistry(includeOptionalProviders: true);
@@ -251,6 +317,26 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void ApplyAssemblyDefaultProviders_ShouldSetDefaultToMoq_WhenAssemblyRegistersMoqAsDefault()
+        {
+            ResetRegistry(includeOptionalProviders: false, includeMoqProvider: false);
+
+            try
+            {
+                var assembly = CreateAssemblyWithRegisterProviderAttribute("moq", typeof(MoqMockingProvider), setAsDefault: true);
+
+                MockingProviderRegistry.ApplyAssemblyProviderRegistrations([assembly]);
+                MockingProviderRegistry.ApplyAssemblyDefaultProviders([assembly]);
+
+                MockingProviderRegistry.Default.Should().BeSameAs(GetProvider("moq"));
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
         public void ApplyAssemblyDefaultProviders_ShouldSetDefaultToNSubstitute_WhenAssemblyDeclaresNSubstitute()
         {
             ResetRegistry(includeOptionalProviders: false);
@@ -259,6 +345,26 @@ namespace FastMoq.Tests
             {
                 var assembly = CreateAssemblyWithDefaultProviderAttribute("nsubstitute");
 
+                MockingProviderRegistry.ApplyAssemblyDefaultProviders([assembly]);
+
+                MockingProviderRegistry.Default.Should().BeSameAs(GetProvider("nsubstitute"));
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
+        public void ApplyAssemblyDefaultProviders_ShouldSetDefaultToNSubstitute_WhenAssemblyRegistersNSubstituteAsDefault()
+        {
+            ResetRegistry(includeOptionalProviders: false, includeMoqProvider: false);
+
+            try
+            {
+                var assembly = CreateAssemblyWithRegisterProviderAttribute("nsubstitute", typeof(NSubstituteMockingProvider), setAsDefault: true);
+
+                MockingProviderRegistry.ApplyAssemblyProviderRegistrations([assembly]);
                 MockingProviderRegistry.ApplyAssemblyDefaultProviders([assembly]);
 
                 MockingProviderRegistry.Default.Should().BeSameAs(GetProvider("nsubstitute"));
@@ -571,18 +677,22 @@ namespace FastMoq.Tests
             return MockingProviderRegistry.Push(providerName);
         }
 
-        private static void ResetRegistry(bool includeOptionalProviders)
+        private static void ResetRegistry(bool includeOptionalProviders, bool includeMoqProvider = true)
         {
             MockingProviderRegistry.Clear();
             MockingProviderRegistry.Register("reflection", ReflectionMockingProvider.Instance, setAsDefault: true);
-            MockingProviderRegistry.Register("moq", MoqMockingProvider.Instance, setAsDefault: false);
+
+            if (includeMoqProvider)
+            {
+                MockingProviderRegistry.Register("moq", MoqMockingProvider.Instance, setAsDefault: false);
+            }
 
             if (includeOptionalProviders)
             {
                 MockingProviderRegistry.Register("nsubstitute", NSubstituteMockingProvider.Instance, setAsDefault: false);
             }
 
-            MockingProviderRegistry.SetDefault("moq");
+            MockingProviderRegistry.SetDefault(includeMoqProvider ? "moq" : "reflection");
         }
 
         private static Assembly CreateAssemblyWithDefaultProviderAttribute(string providerName)
@@ -594,6 +704,27 @@ namespace FastMoq.Tests
             var attribute = new CustomAttributeBuilder(attributeConstructor, [providerName]);
 
             assemblyBuilder.SetCustomAttribute(attribute);
+            return assemblyBuilder;
+        }
+
+        private static Assembly CreateAssemblyWithRegisterProviderAttribute(string providerName, Type providerType, bool setAsDefault = false)
+        {
+            var assemblyName = new AssemblyName($"FastMoq.DynamicProviderRegistration_{providerName}_{Guid.NewGuid():N}");
+            var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            var attributeConstructor = typeof(FastMoqRegisterProviderAttribute).GetConstructor([typeof(string), typeof(Type)])
+                ?? throw new InvalidOperationException("Unable to find FastMoqRegisterProviderAttribute(string, Type) constructor.");
+
+            if (setAsDefault)
+            {
+                var setAsDefaultProperty = typeof(FastMoqRegisterProviderAttribute).GetProperty(nameof(FastMoqRegisterProviderAttribute.SetAsDefault))
+                    ?? throw new InvalidOperationException("Unable to find FastMoqRegisterProviderAttribute.SetAsDefault property.");
+                var attribute = new CustomAttributeBuilder(attributeConstructor, [providerName, providerType], [setAsDefaultProperty], [true]);
+
+                assemblyBuilder.SetCustomAttribute(attribute);
+                return assemblyBuilder;
+            }
+
+            assemblyBuilder.SetCustomAttribute(new CustomAttributeBuilder(attributeConstructor, [providerName, providerType]));
             return assemblyBuilder;
         }
 

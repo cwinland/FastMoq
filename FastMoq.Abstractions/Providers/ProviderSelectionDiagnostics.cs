@@ -29,7 +29,8 @@ namespace FastMoq.Providers
 
             return $"API '{apiName}' requires the '{expectedProviderName}' provider, but the active provider is '{activeProviderName}'. " +
                    $"Tracked mock for '{mockedType.FullName}' is backed by '{nativeType}'. " +
-                     $"You can declare [assembly: FastMoqDefaultProvider(\"{expectedProviderName}\")] for assembly-wide bootstrap, " +
+                                     $"You can declare [assembly: FastMoqDefaultProvider(\"{expectedProviderName}\")] when the provider name is already resolvable, " +
+                                     $"declare [assembly: FastMoqRegisterProvider(\"{expectedProviderName}\", typeof(...), SetAsDefault = true)] to register and select it at assembly scope, " +
                    $"Select the '{expectedProviderName}' provider via MockingProviderRegistry.Push(\"{expectedProviderName}\"), " +
                    $"MockingProviderRegistry.SetDefault(\"{expectedProviderName}\"), or MockingProviderRegistry.Register(\"{expectedProviderName}\", ..., setAsDefault: true), " +
                    $"or use {providerNeutralAlternative}.";

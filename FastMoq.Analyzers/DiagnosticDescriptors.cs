@@ -38,9 +38,9 @@ namespace FastMoq.Analyzers
             "Use provider-first mock retrieval consistently",
             "Document already uses GetOrCreateMock<T>(); convert this GetMock<T>() call to keep retrieval consistent",
             Category,
-            DiagnosticSeverity.Info,
+            DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "When a file or helper layer already uses provider-first retrieval, remaining GetMock<T>() calls are usually migration leftovers that can be normalized.");
+            description: "When a file or helper layer already uses provider-first retrieval, remaining obsolete GetMock<T>() calls are usually migration leftovers that should be normalized.");
 
         public static readonly DiagnosticDescriptor UseExplicitOptionalParameterResolution = new(
             DiagnosticIds.UseExplicitOptionalParameterResolution,
@@ -81,11 +81,11 @@ namespace FastMoq.Analyzers
         public static readonly DiagnosticDescriptor SelectProviderBeforeProviderSpecificApi = new(
             DiagnosticIds.SelectProviderBeforeProviderSpecificApi,
             "Select a provider before using provider-specific FastMoq APIs",
-            "API '{0}' requires FastMoq provider '{1}', but this project does not select it. Reflection remains the default. Use [assembly: FastMoqDefaultProvider(\"{1}\")], Push(\"{1}\"), SetDefault(\"{1}\"), or Register(\"{1}\", ..., setAsDefault: true).",
+            "API '{0}' requires FastMoq provider '{1}', but this project does not select it. Reflection remains the default. Use [assembly: FastMoqDefaultProvider(\"{1}\")], [assembly: FastMoqRegisterProvider(\"{1}\", typeof(...), SetAsDefault = true)], Push(\"{1}\"), SetDefault(\"{1}\"), or Register(\"{1}\", ..., setAsDefault: true).",
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "Provider-specific FastMoq APIs require an explicit provider selection because reflection remains the default in v4. Assembly-level defaults can use FastMoqDefaultProviderAttribute when a test assembly standardizes on a provider.");
+            description: "Provider-specific FastMoq APIs require an explicit provider selection because reflection remains the default in v4. Assembly-level defaults can use FastMoqDefaultProviderAttribute when the provider name is already resolvable, or FastMoqRegisterProviderAttribute when registration and selection need to happen together.");
 
         public static readonly DiagnosticDescriptor PreferTypedProviderExtensions = new(
             DiagnosticIds.PreferTypedProviderExtensions,

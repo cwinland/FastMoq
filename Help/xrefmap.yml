@@ -5928,6 +5928,108 @@ references:
   commentId: N:FastMoq.Providers
   fullName: FastMoq.Providers
   nameWithType: FastMoq.Providers
+- uid: FastMoq.Providers.FastMoqDefaultProviderAttribute
+  name: FastMoqDefaultProviderAttribute
+  href: api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html
+  commentId: T:FastMoq.Providers.FastMoqDefaultProviderAttribute
+  fullName: FastMoq.Providers.FastMoqDefaultProviderAttribute
+  nameWithType: FastMoqDefaultProviderAttribute
+- uid: FastMoq.Providers.FastMoqDefaultProviderAttribute.#ctor(System.String)
+  name: FastMoqDefaultProviderAttribute(string)
+  href: api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html#FastMoq_Providers_FastMoqDefaultProviderAttribute__ctor_System_String_
+  commentId: M:FastMoq.Providers.FastMoqDefaultProviderAttribute.#ctor(System.String)
+  name.vb: New(String)
+  fullName: FastMoq.Providers.FastMoqDefaultProviderAttribute.FastMoqDefaultProviderAttribute(string)
+  fullName.vb: FastMoq.Providers.FastMoqDefaultProviderAttribute.New(String)
+  nameWithType: FastMoqDefaultProviderAttribute.FastMoqDefaultProviderAttribute(string)
+  nameWithType.vb: FastMoqDefaultProviderAttribute.New(String)
+- uid: FastMoq.Providers.FastMoqDefaultProviderAttribute.#ctor*
+  name: FastMoqDefaultProviderAttribute
+  href: api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html#FastMoq_Providers_FastMoqDefaultProviderAttribute__ctor_
+  commentId: Overload:FastMoq.Providers.FastMoqDefaultProviderAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FastMoq.Providers.FastMoqDefaultProviderAttribute.FastMoqDefaultProviderAttribute
+  fullName.vb: FastMoq.Providers.FastMoqDefaultProviderAttribute.New
+  nameWithType: FastMoqDefaultProviderAttribute.FastMoqDefaultProviderAttribute
+  nameWithType.vb: FastMoqDefaultProviderAttribute.New
+- uid: FastMoq.Providers.FastMoqDefaultProviderAttribute.ProviderName
+  name: ProviderName
+  href: api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html#FastMoq_Providers_FastMoqDefaultProviderAttribute_ProviderName
+  commentId: P:FastMoq.Providers.FastMoqDefaultProviderAttribute.ProviderName
+  fullName: FastMoq.Providers.FastMoqDefaultProviderAttribute.ProviderName
+  nameWithType: FastMoqDefaultProviderAttribute.ProviderName
+- uid: FastMoq.Providers.FastMoqDefaultProviderAttribute.ProviderName*
+  name: ProviderName
+  href: api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html#FastMoq_Providers_FastMoqDefaultProviderAttribute_ProviderName_
+  commentId: Overload:FastMoq.Providers.FastMoqDefaultProviderAttribute.ProviderName
+  isSpec: "True"
+  fullName: FastMoq.Providers.FastMoqDefaultProviderAttribute.ProviderName
+  nameWithType: FastMoqDefaultProviderAttribute.ProviderName
+- uid: FastMoq.Providers.FastMoqRegisterProviderAttribute
+  name: FastMoqRegisterProviderAttribute
+  href: api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html
+  commentId: T:FastMoq.Providers.FastMoqRegisterProviderAttribute
+  fullName: FastMoq.Providers.FastMoqRegisterProviderAttribute
+  nameWithType: FastMoqRegisterProviderAttribute
+- uid: FastMoq.Providers.FastMoqRegisterProviderAttribute.#ctor(System.String,System.Type)
+  name: FastMoqRegisterProviderAttribute(string, Type)
+  href: api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html#FastMoq_Providers_FastMoqRegisterProviderAttribute__ctor_System_String_System_Type_
+  commentId: M:FastMoq.Providers.FastMoqRegisterProviderAttribute.#ctor(System.String,System.Type)
+  name.vb: New(String, Type)
+  fullName: FastMoq.Providers.FastMoqRegisterProviderAttribute.FastMoqRegisterProviderAttribute(string, System.Type)
+  fullName.vb: FastMoq.Providers.FastMoqRegisterProviderAttribute.New(String, System.Type)
+  nameWithType: FastMoqRegisterProviderAttribute.FastMoqRegisterProviderAttribute(string, Type)
+  nameWithType.vb: FastMoqRegisterProviderAttribute.New(String, Type)
+- uid: FastMoq.Providers.FastMoqRegisterProviderAttribute.#ctor*
+  name: FastMoqRegisterProviderAttribute
+  href: api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html#FastMoq_Providers_FastMoqRegisterProviderAttribute__ctor_
+  commentId: Overload:FastMoq.Providers.FastMoqRegisterProviderAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FastMoq.Providers.FastMoqRegisterProviderAttribute.FastMoqRegisterProviderAttribute
+  fullName.vb: FastMoq.Providers.FastMoqRegisterProviderAttribute.New
+  nameWithType: FastMoqRegisterProviderAttribute.FastMoqRegisterProviderAttribute
+  nameWithType.vb: FastMoqRegisterProviderAttribute.New
+- uid: FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderName
+  name: ProviderName
+  href: api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html#FastMoq_Providers_FastMoqRegisterProviderAttribute_ProviderName
+  commentId: P:FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderName
+  fullName: FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderName
+  nameWithType: FastMoqRegisterProviderAttribute.ProviderName
+- uid: FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderName*
+  name: ProviderName
+  href: api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html#FastMoq_Providers_FastMoqRegisterProviderAttribute_ProviderName_
+  commentId: Overload:FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderName
+  isSpec: "True"
+  fullName: FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderName
+  nameWithType: FastMoqRegisterProviderAttribute.ProviderName
+- uid: FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderType
+  name: ProviderType
+  href: api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html#FastMoq_Providers_FastMoqRegisterProviderAttribute_ProviderType
+  commentId: P:FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderType
+  fullName: FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderType
+  nameWithType: FastMoqRegisterProviderAttribute.ProviderType
+- uid: FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderType*
+  name: ProviderType
+  href: api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html#FastMoq_Providers_FastMoqRegisterProviderAttribute_ProviderType_
+  commentId: Overload:FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderType
+  isSpec: "True"
+  fullName: FastMoq.Providers.FastMoqRegisterProviderAttribute.ProviderType
+  nameWithType: FastMoqRegisterProviderAttribute.ProviderType
+- uid: FastMoq.Providers.FastMoqRegisterProviderAttribute.SetAsDefault
+  name: SetAsDefault
+  href: api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html#FastMoq_Providers_FastMoqRegisterProviderAttribute_SetAsDefault
+  commentId: P:FastMoq.Providers.FastMoqRegisterProviderAttribute.SetAsDefault
+  fullName: FastMoq.Providers.FastMoqRegisterProviderAttribute.SetAsDefault
+  nameWithType: FastMoqRegisterProviderAttribute.SetAsDefault
+- uid: FastMoq.Providers.FastMoqRegisterProviderAttribute.SetAsDefault*
+  name: SetAsDefault
+  href: api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html#FastMoq_Providers_FastMoqRegisterProviderAttribute_SetAsDefault_
+  commentId: Overload:FastMoq.Providers.FastMoqRegisterProviderAttribute.SetAsDefault
+  isSpec: "True"
+  fullName: FastMoq.Providers.FastMoqRegisterProviderAttribute.SetAsDefault
+  nameWithType: FastMoqRegisterProviderAttribute.SetAsDefault
 - uid: FastMoq.Providers.IFastMock
   name: IFastMock
   href: api/FastMoq.Providers.IFastMock.html

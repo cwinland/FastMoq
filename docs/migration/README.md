@@ -49,6 +49,8 @@ The analyzer pack now has two roles:
 - migration guidance for mechanical provider-first rewrites and compatibility cleanup
 - low-noise authoring guidance for new tests where FastMoq already has a clearer first-party pattern
 
+Warnings are the default for compatibility and obsolete-surface cleanup that is usually actionable immediately. That includes `.Object`, provider-native `Reset()`, `VerifyLogger(...)`, `MockOptional`, `Initialize<T>(...)`, `Strict`, mixed `GetMock<T>()` leftovers in files that already use `GetOrCreateMock<T>()`, and provider-specific FastMoq APIs without an explicit provider selection.
+
 Current examples include:
 
 - `FMOQ0010` for preferring typed provider escape hatches such as `AsMoq()` or `AsNSubstitute()` over raw `NativeMock` / `GetNativeMock(...)`
@@ -196,7 +198,7 @@ Use this when you are moving a larger suite instead of only touching a few tests
 1. Pick the provider that matches the current suite shape before rewriting arrangements.
 1. Stabilize the suite first, especially if it still depends on `GetMock<T>()`, `VerifyLogger(...)`, `Protected()`, or other Moq-heavy flows.
 1. Run tests immediately after each migration batch instead of waiting for a large final rewrite pass.
-1. Apply FastMoq analyzer fixes where the suggestions are high-confidence, then rerun the affected tests.
+1. Apply FastMoq analyzer fixes where the warnings or high-confidence suggestions are local and clear, then rerun the affected tests.
 1. Translate Moq `Setup(...)` calls into provider-native arrangement syntax only in the tests you are actively modernizing.
 1. Move asserts toward `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, and `TimesSpec` where that improves clarity.
 1. Keep Moq for the pockets that still depend on Moq-only semantics such as `SetupSet(...)`, `SetupAllProperties()`, `Protected()`, or `CallBase`.
@@ -219,7 +221,7 @@ Open these only when you hit the relevant problem. That keeps this page short wi
 ### Stabilize-first order
 
 1. Upgrade to v4 and run the suite unchanged.
-1. If legacy Moq-shaped tests fail, select `moq` explicitly for the test assembly.
+1. If legacy Moq-shaped tests fail, select `moq` explicitly for the test assembly, typically with `[assembly: FastMoqDefaultProvider("moq")]`, `[assembly: FastMoqRegisterProvider("moq", typeof(MoqMockingProvider), SetAsDefault = true)]`, or an equivalent bootstrap hook.
 1. Audit `Strict` usage and decide whether each case means fail-on-unconfigured only or a full strict preset. Use [API replacements and migration exceptions](./api-replacements-and-exceptions.md#strict) and [Testing Guide: Strict vs Presets](../getting-started/testing-guide.md#strict-vs-presets) when the replacement is unclear.
 1. Replace new `MockOptional` usage with explicit `OptionalParameterResolution`, `InvocationOptions`, or `MockerTestBase<TComponent>` component-construction overrides. See [API replacements and migration exceptions](./api-replacements-and-exceptions.md#obsolete-mockoptional) and [Testing Guide: Optional constructor and method parameters](../getting-started/testing-guide.md#optional-constructor-and-method-parameters) when the right replacement is unclear.
 1. Stop once the suite is stable unless you are already touching tests for other work.

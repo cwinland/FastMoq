@@ -15,7 +15,9 @@ namespace FastMoq.Core.Providers
             if (Interlocked.Exchange(ref _initialized, 1) == 1) return;
             // Force the registry type initializer to run so built-in providers are registered once.
             _ = MockingProviderRegistry.RegisteredProviderNames;
-            MockingProviderRegistry.ApplyAssemblyDefaultProviders(AppDomain.CurrentDomain.GetAssemblies());
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            MockingProviderRegistry.ApplyAssemblyProviderRegistrations(assemblies);
+            MockingProviderRegistry.ApplyAssemblyDefaultProviders(assemblies);
         }
     }
 }

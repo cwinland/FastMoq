@@ -18,7 +18,7 @@ This is easy to miss during migration because package installation, extension-me
 
 - installing a provider package gives you its implementation and extension methods
 - importing its namespace makes those extension methods visible
-- registering it as the default provider is what actually makes FastMoq use it for new mocks
+- declaring or setting the default provider is what actually makes FastMoq use it for new mocks
 
 ### Package-to-namespace quick map
 
@@ -34,19 +34,48 @@ Use this table when package names and in-editor namespace discovery drift apart 
 
 Packages control availability. Namespaces control extension discovery and which APIs light up in the editor.
 
-Installing `FastMoq.Core` plus `FastMoq.Provider.Moq` is not enough by itself. The Moq provider still needs to be registered as the default for that test assembly.
+Installing `FastMoq.Core` plus `FastMoq.Provider.Moq` is not enough by itself. The Moq provider still needs to be selected as the default for that test assembly.
 
 FastMoq is also not limited to the bundled providers. If your suite uses another mocking library, you can implement `IMockingProvider` and register your own provider instead of adopting `moq` or `nsubstitute`.
 
 If you need a provider-by-provider answer for what is supported today, see [Provider Capabilities](../getting-started/provider-capabilities.md).
 
-Treat this bootstrap as mandatory whenever the migrated test project still uses the Moq compatibility surface.
+Treat explicit assembly-default selection as mandatory whenever the migrated test project still uses any non-default provider-specific compatibility or extension surface.
 
-### Copy-paste bootstrap examples
+For example, `GetMock<T>()`, direct `Mock<T>` access, `VerifyLogger(...)`, and `Protected()` still mean `moq`, while `AsNSubstitute()` and `Received(...)` mean `nsubstitute`.
+
+For the built-in `moq` provider, and for `nsubstitute` after its package is referenced, the shortest path is [FastMoqDefaultProviderAttribute](../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.yml):
+
+```csharp
+using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider("moq")]
+```
+
+That attribute works with xUnit too; it is not tied to a particular test framework. It selects the default provider by canonical name during FastMoq bootstrap.
+
+When the provider must be registered and selected together at assembly scope, use [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml):
+
+```csharp
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider("moq", typeof(MoqMockingProvider), SetAsDefault = true)]
+```
+
+That form registers the provider type and makes it the assembly default during FastMoq bootstrap, without depending on a framework-specific startup hook.
+
+Use the startup-code examples below only when you need more than declarative assembly metadata. Common cases are:
+
+- choosing the provider dynamically at runtime from configuration, environment, or target-specific logic
+- combining provider selection with other one-time test bootstrap work in the same startup path
+- running custom registration logic that cannot be expressed as a provider type plus `SetAsDefault`
+
+### Copy-paste startup-hook examples
 
 #### xUnit
 
-Use a module initializer because xUnit does not provide an assembly setup hook:
+If you need startup code in xUnit, a module initializer is a portable option that works well for provider registration and default-provider selection. Consumers on xUnit v3 may also choose assembly fixtures or test pipeline startup when those fit their broader test-bootstrap model:
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -68,7 +97,7 @@ public static class TestAssemblyProviderBootstrap
 Module-initializer note:
 
 - some analyzers warn on `[ModuleInitializer]` usage in test projects, commonly `CA2255`
-- for a dedicated test bootstrap type, a targeted suppression is an expected choice when xUnit is the active framework
+- for a dedicated test bootstrap type, a targeted suppression is an expected choice when you intentionally use the module-initializer pattern
 - if your framework already offers a one-time assembly startup hook, use that hook instead of forcing the xUnit pattern into every test project
 
 #### NUnit
@@ -115,7 +144,7 @@ Migration guidance for v4:
 
 - prefer provider-neutral surfaces such as `GetOrCreateMock(...)` and `VerifyLogged(...)` for new or actively refactored tests
 - keep using Moq compatibility APIs where they materially reduce migration churn
-- isolate Moq-specific usage behind an assembly-level provider selection so the tests that still depend on it are explicit
+- isolate Moq-specific usage behind an assembly-level provider selection so the tests that still depend on it are explicit, whether that is the attribute form or a startup hook
 
 This keeps existing suites stable for v4 while steering new code toward the provider-neutral shape that will carry forward cleanly.
 
