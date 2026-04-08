@@ -24,6 +24,14 @@
       href: docs/whats-new/README.md
     - name: Migration guide
       href: docs/migration/README.md
+    - name: Provider and compatibility guidance
+      href: docs/migration/provider-and-compatibility.md
+    - name: Framework and web helper migration
+      href: docs/migration/framework-and-web-helpers.md
+    - name: API replacements and migration exceptions
+      href: docs/migration/api-replacements-and-exceptions.md
+    - name: Copilot migration prompts
+      href: docs/migration/copilot-prompts.md
     - name: Breaking changes
       href: docs/breaking-changes/README.md
     - name: Roadmap notes

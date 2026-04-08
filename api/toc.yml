@@ -169,6 +169,9 @@ items:
   - uid: FastMoq.Providers.MockingProviderRegistry
     name: MockingProviderRegistry
     type: Class
+  - uid: FastMoq.Providers.ProviderSelectionDiagnostics
+    name: ProviderSelectionDiagnostics
+    type: Class
   - uid: FastMoq.Providers.TimesSpec
     name: TimesSpec
     type: Struct

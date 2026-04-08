@@ -10,6 +10,7 @@ items:
   - FastMoq.Providers.IMockingProviderCapabilities
   - FastMoq.Providers.MockCreationOptions
   - FastMoq.Providers.MockingProviderRegistry
+  - FastMoq.Providers.ProviderSelectionDiagnostics
   - FastMoq.Providers.TimesSpec
   - FastMoq.Providers.TimesSpecMode
   langs:
@@ -75,6 +76,12 @@ references:
   name: MockCreationOptions
   nameWithType: MockCreationOptions
   fullName: FastMoq.Providers.MockCreationOptions
+- uid: FastMoq.Providers.ProviderSelectionDiagnostics
+  commentId: T:FastMoq.Providers.ProviderSelectionDiagnostics
+  href: FastMoq.Providers.ProviderSelectionDiagnostics.html
+  name: ProviderSelectionDiagnostics
+  nameWithType: ProviderSelectionDiagnostics
+  fullName: FastMoq.Providers.ProviderSelectionDiagnostics
 - uid: FastMoq.Providers.TimesSpecMode
   commentId: T:FastMoq.Providers.TimesSpecMode
   parent: FastMoq.Providers

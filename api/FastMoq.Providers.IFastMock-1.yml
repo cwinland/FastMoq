@@ -16,15 +16,15 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMock
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 16
+    startLine: 35
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
-  summary: Generic variant for convenience strongly typing Instance.
+  summary: Generic variant for convenience strongly typing <xref href="FastMoq.Providers.IFastMock.Instance" data-throw-if-not-resolved="false"></xref>.
   example: []
   syntax:
     content: 'public interface IFastMock<T> : IFastMock where T : class'
@@ -88,14 +88,19 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 18
+    startLine: 41
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: >-
+    Gets the usable mocked instance with its concrete type.
+
+    This is the strongly typed provider-first replacement for older tracked-mock <code>.Object</code> usage.
+  example: []
   syntax:
     content: T Instance { get; }
     parameters: []
@@ -106,6 +111,13 @@ items:
   nameWithType.vb: IFastMock(Of T).Instance
   fullName.vb: FastMoq.Providers.IFastMock(Of T).Instance
 references:
+- uid: FastMoq.Providers.IFastMock.Instance
+  commentId: P:FastMoq.Providers.IFastMock.Instance
+  parent: FastMoq.Providers.IFastMock
+  href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance
+  name: Instance
+  nameWithType: IFastMock.Instance
+  fullName: FastMoq.Providers.IFastMock.Instance
 - uid: FastMoq.Providers
   commentId: N:FastMoq.Providers
   href: FastMoq.html

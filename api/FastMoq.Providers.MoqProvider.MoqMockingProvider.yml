@@ -33,14 +33,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MoqMockingProvider
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 7
+    startLine: 10
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Provider implementation that adapts Moq to the provider-neutral FastMoq abstractions.
+  example: []
   syntax:
     content: 'public sealed class MoqMockingProvider : IMockingProvider, IMockingProviderCapabilities'
     content.vb: Public NotInheritable Class MoqMockingProvider Implements IMockingProvider, IMockingProviderCapabilities
@@ -90,14 +92,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 9
+    startLine: 15
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets the shared singleton instance of the Moq provider.
+  example: []
   syntax:
     content: public static readonly MoqMockingProvider Instance
     return:
@@ -117,14 +121,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Capabilities
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 15
+    startLine: 24
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets the capability descriptor for this provider.
   example: []
   syntax:
     content: public IMockingProviderCapabilities Capabilities { get; }
@@ -149,14 +154,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsCallBase
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 16
+    startLine: 29
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets a value indicating whether Moq supports base-call behavior.
   example: []
   syntax:
     content: public bool SupportsCallBase { get; }
@@ -181,14 +187,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsSetupAllProperties
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 17
+    startLine: 34
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets a value indicating whether Moq supports automatic property backing.
   example: []
   syntax:
     content: public bool SupportsSetupAllProperties { get; }
@@ -213,14 +220,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsProtectedMembers
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 18
+    startLine: 39
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets a value indicating whether Moq supports protected member interception.
   example: []
   syntax:
     content: public bool SupportsProtectedMembers { get; }
@@ -245,14 +253,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsInvocationTracking
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 19
+    startLine: 44
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets a value indicating whether Moq supports invocation tracking.
   example: []
   syntax:
     content: public bool SupportsInvocationTracking { get; }
@@ -277,14 +286,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsLoggerCapture
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 20
+    startLine: 49
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets a value indicating whether Moq supports logger capture helpers.
   example: []
   syntax:
     content: public bool SupportsLoggerCapture { get; }
@@ -309,14 +319,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 22
+    startLine: 54
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Builds a Moq expression scaffold for provider-specific use.
   example: []
   syntax:
     content: public Expression<Func<T, bool>> BuildExpression<T>()
@@ -345,14 +356,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 28
+    startLine: 63
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Creates a typed FastMoq wrapper around a new Moq mock.
   example: []
   syntax:
     content: 'public IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class'
@@ -384,14 +396,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 46
+    startLine: 84
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Creates an untyped FastMoq wrapper around a new Moq mock.
   example: []
   syntax:
     content: public IFastMock CreateMock(Type type, MockCreationOptions? options = null)
@@ -423,14 +436,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAllProperties
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 68
+    startLine: 109
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Configures all settable properties on the supplied mock for automatic backing storage.
   example: []
   syntax:
     content: public void SetupAllProperties(IFastMock mock)
@@ -455,14 +469,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetCallBase
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 74
+    startLine: 118
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Enables or disables base-call behavior on the supplied mock.
   example: []
   syntax:
     content: public void SetCallBase(IFastMock mock, bool value)
@@ -492,14 +507,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 83
+    startLine: 130
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Verifies that the supplied expression was invoked on the wrapped Moq mock.
   example: []
   syntax:
     content: 'public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class'
@@ -533,14 +549,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 126
+    startLine: 176
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Verifies that no unverified Moq calls remain on the supplied mock.
   example: []
   syntax:
     content: public void VerifyNoOtherCalls(IFastMock mock)
@@ -565,14 +582,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureProperties
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 153
+    startLine: 206
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Configures property behavior on the supplied mock when the provider supports it.
   example: []
   syntax:
     content: public void ConfigureProperties(IFastMock mock)
@@ -597,14 +615,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 161
+    startLine: 217
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Configures logger callback capture on the supplied mock.
   example: []
   syntax:
     content: public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback)
@@ -634,14 +653,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetLegacy
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 180
+    startLine: 239
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Attempts to expose the underlying Moq mock from a provider-neutral wrapper.
   example: []
   syntax:
     content: public object? TryGetLegacy(IFastMock mock)
@@ -668,14 +688,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TryWrapLegacy
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 186
+    startLine: 248
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Attempts to wrap an existing Moq mock in the provider-neutral FastMoq abstraction.
   example: []
   syntax:
     content: public IFastMock? TryWrapLegacy(object legacyMock, Type mockedType)

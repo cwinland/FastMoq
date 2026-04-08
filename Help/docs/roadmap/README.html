@@ -73,6 +73,8 @@
 <h1 id="fastmoq-roadmap-notes">FastMoq Roadmap Notes</h1>
 
 <p>This document captures the current provider-first direction for FastMoq. It is not a marketing roadmap. It is a working backlog note for contributors and maintainers.</p>
+<p>It serves as the repo-local place to track v4.x hardening work and candidate v5 enhancements.</p>
+<p>For tracker-ready backlog text derived from recent migration feedback, see <a href="migration-feedback-issue-drafts.html">Migration Feedback Issue Drafts</a>.</p>
 <h2 id="current-direction">Current Direction</h2>
 <p>FastMoq is moving toward a provider-based architecture where:</p>
 <ol>
@@ -101,7 +103,7 @@
 <p>The main remaining release-facing work is no longer about inventing large new features. It is about freezing the transition contract cleanly for the next major line.</p>
 <p>Current release-hardening focus:</p>
 <ul>
-<li>Finalize the packaging and provider-selection story for the built-in Moq, NSubstitute, and reflection providers.</li>
+<li>Continue hardening and validating the packaging and provider-selection story for the built-in Moq, NSubstitute, and reflection providers.</li>
 <li>Keep the remaining Moq compatibility shims explicit so they do not look like provider-neutral core behavior.</li>
 <li>Tighten migration notes for obsolete or compatibility-only surfaces that will move in <code>v5</code>.</li>
 <li>Validate docs and executable examples against the release candidate behavior.</li>
@@ -134,13 +136,13 @@
 <h2 id="documentation-follow-ups">Documentation Follow-Ups</h2>
 <p>Documentation now covers the testing decision points and known-type behavior, but more sample updates are still desirable later:</p>
 <ul>
-<li>Provider-native examples once additional provider work lands.</li>
+<li>Expanded provider-native examples beyond the current capability matrix and provider-style samples.</li>
 <li>Focused migration notes for older Moq-heavy test suites.</li>
 <li>Expanded web samples if broader web support moves out of the deferred bucket.</li>
 <li>Additional DbContext examples now that mock-mode versus real-mode options are explicit.</li>
 </ul>
 <h2 id="decision-rules">Decision Rules</h2>
-<p>When choosing what to do next, use these rules:</p>
+<p>The current prioritization rules are:</p>
 <ol>
 <li>Prefer provider-boundary work over adding new provider-specific surface area.</li>
 <li>Prefer per-<code>Mocker</code> extension points over global mutable registries.</li>
@@ -169,7 +171,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
       
           </div>
         </div>

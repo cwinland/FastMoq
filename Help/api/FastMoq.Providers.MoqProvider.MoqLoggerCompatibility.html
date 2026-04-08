@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class MoqLoggerCompatibility | FastMoq ">
     
-    
+    <meta name="description" content="Provides Moq-based logger verification and callback helpers used by the compatibility layer.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -81,7 +81,8 @@
 
 
   <h1 id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility" class="text-break">Class MoqLoggerCompatibility</h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Provides Moq-based logger verification and callback helpers used by the compatibility layer.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -122,7 +123,8 @@
 </h3>
   <a id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_SetupLoggerCallback_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_SetupLoggerCallback__1_Moq_Mock___0__System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.SetupLoggerCallback``1(Moq.Mock{``0},System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})">SetupLoggerCallback&lt;TLogger&gt;(Mock&lt;TLogger&gt;, Action&lt;LogLevel, EventId, string, Exception?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers a callback that receives normalized logger invocations from a Moq logger mock.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -167,7 +169,8 @@
   </table>
   <a id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)">VerifyLogger(Mock&lt;ILogger&gt;, LogLevel, string, Exception?, int?, int)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies a non-generic logger mock was written with the expected exception payload.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -217,7 +220,8 @@
   </table>
   <a id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)">VerifyLogger(Mock&lt;ILogger&gt;, LogLevel, string, int)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies a non-generic logger mock was written to the expected number of times.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -257,7 +261,8 @@
   </table>
   <a id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String___0_System_Nullable_System_Int32__Moq_Times_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},Moq.Times)">VerifyLogger&lt;TException&gt;(Mock&lt;ILogger&gt;, LogLevel, string, TException?, int?, Times)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies a non-generic logger mock using an exception type-specific matcher and a Moq <span class="xref">Moq.Times</span> constraint.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -322,7 +327,8 @@
   </table>
   <a id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String___0_System_Nullable_System_Int32__System_Func_Moq_Times__" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Func{Moq.Times})">VerifyLogger&lt;TException&gt;(Mock&lt;ILogger&gt;, LogLevel, string, TException?, int?, Func&lt;Times&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies a non-generic logger mock using an exception type-specific matcher and a deferred Moq <span class="xref">Moq.Times</span> constraint.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -387,7 +393,8 @@
   </table>
   <a id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger__1_Moq_Mock_Microsoft_Extensions_Logging_ILogger__Microsoft_Extensions_Logging_LogLevel_System_String___0_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{Microsoft.Extensions.Logging.ILogger},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)">VerifyLogger&lt;TException&gt;(Mock&lt;ILogger&gt;, LogLevel, string, TException?, int?, int)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies a non-generic logger mock using an exception type-specific matcher and an exact call count.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -452,7 +459,8 @@
   </table>
   <a id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger__1_Moq_Mock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Exception_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Exception,System.Nullable{System.Int32},System.Int32)">VerifyLogger&lt;TLogger&gt;(Mock&lt;TLogger&gt;, LogLevel, string, Exception?, int?, int)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies a generic logger mock was written with the expected exception payload.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -517,7 +525,8 @@
   </table>
   <a id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger__1_Moq_Mock___0__Microsoft_Extensions_Logging_LogLevel_System_String_System_Int32_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``1(Moq.Mock{``0},Microsoft.Extensions.Logging.LogLevel,System.String,System.Int32)">VerifyLogger&lt;TLogger&gt;(Mock&lt;TLogger&gt;, LogLevel, string, int)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies a generic logger mock was written to the expected number of times.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -572,7 +581,8 @@
   </table>
   <a id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_MoqLoggerCompatibility_VerifyLogger__2_Moq_Mock___1__Microsoft_Extensions_Logging_LogLevel_System_String___0_System_Nullable_System_Int32__System_Int32_" data-uid="FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.VerifyLogger``2(Moq.Mock{``1},Microsoft.Extensions.Logging.LogLevel,System.String,``0,System.Nullable{System.Int32},System.Int32)">VerifyLogger&lt;TException, TLogger&gt;(Mock&lt;TLogger&gt;, LogLevel, string, TException?, int?, int)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies a generic logger mock using an exception type-specific matcher and an exact call count.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -661,7 +671,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
       
           </div>
         </div>

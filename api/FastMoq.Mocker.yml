@@ -103,7 +103,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.Supplemental.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Mocker
     path: FastMoq.Core/Mocker.Supplemental.cs
@@ -237,7 +237,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: fileSystem
     path: FastMoq.Core/Mocker.cs
@@ -266,7 +266,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: creatingTypeList
     path: FastMoq.Core/Mocker.cs
@@ -295,7 +295,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: mockCollection
     path: FastMoq.Core/Mocker.cs
@@ -324,7 +324,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorHistory
     path: FastMoq.Core/Mocker.cs
@@ -355,7 +355,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/Mocker.cs
@@ -386,7 +386,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: OptionalParameterResolution
     path: FastMoq.Core/Mocker.cs
@@ -417,7 +417,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Policy
     path: FastMoq.Core/Mocker.cs
@@ -448,7 +448,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ExceptionLog
     path: FastMoq.Core/Mocker.cs
@@ -479,7 +479,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: LogEntries
     path: FastMoq.Core/Mocker.cs
@@ -510,7 +510,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: HttpClient
     path: FastMoq.Core/Mocker.cs
@@ -541,7 +541,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Core/Mocker.cs
@@ -572,7 +572,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Behavior
     path: FastMoq.Core/Mocker.cs
@@ -603,7 +603,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: UseStrictPreset
     path: FastMoq.Core/Mocker.cs
@@ -634,7 +634,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: UseLenientPreset
     path: FastMoq.Core/Mocker.cs
@@ -665,7 +665,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -696,7 +696,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -731,7 +731,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -766,7 +766,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -801,7 +801,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -839,7 +839,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -877,7 +877,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
@@ -927,7 +927,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
@@ -979,7 +979,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
@@ -1020,7 +1020,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
@@ -1063,7 +1063,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
@@ -1105,7 +1105,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
@@ -1151,7 +1151,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
@@ -1193,7 +1193,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
@@ -1236,7 +1236,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
@@ -1281,7 +1281,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
@@ -1325,7 +1325,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddFileSystemAbstractionMapping
     path: FastMoq.Core/Mocker.cs
@@ -1353,7 +1353,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKnownType
     path: FastMoq.Core/Mocker.cs
@@ -1394,7 +1394,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKnownType
     path: FastMoq.Core/Mocker.cs
@@ -1442,7 +1442,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddInjections
     path: FastMoq.Core/Mocker.cs
@@ -1486,7 +1486,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
@@ -1527,7 +1527,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
@@ -1567,7 +1567,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
@@ -1602,17 +1602,23 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 928
+    startLine: 933
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
   summary: Resolves an object using FastMoq's runtime resolution pipeline.
   example:
   - >-
+    <p>Use <xref href="FastMoq.Mocker.GetObject%60%601" data-throw-if-not-resolved="false"></xref> when older code only needed <code>GetMock&lt;T&gt;().Object</code> and does not need the tracked mock handle itself.</p>
+
+    <pre><code class="lang-csharp">var mocker = new Mocker();
+
+    var gateway = mocker.GetObject&lt;IOrderGateway&gt;();</code></pre>
+
     <p>Resolve a dependency after configuring a concrete registration through the provider-first pipeline.</p>
 
     <pre><code class="lang-csharp">var fileSystem = new MockFileSystem();
@@ -1652,11 +1658,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 932
+    startLine: 937
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1690,11 +1696,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 937
+    startLine: 942
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1728,11 +1734,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 942
+    startLine: 947
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1768,11 +1774,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 947
+    startLine: 952
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1806,11 +1812,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
-    startLine: 983
+    startLine: 988
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1846,11 +1852,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
-    startLine: 1032
+    startLine: 1037
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1886,11 +1892,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
-    startLine: 1039
+    startLine: 1044
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1924,11 +1930,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
-    startLine: 1045
+    startLine: 1050
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1964,11 +1970,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
-    startLine: 1091
+    startLine: 1096
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2002,11 +2008,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
-    startLine: 1099
+    startLine: 1104
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2042,11 +2048,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: HasParameterlessConstructor
     path: FastMoq.Core/Mocker.cs
-    startLine: 1433
+    startLine: 1438
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2080,15 +2086,18 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1760
+    startLine: 1769
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Gets the provider-native mock object for the supplied runtime type.
+  summary: >-
+    Gets the provider-native mock object for the supplied runtime type.
+
+    Prefer <xref href="FastMoq.Mocker.GetOrCreateMock(System.Type%2cFastMoq.MockRequestOptions)" data-throw-if-not-resolved="false"></xref> plus provider-typed escape hatches when the test intentionally needs provider-specific APIs, and prefer <xref href="FastMoq.Mocker.GetObject(System.Type%2cSystem.Action%7bSystem.Object%7d)" data-throw-if-not-resolved="false"></xref> or <xref href="FastMoq.Mocker.GetOrCreateMock(System.Type%2cFastMoq.MockRequestOptions)" data-throw-if-not-resolved="false"></xref> for provider-first flows.
   example: []
   syntax:
     content: public object GetNativeMock(Type type)
@@ -2113,15 +2122,18 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1775
+    startLine: 1785
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Gets the provider-native mock object for the supplied type parameter.
+  summary: >-
+    Gets the provider-native mock object for the supplied type parameter.
+
+    Prefer <xref href="FastMoq.Mocker.GetOrCreateMock%60%601(FastMoq.MockRequestOptions)" data-throw-if-not-resolved="false"></xref> plus provider-typed escape hatches such as <code>AsMoq()</code> or <code>AsNSubstitute()</code> when the test intentionally needs a provider-specific API surface.
   example: []
   syntax:
     content: 'public object GetNativeMock<T>(params object?[] args) where T : class'
@@ -2151,11 +2163,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockModel
     path: FastMoq.Core/Mocker.cs
-    startLine: 1787
+    startLine: 1797
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2186,11 +2198,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
-    startLine: 1977
+    startLine: 1987
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2222,11 +2234,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
-    startLine: 1986
+    startLine: 1996
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2252,11 +2264,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 1991
+    startLine: 2001
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2292,11 +2304,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 2005
+    startLine: 2015
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2332,11 +2344,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 2019
+    startLine: 2029
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2374,11 +2386,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2034
+    startLine: 2044
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2410,11 +2422,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2042
+    startLine: 2052
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2448,11 +2460,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodDefaultData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2060
+    startLine: 2070
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2484,11 +2496,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2073
+    startLine: 2083
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2519,11 +2531,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2081
+    startLine: 2091
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2557,11 +2569,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2087
+    startLine: 2097
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2595,11 +2607,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2176
+    startLine: 2186
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2637,11 +2649,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2185
+    startLine: 2195
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2681,11 +2693,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2216
+    startLine: 2226
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2725,11 +2737,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2225
+    startLine: 2235
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2771,11 +2783,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2257
+    startLine: 2267
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2813,11 +2825,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2263
+    startLine: 2273
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2857,11 +2869,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2272
+    startLine: 2282
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2897,11 +2909,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2281
+    startLine: 2291
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2939,11 +2951,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2303
+    startLine: 2313
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2975,11 +2987,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2308
+    startLine: 2318
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3013,11 +3025,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2313
+    startLine: 2323
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3053,11 +3065,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2318
+    startLine: 2328
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3095,11 +3107,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2323
+    startLine: 2333
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3131,11 +3143,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2328
+    startLine: 2338
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3169,11 +3181,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
-    startLine: 2333
+    startLine: 2343
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3209,11 +3221,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
-    startLine: 2344
+    startLine: 2354
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3251,11 +3263,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetStringContent
     path: FastMoq.Core/Mocker.cs
-    startLine: 2372
+    startLine: 2382
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3287,11 +3299,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 2377
+    startLine: 2387
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3322,11 +3334,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 39
+    startLine: 40
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3334,6 +3346,8 @@ items:
   example:
   - >-
     <p>Use <xref href="FastMoq.Mocker.GetOrCreateMock%60%601(FastMoq.MockRequestOptions)" data-throw-if-not-resolved="false"></xref> when the test needs the tracked mock handle itself, not just automatic constructor resolution.</p>
+
+    <p><code>fastMock.Instance</code> is the provider-first replacement for older <code>GetMock&lt;T&gt;().Object</code> access when the test still wants the tracked handle.</p>
 
     <p><code>GetOrCreateMock</code> uses the active FastMoq provider. It does not require the Moq provider to be selected unless the test later calls Moq-specific extensions such as <code>AsMoq()</code>, <code>Setup(...)</code>, or <code>Protected()</code>.</p>
 
@@ -3397,15 +3411,18 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 47
+    startLine: 49
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.
+  summary: >-
+    Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.
+
+    Use the returned <xref href="FastMoq.Providers.IFastMock" data-throw-if-not-resolved="false"></xref> when the test needs the tracked handle itself, and prefer <xref href="FastMoq.Mocker.GetObject(System.Type%2cSystem.Action%7bSystem.Object%7d)" data-throw-if-not-resolved="false"></xref> when only the instance is needed.
   example: []
   syntax:
     content: public IFastMock GetOrCreateMock(Type type, MockRequestOptions? options = null)
@@ -3435,11 +3452,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 56
+    startLine: 58
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3473,11 +3490,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 71
+    startLine: 73
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3506,11 +3523,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateFastMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 81
+    startLine: 83
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3544,7 +3561,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.Supplemental.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Core/Mocker.Supplemental.cs
@@ -3579,7 +3596,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.Supplemental.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Scenario
     path: FastMoq.Core/Mocker.Supplemental.cs
@@ -12507,6 +12524,35 @@ references:
     name: Reflection
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.reflection
+- uid: FastMoq.Mocker.GetObject``1
+  commentId: M:FastMoq.Mocker.GetObject``1
+  href: FastMoq.Mocker.html#FastMoq_Mocker_GetObject__1
+  name: GetObject<T>()
+  nameWithType: Mocker.GetObject<T>()
+  fullName: FastMoq.Mocker.GetObject<T>()
+  nameWithType.vb: Mocker.GetObject(Of T)()
+  fullName.vb: FastMoq.Mocker.GetObject(Of T)()
+  name.vb: GetObject(Of T)()
+  spec.csharp:
+  - uid: FastMoq.Mocker.GetObject``1
+    name: GetObject
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetObject__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Mocker.GetObject``1
+    name: GetObject
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetObject__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
 - uid: System.Action{{T}}
   commentId: T:System.Action{``0}
   parent: System
@@ -12639,12 +12685,140 @@ references:
   name: HasParameterlessConstructor
   nameWithType: Mocker.HasParameterlessConstructor
   fullName: FastMoq.Mocker.HasParameterlessConstructor
+- uid: FastMoq.Mocker.GetOrCreateMock(System.Type,FastMoq.MockRequestOptions)
+  commentId: M:FastMoq.Mocker.GetOrCreateMock(System.Type,FastMoq.MockRequestOptions)
+  isExternal: true
+  href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock_System_Type_FastMoq_MockRequestOptions_
+  name: GetOrCreateMock(Type, MockRequestOptions)
+  nameWithType: Mocker.GetOrCreateMock(Type, MockRequestOptions)
+  fullName: FastMoq.Mocker.GetOrCreateMock(System.Type, FastMoq.MockRequestOptions)
+  spec.csharp:
+  - uid: FastMoq.Mocker.GetOrCreateMock(System.Type,FastMoq.MockRequestOptions)
+    name: GetOrCreateMock
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock_System_Type_FastMoq_MockRequestOptions_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: FastMoq.MockRequestOptions
+    name: MockRequestOptions
+    href: FastMoq.MockRequestOptions.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Mocker.GetOrCreateMock(System.Type,FastMoq.MockRequestOptions)
+    name: GetOrCreateMock
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock_System_Type_FastMoq_MockRequestOptions_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: FastMoq.MockRequestOptions
+    name: MockRequestOptions
+    href: FastMoq.MockRequestOptions.html
+  - name: )
+- uid: FastMoq.Mocker.GetObject(System.Type,System.Action{System.Object})
+  commentId: M:FastMoq.Mocker.GetObject(System.Type,System.Action{System.Object})
+  isExternal: true
+  href: FastMoq.Mocker.html#FastMoq_Mocker_GetObject_System_Type_System_Action_System_Object__
+  name: GetObject(Type, Action<object>)
+  nameWithType: Mocker.GetObject(Type, Action<object>)
+  fullName: FastMoq.Mocker.GetObject(System.Type, System.Action<object>)
+  nameWithType.vb: Mocker.GetObject(Type, Action(Of Object))
+  fullName.vb: FastMoq.Mocker.GetObject(System.Type, System.Action(Of Object))
+  name.vb: GetObject(Type, Action(Of Object))
+  spec.csharp:
+  - uid: FastMoq.Mocker.GetObject(System.Type,System.Action{System.Object})
+    name: GetObject
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetObject_System_Type_System_Action_System_Object__
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Mocker.GetObject(System.Type,System.Action{System.Object})
+    name: GetObject
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetObject_System_Type_System_Action_System_Object__
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
 - uid: FastMoq.Mocker.GetNativeMock*
   commentId: Overload:FastMoq.Mocker.GetNativeMock
   href: FastMoq.Mocker.html#FastMoq_Mocker_GetNativeMock_System_Type_
   name: GetNativeMock
   nameWithType: Mocker.GetNativeMock
   fullName: FastMoq.Mocker.GetNativeMock
+- uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+  commentId: M:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+  href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
+  name: GetOrCreateMock<T>(MockRequestOptions)
+  nameWithType: Mocker.GetOrCreateMock<T>(MockRequestOptions)
+  fullName: FastMoq.Mocker.GetOrCreateMock<T>(FastMoq.MockRequestOptions)
+  nameWithType.vb: Mocker.GetOrCreateMock(Of T)(MockRequestOptions)
+  fullName.vb: FastMoq.Mocker.GetOrCreateMock(Of T)(FastMoq.MockRequestOptions)
+  name.vb: GetOrCreateMock(Of T)(MockRequestOptions)
+  spec.csharp:
+  - uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+    name: GetOrCreateMock
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FastMoq.MockRequestOptions
+    name: MockRequestOptions
+    href: FastMoq.MockRequestOptions.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
+    name: GetOrCreateMock
+    href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FastMoq.MockRequestOptions
+    name: MockRequestOptions
+    href: FastMoq.MockRequestOptions.html
+  - name: )
 - uid: FastMoq.Mocker.GetMockModel*
   commentId: Overload:FastMoq.Mocker.GetMockModel
   href: FastMoq.Mocker.html#FastMoq_Mocker_GetMockModel__1
@@ -13231,41 +13405,6 @@ references:
   name: GetRequiredObject
   nameWithType: Mocker.GetRequiredObject
   fullName: FastMoq.Mocker.GetRequiredObject
-- uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
-  commentId: M:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
-  href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
-  name: GetOrCreateMock<T>(MockRequestOptions)
-  nameWithType: Mocker.GetOrCreateMock<T>(MockRequestOptions)
-  fullName: FastMoq.Mocker.GetOrCreateMock<T>(FastMoq.MockRequestOptions)
-  nameWithType.vb: Mocker.GetOrCreateMock(Of T)(MockRequestOptions)
-  fullName.vb: FastMoq.Mocker.GetOrCreateMock(Of T)(FastMoq.MockRequestOptions)
-  name.vb: GetOrCreateMock(Of T)(MockRequestOptions)
-  spec.csharp:
-  - uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
-    name: GetOrCreateMock
-    href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - uid: FastMoq.MockRequestOptions
-    name: MockRequestOptions
-    href: FastMoq.MockRequestOptions.html
-  - name: )
-  spec.vb:
-  - uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
-    name: GetOrCreateMock
-    href: FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - uid: FastMoq.MockRequestOptions
-    name: MockRequestOptions
-    href: FastMoq.MockRequestOptions.html
-  - name: )
 - uid: FastMoq.Providers.IFastMock`1
   commentId: T:FastMoq.Providers.IFastMock`1
   href: FastMoq.Providers.IFastMock-1.html

@@ -73,6 +73,15 @@
 <h1 id="provider-selection-and-setup">Provider Selection and Setup</h1>
 
 <p>This guide explains how FastMoq chooses a mocking provider, how to set an app-wide default for a test assembly, and when to use scoped overrides.</p>
+<p>For a provider-by-provider support matrix, see <a href="provider-capabilities.html">Provider Capabilities</a>.</p>
+<h2 id="start-here">Start here</h2>
+<p>If you only remember four things from this page, make them these:</p>
+<ol>
+<li><code>reflection</code> stays the default provider unless you explicitly change it.</li>
+<li>Installing <code>FastMoq.Provider.Moq</code> or another provider package does not select that provider automatically.</li>
+<li>If the test project still uses <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>VerifyLogger(...)</code>, <code>Protected()</code>, or other Moq compatibility APIs, register <code>moq</code> as the test-assembly default before running the suite.</li>
+<li>You are not limited to the bundled providers. Any library can be used through FastMoq if you implement <a href="../../api/FastMoq.Providers.IMockingProvider.html">IMockingProvider</a> and register it with <code>MockingProviderRegistry</code>.</li>
+</ol>
 <h2 id="current-defaults">Current defaults</h2>
 <p>For the current v4 release line:</p>
 <ul>
@@ -81,14 +90,107 @@
 <li><code>moq</code> is still available without adding another package.</li>
 <li>optional providers such as <code>nsubstitute</code> must be added explicitly and registered with <code>MockingProviderRegistry</code>.</li>
 </ul>
+<p>Important boundary:</p>
+<ul>
+<li>adding <code>FastMoq.Provider.Moq</code> gives you the Moq provider package and its extension methods</li>
+<li>it does not change the default provider by itself</li>
+<li>if the test assembly still uses <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>VerifyLogger(...)</code>, <code>Protected()</code>, or other Moq compatibility APIs, register Moq explicitly as the default provider</li>
+<li>the same rule applies to any other provider package or custom provider implementation: registration controls selection</li>
+</ul>
 <p>Why this matters:</p>
 <ul>
 <li>provider-neutral APIs such as <code>GetOrCreateMock(...)</code>, <code>VerifyLogged(...)</code>, and the scenario builder can work with any registered provider that supports the needed capability.</li>
 <li>Moq compatibility APIs such as <code>GetMock&lt;T&gt;()</code>, <code>VerifyLogger(...)</code>, <code>Protected()</code>, and direct <code>Mock&lt;T&gt;</code> setup require the Moq provider to be selected.</li>
 <li>provider-package extensions such as <code>AsMoq()</code>, <code>Setup(...)</code> on <code>IFastMock&lt;T&gt;</code>, and <code>AsNSubstitute()</code> also require their corresponding provider package and selected provider.</li>
 </ul>
+<h2 id="first-decision-do-you-need-a-non-default-provider">First decision: do you need a non-default provider?</h2>
+<p>Use this quick check before reading the rest of the page:</p>
+<ul>
+<li>stay on <code>reflection</code> if the tests use only provider-neutral APIs and do not need mocking-library-specific setup helpers</li>
+<li>switch to <code>moq</code> if the tests still depend on <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>VerifyLogger(...)</code>, <code>Protected()</code>, <code>SetupSet(...)</code>, or other Moq-specific semantics</li>
+<li>switch to <code>nsubstitute</code> only when the test project is intentionally written against NSubstitute behavior</li>
+<li>register a custom provider if your team uses a different mocking library or needs provider behavior that the bundled packages do not cover</li>
+</ul>
+<h2 id="mandatory-bootstrap-when-the-test-assembly-must-not-stay-on-reflection">Mandatory bootstrap when the test assembly must not stay on <code>reflection</code></h2>
+<p>If a migrated test project still uses the Moq compatibility surface, or if the suite is intentionally standardizing on another non-default provider, treat provider bootstrap as required setup, not as an optional cleanup step.</p>
+<p>The examples below show the common Moq migration case, but the same assembly-startup rule applies to <code>nsubstitute</code> and custom providers: register the provider and set it as the default before the suite creates <code>Mocker</code> instances.</p>
+<h3 id="xunit">xUnit</h3>
+<p>Use a module initializer:</p>
+<pre><code class="lang-csharp">using System.Runtime.CompilerServices;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+namespace MyTests;
+
+public static class TestAssemblyProviderBootstrap
+{
+    [ModuleInitializer]
+    public static void Initialize()
+    {
+        MockingProviderRegistry.Register(&quot;moq&quot;, MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+</code></pre>
+<p>What each argument means in that call:</p>
+<ul>
+<li><code>&quot;moq&quot;</code> is the registry key, not the source of Moq behavior</li>
+<li><code>MoqMockingProvider.Instance</code> is the actual provider implementation that creates mocks, verifies calls, exposes capabilities, and adapts FastMoq to Moq</li>
+<li><code>setAsDefault: true</code> makes that registered provider instance the assembly default</li>
+</ul>
+<p>That means the name matters only as the lookup key you will use later with <code>SetDefault(...)</code>, <code>Push(...)</code>, <code>TryGet(...)</code>, and diagnostics. The provider behavior itself comes from <code>MoqMockingProvider.Instance</code>.</p>
+<p>In practice, still use the canonical names from the docs for built-in and packaged providers. If you registered Moq under a different name, the provider would still work, but any code or docs that later say <code>Push(&quot;moq&quot;)</code> would not match your custom alias.</p>
+<p>Module-initializer note:</p>
+<ul>
+<li>some analyzers warn on <code>[ModuleInitializer]</code> usage in test projects, commonly <code>CA2255</code></li>
+<li>for a dedicated test bootstrap type, a targeted suppression is a normal choice when xUnit is the active framework</li>
+<li>if your framework already offers a one-time assembly startup hook, use that hook instead of forcing the xUnit pattern into every test project</li>
+</ul>
+<h3 id="nunit">NUnit</h3>
+<pre><code class="lang-csharp">using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using NUnit.Framework;
+
+namespace MyTests;
+
+[SetUpFixture]
+public sealed class TestAssemblyProviderBootstrap
+{
+    [OneTimeSetUp]
+    public void Initialize()
+    {
+        MockingProviderRegistry.Register(&quot;moq&quot;, MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+</code></pre>
+<h3 id="mstest">MSTest</h3>
+<pre><code class="lang-csharp">using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace MyTests;
+
+[TestClass]
+public sealed class TestAssemblyProviderBootstrap
+{
+    [AssemblyInitialize]
+    public static void Initialize(TestContext _)
+    {
+        MockingProviderRegistry.Register(&quot;moq&quot;, MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+</code></pre>
+<p>Without one of those bootstrap patterns, the active default remains <code>reflection</code>.</p>
 <h2 id="how-provider-selection-works">How provider selection works</h2>
 <p>The selection code lives in <code>MockingProviderRegistry</code>.</p>
+<p>Provider names are registry keys. FastMoq does not derive the string automatically from the provider type when you call <code>Register(...)</code>.</p>
+<p>Use these rules:</p>
+<ul>
+<li>for built-in providers, use the canonical names already registered by FastMoq: <code>reflection</code> and <code>moq</code></li>
+<li>for the NSubstitute package, this documentation uses <code>nsubstitute</code> as the recommended registration name</li>
+<li>for custom providers, choose a stable unique name such as <code>my-provider</code> and reuse that same name for <code>Register(...)</code>, <code>SetDefault(...)</code>, and <code>Push(...)</code></li>
+<li>the registry is case-insensitive, but lowercase names keep examples and diagnostics consistent</li>
+<li>if you are unsure what is currently registered, inspect <code>MockingProviderRegistry.RegisteredProviderNames</code> or guard with <code>TryGet(...)</code></li>
+</ul>
 <p>Resolution order:</p>
 <ol>
 <li>Use the current async-scoped override set by <code>Push(...)</code> if one exists.</li>
@@ -100,6 +202,18 @@
 <li><code>MockingProviderRegistry.SetDefault(name)</code></li>
 <li><code>MockingProviderRegistry.Push(name)</code></li>
 <li><code>MockingProviderRegistry.Default</code></li>
+</ul>
+<p>What each method is for:</p>
+<ul>
+<li><code>SetDefault(name)</code> changes the app-wide default provider that new <code>Mocker</code> instances will use when no scoped override is active</li>
+<li><code>Push(name)</code> is the temporary async-scoped override; use it when one test or one code path needs a different provider than the assembly default</li>
+<li><code>TryGet(name, out provider)</code> is only a lookup and guard API; it tells you whether a provider name is registered, but it does not activate or switch anything</li>
+<li><code>Default</code> returns the effective provider for the current context, which means the pushed provider if one is active, otherwise the app-wide default</li>
+</ul>
+<p>Example mental model:</p>
+<ul>
+<li><code>Register(&quot;moq&quot;, MoqMockingProvider.Instance, ...)</code> means <code>&quot;moq&quot;</code> is the lookup key you will later pass to <code>SetDefault(&quot;moq&quot;)</code> or <code>Push(&quot;moq&quot;)</code></li>
+<li><code>Register(&quot;my-provider&quot;, new MyMockingProvider(), ...)</code> means you chose <code>&quot;my-provider&quot;</code> as that provider's lookup key</li>
 </ul>
 <h2 id="recommended-pattern-app-wide-default-for-the-test-assembly">Recommended pattern: app-wide default for the test assembly</h2>
 <p>If a whole test project should use one provider, register it once at assembly startup and set it as the default.</p>
@@ -145,6 +259,27 @@ public static class TestAssemblyProviderBootstrap
     }
 }
 </code></pre>
+<h2 id="custom-providers">Custom providers</h2>
+<p>You do not have to use the bundled FastMoq providers.</p>
+<p>If your team wants to integrate a different mocking library, implement <a href="../../api/FastMoq.Providers.IMockingProvider.html">IMockingProvider</a>, expose the needed <a href="../../api/FastMoq.Providers.IMockingProviderCapabilities.html">IMockingProviderCapabilities</a>, and register that implementation with <code>MockingProviderRegistry</code>.</p>
+<p>Typical shape:</p>
+<pre><code class="lang-csharp">using System.Runtime.CompilerServices;
+using FastMoq.Providers;
+
+namespace MyTests;
+
+public static class TestAssemblyProviderBootstrap
+{
+    [ModuleInitializer]
+    public static void Initialize()
+    {
+        MockingProviderRegistry.Register(&quot;my-provider&quot;, new MyMockingProvider(), setAsDefault: true);
+    }
+}
+</code></pre>
+<p>The bundled <code>moq</code>, <code>reflection</code>, and <code>nsubstitute</code> implementations are examples of the registration model, not a closed list of allowed providers.</p>
+<p>The built-in providers are also not intended to be subclassed and extended in place. If your team needs different behavior, create a new <code>IMockingProvider</code> implementation and register it directly. When the change is small, that implementation can delegate to an existing provider internally instead of replacing every behavior from scratch.</p>
+<p>If you want the shortest API-reference path after reading this overview, use <a href="../api/quick-reference.html">API Quick Reference</a> and follow the custom-provider navigation path there.</p>
 <h2 id="scoped-override">Scoped override</h2>
 <p>If most of the assembly should use one provider but a specific test needs another, use a scoped override:</p>
 <pre><code class="lang-csharp">using var _ = MockingProviderRegistry.Push(&quot;reflection&quot;);
@@ -163,14 +298,16 @@ var mocker = new Mocker();
 <li>Leave the default as <code>reflection</code> if you want the provider-neutral baseline and do not need Moq-specific APIs.</li>
 <li>Set the default to <code>moq</code> if your test assembly relies on <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>Protected()</code>, or other Moq compatibility behavior.</li>
 <li>Add and set another provider such as <code>nsubstitute</code> only when that test assembly is intentionally written against that provider's behavior.</li>
+<li>Register your own provider when neither the bundled providers nor the optional packages match the mocking library your tests actually use.</li>
 </ul>
 <h2 id="v5-direction">v5 direction</h2>
 <p>The planned v5 direction is:</p>
 <ul>
 <li><code>FastMoq.Core</code> keeps <code>reflection</code> as the default provider.</li>
 <li>bundled Moq compatibility is removed from core.</li>
-<li>provider packages such as Moq or NSubstitute are added explicitly and registered by the consuming test assembly.</li>
+<li>provider packages such as Moq or NSubstitute are added explicitly, then registered and selected by the consuming test assembly.</li>
 </ul>
+<p>In other words, the registry entry in core goes away, but the provider model does not. In <code>v5</code>, adding the Moq package alone will not activate Moq. The consuming test assembly must still register a provider implementation such as <code>MoqMockingProvider.Instance</code> and make it the default when the suite depends on Moq behavior.</p>
 <p>That means the app-wide bootstrap pattern shown above is the forward-compatible way to select a provider.</p>
 
 </article>
@@ -194,7 +331,7 @@ var mocker = new Mocker();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
       
           </div>
         </div>

@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class IFastMockNSubstituteExtensions | FastMoq ">
     
-    <meta name="description" content="NSubstitute-specific convenience extensions for . These stay in the provider package so the core abstractions remain provider agnostic.">
+    <meta name="description" content="NSubstitute-specific convenience extensions for . These stay in the provider package so the core abstractions remain provider agnostic. Prefer provider-first members such as , , and FastMoq verification helpers first, and use these extensions when the test intentionally needs NSubstitute-specific APIs.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -82,7 +82,8 @@
 
   <h1 id="FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions" data-uid="FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions" class="text-break">Class IFastMockNSubstituteExtensions</h1>
   <div class="markdown level0 summary"><p>NSubstitute-specific convenience extensions for <a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock&lt;T&gt;</a>.
-These stay in the provider package so the core abstractions remain provider agnostic.</p>
+These stay in the provider package so the core abstractions remain provider agnostic.
+Prefer provider-first members such as <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance">Instance</a>, <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset">Reset()</a>, and FastMoq verification helpers first, and use these extensions when the test intentionally needs NSubstitute-specific APIs.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -124,7 +125,8 @@ These stay in the provider package so the core abstractions remain provider agno
 </h3>
   <a id="FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_AsNSubstitute_" data-uid="FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute*"></a>
   <h4 id="FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_AsNSubstitute__1_FastMoq_Providers_IFastMock___0__" data-uid="FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute``1(FastMoq.Providers.IFastMock{``0})">AsNSubstitute&lt;T&gt;(IFastMock&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"><p>Returns the tracked substitute instance after validating that the active provider produced an NSubstitute substitute.</p>
+  <div class="markdown level1 summary"><p>Returns the tracked substitute instance after validating that the active provider produced an NSubstitute substitute.
+Use this when the test intentionally needs NSubstitute-specific APIs such as <code>Received()</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -178,6 +180,14 @@ These stay in the provider package so the core abstractions remain provider agno
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_AsNSubstitute__1_FastMoq_Providers_IFastMock___0___examples">Examples</h5>
+  <p>Select the NSubstitute provider first, then use <a class="xref" href="FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_AsNSubstitute__1_FastMoq_Providers_IFastMock___0__">AsNSubstitute&lt;T&gt;(IFastMock&lt;T&gt;)</a> as the provider-native escape hatch when the test truly needs NSubstitute semantics.</p>
+<pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push("nsubstitute");
+<p>var mocker = new Mocker();
+var gateway = mocker.GetOrCreateMock&lt;IOrderGateway&gt;();</p>
+<p>gateway.AsNSubstitute().Publish(42);
+gateway.Received().Publish(42);</p></code></pre>
+
   <a id="FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_ClearReceivedCalls_" data-uid="FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ClearReceivedCalls*"></a>
   <h4 id="FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_ClearReceivedCalls__1_FastMoq_Providers_IFastMock___0__" data-uid="FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ClearReceivedCalls``1(FastMoq.Providers.IFastMock{``0})">ClearReceivedCalls&lt;T&gt;(IFastMock&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>Clears recorded calls on the tracked substitute.</p>
@@ -526,7 +536,7 @@ These stay in the provider package so the core abstractions remain provider agno
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
       
           </div>
         </div>

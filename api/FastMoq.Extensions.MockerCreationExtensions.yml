@@ -30,7 +30,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerCreationExtensions
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -81,7 +81,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -143,7 +143,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -185,7 +185,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -234,7 +234,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -277,7 +277,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -328,7 +328,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -372,7 +372,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -425,7 +425,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -470,7 +470,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -525,7 +525,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -571,7 +571,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInternal
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -620,7 +620,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInternal
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -675,7 +675,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -720,7 +720,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
@@ -765,7 +765,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs

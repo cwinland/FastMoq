@@ -95,7 +95,7 @@ Important package boundaries in the current v4 line:
 - `FastMoq.Core` does not include analyzer assets; add `FastMoq.Analyzers` explicitly if you want analyzer guidance in a core-only package graph
 - `FastMoq.Core` includes the built-in `reflection` provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as `Setup(...)` and `Protected()` still belong to the `FastMoq.Provider.Moq` package
 - provider-package extension methods still follow the provider-package docs and selection rules described in [Provider Selection and Setup](./provider-selection.md)
-- if you are unsure whether your web tests need another package, see the web-helper notes in [Testing Guide](./testing-guide.md#controller-testing) and the migration-specific notes in [Migration Guide](../migration/README.md#web-test-helpers)
+- if you are unsure whether your web tests need another package, see the web-helper notes in [Testing Guide](./testing-guide.md#controller-testing) and the migration-specific notes in [Framework and web helper migration](../migration/framework-and-web-helpers.md#web-test-helpers)
 
 If your team wants the aggregate runtime package without analyzer diagnostics in a specific test project, you can opt out with:
 

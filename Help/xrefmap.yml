@@ -6782,6 +6782,28 @@ references:
   fullName.vb: FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.Verify(Of T)(FastMoq.Providers.IFastMock(Of T), System.Linq.Expressions.Expression(Of System.Action(Of T)), FastMoq.Providers.TimesSpec?)
   nameWithType: NSubstituteMockingProvider.Verify<T>(IFastMock<T>, Expression<Action<T>>, TimesSpec?)
   nameWithType.vb: NSubstituteMockingProvider.Verify(Of T)(IFastMock(Of T), Expression(Of Action(Of T)), TimesSpec?)
+- uid: FastMoq.Providers.ProviderSelectionDiagnostics
+  name: ProviderSelectionDiagnostics
+  href: api/FastMoq.Providers.ProviderSelectionDiagnostics.html
+  commentId: T:FastMoq.Providers.ProviderSelectionDiagnostics
+  fullName: FastMoq.Providers.ProviderSelectionDiagnostics
+  nameWithType: ProviderSelectionDiagnostics
+- uid: FastMoq.Providers.ProviderSelectionDiagnostics.BuildProviderMismatchMessage(System.String,System.Type,System.Object,System.Object,System.String,System.String)
+  name: BuildProviderMismatchMessage(string, Type, object?, object?, string, string)
+  href: api/FastMoq.Providers.ProviderSelectionDiagnostics.html#FastMoq_Providers_ProviderSelectionDiagnostics_BuildProviderMismatchMessage_System_String_System_Type_System_Object_System_Object_System_String_System_String_
+  commentId: M:FastMoq.Providers.ProviderSelectionDiagnostics.BuildProviderMismatchMessage(System.String,System.Type,System.Object,System.Object,System.String,System.String)
+  name.vb: BuildProviderMismatchMessage(String, Type, Object, Object, String, String)
+  fullName: FastMoq.Providers.ProviderSelectionDiagnostics.BuildProviderMismatchMessage(string, System.Type, object?, object?, string, string)
+  fullName.vb: FastMoq.Providers.ProviderSelectionDiagnostics.BuildProviderMismatchMessage(String, System.Type, Object, Object, String, String)
+  nameWithType: ProviderSelectionDiagnostics.BuildProviderMismatchMessage(string, Type, object?, object?, string, string)
+  nameWithType.vb: ProviderSelectionDiagnostics.BuildProviderMismatchMessage(String, Type, Object, Object, String, String)
+- uid: FastMoq.Providers.ProviderSelectionDiagnostics.BuildProviderMismatchMessage*
+  name: BuildProviderMismatchMessage
+  href: api/FastMoq.Providers.ProviderSelectionDiagnostics.html#FastMoq_Providers_ProviderSelectionDiagnostics_BuildProviderMismatchMessage_
+  commentId: Overload:FastMoq.Providers.ProviderSelectionDiagnostics.BuildProviderMismatchMessage
+  isSpec: "True"
+  fullName: FastMoq.Providers.ProviderSelectionDiagnostics.BuildProviderMismatchMessage
+  nameWithType: ProviderSelectionDiagnostics.BuildProviderMismatchMessage
 - uid: FastMoq.Providers.TimesSpec
   name: TimesSpec
   href: api/FastMoq.Providers.TimesSpec.html

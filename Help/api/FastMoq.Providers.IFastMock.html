@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Interface IFastMock | FastMoq ">
     
-    <meta name="description" content="Non generic abstraction for a created mock instance. Named IFastMock to avoid collision with provider library IMock types.">
+    <meta name="description" content="Non generic abstraction for a created mock instance. Prefer  and  for provider-first flows, and treat  as the provider-native escape hatch.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -81,7 +81,8 @@
 
 
   <h1 id="FastMoq_Providers_IFastMock" data-uid="FastMoq.Providers.IFastMock" class="text-break">Interface IFastMock</h1>
-  <div class="markdown level0 summary"><p>Non generic abstraction for a created mock instance. Named IFastMock to avoid collision with provider library IMock types.</p>
+  <div class="markdown level0 summary"><p>Non generic abstraction for a created mock instance.
+Prefer <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance">Instance</a> and <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset">Reset()</a> for provider-first flows, and treat <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_NativeMock">NativeMock</a> as the provider-native escape hatch.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a>.<a class="xref" href="FastMoq.Providers.html">Providers</a></h6>
@@ -94,7 +95,9 @@
 </h3>
   <a id="FastMoq_Providers_IFastMock_Instance_" data-uid="FastMoq.Providers.IFastMock.Instance*"></a>
   <h4 id="FastMoq_Providers_IFastMock_Instance" data-uid="FastMoq.Providers.IFastMock.Instance">Instance</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the usable mocked instance.
+In provider-first migrations, this is the tracked replacement for older <code>GetMock&lt;T&gt;().Object</code> access.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -117,7 +120,8 @@
   </table>
   <a id="FastMoq_Providers_IFastMock_MockedType_" data-uid="FastMoq.Providers.IFastMock.MockedType*"></a>
   <h4 id="FastMoq_Providers_IFastMock_MockedType" data-uid="FastMoq.Providers.IFastMock.MockedType">MockedType</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the type being mocked.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -140,7 +144,9 @@
   </table>
   <a id="FastMoq_Providers_IFastMock_NativeMock_" data-uid="FastMoq.Providers.IFastMock.NativeMock*"></a>
   <h4 id="FastMoq_Providers_IFastMock_NativeMock" data-uid="FastMoq.Providers.IFastMock.NativeMock">NativeMock</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the provider-specific underlying mock object.
+Prefer <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance">Instance</a> and provider-first helpers first, and use this only when the test intentionally needs a provider-specific API surface.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -165,7 +171,9 @@
 </h3>
   <a id="FastMoq_Providers_IFastMock_Reset_" data-uid="FastMoq.Providers.IFastMock.Reset*"></a>
   <h4 id="FastMoq_Providers_IFastMock_Reset" data-uid="FastMoq.Providers.IFastMock.Reset">Reset()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Resets or clears tracked mock state through the active provider.
+Use this provider-first path instead of calling provider-native reset APIs directly when the test can stay provider neutral.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -254,7 +262,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
       
           </div>
         </div>

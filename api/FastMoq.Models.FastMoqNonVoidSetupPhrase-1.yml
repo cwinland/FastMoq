@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: FastMoqNonVoidSetupPhrase
     path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
@@ -81,7 +81,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
@@ -117,7 +117,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Returns
     path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs

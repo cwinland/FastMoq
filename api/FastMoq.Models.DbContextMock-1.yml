@@ -26,7 +26,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContextMock
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -239,7 +239,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallBase
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -276,7 +276,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -308,7 +308,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -344,7 +344,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -387,7 +387,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -429,7 +429,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -474,7 +474,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbContextSetMethods
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -508,7 +508,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetProperties
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -545,7 +545,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetPropertyGet
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -582,7 +582,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupSetMethod
     path: FastMoq.Database/Models/DbContextMock.cs
@@ -623,7 +623,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSets
     path: FastMoq.Database/Models/DbContextMock.cs

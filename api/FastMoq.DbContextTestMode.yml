@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextTestMode.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContextTestMode
     path: FastMoq.Database/DbContextTestMode.cs
@@ -56,7 +56,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextTestMode.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockedSets
     path: FastMoq.Database/DbContextTestMode.cs
@@ -84,7 +84,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextTestMode.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: RealInMemory
     path: FastMoq.Database/DbContextTestMode.cs

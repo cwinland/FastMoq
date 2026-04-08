@@ -15,7 +15,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockDbContextOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockDbContextOptions
     path: FastMoq.Database/Models/MockDbContextOptions.cs

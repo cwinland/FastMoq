@@ -105,7 +105,40 @@ inventoryGateway
 
 var result = await Component.PlaceOrderAsync(request, CancellationToken.None);
 </code></pre>
+<p>This arrange example assumes the Moq provider extensions are in use. For provider-neutral verification only, keep the assert style and adapt the arrange step per provider. See <a href="../getting-started/provider-capabilities.html">Provider Capabilities</a> when you need the provider-specific equivalent.</p>
 <p>FastMoq removes mock field declarations and subject construction, while still letting the test move to provider-specific APIs when needed.</p>
+<h3 id="side-by-side-moq-arrange-syntax-versus-nsubstitute-arrange-syntax">Side-by-side: Moq arrange syntax versus NSubstitute arrange syntax</h3>
+<p>When a suite moves from Moq to NSubstitute, the assert side can often stay provider-first, but the arrange side must be translated into native NSubstitute calls.</p>
+<p>Moq arrange shape:</p>
+<pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push(&quot;moq&quot;);
+var inventoryGateway = Mocks.GetOrCreateMock&lt;IInventoryGateway&gt;();
+
+inventoryGateway
+    .Setup(x =&gt; x.ReserveAsync(request.Sku, request.Quantity, CancellationToken.None))
+    .ReturnsAsync(true);
+</code></pre>
+<p>NSubstitute arrange shape:</p>
+<pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push(&quot;nsubstitute&quot;);
+var inventoryGateway = Mocks.GetOrCreateMock&lt;IInventoryGateway&gt;();
+
+inventoryGateway
+    .AsNSubstitute()
+    .ReserveAsync(request.Sku, request.Quantity, CancellationToken.None)
+    .Returns(true);
+</code></pre>
+<p>For argument matching, translate the matcher syntax too:</p>
+<pre><code class="lang-csharp">// Moq
+inventoryGateway
+    .Setup(x =&gt; x.ReserveAsync(It.IsAny&lt;string&gt;(), It.Is&lt;int&gt;(qty =&gt; qty &gt; 0), CancellationToken.None))
+    .ReturnsAsync(true);
+
+// NSubstitute
+inventoryGateway
+    .AsNSubstitute()
+    .ReserveAsync(Arg.Any&lt;string&gt;(), Arg.Is&lt;int&gt;(qty =&gt; qty &gt; 0), CancellationToken.None)
+    .Returns(true);
+</code></pre>
+<p>That is the main migration pattern: replace <code>Setup(...)</code> with direct substitute calls plus <code>Returns(...)</code> or <code>When(...).Do(...)</code>, then keep FastMoq verification where it still reads well.</p>
 <p>The source of truth for these examples is the test project itself:</p>
 <ul>
 <li><code>FastMoq.TestingExample/RealWorldExampleServices.cs</code></li>
@@ -121,7 +154,7 @@ var result = await Component.PlaceOrderAsync(request, CancellationToken.None);
 <li>built-in <code>IFileSystem</code> behavior via the predefined <code>MockFileSystem</code></li>
 <li><code>VerifyLogged(...)</code> for provider-safe structured logging assertions</li>
 <li><code>Scenario.With(...).When(...).Then(...).Verify(...)</code> for the fluent scenario style inside <code>MockerTestBase&lt;TComponent&gt;</code></li>
-<li>provider-first verification through <code>TimesSpec.Once</code>, <code>TimesSpec.Exactly(...)</code>, <code>TimesSpec.AtLeast(...)</code>, <code>TimesSpec.AtMost(...)</code>, and <code>TimesSpec.Never()</code></li>
+<li>provider-first verification through <code>TimesSpec.Once</code>, <code>TimesSpec.NeverCalled</code>, <code>TimesSpec.Exactly(...)</code>, <code>TimesSpec.AtLeast(...)</code>, and <code>TimesSpec.AtMost(...)</code></li>
 </ul>
 <h2 id="example-1-order-processing-workflow">Example 1: Order Processing Workflow</h2>
 <p>The order-processing example models a typical service that coordinates several collaborators:</p>
@@ -131,6 +164,7 @@ var result = await Component.PlaceOrderAsync(request, CancellationToken.None);
 <li>repository persistence</li>
 <li>operational logging</li>
 </ul>
+<p>This example also assumes the Moq provider extensions are available for the arrange step. The verification style remains provider-first; the <code>Setup(...)</code> calls are the provider-specific part.</p>
 <pre><code class="lang-csharp">public class OrderProcessingServiceExamples : MockerTestBase&lt;OrderProcessingService&gt;
 {
     [Fact]
@@ -204,7 +238,7 @@ var result = await Component.PlaceOrderAsync(request, CancellationToken.None);
     .Verify&lt;IEmailGateway&gt;(x =&gt; x.SendReminderAsync(&quot;ap@contoso.test&quot;, 125m, CancellationToken.None), TimesSpec.Once)
     .Execute();
 </code></pre>
-<p><code>TimesSpec</code> supports <code>TimesSpec.Once</code>, <code>TimesSpec.Exactly(count)</code>, <code>TimesSpec.AtLeast(count)</code>, <code>TimesSpec.AtMost(count)</code>, and <code>TimesSpec.Never()</code> for provider-safe interaction verification.</p>
+<p><code>TimesSpec</code> supports <code>TimesSpec.Once</code>, <code>TimesSpec.NeverCalled</code>, <code>TimesSpec.Exactly(count)</code>, <code>TimesSpec.AtLeast(count)</code>, and <code>TimesSpec.AtMost(count)</code> for provider-safe interaction verification. <code>TimesSpec.Never()</code> remains available as a compatibility form.</p>
 <p>For failure-path scenarios, prefer one of these two patterns:</p>
 <pre><code class="lang-csharp">Scenario
     .WhenThrows&lt;InvalidOperationException&gt;(() =&gt; Component.SendRemindersAsync(now, CancellationToken.None))
@@ -245,7 +279,7 @@ var result = await Component.PlaceOrderAsync(request, CancellationToken.None);
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
       
           </div>
         </div>

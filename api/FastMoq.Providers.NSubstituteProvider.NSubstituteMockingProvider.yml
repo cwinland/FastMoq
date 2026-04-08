@@ -33,14 +33,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: NSubstituteMockingProvider
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 8
+    startLine: 11
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Provider implementation that adapts NSubstitute to the provider-neutral FastMoq abstractions.
+  example: []
   syntax:
     content: 'public sealed class NSubstituteMockingProvider : IMockingProvider, IMockingProviderCapabilities'
     content.vb: Public NotInheritable Class NSubstituteMockingProvider Implements IMockingProvider, IMockingProviderCapabilities
@@ -90,14 +92,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 13
+    startLine: 19
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Gets the shared singleton instance of the NSubstitute provider.
+  example: []
   syntax:
     content: public static readonly NSubstituteMockingProvider Instance
     return:
@@ -117,14 +121,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Capabilities
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 19
+    startLine: 28
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Gets the capability descriptor for this provider.
   example: []
   syntax:
     content: public IMockingProviderCapabilities Capabilities { get; }
@@ -149,14 +154,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsCallBase
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 20
+    startLine: 33
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Gets a value indicating whether NSubstitute supports base-call behavior.
   example: []
   syntax:
     content: public bool SupportsCallBase { get; }
@@ -181,14 +187,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsSetupAllProperties
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 21
+    startLine: 38
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Gets a value indicating whether NSubstitute supports automatic property backing.
   example: []
   syntax:
     content: public bool SupportsSetupAllProperties { get; }
@@ -213,14 +220,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsProtectedMembers
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 22
+    startLine: 43
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Gets a value indicating whether NSubstitute supports protected member interception.
   example: []
   syntax:
     content: public bool SupportsProtectedMembers { get; }
@@ -245,14 +253,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsInvocationTracking
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 23
+    startLine: 48
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Gets a value indicating whether NSubstitute supports invocation tracking.
   example: []
   syntax:
     content: public bool SupportsInvocationTracking { get; }
@@ -277,14 +286,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsLoggerCapture
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 24
+    startLine: 53
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Gets a value indicating whether NSubstitute supports logger capture helpers.
   example: []
   syntax:
     content: public bool SupportsLoggerCapture { get; }
@@ -309,14 +319,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 26
+    startLine: 58
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Builds a predicate expression suitable for provider-neutral matching.
   example: []
   syntax:
     content: public Expression<Func<T, bool>> BuildExpression<T>()
@@ -345,14 +356,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 31
+    startLine: 66
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Creates a typed FastMoq wrapper around a new NSubstitute substitute.
   example: []
   syntax:
     content: 'public IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class'
@@ -384,14 +396,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 47
+    startLine: 85
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Creates an untyped FastMoq wrapper around a new NSubstitute substitute.
   example: []
   syntax:
     content: public IFastMock CreateMock(Type type, MockCreationOptions? options = null)
@@ -423,14 +436,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAllProperties
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 57
+    startLine: 98
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Requests property auto-configuration on the supplied mock.
   example: []
   syntax:
     content: public void SetupAllProperties(IFastMock mock)
@@ -455,14 +469,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetCallBase
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 62
+    startLine: 106
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Requests base-call behavior on the supplied mock.
   example: []
   syntax:
     content: public void SetCallBase(IFastMock mock, bool value)
@@ -492,14 +507,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 67
+    startLine: 114
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Verifies that the supplied expression was invoked on the wrapped NSubstitute mock.
   example: []
   syntax:
     content: 'public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class'
@@ -533,14 +549,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 139
+    startLine: 189
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Verifies that no unverified calls remain on the supplied mock.
   example: []
   syntax:
     content: public void VerifyNoOtherCalls(IFastMock mock)
@@ -565,14 +582,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureProperties
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 157
+    startLine: 210
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Configures property behavior on the supplied mock when the provider supports it.
   example: []
   syntax:
     content: public void ConfigureProperties(IFastMock mock)
@@ -597,14 +615,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureLogger
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 162
+    startLine: 218
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Configures logger callback capture on the supplied mock.
   example: []
   syntax:
     content: public void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback)
@@ -634,14 +653,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetLegacy
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 175
+    startLine: 234
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Attempts to expose a provider-specific legacy mock object from a wrapper.
   example: []
   syntax:
     content: public object? TryGetLegacy(IFastMock mock)
@@ -668,14 +688,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TryWrapLegacy
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-    startLine: 177
+    startLine: 239
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
+  summary: Attempts to wrap a provider-specific legacy mock object in the FastMoq abstraction.
   example: []
   syntax:
     content: public IFastMock? TryWrapLegacy(object legacyMock, Type mockedType)

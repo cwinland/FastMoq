@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Copilot Migration Prompts | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Copilot Migration Prompts | FastMoq ">
+    
+    
+      <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+      <link rel="shortcut icon" href="../../favicon.svg">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="copilot-migration-prompts">Copilot Migration Prompts</h1>
+
+<p>Use <a href="README.html">Migration Guide: 3.0.0 To Current Repo</a> and its linked detail pages as the source of truth.</p>
+<p>This page only collects reusable AI prompt templates that point back to those migration docs. If you copy one of these prompts into a custom prompt, keep the doc links in the prompt body; the model does not need this page at runtime.</p>
+<h2 id="when-to-use-which-prompt">When to use which prompt</h2>
+<table>
+<thead>
+<tr>
+<th>Prompt</th>
+<th>Use it when</th>
+<th>Avoid it when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Project-level migration prompt</td>
+<td>You are migrating a suite in small batches and still need to decide which tests should stabilize first versus modernize now.</td>
+<td>You want every touched file to remove obsolete APIs aggressively.</td>
+</tr>
+<tr>
+<td>Strict obsolete-cleanup prompt</td>
+<td>The suite is already stable and you want touched files fully converted away from obsolete FastMoq entry points wherever possible.</td>
+<td>You are still in the earliest &quot;just get the suite green&quot; phase.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="project-level-migration-prompt">Project-level migration prompt</h2>
+<p>Use this prompt for staged migration work where package, provider, and obsolete-API decisions still matter.</p>
+<pre><code class="lang-text">I am migrating this test project from FastMoq 3.0.0-style usage to the current v4 provider-first APIs.
+
+Use these docs, in order, as the source of truth:
+- Main migration guide and routing: https://github.com/cwinland/FastMoq/blob/master/docs/migration/README.md
+- API replacements and migration exceptions: https://github.com/cwinland/FastMoq/blob/master/docs/migration/api-replacements-and-exceptions.md
+- Provider bootstrap, package boundaries, and Moq-to-NSubstitute translation: https://github.com/cwinland/FastMoq/blob/master/docs/migration/provider-and-compatibility.md
+- Framework helpers, FastMoq.Web migration, claims-principal guidance, keyed DI, and FunctionContext.InstanceServices: https://github.com/cwinland/FastMoq/blob/master/docs/migration/framework-and-web-helpers.md
+
+If only one doc can be provided, use the main migration guide. If two can be provided, use the main migration guide and API replacements doc.
+
+Work only on a small batch of tests at a time and run tests frequently after each batch.
+
+Before editing:
+- inspect package references and determine whether the project uses the aggregate FastMoq package or split packages such as FastMoq.Core, FastMoq.Web, FastMoq.Database, FastMoq.Provider.Moq, or FastMoq.Provider.NSubstitute
+- inspect shared helpers and base classes before leaf tests, especially `.Object`, `.Reset()`, `Func&lt;Times&gt;`, and framework service-provider setup such as `FunctionContext.InstanceServices`
+- identify Moq-specific dependencies such as GetMock&lt;T&gt;(), direct Mock&lt;T&gt;, Setup(...), SetupSet(...), SetupAllProperties(), Protected(), VerifyLogger(...), and out/ref verification
+- identify web helpers, DbContext helpers, and HTTP compatibility helpers that imply package boundaries
+
+Migration rules:
+- prefer GetOrCreateMock&lt;T&gt;(), GetObject&lt;T&gt;(), Verify(...), VerifyNoOtherCalls(...), VerifyLogged(...), and TimesSpec when that makes the test clearer
+- treat obsolete APIs such as GetMock&lt;T&gt;(), VerifyLogger(...), Initialize&lt;T&gt;(...), and MockOptional as migration targets, not the preferred end state
+- replace GetMock&lt;T&gt;() with GetOrCreateMock&lt;T&gt;() plus provider-package extensions such as AsMoq() unless the test still truly requires raw Mock&lt;T&gt;-shaped compatibility
+- keep Moq-specific behavior on Moq when the test still depends on Moq-only semantics
+- for NSubstitute migration, replace Moq Setup(...) syntax with native NSubstitute arrangement syntax
+- for controller or HttpContext tests, prefer FastMoq.Web helpers such as CreateHttpContext(...), CreateControllerContext(...), SetupClaimsPrincipal(...), AddHttpContext(...), and AddHttpContextAccessor(...)
+- if exact custom claims matter, use TestClaimsPrincipalOptions with IncludeDefaultIdentityClaims = false
+- if local repo helpers overlap with FastMoq.Web helpers, re-point the local wrappers first and simplify later only if it improves clarity
+- do not force provider-neutral rewrites where Moq compatibility is still the clearer path, but still remove obsolete entry points where a v4 replacement exists
+
+For this batch:
+- explain the package and provider assumptions you found
+- explain which tests should stay on Moq and which can move toward provider-neutral APIs
+- convert obsolete APIs to their v4 replacements wherever the test intent stays clear
+- make the smallest safe edits needed
+- list any obsolete usages that remain and the exact blocker for each one
+</code></pre>
+<p>Use this version for incremental migration. Stabilize first if the suite is still red. Once it is stable, treat obsolete removal as the default for touched tests and leave compatibility APIs only where a real blocker remains.</p>
+<h2 id="strict-obsolete-cleanup-prompt">Strict obsolete-cleanup prompt</h2>
+<p>Use this version when the goal is to keep the suite passing and remove obsolete FastMoq entry points from every touched file unless a concrete blocker remains.</p>
+<pre><code class="lang-text">I am migrating this FastMoq test file to the current v4 APIs.
+
+Use these docs, in order, as the source of truth:
+- Main migration guide and routing: https://github.com/cwinland/FastMoq/blob/master/docs/migration/README.md
+- API replacements and migration exceptions: https://github.com/cwinland/FastMoq/blob/master/docs/migration/api-replacements-and-exceptions.md
+- Provider bootstrap, package boundaries, and Moq-to-NSubstitute translation: https://github.com/cwinland/FastMoq/blob/master/docs/migration/provider-and-compatibility.md
+- Framework helpers, FastMoq.Web migration, claims-principal guidance, keyed DI, and FunctionContext.InstanceServices: https://github.com/cwinland/FastMoq/blob/master/docs/migration/framework-and-web-helpers.md
+
+If only one doc can be provided, use the main migration guide. If two can be provided, use the main migration guide and API replacements doc.
+
+Treat obsolete FastMoq APIs as migration defects to remove from this file unless there is a documented blocker.
+
+Before editing:
+- inspect package references and active provider assumptions
+- inspect shared helpers or base classes first if the file depends on them
+- identify every use of GetMock&lt;T&gt;(), VerifyLogger(...), Initialize&lt;T&gt;(...), MockOptional, and other obsolete or compatibility-only FastMoq APIs in this file
+- identify any Moq-only behavior that still requires provider-specific handling
+
+Editing rules:
+- replace obsolete FastMoq APIs with current v4 equivalents wherever possible
+- prefer GetOrCreateMock&lt;T&gt;(), GetObject&lt;T&gt;(), Verify(...), VerifyNoOtherCalls(...), VerifyLogged(...), TimesSpec, AddType(...), and FastMoq.Web helpers where appropriate
+- use GetOrCreateMock&lt;T&gt;().AsMoq() or direct provider-package extensions instead of leaving GetMock&lt;T&gt;() behind when the test still needs Moq semantics
+- only keep an obsolete call if the file still depends on a compatibility-only shape with no clean v4 replacement in that test
+
+Output expectations:
+- make the smallest safe edits needed
+- list every obsolete usage that was replaced
+- list every obsolete usage that remains and explain the specific blocker for each one
+</code></pre>
+<p>Use the strict variant after the first stabilization pass. It is for touched-file cleanup, not the earliest &quot;just get the suite green&quot; phase.</p>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -48,7 +48,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IMockerBlazorTestHelpers
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -103,7 +103,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -147,7 +147,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -191,7 +191,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -241,7 +241,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -289,7 +289,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -340,7 +340,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickDropdownItem
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -390,7 +390,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickDropdownItem
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -437,7 +437,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: FindAllByTag
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -475,7 +475,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: FindById
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -513,7 +513,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -551,7 +551,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -600,7 +600,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -642,7 +642,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -691,7 +691,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -733,7 +733,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -770,7 +770,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -807,7 +807,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -847,7 +847,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -887,7 +887,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -924,7 +924,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -961,7 +961,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1000,7 +1000,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IsExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1041,7 +1041,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1087,7 +1087,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1136,7 +1136,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetAutoComplete
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1183,7 +1183,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementCheck
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1243,7 +1243,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementSwitch
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1300,7 +1300,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1347,7 +1347,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1401,7 +1401,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitDelay
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1438,7 +1438,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1479,7 +1479,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForNotExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1520,7 +1520,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForState
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs

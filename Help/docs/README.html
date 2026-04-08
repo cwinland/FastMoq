@@ -73,6 +73,16 @@
 <h1 id="fastmoq-documentation">FastMoq Documentation</h1>
 
 <p>Welcome to the comprehensive FastMoq documentation! This documentation is designed to help you get the most out of FastMoq, from your first test to advanced enterprise scenarios.</p>
+<h2 id="-release-highlights-since-300">🆕 Release Highlights Since 3.0.0</h2>
+<p>If you are coming from the last public <code>3.0.0</code> package, the biggest changes in the current line are:</p>
+<ul>
+<li>provider-first architecture with explicit provider registration and selection</li>
+<li>new package split across abstractions, database helpers, and provider-specific adapters</li>
+<li>provider-neutral verification with <code>TimesSpec</code>, <code>Verify(...)</code>, and <code>VerifyLogged(...)</code></li>
+<li>fluent <code>Scenario.With(...).When(...).Then(...).Verify(...)</code> support</li>
+<li>explicit policy surfaces for constructor fallback, method fallback, known-type resolution, and optional-parameter behavior</li>
+<li>expanded migration guidance, executable examples, and generated API coverage</li>
+</ul>
 <h2 id="-documentation-structure">📚 Documentation Structure</h2>
 <h3 id="-getting-started">🚀 <a href="getting-started/README.html">Getting Started</a></h3>
 <p>Perfect for developers new to FastMoq. Learn the basics and write your first test in minutes.</p>
@@ -80,7 +90,9 @@
 <li>Installation and setup</li>
 <li>Your first FastMoq test</li>
 <li><a href="getting-started/provider-selection.html">Provider selection and setup</a></li>
+<li><a href="getting-started/provider-capabilities.html">Provider capabilities matrix</a></li>
 <li><a href="getting-started/testing-guide.html">Repo-native testing guide</a></li>
+<li><a href="getting-started/testing-guide.html#controller-testing">Web helper guidance for controller and request tests</a></li>
 <li><a href="samples/testing-examples.html">Executable testing examples</a></li>
 <li>Understanding the architecture</li>
 <li>Common patterns and best practices</li>
@@ -124,7 +136,7 @@
 <h3 id="-roadmap-notes">🗺️ <a href="roadmap/README.html">Roadmap Notes</a></h3>
 <p>Current provider-first direction, active architectural work, and intentionally deferred items.</p>
 <h3 id="-whats-new-since-300">🆕 <a href="whats-new/README.html">What's New Since 3.0.0</a></h3>
-<p>Summary of the v4 release line relative to the May 12, 2025 <code>3.0.0</code> release baseline.</p>
+<p>Summary of the major architecture, packaging, API, and documentation changes after the May 12, 2025 <code>3.0.0</code> baseline.</p>
 <h3 id="-breaking-changes">⚠️ <a href="breaking-changes/README.html">Breaking Changes</a></h3>
 <p>Intentional v4 breaking changes, with migration notes for changed behavior.</p>
 <h3 id="-migration-guide">🔄 <a href="migration/README.html">Migration Guide</a></h3>
@@ -173,6 +185,11 @@
 <td><a href="samples/ecommerce-orders/README.html">E-Commerce Sample</a></td>
 </tr>
 <tr>
+<td><strong>Web helper migration</strong></td>
+<td><a href="migration/framework-and-web-helpers.html#web-test-helpers">Framework and web helper migration</a></td>
+<td><a href="getting-started/testing-guide.html#controller-testing">Repo-native testing guide</a></td>
+</tr>
+<tr>
 <td><strong>Database Testing</strong></td>
 <td><a href="cookbook/README.html#entity-framework-core-testing">EF Core Testing</a></td>
 <td><a href="samples/ecommerce-orders/README.html">Repository Patterns</a></td>
@@ -194,7 +211,9 @@
 </tr>
 </tbody>
 </table>
-<p>Package note: <code>FastMoq</code> is the aggregate package. <code>FastMoq.Core</code> is intentionally lighter, EF-specific helpers live in <code>FastMoq.Database</code>, and web helpers live in <code>FastMoq.Web</code> while the primary calls stay in the <code>FastMoq</code> namespace.</p>
+<p>Package note: <code>FastMoq</code> is the aggregate package. Provider contracts live in <code>FastMoq.Abstractions</code>, <code>FastMoq.Core</code> stays lighter, EF-specific helpers live in <code>FastMoq.Database</code>, provider-specific adapters live in <code>FastMoq.Provider.*</code>, and web helpers live in <code>FastMoq.Web</code> while the primary calls stay in the <code>FastMoq</code> namespace.</p>
+<p>Web helper note: if your test project references the aggregate <code>FastMoq</code> package, the web helpers are already included. If your test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.Web</code> before using helpers such as <code>CreateHttpContext(...)</code>, <code>CreateControllerContext(...)</code>, <code>SetupClaimsPrincipal(...)</code>, <code>AddHttpContext(...)</code>, or <code>AddHttpContextAccessor(...)</code>.</p>
+<p>See <a href="getting-started/README.html#package-choices">Getting Started package choices</a> when you need the full install matrix instead of a quick reminder.</p>
 <h2 id="-key-advantages">🏆 Key Advantages</h2>
 <p>FastMoq is designed for <strong>developer productivity</strong> and <strong>maintainable tests</strong>:</p>
 <h3 id="-less-code-more-testing">📝 Less Code, More Testing</h3>
@@ -277,7 +296,7 @@
 <li><strong>Release Notes</strong>: <a href="https://github.com/cwinland/FastMoq/releases">GitHub Releases</a></li>
 </ul>
 <h2 id="-version-information">🏷️ Version Information</h2>
-<p>This documentation tracks the current repository direction after <strong>FastMoq 3.0.0</strong>.</p>
+<p>This documentation tracks the current post-<code>3.0.0</code> FastMoq v4 release line.</p>
 <hr>
 <p><strong>Ready to get started?</strong> Jump to <a href="getting-started/README.html">Getting Started</a> or pick a specific topic from the navigation above!</p>
 
@@ -302,7 +321,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
       
           </div>
         </div>

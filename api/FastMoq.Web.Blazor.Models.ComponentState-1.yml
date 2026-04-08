@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ComponentState
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
@@ -93,7 +93,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Component
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
@@ -127,7 +127,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/Models/ComponentState.cs

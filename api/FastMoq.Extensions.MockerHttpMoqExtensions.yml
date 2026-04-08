@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerHttpMoqExtensions
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
@@ -63,7 +63,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupHttpMessage
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
@@ -107,7 +107,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessage
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
@@ -149,7 +149,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageAsync
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
@@ -191,7 +191,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageProtected
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
@@ -235,7 +235,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageProtectedAsync
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs

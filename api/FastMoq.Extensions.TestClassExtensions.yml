@@ -47,7 +47,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TestClassExtensions
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -95,7 +95,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallGenericMethod
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -153,7 +153,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: EnsureNullCheckThrown
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -202,7 +202,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: EnsureNullCheckThrown
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -247,7 +247,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetDefaultValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -283,7 +283,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetField
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -328,7 +328,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldInfo
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -373,7 +373,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -420,7 +420,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -465,7 +465,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -513,7 +513,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMember
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -560,7 +560,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberExpression
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -602,7 +602,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberExpression
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -638,7 +638,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberName
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -685,7 +685,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberName
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -721,7 +721,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethod
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -766,7 +766,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -817,7 +817,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetProperty
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -862,7 +862,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetPropertyValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -910,7 +910,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetTestData
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -955,7 +955,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetTypeFromInterface
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1004,7 +1004,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1046,7 +1046,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddFiles
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1081,7 +1081,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1126,7 +1126,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousConstructorImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1165,7 +1165,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1210,7 +1210,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetPropertyValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1255,7 +1255,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1301,7 +1301,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1342,7 +1342,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1383,7 +1383,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1429,7 +1429,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
@@ -1474,7 +1474,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs

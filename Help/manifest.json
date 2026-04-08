@@ -714,7 +714,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Providers.IFastMock<T>",
-      "Summary": "<p sourcefile=\"api/FastMoq.Providers.IFastMock-1.yml\" sourcestartlinenumber=\"1\">Generic variant for convenience strongly typing Instance.</p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.IFastMock-1.yml\" sourcestartlinenumber=\"1\">Generic variant for convenience strongly typing <xref href=\"FastMoq.Providers.IFastMock.Instance\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -728,7 +728,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Providers.IFastMock",
-      "Summary": "<p sourcefile=\"api/FastMoq.Providers.IFastMock.yml\" sourcestartlinenumber=\"1\">Non generic abstraction for a created mock instance. Named IFastMock to avoid collision with provider library IMock types.</p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.IFastMock.yml\" sourcestartlinenumber=\"1\">Non generic abstraction for a created mock instance.\nPrefer <xref href=\"FastMoq.Providers.IFastMock.Instance\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"FastMoq.Providers.IFastMock.Reset\" data-throw-if-not-resolved=\"false\"></xref> for provider-first flows, and treat <xref href=\"FastMoq.Providers.IFastMock.NativeMock\" data-throw-if-not-resolved=\"false\"></xref> as the provider-native escape hatch.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -798,7 +798,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Providers.MoqProvider.IFastMockMoqExtensions",
-      "Summary": "<p sourcefile=\"api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.yml\" sourcestartlinenumber=\"1\">Moq-specific convenience extensions for <xref href=\"FastMoq.Providers.IFastMock\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"FastMoq.Providers.IFastMock%601\" data-throw-if-not-resolved=\"false\"></xref>.\nThese stay in the provider package so the core abstractions remain provider agnostic.</p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.yml\" sourcestartlinenumber=\"1\">Moq-specific convenience extensions for <xref href=\"FastMoq.Providers.IFastMock\" data-throw-if-not-resolved=\"false\"></xref> and <xref href=\"FastMoq.Providers.IFastMock%601\" data-throw-if-not-resolved=\"false\"></xref>.\nThese stay in the provider package so the core abstractions remain provider agnostic.\nPrefer provider-first members such as <xref href=\"FastMoq.Providers.IFastMock.Instance\" data-throw-if-not-resolved=\"false\"></xref>, <xref href=\"FastMoq.Providers.IFastMock.Reset\" data-throw-if-not-resolved=\"false\"></xref>, and FastMoq verification helpers first, and use these extensions when the test intentionally needs Moq-specific APIs.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -812,7 +812,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Providers.MoqProvider.MoqLoggerCompatibility",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.MoqProvider.MoqLoggerCompatibility.yml\" sourcestartlinenumber=\"1\">Provides Moq-based logger verification and callback helpers used by the compatibility layer.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -826,7 +826,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Providers.MoqProvider.MoqMockAdapter<T>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.MoqProvider.MoqMockAdapter-1.yml\" sourcestartlinenumber=\"1\">Wraps a typed Moq mock in the provider-neutral FastMoq abstraction.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -840,7 +840,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Providers.MoqProvider.MoqMockAdapter",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.MoqProvider.MoqMockAdapter.yml\" sourcestartlinenumber=\"1\">Wraps a non-generic Moq mock in the provider-neutral FastMoq abstraction.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -854,7 +854,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Providers.MoqProvider.MoqMockingProvider",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.MoqProvider.MoqMockingProvider.yml\" sourcestartlinenumber=\"1\">Provider implementation that adapts Moq to the provider-neutral FastMoq abstractions.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -882,7 +882,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions",
-      "Summary": "<p sourcefile=\"api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.yml\" sourcestartlinenumber=\"1\">NSubstitute-specific convenience extensions for <xref href=\"FastMoq.Providers.IFastMock%601\" data-throw-if-not-resolved=\"false\"></xref>.\nThese stay in the provider package so the core abstractions remain provider agnostic.</p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.yml\" sourcestartlinenumber=\"1\">NSubstitute-specific convenience extensions for <xref href=\"FastMoq.Providers.IFastMock%601\" data-throw-if-not-resolved=\"false\"></xref>.\nThese stay in the provider package so the core abstractions remain provider agnostic.\nPrefer provider-first members such as <xref href=\"FastMoq.Providers.IFastMock.Instance\" data-throw-if-not-resolved=\"false\"></xref>, <xref href=\"FastMoq.Providers.IFastMock.Reset\" data-throw-if-not-resolved=\"false\"></xref>, and FastMoq verification helpers first, and use these extensions when the test intentionally needs NSubstitute-specific APIs.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -896,7 +896,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.yml\" sourcestartlinenumber=\"1\">Provider implementation that adapts NSubstitute to the provider-neutral FastMoq abstractions.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -911,6 +911,20 @@
       "IsMRef": true,
       "Title": "FastMoq.Providers.NSubstituteProvider",
       "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Providers.ProviderSelectionDiagnostics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Providers.ProviderSelectionDiagnostics.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Providers.ProviderSelectionDiagnostics",
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.ProviderSelectionDiagnostics.yml\" sourcestartlinenumber=\"1\">Builds consistent provider-selection guidance for provider-specific FastMoq APIs.\nThis keeps runtime messages aligned across the compatibility surface and provider-specific escape hatches.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -938,7 +952,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Providers.TimesSpecMode",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Providers.TimesSpecMode.yml\" sourcestartlinenumber=\"1\">Identifies the verification strategy represented by a <xref href=\"FastMoq.Providers.TimesSpec\" data-throw-if-not-resolved=\"false\"></xref> value.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1221,6 +1235,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "docs/getting-started/provider-capabilities.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started/provider-capabilities.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "docs/getting-started/provider-selection.md",
       "output": {
         ".html": {
@@ -1251,10 +1275,60 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "docs/migration/api-replacements-and-exceptions.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/migration/api-replacements-and-exceptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/migration/copilot-prompts.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/migration/copilot-prompts.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/migration/framework-and-web-helpers.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/migration/framework-and-web-helpers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/migration/provider-and-compatibility.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/migration/provider-and-compatibility.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "docs/roadmap/README.md",
       "output": {
         ".html": {
           "relative_path": "docs/roadmap/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/roadmap/migration-feedback-issue-drafts.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/roadmap/migration-feedback-issue-drafts.html"
         }
       },
       "version": ""

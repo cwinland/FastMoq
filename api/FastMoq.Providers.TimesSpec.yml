@@ -23,11 +23,11 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TimesSpec
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 15
+    startLine: 37
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
@@ -74,14 +74,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Mode
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 44
+    startLine: 69
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets the verification mode.
+  example: []
   syntax:
     content: public TimesSpecMode Mode { get; }
     parameters: []
@@ -103,14 +105,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Count
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 45
+    startLine: 74
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets the expected invocation count when the selected <xref href="FastMoq.Providers.TimesSpec.Mode" data-throw-if-not-resolved="false"></xref> requires one.
+  example: []
   syntax:
     content: public int? Count { get; }
     parameters: []
@@ -132,14 +136,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Once
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 47
+    startLine: 79
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets a specification that requires exactly one invocation.
+  example: []
   syntax:
     content: public static TimesSpec Once { get; }
     parameters: []
@@ -161,14 +167,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: NeverCalled
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 48
+    startLine: 84
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets a specification that requires zero invocations.
+  example: []
   syntax:
     content: public static TimesSpec NeverCalled { get; }
     parameters: []
@@ -190,21 +198,25 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Exactly
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 50
+    startLine: 91
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Creates a specification that requires exactly <code class="paramref">count</code> invocations.
+  example: []
   syntax:
     content: public static TimesSpec Exactly(int count)
     parameters:
     - id: count
       type: System.Int32
+      description: The required invocation count.
     return:
       type: FastMoq.Providers.TimesSpec
+      description: A verification specification for an exact count.
     content.vb: Public Shared Function Exactly(count As Integer) As TimesSpec
   overload: FastMoq.Providers.TimesSpec.Exactly*
   nameWithType.vb: TimesSpec.Exactly(Integer)
@@ -224,21 +236,25 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AtLeast
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 51
+    startLine: 98
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Creates a specification that requires at least <code class="paramref">count</code> invocations.
+  example: []
   syntax:
     content: public static TimesSpec AtLeast(int count)
     parameters:
     - id: count
       type: System.Int32
+      description: The minimum required invocation count.
     return:
       type: FastMoq.Providers.TimesSpec
+      description: A verification specification for a minimum count.
     content.vb: Public Shared Function AtLeast(count As Integer) As TimesSpec
   overload: FastMoq.Providers.TimesSpec.AtLeast*
   nameWithType.vb: TimesSpec.AtLeast(Integer)
@@ -258,21 +274,25 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AtMost
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 52
+    startLine: 105
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Creates a specification that allows at most <code class="paramref">count</code> invocations.
+  example: []
   syntax:
     content: public static TimesSpec AtMost(int count)
     parameters:
     - id: count
       type: System.Int32
+      description: The maximum allowed invocation count.
     return:
       type: FastMoq.Providers.TimesSpec
+      description: A verification specification for a maximum count.
     content.vb: Public Shared Function AtMost(count As Integer) As TimesSpec
   overload: FastMoq.Providers.TimesSpec.AtMost*
   nameWithType.vb: TimesSpec.AtMost(Integer)
@@ -292,18 +312,21 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Never
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 53
+    startLine: 111
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Creates a specification that requires zero invocations.
+  example: []
   syntax:
     content: public static TimesSpec Never()
     return:
       type: FastMoq.Providers.TimesSpec
+      description: A verification specification for no invocations.
     content.vb: Public Shared Function Never() As TimesSpec
   overload: FastMoq.Providers.TimesSpec.Never*
 references:
@@ -2399,6 +2422,12 @@ references:
   name: TimesSpecMode
   nameWithType: TimesSpecMode
   fullName: FastMoq.Providers.TimesSpecMode
+- uid: FastMoq.Providers.TimesSpec.Mode
+  commentId: P:FastMoq.Providers.TimesSpec.Mode
+  href: FastMoq.Providers.TimesSpec.html#FastMoq_Providers_TimesSpec_Mode
+  name: Mode
+  nameWithType: TimesSpec.Mode
+  fullName: FastMoq.Providers.TimesSpec.Mode
 - uid: FastMoq.Providers.TimesSpec.Count*
   commentId: Overload:FastMoq.Providers.TimesSpec.Count
   href: FastMoq.Providers.TimesSpec.html#FastMoq_Providers_TimesSpec_Count

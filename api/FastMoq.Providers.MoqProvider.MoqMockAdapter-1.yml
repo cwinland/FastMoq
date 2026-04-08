@@ -21,14 +21,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MoqMockAdapter
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 2
+    startLine: 5
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Wraps a typed Moq mock in the provider-neutral FastMoq abstraction.
+  example: []
   syntax:
     content: 'public sealed class MoqMockAdapter<T> : IFastMock<T>, IFastMock where T : class'
     typeParameters:
@@ -97,14 +99,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 4
+    startLine: 10
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Initializes a new adapter for the supplied Moq mock.
+  example: []
   syntax:
     content: public MoqMockAdapter(Mock<T> inner)
     parameters:
@@ -129,14 +133,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Inner
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 9
+    startLine: 18
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets the wrapped Moq mock.
+  example: []
   syntax:
     content: public Mock<T> Inner { get; }
     parameters: []
@@ -160,14 +166,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockedType
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 10
+    startLine: 23
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets the type being mocked.
   example: []
   syntax:
     content: public Type MockedType { get; }
@@ -194,14 +201,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 11
+    startLine: 28
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets the mocked instance.
   example: []
   syntax:
     content: public T Instance { get; }
@@ -228,14 +236,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: NativeMock
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 12
+    startLine: 33
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Gets the provider-specific underlying mock object.
   example: []
   syntax:
     content: public object NativeMock { get; }
@@ -262,14 +271,15 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Reset
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-    startLine: 15
+    startLine: 39
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Resets mock state when supported by the provider wrapper.
   example: []
   syntax:
     content: public void Reset()

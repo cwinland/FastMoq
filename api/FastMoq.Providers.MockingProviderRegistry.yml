@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockingProviderRegistry
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
@@ -61,7 +61,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Register
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
@@ -97,7 +97,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGet
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
@@ -133,7 +133,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: RegisteredProviderNames
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
@@ -162,7 +162,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Default
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
@@ -191,7 +191,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WrapLegacy
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
@@ -227,7 +227,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetDefault
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
@@ -259,7 +259,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
@@ -292,7 +292,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
@@ -326,7 +326,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Clear
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs

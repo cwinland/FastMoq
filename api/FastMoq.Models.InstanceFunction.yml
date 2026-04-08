@@ -21,7 +21,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceFunction.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceFunction
     path: FastMoq.Core/Models/InstanceFunction.cs
@@ -78,7 +78,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceFunction.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceFunction.cs
@@ -110,7 +110,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceFunction.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceType
     path: FastMoq.Core/Models/InstanceFunction.cs
@@ -139,7 +139,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceFunction.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Function
     path: FastMoq.Core/Models/InstanceFunction.cs
@@ -168,7 +168,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceFunction.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetFunction
     path: FastMoq.Core/Models/InstanceFunction.cs
@@ -197,7 +197,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceFunction.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Invoke
     path: FastMoq.Core/Models/InstanceFunction.cs
@@ -233,7 +233,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceFunction.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Models/InstanceFunction.cs

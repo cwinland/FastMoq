@@ -550,6 +550,8 @@
   "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.TryWrapLegacy(System.Object,System.Type)": "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.yml",
   "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)": "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.yml",
   "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})": "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.yml",
+  "FastMoq.Providers.ProviderSelectionDiagnostics": "FastMoq.Providers.ProviderSelectionDiagnostics.yml",
+  "FastMoq.Providers.ProviderSelectionDiagnostics.BuildProviderMismatchMessage(System.String,System.Type,System.Object,System.Object,System.String,System.String)": "FastMoq.Providers.ProviderSelectionDiagnostics.yml",
   "FastMoq.Providers.TimesSpec": "FastMoq.Providers.TimesSpec.yml",
   "FastMoq.Providers.TimesSpec.AtLeast(System.Int32)": "FastMoq.Providers.TimesSpec.yml",
   "FastMoq.Providers.TimesSpec.AtMost(System.Int32)": "FastMoq.Providers.TimesSpec.yml",

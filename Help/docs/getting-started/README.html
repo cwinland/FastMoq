@@ -126,6 +126,67 @@ Mocks.Verify&lt;ICustomerRepository&gt;(
 </ul>
 <h2 id="installation">Installation</h2>
 <p>Install FastMoq using your preferred package manager:</p>
+<h3 id="package-choices">Package choices</h3>
+<p>Use this table when you are deciding which package line your test project should reference.</p>
+<table>
+<thead>
+<tr>
+<th>If you want...</th>
+<th>Install...</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>simplest all-in-one experience</td>
+<td><code>FastMoq</code></td>
+<td>Aggregate package that includes the primary runtime, database helpers, web support, and the FastMoq analyzer pack by default</td>
+</tr>
+<tr>
+<td>lighter core-only usage</td>
+<td><code>FastMoq.Core</code></td>
+<td>Provider-first runtime without the extra EF, web-specific, or analyzer package payloads</td>
+</tr>
+<tr>
+<td>DbContext and EF-specific helpers while using <code>FastMoq.Core</code></td>
+<td><code>FastMoq.Database</code></td>
+<td>Adds <code>GetMockDbContext&lt;TContext&gt;()</code> and the explicit DbContext handle modes</td>
+</tr>
+<tr>
+<td>controller, <code>HttpContext</code>, <code>IHttpContextAccessor</code>, or claims-principal helpers while using <code>FastMoq.Core</code></td>
+<td><code>FastMoq.Web</code></td>
+<td>Adds <code>CreateHttpContext(...)</code>, <code>CreateControllerContext(...)</code>, <code>SetupClaimsPrincipal(...)</code>, <code>AddHttpContext(...)</code>, and <code>AddHttpContextAccessor(...)</code></td>
+</tr>
+<tr>
+<td>Moq-specific tracked-mock extension methods during migration</td>
+<td><code>FastMoq.Provider.Moq</code></td>
+<td>Adds provider-package extension methods such as <code>AsMoq()</code>, <code>Setup(...)</code>, <code>SetupGet(...)</code>, <code>SetupSequence(...)</code>, and <code>Protected()</code> on <code>IFastMock&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td>optional NSubstitute-backed provider support</td>
+<td><code>FastMoq.Provider.NSubstitute</code></td>
+<td>Adds the NSubstitute provider package and tracked-mock extensions such as <code>AsNSubstitute()</code></td>
+</tr>
+<tr>
+<td>analyzer guidance without the aggregate runtime package</td>
+<td><code>FastMoq.Analyzers</code></td>
+<td>Standalone Roslyn analyzers and code fixes for migration cleanup and provider-first test-authoring guidance</td>
+</tr>
+</tbody>
+</table>
+<p>Important package boundaries in the current v4 line:</p>
+<ul>
+<li><code>FastMoq</code> already includes the common end-user surface, including web and database helpers</li>
+<li><code>FastMoq</code> also includes the FastMoq analyzer assets by default so most test projects get migration guidance without extra setup</li>
+<li><code>FastMoq.Core</code> stays lighter on purpose, so EF helpers and web helpers are separate package decisions when you consume core directly</li>
+<li><code>FastMoq.Core</code> does not include analyzer assets; add <code>FastMoq.Analyzers</code> explicitly if you want analyzer guidance in a core-only package graph</li>
+<li><code>FastMoq.Core</code> includes the built-in <code>reflection</code> provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as <code>Setup(...)</code> and <code>Protected()</code> still belong to the <code>FastMoq.Provider.Moq</code> package</li>
+<li>provider-package extension methods still follow the provider-package docs and selection rules described in <a href="provider-selection.html">Provider Selection and Setup</a></li>
+<li>if you are unsure whether your web tests need another package, see the web-helper notes in <a href="testing-guide.html#controller-testing">Testing Guide</a> and the migration-specific notes in <a href="../migration/framework-and-web-helpers.html#web-test-helpers">Framework and web helper migration</a></li>
+</ul>
+<p>If your team wants the aggregate runtime package without analyzer diagnostics in a specific test project, you can opt out with:</p>
+<pre><code class="lang-xml">&lt;PackageReference Include=&quot;FastMoq&quot; Version=&quot;4.*&quot; ExcludeAssets=&quot;analyzers&quot; /&gt;
+</code></pre>
 <h3 id="net-cli">.NET CLI</h3>
 <pre><code class="lang-bash">dotnet add package FastMoq
 </code></pre>
@@ -133,6 +194,7 @@ Mocks.Verify&lt;ICustomerRepository&gt;(
 <pre><code class="lang-bash">dotnet add package FastMoq.Core
 dotnet add package FastMoq.Database
 dotnet add package FastMoq.Web
+dotnet add package FastMoq.Provider.Moq
 </code></pre>
 <h3 id="package-manager-console">Package Manager Console</h3>
 <pre><code class="lang-powershell">Install-Package FastMoq
@@ -144,12 +206,13 @@ dotnet add package FastMoq.Web
 <pre><code class="lang-xml">&lt;PackageReference Include=&quot;FastMoq.Core&quot; Version=&quot;4.*&quot; /&gt;
 &lt;PackageReference Include=&quot;FastMoq.Database&quot; Version=&quot;4.*&quot; /&gt;
 &lt;PackageReference Include=&quot;FastMoq.Web&quot; Version=&quot;4.*&quot; /&gt;
+&lt;PackageReference Include=&quot;FastMoq.Provider.Moq&quot; Version=&quot;4.*&quot; /&gt;
 </code></pre>
 <blockquote>
 <p>Note: this guide targets the current v4 release line. For the release delta relative to the last public <code>3.0.0</code> package, see <a href="../whats-new/README.html">What's New Since 3.0.0</a>.
 Note: in the current repository, <code>GetMockDbContext&lt;TContext&gt;()</code> keeps the same <code>FastMoq</code> namespace call shape, but direct <code>FastMoq.Core</code> consumers should add <code>FastMoq.Database</code> for EF-specific helpers. Direct web-helper consumers should add <code>FastMoq.Web</code>.</p>
 </blockquote>
-<p>In the current v4 transition layout, <code>FastMoq.Core</code> bundles the built-in <code>moq</code> provider and the internal <code>reflection</code> fallback. The default provider is <code>reflection</code>. Optional providers such as <code>nsubstitute</code> can be added explicitly and registered with <code>MockingProviderRegistry</code>.</p>
+<p>In the current v4 transition layout, <code>FastMoq.Core</code> bundles the built-in <code>moq</code> provider and the internal <code>reflection</code> fallback. The default provider is <code>reflection</code>. Optional providers such as <code>nsubstitute</code> can be added explicitly and registered with <code>MockingProviderRegistry</code>. You can also register your own provider by implementing <code>IMockingProvider</code>; the bundled providers are examples, not the only supported choices.</p>
 <p>The DbContext helper path now exposes explicit modes through <code>GetDbContextHandle&lt;TContext&gt;(...)</code>. <code>GetMockDbContext&lt;TContext&gt;()</code> remains the mocked-sets convenience entry point, and <code>DbContextTestMode.RealInMemory</code> is the real EF-backed option. The mocked-sets implementation still uses the existing moved Moq-based <code>DbContextMock&lt;TContext&gt;</code> path internally.</p>
 <h3 id="required-using-statements">Required Using Statements</h3>
 <p>For most FastMoq tests, these using statements are a good starting point:</p>
@@ -274,7 +337,7 @@ public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&
         // Verify file was never read
         Mocks.Verify&lt;IFileSystem&gt;(
             x =&gt; x.File.ReadAllTextAsync(It.IsAny&lt;string&gt;(), It.IsAny&lt;CancellationToken&gt;()),
-            TimesSpec.Never());
+            TimesSpec.NeverCalled);
     }
 }
 </code></pre>
@@ -452,7 +515,7 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
       
           </div>
         </div>

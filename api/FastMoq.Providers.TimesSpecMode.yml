@@ -20,14 +20,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TimesSpecMode
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 2
+    startLine: 5
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Identifies the verification strategy represented by a <xref href="FastMoq.Providers.TimesSpec" data-throw-if-not-resolved="false"></xref> value.
+  example: []
   syntax:
     content: public enum TimesSpecMode
     content.vb: Public Enum TimesSpecMode
@@ -57,14 +59,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AtLeastOnce
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 4
+    startLine: 10
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Verifies that the invocation occurred at least once.
+  example: []
   syntax:
     content: AtLeastOnce = 0
     return:
@@ -83,14 +87,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Exactly
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 5
+    startLine: 15
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Verifies that the invocation occurred an exact number of times.
+  example: []
   syntax:
     content: Exactly = 1
     return:
@@ -109,14 +115,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AtLeast
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 6
+    startLine: 20
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Verifies that the invocation occurred at least the specified number of times.
+  example: []
   syntax:
     content: AtLeast = 2
     return:
@@ -135,14 +143,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AtMost
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 7
+    startLine: 25
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Verifies that the invocation occurred at most the specified number of times.
+  example: []
   syntax:
     content: AtMost = 3
     return:
@@ -161,19 +171,28 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Never
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
-    startLine: 8
+    startLine: 30
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Verifies that the invocation never occurred.
+  example: []
   syntax:
     content: Never = 4
     return:
       type: FastMoq.Providers.TimesSpecMode
 references:
+- uid: FastMoq.Providers.TimesSpec
+  commentId: T:FastMoq.Providers.TimesSpec
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.TimesSpec.html
+  name: TimesSpec
+  nameWithType: TimesSpec
+  fullName: FastMoq.Providers.TimesSpec
 - uid: FastMoq.Providers
   commentId: N:FastMoq.Providers
   href: FastMoq.html

@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class IFastMockMoqExtensions | FastMoq ">
     
-    <meta name="description" content="Moq-specific convenience extensions for  and . These stay in the provider package so the core abstractions remain provider agnostic.">
+    <meta name="description" content="Moq-specific convenience extensions for  and . These stay in the provider package so the core abstractions remain provider agnostic. Prefer provider-first members such as , , and FastMoq verification helpers first, and use these extensions when the test intentionally needs Moq-specific APIs.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -82,7 +82,8 @@
 
   <h1 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions" class="text-break">Class IFastMockMoqExtensions</h1>
   <div class="markdown level0 summary"><p>Moq-specific convenience extensions for <a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a> and <a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock&lt;T&gt;</a>.
-These stay in the provider package so the core abstractions remain provider agnostic.</p>
+These stay in the provider package so the core abstractions remain provider agnostic.
+Prefer provider-first members such as <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance">Instance</a>, <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset">Reset()</a>, and FastMoq verification helpers first, and use these extensions when the test intentionally needs Moq-specific APIs.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -124,7 +125,8 @@ These stay in the provider package so the core abstractions remain provider agno
 </h3>
   <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq_FastMoq_Providers_IFastMock_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq(FastMoq.Providers.IFastMock)">AsMoq(IFastMock)</h4>
-  <div class="markdown level1 summary"><p>Returns the provider-native non-generic <span class="xref">Moq.Mock</span> instance for a tracked FastMoq mock.</p>
+  <div class="markdown level1 summary"><p>Returns the provider-native non-generic <span class="xref">Moq.Mock</span> instance for a tracked FastMoq mock.
+Use this only when the test intentionally needs Moq's non-generic APIs.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -188,7 +190,8 @@ These stay in the provider package so the core abstractions remain provider agno
   </table>
   <a id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq_" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq*"></a>
   <h4 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq__1_FastMoq_Providers_IFastMock___0__" data-uid="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq``1(FastMoq.Providers.IFastMock{``0})">AsMoq&lt;T&gt;(IFastMock&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"><p>Returns the provider-native <span class="xref">Moq.Mock&lt;T&gt;</span> instance for a tracked FastMoq mock.</p>
+  <div class="markdown level1 summary"><p>Returns the provider-native <span class="xref">Moq.Mock&lt;T&gt;</span> instance for a tracked FastMoq mock.
+Use this when the test intentionally needs a Moq-only API such as <code>Setup(...)</code> or <code>Protected()</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -245,6 +248,15 @@ These stay in the provider package so the core abstractions remain provider agno
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq__1_FastMoq_Providers_IFastMock___0___examples">Examples</h5>
+  <p>Select the Moq provider first, then use <a class="xref" href="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq__1_FastMoq_Providers_IFastMock___0__">AsMoq&lt;T&gt;(IFastMock&lt;T&gt;)</a> as the provider-native escape hatch when the test truly needs Moq semantics.</p>
+<pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push("moq");
+<p>var mocker = new Mocker();
+var gateway = mocker.GetOrCreateMock&lt;IOrderGateway&gt;();</p>
+<p>gateway.AsMoq()
+.Setup(x =&gt; x.Publish(42))
+.Returns(true);</p></code></pre>
+
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-condensed">
     <thead>
@@ -891,7 +903,7 @@ These stay in the provider package so the core abstractions remain provider agno
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
       
           </div>
         </div>
