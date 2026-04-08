@@ -8,6 +8,7 @@ This API reference is generated from XML comments in the source projects.
 - [Sample applications overview](../samples/README.md)
 - [Provider selection guide](../getting-started/provider-selection.md)
 - [Testing guide](../getting-started/testing-guide.md)
+- [Quick reference for common types](./quick-reference.md) when you want the shortest path to provider APIs such as `IMockingProvider` and `MockingProviderRegistry`
 
 ## Quick type lookup
 
@@ -16,6 +17,8 @@ This API reference is generated from XML comments in the source projects.
 - [MockerTestBase&lt;TComponent&gt;](../../api/FastMoq.MockerTestBase-1.yml)
 - [ScenarioBuilder&lt;T&gt;](../../api/FastMoq.ScenarioBuilder-1.yml)
 - [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml)
+
+If you are integrating a non-bundled mocking library, start from [Quick reference for common types](./quick-reference.md) and follow the provider path through `IMockingProvider`, `IMockingProviderCapabilities`, and `MockingProviderRegistry`.
 
 ## Notes
 

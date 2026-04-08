@@ -111,7 +111,9 @@ The FastMoq version removes explicit mock declarations, subject construction, an
 
 - **🚀 [Getting Started Guide](./docs/getting-started)** - Your first FastMoq test in 5 minutes
 - **🧪 [Testing Guide](./docs/getting-started/testing-guide.md)** - Repo-native guidance for `GetOrCreateMock<T>()`, `AddType(...)`, `DbContext`, `IFileSystem`, and known types
+- **🌐 [Web Helper Guidance](./docs/getting-started/testing-guide.md#controller-testing)** - Controller, `HttpContext`, `IHttpContextAccessor`, and claims-principal test setup
 - **🔌 [Provider Selection Guide](./docs/getting-started/provider-selection.md)** - How to register, select, and bootstrap providers for a test assembly
+- **📋 [Provider Capabilities](./docs/getting-started/provider-capabilities.md)** - What `moq`, `nsubstitute`, and `reflection` support today, with recommended usage patterns
 - **👨‍🍳 [Cookbook](./docs/cookbook)** - Real-world patterns and recipes
 - **🏗️ [Sample Applications](./docs/samples)** - Complete examples with Azure integration
 - **🧪 [Executable Testing Examples](./docs/samples/testing-examples.md)** - Repo-backed service examples using the current FastMoq API direction
@@ -159,6 +161,13 @@ The FastMoq version removes explicit mock declarations, subject construction, an
 - FastMoq.Web - Blazor and web support.
 
 In the current v4 layout, `FastMoq.Core` bundles the internal `reflection` provider and the bundled `moq` compatibility provider. The default provider is `reflection`. Additional providers such as `nsubstitute` can be added explicitly.
+
+Web-helper note:
+
+- if you install the aggregate `FastMoq` package, the web helpers are included
+- if you install `FastMoq.Core` directly, add `FastMoq.Web` before using `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, or `AddHttpContextAccessor(...)`
+- for migration-specific guidance, start with [Migration Guide](./docs/migration/README.md#web-test-helpers) and then use [Testing Guide](./docs/getting-started/testing-guide.md#controller-testing) for the day-to-day helper rules
+- for the full package-choice overview, use [Getting Started](./docs/getting-started/README.md#package-choices)
 
 Typical split-package install:
 
@@ -238,6 +247,7 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
 - [Testing Guide](./docs/getting-started/testing-guide.md) for common patterns such as `IFileSystem`, `DbContext`, `CallMethod(...)`, and constructor-guard testing
 - [Executable Testing Examples](./docs/samples/testing-examples.md) for realistic sample flows backed by repository tests
 - [Provider Selection Guide](./docs/getting-started/provider-selection.md) for provider bootstrap and selection
+- [Provider Capabilities](./docs/getting-started/provider-capabilities.md) for supported-vs-unsupported behavior by provider
 - [Migration Guide](./docs/migration) for the v3 to v4 to v5 path
 - [Breaking Changes](./docs/breaking-changes/README.md) for behavior changes relative to `3.0.0`
 - [API Documentation](https://help.fastmoq.com/) for generated reference docs

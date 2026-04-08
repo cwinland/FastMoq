@@ -2,6 +2,8 @@
 
 This document captures the current provider-first direction for FastMoq. It is not a marketing roadmap. It is a working backlog note for contributors and maintainers.
 
+It serves as the repo-local place to track v4.x hardening work and candidate v5 enhancements.
+
 ## Current Direction
 
 FastMoq is moving toward a provider-based architecture where:
@@ -36,7 +38,7 @@ The main remaining release-facing work is no longer about inventing large new fe
 
 Current release-hardening focus:
 
-- Finalize the packaging and provider-selection story for the built-in Moq, NSubstitute, and reflection providers.
+- Continue hardening and validating the packaging and provider-selection story for the built-in Moq, NSubstitute, and reflection providers.
 - Keep the remaining Moq compatibility shims explicit so they do not look like provider-neutral core behavior.
 - Tighten migration notes for obsolete or compatibility-only surfaces that will move in `v5`.
 - Validate docs and executable examples against the release candidate behavior.
@@ -83,14 +85,14 @@ Future work should evaluate:
 
 Documentation now covers the testing decision points and known-type behavior, but more sample updates are still desirable later:
 
-- Provider-native examples once additional provider work lands.
+- Expanded provider-native examples beyond the current capability matrix and provider-style samples.
 - Focused migration notes for older Moq-heavy test suites.
 - Expanded web samples if broader web support moves out of the deferred bucket.
 - Additional DbContext examples now that mock-mode versus real-mode options are explicit.
 
 ## Decision Rules
 
-When choosing what to do next, use these rules:
+The current prioritization rules are:
 
 1. Prefer provider-boundary work over adding new provider-specific surface area.
 2. Prefer per-`Mocker` extension points over global mutable registries.

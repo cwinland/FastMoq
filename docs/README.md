@@ -22,7 +22,9 @@ Perfect for developers new to FastMoq. Learn the basics and write your first tes
 - Installation and setup
 - Your first FastMoq test
 - [Provider selection and setup](./getting-started/provider-selection.md)
+- [Provider capabilities matrix](./getting-started/provider-capabilities.md)
 - [Repo-native testing guide](./getting-started/testing-guide.md)
+- [Web helper guidance for controller and request tests](./getting-started/testing-guide.md#controller-testing)
 - [Executable testing examples](./samples/testing-examples.md)
 - Understanding the architecture
 - Common patterns and best practices
@@ -98,12 +100,17 @@ Practical guidance for moving from the `3.0.0` public release toward the current
 | Use Case | Documentation | Sample Code |
 | -------- | ------------- | ----------- |
 | **Web APIs** | [API Controller Testing](./cookbook/README.md#api-controller-testing) | [E-Commerce Sample](./samples/ecommerce-orders/README.md) |
+| **Web helper migration** | [Migration Guide web-helper section](./migration/README.md#web-test-helpers) | [Repo-native testing guide](./getting-started/testing-guide.md#controller-testing) |
 | **Database Testing** | [EF Core Testing](./cookbook/README.md#entity-framework-core-testing) | [Repository Patterns](./samples/ecommerce-orders/README.md) |
 | **Azure Integration** | [Sample Applications](./samples/README.md) | [Complete Azure App](./samples/ecommerce-orders/README.md) |
 | **Background Jobs** | [Background Services](./cookbook/README.md#background-services-testing) | [Executable Testing Examples](./samples/testing-examples.md) |
 | **Blazor Apps** | [Getting Started](./getting-started/README.md) | [Executable Testing Examples](./samples/testing-examples.md) |
 
 Package note: `FastMoq` is the aggregate package. Provider contracts live in `FastMoq.Abstractions`, `FastMoq.Core` stays lighter, EF-specific helpers live in `FastMoq.Database`, provider-specific adapters live in `FastMoq.Provider.*`, and web helpers live in `FastMoq.Web` while the primary calls stay in the `FastMoq` namespace.
+
+Web helper note: if your test project references the aggregate `FastMoq` package, the web helpers are already included. If your test project references `FastMoq.Core` directly, add `FastMoq.Web` before using helpers such as `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, or `AddHttpContextAccessor(...)`.
+
+See [Getting Started package choices](./getting-started/README.md#package-choices) when you need the full install matrix instead of a quick reminder.
 
 ## 🏆 Key Advantages
 

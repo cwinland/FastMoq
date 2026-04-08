@@ -44,7 +44,53 @@ Mocks.GetOrCreateMock<IInventoryGateway>()
 var result = await Component.PlaceOrderAsync(request, CancellationToken.None);
 ```
 
+This arrange example assumes the Moq provider extensions are in use. For provider-neutral verification only, keep the assert style and adapt the arrange step per provider. See [Provider Capabilities](../getting-started/provider-capabilities.md) when you need the provider-specific equivalent.
+
 FastMoq removes mock field declarations and subject construction, while still letting the test move to provider-specific APIs when needed.
+
+### Side-by-side: Moq arrange syntax versus NSubstitute arrange syntax
+
+When a suite moves from Moq to NSubstitute, the assert side can often stay provider-first, but the arrange side must be translated into native NSubstitute calls.
+
+Moq arrange shape:
+
+```csharp
+using var providerScope = MockingProviderRegistry.Push("moq");
+var inventoryGateway = Mocks.GetOrCreateMock<IInventoryGateway>();
+
+inventoryGateway
+    .Setup(x => x.ReserveAsync(request.Sku, request.Quantity, CancellationToken.None))
+    .ReturnsAsync(true);
+```
+
+NSubstitute arrange shape:
+
+```csharp
+using var providerScope = MockingProviderRegistry.Push("nsubstitute");
+var inventoryGateway = Mocks.GetOrCreateMock<IInventoryGateway>();
+
+inventoryGateway
+    .AsNSubstitute()
+    .ReserveAsync(request.Sku, request.Quantity, CancellationToken.None)
+    .Returns(true);
+```
+
+For argument matching, translate the matcher syntax too:
+
+```csharp
+// Moq
+inventoryGateway
+    .Setup(x => x.ReserveAsync(It.IsAny<string>(), It.Is<int>(qty => qty > 0), CancellationToken.None))
+    .ReturnsAsync(true);
+
+// NSubstitute
+inventoryGateway
+    .AsNSubstitute()
+    .ReserveAsync(Arg.Any<string>(), Arg.Is<int>(qty => qty > 0), CancellationToken.None)
+    .Returns(true);
+```
+
+That is the main migration pattern: replace `Setup(...)` with direct substitute calls plus `Returns(...)` or `When(...).Do(...)`, then keep FastMoq verification where it still reads well.
 
 The source of truth for these examples is the test project itself:
 
@@ -63,7 +109,7 @@ They demonstrate:
 - built-in `IFileSystem` behavior via the predefined `MockFileSystem`
 - `VerifyLogged(...)` for provider-safe structured logging assertions
 - `Scenario.With(...).When(...).Then(...).Verify(...)` for the fluent scenario style inside `MockerTestBase<TComponent>`
-- provider-first verification through `TimesSpec.Once`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, `TimesSpec.AtMost(...)`, and `TimesSpec.Never()`
+- provider-first verification through `TimesSpec.Once`, `TimesSpec.NeverCalled`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, and `TimesSpec.AtMost(...)`
 
 ## Example 1: Order Processing Workflow
 
@@ -73,6 +119,8 @@ The order-processing example models a typical service that coordinates several c
 - payment authorization
 - repository persistence
 - operational logging
+
+This example also assumes the Moq provider extensions are available for the arrange step. The verification style remains provider-first; the `Setup(...)` calls are the provider-specific part.
 
 ```csharp
 public class OrderProcessingServiceExamples : MockerTestBase<OrderProcessingService>
@@ -157,7 +205,7 @@ Scenario
     .Execute();
 ```
 
-`TimesSpec` supports `TimesSpec.Once`, `TimesSpec.Exactly(count)`, `TimesSpec.AtLeast(count)`, `TimesSpec.AtMost(count)`, and `TimesSpec.Never()` for provider-safe interaction verification.
+`TimesSpec` supports `TimesSpec.Once`, `TimesSpec.NeverCalled`, `TimesSpec.Exactly(count)`, `TimesSpec.AtLeast(count)`, and `TimesSpec.AtMost(count)` for provider-safe interaction verification. `TimesSpec.Never()` remains available as a compatibility form.
 
 For failure-path scenarios, prefer one of these two patterns:
 

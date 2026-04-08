@@ -32,6 +32,8 @@ Use this page when you already know the type name and want to jump straight to t
 - [TimesSpec](../../api/FastMoq.Providers.TimesSpec.yml)
 - [MockCreationOptions](../../api/FastMoq.Providers.MockCreationOptions.yml)
 
+If you are writing your own provider instead of using the bundled ones, start with [IMockingProvider](../../api/FastMoq.Providers.IMockingProvider.yml), then [IMockingProviderCapabilities](../../api/FastMoq.Providers.IMockingProviderCapabilities.yml), then [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml).
+
 ## Logging and verification
 
 - [TestClassExtensions](../../api/FastMoq.Extensions.TestClassExtensions.yml)
@@ -78,5 +80,6 @@ Use this page when you already know the type name and want to jump straight to t
 
 - Starting a new service test: [MockerTestBase&lt;TComponent&gt;](../../api/FastMoq.MockerTestBase-1.yml) then [Mocker](../../api/FastMoq.Mocker.yml)
 - Configuring provider behavior: [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml) then [IMockingProvider](../../api/FastMoq.Providers.IMockingProvider.yml)
+- Writing a custom provider: [IMockingProvider](../../api/FastMoq.Providers.IMockingProvider.yml) then [IMockingProviderCapabilities](../../api/FastMoq.Providers.IMockingProviderCapabilities.yml) then [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml)
 - Verifying interactions: [TimesSpec](../../api/FastMoq.Providers.TimesSpec.yml) then [TestClassExtensions](../../api/FastMoq.Extensions.TestClassExtensions.yml)
 - Working with Blazor components: [MockerBlazorTestBase&lt;T&gt;](../../api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.yml) then [IMockerBlazorTestHelpers&lt;T&gt;](../../api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.yml)

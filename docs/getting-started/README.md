@@ -73,6 +73,27 @@ If you need to choose or bootstrap a provider explicitly, see the [Provider Sele
 
 Install FastMoq using your preferred package manager:
 
+### Package choices
+
+Use this table when you are deciding which package line your test project should reference.
+
+| If you want... | Install... | Why |
+| --- | --- | --- |
+| simplest all-in-one experience | `FastMoq` | Aggregate package that includes the primary runtime, database helpers, and web support |
+| lighter core-only usage | `FastMoq.Core` | Provider-first runtime without the extra EF or web-specific helper packages |
+| DbContext and EF-specific helpers while using `FastMoq.Core` | `FastMoq.Database` | Adds `GetMockDbContext<TContext>()` and the explicit DbContext handle modes |
+| controller, `HttpContext`, `IHttpContextAccessor`, or claims-principal helpers while using `FastMoq.Core` | `FastMoq.Web` | Adds `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, and `AddHttpContextAccessor(...)` |
+| Moq-specific tracked-mock extension methods during migration | `FastMoq.Provider.Moq` | Adds provider-package extension methods such as `AsMoq()`, `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, and `Protected()` on `IFastMock<T>` |
+| optional NSubstitute-backed provider support | `FastMoq.Provider.NSubstitute` | Adds the NSubstitute provider package and tracked-mock extensions such as `AsNSubstitute()` |
+
+Important package boundaries in the current v4 line:
+
+- `FastMoq` already includes the common end-user surface, including web and database helpers
+- `FastMoq.Core` stays lighter on purpose, so EF helpers and web helpers are separate package decisions when you consume core directly
+- `FastMoq.Core` includes the built-in `reflection` provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as `Setup(...)` and `Protected()` still belong to the `FastMoq.Provider.Moq` package
+- provider-package extension methods still follow the provider-package docs and selection rules described in [Provider Selection and Setup](./provider-selection.md)
+- if you are unsure whether your web tests need another package, see the web-helper notes in [Testing Guide](./testing-guide.md#controller-testing) and the migration-specific notes in [Migration Guide](../migration/README.md#web-test-helpers)
+
 ### .NET CLI
 
 ```bash
@@ -85,6 +106,7 @@ If you prefer the split packages instead of the aggregate package:
 dotnet add package FastMoq.Core
 dotnet add package FastMoq.Database
 dotnet add package FastMoq.Web
+dotnet add package FastMoq.Provider.Moq
 ```
 
 ### Package Manager Console
@@ -105,12 +127,13 @@ Split-package example:
 <PackageReference Include="FastMoq.Core" Version="4.*" />
 <PackageReference Include="FastMoq.Database" Version="4.*" />
 <PackageReference Include="FastMoq.Web" Version="4.*" />
+<PackageReference Include="FastMoq.Provider.Moq" Version="4.*" />
 ```
 
 > Note: this guide targets the current v4 release line. For the release delta relative to the last public `3.0.0` package, see [What's New Since 3.0.0](../whats-new/README.md).
 > Note: in the current repository, `GetMockDbContext<TContext>()` keeps the same `FastMoq` namespace call shape, but direct `FastMoq.Core` consumers should add `FastMoq.Database` for EF-specific helpers. Direct web-helper consumers should add `FastMoq.Web`.
 
-In the current v4 transition layout, `FastMoq.Core` bundles the built-in `moq` provider and the internal `reflection` fallback. The default provider is `reflection`. Optional providers such as `nsubstitute` can be added explicitly and registered with `MockingProviderRegistry`.
+In the current v4 transition layout, `FastMoq.Core` bundles the built-in `moq` provider and the internal `reflection` fallback. The default provider is `reflection`. Optional providers such as `nsubstitute` can be added explicitly and registered with `MockingProviderRegistry`. You can also register your own provider by implementing `IMockingProvider`; the bundled providers are examples, not the only supported choices.
 
 The DbContext helper path now exposes explicit modes through `GetDbContextHandle<TContext>(...)`. `GetMockDbContext<TContext>()` remains the mocked-sets convenience entry point, and `DbContextTestMode.RealInMemory` is the real EF-backed option. The mocked-sets implementation still uses the existing moved Moq-based `DbContextMock<TContext>` path internally.
 
@@ -254,7 +277,7 @@ public class FileProcessorServiceTests : MockerTestBase<FileProcessorService>
         // Verify file was never read
         Mocks.Verify<IFileSystem>(
             x => x.File.ReadAllTextAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
-            TimesSpec.Never());
+            TimesSpec.NeverCalled);
     }
 }
 ```

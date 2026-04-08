@@ -17,7 +17,7 @@ Those examples are backed by the `FastMoq.TestingExample` project and currently 
 - built-in `IFileSystem` behavior with `MockFileSystem`
 - `VerifyLogged(...)` assertions
 - fluent `Scenario.With(...).When(...).Then(...).Verify(...)` usage inside `MockerTestBase<TComponent>`
-- provider-first verification with `TimesSpec.Once`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, `TimesSpec.AtMost(...)`, and `TimesSpec.Never()`
+- provider-first verification with `TimesSpec.Once`, `TimesSpec.NeverCalled`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, and `TimesSpec.AtMost(...)`
 
 ## Common patterns demonstrated
 

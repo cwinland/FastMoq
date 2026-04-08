@@ -32,6 +32,8 @@ These are not interchangeable.
 - You only need to arrange or verify behavior.
 - You want the dependency tracked as the mock FastMoq would have created anyway.
 
+The example below assumes the Moq provider extensions are in use for the arrange step. The tracked-mock concept is provider-first, but the `.Setup(...)` syntax itself is provider-specific. See [Provider Capabilities](./provider-capabilities.md) when you need the equivalent arrangement style for another provider.
+
 ```csharp
 var repoMock = Mocks.GetOrCreateMock<IOrderRepository>();
 repoMock.Setup(x => x.Load(123)).Returns(order);
@@ -256,6 +258,12 @@ FastMoq applies built-in setup for `HttpContext`, `IHttpContextAccessor`, and `H
 
 When you want explicit test setup for headers, query strings, or authenticated users, use the `FastMoq.Web.Extensions` helpers instead of wiring those pieces by hand.
 
+Package note:
+
+- if your project references the aggregate `FastMoq` package, the web helpers are already available
+- if your project references `FastMoq.Core` directly, add `FastMoq.Web` before using `FastMoq.Web.Extensions`
+- for the broader package-choice rules, see [Getting Started installation and package choices](./README.md#package-choices)
+
 ## Controller Testing
 
 For controller and request-driven tests, prefer building the request shape explicitly with the web helpers.
@@ -305,6 +313,21 @@ Practical rules:
 3. Use `SetRequestHeader(...)`, `SetRequestHeaders(...)`, `SetQueryString(...)`, `SetQueryParameter(...)`, or `SetQueryParameters(...)` to make request intent obvious in the test.
 4. Use [CreateControllerContext(...)](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) when the controller itself reads from `ControllerContext.HttpContext.User`.
 5. Use [GetOkObjectResult()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml), [GetBadRequestObjectResult()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml), [GetConflictObjectResult()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml), and [GetObjectResultContent&lt;T&gt;()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) to keep result assertions short.
+
+Quick decision table:
+
+| If the test needs... | Prefer... | Why |
+| --- | --- | --- |
+| role-only authenticated user setup | `SetupClaimsPrincipal(params roles)` or `CreateControllerContext(params roles)` | Fast path for common controller and request tests |
+| exact custom claims | `SetupClaimsPrincipal(claims, options)` | Use `IncludeDefaultIdentityClaims = false` when exact claim preservation matters |
+| controller reads `ControllerContext.HttpContext.User` | `CreateControllerContext(...)` | Keeps controller user setup aligned with the underlying `HttpContext` |
+| `HttpContext` or `IHttpContextAccessor` from DI | `AddHttpContext(...)` or `AddHttpContextAccessor(...)` | Replaces hand-rolled accessor wiring |
+
+Important note for custom-claim tests:
+
+- role-only helpers and custom-claim helpers are not identical because `FastMoq.Web` adds compatibility identity claims by default
+- if the test is asserting exact `ClaimTypes.Name`, email, or related identity values, pass `IncludeDefaultIdentityClaims = false`
+- if your suite already has local wrappers for these helpers, re-point those wrappers to `FastMoq.Web` first and simplify call sites later
 
 ## Accessor And Middleware Testing
 
@@ -461,7 +484,7 @@ FastMoq is moving toward a provider-based architecture. The stable guidance for 
 
 [ScenarioBuilder](xref:FastMoq.ScenarioBuilder`1) still works with each registered provider because it only orchestrates arrange, act, and assert steps and forwards provider-first verification through [Mocker.Verify(...)](xref:FastMoq.Mocker.Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})). The provider-specific part is still the arrangement code you put inside `With(...)` or `When(...)`.
 
-[VerifyLogged(...)](../../api/FastMoq.Extensions.TestClassExtensions.yml) now follows the same default expectation model as provider-first verification: if you do not specify a count, it means at least once. Use [TimesSpec](../../api/FastMoq.Providers.TimesSpec.yml) when you need [Exactly](../../api/FastMoq.Providers.TimesSpec.yml), [AtLeast](../../api/FastMoq.Providers.TimesSpec.yml), [AtMost](../../api/FastMoq.Providers.TimesSpec.yml), or [Never](../../api/FastMoq.Providers.TimesSpec.yml) semantics for captured log entries.
+[VerifyLogged(...)](../../api/FastMoq.Extensions.TestClassExtensions.yml) now follows the same default expectation model as provider-first verification: if you do not specify a count, it means at least once. Use [TimesSpec](../../api/FastMoq.Providers.TimesSpec.yml) when you need [Exactly](../../api/FastMoq.Providers.TimesSpec.yml), [AtLeast](../../api/FastMoq.Providers.TimesSpec.yml), [AtMost](../../api/FastMoq.Providers.TimesSpec.yml), or the zero-invocation aliases [NeverCalled](../../api/FastMoq.Providers.TimesSpec.yml) / [Never()](../../api/FastMoq.Providers.TimesSpec.yml) semantics for captured log entries.
 
 If you need provider-specific behavior for a tracked mock, prefer the typed provider-package extensions first, such as [AsMoq()](../../api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.yml) or [AsNSubstitute()](../../api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.yml).
 
@@ -526,7 +549,7 @@ Start there if you want repo-backed samples for:
 - built-in `IFileSystem` behavior
 - logger verification
 - fluent `Scenario` usage with parameterless arrange/act/assert overloads
-- provider-first verification with [TimesSpec.Once](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.Exactly(...)](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.AtLeast(...)](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.AtMost(...)](../../api/FastMoq.Providers.TimesSpec.yml), and [TimesSpec.Never()](../../api/FastMoq.Providers.TimesSpec.yml)
+- provider-first verification with [TimesSpec.Once](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.NeverCalled](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.Exactly(...)](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.AtLeast(...)](../../api/FastMoq.Providers.TimesSpec.yml), and [TimesSpec.AtMost(...)](../../api/FastMoq.Providers.TimesSpec.yml)
 
 See [Executable Testing Examples](../samples/testing-examples.md).
 
