@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FastMoq.Providers;
+﻿using FastMoq.Providers;
 using Moq; // legacy (to be removed in future)
+using System.Diagnostics.CodeAnalysis;
 
 namespace FastMoq.Models
 {

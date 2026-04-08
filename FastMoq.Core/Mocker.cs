@@ -1,13 +1,13 @@
-﻿using System.ComponentModel;
-using System.Reflection;
-using Microsoft.Extensions.Logging;
-using Moq;
-using System.IO.Abstractions;
-using System.IO.Abstractions.TestingHelpers;
+﻿using FastMoq.Core.Providers;
 using FastMoq.Extensions;
 using FastMoq.Models;
 using FastMoq.Providers;
-using FastMoq.Core.Providers;
+using Microsoft.Extensions.Logging;
+using Moq;
+using System.ComponentModel;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
+using System.Reflection;
 using System.Runtime; // For AmbiguousImplementationException per refactor
 
 namespace FastMoq
@@ -413,7 +413,7 @@ namespace FastMoq
         /// Registers a type as its own implementation for future resolution.
         /// </summary>
         public Mocker AddType<TInterface, TClass>(bool replace = false, params object?[]? args)
-            where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), (Func<Mocker, object>?)null, replace, args);
+            where TInterface : class where TClass : class => AddType(typeof(TInterface), typeof(TClass), (Func<Mocker, object>?) null, replace, args);
 
         /// <summary>
         /// Registers a type mapping that uses a typed factory during resolution.
@@ -466,7 +466,7 @@ namespace FastMoq
         /// Adds a keyed interface-to-concrete registration for this <see cref="Mocker"/> instance.
         /// </summary>
         public Mocker AddKeyedType<TInterface, TClass>(object serviceKey, bool replace = false, params object?[]? args)
-            where TInterface : class where TClass : class => AddKeyedType(typeof(TInterface), serviceKey, typeof(TClass), (Func<Mocker, object>?)null, replace, args);
+            where TInterface : class where TClass : class => AddKeyedType(typeof(TInterface), serviceKey, typeof(TClass), (Func<Mocker, object>?) null, replace, args);
 
         /// <summary>
         /// Adds a keyed interface-to-concrete registration with factory for this <see cref="Mocker"/> instance.
@@ -499,7 +499,7 @@ namespace FastMoq
                 typeMap.Remove(typeof(string));
             }
 
-            typeMap[typeof(string)] = new InstanceModel(typeof(string), typeof(string), (Func<Mocker, object, object>)((m, ctx) => createFunc(m, ctx)!), args?.ToList() ?? new List<object?>());
+            typeMap[typeof(string)] = new InstanceModel(typeof(string), typeof(string), (Func<Mocker, object, object>) ((m, ctx) => createFunc(m, ctx)!), args?.ToList() ?? new List<object?>());
             return this;
         }
 
@@ -935,7 +935,7 @@ namespace FastMoq
         /// <summary>
         /// Resolves an object and invokes an initialization callback with the typed result.
         /// </summary>
-        public T? GetObject<T>(Action<T?> init) where T : class => GetObject(typeof(T), o => init((T?)o)) as T;
+        public T? GetObject<T>(Action<T?> init) where T : class => GetObject(typeof(T), o => init((T?) o)) as T;
 
         /// <summary>
         /// Resolves a keyed object using the supplied service key.
@@ -945,7 +945,7 @@ namespace FastMoq
         /// <summary>
         /// Resolves a keyed object and invokes an initialization callback with the typed result.
         /// </summary>
-        public T? GetKeyedObject<T>(object serviceKey, Action<T?> init) where T : class => GetKeyedObject(typeof(T), serviceKey, o => init((T?)o)) as T;
+        public T? GetKeyedObject<T>(object serviceKey, Action<T?> init) where T : class => GetKeyedObject(typeof(T), serviceKey, o => init((T?) o)) as T;
 
         /// <summary>
         /// Creates an instance of <typeparamref name="T"/> using the supplied constructor arguments.
@@ -1035,7 +1035,7 @@ namespace FastMoq
         /// <summary>
         /// Populates readable properties on an object using either explicit values or resolved dependencies.
         /// </summary>
-        public T? AddProperties<T>(T obj, params KeyValuePair<string, object>[] data) => (T?)AddProperties(typeof(T), obj, data);
+        public T? AddProperties<T>(T obj, params KeyValuePair<string, object>[] data) => (T?) AddProperties(typeof(T), obj, data);
         #endregion
 
         #region Constructor Resolution / Instance Creation
@@ -1665,7 +1665,7 @@ namespace FastMoq
         /// </summary>
         [Obsolete("Use GetOrCreateMock<T>(...) for tracked mocks or AddType<T>(...) for concrete instances. This legacy Moq compatibility API will be removed in v5.")]
         public MockModel<T> AddMock<T>(Mock<T> mock, bool overwrite = false, bool nonPublic = false) where T : class
-            => new MockModel<T>(AddMock((Mock)mock, typeof(T), overwrite, nonPublic));
+            => new MockModel<T>(AddMock((Mock) mock, typeof(T), overwrite, nonPublic));
         private static Mock? TryGetLegacyMock(IFastMock fastMock)
         {
             if (fastMock.NativeMock is Mock nativeMock)
@@ -1723,7 +1723,7 @@ namespace FastMoq
         /// ]]></code>
         /// </example>
         [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval. Keep GetMock<T>(...) only for legacy Moq-specific setup/access. This API will be removed in v5.")]
-        public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>)GetMock(typeof(T), args);
+        public Mock<T> GetMock<T>(params object?[] args) where T : class => (Mock<T>) GetMock(typeof(T), args);
 
         /// <summary>
         /// Gets a tracked legacy Moq mock and applies an initialization callback to it.
@@ -1761,7 +1761,7 @@ namespace FastMoq
         /// Gets an already tracked legacy Moq mock for the supplied type parameter.
         /// </summary>
         [Obsolete("Use GetOrCreateMock<T>(...) for provider-neutral retrieval plus FastMoq verification. Keep GetRequiredMock<T>() only for legacy Moq-specific access. This API will be removed in v5.")]
-        public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>)GetRequiredMock(typeof(T));
+        public Mock<T> GetRequiredMock<T>() where T : class => (Mock<T>) GetRequiredMock(typeof(T));
 
         /// <summary>
         /// Gets the provider-native mock object for the supplied runtime type.
@@ -2266,7 +2266,7 @@ namespace FastMoq
         /// Invokes a method declared on <typeparamref name="T"/> without an explicit instance parameter.
         /// </summary>
         public object? InvokeMethod<T>(string methodName, bool nonPublic = false, params object?[] args) =>
-            InvokeMethod<T>((object?)null, methodName, nonPublic, args);
+            InvokeMethod<T>((object?) null, methodName, nonPublic, args);
 
         /// <summary>
         /// Invokes a method declared on <typeparamref name="T"/> without an explicit instance parameter using the supplied invocation options.
@@ -2300,7 +2300,7 @@ namespace FastMoq
             try
             {
                 var result = del.DynamicInvoke(invocationArgs);
-                return (TReturn)result!;
+                return (TReturn) result!;
             }
             catch (TargetInvocationException ex) when (ex.InnerException is { } inner)
             {
@@ -2321,22 +2321,22 @@ namespace FastMoq
         /// <summary>
         /// Invokes a function and returns its result using the mocker's current invocation defaults.
         /// </summary>
-        public TReturn CallMethod<TReturn>(Func<TReturn> func, params object?[] args) => CallMethod<TReturn>((Delegate)func, args);
+        public TReturn CallMethod<TReturn>(Func<TReturn> func, params object?[] args) => CallMethod<TReturn>((Delegate) func, args);
 
         /// <summary>
         /// Invokes a function and returns its result using the supplied invocation options.
         /// </summary>
-        public TReturn CallMethod<TReturn>(InvocationOptions? options, Func<TReturn> func, params object?[] args) => CallMethod<TReturn>(options, (Delegate)func, args);
+        public TReturn CallMethod<TReturn>(InvocationOptions? options, Func<TReturn> func, params object?[] args) => CallMethod<TReturn>(options, (Delegate) func, args);
 
         /// <summary>
         /// Invokes an action using the mocker's current invocation defaults.
         /// </summary>
-        public void CallMethod(Action action, params object?[] args) => CallMethod<object?>((Delegate)action, args);
+        public void CallMethod(Action action, params object?[] args) => CallMethod<object?>((Delegate) action, args);
 
         /// <summary>
         /// Invokes an action using the supplied invocation options.
         /// </summary>
-        public void CallMethod(InvocationOptions? options, Action action, params object?[] args) => CallMethod<object?>(options, (Delegate)action, args);
+        public void CallMethod(InvocationOptions? options, Action action, params object?[] args) => CallMethod<object?>(options, (Delegate) action, args);
 
         /// <summary>
         /// Invokes a delegate and awaits a task result using the mocker's current invocation defaults.
@@ -2360,11 +2360,11 @@ namespace FastMoq
                 await task.ConfigureAwait(false);
                 if (task.GetType().IsGenericType)
                 {
-                    return (TReturn)task.GetType().GetProperty("Result")!.GetValue(task)!;
+                    return (TReturn) task.GetType().GetProperty("Result")!.GetValue(task)!;
                 }
                 return default!;
             }
-            return (TReturn)result;
+            return (TReturn) result;
         }
 
         /// <summary>

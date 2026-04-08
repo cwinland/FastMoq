@@ -5,7 +5,7 @@ items:
   id: ComponentState`1
   parent: FastMoq.Web.Blazor.Models
   children:
-  - FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Object,Bunit.Rendering.TestRenderer)
+  - FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Object,Bunit.Rendering.BunitRenderer,Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   - FastMoq.Web.Blazor.Models.ComponentState`1.Component
   langs:
   - csharp
@@ -26,6 +26,12 @@ items:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
   summary: Typed wrapper around Blazor component render state information.
+  remarks: >-
+    FastMoq uses this wrapper instead of exposing raw renderer internals directly because bUnit 2 changed the shape of the
+
+    renderer state it stores for rendered components. Consumers should prefer <xref href="FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)" data-throw-if-not-resolved="false"></xref>
+
+    or <xref href="FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent%60%601" data-throw-if-not-resolved="false"></xref> over reflecting on renderer state objects themselves.
   example: []
   syntax:
     content: 'public class ComponentState<T> : ComponentState where T : ComponentBase'
@@ -34,8 +40,6 @@ items:
       description: The component type represented by the state wrapper.
     content.vb: Public Class ComponentState(Of T As ComponentBase) Inherits ComponentState
   seealso:
-  - linkId: FastMoq.Web.Blazor.Models.ComponentState
-    commentId: T:FastMoq.Web.Blazor.Models.ComponentState
   - linkId: FastMoq.Web.Blazor.Models.ComponentState
     commentId: T:FastMoq.Web.Blazor.Models.ComponentState
   inheritance:
@@ -113,16 +117,16 @@ items:
   overload: FastMoq.Web.Blazor.Models.ComponentState`1.Component*
   nameWithType.vb: ComponentState(Of T).Component
   fullName.vb: FastMoq.Web.Blazor.Models.ComponentState(Of T).Component
-- uid: FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Object,Bunit.Rendering.TestRenderer)
-  commentId: M:FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Object,Bunit.Rendering.TestRenderer)
-  id: '#ctor(System.Object,Bunit.Rendering.TestRenderer)'
+- uid: FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Object,Bunit.Rendering.BunitRenderer,Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Object,Bunit.Rendering.BunitRenderer,Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  id: '#ctor(System.Object,Bunit.Rendering.BunitRenderer,Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})'
   parent: FastMoq.Web.Blazor.Models.ComponentState`1
   langs:
   - csharp
   - vb
-  name: ComponentState(object?, TestRenderer)
-  nameWithType: ComponentState<T>.ComponentState(object?, TestRenderer)
-  fullName: FastMoq.Web.Blazor.Models.ComponentState<T>.ComponentState(object?, Bunit.Rendering.TestRenderer)
+  name: ComponentState(object?, BunitRenderer, IRenderedComponent<IComponent>?)
+  nameWithType: ComponentState<T>.ComponentState(object?, BunitRenderer, IRenderedComponent<IComponent>?)
+  fullName: FastMoq.Web.Blazor.Models.ComponentState<T>.ComponentState(object?, Bunit.Rendering.BunitRenderer, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
   type: Constructor
   source:
     remote:
@@ -131,26 +135,29 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
-    startLine: 34
+    startLine: 35
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Models
   summary: Initializes a new instance of the <xref href="FastMoq.Web.Blazor.Models.ComponentState%601" data-throw-if-not-resolved="false"></xref> class.
   example: []
   syntax:
-    content: public ComponentState(object? obj, TestRenderer renderer)
+    content: public ComponentState(object? obj, BunitRenderer renderer, IRenderedComponent<IComponent>? rootComponent = null)
     parameters:
     - id: obj
       type: System.Object
-      description: The object.
+      description: The raw renderer state object.
     - id: renderer
-      type: Bunit.Rendering.TestRenderer
+      type: Bunit.Rendering.BunitRenderer
       description: The renderer.
-    content.vb: Public Sub New(obj As Object, renderer As TestRenderer)
+    - id: rootComponent
+      type: Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+      description: The rendered root component used for nested component lookups when needed.
+    content.vb: Public Sub New(obj As Object, renderer As BunitRenderer, rootComponent As IRenderedComponent(Of IComponent) = Nothing)
   overload: FastMoq.Web.Blazor.Models.ComponentState`1.#ctor*
-  nameWithType.vb: ComponentState(Of T).New(Object, TestRenderer)
-  fullName.vb: FastMoq.Web.Blazor.Models.ComponentState(Of T).New(Object, Bunit.Rendering.TestRenderer)
-  name.vb: New(Object, TestRenderer)
+  nameWithType.vb: ComponentState(Of T).New(Object, BunitRenderer, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.Models.ComponentState(Of T).New(Object, Bunit.Rendering.BunitRenderer, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: New(Object, BunitRenderer, IRenderedComponent(Of IComponent))
 references:
 - uid: FastMoq.Web.Blazor.Models.ComponentState
   commentId: T:FastMoq.Web.Blazor.Models.ComponentState
@@ -159,6 +166,64 @@ references:
   name: ComponentState
   nameWithType: ComponentState
   fullName: FastMoq.Web.Blazor.Models.ComponentState
+- uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)
+  commentId: M:FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)
+  parent: FastMoq.Web.Blazor.Models.ComponentState
+  isExternal: true
+  href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent_System_Type_
+  name: GetOrCreateRenderedComponent(Type)
+  nameWithType: ComponentState.GetOrCreateRenderedComponent(Type)
+  fullName: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)
+  spec.csharp:
+  - uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)
+    name: GetOrCreateRenderedComponent
+    href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)
+    name: GetOrCreateRenderedComponent
+    href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent_System_Type_
+  - name: (
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent``1
+  commentId: M:FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent``1
+  parent: FastMoq.Web.Blazor.Models.ComponentState
+  href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent__1
+  name: GetOrCreateRenderedComponent<T>()
+  nameWithType: ComponentState.GetOrCreateRenderedComponent<T>()
+  fullName: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent<T>()
+  nameWithType.vb: ComponentState.GetOrCreateRenderedComponent(Of T)()
+  fullName.vb: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(Of T)()
+  name.vb: GetOrCreateRenderedComponent(Of T)()
+  spec.csharp:
+  - uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent``1
+    name: GetOrCreateRenderedComponent
+    href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent``1
+    name: GetOrCreateRenderedComponent
+    href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
 - uid: FastMoq.Web.Blazor.Models
   commentId: N:FastMoq.Web.Blazor.Models
   href: FastMoq.html
@@ -243,64 +308,6 @@ references:
   name: ComponentType
   nameWithType: ComponentState.ComponentType
   fullName: FastMoq.Web.Blazor.Models.ComponentState.ComponentType
-- uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)
-  commentId: M:FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)
-  parent: FastMoq.Web.Blazor.Models.ComponentState
-  isExternal: true
-  href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent_System_Type_
-  name: GetOrCreateRenderedComponent(Type)
-  nameWithType: ComponentState.GetOrCreateRenderedComponent(Type)
-  fullName: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)
-  spec.csharp:
-  - uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)
-    name: GetOrCreateRenderedComponent
-    href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent_System_Type_
-  - name: (
-  - uid: System.Type
-    name: Type
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.type
-  - name: )
-  spec.vb:
-  - uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(System.Type)
-    name: GetOrCreateRenderedComponent
-    href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent_System_Type_
-  - name: (
-  - uid: System.Type
-    name: Type
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.type
-  - name: )
-- uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent``1
-  commentId: M:FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent``1
-  parent: FastMoq.Web.Blazor.Models.ComponentState
-  href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent__1
-  name: GetOrCreateRenderedComponent<T>()
-  nameWithType: ComponentState.GetOrCreateRenderedComponent<T>()
-  fullName: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent<T>()
-  nameWithType.vb: ComponentState.GetOrCreateRenderedComponent(Of T)()
-  fullName.vb: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent(Of T)()
-  name.vb: GetOrCreateRenderedComponent(Of T)()
-  spec.csharp:
-  - uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent``1
-    name: GetOrCreateRenderedComponent
-    href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent__1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: FastMoq.Web.Blazor.Models.ComponentState.GetOrCreateRenderedComponent``1
-    name: GetOrCreateRenderedComponent
-    href: FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState_GetOrCreateRenderedComponent__1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: )
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -3562,20 +3569,53 @@ references:
   - name: )
 - uid: FastMoq.Web.Blazor.Models.ComponentState`1.#ctor*
   commentId: Overload:FastMoq.Web.Blazor.Models.ComponentState`1.#ctor
-  href: FastMoq.Web.Blazor.Models.ComponentState-1.html#FastMoq_Web_Blazor_Models_ComponentState_1__ctor_System_Object_Bunit_Rendering_TestRenderer_
+  href: FastMoq.Web.Blazor.Models.ComponentState-1.html#FastMoq_Web_Blazor_Models_ComponentState_1__ctor_System_Object_Bunit_Rendering_BunitRenderer_Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   name: ComponentState
   nameWithType: ComponentState<T>.ComponentState
   fullName: FastMoq.Web.Blazor.Models.ComponentState<T>.ComponentState
   nameWithType.vb: ComponentState(Of T).New
   fullName.vb: FastMoq.Web.Blazor.Models.ComponentState(Of T).New
   name.vb: New
-- uid: Bunit.Rendering.TestRenderer
-  commentId: T:Bunit.Rendering.TestRenderer
+- uid: Bunit.Rendering.BunitRenderer
+  commentId: T:Bunit.Rendering.BunitRenderer
   parent: Bunit.Rendering
   isExternal: true
-  name: TestRenderer
-  nameWithType: TestRenderer
-  fullName: Bunit.Rendering.TestRenderer
+  name: BunitRenderer
+  nameWithType: BunitRenderer
+  fullName: Bunit.Rendering.BunitRenderer
+- uid: Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+  commentId: T:Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+  parent: Bunit
+  definition: Bunit.IRenderedComponent`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  name: IRenderedComponent<IComponent>
+  nameWithType: IRenderedComponent<IComponent>
+  fullName: Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>
+  nameWithType.vb: IRenderedComponent(Of IComponent)
+  fullName.vb: Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent)
+  name.vb: IRenderedComponent(Of IComponent)
+  spec.csharp:
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
+    isExternal: true
+  - name: <
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: '>'
+  spec.vb:
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: )
 - uid: Bunit.Rendering
   commentId: N:Bunit.Rendering
   isExternal: true
@@ -3598,3 +3638,34 @@ references:
   - uid: Bunit.Rendering
     name: Rendering
     isExternal: true
+- uid: Bunit.IRenderedComponent`1
+  commentId: T:Bunit.IRenderedComponent`1
+  isExternal: true
+  name: IRenderedComponent<TComponent>
+  nameWithType: IRenderedComponent<TComponent>
+  fullName: Bunit.IRenderedComponent<TComponent>
+  nameWithType.vb: IRenderedComponent(Of TComponent)
+  fullName.vb: Bunit.IRenderedComponent(Of TComponent)
+  name.vb: IRenderedComponent(Of TComponent)
+  spec.csharp:
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
+    isExternal: true
+  - name: <
+  - name: TComponent
+  - name: '>'
+  spec.vb:
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TComponent
+  - name: )
+- uid: Bunit
+  commentId: N:Bunit
+  href: Bunit.html
+  name: Bunit
+  nameWithType: Bunit
+  fullName: Bunit

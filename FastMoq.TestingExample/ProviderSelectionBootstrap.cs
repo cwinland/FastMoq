@@ -1,6 +1,6 @@
-using System.Runtime.CompilerServices;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
+using System.Runtime.CompilerServices;
 
 namespace FastMoq.TestingExample
 {

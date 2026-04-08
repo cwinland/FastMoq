@@ -73,6 +73,23 @@
 <h1 id="whats-new-since-300">What's New Since 3.0.0</h1>
 
 <p>This page summarizes the release delta between the last public <code>3.0.0</code> package and the current v4 code line in this repository.</p>
+<h2 id="403">4.0.3</h2>
+<p>FastMoq.Web now uses <code>bunit</code> <code>2.7.2</code> for Blazor component tests. The FastMoq Blazor helper layer was updated to keep existing test suites moving with low source churn while matching bUnit 2's renderer, parameter, authorization, and navigation changes.</p>
+<p>Consumer impact:</p>
+<ul>
+<li><code>MockerBlazorTestBase&lt;T&gt;</code> and <code>ComponentState</code> were updated for bUnit 2's renamed test doubles, unified render APIs, and renderer state shape</li>
+<li><code>MockerBlazorTestBase&lt;T&gt;.RenderParameters</code> now uses <code>FastMoq.Web.Blazor.Models.RenderParameter</code> because bUnit 2 no longer exposes the old <code>ComponentParameter</code> type to consumers</li>
+<li><code>SetElementCheck(...)</code>, <code>SetElementSwitch(...)</code>, and <code>SetElementText(...)</code> now accept <code>IRenderedComponent&lt;IComponent&gt;?</code> for <code>startingPoint</code> because bUnit 2 removed <code>IRenderedFragment</code></li>
+<li>compatibility shims for <code>TestServiceProvider</code>, <code>TestAuthorizationContext</code>, and <code>FakeNavigationManager</code> keep common Blazor test patterns compiling with lower migration churn</li>
+</ul>
+<p>Validation run for this change:</p>
+<ul>
+<li><code>dotnet build .\FastMoq.Web\FastMoq.Web.csproj -c Debug</code></li>
+<li><code>dotnet test .\FastMoq.Tests.Web\FastMoq.Tests.Web.csproj -c Debug</code></li>
+<li><code>dotnet test .\FastMoq.sln -c Debug</code></li>
+<li><code>powershell -ExecutionPolicy Bypass -File .\scripts\Generate-ApiDocs.ps1</code></li>
+</ul>
+<p>Migration details are documented in <a href="../migration/bunit-and-blazor-testing.html">bUnit and Blazor test migration</a>.</p>
 <h2 id="release-baseline">Release baseline</h2>
 <ul>
 <li>Last public release: <code>3.0.0</code></li>
@@ -236,7 +253,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 18:28 UTC</span></div>
       
           </div>
         </div>

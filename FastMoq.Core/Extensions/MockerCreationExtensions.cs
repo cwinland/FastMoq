@@ -199,7 +199,7 @@ namespace FastMoq.Extensions
         /// <remarks>This is designed for interface mocks or concrete mocks without parameters.</remarks>
         /// <exception cref="System.ApplicationException">Cannot create instance of Mock.</exception>
         public static Mock<T> CreateMockInternal<T>(this Mocker mocker, bool isNonPublic = true) where T : class =>
-            (Mock<T>)mocker.CreateMockInternal(typeof(T), new List<object?>(), true);
+            (Mock<T>) mocker.CreateMockInternal(typeof(T), new List<object?>(), true);
 
         /// <summary>
         ///     Creates the mock internal.
@@ -228,7 +228,7 @@ namespace FastMoq.Extensions
             Mock? instance = null;
             var isEntityFrameworkDbContextType = DatabaseSupportBridge.IsEntityFrameworkDbContextType(type);
             if (!isEntityFrameworkDbContextType ||
-                !DatabaseSupportBridge.TryCreateLegacyDbContextMock(type, (MockBehavior)parameters[0]!, parameterList, out instance))
+                !DatabaseSupportBridge.TryCreateLegacyDbContextMock(type, (MockBehavior) parameters[0]!, parameterList, out instance))
             {
                 var newType = typeof(Mock<>).MakeGenericType(type);
                 instance = Activator.CreateInstance(newType,
@@ -336,7 +336,7 @@ namespace FastMoq.Extensions
 
             if (type.CreateFunc != null)
             {
-                return (T?)type.CreateFunc.Invoke(mocker, type.InstanceType);
+                return (T?) type.CreateFunc.Invoke(mocker, type.InstanceType);
             }
 
             data ??= new();

@@ -49,10 +49,10 @@ items:
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderComponent(System.Boolean)
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderParameters
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetAutoComplete(System.String,System.String,System.Func{System.Boolean},System.String)
-  - FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  - FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  - FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(AngleSharp.Dom.IElement,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan})
-  - FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1.Setup(Bunit.InvocationMatcher,System.Boolean)
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupAuthorization
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupComponent
@@ -126,11 +126,11 @@ items:
         NavigationManager.Uri.Should().Contain("/orders/review");
     }</code></pre>
   syntax:
-    content: 'public abstract class MockerBlazorTestBase<T> : TestContext, IDisposable, IMockerBlazorTestHelpers<T> where T : ComponentBase'
+    content: 'public abstract class MockerBlazorTestBase<T> : BunitContext, IDisposable, IAsyncDisposable, IMockerBlazorTestHelpers<T> where T : ComponentBase'
     typeParameters:
     - id: T
       description: The Blazor component under test.
-    content.vb: Public MustInherit Class MockerBlazorTestBase(Of T As ComponentBase) Inherits TestContext Implements IDisposable, IMockerBlazorTestHelpers(Of T)
+    content.vb: Public MustInherit Class MockerBlazorTestBase(Of T As ComponentBase) Inherits BunitContext Implements IDisposable, IAsyncDisposable, IMockerBlazorTestHelpers(Of T)
   seealso:
   - linkId: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
     commentId: T:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
@@ -138,26 +138,28 @@ items:
     commentId: T:Microsoft.AspNetCore.Components.ComponentBase
   inheritance:
   - System.Object
-  - Bunit.TestContextBase
-  - Bunit.TestContext
+  - Bunit.BunitContext
   implements:
   - System.IDisposable
+  - System.IAsyncDisposable
   - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}
   inheritedMembers:
-  - Bunit.TestContext.RenderComponent``1(Bunit.ComponentParameter[])
-  - Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{{TComponent}}})
-  - Bunit.TestContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)
-  - Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
-  - Bunit.TestContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
-  - Bunit.TestContext.CreateTestRenderer
-  - Bunit.TestContext.JSInterop
-  - Bunit.TestContextBase.Dispose
-  - Bunit.TestContextBase.DisposeComponents
-  - Bunit.TestContextBase.DefaultWaitTimeout
-  - Bunit.TestContextBase.Renderer
-  - Bunit.TestContextBase.Services
-  - Bunit.TestContextBase.RenderTree
-  - Bunit.TestContextBase.ComponentFactories
+  - Bunit.BunitContext.Dispose
+  - Bunit.BunitContext.DisposeAsync
+  - Bunit.BunitContext.DisposeAsyncCore
+  - Bunit.BunitContext.DisposeComponentsAsync
+  - Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{{TComponent}}})
+  - Bunit.BunitContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)
+  - Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
+  - Bunit.BunitContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+  - Bunit.BunitContext.AddAuthorization
+  - Bunit.BunitContext.AddBunitPersistentComponentState
+  - Bunit.BunitContext.DefaultWaitTimeout
+  - Bunit.BunitContext.Renderer
+  - Bunit.BunitContext.JSInterop
+  - Bunit.BunitContext.Services
+  - Bunit.BunitContext.RenderTree
+  - Bunit.BunitContext.ComponentFactories
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetHashCode
@@ -166,6 +168,7 @@ items:
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
   extensionMethods:
+  - Bunit.BunitContext.Bunit.TestAuthorizationExtensions.AddTestAuthorization
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.Web.Blazor.MockerBlazorTestBase{{T}})
   - FastMoq.Web.Blazor.MockerBlazorTestBase`1.FastMoq.Extensions.TestClassExtensions.GetField``1(System.String)
@@ -614,11 +617,15 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: NavigationManager
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 217
+    startLine: 221
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
   summary: Gets the navigation manager.
+  remarks: >-
+    This property returns FastMoq's compatibility wrapper over bUnit 2's navigation manager so existing navigation
+
+    assertions can usually stay unchanged during migration.
   example:
   - >-
     Click Button by class, tag, or id and check the navigation manager for changes.
@@ -653,7 +660,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderParameters
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 224
+    startLine: 240
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -661,20 +668,33 @@ items:
     Gets the list of parameters used when rendering. This is used to setup a component before the test constructor
 
     runs.
-  example: []
+  remarks: >-
+    This list now uses <xref href="FastMoq.Web.Blazor.Models.RenderParameter" data-throw-if-not-resolved="false"></xref> instead of bUnit's older public parameter type.
+
+    Add direct parameters with <xref href="FastMoq.Web.Blazor.Models.RenderParameter.Create(System.String%2cSystem.Object)" data-throw-if-not-resolved="false"></xref> and cascading values with
+
+    <xref href="FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(System.String%2cSystem.Object)" data-throw-if-not-resolved="false"></xref>.
+  example:
+  - >-
+    Configure direct and cascading parameters before <xref href="FastMoq.Web.Blazor.MockerBlazorTestBase%601.Setup(Bunit.InvocationMatcher%2cSystem.Boolean)" data-throw-if-not-resolved="false"></xref> runs.
+
+
+    <pre><code class="lang-cs">RenderParameters.Add((nameof(OrdersMigrationPage.Title), "Queued Orders"));
+
+    RenderParameters.Add(("Accent", "Ocean", true));</code></pre>
   syntax:
     content: >-
       [ExcludeFromCodeCoverage]
 
-      protected virtual List<ComponentParameter> RenderParameters { get; }
+      protected virtual List<RenderParameter> RenderParameters { get; }
     parameters: []
     return:
-      type: System.Collections.Generic.List{Bunit.ComponentParameter}
+      type: System.Collections.Generic.List{FastMoq.Web.Blazor.Models.RenderParameter}
       description: The render parameters.
     content.vb: >-
       <ExcludeFromCodeCoverage>
 
-      Protected Overridable ReadOnly Property RenderParameters As List(Of ComponentParameter)
+      Protected Overridable ReadOnly Property RenderParameters As List(Of RenderParameter)
   overload: FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderParameters*
   attributes:
   - type: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
@@ -700,7 +720,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 231
+    startLine: 247
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -744,7 +764,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TokenSource
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 238
+    startLine: 254
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -778,11 +798,11 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 243
+    startLine: 259
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
-  summary: Initializes a new instance of the <xref href="Bunit.TestContext" data-throw-if-not-resolved="false"></xref> class.
+  summary: Initializes a new instance of the <xref href="Bunit.BunitContext" data-throw-if-not-resolved="false"></xref> class.
   example: []
   syntax:
     content: protected MockerBlazorTestBase()
@@ -809,7 +829,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 252
+    startLine: 268
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -850,7 +870,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupJsInterop
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 271
+    startLine: 287
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -891,7 +911,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAllComponents
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 288
+    startLine: 304
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -932,7 +952,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAllComponents
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 318
+    startLine: 334
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -965,7 +985,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Setup
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 323
+    startLine: 339
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1001,29 +1021,27 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 338
+    startLine: 354
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
   summary: >-
-    Disposes of the test context resources, in particular it disposes the <xref href="Bunit.TestContextBase.Services" data-throw-if-not-resolved="false"></xref>
+    Disposes of the test context resources, in particular it disposes the <xref href="Bunit.BunitContext.Services" data-throw-if-not-resolved="false"></xref>
 
-    service provider. Any async services registered with the service provider will disposed first,
-
-    but their disposal will not be awaited..
+    service provider.
   remarks: >-
     The disposing parameter should be false when called from a finalizer, and true when called from the
 
-    <xref href="Bunit.TestContextBase.Dispose" data-throw-if-not-resolved="false"></xref> method. In other words, it is true when deterministically called and false when non-deterministically called.
+    <xref href="Bunit.BunitContext.Dispose" data-throw-if-not-resolved="false"></xref> method. In other words, it is true when deterministically called and false when non-deterministically called.
   example: []
   syntax:
     content: protected override void Dispose(bool disposing)
     parameters:
     - id: disposing
       type: System.Boolean
-      description: Set to true if called from <xref href="Bunit.TestContextBase.Dispose" data-throw-if-not-resolved="false"></xref>, false if called from a finalizer.f.
+      description: Set to true if called from <xref href="Bunit.BunitContext.Dispose" data-throw-if-not-resolved="false"></xref>, false if called from a finalizer.f.
     content.vb: Protected Overrides Sub Dispose(disposing As Boolean)
-  overridden: Bunit.TestContextBase.Dispose(System.Boolean)
+  overridden: Bunit.BunitContext.Dispose(System.Boolean)
   overload: FastMoq.Web.Blazor.MockerBlazorTestBase`1.Dispose*
   nameWithType.vb: MockerBlazorTestBase(Of T).Dispose(Boolean)
   fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).Dispose(Boolean)
@@ -1046,7 +1064,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAuthorization
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 358
+    startLine: 374
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1087,7 +1105,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMocks
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 369
+    startLine: 385
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1117,7 +1135,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupServices
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 375
+    startLine: 391
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1151,7 +1169,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: OnAuthorizedClaimsChanged
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 391
+    startLine: 407
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1189,7 +1207,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: OnAuthorizedPoliciesChanged
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 399
+    startLine: 415
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1227,7 +1245,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: OnAuthorizedRolesChanged
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 407
+    startLine: 423
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1265,7 +1283,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 413
+    startLine: 429
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1311,7 +1329,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 424
+    startLine: 440
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1357,7 +1375,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 432
+    startLine: 448
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1409,7 +1427,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 439
+    startLine: 455
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1459,7 +1477,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 454
+    startLine: 470
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1512,7 +1530,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickDropdownItem
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 460
+    startLine: 476
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1564,7 +1582,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickDropdownItem
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 474
+    startLine: 490
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1616,7 +1634,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: FindAllByTag
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 483
+    startLine: 499
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1656,7 +1674,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: FindById
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 489
+    startLine: 505
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1696,7 +1714,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 493
+    startLine: 509
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1736,7 +1754,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 497
+    startLine: 513
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1787,7 +1805,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 511
+    startLine: 528
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1831,7 +1849,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 521
+    startLine: 538
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1881,7 +1899,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 532
+    startLine: 547
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1924,7 +1942,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 542
+    startLine: 562
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -1966,7 +1984,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 548
+    startLine: 568
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2005,7 +2023,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 551
+    startLine: 571
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2044,7 +2062,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 554
+    startLine: 574
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2083,7 +2101,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 557
+    startLine: 577
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2125,7 +2143,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 576
+    startLine: 596
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2164,7 +2182,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 579
+    startLine: 599
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2205,7 +2223,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IsExists
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 583
+    startLine: 603
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2248,7 +2266,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 596
+    startLine: 616
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2296,20 +2314,26 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 612
+    startLine: 632
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
   summary: Renders the component. If the component is already rendered, it will act like a stateChanged.
+  remarks: >-
+    Use this overload for direct parameter changes. If the test needs to persist or mutate named cascading parameters,
+
+    update <code>RenderParameters</code> and call <xref href="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers%601.RenderComponent(System.Boolean)" data-throw-if-not-resolved="false"></xref> so the helper can choose the compatible
+
+    rerender path.
   example:
   - >-
     <p>Render again with parameters without losing context.</p>
 
-    <pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()));</code></pre>
+    <pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.Title, "Reviewed Orders"));</code></pre>
   - >-
     <p>Force an initial render with parameters.</p>
 
-    <pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()), true);</code></pre>
+    <pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.Title, "Reviewed Orders"), true);</code></pre>
   syntax:
     content: public IRenderedComponent<T> RenderComponent(Action<ComponentParameterCollectionBuilder<T>> parameterBuilder, bool forceNew = false)
     parameters:
@@ -2347,7 +2371,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetAutoComplete
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 628
+    startLine: 648
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2378,16 +2402,16 @@ items:
   nameWithType.vb: MockerBlazorTestBase(Of T).SetAutoComplete(String, String, Func(Of Boolean), String)
   fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetAutoComplete(String, String, System.Func(Of Boolean), String)
   name.vb: SetAutoComplete(String, String, Func(Of Boolean), String)
-- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  id: SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  id: SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   parent: FastMoq.Web.Blazor.MockerBlazorTestBase`1
   langs:
   - csharp
   - vb
-  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType: MockerBlazorTestBase<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
+  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType: MockerBlazorTestBase<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
   type: Method
   source:
     remote:
@@ -2396,14 +2420,18 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementCheck
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 652
+    startLine: 672
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
   summary: Sets the element check.
-  example: []
+  example:
+  - >-
+    <pre><code class="lang-csharp">var secondaryEditor = GetComponent&lt;OrderMigrationEditor&gt;(x =&gt; x.Instance.EditorId == "secondary");
+
+    SetElementCheck&lt;OrderMigrationEditor&gt;("input.include-archived", true, () =&gt; secondaryEditor.Instance.IncludeArchived, startingPoint: secondaryEditor);</code></pre>
   syntax:
-    content: 'public IMockerBlazorTestHelpers<T> SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null) where TComponent : class, IComponent'
+    content: 'public IMockerBlazorTestHelpers<T> SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent<IComponent>? startingPoint = null) where TComponent : class, IComponent'
     parameters:
     - id: cssSelector
       type: System.String
@@ -2418,15 +2446,15 @@ items:
       type: System.Nullable{System.TimeSpan}
       description: The wait timeout.
     - id: startingPoint
-      type: Bunit.IRenderedFragment
-      description: The starting point.
+      type: Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+      description: An optional rendered child component used to scope the lookup to a nested subtree.
     typeParameters:
     - id: TComponent
       description: The type of the t component.
     return:
       type: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}
       description: IMockerBlazorTestHelpers&lt;T&gt;.
-    content.vb: Public Function SetElementCheck(Of TComponent As {Class, IComponent})(cssSelector As String, isChecked As Boolean, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedFragment = Nothing) As IMockerBlazorTestHelpers(Of T)
+    content.vb: Public Function SetElementCheck(Of TComponent As {Class, IComponent})(cssSelector As String, isChecked As Boolean, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedComponent(Of IComponent) = Nothing) As IMockerBlazorTestHelpers(Of T)
   overload: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck*
   exceptions:
   - type: System.ArgumentNullException
@@ -2436,20 +2464,20 @@ items:
     commentId: T:Bunit.ElementNotFoundException
     description: ''
   implements:
-  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  id: SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  id: SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   parent: FastMoq.Web.Blazor.MockerBlazorTestBase`1
   langs:
   - csharp
   - vb
-  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType: MockerBlazorTestBase<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
+  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType: MockerBlazorTestBase<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
   type: Method
   source:
     remote:
@@ -2458,14 +2486,14 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementSwitch
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 710
+    startLine: 736
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
   summary: Sets the element switch.
   example: []
   syntax:
-    content: 'public IMockerBlazorTestHelpers<T> SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null) where TComponent : class, IComponent'
+    content: 'public IMockerBlazorTestHelpers<T> SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent<IComponent>? startingPoint = null) where TComponent : class, IComponent'
     parameters:
     - id: cssSelector
       type: System.String
@@ -2480,25 +2508,25 @@ items:
       type: System.Nullable{System.TimeSpan}
       description: The wait timeout.
     - id: startingPoint
-      type: Bunit.IRenderedFragment
-      description: The starting point.
+      type: Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+      description: An optional rendered child component used to scope the lookup to a nested subtree.
     typeParameters:
     - id: TComponent
       description: The type of the t component.
     return:
       type: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}
       description: IMockerBlazorTestHelpers&lt;T&gt;.
-    content.vb: Public Function SetElementSwitch(Of TComponent As {Class, IComponent})(cssSelector As String, isChecked As Boolean, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedFragment = Nothing) As IMockerBlazorTestHelpers(Of T)
+    content.vb: Public Function SetElementSwitch(Of TComponent As {Class, IComponent})(cssSelector As String, isChecked As Boolean, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedComponent(Of IComponent) = Nothing) As IMockerBlazorTestHelpers(Of T)
   overload: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch*
   exceptions:
   - type: System.ArgumentNullException
     commentId: T:System.ArgumentNullException
     description: cssSelector
   implements:
-  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(AngleSharp.Dom.IElement,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan})
   commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(AngleSharp.Dom.IElement,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan})
   id: SetElementText(AngleSharp.Dom.IElement,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan})
@@ -2517,7 +2545,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 769
+    startLine: 801
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2548,16 +2576,16 @@ items:
   nameWithType.vb: MockerBlazorTestBase(Of T).SetElementText(IElement, String, Func(Of Boolean), TimeSpan?)
   fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementText(AngleSharp.Dom.IElement, String, System.Func(Of Boolean), System.TimeSpan?)
   name.vb: SetElementText(IElement, String, Func(Of Boolean), TimeSpan?)
-- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  id: SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  id: SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   parent: FastMoq.Web.Blazor.MockerBlazorTestBase`1
   langs:
   - csharp
   - vb
-  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType: MockerBlazorTestBase<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment?)
-  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
+  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType: MockerBlazorTestBase<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
   type: Method
   source:
     remote:
@@ -2566,14 +2594,18 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 783
+    startLine: 815
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
   summary: Sets the element text.
-  example: []
+  example:
+  - >-
+    <pre><code class="lang-csharp">var secondaryEditor = GetComponent&lt;OrderMigrationEditor&gt;(x =&gt; x.Instance.EditorId == "secondary");
+
+    SetElementText("input.order-filter", "approved", () =&gt; secondaryEditor.Instance.FilterText == "approved", startingPoint: secondaryEditor);</code></pre>
   syntax:
-    content: public IMockerBlazorTestHelpers<T> SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null)
+    content: public IMockerBlazorTestHelpers<T> SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent<IComponent>? startingPoint = null)
     parameters:
     - id: cssSelector
       type: System.String
@@ -2588,22 +2620,22 @@ items:
       type: System.Nullable{System.TimeSpan}
       description: The wait timeout.
     - id: startingPoint
-      type: Bunit.IRenderedFragment
-      description: The starting point.
+      type: Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+      description: An optional rendered child component used to scope the lookup to a nested subtree.
     return:
       type: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}
       description: IMockerBlazorTestHelpers&lt;T&gt;.
-    content.vb: Public Function SetElementText(cssSelector As String, text As String, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedFragment = Nothing) As IMockerBlazorTestHelpers(Of T)
+    content.vb: Public Function SetElementText(cssSelector As String, text As String, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedComponent(Of IComponent) = Nothing) As IMockerBlazorTestHelpers(Of T)
   overload: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText*
   exceptions:
   - type: System.ArgumentNullException
     commentId: T:System.ArgumentNullException
     description: cssSelector
   implements:
-  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitDelay(System.Nullable{System.TimeSpan})
   commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitDelay(System.Nullable{System.TimeSpan})
   id: WaitDelay(System.Nullable{System.TimeSpan})
@@ -2622,7 +2654,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitDelay
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 816
+    startLine: 848
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2661,7 +2693,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForExists
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 831
+    startLine: 863
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2704,7 +2736,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForNotExists
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 835
+    startLine: 867
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2747,7 +2779,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForState
     path: FastMoq.Web/Blazor/MockerBlazorTestBase.cs
-    startLine: 839
+    startLine: 871
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor
@@ -2764,7 +2796,7 @@ items:
       description: The wait timeout.
     return:
       type: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}
-      description: <code>true</code> if XXXX, <code>false</code> otherwise.
+      description: The current helper instance.
     content.vb: Public Function WaitForState(waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing) As IMockerBlazorTestHelpers(Of T)
   overload: FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitForState*
   implements:
@@ -2847,20 +2879,13 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
-- uid: Bunit.TestContextBase
-  commentId: T:Bunit.TestContextBase
+- uid: Bunit.BunitContext
+  commentId: T:Bunit.BunitContext
   parent: Bunit
   isExternal: true
-  name: TestContextBase
-  nameWithType: TestContextBase
-  fullName: Bunit.TestContextBase
-- uid: Bunit.TestContext
-  commentId: T:Bunit.TestContext
-  parent: Bunit
-  isExternal: true
-  name: TestContext
-  nameWithType: TestContext
-  fullName: Bunit.TestContext
+  name: BunitContext
+  nameWithType: BunitContext
+  fullName: Bunit.BunitContext
 - uid: System.IDisposable
   commentId: T:System.IDisposable
   parent: System
@@ -2869,6 +2894,14 @@ references:
   name: IDisposable
   nameWithType: IDisposable
   fullName: System.IDisposable
+- uid: System.IAsyncDisposable
+  commentId: T:System.IAsyncDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  name: IAsyncDisposable
+  nameWithType: IAsyncDisposable
+  fullName: System.IAsyncDisposable
 - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}
   commentId: T:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}
   parent: FastMoq.Web.Blazor.Interfaces
@@ -2896,64 +2929,96 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: Bunit.TestContext.RenderComponent``1(Bunit.ComponentParameter[])
-  commentId: M:Bunit.TestContext.RenderComponent``1(Bunit.ComponentParameter[])
-  parent: Bunit.TestContext
+- uid: Bunit.BunitContext.Dispose
+  commentId: M:Bunit.BunitContext.Dispose
+  parent: Bunit.BunitContext
   isExternal: true
-  name: RenderComponent<TComponent>(params ComponentParameter[])
-  nameWithType: TestContext.RenderComponent<TComponent>(params ComponentParameter[])
-  fullName: Bunit.TestContext.RenderComponent<TComponent>(params Bunit.ComponentParameter[])
-  nameWithType.vb: TestContext.RenderComponent(Of TComponent)(ParamArray ComponentParameter())
-  fullName.vb: Bunit.TestContext.RenderComponent(Of TComponent)(ParamArray Bunit.ComponentParameter())
-  name.vb: RenderComponent(Of TComponent)(ParamArray ComponentParameter())
+  name: Dispose()
+  nameWithType: BunitContext.Dispose()
+  fullName: Bunit.BunitContext.Dispose()
   spec.csharp:
-  - uid: Bunit.TestContext.RenderComponent``1(Bunit.ComponentParameter[])
-    name: RenderComponent
+  - uid: Bunit.BunitContext.Dispose
+    name: Dispose
     isExternal: true
-  - name: <
-  - name: TComponent
-  - name: '>'
   - name: (
-  - name: params
-  - name: " "
-  - uid: Bunit.ComponentParameter
-    name: ComponentParameter
-    isExternal: true
-  - name: '['
-  - name: ']'
   - name: )
   spec.vb:
-  - uid: Bunit.TestContext.RenderComponent``1(Bunit.ComponentParameter[])
-    name: RenderComponent
-    isExternal: true
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TComponent
-  - name: )
-  - name: (
-  - name: ParamArray
-  - name: " "
-  - uid: Bunit.ComponentParameter
-    name: ComponentParameter
+  - uid: Bunit.BunitContext.Dispose
+    name: Dispose
     isExternal: true
   - name: (
   - name: )
+- uid: Bunit.BunitContext.DisposeAsync
+  commentId: M:Bunit.BunitContext.DisposeAsync
+  parent: Bunit.BunitContext
+  isExternal: true
+  name: DisposeAsync()
+  nameWithType: BunitContext.DisposeAsync()
+  fullName: Bunit.BunitContext.DisposeAsync()
+  spec.csharp:
+  - uid: Bunit.BunitContext.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+  - name: (
   - name: )
-- uid: Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{{TComponent}}})
-  commentId: M:Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
-  parent: Bunit.TestContext
-  definition: Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
+  spec.vb:
+  - uid: Bunit.BunitContext.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bunit.BunitContext.DisposeAsyncCore
+  commentId: M:Bunit.BunitContext.DisposeAsyncCore
+  parent: Bunit.BunitContext
+  isExternal: true
+  name: DisposeAsyncCore()
+  nameWithType: BunitContext.DisposeAsyncCore()
+  fullName: Bunit.BunitContext.DisposeAsyncCore()
+  spec.csharp:
+  - uid: Bunit.BunitContext.DisposeAsyncCore
+    name: DisposeAsyncCore
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bunit.BunitContext.DisposeAsyncCore
+    name: DisposeAsyncCore
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bunit.BunitContext.DisposeComponentsAsync
+  commentId: M:Bunit.BunitContext.DisposeComponentsAsync
+  parent: Bunit.BunitContext
+  isExternal: true
+  name: DisposeComponentsAsync()
+  nameWithType: BunitContext.DisposeComponentsAsync()
+  fullName: Bunit.BunitContext.DisposeComponentsAsync()
+  spec.csharp:
+  - uid: Bunit.BunitContext.DisposeComponentsAsync
+    name: DisposeComponentsAsync
+    isExternal: true
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Bunit.BunitContext.DisposeComponentsAsync
+    name: DisposeComponentsAsync
+    isExternal: true
+  - name: (
+  - name: )
+- uid: Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{{TComponent}}})
+  commentId: M:Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
+  parent: Bunit.BunitContext
+  definition: Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
   href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>)
-  nameWithType: TestContext.RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>)
-  fullName: Bunit.TestContext.RenderComponent<TComponent>(System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>>)
-  nameWithType.vb: TestContext.RenderComponent(Of TComponent)(Action(Of ComponentParameterCollectionBuilder(Of TComponent)))
-  fullName.vb: Bunit.TestContext.RenderComponent(Of TComponent)(System.Action(Of Bunit.ComponentParameterCollectionBuilder(Of TComponent)))
-  name.vb: RenderComponent(Of TComponent)(Action(Of ComponentParameterCollectionBuilder(Of TComponent)))
+  name: Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>)
+  nameWithType: BunitContext.Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>)
+  fullName: Bunit.BunitContext.Render<TComponent>(System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>>)
+  nameWithType.vb: BunitContext.Render(Of TComponent)(Action(Of ComponentParameterCollectionBuilder(Of TComponent)))
+  fullName.vb: Bunit.BunitContext.Render(Of TComponent)(System.Action(Of Bunit.ComponentParameterCollectionBuilder(Of TComponent)))
+  name.vb: Render(Of TComponent)(Action(Of ComponentParameterCollectionBuilder(Of TComponent)))
   spec.csharp:
-  - uid: Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
-    name: RenderComponent
+  - uid: Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
+    name: Render
     isExternal: true
   - name: <
   - name: TComponent
@@ -2973,8 +3038,8 @@ references:
   - name: '>'
   - name: )
   spec.vb:
-  - uid: Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
-    name: RenderComponent
+  - uid: Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
+    name: Render
     isExternal: true
   - name: (
   - name: Of
@@ -2999,19 +3064,19 @@ references:
   - name: )
   - name: )
   - name: )
-- uid: Bunit.TestContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)
-  commentId: M:Bunit.TestContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)
-  parent: Bunit.TestContext
+- uid: Bunit.BunitContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)
+  commentId: M:Bunit.BunitContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)
+  parent: Bunit.BunitContext
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.renderfragment
   name: Render<TComponent>(RenderFragment)
-  nameWithType: TestContext.Render<TComponent>(RenderFragment)
-  fullName: Bunit.TestContext.Render<TComponent>(Microsoft.AspNetCore.Components.RenderFragment)
-  nameWithType.vb: TestContext.Render(Of TComponent)(RenderFragment)
-  fullName.vb: Bunit.TestContext.Render(Of TComponent)(Microsoft.AspNetCore.Components.RenderFragment)
+  nameWithType: BunitContext.Render<TComponent>(RenderFragment)
+  fullName: Bunit.BunitContext.Render<TComponent>(Microsoft.AspNetCore.Components.RenderFragment)
+  nameWithType.vb: BunitContext.Render(Of TComponent)(RenderFragment)
+  fullName.vb: Bunit.BunitContext.Render(Of TComponent)(Microsoft.AspNetCore.Components.RenderFragment)
   name.vb: Render(Of TComponent)(RenderFragment)
   spec.csharp:
-  - uid: Bunit.TestContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)
+  - uid: Bunit.BunitContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)
     name: Render
     isExternal: true
   - name: <
@@ -3024,7 +3089,7 @@ references:
     href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.renderfragment
   - name: )
   spec.vb:
-  - uid: Bunit.TestContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)
+  - uid: Bunit.BunitContext.Render``1(Microsoft.AspNetCore.Components.RenderFragment)
     name: Render
     isExternal: true
   - name: (
@@ -3038,16 +3103,16 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.renderfragment
   - name: )
-- uid: Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
-  commentId: M:Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
-  parent: Bunit.TestContext
+- uid: Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
+  commentId: M:Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
+  parent: Bunit.BunitContext
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.renderfragment
   name: Render(RenderFragment)
-  nameWithType: TestContext.Render(RenderFragment)
-  fullName: Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
+  nameWithType: BunitContext.Render(RenderFragment)
+  fullName: Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
   spec.csharp:
-  - uid: Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
+  - uid: Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
     name: Render
     isExternal: true
   - name: (
@@ -3057,7 +3122,7 @@ references:
     href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.renderfragment
   - name: )
   spec.vb:
-  - uid: Bunit.TestContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
+  - uid: Bunit.BunitContext.Render(Microsoft.AspNetCore.Components.RenderFragment)
     name: Render
     isExternal: true
   - name: (
@@ -3066,16 +3131,16 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.renderfragment
   - name: )
-- uid: Bunit.TestContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
-  commentId: M:Bunit.TestContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
-  parent: Bunit.TestContext
+- uid: Bunit.BunitContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+  commentId: M:Bunit.BunitContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+  parent: Bunit.BunitContext
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.rendering.rendertreebuilder
   name: BuildRenderTree(RenderTreeBuilder)
-  nameWithType: TestContext.BuildRenderTree(RenderTreeBuilder)
-  fullName: Bunit.TestContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+  nameWithType: BunitContext.BuildRenderTree(RenderTreeBuilder)
+  fullName: Bunit.BunitContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
   spec.csharp:
-  - uid: Bunit.TestContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+  - uid: Bunit.BunitContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
     name: BuildRenderTree
     isExternal: true
   - name: (
@@ -3085,7 +3150,7 @@ references:
     href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.rendering.rendertreebuilder
   - name: )
   spec.vb:
-  - uid: Bunit.TestContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+  - uid: Bunit.BunitContext.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
     name: BuildRenderTree
     isExternal: true
   - name: (
@@ -3094,105 +3159,86 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.rendering.rendertreebuilder
   - name: )
-- uid: Bunit.TestContext.CreateTestRenderer
-  commentId: M:Bunit.TestContext.CreateTestRenderer
-  parent: Bunit.TestContext
+- uid: Bunit.BunitContext.AddAuthorization
+  commentId: M:Bunit.BunitContext.AddAuthorization
+  parent: Bunit.BunitContext
   isExternal: true
-  name: CreateTestRenderer()
-  nameWithType: TestContext.CreateTestRenderer()
-  fullName: Bunit.TestContext.CreateTestRenderer()
+  name: AddAuthorization()
+  nameWithType: BunitContext.AddAuthorization()
+  fullName: Bunit.BunitContext.AddAuthorization()
   spec.csharp:
-  - uid: Bunit.TestContext.CreateTestRenderer
-    name: CreateTestRenderer
+  - uid: Bunit.BunitContext.AddAuthorization
+    name: AddAuthorization
     isExternal: true
   - name: (
   - name: )
   spec.vb:
-  - uid: Bunit.TestContext.CreateTestRenderer
-    name: CreateTestRenderer
+  - uid: Bunit.BunitContext.AddAuthorization
+    name: AddAuthorization
     isExternal: true
   - name: (
   - name: )
-- uid: Bunit.TestContext.JSInterop
-  commentId: P:Bunit.TestContext.JSInterop
-  parent: Bunit.TestContext
+- uid: Bunit.BunitContext.AddBunitPersistentComponentState
+  commentId: M:Bunit.BunitContext.AddBunitPersistentComponentState
+  parent: Bunit.BunitContext
   isExternal: true
-  name: JSInterop
-  nameWithType: TestContext.JSInterop
-  fullName: Bunit.TestContext.JSInterop
-- uid: Bunit.TestContextBase.Dispose
-  commentId: M:Bunit.TestContextBase.Dispose
-  parent: Bunit.TestContextBase
-  isExternal: true
-  name: Dispose()
-  nameWithType: TestContextBase.Dispose()
-  fullName: Bunit.TestContextBase.Dispose()
+  name: AddBunitPersistentComponentState()
+  nameWithType: BunitContext.AddBunitPersistentComponentState()
+  fullName: Bunit.BunitContext.AddBunitPersistentComponentState()
   spec.csharp:
-  - uid: Bunit.TestContextBase.Dispose
-    name: Dispose
+  - uid: Bunit.BunitContext.AddBunitPersistentComponentState
+    name: AddBunitPersistentComponentState
     isExternal: true
   - name: (
   - name: )
   spec.vb:
-  - uid: Bunit.TestContextBase.Dispose
-    name: Dispose
+  - uid: Bunit.BunitContext.AddBunitPersistentComponentState
+    name: AddBunitPersistentComponentState
     isExternal: true
   - name: (
   - name: )
-- uid: Bunit.TestContextBase.DisposeComponents
-  commentId: M:Bunit.TestContextBase.DisposeComponents
-  parent: Bunit.TestContextBase
-  isExternal: true
-  name: DisposeComponents()
-  nameWithType: TestContextBase.DisposeComponents()
-  fullName: Bunit.TestContextBase.DisposeComponents()
-  spec.csharp:
-  - uid: Bunit.TestContextBase.DisposeComponents
-    name: DisposeComponents
-    isExternal: true
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: Bunit.TestContextBase.DisposeComponents
-    name: DisposeComponents
-    isExternal: true
-  - name: (
-  - name: )
-- uid: Bunit.TestContextBase.DefaultWaitTimeout
-  commentId: P:Bunit.TestContextBase.DefaultWaitTimeout
-  parent: Bunit.TestContextBase
+- uid: Bunit.BunitContext.DefaultWaitTimeout
+  commentId: P:Bunit.BunitContext.DefaultWaitTimeout
+  parent: Bunit.BunitContext
   isExternal: true
   name: DefaultWaitTimeout
-  nameWithType: TestContextBase.DefaultWaitTimeout
-  fullName: Bunit.TestContextBase.DefaultWaitTimeout
-- uid: Bunit.TestContextBase.Renderer
-  commentId: P:Bunit.TestContextBase.Renderer
-  parent: Bunit.TestContextBase
+  nameWithType: BunitContext.DefaultWaitTimeout
+  fullName: Bunit.BunitContext.DefaultWaitTimeout
+- uid: Bunit.BunitContext.Renderer
+  commentId: P:Bunit.BunitContext.Renderer
+  parent: Bunit.BunitContext
   isExternal: true
   name: Renderer
-  nameWithType: TestContextBase.Renderer
-  fullName: Bunit.TestContextBase.Renderer
-- uid: Bunit.TestContextBase.Services
-  commentId: P:Bunit.TestContextBase.Services
-  parent: Bunit.TestContextBase
+  nameWithType: BunitContext.Renderer
+  fullName: Bunit.BunitContext.Renderer
+- uid: Bunit.BunitContext.JSInterop
+  commentId: P:Bunit.BunitContext.JSInterop
+  parent: Bunit.BunitContext
+  isExternal: true
+  name: JSInterop
+  nameWithType: BunitContext.JSInterop
+  fullName: Bunit.BunitContext.JSInterop
+- uid: Bunit.BunitContext.Services
+  commentId: P:Bunit.BunitContext.Services
+  parent: Bunit.BunitContext
   isExternal: true
   name: Services
-  nameWithType: TestContextBase.Services
-  fullName: Bunit.TestContextBase.Services
-- uid: Bunit.TestContextBase.RenderTree
-  commentId: P:Bunit.TestContextBase.RenderTree
-  parent: Bunit.TestContextBase
+  nameWithType: BunitContext.Services
+  fullName: Bunit.BunitContext.Services
+- uid: Bunit.BunitContext.RenderTree
+  commentId: P:Bunit.BunitContext.RenderTree
+  parent: Bunit.BunitContext
   isExternal: true
   name: RenderTree
-  nameWithType: TestContextBase.RenderTree
-  fullName: Bunit.TestContextBase.RenderTree
-- uid: Bunit.TestContextBase.ComponentFactories
-  commentId: P:Bunit.TestContextBase.ComponentFactories
-  parent: Bunit.TestContextBase
+  nameWithType: BunitContext.RenderTree
+  fullName: Bunit.BunitContext.RenderTree
+- uid: Bunit.BunitContext.ComponentFactories
+  commentId: P:Bunit.BunitContext.ComponentFactories
+  parent: Bunit.BunitContext
   isExternal: true
   name: ComponentFactories
-  nameWithType: TestContextBase.ComponentFactories
-  fullName: Bunit.TestContextBase.ComponentFactories
+  nameWithType: BunitContext.ComponentFactories
+  fullName: Bunit.BunitContext.ComponentFactories
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -3411,6 +3457,32 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
+  - name: )
+- uid: Bunit.BunitContext.Bunit.TestAuthorizationExtensions.AddTestAuthorization
+  commentId: M:Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+  parent: Bunit.TestAuthorizationExtensions
+  definition: Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+  href: Bunit.TestAuthorizationExtensions.html#Bunit_TestAuthorizationExtensions_AddTestAuthorization_Bunit_BunitContext_
+  name: AddTestAuthorization(BunitContext)
+  nameWithType: TestAuthorizationExtensions.AddTestAuthorization(BunitContext)
+  fullName: Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+  spec.csharp:
+  - uid: Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+    name: AddTestAuthorization
+    href: Bunit.TestAuthorizationExtensions.html#Bunit_TestAuthorizationExtensions_AddTestAuthorization_Bunit_BunitContext_
+  - name: (
+  - uid: Bunit.BunitContext
+    name: BunitContext
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+    name: AddTestAuthorization
+    href: Bunit.TestAuthorizationExtensions.html#Bunit_TestAuthorizationExtensions_AddTestAuthorization_Bunit_BunitContext_
+  - name: (
+  - uid: Bunit.BunitContext
+    name: BunitContext
+    isExternal: true
   - name: )
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
   commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
@@ -5092,23 +5164,23 @@ references:
   fullName: System
 - uid: Bunit
   commentId: N:Bunit
-  isExternal: true
+  href: Bunit.html
   name: Bunit
   nameWithType: Bunit
   fullName: Bunit
-- uid: Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
-  commentId: M:Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
+- uid: Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
+  commentId: M:Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>)
-  nameWithType: TestContext.RenderComponent<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>)
-  fullName: Bunit.TestContext.RenderComponent<TComponent>(System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>>)
-  nameWithType.vb: TestContext.RenderComponent(Of TComponent)(Action(Of ComponentParameterCollectionBuilder(Of TComponent)))
-  fullName.vb: Bunit.TestContext.RenderComponent(Of TComponent)(System.Action(Of Bunit.ComponentParameterCollectionBuilder(Of TComponent)))
-  name.vb: RenderComponent(Of TComponent)(Action(Of ComponentParameterCollectionBuilder(Of TComponent)))
+  name: Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>)
+  nameWithType: BunitContext.Render<TComponent>(Action<ComponentParameterCollectionBuilder<TComponent>>)
+  fullName: Bunit.BunitContext.Render<TComponent>(System.Action<Bunit.ComponentParameterCollectionBuilder<TComponent>>)
+  nameWithType.vb: BunitContext.Render(Of TComponent)(Action(Of ComponentParameterCollectionBuilder(Of TComponent)))
+  fullName.vb: Bunit.BunitContext.Render(Of TComponent)(System.Action(Of Bunit.ComponentParameterCollectionBuilder(Of TComponent)))
+  name.vb: Render(Of TComponent)(Action(Of ComponentParameterCollectionBuilder(Of TComponent)))
   spec.csharp:
-  - uid: Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
-    name: RenderComponent
+  - uid: Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
+    name: Render
     isExternal: true
   - name: <
   - name: TComponent
@@ -5128,8 +5200,8 @@ references:
   - name: '>'
   - name: )
   spec.vb:
-  - uid: Bunit.TestContext.RenderComponent``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
-    name: RenderComponent
+  - uid: Bunit.BunitContext.Render``1(System.Action{Bunit.ComponentParameterCollectionBuilder{``0}})
+    name: Render
     isExternal: true
   - name: (
   - name: Of
@@ -5154,6 +5226,38 @@ references:
   - name: )
   - name: )
   - name: )
+- uid: Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+  commentId: M:Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+  isExternal: true
+  href: Bunit.TestAuthorizationExtensions.html#Bunit_TestAuthorizationExtensions_AddTestAuthorization_Bunit_BunitContext_
+  name: AddTestAuthorization(BunitContext)
+  nameWithType: TestAuthorizationExtensions.AddTestAuthorization(BunitContext)
+  fullName: Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+  spec.csharp:
+  - uid: Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+    name: AddTestAuthorization
+    href: Bunit.TestAuthorizationExtensions.html#Bunit_TestAuthorizationExtensions_AddTestAuthorization_Bunit_BunitContext_
+  - name: (
+  - uid: Bunit.BunitContext
+    name: BunitContext
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+    name: AddTestAuthorization
+    href: Bunit.TestAuthorizationExtensions.html#Bunit_TestAuthorizationExtensions_AddTestAuthorization_Bunit_BunitContext_
+  - name: (
+  - uid: Bunit.BunitContext
+    name: BunitContext
+    isExternal: true
+  - name: )
+- uid: Bunit.TestAuthorizationExtensions
+  commentId: T:Bunit.TestAuthorizationExtensions
+  parent: Bunit
+  href: Bunit.TestAuthorizationExtensions.html
+  name: TestAuthorizationExtensions
+  nameWithType: TestAuthorizationExtensions
+  fullName: Bunit.TestAuthorizationExtensions
 - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
   commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
   isExternal: true
@@ -6554,32 +6658,32 @@ references:
 - uid: Bunit.TestDoubles.TestAuthorizationContext
   commentId: T:Bunit.TestDoubles.TestAuthorizationContext
   parent: Bunit.TestDoubles
-  isExternal: true
+  href: Bunit.TestDoubles.TestAuthorizationContext.html
   name: TestAuthorizationContext
   nameWithType: TestAuthorizationContext
   fullName: Bunit.TestDoubles.TestAuthorizationContext
 - uid: Bunit.TestDoubles
   commentId: N:Bunit.TestDoubles
-  isExternal: true
+  href: Bunit.html
   name: Bunit.TestDoubles
   nameWithType: Bunit.TestDoubles
   fullName: Bunit.TestDoubles
   spec.csharp:
   - uid: Bunit
     name: Bunit
-    isExternal: true
+    href: Bunit.html
   - name: .
   - uid: Bunit.TestDoubles
     name: TestDoubles
-    isExternal: true
+    href: Bunit.TestDoubles.html
   spec.vb:
   - uid: Bunit
     name: Bunit
-    isExternal: true
+    href: Bunit.html
   - name: .
   - uid: Bunit.TestDoubles
     name: TestDoubles
-    isExternal: true
+    href: Bunit.TestDoubles.html
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthContext
   commentId: P:FastMoq.Web.Blazor.MockerBlazorTestBase`1.AuthContext
   href: FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_AuthContext
@@ -6818,7 +6922,7 @@ references:
   - name: <
   - uid: Bunit.TestServiceProvider
     name: TestServiceProvider
-    isExternal: true
+    href: Bunit.TestServiceProvider.html
   - name: ','
   - name: " "
   - uid: Microsoft.Extensions.Configuration.IConfiguration
@@ -6840,7 +6944,7 @@ references:
   - name: " "
   - uid: Bunit.TestServiceProvider
     name: TestServiceProvider
-    isExternal: true
+    href: Bunit.TestServiceProvider.html
   - name: ','
   - name: " "
   - uid: Microsoft.Extensions.Configuration.IConfiguration
@@ -6942,10 +7046,141 @@ references:
 - uid: Bunit.TestDoubles.FakeNavigationManager
   commentId: T:Bunit.TestDoubles.FakeNavigationManager
   parent: Bunit.TestDoubles
-  isExternal: true
+  href: Bunit.TestDoubles.FakeNavigationManager.html
   name: FakeNavigationManager
   nameWithType: FakeNavigationManager
   fullName: Bunit.TestDoubles.FakeNavigationManager
+- uid: FastMoq.Web.Blazor.Models.RenderParameter
+  commentId: T:FastMoq.Web.Blazor.Models.RenderParameter
+  parent: FastMoq.Web.Blazor.Models
+  href: FastMoq.Web.Blazor.Models.RenderParameter.html
+  name: RenderParameter
+  nameWithType: RenderParameter
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.Create(System.String,System.Object)
+  commentId: M:FastMoq.Web.Blazor.Models.RenderParameter.Create(System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_Create_System_String_System_Object_
+  name: Create(string, object)
+  nameWithType: RenderParameter.Create(string, object)
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.Create(string, object)
+  nameWithType.vb: RenderParameter.Create(String, Object)
+  fullName.vb: FastMoq.Web.Blazor.Models.RenderParameter.Create(String, Object)
+  name.vb: Create(String, Object)
+  spec.csharp:
+  - uid: FastMoq.Web.Blazor.Models.RenderParameter.Create(System.String,System.Object)
+    name: Create
+    href: FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_Create_System_String_System_Object_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Web.Blazor.Models.RenderParameter.Create(System.String,System.Object)
+    name: Create
+    href: FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_Create_System_String_System_Object_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(System.String,System.Object)
+  commentId: M:FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(System.String,System.Object)
+  isExternal: true
+  href: FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_CreateCascading_System_String_System_Object_
+  name: CreateCascading(string, object)
+  nameWithType: RenderParameter.CreateCascading(string, object)
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(string, object)
+  nameWithType.vb: RenderParameter.CreateCascading(String, Object)
+  fullName.vb: FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(String, Object)
+  name.vb: CreateCascading(String, Object)
+  spec.csharp:
+  - uid: FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(System.String,System.Object)
+    name: CreateCascading
+    href: FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_CreateCascading_System_String_System_Object_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(System.String,System.Object)
+    name: CreateCascading
+    href: FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_CreateCascading_System_String_System_Object_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.Setup(Bunit.InvocationMatcher,System.Boolean)
+  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.Setup(Bunit.InvocationMatcher,System.Boolean)
+  isExternal: true
+  href: FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_Setup_Bunit_InvocationMatcher_System_Boolean_
+  name: Setup(InvocationMatcher, bool)
+  nameWithType: MockerBlazorTestBase<T>.Setup(InvocationMatcher, bool)
+  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.Setup(Bunit.InvocationMatcher, bool)
+  nameWithType.vb: MockerBlazorTestBase(Of T).Setup(InvocationMatcher, Boolean)
+  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).Setup(Bunit.InvocationMatcher, Boolean)
+  name.vb: Setup(InvocationMatcher, Boolean)
+  spec.csharp:
+  - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.Setup(Bunit.InvocationMatcher,System.Boolean)
+    name: Setup
+    href: FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_Setup_Bunit_InvocationMatcher_System_Boolean_
+  - name: (
+  - uid: Bunit.InvocationMatcher
+    name: InvocationMatcher
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.Setup(Bunit.InvocationMatcher,System.Boolean)
+    name: Setup
+    href: FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_Setup_Bunit_InvocationMatcher_System_Boolean_
+  - name: (
+  - uid: Bunit.InvocationMatcher
+    name: InvocationMatcher
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderParameters*
   commentId: Overload:FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderParameters
   href: FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_RenderParameters
@@ -6954,26 +7189,26 @@ references:
   fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.RenderParameters
   nameWithType.vb: MockerBlazorTestBase(Of T).RenderParameters
   fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).RenderParameters
-- uid: System.Collections.Generic.List{Bunit.ComponentParameter}
-  commentId: T:System.Collections.Generic.List{Bunit.ComponentParameter}
+- uid: System.Collections.Generic.List{FastMoq.Web.Blazor.Models.RenderParameter}
+  commentId: T:System.Collections.Generic.List{FastMoq.Web.Blazor.Models.RenderParameter}
   parent: System.Collections.Generic
   definition: System.Collections.Generic.List`1
   href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
-  name: List<ComponentParameter>
-  nameWithType: List<ComponentParameter>
-  fullName: System.Collections.Generic.List<Bunit.ComponentParameter>
-  nameWithType.vb: List(Of ComponentParameter)
-  fullName.vb: System.Collections.Generic.List(Of Bunit.ComponentParameter)
-  name.vb: List(Of ComponentParameter)
+  name: List<RenderParameter>
+  nameWithType: List<RenderParameter>
+  fullName: System.Collections.Generic.List<FastMoq.Web.Blazor.Models.RenderParameter>
+  nameWithType.vb: List(Of RenderParameter)
+  fullName.vb: System.Collections.Generic.List(Of FastMoq.Web.Blazor.Models.RenderParameter)
+  name.vb: List(Of RenderParameter)
   spec.csharp:
   - uid: System.Collections.Generic.List`1
     name: List
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
   - name: <
-  - uid: Bunit.ComponentParameter
-    name: ComponentParameter
-    isExternal: true
+  - uid: FastMoq.Web.Blazor.Models.RenderParameter
+    name: RenderParameter
+    href: FastMoq.Web.Blazor.Models.RenderParameter.html
   - name: '>'
   spec.vb:
   - uid: System.Collections.Generic.List`1
@@ -6983,10 +7218,48 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: Bunit.ComponentParameter
-    name: ComponentParameter
-    isExternal: true
+  - uid: FastMoq.Web.Blazor.Models.RenderParameter
+    name: RenderParameter
+    href: FastMoq.Web.Blazor.Models.RenderParameter.html
   - name: )
+- uid: FastMoq.Web.Blazor.Models
+  commentId: N:FastMoq.Web.Blazor.Models
+  href: FastMoq.html
+  name: FastMoq.Web.Blazor.Models
+  nameWithType: FastMoq.Web.Blazor.Models
+  fullName: FastMoq.Web.Blazor.Models
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Web
+    name: Web
+    href: FastMoq.Web.html
+  - name: .
+  - uid: FastMoq.Web.Blazor
+    name: Blazor
+    href: FastMoq.Web.Blazor.html
+  - name: .
+  - uid: FastMoq.Web.Blazor.Models
+    name: Models
+    href: FastMoq.Web.Blazor.Models.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Web
+    name: Web
+    href: FastMoq.Web.html
+  - name: .
+  - uid: FastMoq.Web.Blazor
+    name: Blazor
+    href: FastMoq.Web.Blazor.html
+  - name: .
+  - uid: FastMoq.Web.Blazor.Models
+    name: Models
+    href: FastMoq.Web.Blazor.Models.html
 - uid: System.Collections.Generic.List`1
   commentId: T:System.Collections.Generic.List`1
   isExternal: true
@@ -7372,19 +7645,19 @@ references:
   fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.Setup
   nameWithType.vb: MockerBlazorTestBase(Of T).Setup
   fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).Setup
-- uid: Bunit.TestContextBase.Dispose(System.Boolean)
-  commentId: M:Bunit.TestContextBase.Dispose(System.Boolean)
-  parent: Bunit.TestContextBase
+- uid: Bunit.BunitContext.Dispose(System.Boolean)
+  commentId: M:Bunit.BunitContext.Dispose(System.Boolean)
+  parent: Bunit.BunitContext
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system.boolean
   name: Dispose(bool)
-  nameWithType: TestContextBase.Dispose(bool)
-  fullName: Bunit.TestContextBase.Dispose(bool)
-  nameWithType.vb: TestContextBase.Dispose(Boolean)
-  fullName.vb: Bunit.TestContextBase.Dispose(Boolean)
+  nameWithType: BunitContext.Dispose(bool)
+  fullName: Bunit.BunitContext.Dispose(bool)
+  nameWithType.vb: BunitContext.Dispose(Boolean)
+  fullName.vb: Bunit.BunitContext.Dispose(Boolean)
   name.vb: Dispose(Boolean)
   spec.csharp:
-  - uid: Bunit.TestContextBase.Dispose(System.Boolean)
+  - uid: Bunit.BunitContext.Dispose(System.Boolean)
     name: Dispose
     isExternal: true
   - name: (
@@ -7394,7 +7667,7 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   spec.vb:
-  - uid: Bunit.TestContextBase.Dispose(System.Boolean)
+  - uid: Bunit.BunitContext.Dispose(System.Boolean)
     name: Dispose
     isExternal: true
   - name: (
@@ -11016,27 +11289,27 @@ references:
   fullName: Bunit.ElementNotFoundException
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck*
   commentId: Overload:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck
-  href: FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+  href: FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   name: SetElementCheck
   nameWithType: MockerBlazorTestBase<T>.SetElementCheck
   fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementCheck
   nameWithType.vb: MockerBlazorTestBase(Of T).SetElementCheck
   fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementCheck
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   parent: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}
-  definition: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+  definition: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
   spec.csharp:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementCheck
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: <
   - name: TComponent
   - name: '>'
@@ -11072,14 +11345,20 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: <
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: '>'
   - name: )
   spec.vb:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementCheck
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: (
   - name: Of
   - name: " "
@@ -11119,31 +11398,65 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
   - name: )
-- uid: Bunit.IRenderedFragment
-  commentId: T:Bunit.IRenderedFragment
+  - name: )
+- uid: Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+  commentId: T:Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
   parent: Bunit
-  isExternal: true
-  name: IRenderedFragment
-  nameWithType: IRenderedFragment
-  fullName: Bunit.IRenderedFragment
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  isExternal: true
-  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+  definition: Bunit.IRenderedComponent`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  name: IRenderedComponent<IComponent>
+  nameWithType: IRenderedComponent<IComponent>
+  fullName: Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>
+  nameWithType.vb: IRenderedComponent(Of IComponent)
+  fullName.vb: Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent)
+  name.vb: IRenderedComponent(Of IComponent)
   spec.csharp:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
+    isExternal: true
+  - name: <
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: '>'
+  spec.vb:
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: )
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  isExternal: true
+  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  spec.csharp:
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementCheck
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: <
   - name: TComponent
   - name: '>'
@@ -11179,14 +11492,20 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: <
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: '>'
   - name: )
   spec.vb:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementCheck
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: (
   - name: Of
   - name: " "
@@ -11226,33 +11545,41 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: )
   - name: )
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch*
   commentId: Overload:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch
-  href: FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+  href: FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   name: SetElementSwitch
   nameWithType: MockerBlazorTestBase<T>.SetElementSwitch
   fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementSwitch
   nameWithType.vb: MockerBlazorTestBase(Of T).SetElementSwitch
   fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementSwitch
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   parent: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}
-  definition: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+  definition: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
   spec.csharp:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementSwitch
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: <
   - name: TComponent
   - name: '>'
@@ -11288,14 +11615,20 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: <
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: '>'
   - name: )
   spec.vb:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementSwitch
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: (
   - name: Of
   - name: " "
@@ -11335,24 +11668,32 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
   - name: )
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - name: )
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   isExternal: true
-  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
   spec.csharp:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementSwitch
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: <
   - name: TComponent
   - name: '>'
@@ -11388,14 +11729,20 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: <
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: '>'
   - name: )
   spec.vb:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementSwitch
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: (
   - name: Of
   - name: " "
@@ -11435,9 +11782,17 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: )
   - name: )
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText*
   commentId: Overload:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText
@@ -11608,21 +11963,21 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.timespan
   - name: '?'
   - name: )
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   parent: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{{T}}
-  definition: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+  definition: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
   spec.csharp:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementText
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: (
   - uid: System.String
     name: string
@@ -11655,14 +12010,20 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: <
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: '>'
   - name: )
   spec.vb:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers{`0}.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementText
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: (
   - uid: System.String
     name: String
@@ -11697,24 +12058,32 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
   - name: )
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - name: )
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   isExternal: true
-  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>)
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
   spec.csharp:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementText
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: (
   - uid: System.String
     name: string
@@ -11747,14 +12116,20 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: <
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: '>'
   - name: )
   spec.vb:
-  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
     name: SetElementText
-    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   - name: (
   - uid: System.String
     name: String
@@ -11789,9 +12164,17 @@ references:
   - name: '?'
   - name: ','
   - name: " "
-  - uid: Bunit.IRenderedFragment
-    name: IRenderedFragment
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
     isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: )
   - name: )
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitDelay*
   commentId: Overload:FastMoq.Web.Blazor.MockerBlazorTestBase`1.WaitDelay

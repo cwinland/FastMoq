@@ -1,7 +1,7 @@
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Collections.Immutable;
 
 namespace FastMoq.Analyzers.Analyzers
 {
@@ -19,7 +19,7 @@ namespace FastMoq.Analyzers.Analyzers
 
         private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
-            var invocationExpression = (InvocationExpressionSyntax)context.Node;
+            var invocationExpression = (InvocationExpressionSyntax) context.Node;
             if (!FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) ||
                 method is null ||
                 !FastMoqAnalysisHelpers.IsFastMoqInitializeMethod(method) ||

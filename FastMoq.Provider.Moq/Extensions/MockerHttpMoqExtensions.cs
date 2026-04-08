@@ -1,8 +1,8 @@
-using System.Linq.Expressions;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
 using Moq;
 using Moq.Protected;
+using System.Linq.Expressions;
 
 namespace FastMoq.Extensions
 {

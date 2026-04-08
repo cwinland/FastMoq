@@ -1,8 +1,8 @@
-using System;
 using FastMoq.Providers;
 using FastMoq.Providers.NSubstituteProvider;
 using NSubstitute;
 using NSubstitute.Exceptions;
+using System;
 
 namespace FastMoq.Tests
 {

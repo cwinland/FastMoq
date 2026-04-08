@@ -12,7 +12,8 @@ using System;
 
 namespace FastMoq.Tests.Web
 {
-    public class BlazorCounterTests : MockerBlazorTestBase<Counter> {
+    public class BlazorCounterTests : MockerBlazorTestBase<Counter>
+    {
         public BlazorCounterTests() { }
 
         [Fact]

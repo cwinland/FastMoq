@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
-using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace FastMoq.Providers.MoqProvider
 {
@@ -94,7 +94,7 @@ namespace FastMoq.Providers.MoqProvider
             var args = options.ConstructorArgs is { Length: > 0 }
                 ? new object?[] { behavior, options.ConstructorArgs }
                 : new object?[] { behavior };
-            var mock = (Mock)Activator.CreateInstance(generic, args)!;
+            var mock = (Mock) Activator.CreateInstance(generic, args)!;
 
             if (options.CallBase)
             {
@@ -265,7 +265,7 @@ namespace FastMoq.Providers.MoqProvider
                 if (genericArgument == mockedType)
                 {
                     var wrapperType = typeof(MoqFastMockGeneric<>).MakeGenericType(mockedType);
-                    return (IFastMock)Activator.CreateInstance(wrapperType, legacyMock)!;
+                    return (IFastMock) Activator.CreateInstance(wrapperType, legacyMock)!;
                 }
             }
 

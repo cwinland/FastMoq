@@ -79,6 +79,28 @@
 <li>This document describes the changed behavior in the current v4 release line.</li>
 </ul>
 <h2 id="current-breaking-changes">Current breaking changes</h2>
+<h3 id="fastmoqweb-blazor-helpers-now-align-with-bunit-2"><code>FastMoq.Web</code> Blazor helpers now align with bUnit 2</h3>
+<p>The current branch upgrades <code>FastMoq.Web</code> from bUnit <code>1.38.5</code> to <code>2.7.2</code>.</p>
+<p>What changed:</p>
+<ul>
+<li><code>MockerBlazorTestBase&lt;T&gt;.RenderParameters</code> now uses <code>FastMoq.Web.Blazor.Models.RenderParameter</code></li>
+<li>nested helper methods such as <code>SetElementText(...)</code>, <code>SetElementCheck(...)</code>, and <code>SetElementSwitch(...)</code> now take <code>IRenderedComponent&lt;IComponent&gt;?</code> for <code>startingPoint</code></li>
+<li>direct bUnit examples should use <code>BunitContext</code> instead of the old <code>TestContext</code></li>
+<li>FastMoq added compatibility wrappers for <code>TestServiceProvider</code>, <code>TestAuthorizationContext</code>, and <code>FakeNavigationManager</code> to keep migration churn lower</li>
+</ul>
+<p>What did not require a rewrite:</p>
+<ul>
+<li>most existing <code>MockerBlazorTestBase&lt;T&gt;</code> tests can keep the same base class</li>
+<li>authorization and navigation helpers still exist under the familiar FastMoq-facing names</li>
+<li>component discovery helpers such as <code>GetComponent(...)</code> and <code>GetComponents(...)</code> still work, but their implementation now understands bUnit 2's renderer state shape</li>
+</ul>
+<p>Migration guidance:</p>
+<ul>
+<li>replace any stored <code>ComponentParameter</code> usage with <code>RenderParameter</code></li>
+<li>update nested helper <code>startingPoint</code> arguments to pass rendered child components</li>
+<li>keep using the compatibility wrappers first, then simplify later only if the direct bUnit 2 APIs are clearer for your suite</li>
+</ul>
+<p>For the step-by-step migration path and repo-backed examples, see <a href="../migration/bunit-and-blazor-testing.html">bUnit and Blazor test migration</a>.</p>
 <h3 id="moq-specific-http-setup-helpers-moved-packages">Moq-specific HTTP setup helpers moved packages</h3>
 <p>The older Moq-shaped HTTP setup helpers such as <code>SetupHttpMessage(...)</code> are no longer provided by <code>FastMoq.Core</code>.</p>
 <p>What changed:</p>
@@ -201,7 +223,7 @@ Mocks.GetMock&lt;IFileSystem&gt;()
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 18:28 UTC</span></div>
       
           </div>
         </div>

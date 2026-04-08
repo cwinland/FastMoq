@@ -1,0 +1,50 @@
+<div class="order-editor" data-editor-id="@EditorId" data-accent="@Accent">
+    <label for="@($"{EditorId}-filter")">@EditorId filter</label>
+    <input id="@($"{EditorId}-filter")" class="order-filter" value="@FilterText" @oninput="HandleFilterChanged" />
+
+    <label>
+        <input class="include-archived" type="checkbox" checked="@IncludeArchived" @onchange="HandleArchivedChanged" />
+        include archived
+    </label>
+
+    <p class="summary">@EditorId|@FilterText|@IncludeArchived|@Accent</p>
+</div>
+
+@code {
+    [Parameter]
+    public string EditorId { get; set; } = string.Empty;
+
+    [Parameter]
+    public string InitialQuery { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool InitiallyIncludeArchived { get; set; }
+
+    [CascadingParameter(Name = "Accent")]
+    public string Accent { get; set; } = "Default";
+
+    public string FilterText { get; private set; } = string.Empty;
+
+    public bool IncludeArchived { get; private set; }
+
+    protected override void OnParametersSet()
+    {
+        FilterText = InitialQuery;
+        IncludeArchived = InitiallyIncludeArchived;
+    }
+
+    private void HandleFilterChanged(ChangeEventArgs args)
+    {
+        FilterText = args.Value?.ToString() ?? string.Empty;
+    }
+
+    private void HandleArchivedChanged(ChangeEventArgs args)
+    {
+        IncludeArchived = args.Value switch
+        {
+            bool value => value,
+            string value when bool.TryParse(value, out var parsed) => parsed,
+            _ => false,
+        };
+    }
+}

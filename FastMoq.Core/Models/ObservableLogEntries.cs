@@ -24,19 +24,19 @@ namespace FastMoq.Models
 
         public event NotifyCollectionChangedEventHandler? CollectionChanged
         {
-            add => ((INotifyCollectionChanged)readOnlyCollection).CollectionChanged += value;
-            remove => ((INotifyCollectionChanged)readOnlyCollection).CollectionChanged -= value;
+            add => ((INotifyCollectionChanged) readOnlyCollection).CollectionChanged += value;
+            remove => ((INotifyCollectionChanged) readOnlyCollection).CollectionChanged -= value;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged
         {
-            add => ((INotifyPropertyChanged)readOnlyCollection).PropertyChanged += value;
-            remove => ((INotifyPropertyChanged)readOnlyCollection).PropertyChanged -= value;
+            add => ((INotifyPropertyChanged) readOnlyCollection).PropertyChanged += value;
+            remove => ((INotifyPropertyChanged) readOnlyCollection).PropertyChanged -= value;
         }
 
         public IEnumerator<LogEntry> GetEnumerator() => readOnlyCollection.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)readOnlyCollection).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) readOnlyCollection).GetEnumerator();
 
         public int Count => readOnlyCollection.Count;
     }

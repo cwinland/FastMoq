@@ -1,6 +1,781 @@
 ### YamlMime:XRefMap
 sorted: true
 references:
+- uid: Bunit
+  name: Bunit
+  href: api/Bunit.html
+  commentId: N:Bunit
+  fullName: Bunit
+  nameWithType: Bunit
+- uid: Bunit.TestAuthorizationExtensions
+  name: TestAuthorizationExtensions
+  href: api/Bunit.TestAuthorizationExtensions.html
+  commentId: T:Bunit.TestAuthorizationExtensions
+  fullName: Bunit.TestAuthorizationExtensions
+  nameWithType: TestAuthorizationExtensions
+- uid: Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+  name: AddTestAuthorization(BunitContext)
+  href: api/Bunit.TestAuthorizationExtensions.html#Bunit_TestAuthorizationExtensions_AddTestAuthorization_Bunit_BunitContext_
+  commentId: M:Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+  fullName: Bunit.TestAuthorizationExtensions.AddTestAuthorization(Bunit.BunitContext)
+  nameWithType: TestAuthorizationExtensions.AddTestAuthorization(BunitContext)
+- uid: Bunit.TestAuthorizationExtensions.AddTestAuthorization*
+  name: AddTestAuthorization
+  href: api/Bunit.TestAuthorizationExtensions.html#Bunit_TestAuthorizationExtensions_AddTestAuthorization_
+  commentId: Overload:Bunit.TestAuthorizationExtensions.AddTestAuthorization
+  isSpec: "True"
+  fullName: Bunit.TestAuthorizationExtensions.AddTestAuthorization
+  nameWithType: TestAuthorizationExtensions.AddTestAuthorization
+- uid: Bunit.TestDoubles
+  name: Bunit.TestDoubles
+  href: api/Bunit.TestDoubles.html
+  commentId: N:Bunit.TestDoubles
+  fullName: Bunit.TestDoubles
+  nameWithType: Bunit.TestDoubles
+- uid: Bunit.TestDoubles.FakeNavigationManager
+  name: FakeNavigationManager
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html
+  commentId: T:Bunit.TestDoubles.FakeNavigationManager
+  fullName: Bunit.TestDoubles.FakeNavigationManager
+  nameWithType: FakeNavigationManager
+- uid: Bunit.TestDoubles.FakeNavigationManager.#ctor(Bunit.TestDoubles.BunitNavigationManager)
+  name: FakeNavigationManager(BunitNavigationManager)
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager__ctor_Bunit_TestDoubles_BunitNavigationManager_
+  commentId: M:Bunit.TestDoubles.FakeNavigationManager.#ctor(Bunit.TestDoubles.BunitNavigationManager)
+  name.vb: New(BunitNavigationManager)
+  fullName: Bunit.TestDoubles.FakeNavigationManager.FakeNavigationManager(Bunit.TestDoubles.BunitNavigationManager)
+  fullName.vb: Bunit.TestDoubles.FakeNavigationManager.New(Bunit.TestDoubles.BunitNavigationManager)
+  nameWithType: FakeNavigationManager.FakeNavigationManager(BunitNavigationManager)
+  nameWithType.vb: FakeNavigationManager.New(BunitNavigationManager)
+- uid: Bunit.TestDoubles.FakeNavigationManager.#ctor*
+  name: FakeNavigationManager
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager__ctor_
+  commentId: Overload:Bunit.TestDoubles.FakeNavigationManager.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Bunit.TestDoubles.FakeNavigationManager.FakeNavigationManager
+  fullName.vb: Bunit.TestDoubles.FakeNavigationManager.New
+  nameWithType: FakeNavigationManager.FakeNavigationManager
+  nameWithType.vb: FakeNavigationManager.New
+- uid: Bunit.TestDoubles.FakeNavigationManager.BaseUri
+  name: BaseUri
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_BaseUri
+  commentId: P:Bunit.TestDoubles.FakeNavigationManager.BaseUri
+  fullName: Bunit.TestDoubles.FakeNavigationManager.BaseUri
+  nameWithType: FakeNavigationManager.BaseUri
+- uid: Bunit.TestDoubles.FakeNavigationManager.BaseUri*
+  name: BaseUri
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_BaseUri_
+  commentId: Overload:Bunit.TestDoubles.FakeNavigationManager.BaseUri
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.FakeNavigationManager.BaseUri
+  nameWithType: FakeNavigationManager.BaseUri
+- uid: Bunit.TestDoubles.FakeNavigationManager.History
+  name: History
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_History
+  commentId: P:Bunit.TestDoubles.FakeNavigationManager.History
+  fullName: Bunit.TestDoubles.FakeNavigationManager.History
+  nameWithType: FakeNavigationManager.History
+- uid: Bunit.TestDoubles.FakeNavigationManager.History*
+  name: History
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_History_
+  commentId: Overload:Bunit.TestDoubles.FakeNavigationManager.History
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.FakeNavigationManager.History
+  nameWithType: FakeNavigationManager.History
+- uid: Bunit.TestDoubles.FakeNavigationManager.InnerManager
+  name: InnerManager
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_InnerManager
+  commentId: P:Bunit.TestDoubles.FakeNavigationManager.InnerManager
+  fullName: Bunit.TestDoubles.FakeNavigationManager.InnerManager
+  nameWithType: FakeNavigationManager.InnerManager
+- uid: Bunit.TestDoubles.FakeNavigationManager.InnerManager*
+  name: InnerManager
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_InnerManager_
+  commentId: Overload:Bunit.TestDoubles.FakeNavigationManager.InnerManager
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.FakeNavigationManager.InnerManager
+  nameWithType: FakeNavigationManager.InnerManager
+- uid: Bunit.TestDoubles.FakeNavigationManager.NavigateTo(System.String,Microsoft.AspNetCore.Components.NavigationOptions)
+  name: NavigateTo(string, NavigationOptions)
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_NavigateTo_System_String_Microsoft_AspNetCore_Components_NavigationOptions_
+  commentId: M:Bunit.TestDoubles.FakeNavigationManager.NavigateTo(System.String,Microsoft.AspNetCore.Components.NavigationOptions)
+  name.vb: NavigateTo(String, NavigationOptions)
+  fullName: Bunit.TestDoubles.FakeNavigationManager.NavigateTo(string, Microsoft.AspNetCore.Components.NavigationOptions)
+  fullName.vb: Bunit.TestDoubles.FakeNavigationManager.NavigateTo(String, Microsoft.AspNetCore.Components.NavigationOptions)
+  nameWithType: FakeNavigationManager.NavigateTo(string, NavigationOptions)
+  nameWithType.vb: FakeNavigationManager.NavigateTo(String, NavigationOptions)
+- uid: Bunit.TestDoubles.FakeNavigationManager.NavigateTo(System.String,System.Boolean,System.Boolean)
+  name: NavigateTo(string, bool, bool)
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_NavigateTo_System_String_System_Boolean_System_Boolean_
+  commentId: M:Bunit.TestDoubles.FakeNavigationManager.NavigateTo(System.String,System.Boolean,System.Boolean)
+  name.vb: NavigateTo(String, Boolean, Boolean)
+  fullName: Bunit.TestDoubles.FakeNavigationManager.NavigateTo(string, bool, bool)
+  fullName.vb: Bunit.TestDoubles.FakeNavigationManager.NavigateTo(String, Boolean, Boolean)
+  nameWithType: FakeNavigationManager.NavigateTo(string, bool, bool)
+  nameWithType.vb: FakeNavigationManager.NavigateTo(String, Boolean, Boolean)
+- uid: Bunit.TestDoubles.FakeNavigationManager.NavigateTo*
+  name: NavigateTo
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_NavigateTo_
+  commentId: Overload:Bunit.TestDoubles.FakeNavigationManager.NavigateTo
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.FakeNavigationManager.NavigateTo
+  nameWithType: FakeNavigationManager.NavigateTo
+- uid: Bunit.TestDoubles.FakeNavigationManager.ToAbsoluteUri(System.String)
+  name: ToAbsoluteUri(string)
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_ToAbsoluteUri_System_String_
+  commentId: M:Bunit.TestDoubles.FakeNavigationManager.ToAbsoluteUri(System.String)
+  name.vb: ToAbsoluteUri(String)
+  fullName: Bunit.TestDoubles.FakeNavigationManager.ToAbsoluteUri(string)
+  fullName.vb: Bunit.TestDoubles.FakeNavigationManager.ToAbsoluteUri(String)
+  nameWithType: FakeNavigationManager.ToAbsoluteUri(string)
+  nameWithType.vb: FakeNavigationManager.ToAbsoluteUri(String)
+- uid: Bunit.TestDoubles.FakeNavigationManager.ToAbsoluteUri*
+  name: ToAbsoluteUri
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_ToAbsoluteUri_
+  commentId: Overload:Bunit.TestDoubles.FakeNavigationManager.ToAbsoluteUri
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.FakeNavigationManager.ToAbsoluteUri
+  nameWithType: FakeNavigationManager.ToAbsoluteUri
+- uid: Bunit.TestDoubles.FakeNavigationManager.ToBaseRelativePath(System.String)
+  name: ToBaseRelativePath(string)
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_ToBaseRelativePath_System_String_
+  commentId: M:Bunit.TestDoubles.FakeNavigationManager.ToBaseRelativePath(System.String)
+  name.vb: ToBaseRelativePath(String)
+  fullName: Bunit.TestDoubles.FakeNavigationManager.ToBaseRelativePath(string)
+  fullName.vb: Bunit.TestDoubles.FakeNavigationManager.ToBaseRelativePath(String)
+  nameWithType: FakeNavigationManager.ToBaseRelativePath(string)
+  nameWithType.vb: FakeNavigationManager.ToBaseRelativePath(String)
+- uid: Bunit.TestDoubles.FakeNavigationManager.ToBaseRelativePath*
+  name: ToBaseRelativePath
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_ToBaseRelativePath_
+  commentId: Overload:Bunit.TestDoubles.FakeNavigationManager.ToBaseRelativePath
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.FakeNavigationManager.ToBaseRelativePath
+  nameWithType: FakeNavigationManager.ToBaseRelativePath
+- uid: Bunit.TestDoubles.FakeNavigationManager.Uri
+  name: Uri
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_Uri
+  commentId: P:Bunit.TestDoubles.FakeNavigationManager.Uri
+  fullName: Bunit.TestDoubles.FakeNavigationManager.Uri
+  nameWithType: FakeNavigationManager.Uri
+- uid: Bunit.TestDoubles.FakeNavigationManager.Uri*
+  name: Uri
+  href: api/Bunit.TestDoubles.FakeNavigationManager.html#Bunit_TestDoubles_FakeNavigationManager_Uri_
+  commentId: Overload:Bunit.TestDoubles.FakeNavigationManager.Uri
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.FakeNavigationManager.Uri
+  nameWithType: FakeNavigationManager.Uri
+- uid: Bunit.TestDoubles.TestAuthorizationContext
+  name: TestAuthorizationContext
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html
+  commentId: T:Bunit.TestDoubles.TestAuthorizationContext
+  fullName: Bunit.TestDoubles.TestAuthorizationContext
+  nameWithType: TestAuthorizationContext
+- uid: Bunit.TestDoubles.TestAuthorizationContext.#ctor(Bunit.TestDoubles.BunitAuthorizationContext)
+  name: TestAuthorizationContext(BunitAuthorizationContext)
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext__ctor_Bunit_TestDoubles_BunitAuthorizationContext_
+  commentId: M:Bunit.TestDoubles.TestAuthorizationContext.#ctor(Bunit.TestDoubles.BunitAuthorizationContext)
+  name.vb: New(BunitAuthorizationContext)
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.TestAuthorizationContext(Bunit.TestDoubles.BunitAuthorizationContext)
+  fullName.vb: Bunit.TestDoubles.TestAuthorizationContext.New(Bunit.TestDoubles.BunitAuthorizationContext)
+  nameWithType: TestAuthorizationContext.TestAuthorizationContext(BunitAuthorizationContext)
+  nameWithType.vb: TestAuthorizationContext.New(BunitAuthorizationContext)
+- uid: Bunit.TestDoubles.TestAuthorizationContext.#ctor*
+  name: TestAuthorizationContext
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext__ctor_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.TestAuthorizationContext
+  fullName.vb: Bunit.TestDoubles.TestAuthorizationContext.New
+  nameWithType: TestAuthorizationContext.TestAuthorizationContext
+  nameWithType.vb: TestAuthorizationContext.New
+- uid: Bunit.TestDoubles.TestAuthorizationContext.Claims
+  name: Claims
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_Claims
+  commentId: P:Bunit.TestDoubles.TestAuthorizationContext.Claims
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.Claims
+  nameWithType: TestAuthorizationContext.Claims
+- uid: Bunit.TestDoubles.TestAuthorizationContext.Claims*
+  name: Claims
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_Claims_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.Claims
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.Claims
+  nameWithType: TestAuthorizationContext.Claims
+- uid: Bunit.TestDoubles.TestAuthorizationContext.InnerContext
+  name: InnerContext
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_InnerContext
+  commentId: P:Bunit.TestDoubles.TestAuthorizationContext.InnerContext
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.InnerContext
+  nameWithType: TestAuthorizationContext.InnerContext
+- uid: Bunit.TestDoubles.TestAuthorizationContext.InnerContext*
+  name: InnerContext
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_InnerContext_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.InnerContext
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.InnerContext
+  nameWithType: TestAuthorizationContext.InnerContext
+- uid: Bunit.TestDoubles.TestAuthorizationContext.IsAuthenticated
+  name: IsAuthenticated
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_IsAuthenticated
+  commentId: P:Bunit.TestDoubles.TestAuthorizationContext.IsAuthenticated
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.IsAuthenticated
+  nameWithType: TestAuthorizationContext.IsAuthenticated
+- uid: Bunit.TestDoubles.TestAuthorizationContext.IsAuthenticated*
+  name: IsAuthenticated
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_IsAuthenticated_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.IsAuthenticated
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.IsAuthenticated
+  nameWithType: TestAuthorizationContext.IsAuthenticated
+- uid: Bunit.TestDoubles.TestAuthorizationContext.Policies
+  name: Policies
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_Policies
+  commentId: P:Bunit.TestDoubles.TestAuthorizationContext.Policies
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.Policies
+  nameWithType: TestAuthorizationContext.Policies
+- uid: Bunit.TestDoubles.TestAuthorizationContext.Policies*
+  name: Policies
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_Policies_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.Policies
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.Policies
+  nameWithType: TestAuthorizationContext.Policies
+- uid: Bunit.TestDoubles.TestAuthorizationContext.PolicySchemeName
+  name: PolicySchemeName
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_PolicySchemeName
+  commentId: P:Bunit.TestDoubles.TestAuthorizationContext.PolicySchemeName
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.PolicySchemeName
+  nameWithType: TestAuthorizationContext.PolicySchemeName
+- uid: Bunit.TestDoubles.TestAuthorizationContext.PolicySchemeName*
+  name: PolicySchemeName
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_PolicySchemeName_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.PolicySchemeName
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.PolicySchemeName
+  nameWithType: TestAuthorizationContext.PolicySchemeName
+- uid: Bunit.TestDoubles.TestAuthorizationContext.Roles
+  name: Roles
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_Roles
+  commentId: P:Bunit.TestDoubles.TestAuthorizationContext.Roles
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.Roles
+  nameWithType: TestAuthorizationContext.Roles
+- uid: Bunit.TestDoubles.TestAuthorizationContext.Roles*
+  name: Roles
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_Roles_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.Roles
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.Roles
+  nameWithType: TestAuthorizationContext.Roles
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetAuthenticationType(System.String)
+  name: SetAuthenticationType(string)
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetAuthenticationType_System_String_
+  commentId: M:Bunit.TestDoubles.TestAuthorizationContext.SetAuthenticationType(System.String)
+  name.vb: SetAuthenticationType(String)
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetAuthenticationType(string)
+  fullName.vb: Bunit.TestDoubles.TestAuthorizationContext.SetAuthenticationType(String)
+  nameWithType: TestAuthorizationContext.SetAuthenticationType(string)
+  nameWithType.vb: TestAuthorizationContext.SetAuthenticationType(String)
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetAuthenticationType*
+  name: SetAuthenticationType
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetAuthenticationType_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.SetAuthenticationType
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetAuthenticationType
+  nameWithType: TestAuthorizationContext.SetAuthenticationType
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String)
+  name: SetAuthorized(string)
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetAuthorized_System_String_
+  commentId: M:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String)
+  name.vb: SetAuthorized(String)
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(string)
+  fullName.vb: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(String)
+  nameWithType: TestAuthorizationContext.SetAuthorized(string)
+  nameWithType.vb: TestAuthorizationContext.SetAuthorized(String)
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.AuthorizationState)
+  name: SetAuthorized(string, AuthorizationState)
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetAuthorized_System_String_Bunit_TestDoubles_AuthorizationState_
+  commentId: M:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(System.String,Bunit.TestDoubles.AuthorizationState)
+  name.vb: SetAuthorized(String, AuthorizationState)
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(string, Bunit.TestDoubles.AuthorizationState)
+  fullName.vb: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized(String, Bunit.TestDoubles.AuthorizationState)
+  nameWithType: TestAuthorizationContext.SetAuthorized(string, AuthorizationState)
+  nameWithType.vb: TestAuthorizationContext.SetAuthorized(String, AuthorizationState)
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized*
+  name: SetAuthorized
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetAuthorized_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorized
+  nameWithType: TestAuthorizationContext.SetAuthorized
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorizing
+  name: SetAuthorizing()
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetAuthorizing
+  commentId: M:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorizing
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorizing()
+  nameWithType: TestAuthorizationContext.SetAuthorizing()
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorizing*
+  name: SetAuthorizing
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetAuthorizing_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.SetAuthorizing
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetAuthorizing
+  nameWithType: TestAuthorizationContext.SetAuthorizing
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetClaims(System.Security.Claims.Claim[])
+  name: SetClaims(params Claim[])
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetClaims_System_Security_Claims_Claim___
+  commentId: M:Bunit.TestDoubles.TestAuthorizationContext.SetClaims(System.Security.Claims.Claim[])
+  name.vb: SetClaims(ParamArray Claim())
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetClaims(params System.Security.Claims.Claim[])
+  fullName.vb: Bunit.TestDoubles.TestAuthorizationContext.SetClaims(ParamArray System.Security.Claims.Claim())
+  nameWithType: TestAuthorizationContext.SetClaims(params Claim[])
+  nameWithType.vb: TestAuthorizationContext.SetClaims(ParamArray Claim())
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetClaims*
+  name: SetClaims
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetClaims_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.SetClaims
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetClaims
+  nameWithType: TestAuthorizationContext.SetClaims
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetNotAuthorized
+  name: SetNotAuthorized()
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetNotAuthorized
+  commentId: M:Bunit.TestDoubles.TestAuthorizationContext.SetNotAuthorized
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetNotAuthorized()
+  nameWithType: TestAuthorizationContext.SetNotAuthorized()
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetNotAuthorized*
+  name: SetNotAuthorized
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetNotAuthorized_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.SetNotAuthorized
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetNotAuthorized
+  nameWithType: TestAuthorizationContext.SetNotAuthorized
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetPolicies(System.String[])
+  name: SetPolicies(params string[])
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetPolicies_System_String___
+  commentId: M:Bunit.TestDoubles.TestAuthorizationContext.SetPolicies(System.String[])
+  name.vb: SetPolicies(ParamArray String())
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetPolicies(params string[])
+  fullName.vb: Bunit.TestDoubles.TestAuthorizationContext.SetPolicies(ParamArray String())
+  nameWithType: TestAuthorizationContext.SetPolicies(params string[])
+  nameWithType.vb: TestAuthorizationContext.SetPolicies(ParamArray String())
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetPolicies*
+  name: SetPolicies
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetPolicies_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.SetPolicies
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetPolicies
+  nameWithType: TestAuthorizationContext.SetPolicies
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetRoles(System.String[])
+  name: SetRoles(params string[])
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetRoles_System_String___
+  commentId: M:Bunit.TestDoubles.TestAuthorizationContext.SetRoles(System.String[])
+  name.vb: SetRoles(ParamArray String())
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetRoles(params string[])
+  fullName.vb: Bunit.TestDoubles.TestAuthorizationContext.SetRoles(ParamArray String())
+  nameWithType: TestAuthorizationContext.SetRoles(params string[])
+  nameWithType.vb: TestAuthorizationContext.SetRoles(ParamArray String())
+- uid: Bunit.TestDoubles.TestAuthorizationContext.SetRoles*
+  name: SetRoles
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_SetRoles_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.SetRoles
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.SetRoles
+  nameWithType: TestAuthorizationContext.SetRoles
+- uid: Bunit.TestDoubles.TestAuthorizationContext.State
+  name: State
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_State
+  commentId: P:Bunit.TestDoubles.TestAuthorizationContext.State
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.State
+  nameWithType: TestAuthorizationContext.State
+- uid: Bunit.TestDoubles.TestAuthorizationContext.State*
+  name: State
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_State_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.State
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.State
+  nameWithType: TestAuthorizationContext.State
+- uid: Bunit.TestDoubles.TestAuthorizationContext.UserName
+  name: UserName
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_UserName
+  commentId: P:Bunit.TestDoubles.TestAuthorizationContext.UserName
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.UserName
+  nameWithType: TestAuthorizationContext.UserName
+- uid: Bunit.TestDoubles.TestAuthorizationContext.UserName*
+  name: UserName
+  href: api/Bunit.TestDoubles.TestAuthorizationContext.html#Bunit_TestDoubles_TestAuthorizationContext_UserName_
+  commentId: Overload:Bunit.TestDoubles.TestAuthorizationContext.UserName
+  isSpec: "True"
+  fullName: Bunit.TestDoubles.TestAuthorizationContext.UserName
+  nameWithType: TestAuthorizationContext.UserName
+- uid: Bunit.TestServiceProvider
+  name: TestServiceProvider
+  href: api/Bunit.TestServiceProvider.html
+  commentId: T:Bunit.TestServiceProvider
+  fullName: Bunit.TestServiceProvider
+  nameWithType: TestServiceProvider
+- uid: Bunit.TestServiceProvider.#ctor(Bunit.BunitServiceProvider)
+  name: TestServiceProvider(BunitServiceProvider)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider__ctor_Bunit_BunitServiceProvider_
+  commentId: M:Bunit.TestServiceProvider.#ctor(Bunit.BunitServiceProvider)
+  name.vb: New(BunitServiceProvider)
+  fullName: Bunit.TestServiceProvider.TestServiceProvider(Bunit.BunitServiceProvider)
+  fullName.vb: Bunit.TestServiceProvider.New(Bunit.BunitServiceProvider)
+  nameWithType: TestServiceProvider.TestServiceProvider(BunitServiceProvider)
+  nameWithType.vb: TestServiceProvider.New(BunitServiceProvider)
+- uid: Bunit.TestServiceProvider.#ctor*
+  name: TestServiceProvider
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider__ctor_
+  commentId: Overload:Bunit.TestServiceProvider.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Bunit.TestServiceProvider.TestServiceProvider
+  fullName.vb: Bunit.TestServiceProvider.New
+  nameWithType: TestServiceProvider.TestServiceProvider
+  nameWithType.vb: TestServiceProvider.New
+- uid: Bunit.TestServiceProvider.Add(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  name: Add(ServiceDescriptor)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Add_Microsoft_Extensions_DependencyInjection_ServiceDescriptor_
+  commentId: M:Bunit.TestServiceProvider.Add(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  fullName: Bunit.TestServiceProvider.Add(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  nameWithType: TestServiceProvider.Add(ServiceDescriptor)
+- uid: Bunit.TestServiceProvider.Add*
+  name: Add
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Add_
+  commentId: Overload:Bunit.TestServiceProvider.Add
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.Add
+  nameWithType: TestServiceProvider.Add
+- uid: Bunit.TestServiceProvider.AddFallbackServiceProvider(System.IServiceProvider)
+  name: AddFallbackServiceProvider(IServiceProvider)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_AddFallbackServiceProvider_System_IServiceProvider_
+  commentId: M:Bunit.TestServiceProvider.AddFallbackServiceProvider(System.IServiceProvider)
+  fullName: Bunit.TestServiceProvider.AddFallbackServiceProvider(System.IServiceProvider)
+  nameWithType: TestServiceProvider.AddFallbackServiceProvider(IServiceProvider)
+- uid: Bunit.TestServiceProvider.AddFallbackServiceProvider*
+  name: AddFallbackServiceProvider
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_AddFallbackServiceProvider_
+  commentId: Overload:Bunit.TestServiceProvider.AddFallbackServiceProvider
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.AddFallbackServiceProvider
+  nameWithType: TestServiceProvider.AddFallbackServiceProvider
+- uid: Bunit.TestServiceProvider.Clear
+  name: Clear()
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Clear
+  commentId: M:Bunit.TestServiceProvider.Clear
+  fullName: Bunit.TestServiceProvider.Clear()
+  nameWithType: TestServiceProvider.Clear()
+- uid: Bunit.TestServiceProvider.Clear*
+  name: Clear
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Clear_
+  commentId: Overload:Bunit.TestServiceProvider.Clear
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.Clear
+  nameWithType: TestServiceProvider.Clear
+- uid: Bunit.TestServiceProvider.Contains(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  name: Contains(ServiceDescriptor)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Contains_Microsoft_Extensions_DependencyInjection_ServiceDescriptor_
+  commentId: M:Bunit.TestServiceProvider.Contains(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  fullName: Bunit.TestServiceProvider.Contains(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  nameWithType: TestServiceProvider.Contains(ServiceDescriptor)
+- uid: Bunit.TestServiceProvider.Contains*
+  name: Contains
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Contains_
+  commentId: Overload:Bunit.TestServiceProvider.Contains
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.Contains
+  nameWithType: TestServiceProvider.Contains
+- uid: Bunit.TestServiceProvider.CopyTo(Microsoft.Extensions.DependencyInjection.ServiceDescriptor[],System.Int32)
+  name: CopyTo(ServiceDescriptor[], int)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_CopyTo_Microsoft_Extensions_DependencyInjection_ServiceDescriptor___System_Int32_
+  commentId: M:Bunit.TestServiceProvider.CopyTo(Microsoft.Extensions.DependencyInjection.ServiceDescriptor[],System.Int32)
+  name.vb: CopyTo(ServiceDescriptor(), Integer)
+  fullName: Bunit.TestServiceProvider.CopyTo(Microsoft.Extensions.DependencyInjection.ServiceDescriptor[], int)
+  fullName.vb: Bunit.TestServiceProvider.CopyTo(Microsoft.Extensions.DependencyInjection.ServiceDescriptor(), Integer)
+  nameWithType: TestServiceProvider.CopyTo(ServiceDescriptor[], int)
+  nameWithType.vb: TestServiceProvider.CopyTo(ServiceDescriptor(), Integer)
+- uid: Bunit.TestServiceProvider.CopyTo*
+  name: CopyTo
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_CopyTo_
+  commentId: Overload:Bunit.TestServiceProvider.CopyTo
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.CopyTo
+  nameWithType: TestServiceProvider.CopyTo
+- uid: Bunit.TestServiceProvider.Count
+  name: Count
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Count
+  commentId: P:Bunit.TestServiceProvider.Count
+  fullName: Bunit.TestServiceProvider.Count
+  nameWithType: TestServiceProvider.Count
+- uid: Bunit.TestServiceProvider.Count*
+  name: Count
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Count_
+  commentId: Overload:Bunit.TestServiceProvider.Count
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.Count
+  nameWithType: TestServiceProvider.Count
+- uid: Bunit.TestServiceProvider.Dispose
+  name: Dispose()
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Dispose
+  commentId: M:Bunit.TestServiceProvider.Dispose
+  fullName: Bunit.TestServiceProvider.Dispose()
+  nameWithType: TestServiceProvider.Dispose()
+- uid: Bunit.TestServiceProvider.Dispose*
+  name: Dispose
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Dispose_
+  commentId: Overload:Bunit.TestServiceProvider.Dispose
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.Dispose
+  nameWithType: TestServiceProvider.Dispose
+- uid: Bunit.TestServiceProvider.DisposeAsync
+  name: DisposeAsync()
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_DisposeAsync
+  commentId: M:Bunit.TestServiceProvider.DisposeAsync
+  fullName: Bunit.TestServiceProvider.DisposeAsync()
+  nameWithType: TestServiceProvider.DisposeAsync()
+- uid: Bunit.TestServiceProvider.DisposeAsync*
+  name: DisposeAsync
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_DisposeAsync_
+  commentId: Overload:Bunit.TestServiceProvider.DisposeAsync
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.DisposeAsync
+  nameWithType: TestServiceProvider.DisposeAsync
+- uid: Bunit.TestServiceProvider.GetEnumerator
+  name: GetEnumerator()
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_GetEnumerator
+  commentId: M:Bunit.TestServiceProvider.GetEnumerator
+  fullName: Bunit.TestServiceProvider.GetEnumerator()
+  nameWithType: TestServiceProvider.GetEnumerator()
+- uid: Bunit.TestServiceProvider.GetEnumerator*
+  name: GetEnumerator
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_GetEnumerator_
+  commentId: Overload:Bunit.TestServiceProvider.GetEnumerator
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.GetEnumerator
+  nameWithType: TestServiceProvider.GetEnumerator
+- uid: Bunit.TestServiceProvider.GetKeyedService(System.Type,System.Object)
+  name: GetKeyedService(Type, object)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_GetKeyedService_System_Type_System_Object_
+  commentId: M:Bunit.TestServiceProvider.GetKeyedService(System.Type,System.Object)
+  name.vb: GetKeyedService(Type, Object)
+  fullName: Bunit.TestServiceProvider.GetKeyedService(System.Type, object)
+  fullName.vb: Bunit.TestServiceProvider.GetKeyedService(System.Type, Object)
+  nameWithType: TestServiceProvider.GetKeyedService(Type, object)
+  nameWithType.vb: TestServiceProvider.GetKeyedService(Type, Object)
+- uid: Bunit.TestServiceProvider.GetKeyedService*
+  name: GetKeyedService
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_GetKeyedService_
+  commentId: Overload:Bunit.TestServiceProvider.GetKeyedService
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.GetKeyedService
+  nameWithType: TestServiceProvider.GetKeyedService
+- uid: Bunit.TestServiceProvider.GetRequiredKeyedService(System.Type,System.Object)
+  name: GetRequiredKeyedService(Type, object)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_GetRequiredKeyedService_System_Type_System_Object_
+  commentId: M:Bunit.TestServiceProvider.GetRequiredKeyedService(System.Type,System.Object)
+  name.vb: GetRequiredKeyedService(Type, Object)
+  fullName: Bunit.TestServiceProvider.GetRequiredKeyedService(System.Type, object)
+  fullName.vb: Bunit.TestServiceProvider.GetRequiredKeyedService(System.Type, Object)
+  nameWithType: TestServiceProvider.GetRequiredKeyedService(Type, object)
+  nameWithType.vb: TestServiceProvider.GetRequiredKeyedService(Type, Object)
+- uid: Bunit.TestServiceProvider.GetRequiredKeyedService*
+  name: GetRequiredKeyedService
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_GetRequiredKeyedService_
+  commentId: Overload:Bunit.TestServiceProvider.GetRequiredKeyedService
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.GetRequiredKeyedService
+  nameWithType: TestServiceProvider.GetRequiredKeyedService
+- uid: Bunit.TestServiceProvider.GetService(System.Type)
+  name: GetService(Type)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_GetService_System_Type_
+  commentId: M:Bunit.TestServiceProvider.GetService(System.Type)
+  fullName: Bunit.TestServiceProvider.GetService(System.Type)
+  nameWithType: TestServiceProvider.GetService(Type)
+- uid: Bunit.TestServiceProvider.GetService*
+  name: GetService
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_GetService_
+  commentId: Overload:Bunit.TestServiceProvider.GetService
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.GetService
+  nameWithType: TestServiceProvider.GetService
+- uid: Bunit.TestServiceProvider.GetService``1
+  name: GetService<TService>()
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_GetService__1
+  commentId: M:Bunit.TestServiceProvider.GetService``1
+  name.vb: GetService(Of TService)()
+  fullName: Bunit.TestServiceProvider.GetService<TService>()
+  fullName.vb: Bunit.TestServiceProvider.GetService(Of TService)()
+  nameWithType: TestServiceProvider.GetService<TService>()
+  nameWithType.vb: TestServiceProvider.GetService(Of TService)()
+- uid: Bunit.TestServiceProvider.IndexOf(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  name: IndexOf(ServiceDescriptor)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_IndexOf_Microsoft_Extensions_DependencyInjection_ServiceDescriptor_
+  commentId: M:Bunit.TestServiceProvider.IndexOf(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  fullName: Bunit.TestServiceProvider.IndexOf(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  nameWithType: TestServiceProvider.IndexOf(ServiceDescriptor)
+- uid: Bunit.TestServiceProvider.IndexOf*
+  name: IndexOf
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_IndexOf_
+  commentId: Overload:Bunit.TestServiceProvider.IndexOf
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.IndexOf
+  nameWithType: TestServiceProvider.IndexOf
+- uid: Bunit.TestServiceProvider.InitializeProvider
+  name: InitializeProvider()
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_InitializeProvider
+  commentId: M:Bunit.TestServiceProvider.InitializeProvider
+  fullName: Bunit.TestServiceProvider.InitializeProvider()
+  nameWithType: TestServiceProvider.InitializeProvider()
+- uid: Bunit.TestServiceProvider.InitializeProvider*
+  name: InitializeProvider
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_InitializeProvider_
+  commentId: Overload:Bunit.TestServiceProvider.InitializeProvider
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.InitializeProvider
+  nameWithType: TestServiceProvider.InitializeProvider
+- uid: Bunit.TestServiceProvider.InnerProvider
+  name: InnerProvider
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_InnerProvider
+  commentId: P:Bunit.TestServiceProvider.InnerProvider
+  fullName: Bunit.TestServiceProvider.InnerProvider
+  nameWithType: TestServiceProvider.InnerProvider
+- uid: Bunit.TestServiceProvider.InnerProvider*
+  name: InnerProvider
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_InnerProvider_
+  commentId: Overload:Bunit.TestServiceProvider.InnerProvider
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.InnerProvider
+  nameWithType: TestServiceProvider.InnerProvider
+- uid: Bunit.TestServiceProvider.Insert(System.Int32,Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  name: Insert(int, ServiceDescriptor)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Insert_System_Int32_Microsoft_Extensions_DependencyInjection_ServiceDescriptor_
+  commentId: M:Bunit.TestServiceProvider.Insert(System.Int32,Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  name.vb: Insert(Integer, ServiceDescriptor)
+  fullName: Bunit.TestServiceProvider.Insert(int, Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  fullName.vb: Bunit.TestServiceProvider.Insert(Integer, Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  nameWithType: TestServiceProvider.Insert(int, ServiceDescriptor)
+  nameWithType.vb: TestServiceProvider.Insert(Integer, ServiceDescriptor)
+- uid: Bunit.TestServiceProvider.Insert*
+  name: Insert
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Insert_
+  commentId: Overload:Bunit.TestServiceProvider.Insert
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.Insert
+  nameWithType: TestServiceProvider.Insert
+- uid: Bunit.TestServiceProvider.IsProviderInitialized
+  name: IsProviderInitialized
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_IsProviderInitialized
+  commentId: P:Bunit.TestServiceProvider.IsProviderInitialized
+  fullName: Bunit.TestServiceProvider.IsProviderInitialized
+  nameWithType: TestServiceProvider.IsProviderInitialized
+- uid: Bunit.TestServiceProvider.IsProviderInitialized*
+  name: IsProviderInitialized
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_IsProviderInitialized_
+  commentId: Overload:Bunit.TestServiceProvider.IsProviderInitialized
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.IsProviderInitialized
+  nameWithType: TestServiceProvider.IsProviderInitialized
+- uid: Bunit.TestServiceProvider.IsReadOnly
+  name: IsReadOnly
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_IsReadOnly
+  commentId: P:Bunit.TestServiceProvider.IsReadOnly
+  fullName: Bunit.TestServiceProvider.IsReadOnly
+  nameWithType: TestServiceProvider.IsReadOnly
+- uid: Bunit.TestServiceProvider.IsReadOnly*
+  name: IsReadOnly
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_IsReadOnly_
+  commentId: Overload:Bunit.TestServiceProvider.IsReadOnly
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.IsReadOnly
+  nameWithType: TestServiceProvider.IsReadOnly
+- uid: Bunit.TestServiceProvider.Item(System.Int32)
+  name: this[int]
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Item_System_Int32_
+  commentId: P:Bunit.TestServiceProvider.Item(System.Int32)
+  name.vb: this[](Integer)
+  fullName: Bunit.TestServiceProvider.this[int]
+  fullName.vb: Bunit.TestServiceProvider.this[](Integer)
+  nameWithType: TestServiceProvider.this[int]
+  nameWithType.vb: TestServiceProvider.this[](Integer)
+- uid: Bunit.TestServiceProvider.Item*
+  name: this
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Item_
+  commentId: Overload:Bunit.TestServiceProvider.Item
+  isSpec: "True"
+  name.vb: this[]
+  fullName: Bunit.TestServiceProvider.this
+  fullName.vb: Bunit.TestServiceProvider.this[]
+  nameWithType: TestServiceProvider.this
+  nameWithType.vb: TestServiceProvider.this[]
+- uid: Bunit.TestServiceProvider.Options
+  name: Options
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Options
+  commentId: P:Bunit.TestServiceProvider.Options
+  fullName: Bunit.TestServiceProvider.Options
+  nameWithType: TestServiceProvider.Options
+- uid: Bunit.TestServiceProvider.Options*
+  name: Options
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Options_
+  commentId: Overload:Bunit.TestServiceProvider.Options
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.Options
+  nameWithType: TestServiceProvider.Options
+- uid: Bunit.TestServiceProvider.Remove(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  name: Remove(ServiceDescriptor)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Remove_Microsoft_Extensions_DependencyInjection_ServiceDescriptor_
+  commentId: M:Bunit.TestServiceProvider.Remove(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  fullName: Bunit.TestServiceProvider.Remove(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)
+  nameWithType: TestServiceProvider.Remove(ServiceDescriptor)
+- uid: Bunit.TestServiceProvider.Remove*
+  name: Remove
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_Remove_
+  commentId: Overload:Bunit.TestServiceProvider.Remove
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.Remove
+  nameWithType: TestServiceProvider.Remove
+- uid: Bunit.TestServiceProvider.RemoveAt(System.Int32)
+  name: RemoveAt(int)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_RemoveAt_System_Int32_
+  commentId: M:Bunit.TestServiceProvider.RemoveAt(System.Int32)
+  name.vb: RemoveAt(Integer)
+  fullName: Bunit.TestServiceProvider.RemoveAt(int)
+  fullName.vb: Bunit.TestServiceProvider.RemoveAt(Integer)
+  nameWithType: TestServiceProvider.RemoveAt(int)
+  nameWithType.vb: TestServiceProvider.RemoveAt(Integer)
+- uid: Bunit.TestServiceProvider.RemoveAt*
+  name: RemoveAt
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_RemoveAt_
+  commentId: Overload:Bunit.TestServiceProvider.RemoveAt
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.RemoveAt
+  nameWithType: TestServiceProvider.RemoveAt
+- uid: Bunit.TestServiceProvider.UseServiceProviderFactory(System.Func{Microsoft.Extensions.DependencyInjection.IServiceCollection,System.IServiceProvider})
+  name: UseServiceProviderFactory(Func<IServiceCollection, IServiceProvider>)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_UseServiceProviderFactory_System_Func_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_IServiceProvider__
+  commentId: M:Bunit.TestServiceProvider.UseServiceProviderFactory(System.Func{Microsoft.Extensions.DependencyInjection.IServiceCollection,System.IServiceProvider})
+  name.vb: UseServiceProviderFactory(Func(Of IServiceCollection, IServiceProvider))
+  fullName: Bunit.TestServiceProvider.UseServiceProviderFactory(System.Func<Microsoft.Extensions.DependencyInjection.IServiceCollection, System.IServiceProvider>)
+  fullName.vb: Bunit.TestServiceProvider.UseServiceProviderFactory(System.Func(Of Microsoft.Extensions.DependencyInjection.IServiceCollection, System.IServiceProvider))
+  nameWithType: TestServiceProvider.UseServiceProviderFactory(Func<IServiceCollection, IServiceProvider>)
+  nameWithType.vb: TestServiceProvider.UseServiceProviderFactory(Func(Of IServiceCollection, IServiceProvider))
+- uid: Bunit.TestServiceProvider.UseServiceProviderFactory*
+  name: UseServiceProviderFactory
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_UseServiceProviderFactory_
+  commentId: Overload:Bunit.TestServiceProvider.UseServiceProviderFactory
+  isSpec: "True"
+  fullName: Bunit.TestServiceProvider.UseServiceProviderFactory
+  nameWithType: TestServiceProvider.UseServiceProviderFactory
+- uid: Bunit.TestServiceProvider.UseServiceProviderFactory``1(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory{``0},System.Action{``0})
+  name: UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder>, Action<TContainerBuilder>)
+  href: api/Bunit.TestServiceProvider.html#Bunit_TestServiceProvider_UseServiceProviderFactory__1_Microsoft_Extensions_DependencyInjection_IServiceProviderFactory___0__System_Action___0__
+  commentId: M:Bunit.TestServiceProvider.UseServiceProviderFactory``1(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory{``0},System.Action{``0})
+  name.vb: UseServiceProviderFactory(Of TContainerBuilder)(IServiceProviderFactory(Of TContainerBuilder), Action(Of TContainerBuilder))
+  fullName: Bunit.TestServiceProvider.UseServiceProviderFactory<TContainerBuilder>(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TContainerBuilder>, System.Action<TContainerBuilder>)
+  fullName.vb: Bunit.TestServiceProvider.UseServiceProviderFactory(Of TContainerBuilder)(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory(Of TContainerBuilder), System.Action(Of TContainerBuilder))
+  nameWithType: TestServiceProvider.UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder>, Action<TContainerBuilder>)
+  nameWithType.vb: TestServiceProvider.UseServiceProviderFactory(Of TContainerBuilder)(IServiceProviderFactory(Of TContainerBuilder), Action(Of TContainerBuilder))
 - uid: FastMoq
   name: FastMoq
   href: api/FastMoq.html
@@ -7704,15 +8479,15 @@ references:
   fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementCheck
   nameWithType: IMockerBlazorTestHelpers<T>.SetElementCheck
   nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementCheck
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  href: api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  href: api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch*
   name: SetElementSwitch
   href: api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch_
@@ -7722,15 +8497,15 @@ references:
   fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementSwitch
   nameWithType: IMockerBlazorTestHelpers<T>.SetElementSwitch
   nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementSwitch
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  href: api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  href: api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(AngleSharp.Dom.IElement,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan})
   name: SetElementText(IElement, string, Func<bool>, TimeSpan?)
   href: api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_AngleSharp_Dom_IElement_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__
@@ -7740,15 +8515,15 @@ references:
   fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementText(AngleSharp.Dom.IElement, String, System.Func(Of Boolean), System.TimeSpan?)
   nameWithType: IMockerBlazorTestHelpers<T>.SetElementText(IElement, string, Func<bool>, TimeSpan?)
   nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementText(IElement, String, Func(Of Boolean), TimeSpan?)
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment?)
-  href: api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  href: api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText*
   name: SetElementText
   href: api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_
@@ -8480,15 +9255,15 @@ references:
   fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementCheck
   nameWithType: MockerBlazorTestBase<T>.SetElementCheck
   nameWithType.vb: MockerBlazorTestBase(Of T).SetElementCheck
-- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  href: api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
-  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType: MockerBlazorTestBase<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  href: api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
+  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  nameWithType: MockerBlazorTestBase<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch*
   name: SetElementSwitch
   href: api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementSwitch_
@@ -8498,15 +9273,15 @@ references:
   fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementSwitch
   nameWithType: MockerBlazorTestBase<T>.SetElementSwitch
   nameWithType.vb: MockerBlazorTestBase(Of T).SetElementSwitch
-- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  href: api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
-  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType: MockerBlazorTestBase<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  href: api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
+  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  nameWithType: MockerBlazorTestBase<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(AngleSharp.Dom.IElement,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan})
   name: SetElementText(IElement, string, Func<bool>, TimeSpan?)
   href: api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementText_AngleSharp_Dom_IElement_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__
@@ -8516,15 +9291,15 @@ references:
   fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementText(AngleSharp.Dom.IElement, String, System.Func(Of Boolean), System.TimeSpan?)
   nameWithType: MockerBlazorTestBase<T>.SetElementText(IElement, string, Func<bool>, TimeSpan?)
   nameWithType.vb: MockerBlazorTestBase(Of T).SetElementText(IElement, String, Func(Of Boolean), TimeSpan?)
-- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment?)
-  href: api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
-  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
-  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  nameWithType: MockerBlazorTestBase<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+- uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  href: api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  commentId: M:FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName: FastMoq.Web.Blazor.MockerBlazorTestBase<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
+  fullName.vb: FastMoq.Web.Blazor.MockerBlazorTestBase(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  nameWithType: MockerBlazorTestBase<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType.vb: MockerBlazorTestBase(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText*
   name: SetElementText
   href: api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementText_
@@ -8738,15 +9513,15 @@ references:
   commentId: T:FastMoq.Web.Blazor.Models.ComponentState
   fullName: FastMoq.Web.Blazor.Models.ComponentState
   nameWithType: ComponentState
-- uid: FastMoq.Web.Blazor.Models.ComponentState.#ctor(System.Object,Bunit.Rendering.TestRenderer)
-  name: ComponentState(object?, TestRenderer)
-  href: api/FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState__ctor_System_Object_Bunit_Rendering_TestRenderer_
-  commentId: M:FastMoq.Web.Blazor.Models.ComponentState.#ctor(System.Object,Bunit.Rendering.TestRenderer)
-  name.vb: New(Object, TestRenderer)
-  fullName: FastMoq.Web.Blazor.Models.ComponentState.ComponentState(object?, Bunit.Rendering.TestRenderer)
-  fullName.vb: FastMoq.Web.Blazor.Models.ComponentState.New(Object, Bunit.Rendering.TestRenderer)
-  nameWithType: ComponentState.ComponentState(object?, TestRenderer)
-  nameWithType.vb: ComponentState.New(Object, TestRenderer)
+- uid: FastMoq.Web.Blazor.Models.ComponentState.#ctor(System.Object,Bunit.Rendering.BunitRenderer,Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name: ComponentState(object?, BunitRenderer, IRenderedComponent<IComponent>?)
+  href: api/FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState__ctor_System_Object_Bunit_Rendering_BunitRenderer_Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  commentId: M:FastMoq.Web.Blazor.Models.ComponentState.#ctor(System.Object,Bunit.Rendering.BunitRenderer,Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name.vb: New(Object, BunitRenderer, IRenderedComponent(Of IComponent))
+  fullName: FastMoq.Web.Blazor.Models.ComponentState.ComponentState(object?, Bunit.Rendering.BunitRenderer, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
+  fullName.vb: FastMoq.Web.Blazor.Models.ComponentState.New(Object, Bunit.Rendering.BunitRenderer, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  nameWithType: ComponentState.ComponentState(object?, BunitRenderer, IRenderedComponent<IComponent>?)
+  nameWithType.vb: ComponentState.New(Object, BunitRenderer, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.Models.ComponentState.#ctor*
   name: ComponentState
   href: api/FastMoq.Web.Blazor.Models.ComponentState.html#FastMoq_Web_Blazor_Models_ComponentState__ctor_
@@ -8866,15 +9641,15 @@ references:
   fullName.vb: FastMoq.Web.Blazor.Models.ComponentState(Of T)
   nameWithType: ComponentState<T>
   nameWithType.vb: ComponentState(Of T)
-- uid: FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Object,Bunit.Rendering.TestRenderer)
-  name: ComponentState(object?, TestRenderer)
-  href: api/FastMoq.Web.Blazor.Models.ComponentState-1.html#FastMoq_Web_Blazor_Models_ComponentState_1__ctor_System_Object_Bunit_Rendering_TestRenderer_
-  commentId: M:FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Object,Bunit.Rendering.TestRenderer)
-  name.vb: New(Object, TestRenderer)
-  fullName: FastMoq.Web.Blazor.Models.ComponentState<T>.ComponentState(object?, Bunit.Rendering.TestRenderer)
-  fullName.vb: FastMoq.Web.Blazor.Models.ComponentState(Of T).New(Object, Bunit.Rendering.TestRenderer)
-  nameWithType: ComponentState<T>.ComponentState(object?, TestRenderer)
-  nameWithType.vb: ComponentState(Of T).New(Object, TestRenderer)
+- uid: FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Object,Bunit.Rendering.BunitRenderer,Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name: ComponentState(object?, BunitRenderer, IRenderedComponent<IComponent>?)
+  href: api/FastMoq.Web.Blazor.Models.ComponentState-1.html#FastMoq_Web_Blazor_Models_ComponentState_1__ctor_System_Object_Bunit_Rendering_BunitRenderer_Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
+  commentId: M:FastMoq.Web.Blazor.Models.ComponentState`1.#ctor(System.Object,Bunit.Rendering.BunitRenderer,Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  name.vb: New(Object, BunitRenderer, IRenderedComponent(Of IComponent))
+  fullName: FastMoq.Web.Blazor.Models.ComponentState<T>.ComponentState(object?, Bunit.Rendering.BunitRenderer, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
+  fullName.vb: FastMoq.Web.Blazor.Models.ComponentState(Of T).New(Object, Bunit.Rendering.BunitRenderer, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  nameWithType: ComponentState<T>.ComponentState(object?, BunitRenderer, IRenderedComponent<IComponent>?)
+  nameWithType.vb: ComponentState(Of T).New(Object, BunitRenderer, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.Models.ComponentState`1.#ctor*
   name: ComponentState
   href: api/FastMoq.Web.Blazor.Models.ComponentState-1.html#FastMoq_Web_Blazor_Models_ComponentState_1__ctor_
@@ -8902,6 +9677,130 @@ references:
   fullName.vb: FastMoq.Web.Blazor.Models.ComponentState(Of T).Component
   nameWithType: ComponentState<T>.Component
   nameWithType.vb: ComponentState(Of T).Component
+- uid: FastMoq.Web.Blazor.Models.RenderParameter
+  name: RenderParameter
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html
+  commentId: T:FastMoq.Web.Blazor.Models.RenderParameter
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter
+  nameWithType: RenderParameter
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.#ctor(System.String,System.Object,System.Boolean)
+  name: RenderParameter(string, object?, bool)
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter__ctor_System_String_System_Object_System_Boolean_
+  commentId: M:FastMoq.Web.Blazor.Models.RenderParameter.#ctor(System.String,System.Object,System.Boolean)
+  name.vb: New(String, Object, Boolean)
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.RenderParameter(string, object?, bool)
+  fullName.vb: FastMoq.Web.Blazor.Models.RenderParameter.New(String, Object, Boolean)
+  nameWithType: RenderParameter.RenderParameter(string, object?, bool)
+  nameWithType.vb: RenderParameter.New(String, Object, Boolean)
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.#ctor*
+  name: RenderParameter
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter__ctor_
+  commentId: Overload:FastMoq.Web.Blazor.Models.RenderParameter.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.RenderParameter
+  fullName.vb: FastMoq.Web.Blazor.Models.RenderParameter.New
+  nameWithType: RenderParameter.RenderParameter
+  nameWithType.vb: RenderParameter.New
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.Create(System.String,System.Object)
+  name: Create(string, object?)
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_Create_System_String_System_Object_
+  commentId: M:FastMoq.Web.Blazor.Models.RenderParameter.Create(System.String,System.Object)
+  name.vb: Create(String, Object)
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.Create(string, object?)
+  fullName.vb: FastMoq.Web.Blazor.Models.RenderParameter.Create(String, Object)
+  nameWithType: RenderParameter.Create(string, object?)
+  nameWithType.vb: RenderParameter.Create(String, Object)
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.Create*
+  name: Create
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_Create_
+  commentId: Overload:FastMoq.Web.Blazor.Models.RenderParameter.Create
+  isSpec: "True"
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.Create
+  nameWithType: RenderParameter.Create
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(System.String,System.Object)
+  name: CreateCascading(string, object?)
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_CreateCascading_System_String_System_Object_
+  commentId: M:FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(System.String,System.Object)
+  name.vb: CreateCascading(String, Object)
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(string, object?)
+  fullName.vb: FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading(String, Object)
+  nameWithType: RenderParameter.CreateCascading(string, object?)
+  nameWithType.vb: RenderParameter.CreateCascading(String, Object)
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading*
+  name: CreateCascading
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_CreateCascading_
+  commentId: Overload:FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading
+  isSpec: "True"
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.CreateCascading
+  nameWithType: RenderParameter.CreateCascading
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.IsCascadingValue
+  name: IsCascadingValue
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_IsCascadingValue
+  commentId: P:FastMoq.Web.Blazor.Models.RenderParameter.IsCascadingValue
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.IsCascadingValue
+  nameWithType: RenderParameter.IsCascadingValue
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.IsCascadingValue*
+  name: IsCascadingValue
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_IsCascadingValue_
+  commentId: Overload:FastMoq.Web.Blazor.Models.RenderParameter.IsCascadingValue
+  isSpec: "True"
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.IsCascadingValue
+  nameWithType: RenderParameter.IsCascadingValue
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.Name
+  name: Name
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_Name
+  commentId: P:FastMoq.Web.Blazor.Models.RenderParameter.Name
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.Name
+  nameWithType: RenderParameter.Name
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.Name*
+  name: Name
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_Name_
+  commentId: Overload:FastMoq.Web.Blazor.Models.RenderParameter.Name
+  isSpec: "True"
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.Name
+  nameWithType: RenderParameter.Name
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.Value
+  name: Value
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_Value
+  commentId: P:FastMoq.Web.Blazor.Models.RenderParameter.Value
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.Value
+  nameWithType: RenderParameter.Value
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.Value*
+  name: Value
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_Value_
+  commentId: Overload:FastMoq.Web.Blazor.Models.RenderParameter.Value
+  isSpec: "True"
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.Value
+  nameWithType: RenderParameter.Value
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.op_Implicit(System.ValueTuple{System.String,System.Object,System.Boolean})~FastMoq.Web.Blazor.Models.RenderParameter
+  name: implicit operator RenderParameter((string Name, object? Value, bool IsCascadingValue))
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_op_Implicit_System_ValueTuple_System_String_System_Object_System_Boolean___FastMoq_Web_Blazor_Models_RenderParameter
+  commentId: M:FastMoq.Web.Blazor.Models.RenderParameter.op_Implicit(System.ValueTuple{System.String,System.Object,System.Boolean})~FastMoq.Web.Blazor.Models.RenderParameter
+  name.vb: CType((Name As String, Value As Object, IsCascadingValue As Boolean))
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.implicit operator FastMoq.Web.Blazor.Models.RenderParameter((string Name, object? Value, bool IsCascadingValue))
+  fullName.vb: FastMoq.Web.Blazor.Models.RenderParameter.CType((Name As String, Value As Object, IsCascadingValue As Boolean))
+  nameWithType: RenderParameter.implicit operator RenderParameter((string Name, object? Value, bool IsCascadingValue))
+  nameWithType.vb: RenderParameter.CType((Name As String, Value As Object, IsCascadingValue As Boolean))
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.op_Implicit(System.ValueTuple{System.String,System.Object})~FastMoq.Web.Blazor.Models.RenderParameter
+  name: implicit operator RenderParameter((string Name, object? Value))
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_op_Implicit_System_ValueTuple_System_String_System_Object___FastMoq_Web_Blazor_Models_RenderParameter
+  commentId: M:FastMoq.Web.Blazor.Models.RenderParameter.op_Implicit(System.ValueTuple{System.String,System.Object})~FastMoq.Web.Blazor.Models.RenderParameter
+  name.vb: CType((Name As String, Value As Object))
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.implicit operator FastMoq.Web.Blazor.Models.RenderParameter((string Name, object? Value))
+  fullName.vb: FastMoq.Web.Blazor.Models.RenderParameter.CType((Name As String, Value As Object))
+  nameWithType: RenderParameter.implicit operator RenderParameter((string Name, object? Value))
+  nameWithType.vb: RenderParameter.CType((Name As String, Value As Object))
+- uid: FastMoq.Web.Blazor.Models.RenderParameter.op_Implicit*
+  name: implicit operator
+  href: api/FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_op_Implicit_
+  commentId: Overload:FastMoq.Web.Blazor.Models.RenderParameter.op_Implicit
+  isSpec: "True"
+  name.vb: CType
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter.implicit operator
+  fullName.vb: FastMoq.Web.Blazor.Models.RenderParameter.CType
+  nameWithType: RenderParameter.implicit operator
+  nameWithType.vb: RenderParameter.CType
 - uid: FastMoq.Web.Extensions
   name: FastMoq.Web.Extensions
   href: api/FastMoq.Web.Extensions.html

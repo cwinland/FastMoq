@@ -1,0 +1,43 @@
+@page "/orders-migration"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavManager
+
+<div class="orders-migration-page" data-accent="@Accent">
+    <h1>@Title</h1>
+    <p id="current-user">@CurrentUserName</p>
+
+    <div class="order-editor-list">
+        <OrderMigrationEditor EditorId="primary" InitialQuery="@PrimaryQuery" />
+        <OrderMigrationEditor EditorId="secondary" InitialQuery="@SecondaryQuery" />
+    </div>
+
+    <button id="review-orders" @onclick="NavigateToReview">Review orders</button>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "Orders";
+
+    [Parameter]
+    public string PrimaryQuery { get; set; } = string.Empty;
+
+    [Parameter]
+    public string SecondaryQuery { get; set; } = string.Empty;
+
+    [CascadingParameter(Name = "Accent")]
+    public string Accent { get; set; } = "Default";
+
+    private string CurrentUserName { get; set; } = "Anonymous";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        CurrentUserName = authenticationState.User.Identity?.Name ?? "Anonymous";
+    }
+
+    private void NavigateToReview()
+    {
+        NavManager.NavigateTo($"/orders/review?primary={Uri.EscapeDataString(PrimaryQuery)}");
+    }
+}

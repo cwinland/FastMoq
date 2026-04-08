@@ -36,7 +36,8 @@ namespace FastMoq.Models
 
         /// <inheritdoc />
         public DbContextMock(Expression<Func<TEntity>> newExpression, MockBehavior behavior = MockBehavior.Default) :
-            base(newExpression, behavior) { }
+            base(newExpression, behavior)
+        { }
 
         /// <inheritdoc />
         public DbContextMock(MockBehavior behavior, params object[] args) : base(behavior, args) { }
@@ -55,7 +56,7 @@ namespace FastMoq.Models
             addMockMethod.MakeGenericMethod(x).Invoke(mocks, [value, true, x.IsNotPublic]);
             var obj = value.Object;
 
-            var dbSetMock = (IDbSetMock)value;
+            var dbSetMock = (IDbSetMock) value;
             dbSetMock.SetupMockMethods();
 
             return obj;

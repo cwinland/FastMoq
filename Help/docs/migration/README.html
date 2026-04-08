@@ -83,6 +83,7 @@
 <li><a href="../getting-started/provider-selection.html">Provider Selection and Setup</a>: open this next when the suite still uses provider-specific APIs or you need to understand why a package install did not change runtime behavior.</li>
 <li><a href="../getting-started/provider-capabilities.html">Provider Capabilities</a>: open this when the question is &quot;does this provider support the test shape I have?&quot;</li>
 <li><a href="provider-and-compatibility.html">Provider, package, and compatibility guidance</a>: open this for migration-specific bootstrap snippets, package-to-namespace mapping, and Moq-to-NSubstitute arrangement translation.</li>
+<li><a href="bunit-and-blazor-testing.html">bUnit and Blazor test migration</a>: open this when the churn is in <code>MockerBlazorTestBase&lt;T&gt;</code>, <code>RenderParameters</code>, nested rendered-component helpers, authorization helpers, or bUnit upgrade fallout.</li>
 <li><a href="framework-and-web-helpers.html">Framework and web helper migration</a>: open this for shared helper rewrites, keyed-service setup, Azure Functions <code>InstanceServices</code>, and <code>FastMoq.Web</code> migration guidance.</li>
 <li><a href="api-replacements-and-exceptions.html">API replacements and migration exceptions</a>: open this for old-to-new replacements, compatibility-only edges, and worked migration examples.</li>
 <li><a href="../samples/testing-examples.html">Executable Testing Examples</a>: open this when you want repo-backed examples of the preferred target style.</li>
@@ -91,6 +92,7 @@
 <p>Quick routing:</p>
 <ul>
 <li>If the migration fails because provider-specific APIs do not behave as expected, go to <a href="../getting-started/provider-selection.html">Provider Selection and Setup</a> and <a href="provider-and-compatibility.html">Provider, package, and compatibility guidance</a>.</li>
+<li>If the migration churn is in <code>MockerBlazorTestBase&lt;T&gt;</code>, nested component targeting, render parameters, authorization helpers, or navigation assertions after the bUnit upgrade, go to <a href="bunit-and-blazor-testing.html">bUnit and Blazor test migration</a>.</li>
 <li>If the churn is in controller helpers, principals, <code>HttpContext</code>, <code>IHttpContextAccessor</code>, keyed DI, or framework service-provider shims, go to <a href="framework-and-web-helpers.html">Framework and web helper migration</a>.</li>
 <li>If you are replacing a specific API such as <code>Initialize&lt;T&gt;(...)</code>, <code>VerifyLogger(...)</code>, <code>Strict</code>, <code>MockOptional</code>, or <code>GetMock&lt;T&gt;()</code>, go to <a href="api-replacements-and-exceptions.html">API replacements and migration exceptions</a>.</li>
 <li>If you want a reusable AI workflow instead of writing prompts from scratch, go to <a href="copilot-prompts.html">Copilot migration prompts</a>.</li>
@@ -279,6 +281,7 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
 <p>Open these only when you hit the relevant problem. That keeps this page short without dropping the needed detail.</p>
 <ul>
 <li><a href="provider-and-compatibility.html">Provider, package, and compatibility guidance</a>: migration-specific provider bootstrap, package-to-namespace mapping, and Moq-to-NSubstitute arrangement translation.</li>
+<li><a href="bunit-and-blazor-testing.html">bUnit and Blazor test migration</a>: package-level and helper-level migration guidance for <code>FastMoq.Web</code>, <code>MockerBlazorTestBase&lt;T&gt;</code>, <code>RenderParameter</code>, nested rendered-component helpers, authorization wrappers, and navigation assertions.</li>
 <li><a href="framework-and-web-helpers.html">Framework and web helper migration</a>: shared-helper rewrites, keyed DI, Azure Functions <code>InstanceServices</code>, <code>FastMoq.Web</code> helper usage, principals, and controller-context migration.</li>
 <li><a href="api-replacements-and-exceptions.html">API replacements and migration exceptions</a>: old-to-new API guidance for <code>Initialize&lt;T&gt;(...)</code>, HTTP helpers, <code>VerifyLogger(...)</code>, <code>TimesSpec</code>, <code>Strict</code>, <code>GetMock&lt;T&gt;()</code>, <code>AddType(...)</code>, <code>DbContext</code>, <code>MockOptional</code>, provider-first access, and expected raw-Moq pockets.</li>
 <li><a href="copilot-prompts.html">Copilot migration prompts</a>: reusable prompt entry points for staged migration and stricter obsolete-surface cleanup.</li>
@@ -330,7 +333,7 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 18:28 UTC</span></div>
       
           </div>
         </div>

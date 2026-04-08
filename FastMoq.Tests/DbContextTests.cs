@@ -158,9 +158,9 @@ namespace FastMoq.Tests
         public void Component_DbSetOperations_ShouldTrackAddedEntitiesAcrossNamedSets()
         {
             Component.MyDbUpdateMethod();
-            Component.Set<MockDataModel>().Add(new() { Name="test1" }); // This brings back the second one because it was set twice and last one wins.
-            Component.Set<MockDataModel>("MyDbSetData2").Add(new() { Name="Test2" });
-            Component.MyDbSetData2.Add(new () { Name="Test3" });
+            Component.Set<MockDataModel>().Add(new() { Name = "test1" }); // This brings back the second one because it was set twice and last one wins.
+            Component.Set<MockDataModel>("MyDbSetData2").Add(new() { Name = "Test2" });
+            Component.MyDbSetData2.Add(new() { Name = "Test3" });
             Component.MyDbSetData2.Should().HaveCount(3);
         }
 
@@ -170,9 +170,9 @@ namespace FastMoq.Tests
             var mockDbContext = Mocks.GetMockDbContext<MyDbContext>();
 
             mockDbContext.Object.MyDbUpdateMethod();
-            mockDbContext.Object.Set<MockDataModel>().Add(new() { Name="test1" });  // This brings back the second one because it was set twice and last one wins.
-            mockDbContext.Object.Set<MockDataModel>("MyDbSetData2").Add(new() { Name="Test2" });
-            mockDbContext.Object.MyDbSetData2.Add(new () { Name="Test3" });
+            mockDbContext.Object.Set<MockDataModel>().Add(new() { Name = "test1" });  // This brings back the second one because it was set twice and last one wins.
+            mockDbContext.Object.Set<MockDataModel>("MyDbSetData2").Add(new() { Name = "Test2" });
+            mockDbContext.Object.MyDbSetData2.Add(new() { Name = "Test3" });
             mockDbContext.Object.MyDbSetData2.Should().HaveCount(3);
         }
 

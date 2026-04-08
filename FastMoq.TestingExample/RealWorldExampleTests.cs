@@ -1,14 +1,14 @@
+using FastMoq.Extensions;
+using FastMoq.Providers;
+using FluentAssertions;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Threading;
 using System.Threading.Tasks;
-using FastMoq.Extensions;
-using FastMoq.Providers;
-using FluentAssertions;
-using Microsoft.Extensions.Logging;
-using Moq;
 using Xunit;
 
 namespace FastMoq.TestingExample
@@ -204,7 +204,7 @@ namespace FastMoq.TestingExample
                 {
                     OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
                 },
-                (Func<ILogger?, IFileSystem?, OptionalDependencyProbe>)factory.Create);
+                (Func<ILogger?, IFileSystem?, OptionalDependencyProbe>) factory.Create);
 
             probe.Logger.Should().NotBeNull();
             probe.FileSystem.Should().NotBeNull();

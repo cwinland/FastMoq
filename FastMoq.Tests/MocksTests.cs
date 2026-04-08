@@ -177,7 +177,7 @@ namespace FastMoq.Tests
         public void Create_WithMapInstance()
         {
             // Create Random number.
-            var number = (double)RandomNumberGenerator.GetInt32(1, 100);
+            var number = (double) RandomNumberGenerator.GetInt32(1, 100);
 
             // Add Mock Mapping, demonstrating that the number doesn't get used until CreateInstance is called.
             Mocks.AddType<ITestClassDouble, TestClassDouble2>(_ => new TestClassDouble2
@@ -770,7 +770,7 @@ namespace FastMoq.Tests
             var o = Mocks.CreateInstance<TestClassOne>();
             o.Should().BeEquivalentTo(t);
             Mocks.typeMap.Clear();
-            Mocks.AddFileSystemAbstractionMapping(); 
+            Mocks.AddFileSystemAbstractionMapping();
             Mocks.AddType(typeof(TestClassOne), typeof(TestClassOne), _ => Mocks.CreateInstance<TestClassOne>());
             var t2 = GetTypeMapOf<TestClassOne>().Value.CreateFunc.Invoke(null);
             t.Should().BeEquivalentTo(t2);
@@ -1433,7 +1433,7 @@ namespace FastMoq.Tests
             var probe = Mocks.CallMethod<OptionalParameterProbe>(new InvocationOptions
             {
                 OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
-            }, (Func<ILogger?, IFileSystem?, OptionalParameterProbe>)CreateOptionalParameterProbe);
+            }, (Func<ILogger?, IFileSystem?, OptionalParameterProbe>) CreateOptionalParameterProbe);
 
             probe.Logger.Should().NotBeNull();
             probe.FileSystem.Should().NotBeNull();
@@ -1449,7 +1449,7 @@ namespace FastMoq.Tests
             var probe = Mocks.CallMethod<OptionalParameterProbe>(new InvocationOptions
             {
                 OptionalParameterResolution = OptionalParameterResolutionMode.UseDefaultOrNull,
-            }, (Func<ILogger?, IFileSystem?, OptionalParameterProbe>)CreateOptionalParameterProbe);
+            }, (Func<ILogger?, IFileSystem?, OptionalParameterProbe>) CreateOptionalParameterProbe);
 
             probe.Logger.Should().BeNull();
             probe.FileSystem.Should().BeNull();
@@ -1831,7 +1831,7 @@ namespace FastMoq.Tests
         public void AddType_ShouldHaveValues3_WhenOptionalResolutionResolvesViaMocker()
         {
 #pragma warning disable CS0618 // Intentional compatibility coverage for deprecated context-based AddType overload.
-            Mocks.AddType((a,b) =>
+            Mocks.AddType((a, b) =>
             {
                 if (b is ParameterInfo info)
                 {

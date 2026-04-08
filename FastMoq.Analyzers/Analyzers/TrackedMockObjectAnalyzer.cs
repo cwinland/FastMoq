@@ -1,8 +1,8 @@
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Collections.Immutable;
 
 namespace FastMoq.Analyzers.Analyzers
 {
@@ -20,7 +20,7 @@ namespace FastMoq.Analyzers.Analyzers
 
         private static void AnalyzeMemberAccess(SyntaxNodeAnalysisContext context)
         {
-            var memberAccess = (MemberAccessExpressionSyntax)context.Node;
+            var memberAccess = (MemberAccessExpressionSyntax) context.Node;
             if (memberAccess.Name.Identifier.ValueText != "Object")
             {
                 return;

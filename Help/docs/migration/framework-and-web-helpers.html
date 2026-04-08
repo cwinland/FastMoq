@@ -74,6 +74,7 @@
 
 <p>This page collects the migration guidance that tends to live in shared helpers, framework-specific test plumbing, and <code>FastMoq.Web</code> setup rather than in individual test methods.</p>
 <p>Open this page when the highest-churn migration work is in base classes, controller helpers, principals, <code>HttpContext</code>, keyed DI, or service-provider shims.</p>
+<p>If the migration churn is specifically in Blazor component tests, <code>MockerBlazorTestBase&lt;T&gt;</code>, <code>RenderParameters</code>, nested component targeting, or bUnit package fallout, use <a href="bunit-and-blazor-testing.html">bUnit and Blazor test migration</a> first and come back here for the broader web-helper and framework-helper cleanup.</p>
 <h2 id="shared-test-helpers-first">Shared test helpers first</h2>
 <p>Before rewriting leaf tests, inspect shared base classes, helper wrappers, and test utilities first.</p>
 <p>In mature suites, the highest-leverage migration changes often live there rather than in individual test methods.</p>
@@ -119,6 +120,7 @@ Mocks.GetOrCreateMock&lt;FunctionContext&gt;()
 <p>Avoid helpers that return one object such as <code>ILoggerFactory</code> for every <code>GetService(Type)</code> request. Those shims can let the suite keep running while hiding cast failures for typed services such as <code>IOptions&lt;WorkerOptions&gt;</code>.</p>
 <h2 id="web-test-helpers">Web test helpers</h2>
 <p>For controller tests, request-driven tests, and <code>IHttpContextAccessor</code>-driven tests, prefer the <code>FastMoq.Web</code> helpers instead of continuing to hand-roll local request and principal setup.</p>
+<p>For Blazor component tests, prefer the dedicated <a href="bunit-and-blazor-testing.html">bUnit and Blazor test migration</a> guide. This page stays focused on HTTP, controller, principal, and general framework-helper migration rather than component-rendering API changes.</p>
 <p>Package note:</p>
 <ul>
 <li>if the test project references the aggregate <code>FastMoq</code> package, these helpers are already available</li>
@@ -255,7 +257,7 @@ public class OrdersControllerClaimTests : MockerTestBase&lt;OrdersController&gt;
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 18:28 UTC</span></div>
       
           </div>
         </div>

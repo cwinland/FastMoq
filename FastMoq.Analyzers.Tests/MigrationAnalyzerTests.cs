@@ -1,8 +1,8 @@
-using System.Linq;
-using System.Threading.Tasks;
 using FastMoq.Analyzers;
 using FastMoq.Analyzers.Analyzers;
 using FastMoq.Analyzers.CodeFixes;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FastMoq.Analyzers.Tests

@@ -6,6 +6,7 @@ items:
   children:
   - FastMoq.Web.Blazor.Models.ComponentState
   - FastMoq.Web.Blazor.Models.ComponentState`1
+  - FastMoq.Web.Blazor.Models.RenderParameter
   langs:
   - csharp
   - vb
@@ -48,6 +49,13 @@ references:
   name: ComponentState
   nameWithType: ComponentState
   fullName: FastMoq.Web.Blazor.Models.ComponentState
+- uid: FastMoq.Web.Blazor.Models.RenderParameter
+  commentId: T:FastMoq.Web.Blazor.Models.RenderParameter
+  parent: FastMoq.Web.Blazor.Models
+  href: FastMoq.Web.Blazor.Models.RenderParameter.html
+  name: RenderParameter
+  nameWithType: RenderParameter
+  fullName: FastMoq.Web.Blazor.Models.RenderParameter
 - uid: FastMoq.Web.Blazor.Models
   commentId: N:FastMoq.Web.Blazor.Models
   href: FastMoq.html

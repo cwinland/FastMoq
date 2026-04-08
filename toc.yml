@@ -26,6 +26,8 @@
       href: docs/migration/README.md
     - name: Provider and compatibility guidance
       href: docs/migration/provider-and-compatibility.md
+    - name: bUnit and Blazor test migration
+      href: docs/migration/bunit-and-blazor-testing.md
     - name: Framework and web helper migration
       href: docs/migration/framework-and-web-helpers.md
     - name: API replacements and migration exceptions

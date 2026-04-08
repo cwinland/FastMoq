@@ -1,7 +1,7 @@
+using FastMoq.Providers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FastMoq.Providers;
 
 namespace FastMoq.Tests
 {

@@ -32,6 +32,90 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Bunit.TestAuthorizationExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bunit.TestAuthorizationExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bunit.TestAuthorizationExtensions",
+      "Summary": "<p sourcefile=\"api/Bunit.TestAuthorizationExtensions.yml\" sourcestartlinenumber=\"1\">Compatibility extensions that preserve bUnit 1.x helper names used by FastMoq.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bunit.TestDoubles.FakeNavigationManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bunit.TestDoubles.FakeNavigationManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bunit.TestDoubles.FakeNavigationManager",
+      "Summary": "<p sourcefile=\"api/Bunit.TestDoubles.FakeNavigationManager.yml\" sourcestartlinenumber=\"1\">Backward-compatible wrapper around <xref href=\"Bunit.TestDoubles.BunitNavigationManager\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bunit.TestDoubles.TestAuthorizationContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bunit.TestDoubles.TestAuthorizationContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bunit.TestDoubles.TestAuthorizationContext",
+      "Summary": "<p sourcefile=\"api/Bunit.TestDoubles.TestAuthorizationContext.yml\" sourcestartlinenumber=\"1\">Backward-compatible wrapper around <xref href=\"Bunit.TestDoubles.BunitAuthorizationContext\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bunit.TestDoubles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bunit.TestDoubles.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bunit.TestDoubles",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bunit.TestServiceProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bunit.TestServiceProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bunit.TestServiceProvider",
+      "Summary": "<p sourcefile=\"api/Bunit.TestServiceProvider.yml\" sourcestartlinenumber=\"1\">Backward-compatible wrapper around <xref href=\"Bunit.BunitServiceProvider\" data-throw-if-not-resolved=\"false\"></xref> for FastMoq Blazor helpers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bunit.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bunit.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bunit",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/FastMoq.BuiltInTypeResolutionFlags.yml",
       "output": {
         ".html": {
@@ -1050,7 +1134,21 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Web.Blazor.Models.ComponentState",
-      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.Models.ComponentState.yml\" sourcestartlinenumber=\"1\">Class ComponentState.\nImplements the <xref href=\"FastMoq.Web.Blazor.Models.ComponentState\" data-throw-if-not-resolved=\"false\"></xref></p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.Models.ComponentState.yml\" sourcestartlinenumber=\"1\">Wrapper around the renderer state used by FastMoq's Blazor helpers.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Web.Blazor.Models.RenderParameter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Web.Blazor.Models.RenderParameter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Web.Blazor.Models.RenderParameter",
+      "Summary": "<p sourcefile=\"api/FastMoq.Web.Blazor.Models.RenderParameter.yml\" sourcestartlinenumber=\"1\">Represents a render parameter used by <xref href=\"FastMoq.Web.Blazor.MockerBlazorTestBase%601\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1279,6 +1377,16 @@
       "output": {
         ".html": {
           "relative_path": "docs/migration/api-replacements-and-exceptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/migration/bunit-and-blazor-testing.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/migration/bunit-and-blazor-testing.html"
         }
       },
       "version": ""

@@ -11,7 +11,8 @@ using FastMoq.Tests.Blazor.Pages;
 
 namespace FastMoq.Tests.Web
 {
-    public class BlazorWeatherTests : MockerBlazorTestBase<FetchData> {
+    public class BlazorWeatherTests : MockerBlazorTestBase<FetchData>
+    {
 
         public BlazorWeatherTests() : base(true) { }
 

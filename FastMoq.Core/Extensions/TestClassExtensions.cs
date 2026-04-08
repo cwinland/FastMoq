@@ -1,5 +1,5 @@
-﻿using FastMoq.Models;
-using FastMoq.Internal.MoqCompatibility;
+﻿using FastMoq.Internal.MoqCompatibility;
+using FastMoq.Models;
 using FastMoq.Providers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;

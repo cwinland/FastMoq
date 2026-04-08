@@ -1,17 +1,17 @@
-using System;
-using System.IO.Abstractions;
-using System.Linq.Expressions;
-using System.Net.Http;
 using FastMoq.Extensions;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
 using FastMoq.Providers.NSubstituteProvider;
 using FastMoq.Providers.ReflectionProvider;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using System;
+using System.IO.Abstractions;
+using System.Linq.Expressions;
+using System.Net.Http;
 
 namespace FastMoq.Tests
 {

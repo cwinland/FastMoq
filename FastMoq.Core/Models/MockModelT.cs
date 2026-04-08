@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using FastMoq.Providers;
+﻿using FastMoq.Providers;
 using Moq; // legacy while migrating
+using System.Diagnostics.CodeAnalysis;
 
 namespace FastMoq.Models
 {
@@ -13,7 +13,7 @@ namespace FastMoq.Models
         [Obsolete("Use TypedFastMock / Instance instead. Will be removed in a future major version.")]
         public new Mock<T> Mock
         {
-            get => (Mock<T>)base.Mock;
+            get => (Mock<T>) base.Mock;
             internal set
             {
                 base.Mock = value;
@@ -22,7 +22,7 @@ namespace FastMoq.Models
             }
         }
 
-        public IFastMock<T> TypedFastMock => (IFastMock<T>)FastMock;
+        public IFastMock<T> TypedFastMock => (IFastMock<T>) FastMock;
         public override Type Type => typeof(T);
         public new T Instance => TypedFastMock.Instance;
         #endregion

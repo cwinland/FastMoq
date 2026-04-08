@@ -266,16 +266,21 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="parameterBuilder">The parameter builder.</param>
         /// <param name="forceNew">if set to <c>true</c> [force new].</param>
         /// <returns>IRenderedComponent&lt;T&gt;.</returns>
+        /// <remarks>
+        /// Use this overload for direct parameter changes. If the test needs to persist or mutate named cascading parameters,
+        /// update <c>RenderParameters</c> and call <see cref="RenderComponent(bool)"/> so the helper can choose the compatible
+        /// rerender path.
+        /// </remarks>
         /// <example>
         /// <para>Render again with parameters without losing context.</para>
         /// <code language="csharp"><![CDATA[
-        /// RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()));
+        /// RenderComponent(b => b.Add(x => x.Title, "Reviewed Orders"));
         /// ]]></code>
         /// </example>
         /// <example>
         /// <para>Force an initial render with parameters.</para>
         /// <code language="csharp"><![CDATA[
-        /// RenderComponent(b => b.Add(x => x.WeatherService, Mocks.GetObject<IWeatherForecastService>()), true);
+        /// RenderComponent(b => b.Add(x => x.Title, "Reviewed Orders"), true);
         /// ]]></code>
         /// </example>
         IRenderedComponent<T> RenderComponent(Action<ComponentParameterCollectionBuilder<T>> parameterBuilder, bool forceNew = false);
@@ -298,12 +303,18 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="isChecked">if set to <c>true</c> [is checked].</param>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        /// <param name="startingPoint">The starting point.</param>
+        /// <param name="startingPoint">An optional rendered child component used to scope the lookup to a nested subtree.</param>
         /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
         /// <exception cref="ElementNotFoundException"></exception>
+        /// <example>
+        /// <code language="csharp"><![CDATA[
+        /// var secondaryEditor = GetComponent<OrderMigrationEditor>(x => x.Instance.EditorId == "secondary");
+        /// SetElementCheck<OrderMigrationEditor>("input.include-archived", true, () => secondaryEditor.Instance.IncludeArchived, startingPoint: secondaryEditor);
+        /// ]]></code>
+        /// </example>
         IMockerBlazorTestHelpers<T> SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
-            IRenderedFragment? startingPoint = null)
+            IRenderedComponent<IComponent>? startingPoint = null)
             where TComponent : class, IComponent;
 
         /// <summary>
@@ -314,12 +325,12 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="isChecked">if set to <c>true</c> [is checked].</param>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        /// <param name="startingPoint">The starting point.</param>
+        /// <param name="startingPoint">An optional rendered child component used to scope the lookup to a nested subtree.</param>
         /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
         IMockerBlazorTestHelpers<T> SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc,
             TimeSpan? waitTimeout = null,
-            IRenderedFragment? startingPoint = null) where TComponent : class, IComponent;
+            IRenderedComponent<IComponent>? startingPoint = null) where TComponent : class, IComponent;
 
         /// <summary>
         ///     Sets the element text.
@@ -338,11 +349,17 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// <param name="text">The text.</param>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        /// <param name="startingPoint">The starting point.</param>
+        /// <param name="startingPoint">An optional rendered child component used to scope the lookup to a nested subtree.</param>
         /// <returns>IMockerBlazorTestHelpers&lt;T&gt;.</returns>
         /// <exception cref="ArgumentNullException">cssSelector</exception>
+        /// <example>
+        /// <code language="csharp"><![CDATA[
+        /// var secondaryEditor = GetComponent<OrderMigrationEditor>(x => x.Instance.EditorId == "secondary");
+        /// SetElementText("input.order-filter", "approved", () => secondaryEditor.Instance.FilterText == "approved", startingPoint: secondaryEditor);
+        /// ]]></code>
+        /// </example>
         IMockerBlazorTestHelpers<T> SetElementText(string cssSelector, string text, Func<bool> waitFunc,
-            TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null);
+            TimeSpan? waitTimeout = null, IRenderedComponent<IComponent>? startingPoint = null);
 
         /// <summary>
         ///     Waits the delay time. Use only when absolutely needed. Prefer use of WaitForState, WaitForExists, or
@@ -373,7 +390,7 @@ namespace FastMoq.Web.Blazor.Interfaces
         /// </summary>
         /// <param name="waitFunc">The wait function.</param>
         /// <param name="waitTimeout">The wait timeout.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns>The current helper instance.</returns>
         IMockerBlazorTestHelpers<T> WaitForState(Func<bool> waitFunc, TimeSpan? waitTimeout = null);
     }
 }

@@ -1,7 +1,7 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using System.Security.Claims;
 
 namespace FastMoq.Web.Extensions
 {
@@ -315,7 +315,7 @@ namespace FastMoq.Web.Extensions
 
             var current = httpContext.Request.Query.ToDictionary(
                 pair => pair.Key,
-                pair => (string?)pair.Value.ToString(),
+                pair => (string?) pair.Value.ToString(),
                 StringComparer.OrdinalIgnoreCase);
             current[name] = value;
             return httpContext.SetQueryParameters(current);

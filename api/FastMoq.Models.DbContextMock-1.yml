@@ -433,7 +433,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 41
+    startLine: 42
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -478,7 +478,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbContextSetMethods
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 64
+    startLine: 65
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -512,7 +512,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetProperties
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 86
+    startLine: 87
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -549,7 +549,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetPropertyGet
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 93
+    startLine: 94
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -586,7 +586,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupSetMethod
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 102
+    startLine: 103
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -627,7 +627,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSets
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 132
+    startLine: 133
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models

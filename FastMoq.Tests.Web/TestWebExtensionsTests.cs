@@ -1,12 +1,11 @@
-using System.Security.Claims;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 using FastMoq.Web;
 using FastMoq.Web.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace FastMoq.Tests.Web
 {

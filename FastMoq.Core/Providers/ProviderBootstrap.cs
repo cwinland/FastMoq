@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices;
 using FastMoq.Providers;
+using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("FastMoq.Tests")]
 

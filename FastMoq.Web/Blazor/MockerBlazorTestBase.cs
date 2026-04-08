@@ -25,7 +25,7 @@ namespace FastMoq.Web.Blazor
     /// <typeparam name="T">The Blazor component under test.</typeparam>
     /// <seealso cref="IMockerBlazorTestHelpers{T}" />
     /// <seealso cref="ComponentBase" />
-    /// <inheritdoc cref="TestContext" />
+    /// <inheritdoc cref="BunitContext" />
     /// <example>
     /// <para>Start with a realistic page-level test that configures services, mocks, and assertions in one place.</para>
     /// <code language="csharp"><![CDATA[
@@ -67,7 +67,7 @@ namespace FastMoq.Web.Blazor
     /// }
     /// ]]></code>
     /// </example>
-    public abstract class MockerBlazorTestBase<T> : TestContext, IMockerBlazorTestHelpers<T> where T : ComponentBase
+    public abstract class MockerBlazorTestBase<T> : BunitContext, IMockerBlazorTestHelpers<T> where T : ComponentBase
     {
         #region Fields
 
@@ -209,21 +209,37 @@ namespace FastMoq.Web.Blazor
         ///     Gets the navigation manager.
         /// </summary>
         /// <value>The navigation manager.</value>
+        /// <remarks>
+        /// This property returns FastMoq's compatibility wrapper over bUnit 2's navigation manager so existing navigation
+        /// assertions can usually stay unchanged during migration.
+        /// </remarks>
         /// <example>
         ///     Click Button by class, tag, or id and check the navigation manager for changes.
         ///     <code language="cs"><![CDATA[
         /// NavigationManager.History.Count.Should().Be(2);
         /// ]]></code>
         /// </example>
-        protected FakeNavigationManager NavigationManager => Services.GetRequiredService<FakeNavigationManager>();
+        protected FakeNavigationManager NavigationManager => new(Services.GetRequiredService<BunitNavigationManager>());
 
         /// <summary>
         ///     Gets the list of parameters used when rendering. This is used to setup a component before the test constructor
         ///     runs.
         /// </summary>
         /// <value>The render parameters.</value>
+        /// <remarks>
+        /// This list now uses <see cref="RenderParameter"/> instead of bUnit's older public parameter type.
+        /// Add direct parameters with <see cref="RenderParameter.Create(string, object?)"/> and cascading values with
+        /// <see cref="RenderParameter.CreateCascading(string, object?)"/>.
+        /// </remarks>
+        /// <example>
+        ///     Configure direct and cascading parameters before <see cref="Setup(Bunit.InvocationMatcher?, bool)"/> runs.
+        ///     <code language="cs"><![CDATA[
+        /// RenderParameters.Add((nameof(OrdersMigrationPage.Title), "Queued Orders"));
+        /// RenderParameters.Add(("Accent", "Ocean", true));
+        /// ]]></code>
+        /// </example>
         [ExcludeFromCodeCoverage]
-        protected virtual List<ComponentParameter> RenderParameters { get; } = new();
+        protected virtual List<RenderParameter> RenderParameters { get; } = new();
 
         /// <summary>
         ///     Gets or sets the setup component action. This is used to setup a component before the test constructor runs.
@@ -290,7 +306,7 @@ namespace FastMoq.Web.Blazor
         {
             var list = new Dictionary<TComponent, ComponentState>();
 
-            var renderer = Component?.Services.GetRequiredService<TestContextBase>().Renderer as TestRenderer ??
+            var renderer = Renderer as BunitRenderer ??
                            throw new ArgumentException("Unable to get the renderer for this component.");
 
             var componentList = renderer.GetFieldValue<IDictionary, Renderer>(COMPONENT_LIST_NAME);
@@ -304,7 +320,7 @@ namespace FastMoq.Web.Blazor
             {
                 if (obj.Key is TComponent component)
                 {
-                    var componentState = new ComponentState<TComponent>(obj.Value, renderer);
+                    var componentState = new ComponentState<TComponent>(obj.Value, renderer, Component);
                     list.Add(component, componentState);
                 }
             }
@@ -381,7 +397,7 @@ namespace FastMoq.Web.Blazor
             // Insert component injections
             InjectComponent<T>();
 
-            ConfigureServices.Invoke(Services, configuration, Mocks);
+            ConfigureServices.Invoke(new TestServiceProvider(Services), configuration, Mocks);
         }
 
         /// <summary>
@@ -500,8 +516,9 @@ namespace FastMoq.Web.Blazor
         {
             ArgumentNullException.ThrowIfNull(predicate);
 
-            var components =
-                Component?.FindComponents<TComponent>() ?? throw new ArgumentNullException(nameof(Component));
+            var components = FindRenderedComponents<TComponent>()
+                .Where(predicate)
+                .ToList();
 
             return components.Count <= 1
                 ? components.First(predicate)
@@ -522,9 +539,7 @@ namespace FastMoq.Web.Blazor
         public IReadOnlyList<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IRenderedComponent<TOfType>, bool>? predicate = null)
             where TOfType : class, IComponent
         {
-            var components = GetAllComponents()
-                .Where(x => x.Key is TOfType)
-                .Select(x => GetComponent<TOfType>(y => y.ComponentId == (int) (x.Value.GetPropertyValue("ComponentId") ?? 0)));
+            var components = FindRenderedComponents<TOfType>();
 
             return (predicate == null ? components : components.Where(predicate)).ToList();
         }
@@ -532,11 +547,16 @@ namespace FastMoq.Web.Blazor
         /// <inheritdoc />
         public List<IRenderedComponent<TOfType>> GetComponents<TOfType>(Func<IElement, bool>? predicate = null) where TOfType : class, IComponent
         {
-            var components = GetAllComponents()
-                .Where(x => x.Key is TOfType)
-                .Select(x => GetComponent<TOfType>(y => y.ComponentId == (int) (x.Value.GetPropertyValue("ComponentId") ?? 0)));
+            var components = FindRenderedComponents<TOfType>();
 
-            return (predicate == null ? components : components.Where(x => x.FindAll("*").Any(predicate))).ToList();
+            return (predicate == null
+                    ? components
+                    : components.Where(x =>
+                        {
+                            var elements = x.Nodes.OfType<IElement>().Concat(x.FindAll("*")).ToList();
+                            return elements.Count == 0 || elements.Any(predicate);
+                        }))
+                .ToList();
         }
 
         /// <inheritdoc />
@@ -598,11 +618,11 @@ namespace FastMoq.Web.Blazor
         {
             if (Component == null || forceNew)
             {
-                Component = RenderComponent<T>(RenderParameters.ToArray());
+                Component = base.Render<T>(parameters => ApplyRenderParameters(parameters, RenderParameters));
             }
             else
             {
-                Component.SetParametersAndRender(RenderParameters.ToArray());
+                RerenderComponent(RenderParameters);
             }
 
             WaitDelay();
@@ -614,11 +634,11 @@ namespace FastMoq.Web.Blazor
         {
             if (Component == null || forceNew)
             {
-                Component = base.RenderComponent(parameterBuilder);
+                Component = base.Render(parameterBuilder);
             }
             else
             {
-                Component.SetParametersAndRender(parameterBuilder);
+                RerenderComponent(BuildRenderParameters(parameterBuilder), parameterBuilder);
             }
 
             WaitDelay();
@@ -652,7 +672,7 @@ namespace FastMoq.Web.Blazor
         /// <inheritdoc />
         public IMockerBlazorTestHelpers<T> SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc,
             TimeSpan? waitTimeout = null,
-            IRenderedFragment? startingPoint = null) where TComponent : class, IComponent
+            IRenderedComponent<IComponent>? startingPoint = null) where TComponent : class, IComponent
         {
             IElement? nameFilter = null;
             Component.RaiseIfNull();
@@ -664,7 +684,7 @@ namespace FastMoq.Web.Blazor
 
             if (startingPoint == null)
             {
-                Component.FindComponents<T>()
+                Component.FindComponents<TComponent>()
                     .ForEach(check =>
                         {
                             try
@@ -680,19 +700,26 @@ namespace FastMoq.Web.Blazor
             }
             else
             {
-                startingPoint.FindComponents<T>()
-                    .ForEach(check =>
-                        {
-                            try
+                try
+                {
+                    nameFilter = startingPoint.Find(cssSelector);
+                }
+                catch
+                {
+                    startingPoint.FindComponents<TComponent>()
+                        .ForEach(check =>
                             {
-                                nameFilter = check.Find(cssSelector);
+                                try
+                                {
+                                    nameFilter = check.Find(cssSelector);
+                                }
+                                catch
+                                {
+                                    // Ignore
+                                }
                             }
-                            catch
-                            {
-                                // Ignore
-                            }
-                        }
-                    );
+                        );
+                }
             }
 
             if (nameFilter == null)
@@ -700,8 +727,7 @@ namespace FastMoq.Web.Blazor
                 throw new ElementNotFoundException(cssSelector);
             }
 
-            var checkbox = nameFilter.Unwrap();
-            checkbox.Change(isChecked);
+            nameFilter.Change(isChecked);
             WaitForState(waitFunc, waitTimeout);
 
             return this;
@@ -710,7 +736,7 @@ namespace FastMoq.Web.Blazor
         /// <inheritdoc />
         public IMockerBlazorTestHelpers<T> SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc,
             TimeSpan? waitTimeout = null,
-            IRenderedFragment? startingPoint = null) where TComponent : class, IComponent
+            IRenderedComponent<IComponent>? startingPoint = null) where TComponent : class, IComponent
         {
             IElement? nameFilter = null;
 
@@ -739,19 +765,26 @@ namespace FastMoq.Web.Blazor
             }
             else
             {
-                startingPoint.FindComponents<TComponent>()
-                    .ForEach(toggle =>
-                        {
-                            try
+                try
+                {
+                    nameFilter = startingPoint.Find(cssSelector);
+                }
+                catch
+                {
+                    startingPoint.FindComponents<TComponent>()
+                        .ForEach(toggle =>
                             {
-                                nameFilter = toggle.Find(cssSelector);
+                                try
+                                {
+                                    nameFilter = toggle.Find(cssSelector);
+                                }
+                                catch
+                                {
+                                    // Ignore
+                                }
                             }
-                            catch
-                            {
-                                // Ignore
-                            }
-                        }
-                    );
+                        );
+                }
             }
 
             if (nameFilter == null)
@@ -759,8 +792,7 @@ namespace FastMoq.Web.Blazor
                 throw new InvalidOperationException($"{cssSelector} not found.");
             }
 
-            var theSwitch = nameFilter.Unwrap();
-            theSwitch.Change(isChecked);
+            nameFilter.Change(isChecked);
             WaitForState(waitFunc, waitTimeout);
 
             return this;
@@ -782,7 +814,7 @@ namespace FastMoq.Web.Blazor
 
         /// <inheritdoc />
         public IMockerBlazorTestHelpers<T> SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null,
-            IRenderedFragment? startingPoint = null)
+            IRenderedComponent<IComponent>? startingPoint = null)
         {
             if (string.IsNullOrWhiteSpace(cssSelector))
             {
@@ -843,6 +875,106 @@ namespace FastMoq.Web.Blazor
 
             Component.WaitForState(waitFunc, waitTimeout ?? TimeSpan.FromSeconds(3));
             return this;
+        }
+
+        private static void ApplyRenderParameters(ComponentParameterCollectionBuilder<T> parameters, IEnumerable<RenderParameter> renderParameters)
+        {
+            var addCascadingValueParameter = typeof(ComponentParameterCollectionBuilder<T>).GetMethod(
+                "AddCascadingValueParameter",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            foreach (var renderParameter in renderParameters)
+            {
+                if (renderParameter.IsCascadingValue)
+                {
+                    if (addCascadingValueParameter == null)
+                    {
+                        throw new MissingMethodException(typeof(ComponentParameterCollectionBuilder<T>).FullName, "AddCascadingValueParameter");
+                    }
+
+                    addCascadingValueParameter.Invoke(parameters, new[] { (object?) renderParameter.Name, renderParameter.Value });
+                    continue;
+                }
+
+                if (!parameters.TryAdd(renderParameter.Name, renderParameter.Value))
+                {
+                    parameters.AddUnmatched(renderParameter.Name, renderParameter.Value);
+                }
+            }
+        }
+
+        private static List<RenderParameter> BuildRenderParameters(Action<ComponentParameterCollectionBuilder<T>> parameterBuilder)
+        {
+            var builder = new ComponentParameterCollectionBuilder<T>();
+            parameterBuilder(builder);
+
+            var buildMethod = typeof(ComponentParameterCollectionBuilder<T>).GetMethod("Build", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) ??
+                              throw new MissingMethodException(typeof(ComponentParameterCollectionBuilder<T>).FullName, "Build");
+            var parameterCollection = buildMethod.Invoke(builder, null) as IEnumerable ?? Array.Empty<object>();
+
+            return ExtractRenderParameters(parameterCollection);
+        }
+
+        private static List<RenderParameter> ExtractRenderParameters(IEnumerable parameterCollection)
+        {
+            var parameters = new List<RenderParameter>();
+
+            foreach (var item in parameterCollection)
+            {
+                var name = item.GetPropertyValue(nameof(RenderParameter.Name))?.ToString();
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    continue;
+                }
+
+                var value = item.GetPropertyValue(nameof(RenderParameter.Value));
+                var isCascadingValue = item.GetPropertyValue(nameof(RenderParameter.IsCascadingValue)) as bool? ?? false;
+
+                parameters.Add(new RenderParameter(name, value, isCascadingValue));
+            }
+
+            return parameters;
+        }
+
+        private void RerenderComponent(IEnumerable<RenderParameter> renderParameters, Action<ComponentParameterCollectionBuilder<T>>? fallbackBuilder = null)
+        {
+            Component.RaiseIfNull();
+
+            var parameterList = renderParameters.ToList();
+
+            if (parameterList.Any(parameter => parameter.IsCascadingValue))
+            {
+                Component = fallbackBuilder == null
+                    ? base.Render<T>(parameters => ApplyRenderParameters(parameters, parameterList))
+                    : base.Render(fallbackBuilder);
+
+                return;
+            }
+
+            var parameterValues = new Dictionary<string, object?>(StringComparer.Ordinal);
+
+            foreach (var parameter in parameterList)
+            {
+                parameterValues[parameter.Name] = parameter.Value;
+            }
+
+            var setDirectParameters = Component.GetType().GetMethod("SetDirectParameters", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic) ??
+                                      throw new MissingMethodException(Component.GetType().FullName, "SetDirectParameters");
+
+            Component.InvokeAsync(() => setDirectParameters.Invoke(Component, new object?[] { ParameterView.FromDictionary(parameterValues) }))
+                .GetAwaiter()
+                .GetResult();
+        }
+
+        private List<IRenderedComponent<TComponent>> FindRenderedComponents<TComponent>() where TComponent : class, IComponent
+        {
+            return GetAllComponents()
+                .Where(x => x.Key is TComponent)
+                .Select(x => x.Value.GetOrCreateRenderedComponent(typeof(TComponent)) as IRenderedComponent<TComponent>)
+                .Where(x => x != null)
+                .Cast<IRenderedComponent<TComponent>>()
+                .ToList();
         }
 
         #endregion

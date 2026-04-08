@@ -70,7 +70,7 @@ namespace FastMoq.Tests
             Component.Count.Should().Be(0);
             Component.AddOrUpdate(typeof(IFile), model);
 
-            var result = Component.AsEnumerable().ToDictionary(x=>x.Key, x=>x.Value);
+            var result = Component.AsEnumerable().ToDictionary(x => x.Key, x => x.Value);
             Component[0].Key.Should().Be(result.First().Key);
             Component[0].Key.FullName.Should().Be(result.First().Key.FullName);
             Component[0].Value.Should().BeEquivalentTo(result.First().Value);

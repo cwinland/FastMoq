@@ -4,6 +4,8 @@ This page collects the migration guidance that tends to live in shared helpers, 
 
 Open this page when the highest-churn migration work is in base classes, controller helpers, principals, `HttpContext`, keyed DI, or service-provider shims.
 
+If the migration churn is specifically in Blazor component tests, `MockerBlazorTestBase<T>`, `RenderParameters`, nested component targeting, or bUnit package fallout, use [bUnit and Blazor test migration](./bunit-and-blazor-testing.md) first and come back here for the broader web-helper and framework-helper cleanup.
+
 ## Shared test helpers first
 
 Before rewriting leaf tests, inspect shared base classes, helper wrappers, and test utilities first.
@@ -64,6 +66,8 @@ Avoid helpers that return one object such as `ILoggerFactory` for every `GetServ
 ## Web test helpers
 
 For controller tests, request-driven tests, and `IHttpContextAccessor`-driven tests, prefer the `FastMoq.Web` helpers instead of continuing to hand-roll local request and principal setup.
+
+For Blazor component tests, prefer the dedicated [bUnit and Blazor test migration](./bunit-and-blazor-testing.md) guide. This page stays focused on HTTP, controller, principal, and general framework-helper migration rather than component-rendering API changes.
 
 Package note:
 

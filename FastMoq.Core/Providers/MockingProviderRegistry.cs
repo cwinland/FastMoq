@@ -1,6 +1,6 @@
-using System.Collections.Concurrent;
 using FastMoq.Providers.MoqProvider;
 using FastMoq.Providers.ReflectionProvider;
+using System.Collections.Concurrent;
 
 namespace FastMoq.Providers
 {

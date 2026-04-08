@@ -1,7 +1,7 @@
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Collections.Immutable;
 
 namespace FastMoq.Analyzers.Analyzers
 {
@@ -19,7 +19,7 @@ namespace FastMoq.Analyzers.Analyzers
 
         private static void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
         {
-            var assignmentExpression = (AssignmentExpressionSyntax)context.Node;
+            var assignmentExpression = (AssignmentExpressionSyntax) context.Node;
             if (!FastMoqAnalysisHelpers.TryBuildMockOptionalReplacement(assignmentExpression, context.SemanticModel, context.CancellationToken, out var replacement))
             {
                 return;

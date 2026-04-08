@@ -104,7 +104,7 @@ Practical guidance for moving from the `3.0.0` public release toward the current
 | **Database Testing** | [EF Core Testing](./cookbook/README.md#entity-framework-core-testing) | [Repository Patterns](./samples/ecommerce-orders/README.md) |
 | **Azure Integration** | [Sample Applications](./samples/README.md) | [Complete Azure App](./samples/ecommerce-orders/README.md) |
 | **Background Jobs** | [Background Services](./cookbook/README.md#background-services-testing) | [Executable Testing Examples](./samples/testing-examples.md) |
-| **Blazor Apps** | [Getting Started](./getting-started/README.md) | [Executable Testing Examples](./samples/testing-examples.md) |
+| **Blazor Apps** | [bUnit and Blazor test migration](./migration/bunit-and-blazor-testing.md) | [Executable Testing Examples](./samples/testing-examples.md) |
 
 Package note: `FastMoq` is the aggregate package. Provider contracts live in `FastMoq.Abstractions`, `FastMoq.Core` stays lighter, EF-specific helpers live in `FastMoq.Database`, provider-specific adapters live in `FastMoq.Provider.*`, and web helpers live in `FastMoq.Web` while the primary calls stay in the `FastMoq` namespace.
 

@@ -1,5 +1,25 @@
 ### YamlMime:TableOfContent
 items:
+- uid: Bunit
+  name: Bunit
+  type: Namespace
+  items:
+  - uid: Bunit.TestAuthorizationExtensions
+    name: TestAuthorizationExtensions
+    type: Class
+  - uid: Bunit.TestServiceProvider
+    name: TestServiceProvider
+    type: Class
+- uid: Bunit.TestDoubles
+  name: Bunit.TestDoubles
+  type: Namespace
+  items:
+  - uid: Bunit.TestDoubles.FakeNavigationManager
+    name: FakeNavigationManager
+    type: Class
+  - uid: Bunit.TestDoubles.TestAuthorizationContext
+    name: TestAuthorizationContext
+    type: Class
 - uid: FastMoq
   name: FastMoq
   type: Namespace
@@ -238,6 +258,9 @@ items:
   - uid: FastMoq.Web.Blazor.Models.ComponentState`1
     name: ComponentState<T>
     type: Class
+  - uid: FastMoq.Web.Blazor.Models.RenderParameter
+    name: RenderParameter
+    type: Struct
 - uid: FastMoq.Web.Extensions
   name: FastMoq.Web.Extensions
   type: Namespace

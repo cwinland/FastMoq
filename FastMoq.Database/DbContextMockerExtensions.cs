@@ -89,7 +89,7 @@ namespace FastMoq
         {
             if (mocker.Contains<TContext>())
             {
-                var trackedMock = (DbContextMock<TContext>)mocker.GetMock<TContext>();
+                var trackedMock = (DbContextMock<TContext>) mocker.GetMock<TContext>();
                 return TrackHandle(mocker, new DbContextHandle<TContext>(DbContextTestMode.MockedSets, trackedMock.Object, trackedMock));
             }
 
@@ -268,7 +268,7 @@ namespace FastMoq
                 throw new NotSupportedException($"RealInMemory mode requires a {typeof(TContext).Name} constructor that accepts DbContextOptions or a custom RealContextFactory.");
             }
 
-            return (TContext)constructor.Invoke([options]);
+            return (TContext) constructor.Invoke([options]);
         }
 
         private static Expression<Func<TContext>> CreateDbContextFactory<TContext>(object?[] constructorArgs) where TContext : DbContext

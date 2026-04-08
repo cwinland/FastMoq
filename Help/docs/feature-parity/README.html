@@ -245,12 +245,12 @@ public void Constructor_ShouldThrowWhenDependency2IsNull()
 }
 </code></pre>
 <h4 id="direct-provider-blazor-testing">Direct Provider Blazor Testing</h4>
-<pre><code class="lang-csharp">public class CounterComponentTests : TestContext
+<pre><code class="lang-csharp">public class CounterComponentTests : BunitContext
 {
     [Fact]
     public void Counter_ShouldIncrement_WhenButtonClicked()
     {
-        var component = RenderComponent&lt;Counter&gt;();
+        var component = Render&lt;Counter&gt;();
 
         component.Find(&quot;button&quot;).Click();
 
@@ -364,7 +364,7 @@ public void ProcessData_ShouldReturnData()
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 16:56 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 18:28 UTC</span></div>
       
           </div>
         </div>

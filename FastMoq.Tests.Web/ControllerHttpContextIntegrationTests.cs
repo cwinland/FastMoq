@@ -1,11 +1,10 @@
+using FastMoq.Web.Extensions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-using FastMoq.Web.Extensions;
 
 namespace FastMoq.Tests.Web
 {

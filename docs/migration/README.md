@@ -16,6 +16,7 @@ Recommended reading order:
 1. [Provider Selection and Setup](../getting-started/provider-selection.md): open this next when the suite still uses provider-specific APIs or you need to understand why a package install did not change runtime behavior.
 1. [Provider Capabilities](../getting-started/provider-capabilities.md): open this when the question is "does this provider support the test shape I have?"
 1. [Provider, package, and compatibility guidance](./provider-and-compatibility.md): open this for migration-specific bootstrap snippets, package-to-namespace mapping, and Moq-to-NSubstitute arrangement translation.
+1. [bUnit and Blazor test migration](./bunit-and-blazor-testing.md): open this when the churn is in `MockerBlazorTestBase<T>`, `RenderParameters`, nested rendered-component helpers, authorization helpers, or bUnit upgrade fallout.
 1. [Framework and web helper migration](./framework-and-web-helpers.md): open this for shared helper rewrites, keyed-service setup, Azure Functions `InstanceServices`, and `FastMoq.Web` migration guidance.
 1. [API replacements and migration exceptions](./api-replacements-and-exceptions.md): open this for old-to-new replacements, compatibility-only edges, and worked migration examples.
 1. [Executable Testing Examples](../samples/testing-examples.md): open this when you want repo-backed examples of the preferred target style.
@@ -24,6 +25,7 @@ Recommended reading order:
 Quick routing:
 
 - If the migration fails because provider-specific APIs do not behave as expected, go to [Provider Selection and Setup](../getting-started/provider-selection.md) and [Provider, package, and compatibility guidance](./provider-and-compatibility.md).
+- If the migration churn is in `MockerBlazorTestBase<T>`, nested component targeting, render parameters, authorization helpers, or navigation assertions after the bUnit upgrade, go to [bUnit and Blazor test migration](./bunit-and-blazor-testing.md).
 - If the churn is in controller helpers, principals, `HttpContext`, `IHttpContextAccessor`, keyed DI, or framework service-provider shims, go to [Framework and web helper migration](./framework-and-web-helpers.md).
 - If you are replacing a specific API such as `Initialize<T>(...)`, `VerifyLogger(...)`, `Strict`, `MockOptional`, or `GetMock<T>()`, go to [API replacements and migration exceptions](./api-replacements-and-exceptions.md).
 - If you want a reusable AI workflow instead of writing prompts from scratch, go to [Copilot migration prompts](./copilot-prompts.md).
@@ -207,6 +209,7 @@ If the suite is large, prefer many small green batches over one broad rewrite. T
 Open these only when you hit the relevant problem. That keeps this page short without dropping the needed detail.
 
 - [Provider, package, and compatibility guidance](./provider-and-compatibility.md): migration-specific provider bootstrap, package-to-namespace mapping, and Moq-to-NSubstitute arrangement translation.
+- [bUnit and Blazor test migration](./bunit-and-blazor-testing.md): package-level and helper-level migration guidance for `FastMoq.Web`, `MockerBlazorTestBase<T>`, `RenderParameter`, nested rendered-component helpers, authorization wrappers, and navigation assertions.
 - [Framework and web helper migration](./framework-and-web-helpers.md): shared-helper rewrites, keyed DI, Azure Functions `InstanceServices`, `FastMoq.Web` helper usage, principals, and controller-context migration.
 - [API replacements and migration exceptions](./api-replacements-and-exceptions.md): old-to-new API guidance for `Initialize<T>(...)`, HTTP helpers, `VerifyLogger(...)`, `TimesSpec`, `Strict`, `GetMock<T>()`, `AddType(...)`, `DbContext`, `MockOptional`, provider-first access, and expected raw-Moq pockets.
 - [Copilot migration prompts](./copilot-prompts.md): reusable prompt entry points for staged migration and stricter obsolete-surface cleanup.

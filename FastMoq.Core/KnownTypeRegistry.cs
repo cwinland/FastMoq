@@ -1,10 +1,10 @@
-using System.IO.Abstractions;
-using System.Security.Claims;
 using FastMoq.Extensions;
 using FastMoq.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.IO.Abstractions;
+using System.Security.Claims;
 
 namespace FastMoq
 {

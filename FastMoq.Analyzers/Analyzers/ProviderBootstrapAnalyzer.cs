@@ -1,8 +1,8 @@
-using System.Collections.Immutable;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Collections.Immutable;
+using System.Threading;
 
 namespace FastMoq.Analyzers.Analyzers
 {
@@ -29,7 +29,7 @@ namespace FastMoq.Analyzers.Analyzers
 
         private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context, bool moqSelectedByDefault, bool nsubstituteSelectedByDefault)
         {
-            var invocationExpression = (InvocationExpressionSyntax)context.Node;
+            var invocationExpression = (InvocationExpressionSyntax) context.Node;
             if (!FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) ||
                 method is null ||
                 !FastMoqAnalysisHelpers.TryGetRequiredProvider(method, out var providerName, out var apiName))
@@ -53,7 +53,7 @@ namespace FastMoq.Analyzers.Analyzers
 
         private static void AnalyzeMemberAccess(SyntaxNodeAnalysisContext context, bool moqSelectedByDefault, bool nsubstituteSelectedByDefault)
         {
-            var memberAccessExpression = (MemberAccessExpressionSyntax)context.Node;
+            var memberAccessExpression = (MemberAccessExpressionSyntax) context.Node;
             if (!FastMoqAnalysisHelpers.TryGetPropertySymbol(memberAccessExpression, context.SemanticModel, context.CancellationToken, out var property) ||
                 property is null ||
                 !FastMoqAnalysisHelpers.TryGetRequiredProvider(property, out var providerName, out var apiName))

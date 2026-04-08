@@ -167,12 +167,12 @@ public class CounterComponentTests : MockerBlazorTestBase<Counter>
 #### Direct Provider Blazor Testing
 
 ```csharp
-public class CounterComponentTests : TestContext
+public class CounterComponentTests : BunitContext
 {
     [Fact]
     public void Counter_ShouldIncrement_WhenButtonClicked()
     {
-        var component = RenderComponent<Counter>();
+        var component = Render<Counter>();
 
         component.Find("button").Click();
 

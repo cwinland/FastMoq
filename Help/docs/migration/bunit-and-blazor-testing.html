@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>bUnit And Blazor Test Migration | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="bUnit And Blazor Test Migration | FastMoq ">
+    
+    
+      <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+      <link rel="shortcut icon" href="../../favicon.svg">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="bunit-and-blazor-test-migration">bUnit And Blazor Test Migration</h1>
+
+<p>This page is the dedicated migration guide for <code>FastMoq.Web</code> component tests that were written against older bUnit assumptions and now need to run on the current bUnit 2.x line.</p>
+<p>Use this page when the migration churn is in <code>MockerBlazorTestBase&lt;T&gt;</code>, nested rendered-component helpers, render-parameter setup, authorization helpers, or navigation assertions.</p>
+<h2 id="what-changed">What changed</h2>
+<p>FastMoq.Web now uses bUnit 2.7.2. The Blazor helper layer was updated to match bUnit 2 API, renderer, and test-double changes without forcing a full rewrite of existing FastMoq-based component tests.</p>
+<p>The important changes for consumers are:</p>
+<ul>
+<li><code>bunit</code> moved from <code>1.38.5</code> to <code>2.7.2</code></li>
+<li><code>MockerBlazorTestBase&lt;T&gt;</code> now runs on top of <code>BunitContext</code></li>
+<li><code>RenderParameters</code> now stores <code>FastMoq.Web.Blazor.Models.RenderParameter</code> because bUnit 2 no longer exposes the old <code>ComponentParameter</code> type to consumers</li>
+<li><code>SetElementCheck(...)</code>, <code>SetElementSwitch(...)</code>, and <code>SetElementText(...)</code> now use <code>IRenderedComponent&lt;IComponent&gt;?</code> for <code>startingPoint</code> because bUnit 2 removed <code>IRenderedFragment</code></li>
+<li>compatibility wrappers keep the older helper names available for the most common service-provider, authorization, and navigation patterns</li>
+</ul>
+<h2 id="fast-migration-map">Fast migration map</h2>
+<table>
+<thead>
+<tr>
+<th>Older test shape</th>
+<th>Current FastMoq / bUnit 2 shape</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TestContext</code> for direct bUnit tests</td>
+<td><code>BunitContext</code></td>
+<td>FastMoq consumers should normally stay on <code>MockerBlazorTestBase&lt;T&gt;</code> instead of switching to direct context management.</td>
+</tr>
+<tr>
+<td><code>ComponentParameter</code></td>
+<td><code>RenderParameter</code></td>
+<td>Use <code>RenderParameter.Create(...)</code>, <code>RenderParameter.CreateCascading(...)</code>, or tuple conversion.</td>
+</tr>
+<tr>
+<td><code>IRenderedFragment</code> for nested helper starting points</td>
+<td><code>IRenderedComponent&lt;IComponent&gt;</code></td>
+<td>Pass the rendered child component returned by <code>GetComponent&lt;TChild&gt;(...)</code> or <code>GetComponents&lt;TChild&gt;(...)</code>.</td>
+</tr>
+<tr>
+<td><code>TestServiceProvider</code>, <code>TestAuthorizationContext</code>, <code>FakeNavigationManager</code> from old bUnit packages</td>
+<td>FastMoq compatibility wrappers with the same names</td>
+<td>Existing test code can usually keep the same names with lower source churn.</td>
+</tr>
+<tr>
+<td>Raw assumptions about renderer <code>ComponentState</code> objects</td>
+<td>Use <code>GetComponent(...)</code>, <code>GetComponents(...)</code>, and <code>ComponentState.GetOrCreateRenderedComponent(...)</code></td>
+<td>bUnit 2 changed the renderer state shape. Avoid rolling your own reflection unless you have to.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="recommended-migration-order">Recommended migration order</h2>
+<ol>
+<li>Upgrade the package reference and get the test project compiling.</li>
+<li>Keep existing <code>MockerBlazorTestBase&lt;T&gt;</code> usage unless you are deliberately moving away from FastMoq's Blazor helpers.</li>
+<li>Replace any old <code>ComponentParameter</code> usage with <code>RenderParameter</code>.</li>
+<li>Update helper calls that pass nested starting points so they use <code>IRenderedComponent&lt;IComponent&gt;?</code>.</li>
+<li>Rerun the web test project immediately after each helper migration batch.</li>
+<li>Only after the suite is green, decide whether any compatibility wrappers should be replaced by direct bUnit 2 APIs.</li>
+</ol>
+<p>That order keeps the upgrade mechanical. It avoids mixing a dependency migration with a broader test-style rewrite.</p>
+<h2 id="breaking-changes-to-expect">Breaking changes to expect</h2>
+<h3 id="1-renderparameters-now-uses-renderparameter">1. <code>RenderParameters</code> now uses <code>RenderParameter</code></h3>
+<p>Old bUnit-era tests could build or store <code>ComponentParameter</code> values directly. That type is no longer public in the current bUnit line, so FastMoq now owns the migration-safe parameter type.</p>
+<p>Before:</p>
+<pre><code class="lang-csharp">protected override List&lt;ComponentParameter&gt; RenderParameters { get; } = new()
+{
+    new ComponentParameter(nameof(OrdersPage.Title), &quot;Queued Orders&quot;),
+};
+</code></pre>
+<p>After:</p>
+<pre><code class="lang-csharp">protected override List&lt;RenderParameter&gt; RenderParameters { get; } = new()
+{
+    RenderParameter.Create(nameof(OrdersPage.Title), &quot;Queued Orders&quot;),
+    RenderParameter.CreateCascading(&quot;Accent&quot;, &quot;Ocean&quot;),
+};
+</code></pre>
+<p>Tuple conversions also work when you want terser setup:</p>
+<pre><code class="lang-csharp">RenderParameters.Add((nameof(OrdersPage.Title), &quot;Queued Orders&quot;));
+RenderParameters.Add((&quot;Accent&quot;, &quot;Ocean&quot;, true));
+</code></pre>
+<h3 id="2-nested-helper-starting-points-now-use-rendered-components">2. Nested helper starting points now use rendered components</h3>
+<p>If a test targets a nested component when calling <code>SetElementText(...)</code>, <code>SetElementCheck(...)</code>, or <code>SetElementSwitch(...)</code>, the starting point should now be a rendered child component.</p>
+<p>Before:</p>
+<pre><code class="lang-csharp">var editorFragment = Component.FindComponent&lt;OrderEditor&gt;();
+
+SetElementText(&quot;input.order-filter&quot;, &quot;approved&quot;, waitFunc, startingPoint: editorFragment);
+</code></pre>
+<p>After:</p>
+<pre><code class="lang-csharp">var editor = GetComponent&lt;OrderEditor&gt;(x =&gt; x.Instance.EditorId == &quot;secondary&quot;);
+
+SetElementText(
+    &quot;input.order-filter&quot;,
+    &quot;approved&quot;,
+    waitFunc,
+    startingPoint: editor);
+</code></pre>
+<p>This is the preferred current pattern because the helper now scopes its lookup work to a real rendered component instance instead of a removed fragment abstraction.</p>
+<h3 id="3-direct-bunit-examples-should-use-bunitcontext">3. Direct bUnit examples should use <code>BunitContext</code></h3>
+<p>If you maintain documentation or helper code that shows direct bUnit usage without FastMoq, update the context type:</p>
+<p>Before:</p>
+<pre><code class="lang-csharp">public class CounterComponentTests : TestContext
+{
+    [Fact]
+    public void Counter_ShouldIncrement_WhenButtonClicked()
+    {
+        var component = RenderComponent&lt;Counter&gt;();
+        component.Find(&quot;button&quot;).Click();
+    }
+}
+</code></pre>
+<p>After:</p>
+<pre><code class="lang-csharp">public class CounterComponentTests : BunitContext
+{
+    [Fact]
+    public void Counter_ShouldIncrement_WhenButtonClicked()
+    {
+        var component = Render&lt;Counter&gt;();
+        component.Find(&quot;button&quot;).Click();
+    }
+}
+</code></pre>
+<p>FastMoq tests should usually not need this change directly because <code>MockerBlazorTestBase&lt;T&gt;</code> already absorbed the context migration.</p>
+<h2 id="real-world-fastmoq-example">Real-world FastMoq example</h2>
+<p>The repo now carries a migration-focused example that covers:</p>
+<ul>
+<li>direct parameters through <code>RenderParameter</code></li>
+<li>cascading parameters through <code>RenderParameter.CreateCascading(...)</code></li>
+<li>nested component targeting through <code>IRenderedComponent&lt;IComponent&gt;</code></li>
+<li>authorization state from <code>AddTestAuthorization()</code></li>
+<li>navigation assertions through <code>FakeNavigationManager</code></li>
+</ul>
+<p>The example lives in the web test project and companion sample components:</p>
+<ul>
+<li><code>FastMoq.Tests.Web/BlazorBunitMigrationTests.cs</code></li>
+<li><code>FastMoq.Tests.Blazor/Pages/OrdersMigrationPage.razor</code></li>
+<li><code>FastMoq.Tests.Blazor/Shared/OrderMigrationEditor.razor</code></li>
+</ul>
+<p>The pattern looks like this:</p>
+<pre><code class="lang-csharp">public class OrdersMigrationPageTests : MockerBlazorTestBase&lt;OrdersMigrationPage&gt;
+{
+    public OrdersMigrationPageTests() : base(true)
+    {
+        AuthUsername = &quot;migration.user&quot;;
+        RenderParameters.Add((nameof(OrdersMigrationPage.Title), &quot;Queued Orders&quot;));
+        RenderParameters.Add((nameof(OrdersMigrationPage.PrimaryQuery), &quot;contoso&quot;));
+        RenderParameters.Add((nameof(OrdersMigrationPage.SecondaryQuery), &quot;fabrikam&quot;));
+        RenderParameters.Add((&quot;Accent&quot;, &quot;Ocean&quot;, true));
+
+        Setup();
+    }
+
+    [Fact]
+    public void SecondaryEditor_CanBeScopedByRenderedComponent()
+    {
+        var secondaryEditor = GetComponent&lt;OrderMigrationEditor&gt;(x =&gt; x.Instance.EditorId == &quot;secondary&quot;);
+
+        SetElementText(
+            &quot;input.order-filter&quot;,
+            &quot;approved&quot;,
+            () =&gt; secondaryEditor.Instance.FilterText == &quot;approved&quot;,
+            startingPoint: secondaryEditor);
+
+        SetElementCheck&lt;OrderMigrationEditor&gt;(
+            &quot;input.include-archived&quot;,
+            true,
+            () =&gt; secondaryEditor.Instance.IncludeArchived,
+            startingPoint: secondaryEditor);
+
+        secondaryEditor.Instance.FilterText.Should().Be(&quot;approved&quot;);
+        secondaryEditor.Instance.IncludeArchived.Should().BeTrue();
+    }
+}
+</code></pre>
+<p>This is a good migration target because it keeps the old FastMoq testing ergonomics while aligning the underlying bUnit behavior with the current package line.</p>
+<h2 id="compatibility-wrappers-you-can-keep-using">Compatibility wrappers you can keep using</h2>
+<p>FastMoq now ships compatibility wrappers so common test code does not have to rename every bUnit helper in one pass.</p>
+<p>Current compatibility surfaces include:</p>
+<ul>
+<li><code>TestServiceProvider</code></li>
+<li><code>TestAuthorizationContext</code></li>
+<li><code>FakeNavigationManager</code></li>
+<li><code>AddTestAuthorization(this BunitContext)</code></li>
+</ul>
+<p>Keep those names when the goal is a low-risk migration. Replace them with raw bUnit types later only if that improves clarity for your suite.</p>
+<h2 id="rendering-and-rerendering-notes">Rendering and rerendering notes</h2>
+<p><code>MockerBlazorTestBase&lt;T&gt;</code> now supports two important rerender paths:</p>
+<ul>
+<li>direct parameter rerendering when only direct parameters changed</li>
+<li>full rerender fallback when one of the configured parameters is a cascading value</li>
+</ul>
+<p>That means the following patterns are both valid:</p>
+<pre><code class="lang-csharp">RenderComponent(parameters =&gt; parameters.Add(x =&gt; x.Title, &quot;Reviewed Orders&quot;));
+</code></pre>
+<pre><code class="lang-csharp">RenderParameters.RemoveAll(x =&gt; x.Name == &quot;Accent&quot;);
+RenderParameters.Add(RenderParameter.CreateCascading(&quot;Accent&quot;, &quot;Forest&quot;));
+
+RenderComponent();
+</code></pre>
+<p>Use the first form for ordinary parameter updates. Use the second when the test intentionally changes the stored migration-time parameter set, including cascading values.</p>
+<h2 id="recommended-validation">Recommended validation</h2>
+<p>For FastMoq's own repo, the minimum validation for this upgrade is:</p>
+<pre><code class="lang-powershell">dotnet test .\FastMoq.Tests.Web\FastMoq.Tests.Web.csproj -c Debug
+</code></pre>
+<p>For a full branch validation pass, run the broader solution tests after the web project is green:</p>
+<pre><code class="lang-powershell">dotnet test .\FastMoq.sln -c Debug
+</code></pre>
+<h2 id="related-docs">Related docs</h2>
+<ul>
+<li><a href="README.html">Migration guide front door</a></li>
+<li><a href="framework-and-web-helpers.html">Framework and web helper migration</a></li>
+<li><a href="../breaking-changes/README.html">Breaking changes</a></li>
+<li><a href="../whats-new/README.html">What's new since 3.0.0</a></li>
+</ul>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 18:28 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
