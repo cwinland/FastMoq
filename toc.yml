@@ -38,8 +38,6 @@
       href: docs/breaking-changes/README.md
     - name: Roadmap notes
       href: docs/roadmap/README.md
-    - name: Migration feedback issue drafts
-      href: docs/roadmap/migration-feedback-issue-drafts.md
 - name: API Reference
   items:
     - name: Quick reference

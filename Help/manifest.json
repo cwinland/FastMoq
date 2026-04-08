@@ -1433,16 +1433,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docs/roadmap/migration-feedback-issue-drafts.md",
-      "output": {
-        ".html": {
-          "relative_path": "docs/roadmap/migration-feedback-issue-drafts.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "docs/samples/README.md",
       "output": {
         ".html": {

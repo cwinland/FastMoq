@@ -1,102 +1,90 @@
-# FastMoq Roadmap Notes
+# FastMoq Roadmap
 
-This document captures the current provider-first direction for FastMoq. It is not a marketing roadmap. It is a working backlog note for contributors and maintainers.
+This page summarizes the planned FastMoq priorities for upcoming releases. It focuses on future work rather than repeating completed migration steps.
 
-It serves as the repo-local place to track v4.x hardening work and candidate v5 enhancements.
+## Planned for v4
 
-For tracker-ready backlog text derived from recent migration feedback, see [Migration Feedback Issue Drafts](./migration-feedback-issue-drafts.md).
+### Provider-neutral release hardening
 
-## Current Direction
+v4 work will continue to sharpen the provider boundary so shared FastMoq behavior stays portable and provider-specific behavior stays explicit.
 
-FastMoq is moving toward a provider-based architecture where:
+Planned focus areas:
 
-1. FastMoq core owns creation, injection, lifecycle, and portable helpers.
-2. Provider-native arrangement and advanced mocking behavior stay with the active mocking library.
-3. Moq-specific backward compatibility is preserved where needed, but it should live in Moq-oriented layers rather than defining all provider behavior.
+- Further reduce reliance on Moq-shaped compatibility paths in shared core flows.
+- Keep provider-native access available without requiring every provider to emulate Moq.
+- Harden packaging and provider-selection guidance for the built-in Moq, NSubstitute, and reflection providers.
+- Tighten migration guidance for compatibility surfaces that remain in v4 but are not intended to define the long-term API shape.
 
-## Recently Completed Foundation
+### Analyzer expansion
 
-- Native provider objects are now surfaced through tracked mocks.
-- Instance creation now uses focused APIs with policy-driven defaults plus explicit public-only and constructor-fallback entry points.
-- Known framework-style types now have a per-`Mocker` extension point through `AddKnownType(...)`.
-- A repo-native testing guide now documents the current recommended patterns.
-- DbContext helpers now expose explicit mocked-sets versus real in-memory modes through `GetDbContextHandle(...)` and `DbContextTestMode`.
+The remaining non-web analyzer work is planned for v4 where the guidance is stable enough to stay low-noise and useful in everyday test authoring.
 
-## Active Work
+Planned analyzer work includes:
 
-### Provider boundary cleanup
+- Distinguishing between tests that should use `GetOrCreateMock<T>()` and tests that should intentionally replace resolution with `AddType(...)` or `AddKnownType(...)`.
+- Guiding suites away from one-object-for-all-types service-provider shims once the typed `IServiceProvider` helper is available.
+- Adding keyed-service diagnostics when same-type constructor dependencies should not collapse into one unkeyed test double.
 
-The main remaining architectural work is continuing to isolate shared FastMoq behavior from Moq-specific compatibility behavior.
+### Test helpers and migration support
 
-Areas still in motion:
+v4 also includes helper and migration work where common testing scenarios still need a first-party answer rather than documentation alone.
 
-- Reducing reliance on legacy Moq-oriented surfaces in core paths.
-- Keeping provider-native interactions available without forcing all providers to emulate Moq.
-- Preserving compatibility where it is useful while keeping the long-term API shape provider-neutral.
+Planned work includes:
 
-### Release hardening and packaging
+- A typed `IServiceProvider` helper for framework-heavy suites that need type-aware service resolution during tests.
+- An Azure Functions worker helper for `FunctionContext.InstanceServices` built around typed service resolution.
+- A clearer first-party path for common `SetupSet(...)`-heavy tests where the real need is setter observation or value capture.
+- Focused migration guidance and examples for compatibility-only APIs that remain temporary rather than long-term patterns.
 
-The main remaining release-facing work is no longer about inventing large new features. It is about freezing the transition contract cleanly for the next major line.
+### Documentation and examples
 
-Current release-hardening focus:
+v4 documentation work will focus on the features and migration paths that still need stronger release-facing guidance.
 
-- Continue hardening and validating the packaging and provider-selection story for the built-in Moq, NSubstitute, and reflection providers.
-- Keep the remaining Moq compatibility shims explicit so they do not look like provider-neutral core behavior.
-- Tighten migration notes for obsolete or compatibility-only surfaces that will move in `v5`.
-- Validate docs and executable examples against the release candidate behavior.
+Planned documentation updates include:
 
-The DbContext mode split itself is now in place. The remaining work there is release hardening, test coverage, and documentation accuracy rather than surface design.
+- More provider-native examples beyond the current capability matrix.
+- Focused migration notes for older Moq-heavy suites.
+- Keyed-service guidance tied to new diagnostics and helper APIs.
+- Examples for new typed service-provider and Azure testing helpers.
+- Additional DbContext examples as those surfaces continue to harden.
 
-## Deferred Work
+## Later or decision pending
 
-These items are intentionally deferred until the provider boundary is more settled.
+### Web and UI expansion
 
-### Broader web support beyond Blazor
+Some web-focused items remain intentionally outside the committed v4 scope because their timing depends on how narrow and stable the public web surface should be.
 
-FastMoq currently has meaningful web support, especially around Blazor and common ASP.NET abstractions. Broader web-framework coverage beyond the current Blazor-centered surface is deferred until the core/provider contracts stabilize.
+Potential follow-up areas include:
 
-Examples of deferred expansion work:
+- Additional ASP.NET integration helpers beyond the current `HttpContext` and `HttpClient` patterns.
+- MVC, minimal API, and non-Blazor convenience layers.
+- More public web abstractions where they can be added without hard-coding framework assumptions too early.
+- Richer provider-specific convenience layers once the shared provider contract is stable enough to support them cleanly.
 
-- Larger ASP.NET integration helpers beyond the current HttpContext and HttpClient patterns.
-- Broader MVC, minimal API, and non-Blazor web testing convenience layers.
-- Additional public web abstractions that would otherwise hard-code current framework assumptions too early.
+### Blazor migration analyzers
 
-### Provider-specific convenience layers
+Targeted analyzer guidance for older `FastMoq.Web` helper patterns is still planned, but its release target remains open.
 
-Non-Moq providers may eventually gain richer convenience layers, but that should happen after the shared provider contract is stable enough to support them cleanly.
+Planned follow-up includes:
 
-### Obsolete-surface cleanup
+- Flagging older parameter setup patterns that should move toward `RenderParameter`.
+- Flagging legacy nested-component targeting assumptions when the current rendered-component path is clearer.
+- Pointing older helper usage toward the current `MockerBlazorTestBase<T>` guidance when that recommendation can be made precisely.
 
-Several Moq-oriented compatibility members remain intentionally available. Removing or reshaping them is deferred to a future major-version cleanup once provider migration guidance is ready.
+## Planned v5 Cleanup
 
-### `MockOptional` replacement
+### Obsolete and compatibility surface cleanup
 
-The first replacement pass is now in place.
+A future major-version cleanup will continue reducing Moq-oriented compatibility members that remain only to ease migration.
 
-`MockOptional` is obsolete and retained only as a compatibility alias. The runtime now prefers explicit optional-parameter controls through `Mocker.OptionalParameterResolution`, `InvocationOptions`, and focused `MockerTestBase<TComponent>` component-construction overrides.
+The goal is a smaller, clearer public surface where provider-first APIs are the default path and compatibility shims are no longer carrying day-to-day guidance.
 
-The remaining cleanup direction is to continue reducing older `MockOptional` examples and remove the alias in `v5`, after `v4` ships with the explicit migration path.
+### `MockOptional` retirement
 
-Future work should evaluate:
+FastMoq will continue moving optional-parameter guidance toward explicit controls such as `Mocker.OptionalParameterResolution`, `InvocationOptions`, and focused `MockerTestBase<TComponent>` construction overrides.
 
-- whether any remaining compatibility-only `MockOptional` examples should be rewritten immediately
-- whether more helper APIs should expose the explicit options model directly
-- whether any `v4` release notes need stronger migration guidance before the planned `v5` removal
+Planned follow-up includes:
 
-## Documentation Follow-Ups
-
-Documentation now covers the testing decision points and known-type behavior, but more sample updates are still desirable later:
-
-- Expanded provider-native examples beyond the current capability matrix and provider-style samples.
-- Focused migration notes for older Moq-heavy test suites.
-- Expanded web samples if broader web support moves out of the deferred bucket.
-- Additional DbContext examples now that mock-mode versus real-mode options are explicit.
-
-## Decision Rules
-
-The current prioritization rules are:
-
-1. Prefer provider-boundary work over adding new provider-specific surface area.
-2. Prefer per-`Mocker` extension points over global mutable registries.
-3. Prefer compatibility shims in provider-specific layers over pushing Moq behavior into all providers.
-4. Defer new web-framework breadth until the core/provider split is clearer.
+- Rewriting any remaining compatibility-only `MockOptional` examples.
+- Exposing the explicit options model more directly where targeted helper APIs would benefit from it.
+- Removing the `MockOptional` compatibility alias in `v5` once the migration path is complete.
