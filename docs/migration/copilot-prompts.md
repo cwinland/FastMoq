@@ -18,11 +18,15 @@ Use this prompt when you want Copilot to help with a staged migration without sk
 ```text
 I am migrating this test project from FastMoq 3.0.0-style usage to the current v4 provider-first APIs.
 
+Use this migration guide as the source of truth for package, provider, and obsolete-surface rules when needed:
+https://github.com/cwinland/FastMoq/blob/master/docs/migration/README.md
+
 Work only on a small batch of tests at a time and run tests frequently after each batch.
 
 Before editing:
 - inspect the current test project package references
 - determine whether the project is using the aggregate FastMoq package or split packages such as FastMoq.Core, FastMoq.Web, FastMoq.Database, FastMoq.Provider.Moq, or FastMoq.Provider.NSubstitute
+- inspect shared test helpers and base classes before leaf tests, especially for `.Object`, `.Reset()`, `Func<Times>` helper signatures, and framework service-provider setup such as `FunctionContext.InstanceServices`
 - identify whether the current tests depend on Moq-specific behavior such as GetMock<T>(), direct Mock<T>, Setup(...), SetupSet(...), SetupAllProperties(), Protected(), VerifyLogger(...), or out/ref verification patterns
 - identify whether the tests use web helpers, DbContext helpers, or HTTP compatibility helpers that require specific packages
 
@@ -66,10 +70,14 @@ Use this version when the goal is not only to keep the suite passing, but also t
 ```text
 I am migrating this FastMoq test file to the current v4 APIs.
 
+Use this migration guide as the source of truth for package, provider, and obsolete-surface rules when needed:
+https://github.com/cwinland/FastMoq/blob/master/docs/migration/README.md
+
 Treat obsolete FastMoq APIs as migration defects to remove from this file unless there is a documented blocker.
 
 Before editing:
 - inspect package references and active provider assumptions
+- if the file depends on shared helper wrappers or base classes, inspect those first before patching repeated leaf-test churn
 - identify every use of GetMock<T>(), VerifyLogger(...), Initialize<T>(...), MockOptional, and other obsolete or compatibility-only FastMoq APIs in this file
 - identify any Moq-only behavior that still requires provider-specific handling
 

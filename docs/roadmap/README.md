@@ -4,6 +4,8 @@ This document captures the current provider-first direction for FastMoq. It is n
 
 It serves as the repo-local place to track v4.x hardening work and candidate v5 enhancements.
 
+For tracker-ready backlog text derived from recent migration feedback, see [Migration Feedback Issue Drafts](./migration-feedback-issue-drafts.md).
+
 ## Current Direction
 
 FastMoq is moving toward a provider-based architecture where:

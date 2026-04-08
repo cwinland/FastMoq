@@ -91,7 +91,7 @@ That means new transition surfaces should build on `IFastMock<T>` plus provider-
 | `GetOrCreateMock<T>()` | Default setup path for tracked mocks and most interaction verification | Preferred v4 migration target for touched tests |
 | `GetObject<T>()` | You need the constructed dependency instance, not the tracked wrapper | Useful when the dependency is only consumed as an object during arrange or manual construction |
 | `Mocks.Verify(...)` / `VerifyLogged(...)` | The assertion can be expressed without provider-specific verification APIs | Preferred verification surface for migrated tests |
-| `GetMock<T>()` | Only when you are preserving a stable v3-shaped Moq test with minimal churn during the first stabilization pass | Obsolete compatibility path; recommended default is to replace it with `GetOrCreateMock<T>()` plus v4 provider/package APIs once the suite is stable |
+| `GetMock<T>()` | Only when you are preserving a stable v3-shaped Moq test with minimal churn during the first stabilization pass | Obsolete compatibility surface and migration target for touched files; recommended default is to replace it with `GetOrCreateMock<T>()` plus v4 provider/package APIs once the suite is stable |
 | `AddType(...)` | A fake, stub, factory, or fixed instance reads better than a mock setup chain | Type-resolution override, not a mock-retrieval substitute |
 
 In this guide, "previous FastMoq versions" means tests and helpers written against the public `3.0.0` package or against pre-v4 assumptions, especially code that assumes:
@@ -177,6 +177,70 @@ Use this when you are moving a larger suite instead of only touching a few tests
 8. Replace hard-to-port Moq arrangements with `AddType(...)` plus a fake or stub when that is clearer than forcing another mocking-library equivalent.
 
 If the suite is large, prefer many small green batches over one broad rewrite. That keeps provider-translation mistakes localized and makes it easier to spot the tests that should remain on Moq.
+
+## Shared test helpers first
+
+Before rewriting leaf tests, inspect shared base classes, helper wrappers, and test utilities first.
+
+In mature suites, the highest-leverage migration changes often live there rather than in individual test methods.
+
+Start with helpers that still centralize any of these patterns:
+
+- `.Object` access on raw `Mock<T>` values
+- `.Reset()` calls on provider-specific mocks
+- `Func<Times>` or raw `Times` helper signatures
+- local wrappers around principals, controller contexts, or request setup
+- framework service-provider shims such as `InstanceServices`, `IServiceProvider`, or similar test bootstrap plumbing
+
+One deliberate helper migration can remove the same churn from dozens of files.
+
+### Azure Functions worker: typed `InstanceServices`
+
+Azure Functions worker tests deserve one explicit warning: `FunctionContext.InstanceServices` should behave like a typed `IServiceProvider`, not like a shim that returns the same object for every requested service type.
+
+If the suite uses Azure Functions worker helpers, prefer a real or type-aware service provider shape:
+
+```csharp
+using FastMoq.Providers.MoqProvider;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.DependencyInjection;
+
+var services = new ServiceCollection();
+services.AddLogging();
+services.AddOptions();
+services.Configure<WorkerOptions>(_ => { });
+
+var instanceServices = services.BuildServiceProvider();
+
+Mocks.GetOrCreateMock<FunctionContext>()
+    .Setup(x => x.InstanceServices)
+    .Returns(instanceServices);
+```
+
+Avoid helpers that return one object such as `ILoggerFactory` for every `GetService(Type)` request. Those shims can let the suite keep running while hiding cast failures for typed services such as `IOptions<WorkerOptions>`.
+
+## Real-world gotchas
+
+These are small migration edges that cause disproportionate churn in provider-first rewrites.
+
+| Legacy habit | Preferred v4 move | Why it trips people up |
+| --- | --- | --- |
+| `mock.Object` or `GetMock<T>().Object` | `fastMock.Instance` or `Mocks.GetObject<T>()` | `GetOrCreateMock<T>()` returns `IFastMock<T>`, not a raw `Mock<T>` |
+| `mock.Reset()` | `fastMock.Reset()` | The provider-first handle already has a reset surface; `AsMoq()` is only needed when you truly need raw Moq APIs |
+| `TimesSpec.Never` during bulk conversion | `TimesSpec.Never()` or preferably `TimesSpec.NeverCalled` | The method call is easy to miss, and `NeverCalled` avoids the missing-parentheses mistake entirely |
+| shared helper signatures such as `Func<Times>` | deliberate helper pass to `TimesSpec` | Fixing the helper boundary first is cheaper than patching repeated leaf call sites |
+
+If you still need raw Moq APIs after moving to `GetOrCreateMock<T>()`, step through `AsMoq()` explicitly. Otherwise stay on `Instance`, `Reset()`, `GetObject<T>()`, and the provider-neutral verification surface.
+
+Shared helper signature example:
+
+```csharp
+// Old helper boundary
+void AssertLogged(Mock<ILogger> logger, Func<Times> times)
+
+// Deliberate migration boundary
+void AssertLogged(Mocker mocker, TimesSpec times)
+```
 
 ## Copilot prompts
 
@@ -316,6 +380,20 @@ This is easy to miss during migration because package installation, extension-me
 - importing its namespace makes those extension methods visible
 - registering it as the default provider is what actually makes FastMoq use it for new mocks
 
+### Package-to-namespace quick map
+
+Use this table when package names and in-editor namespace discovery drift apart during migration.
+
+| Package | Common namespace imports | Typical surfaces you expect to appear |
+| --- | --- | --- |
+| `FastMoq.Core` | `FastMoq`, `FastMoq.Extensions`, `FastMoq.Providers` | `Mocker`, `MockerTestBase<T>`, `GetOrCreateMock<T>()`, `GetObject<T>()`, `Verify(...)`, `VerifyLogged(...)`, `MockingProviderRegistry` |
+| `FastMoq.Provider.Moq` | `FastMoq.Providers.MoqProvider` | `MoqMockingProvider`, `AsMoq()`, `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, `Protected()` |
+| `FastMoq.Provider.NSubstitute` | `FastMoq.Providers.NSubstituteProvider` | `NSubstituteMockingProvider`, `AsNSubstitute()`, `Received(...)`, `DidNotReceive()` |
+| `FastMoq.Web` | `FastMoq.Web`, `FastMoq.Web.Extensions` | `TestClaimsPrincipalOptions`, `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, `AddHttpContextAccessor(...)` |
+| `FastMoq.Database` | `FastMoq` | `GetMockDbContext<TContext>()`, `GetDbContextHandle<TContext>()`, `DbContextHandleOptions<TContext>`, `DbContextTestMode` |
+
+Packages control availability. Namespaces control extension discovery and which APIs light up in the editor.
+
 Installing `FastMoq.Core` plus `FastMoq.Provider.Moq` is not enough by itself. The Moq provider still needs to be registered as the default for that test assembly.
 
 FastMoq is also not limited to the bundled providers. If your suite uses another mocking library, you can implement `IMockingProvider` and register your own provider instead of adopting `moq` or `nsubstitute`.
@@ -346,6 +424,12 @@ public static class TestAssemblyProviderBootstrap
     }
 }
 ```
+
+Module-initializer note:
+
+- some analyzers warn on `[ModuleInitializer]` usage in test projects, commonly `CA2255`
+- for a dedicated test bootstrap type, a targeted suppression is an expected choice when xUnit is the active framework
+- if your framework already offers a one-time assembly startup hook, use that hook instead of forcing the xUnit pattern into every test project
 
 #### NUnit
 
@@ -473,7 +557,7 @@ Why:
 
 - `Initialize<T>(...)` is now a compatibility wrapper, not the recommended setup entry point.
 - `GetOrCreateMock<T>()` plus the Moq provider extensions is the preferred v4 transition path for Moq-specific setup.
-- `GetMock<T>()` remains only as an obsolete compatibility path when the assembly is explicitly using the bundled Moq compatibility provider.
+- `GetMock<T>()` remains only as an obsolete compatibility surface when the assembly is explicitly using the bundled Moq compatibility provider.
 
 If you are already refactoring the test and do not specifically need a raw `Moq.Mock<T>`, prefer moving toward provider-neutral retrieval and verification instead of expanding direct `GetMock<T>()` usage further.
 

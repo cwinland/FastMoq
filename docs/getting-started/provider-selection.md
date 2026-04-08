@@ -44,9 +44,11 @@ Use this quick check before reading the rest of the page:
 - switch to `nsubstitute` only when the test project is intentionally written against NSubstitute behavior
 - register a custom provider if your team uses a different mocking library or needs provider behavior that the bundled packages do not cover
 
-## Mandatory bootstrap for Moq-backed migration work
+## Mandatory bootstrap when the test assembly must not stay on `reflection`
 
-If a migrated test project still uses the Moq compatibility surface, treat provider bootstrap as required setup, not as an optional cleanup step.
+If a migrated test project still uses the Moq compatibility surface, or if the suite is intentionally standardizing on another non-default provider, treat provider bootstrap as required setup, not as an optional cleanup step.
+
+The examples below show the common Moq migration case, but the same assembly-startup rule applies to `nsubstitute` and custom providers: register the provider and set it as the default before the suite creates `Mocker` instances.
 
 ### xUnit
 
@@ -68,6 +70,22 @@ public static class TestAssemblyProviderBootstrap
     }
 }
 ```
+
+What each argument means in that call:
+
+- `"moq"` is the registry key, not the source of Moq behavior
+- `MoqMockingProvider.Instance` is the actual provider implementation that creates mocks, verifies calls, exposes capabilities, and adapts FastMoq to Moq
+- `setAsDefault: true` makes that registered provider instance the assembly default
+
+That means the name matters only as the lookup key you will use later with `SetDefault(...)`, `Push(...)`, `TryGet(...)`, and diagnostics. The provider behavior itself comes from `MoqMockingProvider.Instance`.
+
+In practice, still use the canonical names from the docs for built-in and packaged providers. If you registered Moq under a different name, the provider would still work, but any code or docs that later say `Push("moq")` would not match your custom alias.
+
+Module-initializer note:
+
+- some analyzers warn on `[ModuleInitializer]` usage in test projects, commonly `CA2255`
+- for a dedicated test bootstrap type, a targeted suppression is a normal choice when xUnit is the active framework
+- if your framework already offers a one-time assembly startup hook, use that hook instead of forcing the xUnit pattern into every test project
 
 ### NUnit
 
@@ -115,6 +133,16 @@ Without one of those bootstrap patterns, the active default remains `reflection`
 
 The selection code lives in `MockingProviderRegistry`.
 
+Provider names are registry keys. FastMoq does not derive the string automatically from the provider type when you call `Register(...)`.
+
+Use these rules:
+
+- for built-in providers, use the canonical names already registered by FastMoq: `reflection` and `moq`
+- for the NSubstitute package, this documentation uses `nsubstitute` as the recommended registration name
+- for custom providers, choose a stable unique name such as `my-provider` and reuse that same name for `Register(...)`, `SetDefault(...)`, and `Push(...)`
+- the registry is case-insensitive, but lowercase names keep examples and diagnostics consistent
+- if you are unsure what is currently registered, inspect `MockingProviderRegistry.RegisteredProviderNames` or guard with `TryGet(...)`
+
 Resolution order:
 
 1. Use the current async-scoped override set by `Push(...)` if one exists.
@@ -126,6 +154,18 @@ The important methods are:
 - `MockingProviderRegistry.SetDefault(name)`
 - `MockingProviderRegistry.Push(name)`
 - `MockingProviderRegistry.Default`
+
+What each method is for:
+
+- `SetDefault(name)` changes the app-wide default provider that new `Mocker` instances will use when no scoped override is active
+- `Push(name)` is the temporary async-scoped override; use it when one test or one code path needs a different provider than the assembly default
+- `TryGet(name, out provider)` is only a lookup and guard API; it tells you whether a provider name is registered, but it does not activate or switch anything
+- `Default` returns the effective provider for the current context, which means the pushed provider if one is active, otherwise the app-wide default
+
+Example mental model:
+
+- `Register("moq", MoqMockingProvider.Instance, ...)` means `"moq"` is the lookup key you will later pass to `SetDefault("moq")` or `Push("moq")`
+- `Register("my-provider", new MyMockingProvider(), ...)` means you chose `"my-provider"` as that provider's lookup key
 
 ## Recommended pattern: app-wide default for the test assembly
 
@@ -251,6 +291,8 @@ The planned v5 direction is:
 
 - `FastMoq.Core` keeps `reflection` as the default provider.
 - bundled Moq compatibility is removed from core.
-- provider packages such as Moq or NSubstitute are added explicitly and registered by the consuming test assembly.
+- provider packages such as Moq or NSubstitute are added explicitly, then registered and selected by the consuming test assembly.
+
+In other words, the registry entry in core goes away, but the provider model does not. In `v5`, adding the Moq package alone will not activate Moq. The consuming test assembly must still register a provider implementation such as `MoqMockingProvider.Instance` and make it the default when the suite depends on Moq behavior.
 
 That means the app-wide bootstrap pattern shown above is the forward-compatible way to select a provider.
