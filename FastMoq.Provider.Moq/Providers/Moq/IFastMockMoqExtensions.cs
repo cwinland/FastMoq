@@ -9,17 +9,32 @@ namespace FastMoq.Providers.MoqProvider
     /// <summary>
     /// Moq-specific convenience extensions for <see cref="IFastMock"/> and <see cref="IFastMock{T}"/>.
     /// These stay in the provider package so the core abstractions remain provider agnostic.
+    /// Prefer provider-first members such as <see cref="IFastMock.Instance" />, <see cref="IFastMock.Reset" />, and FastMoq verification helpers first, and use these extensions when the test intentionally needs Moq-specific APIs.
     /// </summary>
     public static class IFastMockMoqExtensions
     {
         /// <summary>
         /// Returns the provider-native <see cref="Mock{T}"/> instance for a tracked FastMoq mock.
+        /// Use this when the test intentionally needs a Moq-only API such as <c>Setup(...)</c> or <c>Protected()</c>.
         /// </summary>
         /// <typeparam name="T">Mocked type.</typeparam>
         /// <param name="fastMock">Tracked FastMoq mock.</param>
         /// <returns>The underlying <see cref="Mock{T}"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="fastMock"/> is <see langword="null"/>.</exception>
         /// <exception cref="NotSupportedException">Thrown when the active provider is not Moq.</exception>
+        /// <example>
+        /// <para>Select the Moq provider first, then use <see cref="AsMoq{T}(IFastMock{T})"/> as the provider-native escape hatch when the test truly needs Moq semantics.</para>
+        /// <code language="csharp"><![CDATA[
+        /// using var providerScope = MockingProviderRegistry.Push("moq");
+        ///
+        /// var mocker = new Mocker();
+        /// var gateway = mocker.GetOrCreateMock<IOrderGateway>();
+        ///
+        /// gateway.AsMoq()
+        ///     .Setup(x => x.Publish(42))
+        ///     .Returns(true);
+        /// ]]></code>
+        /// </example>
         public static Mock<T> AsMoq<T>(this IFastMock<T> fastMock) where T : class
         {
             ArgumentNullException.ThrowIfNull(fastMock);
@@ -34,6 +49,7 @@ namespace FastMoq.Providers.MoqProvider
 
         /// <summary>
         /// Returns the provider-native non-generic <see cref="Mock"/> instance for a tracked FastMoq mock.
+        /// Use this only when the test intentionally needs Moq's non-generic APIs.
         /// </summary>
         /// <param name="fastMock">Tracked FastMoq mock.</param>
         /// <returns>The underlying non-generic <see cref="Mock"/>.</returns>
@@ -148,8 +164,13 @@ namespace FastMoq.Providers.MoqProvider
 
         private static NotSupportedException CreateProviderMismatchException(Type mockedType, object? nativeMock)
         {
-            var nativeType = nativeMock?.GetType().FullName ?? "null";
-            return new NotSupportedException($"Tracked mock for '{mockedType.FullName}' is not backed by Moq. The active provider returned '{nativeType}'. Select the Moq provider for this test assembly or use provider-neutral FastMoq APIs.");
+            return new NotSupportedException(ProviderSelectionDiagnostics.BuildProviderMismatchMessage(
+                "moq",
+                mockedType,
+                nativeMock,
+                nativeMock,
+                "AsMoq",
+                "provider-neutral FastMoq APIs"));
         }
     }
 }

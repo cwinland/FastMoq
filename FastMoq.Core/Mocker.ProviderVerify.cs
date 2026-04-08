@@ -12,6 +12,7 @@ namespace FastMoq
         /// </summary>
         /// <example>
         /// <para>Use <see cref="GetOrCreateMock{T}(MockRequestOptions?)"/> when the test needs the tracked mock handle itself, not just automatic constructor resolution.</para>
+        /// <para><c>fastMock.Instance</c> is the provider-first replacement for older <c>GetMock&lt;T&gt;().Object</c> access when the test still wants the tracked handle.</para>
         /// <para><c>GetOrCreateMock</c> uses the active FastMoq provider. It does not require the Moq provider to be selected unless the test later calls Moq-specific extensions such as <c>AsMoq()</c>, <c>Setup(...)</c>, or <c>Protected()</c>.</para>
         /// <code language="csharp"><![CDATA[
         /// var mocker = new Mocker();
@@ -44,6 +45,7 @@ namespace FastMoq
 
         /// <summary>
         /// Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.
+        /// Use the returned <see cref="IFastMock" /> when the test needs the tracked handle itself, and prefer <see cref="Mocker.GetObject(Type, Action{object?}?)" /> when only the instance is needed.
         /// </summary>
         public IFastMock GetOrCreateMock(Type type, MockRequestOptions? options = null)
         {

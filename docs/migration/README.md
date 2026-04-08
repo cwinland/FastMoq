@@ -8,6 +8,27 @@ It is intentionally practical. The goal is not to list every internal refactor, 
 
 The goal is provider-centric tests by default, not removal of all provider-specific APIs.
 
+If your test project references the aggregate `FastMoq` package, the FastMoq Roslyn analyzers ship with it by default. That means common migration leftovers such as `.Object`, provider-native `Reset()`, `VerifyLogger(...)`, and obvious mixed `GetMock<T>()` / `GetOrCreateMock<T>()` usage can be surfaced while you modernize tests. Core-only consumers can opt in separately with `FastMoq.Analyzers`.
+
+The analyzer pack now has two roles:
+
+- migration guidance for mechanical provider-first rewrites and compatibility cleanup
+- low-noise authoring guidance for new tests where FastMoq already has a clearer first-party pattern
+
+The authoring-guidance rules default to suggestion or info severity. Current examples include:
+
+- `FMOQ0010` for preferring typed provider escape hatches such as `AsMoq()` or `AsNSubstitute()` over raw `NativeMock` / `GetNativeMock(...)`
+- `FMOQ0011` for preferring `FastMoq.Web` helpers over hand-rolled `HttpContext`, `ControllerContext`, or `IHttpContextAccessor` registration via `AddType(...)`
+- `FMOQ0012` for preferring `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` over Moq-specific HTTP compatibility helpers when the test only needs request and response behavior
+
+Tune guidance severity in `.editorconfig` if a suite wants quieter or stricter defaults:
+
+```ini
+dotnet_diagnostic.FMOQ0010.severity = suggestion
+dotnet_diagnostic.FMOQ0011.severity = suggestion
+dotnet_diagnostic.FMOQ0012.severity = suggestion
+```
+
 If you only open one document to start a migration, open this one first.
 
 For a successful v4 migration, use this boundary:
@@ -171,10 +192,11 @@ Use this when you are moving a larger suite instead of only touching a few tests
 2. Pick the provider that matches the current suite shape before rewriting arrangements.
 3. Stabilize the suite first, especially if it still depends on `GetMock<T>()`, `VerifyLogger(...)`, `Protected()`, or other Moq-heavy flows.
 4. Run tests immediately after each migration batch instead of waiting for a large final rewrite pass.
-5. Translate Moq `Setup(...)` calls into provider-native arrangement syntax only in the tests you are actively modernizing.
-6. Move asserts toward `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, and `TimesSpec` where that improves clarity.
-7. Keep Moq for the pockets that still depend on Moq-only semantics such as `SetupSet(...)`, `SetupAllProperties()`, `Protected()`, or `CallBase`.
-8. Replace hard-to-port Moq arrangements with `AddType(...)` plus a fake or stub when that is clearer than forcing another mocking-library equivalent.
+5. Apply FastMoq analyzer fixes where the suggestions are high-confidence, then rerun the affected tests.
+6. Translate Moq `Setup(...)` calls into provider-native arrangement syntax only in the tests you are actively modernizing.
+7. Move asserts toward `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, and `TimesSpec` where that improves clarity.
+8. Keep Moq for the pockets that still depend on Moq-only semantics such as `SetupSet(...)`, `SetupAllProperties()`, `Protected()`, or `CallBase`.
+9. Replace hard-to-port Moq arrangements with `AddType(...)` plus a fake or stub when that is clearer than forcing another mocking-library equivalent.
 
 If the suite is large, prefer many small green batches over one broad rewrite. That keeps provider-translation mistakes localized and makes it easier to spot the tests that should remain on Moq.
 

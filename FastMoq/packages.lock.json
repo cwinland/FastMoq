@@ -51,6 +51,7 @@
           "Microsoft.Extensions.Localization.Abstractions": "9.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "System.Text.Json": "9.0.0",
           "bunit.core": "1.38.5"
         }
       },
@@ -365,8 +366,7 @@
         "type": "Project",
         "dependencies": {
           "FastMoq.Core": "[1.0.0, )",
-          "Microsoft.EntityFrameworkCore.InMemory": "[10.*, )",
-          "Moq": "[4.18.4, 4.18.4]"
+          "Microsoft.EntityFrameworkCore.InMemory": "[10.*, )"
         }
       },
       "fastmoq.provider.moq": {
@@ -388,6 +388,7 @@
         "dependencies": {
           "FastMoq.Core": "[1.0.0, )",
           "System.Configuration.ConfigurationManager": "[9.0.2, )",
+          "System.Text.Json": "[10.0.5, )",
           "bunit": "[1.38.5, )"
         }
       },
@@ -428,6 +429,12 @@
           "System.Diagnostics.EventLog": "9.0.2",
           "System.Security.Cryptography.ProtectedData": "9.0.2"
         }
+      },
+      "System.Text.Json": {
+        "type": "CentralTransitive",
+        "requested": "[10.0.5, )",
+        "resolved": "10.0.5",
+        "contentHash": "vW2zhkWziyfhoSXNf42mTWyilw+vfwBGOsODDsHSFtOIY6LCgfRVUyaAilLEL4Kc1fzhaxcep5pS0VWYPSDW0w=="
       },
       "TestableIO.System.IO.Abstractions.TestingHelpers": {
         "type": "CentralTransitive",
@@ -778,8 +785,8 @@
       },
       "System.IO.Pipelines": {
         "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "eA3cinogwaNB4jdjQHOP3Z3EuyiDII7MT35jgtnsA4vkn0LUrrSHsU0nzHTzFzmaFYeKV7MYyMxOocFzsBHpTw=="
+        "resolved": "10.0.5",
+        "contentHash": "8/ZHN/j2y1t+7McdCf1wXku2/c7wtrGLz3WQabIoPuLAn3bHDWT6YOJYreJq8sCMPSo6c8iVYXUdLlFGX5PEqw=="
       },
       "System.Security.Cryptography.ProtectedData": {
         "type": "Transitive",
@@ -788,17 +795,8 @@
       },
       "System.Text.Encodings.Web": {
         "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "e2hMgAErLbKyUUwt18qSBf9T5Y+SFAL3ZedM8fLupkVj8Rj2PZ9oxQ37XX2LF8fTO1wNIxvKpihD7Of7D/NxZw=="
-      },
-      "System.Text.Json": {
-        "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "js7+qAu/9mQvnhA4EfGMZNEzXtJCDxgkgj8ohuxq/Qxv+R56G+ljefhiJHOxTNiw54q8vmABCWUwkMulNdlZ4A==",
-        "dependencies": {
-          "System.IO.Pipelines": "9.0.0",
-          "System.Text.Encodings.Web": "9.0.0"
-        }
+        "resolved": "10.0.5",
+        "contentHash": "opvD/nKTzGKA7GVntZ9L823kN6IxgHQfuxY+VI9gv8VE1Y7CSKoi/QS1EYDQiA63MqtZsD7X6zkISd2ZQJohTQ=="
       },
       "TestableIO.System.IO.Abstractions": {
         "type": "Transitive",
@@ -829,8 +827,7 @@
         "type": "Project",
         "dependencies": {
           "FastMoq.Core": "[1.0.0, )",
-          "Microsoft.EntityFrameworkCore.InMemory": "[8.*, )",
-          "Moq": "[4.18.4, 4.18.4]"
+          "Microsoft.EntityFrameworkCore.InMemory": "[8.*, )"
         }
       },
       "fastmoq.provider.moq": {
@@ -852,6 +849,7 @@
         "dependencies": {
           "FastMoq.Core": "[1.0.0, )",
           "System.Configuration.ConfigurationManager": "[9.0.2, )",
+          "System.Text.Json": "[10.0.5, )",
           "bunit": "[1.38.5, )"
         }
       },
@@ -891,6 +889,16 @@
         "dependencies": {
           "System.Diagnostics.EventLog": "9.0.2",
           "System.Security.Cryptography.ProtectedData": "9.0.2"
+        }
+      },
+      "System.Text.Json": {
+        "type": "CentralTransitive",
+        "requested": "[10.0.5, )",
+        "resolved": "10.0.5",
+        "contentHash": "vW2zhkWziyfhoSXNf42mTWyilw+vfwBGOsODDsHSFtOIY6LCgfRVUyaAilLEL4Kc1fzhaxcep5pS0VWYPSDW0w==",
+        "dependencies": {
+          "System.IO.Pipelines": "10.0.5",
+          "System.Text.Encodings.Web": "10.0.5"
         }
       },
       "TestableIO.System.IO.Abstractions.TestingHelpers": {
@@ -960,6 +968,7 @@
           "Microsoft.Extensions.Localization.Abstractions": "9.0.0",
           "Microsoft.Extensions.Logging": "9.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
+          "System.Text.Json": "9.0.0",
           "bunit.core": "1.38.5"
         }
       },
@@ -1240,10 +1249,20 @@
         "resolved": "9.0.2",
         "contentHash": "i+Fe6Fpst/onydFLBGilCr/Eh9OFdlaTU/c3alPp6IbLZXQJOgpIu3l4MOnmsN8fDYq5nAyHSqNIJesc74Yw3Q=="
       },
+      "System.IO.Pipelines": {
+        "type": "Transitive",
+        "resolved": "10.0.5",
+        "contentHash": "8/ZHN/j2y1t+7McdCf1wXku2/c7wtrGLz3WQabIoPuLAn3bHDWT6YOJYreJq8sCMPSo6c8iVYXUdLlFGX5PEqw=="
+      },
       "System.Security.Cryptography.ProtectedData": {
         "type": "Transitive",
         "resolved": "9.0.2",
         "contentHash": "+z9JWtU9di45tW/w6zpuJms4SnAAqKY2Usmmxs7MpOhxWoIeR2pKl1vEkaFbEx52ZfrMFcZXsFe+8WERMozzGg=="
+      },
+      "System.Text.Encodings.Web": {
+        "type": "Transitive",
+        "resolved": "10.0.5",
+        "contentHash": "opvD/nKTzGKA7GVntZ9L823kN6IxgHQfuxY+VI9gv8VE1Y7CSKoi/QS1EYDQiA63MqtZsD7X6zkISd2ZQJohTQ=="
       },
       "TestableIO.System.IO.Abstractions": {
         "type": "Transitive",
@@ -1274,8 +1293,7 @@
         "type": "Project",
         "dependencies": {
           "FastMoq.Core": "[1.0.0, )",
-          "Microsoft.EntityFrameworkCore.InMemory": "[9.*, )",
-          "Moq": "[4.18.4, 4.18.4]"
+          "Microsoft.EntityFrameworkCore.InMemory": "[9.*, )"
         }
       },
       "fastmoq.provider.moq": {
@@ -1297,6 +1315,7 @@
         "dependencies": {
           "FastMoq.Core": "[1.0.0, )",
           "System.Configuration.ConfigurationManager": "[9.0.2, )",
+          "System.Text.Json": "[10.0.5, )",
           "bunit": "[1.38.5, )"
         }
       },
@@ -1336,6 +1355,16 @@
         "dependencies": {
           "System.Diagnostics.EventLog": "9.0.2",
           "System.Security.Cryptography.ProtectedData": "9.0.2"
+        }
+      },
+      "System.Text.Json": {
+        "type": "CentralTransitive",
+        "requested": "[10.0.5, )",
+        "resolved": "10.0.5",
+        "contentHash": "vW2zhkWziyfhoSXNf42mTWyilw+vfwBGOsODDsHSFtOIY6LCgfRVUyaAilLEL4Kc1fzhaxcep5pS0VWYPSDW0w==",
+        "dependencies": {
+          "System.IO.Pipelines": "10.0.5",
+          "System.Text.Encodings.Web": "10.0.5"
         }
       },
       "TestableIO.System.IO.Abstractions.TestingHelpers": {

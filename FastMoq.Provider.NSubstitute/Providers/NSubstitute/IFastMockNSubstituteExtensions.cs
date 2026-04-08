@@ -6,12 +6,26 @@ namespace FastMoq.Providers.NSubstituteProvider
     /// <summary>
     /// NSubstitute-specific convenience extensions for <see cref="IFastMock{T}"/>.
     /// These stay in the provider package so the core abstractions remain provider agnostic.
+    /// Prefer provider-first members such as <see cref="IFastMock.Instance" />, <see cref="IFastMock.Reset" />, and FastMoq verification helpers first, and use these extensions when the test intentionally needs NSubstitute-specific APIs.
     /// </summary>
     public static class IFastMockNSubstituteExtensions
     {
         /// <summary>
         /// Returns the tracked substitute instance after validating that the active provider produced an NSubstitute substitute.
+        /// Use this when the test intentionally needs NSubstitute-specific APIs such as <c>Received()</c>.
         /// </summary>
+        /// <example>
+        /// <para>Select the NSubstitute provider first, then use <see cref="AsNSubstitute{T}(IFastMock{T})"/> as the provider-native escape hatch when the test truly needs NSubstitute semantics.</para>
+        /// <code language="csharp"><![CDATA[
+        /// using var providerScope = MockingProviderRegistry.Push("nsubstitute");
+        ///
+        /// var mocker = new Mocker();
+        /// var gateway = mocker.GetOrCreateMock<IOrderGateway>();
+        ///
+        /// gateway.AsNSubstitute().Publish(42);
+        /// gateway.Received().Publish(42);
+        /// ]]></code>
+        /// </example>
         public static T AsNSubstitute<T>(this IFastMock<T> fastMock) where T : class
         {
             ArgumentNullException.ThrowIfNull(fastMock);
@@ -77,8 +91,13 @@ namespace FastMoq.Providers.NSubstituteProvider
 
         private static NotSupportedException CreateProviderMismatchException(Type mockedType, object? nativeMock)
         {
-            var nativeType = nativeMock?.GetType().FullName ?? "null";
-            return new NotSupportedException($"Tracked mock for '{mockedType.FullName}' is not backed by NSubstitute. The active provider returned '{nativeType}'. Select the NSubstitute provider for this test assembly or use provider-neutral FastMoq APIs.");
+            return new NotSupportedException(ProviderSelectionDiagnostics.BuildProviderMismatchMessage(
+                "nsubstitute",
+                mockedType,
+                nativeMock,
+                nativeMock,
+                "AsNSubstitute",
+                "provider-neutral FastMoq APIs"));
         }
     }
 }

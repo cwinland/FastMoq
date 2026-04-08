@@ -913,6 +913,11 @@ namespace FastMoq
         /// Resolves an object using FastMoq's runtime resolution pipeline.
         /// </summary>
         /// <example>
+        /// <para>Use <see cref="GetObject{T}()"/> when older code only needed <c>GetMock&lt;T&gt;().Object</c> and does not need the tracked mock handle itself.</para>
+        /// <code language="csharp"><![CDATA[
+        /// var mocker = new Mocker();
+        /// var gateway = mocker.GetObject<IOrderGateway>();
+        /// ]]></code>
         /// <para>Resolve a dependency after configuring a concrete registration through the provider-first pipeline.</para>
         /// <code language="csharp"><![CDATA[
         /// var fileSystem = new MockFileSystem();
@@ -1561,7 +1566,7 @@ namespace FastMoq
                 return typed;
             }
 
-            throw CreateLegacyMoqSurfaceUnavailableException(typeof(T));
+            throw CreateLegacyMoqSurfaceUnavailableException(typeof(T), "CreateMockInstance");
         }
 
         /// <summary>
@@ -1595,7 +1600,7 @@ namespace FastMoq
                 return legacy;
             }
 
-            throw CreateLegacyMoqSurfaceUnavailableException(type);
+            throw CreateLegacyMoqSurfaceUnavailableException(type, "CreateMockInstance", fast);
         }
 
         /// <summary>
@@ -1671,12 +1676,15 @@ namespace FastMoq
             return null;
         }
 
-        private static NotSupportedException CreateLegacyMoqSurfaceUnavailableException(Type type)
+        private static NotSupportedException CreateLegacyMoqSurfaceUnavailableException(Type type, string apiName, IFastMock? fastMock = null)
         {
-            var providerName = MockingProviderRegistry.Default.GetType().Name;
-            return new NotSupportedException(
-                $"Active provider '{providerName}' does not expose a legacy Moq.Mock instance for {type.Name}. " +
-                $"Use GetOrCreateMock<{type.Name}>() for provider-neutral access, or select the Moq provider for this test assembly before calling legacy GetMock/CreateMockInstance APIs.");
+            return new NotSupportedException(ProviderSelectionDiagnostics.BuildProviderMismatchMessage(
+                "moq",
+                type,
+                fastMock?.NativeMock,
+                fastMock?.Instance,
+                apiName,
+                $"GetOrCreateMock<{type.Name}>(), GetObject<{type.Name}>(), or FastMock.Instance for provider-neutral access"));
         }
         #endregion
 
@@ -1743,7 +1751,7 @@ namespace FastMoq
             var model = mockCollection.First(x => x.Type == type);
             if (!model.TryGetLegacyMock(out var mock))
             {
-                throw CreateLegacyMoqSurfaceUnavailableException(type);
+                throw CreateLegacyMoqSurfaceUnavailableException(type, "GetRequiredMock", model.FastMock);
             }
 
             mock.RaiseIfNull();
@@ -1757,6 +1765,7 @@ namespace FastMoq
 
         /// <summary>
         /// Gets the provider-native mock object for the supplied runtime type.
+        /// Prefer <see cref="GetOrCreateMock(Type, MockRequestOptions?)" /> plus provider-typed escape hatches when the test intentionally needs provider-specific APIs, and prefer <see cref="GetObject(Type, Action{object?}?)" /> or <see cref="GetOrCreateMock(Type, MockRequestOptions?)" /> for provider-first flows.
         /// </summary>
         public object GetNativeMock(Type type)
         {
@@ -1772,6 +1781,7 @@ namespace FastMoq
         }
         /// <summary>
         /// Gets the provider-native mock object for the supplied type parameter.
+        /// Prefer <see cref="GetOrCreateMock{T}(MockRequestOptions?)" /> plus provider-typed escape hatches such as <c>AsMoq()</c> or <c>AsNSubstitute()</c> when the test intentionally needs a provider-specific API surface.
         /// </summary>
         public object GetNativeMock<T>(params object?[] args) where T : class
         {

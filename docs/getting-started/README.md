@@ -79,20 +79,29 @@ Use this table when you are deciding which package line your test project should
 
 | If you want... | Install... | Why |
 | --- | --- | --- |
-| simplest all-in-one experience | `FastMoq` | Aggregate package that includes the primary runtime, database helpers, and web support |
-| lighter core-only usage | `FastMoq.Core` | Provider-first runtime without the extra EF or web-specific helper packages |
+| simplest all-in-one experience | `FastMoq` | Aggregate package that includes the primary runtime, database helpers, web support, and the FastMoq analyzer pack by default |
+| lighter core-only usage | `FastMoq.Core` | Provider-first runtime without the extra EF, web-specific, or analyzer package payloads |
 | DbContext and EF-specific helpers while using `FastMoq.Core` | `FastMoq.Database` | Adds `GetMockDbContext<TContext>()` and the explicit DbContext handle modes |
 | controller, `HttpContext`, `IHttpContextAccessor`, or claims-principal helpers while using `FastMoq.Core` | `FastMoq.Web` | Adds `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, and `AddHttpContextAccessor(...)` |
 | Moq-specific tracked-mock extension methods during migration | `FastMoq.Provider.Moq` | Adds provider-package extension methods such as `AsMoq()`, `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, and `Protected()` on `IFastMock<T>` |
 | optional NSubstitute-backed provider support | `FastMoq.Provider.NSubstitute` | Adds the NSubstitute provider package and tracked-mock extensions such as `AsNSubstitute()` |
+| analyzer guidance without the aggregate runtime package | `FastMoq.Analyzers` | Standalone Roslyn analyzers and code fixes for migration cleanup and provider-first test-authoring guidance |
 
 Important package boundaries in the current v4 line:
 
 - `FastMoq` already includes the common end-user surface, including web and database helpers
+- `FastMoq` also includes the FastMoq analyzer assets by default so most test projects get migration guidance without extra setup
 - `FastMoq.Core` stays lighter on purpose, so EF helpers and web helpers are separate package decisions when you consume core directly
+- `FastMoq.Core` does not include analyzer assets; add `FastMoq.Analyzers` explicitly if you want analyzer guidance in a core-only package graph
 - `FastMoq.Core` includes the built-in `reflection` provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as `Setup(...)` and `Protected()` still belong to the `FastMoq.Provider.Moq` package
 - provider-package extension methods still follow the provider-package docs and selection rules described in [Provider Selection and Setup](./provider-selection.md)
 - if you are unsure whether your web tests need another package, see the web-helper notes in [Testing Guide](./testing-guide.md#controller-testing) and the migration-specific notes in [Migration Guide](../migration/README.md#web-test-helpers)
+
+If your team wants the aggregate runtime package without analyzer diagnostics in a specific test project, you can opt out with:
+
+```xml
+<PackageReference Include="FastMoq" Version="4.*" ExcludeAssets="analyzers" />
+```
 
 ### .NET CLI
 

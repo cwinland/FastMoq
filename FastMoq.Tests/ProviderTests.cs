@@ -243,11 +243,33 @@ namespace FastMoq.Tests
 
             if (shouldThrow)
             {
-                action.Should().Throw<NotSupportedException>();
+                var exception = action.Should().Throw<NotSupportedException>().Which;
+                exception.Message.Should().Contain("requires the 'moq' provider");
+                exception.Message.Should().Contain($"active provider is '{providerName}'");
+                exception.Message.Should().Contain("MockingProviderRegistry.Push(\"moq\")");
                 return;
             }
 
             action.Should().NotThrow();
+        }
+
+        [Theory]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void MockModel_MockProperty_ShouldProvideProviderSelectionMessage_WhenProviderIsNotMoq(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+
+            mocker.CreateMock<IProviderDependency>();
+            var model = mocker.GetMockModel<IProviderDependency>();
+
+            Action action = () => _ = model.Mock;
+
+            var exception = action.Should().Throw<NotSupportedException>().Which;
+            exception.Message.Should().Contain("requires the 'moq' provider");
+            exception.Message.Should().Contain($"active provider is '{providerName}'");
+            exception.Message.Should().Contain("MockingProviderRegistry.Push(\"moq\")");
         }
 
         [Theory]

@@ -35,8 +35,10 @@ namespace FastMoq.Tests
 
             Action action = () => dependency.AsNSubstitute();
 
-            action.Should().Throw<NotSupportedException>()
-                .WithMessage("*not backed by NSubstitute*");
+            var exception = action.Should().Throw<NotSupportedException>().Which;
+            exception.Message.Should().Contain("requires the 'nsubstitute' provider");
+            exception.Message.Should().Contain($"active provider is '{providerName}'");
+            exception.Message.Should().Contain("MockingProviderRegistry.Push(\"nsubstitute\")");
         }
 
         [Fact]

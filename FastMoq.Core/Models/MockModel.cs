@@ -27,10 +27,13 @@ namespace FastMoq.Models
             {
                 if (!TryGetLegacyMock(out var legacyMock))
                 {
-                    var providerName = MockingProviderRegistry.Default.GetType().Name;
-                    throw new NotSupportedException(
-                        $"Active provider '{providerName}' does not expose a legacy Moq.Mock instance for {Type.Name}. " +
-                        $"Use FastMock/Instance or GetOrCreateMock(...) for provider-neutral access, or select the Moq provider before using the legacy Mock property.");
+                    throw new NotSupportedException(ProviderSelectionDiagnostics.BuildProviderMismatchMessage(
+                        "moq",
+                        Type,
+                        FastMock.NativeMock,
+                        FastMock.Instance,
+                        "Mock",
+                        "FastMock, Instance, or GetOrCreateMock(...) for provider-neutral access"));
                 }
 
                 return legacyMock;

@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /*.zip
 
 !.editorconfig
+docs/roadmap/migration-feedback-issue-drafts.md
