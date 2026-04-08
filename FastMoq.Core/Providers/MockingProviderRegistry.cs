@@ -1,6 +1,7 @@
 using FastMoq.Providers.MoqProvider;
 using FastMoq.Providers.ReflectionProvider;
 using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace FastMoq.Providers
 {
@@ -9,6 +10,9 @@ namespace FastMoq.Providers
     /// </summary>
     public static class MockingProviderRegistry
     {
+        private const string NSubstituteProviderAssemblyName = "FastMoq.Provider.NSubstitute";
+        private const string NSubstituteProviderTypeName = "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider";
+
         private static readonly ConcurrentDictionary<string, IMockingProvider> _providers = new(StringComparer.OrdinalIgnoreCase);
         private static IMockingProvider? _default;
         private static readonly AsyncLocal<IMockingProvider?> _current = new();
@@ -32,7 +36,17 @@ namespace FastMoq.Providers
             }
         }
 
-        public static bool TryGet(string name, out IMockingProvider provider) => _providers.TryGetValue(name, out provider!);
+        public static bool TryGet(string name, out IMockingProvider provider)
+        {
+            ArgumentNullException.ThrowIfNull(name);
+
+            if (_providers.TryGetValue(name, out provider!))
+            {
+                return true;
+            }
+
+            return TryEnsureOptionalProviderRegistered(name) && _providers.TryGetValue(name, out provider!);
+        }
 
         public static IReadOnlyCollection<string> RegisteredProviderNames => _providers.Keys.OrderBy(name => name, StringComparer.OrdinalIgnoreCase).ToArray();
 
@@ -109,6 +123,88 @@ namespace FastMoq.Providers
             _providers.Clear();
             _default = null;
             _current.Value = null;
+        }
+
+        internal static void ApplyAssemblyDefaultProviders(IEnumerable<Assembly> assemblies)
+        {
+            ArgumentNullException.ThrowIfNull(assemblies);
+
+            var declaredProviders = assemblies
+                .Select(assembly => TryGetAssemblyDefaultProviderName(assembly, out var providerName) ? providerName : string.Empty)
+                .Where(providerName => !string.IsNullOrWhiteSpace(providerName))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+
+            if (declaredProviders.Length == 0)
+            {
+                return;
+            }
+
+            if (declaredProviders.Length > 1)
+            {
+                throw new InvalidOperationException($"Multiple FastMoq default providers were declared across loaded assemblies: {string.Join(", ", declaredProviders.OrderBy(name => name, StringComparer.OrdinalIgnoreCase))}. Declare only one assembly default provider per process.");
+            }
+
+            SetDefault(declaredProviders[0]);
+        }
+
+        internal static bool TryGetAssemblyDefaultProviderName(Assembly assembly, out string providerName)
+        {
+            ArgumentNullException.ThrowIfNull(assembly);
+
+            var attribute = assembly.GetCustomAttributes<FastMoqDefaultProviderAttribute>().FirstOrDefault();
+            if (attribute is null || string.IsNullOrWhiteSpace(attribute.ProviderName))
+            {
+                providerName = string.Empty;
+                return false;
+            }
+
+            providerName = attribute.ProviderName;
+            return true;
+        }
+
+        private static bool TryEnsureOptionalProviderRegistered(string providerName)
+        {
+            if (!string.Equals(providerName, "nsubstitute", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            Assembly? providerAssembly;
+            try
+            {
+                providerAssembly = AppDomain.CurrentDomain.GetAssemblies()
+                    .FirstOrDefault(assembly => string.Equals(assembly.GetName().Name, NSubstituteProviderAssemblyName, StringComparison.OrdinalIgnoreCase))
+                    ?? Assembly.Load(new AssemblyName(NSubstituteProviderAssemblyName));
+            }
+            catch (FileNotFoundException)
+            {
+                return false;
+            }
+            catch (FileLoadException)
+            {
+                return false;
+            }
+            catch (BadImageFormatException)
+            {
+                return false;
+            }
+
+            var providerType = providerAssembly.GetType(NSubstituteProviderTypeName, throwOnError: false, ignoreCase: false);
+            if (providerType is null || !typeof(IMockingProvider).IsAssignableFrom(providerType))
+            {
+                return false;
+            }
+
+            const BindingFlags FLAGS = BindingFlags.Public | BindingFlags.Static;
+            if (providerType.GetField("Instance", FLAGS)?.GetValue(null) is not IMockingProvider provider)
+            {
+                provider = providerType.GetProperty("Instance", FLAGS)?.GetValue(null) as IMockingProvider
+                    ?? throw new InvalidOperationException($"Optional provider '{providerName}' does not expose a public static Instance of type IMockingProvider.");
+            }
+
+            Register(providerName, provider, setAsDefault: false);
+            return true;
         }
 
         private sealed class PopDisposable : IDisposable

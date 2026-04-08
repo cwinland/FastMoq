@@ -31,6 +31,8 @@ namespace FastMoq.Analyzers
 
     internal static class FastMoqAnalysisHelpers
     {
+        private const string FASTMOQ_DEFAULT_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqDefaultProviderAttribute";
+
         private static readonly HashSet<string> DisallowedMixedRetrievalMembers = new(StringComparer.Ordinal)
         {
             "Object",
@@ -515,6 +517,12 @@ namespace FastMoq.Analyzers
 
         public static bool IsProviderSelectedByDefault(Compilation compilation, string providerName, CancellationToken cancellationToken)
         {
+            if (TryGetAssemblyDefaultProviderName(compilation.Assembly, out var assemblyDefaultProvider) &&
+                string.Equals(assemblyDefaultProvider, providerName, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
             foreach (var syntaxTree in compilation.SyntaxTrees)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -530,6 +538,26 @@ namespace FastMoq.Analyzers
                 }
             }
 
+            return false;
+        }
+
+        public static bool TryGetAssemblyDefaultProviderName(IAssemblySymbol assemblySymbol, out string providerName)
+        {
+            foreach (var attribute in assemblySymbol.GetAttributes())
+            {
+                if (attribute.AttributeClass?.ToDisplayString() != FASTMOQ_DEFAULT_PROVIDER_ATTRIBUTE ||
+                    attribute.ConstructorArguments.Length != 1 ||
+                    attribute.ConstructorArguments[0].Value is not string declaredProvider ||
+                    string.IsNullOrWhiteSpace(declaredProvider))
+                {
+                    continue;
+                }
+
+                providerName = declaredProvider;
+                return true;
+            }
+
+            providerName = string.Empty;
             return false;
         }
 

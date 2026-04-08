@@ -1,6 +1,8 @@
 using FastMoq.Analyzers;
 using FastMoq.Analyzers.Analyzers;
 using FastMoq.Analyzers.CodeFixes;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -10,6 +12,53 @@ namespace FastMoq.Analyzers.Tests
     public class MigrationAnalyzerTests
     {
         private readonly FastMoqMigrationCodeFixProvider codeFixProvider = new();
+
+        public static TheoryData<DiagnosticAnalyzer, DiagnosticDescriptor> AnalyzerDescriptorPairs => new()
+        {
+            { new TrackedMockObjectAnalyzer(), DiagnosticDescriptors.UseProviderFirstObjectAccess },
+            { new TrackedMockResetAnalyzer(), DiagnosticDescriptors.UseProviderFirstReset },
+            { new VerifyLoggerAnalyzer(), DiagnosticDescriptors.UseVerifyLogged },
+            { new MixedMockRetrievalAnalyzer(), DiagnosticDescriptors.UseConsistentMockRetrieval },
+            { new MockOptionalAnalyzer(), DiagnosticDescriptors.UseExplicitOptionalParameterResolution },
+            { new InitializeCompatibilityAnalyzer(), DiagnosticDescriptors.ReplaceInitializeCompatibilityWrapper },
+            { new StrictCompatibilityAnalyzer(), DiagnosticDescriptors.AvoidStrictCompatibilityProperty },
+            { new TimesSpecHelperBoundaryAnalyzer(), DiagnosticDescriptors.UseTimesSpecAtHelperBoundary },
+            { new ProviderBootstrapAnalyzer(), DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi },
+            { new NativeMockAuthoringAnalyzer(), DiagnosticDescriptors.PreferTypedProviderExtensions },
+            { new WebHelperAuthoringAnalyzer(), DiagnosticDescriptors.PreferWebTestHelpers },
+            { new HttpRequestHelperAuthoringAnalyzer(), DiagnosticDescriptors.PreferProviderNeutralHttpHelpers },
+        };
+
+        public static TheoryData<DiagnosticDescriptor, DiagnosticSeverity> DescriptorSeverityPairs => new()
+        {
+            { DiagnosticDescriptors.UseProviderFirstObjectAccess, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.UseProviderFirstReset, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.UseVerifyLogged, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.UseConsistentMockRetrieval, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.UseExplicitOptionalParameterResolution, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.ReplaceInitializeCompatibilityWrapper, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.AvoidStrictCompatibilityProperty, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.UseTimesSpecAtHelperBoundary, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.PreferTypedProviderExtensions, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.PreferWebTestHelpers, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.PreferProviderNeutralHttpHelpers, DiagnosticSeverity.Info },
+        };
+
+        [Theory]
+        [MemberData(nameof(AnalyzerDescriptorPairs))]
+        public void Analyzer_ShouldExposeExpectedSupportedDescriptor(DiagnosticAnalyzer analyzer, DiagnosticDescriptor expectedDescriptor)
+        {
+            var actualDescriptor = Assert.Single(analyzer.SupportedDiagnostics);
+            Assert.Same(expectedDescriptor, actualDescriptor);
+        }
+
+        [Theory]
+        [MemberData(nameof(DescriptorSeverityPairs))]
+        public void Descriptor_ShouldExposeExpectedDefaultSeverity(DiagnosticDescriptor descriptor, DiagnosticSeverity expectedSeverity)
+        {
+            Assert.Equal(expectedSeverity, descriptor.DefaultSeverity);
+        }
 
         [Fact]
         public async Task TrackedMockObjectAnalyzer_ShouldReportAndFix_GetMockObjectUsage()
@@ -560,6 +609,62 @@ class Sample
     {
         var mocks = new Mocker();
         var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenAssemblyDeclaresMoqDefaultProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider(""moq"")]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenAssemblyDeclaresNSubstituteDefaultProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+
+[assembly: FastMoqDefaultProvider(""nsubstitute"")]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
     }
 }";
 

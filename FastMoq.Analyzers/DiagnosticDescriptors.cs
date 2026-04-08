@@ -47,7 +47,7 @@ namespace FastMoq.Analyzers
             "Use explicit optional-parameter resolution",
             "Use '{0}' instead of the MockOptional compatibility property",
             Category,
-            DiagnosticSeverity.Info,
+            DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: "MockOptional is a compatibility alias. Prefer explicit OptionalParameterResolution values in current FastMoq code.");
 
@@ -56,7 +56,7 @@ namespace FastMoq.Analyzers
             "Replace Initialize<T>(...) compatibility wrapper",
             "Use '{0}' instead of Initialize<T>(...)",
             Category,
-            DiagnosticSeverity.Info,
+            DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: "Initialize<T>(...) is a legacy wrapper over GetMock<T>(...) and should be replaced with the direct API.");
 
@@ -65,7 +65,7 @@ namespace FastMoq.Analyzers
             "Avoid compatibility Strict property",
             "Strict is a compatibility alias; use explicit Behavior or preset APIs instead",
             Category,
-            DiagnosticSeverity.Info,
+            DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: "Use Behavior.Enabled with MockFeatures.FailOnUnconfigured for narrow strictness, or UseStrictPreset() for the broader strict profile.");
 
@@ -81,11 +81,11 @@ namespace FastMoq.Analyzers
         public static readonly DiagnosticDescriptor SelectProviderBeforeProviderSpecificApi = new(
             DiagnosticIds.SelectProviderBeforeProviderSpecificApi,
             "Select a provider before using provider-specific FastMoq APIs",
-            "API '{0}' requires FastMoq provider '{1}', but this project does not select it. Reflection remains the default. Use Push(\"{1}\"), SetDefault(\"{1}\"), or Register(\"{1}\", ..., setAsDefault: true).",
+            "API '{0}' requires FastMoq provider '{1}', but this project does not select it. Reflection remains the default. Use [assembly: FastMoqDefaultProvider(\"{1}\")], Push(\"{1}\"), SetDefault(\"{1}\"), or Register(\"{1}\", ..., setAsDefault: true).",
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "Provider-specific FastMoq APIs require an explicit provider selection because reflection remains the default in v4.");
+            description: "Provider-specific FastMoq APIs require an explicit provider selection because reflection remains the default in v4. Assembly-level defaults can use FastMoqDefaultProviderAttribute when a test assembly standardizes on a provider.");
 
         public static readonly DiagnosticDescriptor PreferTypedProviderExtensions = new(
             DiagnosticIds.PreferTypedProviderExtensions,
