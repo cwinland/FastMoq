@@ -9,8 +9,9 @@ Use these rules first:
 1. Use [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1) when you want FastMoq to create the component under test and manage its dependencies.
 2. Use [Mocks.GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) when you want the normal FastMoq tracked mock path for a dependency.
 3. Use [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.
-4. Use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) when a framework-style type needs special resolution or post-processing behavior.
-5. Use [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.
+4. If the constructor uses the same abstraction more than once under different DI service keys, use keyed mocks, keyed registrations, or explicit constructor injection for tests where dependency selection matters.
+5. Use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) when a framework-style type needs special resolution or post-processing behavior.
+6. Use [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.
 
 ## Core Mental Model
 
@@ -362,6 +363,75 @@ public class RequestContextReaderTests : MockerTestBase<RequestContextReader>
 
 Use this pattern when the system under test reads directly from `IHttpContextAccessor`, middleware `InvokeAsync(HttpContext)`, or request headers/query collections without needing MVC controller infrastructure.
 
+## Keyed Services And Same-Type Dependencies
+
+When the constructor under test takes the same interface more than once and production distinguishes those parameters with DI service keys, a single unkeyed [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) or `GetMock<T>()` collapses those dependencies into one double.
+
+That is fine for ordinary tests that only need "some `IBlobRepository`", but it is too weak for tests where public vs private, primary vs secondary, or similar selection is part of the behavior.
+
+Use separate doubles when:
+
+- the constructor uses keyed DI attributes such as `FromKeyedServices`
+- swapping the dependencies would be a user-visible bug
+- the test is asserting routing or repository-selection behavior
+
+Use keyed tracked mocks when the dependency is still conceptually a mock:
+
+```csharp
+var publicRepo = Mocks.GetOrCreateMock<IBlobRepository>(new MockRequestOptions
+{
+    ServiceKey = "public",
+});
+
+var privateRepo = Mocks.GetOrCreateMock<IBlobRepository>(new MockRequestOptions
+{
+    ServiceKey = "private",
+});
+
+var controller = Mocks.CreateInstance<BlobAccessController>();
+```
+
+FastMoq keeps those tracked mocks separate. When the constructor uses `[FromKeyedServices("public")]` and `[FromKeyedServices("private")]`, [CreateInstance(...)](xref:FastMoq.Mocker.CreateInstance``1(FastMoq.InstanceCreationFlags,System.Object[])) and [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1) resolve the matching keyed dependency instead of collapsing them to one unkeyed instance.
+
+Use [AddKeyedType(...)](../../api/FastMoq.Mocker.yml) and [GetKeyedObject&lt;T&gt;()](../../api/FastMoq.Mocker.yml) when a fake or fixed instance reads better than a mock:
+
+```csharp
+var publicRepo = new FakeBlobRepository();
+var privateRepo = new FakeBlobRepository();
+
+Mocks.AddKeyedType<IBlobRepository>("public", publicRepo);
+Mocks.AddKeyedType<IBlobRepository>("private", privateRepo);
+
+var controller = Mocks.CreateInstance<BlobAccessController>();
+var resolvedPublicRepo = Mocks.GetKeyedObject<IBlobRepository>("public");
+```
+
+If repo selection itself is the behavior under test, explicit constructor injection with two separate doubles is equally valid and is often the clearest test shape.
+
+### Choosing explicit doubles vs keyed FastMoq setup
+
+Pick explicit constructor injection with two separate doubles when:
+
+- the test is about controller or service logic, not DI wiring
+- you want the two roles to be obvious in the arrange step
+- manual construction makes the test shorter or easier to read
+- you do not need the test to prove that keyed constructor metadata is honored
+
+Pick keyed FastMoq setup when:
+
+- you want to keep [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1) or [CreateInstance(...)](xref:FastMoq.Mocker.CreateInstance``1(FastMoq.InstanceCreationFlags,System.Object[])) as the construction path
+- you want the test to mirror the production keyed DI contract closely
+- the constructor metadata itself is part of what you are trying to protect
+- the suite already uses FastMoq auto-construction heavily and keyed setup removes custom wiring noise
+
+Practical default:
+
+- use explicit separate doubles for most behavior-focused unit tests
+- use keyed FastMoq setup for tests that should fail if the keyed constructor resolution changes
+- if both concerns matter, keep most tests explicit and add one small keyed wiring-focused test
+
+Ordinary unit tests can stay ordinary. The important rule is: if swapping the keyed dependencies would be a bug, the test should not collapse them into one double.
+
 ## Extending Known Types
 
 Use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) when a framework-style type needs special handling that does not belong in the normal type map.
@@ -566,6 +636,7 @@ For most tests in this repo, this order is the least surprising:
 ## Pitfalls to Avoid
 
 - Do not use [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) as a general replacement for [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)).
+- Do not collapse two keyed constructor dependencies into one unkeyed mock or registration when selection between them is part of the behavior under test.
 - Do not bypass [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) unless FastMoq's EF Core support is the thing you are explicitly testing around.
 - Do not assume `CreateInstanceByType(...)` alone is the best API for new code. Use `InstanceCreationFlags` when you need to express constructor-selection intent explicitly.
 - Do not make known-type extensions global. Keep them scoped to the `Mocker` used by the test.

@@ -194,6 +194,22 @@ Start with helpers that still centralize any of these patterns:
 
 One deliberate helper migration can remove the same churn from dozens of files.
 
+### Keyed services: keep separate doubles when selection matters
+
+If the constructor under test takes the same interface more than once and those parameters are distinguished by DI service keys, one unkeyed `GetMock<T>()`, `GetOrCreateMock<T>()`, or `AddType<T>()` can make the migration look correct while hiding a real behavior difference.
+
+The suite passes, but it can no longer catch a public/private or primary/secondary swap because both production dependencies were collapsed into one double.
+
+Migration rule:
+
+- keep ordinary unit tests ordinary
+- but if dependency selection is part of the behavior, use two distinct doubles
+- in FastMoq, the preferred keyed options are `GetOrCreateMock<T>(new MockRequestOptions { ServiceKey = ... })`, `AddKeyedType(...)`, and `GetKeyedObject<T>()`
+- explicit constructor injection with two separate doubles is equally valid when that is clearer
+- add one small wiring-focused test only if you also want coverage that the keyed DI contract itself is honored
+
+For the fuller keyed example, see [Testing Guide: Keyed Services And Same-Type Dependencies](../getting-started/testing-guide.md#keyed-services-and-same-type-dependencies).
+
 ### Azure Functions worker: typed `InstanceServices`
 
 Azure Functions worker tests deserve one explicit warning: `FunctionContext.InstanceServices` should behave like a typed `IServiceProvider`, not like a shim that returns the same object for every requested service type.
@@ -228,6 +244,7 @@ These are small migration edges that cause disproportionate churn in provider-fi
 | `mock.Object` or `GetMock<T>().Object` | `fastMock.Instance` or `Mocks.GetObject<T>()` | `GetOrCreateMock<T>()` returns `IFastMock<T>`, not a raw `Mock<T>` |
 | `mock.Reset()` | `fastMock.Reset()` | The provider-first handle already has a reset surface; `AsMoq()` is only needed when you truly need raw Moq APIs |
 | `TimesSpec.Never` during bulk conversion | `TimesSpec.Never()` or preferably `TimesSpec.NeverCalled` | The method call is easy to miss, and `NeverCalled` avoids the missing-parentheses mistake entirely |
+| one unkeyed mock for two keyed constructor dependencies | keyed `MockRequestOptions.ServiceKey`, `AddKeyedType(...)`, or explicit constructor injection | a single type-based double cannot catch public/private or primary/secondary swaps |
 | shared helper signatures such as `Func<Times>` | deliberate helper pass to `TimesSpec` | Fixing the helper boundary first is cheaper than patching repeated leaf call sites |
 
 If you still need raw Moq APIs after moving to `GetOrCreateMock<T>()`, step through `AsMoq()` explicitly. Otherwise stay on `Instance`, `Reset()`, `GetObject<T>()`, and the provider-neutral verification surface.
