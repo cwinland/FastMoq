@@ -45,7 +45,7 @@ Azure Functions worker tests deserve one explicit warning: `FunctionContext.Inst
 If the suite uses Azure Functions worker helpers, prefer the built-in typed helper path:
 
 ```csharp
-using FastMoq.Extensions;
+using FastMoq.AzureFunctions.Extensions;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -61,7 +61,7 @@ var clock = context.InstanceServices.GetRequiredService<WidgetClock>();
 Package note:
 
 - if the test project references the aggregate `FastMoq` package, these Azure Functions helpers are already included
-- if the test project references `FastMoq.Core` directly, add `FastMoq.AzureFunctions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
+- if the test project references `FastMoq.Core` directly, add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
 - the generic typed `IServiceProvider` helpers stay in `FastMoq.Core`
 
 If a suite already has a local Azure helper wrapper, re-point that wrapper to `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)` first and keep the existing call sites stable until the suite is green.

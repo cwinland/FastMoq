@@ -162,6 +162,20 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void MockModel_Mock_ShouldAddExceptionLogEntry_WhenLegacyHydrationThrows()
+        {
+            var fastMock = new ThrowingLegacyHydrationFastMock<IThrowingLegacyHydrationDependency>(Mock.Of<IThrowingLegacyHydrationDependency>());
+            Component.AddFastMock(fastMock, typeof(IThrowingLegacyHydrationDependency));
+
+            var mockModel = Component.GetMockModel<IThrowingLegacyHydrationDependency>();
+            Action action = () => _ = mockModel.Mock;
+
+            action.Should().Throw<NotSupportedException>();
+            Component.ExceptionLog.Should().Contain(entry => entry.Contains("Failed to hydrate legacy Moq surface"));
+            Component.ExceptionLog.Should().Contain(entry => entry.Contains("legacy hydration boom"));
+        }
+
+        [Fact]
         public void Contains_ShouldWork()
         {
             Mocks.Contains<IDirectory>().Should().BeTrue();
@@ -1149,8 +1163,26 @@ namespace FastMoq.Tests
         {
             new Action(() => Component.GetObject(null)).Should().Throw<ArgumentNullException>();
 
-            var info = Mocks.GetObject<ParameterInfo>();
+            var info = new Mock<ParameterInfo>().Object;
             new Action(() => Component.GetObject(info)).Should().Throw<Exception>();
+        }
+
+        [Fact]
+        public void GetObject_ShouldResolveReflectionMetadataTypes_WhenUsingReflectionProvider()
+        {
+            using var providerScope = MockingProviderRegistry.Push("reflection");
+            var mocker = new Mocker();
+
+            var constructorInfo = mocker.GetObject<ConstructorInfo>();
+            var parameterInfo = mocker.GetObject<ParameterInfo>();
+            var methodInfo = mocker.GetObject<MethodInfo>();
+
+            constructorInfo.Should().NotBeNull();
+            mocker.GetObject<ConstructorInfo>().Should().BeSameAs(constructorInfo);
+            parameterInfo.Should().NotBeNull();
+            methodInfo.Should().NotBeNull();
+            parameterInfo!.Member.Should().BeSameAs(constructorInfo);
+            methodInfo!.DeclaringType.Should().Be(constructorInfo!.DeclaringType);
         }
 
         [Fact]
@@ -1964,6 +1996,27 @@ namespace FastMoq.Tests
         internal ILogger? Logger { get; }
 
         internal IFileSystem? FileSystem { get; }
+    }
+
+    internal interface IThrowingLegacyHydrationDependency
+    {
+    }
+
+    internal sealed class ThrowingLegacyHydrationFastMock<T>(T instance) : IFastMock<T> where T : class
+    {
+        public Type MockedType => typeof(T);
+
+        public T Instance { get; } = instance;
+
+        object IFastMock.Instance => Instance;
+
+        public object NativeMock => Instance;
+
+        public object Inner => throw new InvalidOperationException("legacy hydration boom");
+
+        public void Reset()
+        {
+        }
     }
 
     internal sealed class NonPublicArgDataPreferenceType

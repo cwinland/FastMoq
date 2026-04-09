@@ -1,4 +1,5 @@
 using FastMoq.Extensions;
+using FastMoq.Providers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
@@ -6,8 +7,15 @@ using System.Runtime;
 
 namespace FastMoq.Tests
 {
-    public class LegacyMoqCompatibilityTests
+    public class LegacyMoqCompatibilityTests : IDisposable
     {
+        private readonly IDisposable providerScope = MockingProviderRegistry.Push("moq");
+
+        public void Dispose()
+        {
+            providerScope.Dispose();
+        }
+
         [Fact]
         public void VerifyLogger_ShouldPass_WhenMatches()
         {

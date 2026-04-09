@@ -267,6 +267,141 @@ Mocks.GetMock&lt;IFileSystem&gt;()
     .Setup(x =&gt; x.SendAsync(It.IsAny&lt;string&gt;()))
     .Returns(Task.CompletedTask);
 </code></pre>
+<h3 id="getrequiredmockt"><code>GetRequiredMock&lt;T&gt;()</code></h3>
+<p><code>GetRequiredMock&lt;T&gt;()</code> is the next legacy retrieval surface after <code>GetMock&lt;T&gt;()</code>, but it does not have a single safe one-line replacement.</p>
+<p>Use this decision table instead of a blind search-and-replace:</p>
+<table>
+<thead>
+<tr>
+<th>If the old intent was</th>
+<th>Prefer this</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>create-or-reuse a tracked mock handle</td>
+<td><code>GetOrCreateMock&lt;T&gt;()</code></td>
+<td>the test did not really need the &quot;must already exist&quot; contract</td>
+</tr>
+<tr>
+<td>require that the dependency was already tracked before this line</td>
+<td><code>GetRequiredTrackedMock&lt;T&gt;()</code> or <code>TryGetTrackedMock&lt;T&gt;(...)</code></td>
+<td>this keeps the old precondition without falling back to raw <code>Mock&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td>only get the dependency instance, not the raw <code>Mock&lt;T&gt;</code></td>
+<td><code>GetObject&lt;T&gt;()</code> or <code>GetRequiredObject&lt;T&gt;()</code></td>
+<td>the test is consuming the resolved instance, not the mocking-library wrapper</td>
+</tr>
+<tr>
+<td>keep using raw Moq for a local compatibility pocket</td>
+<td><code>GetRequiredTrackedMock&lt;T&gt;().AsMoq()</code> or <code>GetOrCreateMock&lt;T&gt;().AsMoq()</code> depending on whether existence is required</td>
+<td>the test still depends on raw <code>Mock&lt;T&gt;</code> APIs</td>
+</tr>
+</tbody>
+</table>
+<p>Before:</p>
+<pre><code class="lang-csharp">var logger = Mocks.GetRequiredMock&lt;ILogger&lt;OrderService&gt;&gt;();
+logger.VerifyLogger(LogLevel.Information, &quot;Processing started&quot;);
+</code></pre>
+<p>After, when creation is acceptable and the test only needs the tracked handle:</p>
+<pre><code class="lang-csharp">var logger = Mocks.GetOrCreateMock&lt;ILogger&lt;OrderService&gt;&gt;();
+logger.VerifyLogger(LogLevel.Information, &quot;Processing started&quot;);
+</code></pre>
+<p>After, when the old call really meant &quot;this mock must already be tracked&quot;:</p>
+<pre><code class="lang-csharp">var logger = Mocks.GetRequiredTrackedMock&lt;ILogger&lt;OrderService&gt;&gt;();
+</code></pre>
+<p>After, when the test wants to branch instead of throwing:</p>
+<pre><code class="lang-csharp">if (!Mocks.TryGetTrackedMock&lt;ILogger&lt;OrderService&gt;&gt;(out var logger))
+{
+    return;
+}
+</code></pre>
+<p>After, when the old code only needed the resolved dependency instance:</p>
+<pre><code class="lang-csharp">var logger = Mocks.GetRequiredObject&lt;ILogger&lt;OrderService&gt;&gt;();
+</code></pre>
+<p>Why <code>FMOQ0017</code> is warning-only:</p>
+<ul>
+<li><code>GetRequiredMock&lt;T&gt;()</code> mixes two concerns: legacy raw-Moq access and an existence precondition</li>
+<li>different call sites want different replacements</li>
+<li>an automatic <code>GetOrCreateMock&lt;T&gt;()</code> rewrite could silently weaken the test by creating something that used to be required to exist already</li>
+</ul>
+<h3 id="legacy-mock-creation-and-lifecycle-helpers">Legacy mock creation and lifecycle helpers</h3>
+<p>These APIs are still supported in v4 as compatibility surfaces, but they are no longer the preferred direction for touched tests.</p>
+<table>
+<thead>
+<tr>
+<th>Legacy API</th>
+<th>Preferred move</th>
+<th>Typical manual rewrite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CreateMock&lt;T&gt;(...)</code></td>
+<td>tracked provider-first mock</td>
+<td><code>GetOrCreateMock&lt;T&gt;(...)</code></td>
+</tr>
+<tr>
+<td><code>CreateMockInstance&lt;T&gt;(...)</code></td>
+<td>dedicated <code>Mocker</code> plus tracked provider-first mock</td>
+<td>a fresh <code>Mocker</code> and <code>GetOrCreateMock&lt;T&gt;()</code>, then <code>Instance</code> or <code>AsMoq()</code></td>
+</tr>
+<tr>
+<td><code>CreateDetachedMock&lt;T&gt;(...)</code></td>
+<td>dedicated <code>Mocker</code> plus tracked provider-first mock</td>
+<td>a fresh <code>Mocker</code> per extra double instead of detached legacy <code>Mock&lt;T&gt;</code> creation</td>
+</tr>
+<tr>
+<td><code>AddMock&lt;T&gt;(...)</code></td>
+<td>tracked provider-first mock or explicit concrete override</td>
+<td><code>GetOrCreateMock&lt;T&gt;()</code> or <code>AddType&lt;T&gt;(...)</code></td>
+</tr>
+<tr>
+<td><code>RemoveMock(...)</code></td>
+<td>new scope instead of mutating tracked legacy mocks</td>
+<td>create a fresh <code>Mocker</code> for the branch that needs a different setup</td>
+</tr>
+</tbody>
+</table>
+<p>Before, detached legacy mock creation:</p>
+<pre><code class="lang-csharp">var emailGateway = Mocks.CreateDetachedMock&lt;IEmailGateway&gt;();
+emailGateway.Setup(x =&gt; x.SendAsync(&quot;finance@contoso.test&quot;)).Returns(Task.CompletedTask);
+
+var service = new CheckoutService(emailGateway.Object);
+</code></pre>
+<p>After, provider-first isolated scope:</p>
+<pre><code class="lang-csharp">var isolatedMocks = new Mocker();
+var emailGateway = isolatedMocks.GetOrCreateMock&lt;IEmailGateway&gt;();
+emailGateway.Setup(x =&gt; x.SendAsync(&quot;finance@contoso.test&quot;)).Returns(Task.CompletedTask);
+
+var service = new CheckoutService(emailGateway.Instance);
+</code></pre>
+<p>Before, adding a legacy Moq mock into the tracked collection:</p>
+<pre><code class="lang-csharp">var clock = new Mock&lt;IClock&gt;();
+Mocks.AddMock(clock);
+</code></pre>
+<p>After, when the dependency should stay a tracked mock:</p>
+<pre><code class="lang-csharp">var clock = Mocks.GetOrCreateMock&lt;IClock&gt;();
+</code></pre>
+<p>After, when the dependency is really a fixed fake or stub:</p>
+<pre><code class="lang-csharp">Mocks.AddType&lt;IClock&gt;(_ =&gt; new FakeClock(DateTimeOffset.Parse(&quot;2026-04-01T12:00:00Z&quot;)));
+</code></pre>
+<p>Before, removing and swapping a legacy mock:</p>
+<pre><code class="lang-csharp">Mocks.RemoveMock(existingCacheMock);
+Mocks.AddMock(new Mock&lt;ICache&gt;());
+</code></pre>
+<p>After, prefer a fresh scope for the alternate setup:</p>
+<pre><code class="lang-csharp">var isolatedMocks = new Mocker();
+var cache = isolatedMocks.GetOrCreateMock&lt;ICache&gt;();
+</code></pre>
+<p>Why <code>FMOQ0018</code> is warning-only:</p>
+<ul>
+<li>these helpers do not all collapse to the same target API</li>
+<li>some old call sites want tracked mocks, some want resolved instances, and some really want separate test scopes</li>
+<li>an auto-fix here would be more likely to hide a semantic change than to save useful migration work</li>
+</ul>
 <h3 id="dbcontext-package-boundary"><code>DbContext</code> package boundary</h3>
 <p>In <code>3.0.0</code>, core directly carried the EF packages and the Moq-based <code>DbContextMock&lt;TContext&gt;</code> implementation.</p>
 <p>Current repository direction:</p>
@@ -516,7 +651,7 @@ Use <code>ExecuteThrows&lt;TException&gt;()</code> or <code>ExecuteThrowsAsync&l
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 19:00 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 23:07 UTC</span></div>
       
           </div>
         </div>

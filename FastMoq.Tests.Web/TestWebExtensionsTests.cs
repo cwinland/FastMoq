@@ -146,6 +146,24 @@ namespace FastMoq.Tests.Web
         }
 
         [Fact]
+        public void CreateControllerContext_WithConfigurer_ShouldAllowAnonymousCustomizedContext()
+        {
+            var mocker = new Mocker();
+
+            var controllerContext = mocker.CreateControllerContext(httpContext =>
+            {
+                httpContext.Request.Method = HttpMethods.Post;
+                httpContext.Request.Path = "/api/orders";
+            });
+
+            controllerContext.HttpContext.Should().NotBeNull();
+            controllerContext.HttpContext.Request.Method.Should().Be(HttpMethods.Post);
+            controllerContext.HttpContext.Request.Path.Value.Should().Be("/api/orders");
+            controllerContext.HttpContext.User.Identity.Should().NotBeNull();
+            controllerContext.HttpContext.User.Identity!.IsAuthenticated.Should().BeFalse();
+        }
+
+        [Fact]
         public void CreateControllerContext_WithClaims_ShouldAvoidSeparateUserAssignment()
         {
             var mocker = new Mocker();
@@ -217,6 +235,40 @@ namespace FastMoq.Tests.Web
         }
 
         [Fact]
+        public void CreateHttpContext_WithPrincipalAndConfigurer_ShouldApplyBoth()
+        {
+            var mocker = new Mocker();
+            var principal = mocker.SetupClaimsPrincipal("Admin");
+
+            var httpContext = mocker.CreateHttpContext(principal, context =>
+            {
+                context.Request.Method = HttpMethods.Put;
+                context.SetRequestHeader("X-Test", "value");
+            });
+
+            httpContext.User.Should().BeSameAs(principal);
+            httpContext.Request.Method.Should().Be(HttpMethods.Put);
+            httpContext.Request.Headers["X-Test"].ToString().Should().Be("value");
+        }
+
+        [Fact]
+        public void CreateHttpContext_WithConfigurer_ShouldAllowAnonymousCustomizedContext()
+        {
+            var mocker = new Mocker();
+
+            var httpContext = mocker.CreateHttpContext(context =>
+            {
+                context.Request.Method = HttpMethods.Delete;
+                context.Request.Path = "/api/orders/42";
+            });
+
+            httpContext.Request.Method.Should().Be(HttpMethods.Delete);
+            httpContext.Request.Path.Value.Should().Be("/api/orders/42");
+            httpContext.User.Identity.Should().NotBeNull();
+            httpContext.User.Identity!.IsAuthenticated.Should().BeFalse();
+        }
+
+        [Fact]
         public void CreateHttpContext_WithClaims_ShouldAvoidSeparateUserAssignment()
         {
             var mocker = new Mocker();
@@ -249,6 +301,46 @@ namespace FastMoq.Tests.Web
         }
 
         [Fact]
+        public void AddHttpContext_WithConfigurer_ShouldRegisterConfiguredAnonymousContext()
+        {
+            var mocker = new Mocker();
+
+            mocker.AddHttpContext(context =>
+            {
+                context.Request.Method = HttpMethods.Head;
+                context.Request.Path = "/health";
+            });
+
+            var resolved = mocker.GetObject<HttpContext>();
+
+            resolved.Should().NotBeNull();
+            resolved!.Request.Method.Should().Be(HttpMethods.Head);
+            resolved.Request.Path.Value.Should().Be("/health");
+            resolved.User.Identity.Should().NotBeNull();
+            resolved.User.Identity!.IsAuthenticated.Should().BeFalse();
+        }
+
+        [Fact]
+        public void AddHttpContext_WithPrincipalAndConfigurer_ShouldRegisterConfiguredAuthenticatedContext()
+        {
+            var mocker = new Mocker();
+            var principal = mocker.SetupClaimsPrincipal("Admin");
+
+            mocker.AddHttpContext(principal, context =>
+            {
+                context.Request.Method = HttpMethods.Post;
+                context.Request.Path = "/api/orders";
+            });
+
+            var resolved = mocker.GetObject<HttpContext>();
+
+            resolved.Should().NotBeNull();
+            resolved!.User.Should().BeSameAs(principal);
+            resolved.Request.Method.Should().Be(HttpMethods.Post);
+            resolved.Request.Path.Value.Should().Be("/api/orders");
+        }
+
+        [Fact]
         public void AddHttpContextAccessor_ShouldRegisterAccessor_AndHttpContext()
         {
             var mocker = new Mocker();
@@ -262,6 +354,50 @@ namespace FastMoq.Tests.Web
             accessor!.HttpContext.Should().NotBeNull();
             accessor.HttpContext.Should().BeSameAs(httpContext);
             accessor.HttpContext!.User.IsInRole("Admin").Should().BeTrue();
+        }
+
+        [Fact]
+        public void AddHttpContextAccessor_WithConfigurer_ShouldRegisterConfiguredAnonymousContext()
+        {
+            var mocker = new Mocker();
+
+            mocker.AddHttpContextAccessor(context =>
+            {
+                context.Request.Method = HttpMethods.Options;
+                context.Request.Path = "/metadata";
+            });
+
+            var accessor = mocker.GetObject<IHttpContextAccessor>();
+
+            accessor.Should().NotBeNull();
+            accessor!.HttpContext.Should().NotBeNull();
+            accessor.HttpContext!.Request.Method.Should().Be(HttpMethods.Options);
+            accessor.HttpContext.Request.Path.Value.Should().Be("/metadata");
+            accessor.HttpContext.User.Identity.Should().NotBeNull();
+            accessor.HttpContext.User.Identity!.IsAuthenticated.Should().BeFalse();
+        }
+
+        [Fact]
+        public void AddHttpContextAccessor_WithPrincipalAndConfigurer_ShouldRegisterConfiguredAuthenticatedContext()
+        {
+            var mocker = new Mocker();
+            var principal = mocker.SetupClaimsPrincipal("Admin");
+
+            mocker.AddHttpContextAccessor(principal, context =>
+            {
+                context.Request.Method = HttpMethods.Trace;
+                context.Request.Path = "/api/audit";
+            });
+
+            var accessor = mocker.GetObject<IHttpContextAccessor>();
+            var resolved = mocker.GetObject<HttpContext>();
+
+            accessor.Should().NotBeNull();
+            accessor!.HttpContext.Should().NotBeNull();
+            accessor.HttpContext.Should().BeSameAs(resolved);
+            accessor.HttpContext!.User.Should().BeSameAs(principal);
+            accessor.HttpContext.Request.Method.Should().Be(HttpMethods.Trace);
+            accessor.HttpContext.Request.Path.Value.Should().Be("/api/audit");
         }
 
         [Fact]

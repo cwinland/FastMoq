@@ -38,7 +38,7 @@ namespace FastMoq.Models
 
             FastMock = MockingProviderRegistry.WrapLegacy(typedMock, typeof(T));
         }
-        internal MockModel(MockModel baseModel) : base(baseModel.FastMock, baseModel.NonPublic) { }
+        internal MockModel(MockModel baseModel) : base(baseModel.FastMock, baseModel.NonPublic, baseModel.ExceptionLog) { }
         #endregion
 
         #region Comparison / Equality

@@ -4,7 +4,6 @@ items:
   commentId: N:FastMoq.Extensions
   id: FastMoq.Extensions
   children:
-  - FastMoq.Extensions.FunctionContextTestExtensions
   - FastMoq.Extensions.IdentityHelperExtensions
   - FastMoq.Extensions.MockerBooleanExtensions
   - FastMoq.Extensions.MockerCreationExtensions
@@ -21,14 +20,8 @@ items:
   fullName: FastMoq.Extensions
   type: Namespace
   assemblies:
-  - FastMoq.AzureFunctions
+  - FastMoq.Core
 references:
-- uid: FastMoq.Extensions.FunctionContextTestExtensions
-  commentId: T:FastMoq.Extensions.FunctionContextTestExtensions
-  href: FastMoq.Extensions.FunctionContextTestExtensions.html
-  name: FunctionContextTestExtensions
-  nameWithType: FunctionContextTestExtensions
-  fullName: FastMoq.Extensions.FunctionContextTestExtensions
 - uid: FastMoq.Extensions.IdentityHelperExtensions
   commentId: T:FastMoq.Extensions.IdentityHelperExtensions
   href: FastMoq.Extensions.IdentityHelperExtensions.html

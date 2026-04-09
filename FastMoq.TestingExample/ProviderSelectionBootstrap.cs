@@ -1,3 +1,4 @@
 using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
 
-[assembly: FastMoqDefaultProvider("moq")]
+[assembly: FastMoqRegisterProvider("moq", typeof(MoqMockingProvider), SetAsDefault = true)]

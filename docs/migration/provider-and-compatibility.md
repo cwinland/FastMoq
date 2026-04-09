@@ -27,7 +27,7 @@ Use this table when package names and in-editor namespace discovery drift apart 
 | Package | Common namespace imports | Typical surfaces you expect to appear |
 | --- | --- | --- |
 | `FastMoq.Core` | `FastMoq`, `FastMoq.Extensions`, `FastMoq.Providers` | `Mocker`, `MockerTestBase<T>`, `GetOrCreateMock<T>()`, `GetObject<T>()`, `Verify(...)`, `VerifyLogged(...)`, `MockingProviderRegistry` |
-| `FastMoq.AzureFunctions` | `FastMoq.Extensions` | `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)` |
+| `FastMoq.AzureFunctions` | `FastMoq.AzureFunctions.Extensions` | `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)` |
 | `FastMoq.Provider.Moq` | `FastMoq.Providers.MoqProvider` | `MoqMockingProvider`, `AsMoq()`, `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, `Protected()` |
 | `FastMoq.Provider.NSubstitute` | `FastMoq.Providers.NSubstituteProvider` | `NSubstituteMockingProvider`, `AsNSubstitute()`, `Received(...)`, `DidNotReceive()` |
 | `FastMoq.Web` | `FastMoq.Web`, `FastMoq.Web.Extensions` | `TestClaimsPrincipalOptions`, `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, `AddHttpContextAccessor(...)` |

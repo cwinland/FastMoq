@@ -1,15 +1,21 @@
+using Azure.Core;
+using Azure.Core.Serialization;
 using System.Reflection;
+using FastMoq.Extensions;
 using FastMoq.Providers;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
-namespace FastMoq.Extensions
+namespace FastMoq.AzureFunctions.Extensions
 {
     /// <summary>
     /// Provides Azure Functions worker helpers for typed <see cref="FunctionContext.InstanceServices" /> setup.
     /// </summary>
     public static class FunctionContextTestExtensions
     {
+        private static readonly ObjectSerializer DefaultFunctionSerializer = new JsonObjectSerializer();
+
         private static readonly MethodInfo SetupMockPropertyByNameMethod = typeof(MockerCreationExtensions)
             .GetMethods(BindingFlags.Public | BindingFlags.Static)
             .Single(method =>
@@ -35,7 +41,12 @@ namespace FastMoq.Extensions
                 {
                     services.AddLogging();
                     services.AddOptions();
-                    services.Configure<WorkerOptions>(_ => { });
+                    services.Configure<WorkerOptions>(options =>
+                    {
+                        options.Serializer ??= DefaultFunctionSerializer;
+                    });
+                    services.AddSingleton(serviceProvider => serviceProvider.GetRequiredService<IOptions<WorkerOptions>>().Value);
+                    services.AddSingleton<ObjectSerializer>(serviceProvider => serviceProvider.GetRequiredService<WorkerOptions>().Serializer ?? DefaultFunctionSerializer);
                 }
 
                 configureServices?.Invoke(services);

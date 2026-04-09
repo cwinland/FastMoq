@@ -86,6 +86,8 @@ Mocks.AddServiceProvider(services =>
 Use `CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` for Azure Functions worker tests instead of hand-writing `FunctionContext.InstanceServices` plumbing:
 
 ```csharp
+using FastMoq.AzureFunctions.Extensions;
+
 Mocks.AddFunctionContextInstanceServices(services =>
 {
     services.AddSingleton(new WidgetClock());
@@ -98,7 +100,7 @@ var clock = context.InstanceServices.GetRequiredService<WidgetClock>();
 Package note:
 
 - `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` remain part of `FastMoq.Core`
-- direct `FastMoq.Core` consumers should add `FastMoq.AzureFunctions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
+- direct `FastMoq.Core` consumers should add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
 - the aggregate `FastMoq` package includes the Azure Functions helper package already
 
 Analyzer note:

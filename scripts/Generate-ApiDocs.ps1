@@ -6,15 +6,19 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
+$apiPath = Join-Path $repoRoot 'api'
 $helpPath = Join-Path $repoRoot 'Help'
 $docfxConfigPath = Join-Path $repoRoot 'docfx.json'
 $metadataScriptPath = Join-Path $PSScriptRoot 'Write-DocfxBuildMetadata.ps1'
 
 & $metadataScriptPath -PublishedVersion $PublishedVersion
 
-if (Test-Path $helpPath)
+foreach ($outputPath in @($apiPath, $helpPath))
 {
-    Remove-Item $helpPath -Recurse -Force
+    if (Test-Path $outputPath)
+    {
+        Remove-Item $outputPath -Recurse -Force
+    }
 }
 
 Push-Location $repoRoot

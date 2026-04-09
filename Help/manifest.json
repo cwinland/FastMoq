@@ -116,6 +116,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.yml\" sourcestartlinenumber=\"1\">Provides Azure Functions worker helpers for typed <xref href=\"Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices\" data-throw-if-not-resolved=\"false\"></xref> setup.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.AzureFunctions.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.AzureFunctions.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.AzureFunctions.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/FastMoq.BuiltInTypeResolutionFlags.yml",
       "output": {
         ".html": {
@@ -126,34 +154,6 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.BuiltInTypeResolutionFlags",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/FastMoq.Core.Providers.MockWrapper-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/FastMoq.Core.Providers.MockWrapper-1.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FastMoq.Core.Providers.MockWrapper<T>",
-      "Summary": "<p sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"1\">Provider-agnostic wrapper around an <xref href=\"FastMoq.Providers.IFastMock%601\" data-throw-if-not-resolved=\"false\"></xref> supplying:</p>\n<ul sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"2\">\n<li sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"2\">Instance (test subject dependency)</li>\n<li sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"3\">NativeMock (legacy underlying mock if the provider exposes one)</li>\n<li sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"4\">Verify delegation through <xref href=\"FastMoq.Providers.IMockingProvider\" data-throw-if-not-resolved=\"false\"></xref></li>\n<li sourcefile=\"api/FastMoq.Core.Providers.MockWrapper-1.yml\" sourcestartlinenumber=\"5\">Transitional Setup helpers (Moq pass-through). Other providers throw until a common Setup abstraction exists.</li>\n</ul>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/FastMoq.Core.Providers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/FastMoq.Core.Providers.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FastMoq.Core.Providers",
       "Summary": null
     },
     {
@@ -211,20 +211,6 @@
       "IsMRef": true,
       "Title": "FastMoq.DbContextTestMode",
       "Summary": "<p sourcefile=\"api/FastMoq.DbContextTestMode.yml\" sourcestartlinenumber=\"1\">Selects how FastMoq should provision a DbContext test double.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/FastMoq.Extensions.FunctionContextTestExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/FastMoq.Extensions.FunctionContextTestExtensions.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "FastMoq.Extensions.FunctionContextTestExtensions",
-      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.FunctionContextTestExtensions.yml\" sourcestartlinenumber=\"1\">Provides Azure Functions worker helpers for typed <xref href=\"Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices\" data-throw-if-not-resolved=\"false\"></xref> setup.</p>\n"
     },
     {
       "type": "ManagedReference",

@@ -17,5 +17,8 @@ namespace FastMoq.Analyzers
         public const string PreferTypedServiceProviderHelpers = "FMOQ0013";
         public const string PreferKnownTypeRegistrations = "FMOQ0014";
         public const string PreserveKeyedServiceDistinctness = "FMOQ0015";
+        public const string UseProviderFirstMockRetrieval = "FMOQ0016";
+        public const string AvoidLegacyRequiredMockRetrieval = "FMOQ0017";
+        public const string AvoidLegacyMockCreationAndLifecycleApis = "FMOQ0018";
     }
 }

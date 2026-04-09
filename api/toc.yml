@@ -75,13 +75,17 @@ items:
   - uid: FastMoq.ScenarioBuilder`1
     name: ScenarioBuilder<T>
     type: Class
+- uid: FastMoq.AzureFunctions.Extensions
+  name: FastMoq.AzureFunctions.Extensions
+  type: Namespace
+  items:
+  - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+    name: FunctionContextTestExtensions
+    type: Class
 - uid: FastMoq.Extensions
   name: FastMoq.Extensions
   type: Namespace
   items:
-  - uid: FastMoq.Extensions.FunctionContextTestExtensions
-    name: FunctionContextTestExtensions
-    type: Class
   - uid: FastMoq.Extensions.IdentityHelperExtensions
     name: IdentityHelperExtensions
     type: Class

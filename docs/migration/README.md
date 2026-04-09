@@ -27,7 +27,7 @@ Quick routing:
 - If the migration fails because provider-specific APIs do not behave as expected, go to [Provider Selection and Setup](../getting-started/provider-selection.md) and [Provider, package, and compatibility guidance](./provider-and-compatibility.md).
 - If the migration churn is in `MockerBlazorTestBase<T>`, nested component targeting, render parameters, authorization helpers, or navigation assertions after the bUnit upgrade, go to [bUnit and Blazor test migration](./bunit-and-blazor-testing.md).
 - If the churn is in controller helpers, principals, `HttpContext`, `IHttpContextAccessor`, keyed DI, or framework service-provider shims, go to [Framework and web helper migration](./framework-and-web-helpers.md).
-- If you are replacing a specific API such as `Initialize<T>(...)`, `VerifyLogger(...)`, `Strict`, `MockOptional`, or `GetMock<T>()`, go to [API replacements and migration exceptions](./api-replacements-and-exceptions.md).
+- If you are replacing a specific API such as `Initialize<T>(...)`, `VerifyLogger(...)`, `Strict`, `MockOptional`, `GetMock<T>()`, `GetRequiredMock<T>()`, or `CreateDetachedMock<T>()`, go to [API replacements and migration exceptions](./api-replacements-and-exceptions.md).
 - If you want a reusable AI workflow instead of writing prompts from scratch, go to [Copilot migration prompts](./copilot-prompts.md).
 
 ## Scope
@@ -42,14 +42,14 @@ This is migration guidance for the current v4 release line. Some references poin
 
 The goal is provider-centric tests by default, not removal of all provider-specific APIs.
 
-If your test project references the aggregate `FastMoq` package, the FastMoq Roslyn analyzers ship with it by default. That means common migration leftovers such as `.Object`, provider-native `Reset()`, `VerifyLogger(...)`, and obvious mixed `GetMock<T>()` / `GetOrCreateMock<T>()` usage can be surfaced while you modernize tests. Core-only consumers can opt in separately with `FastMoq.Analyzers`.
+If your test project references the aggregate `FastMoq` package, the FastMoq Roslyn analyzers ship with it by default. That means common migration leftovers such as `.Object`, provider-native `Reset()`, `VerifyLogger(...)`, safe standalone `GetMock<T>()` usage, legacy `GetRequiredMock<T>()` usage, legacy `CreateMock(...)` / `CreateDetachedMock(...)` / `AddMock(...)` usage, and obvious mixed `GetMock<T>()` / `GetOrCreateMock<T>()` usage can be surfaced while you modernize tests. Core-only consumers can opt in separately with `FastMoq.Analyzers`.
 
 The analyzer pack now has two roles:
 
 - migration guidance for mechanical provider-first rewrites and compatibility cleanup
 - low-noise authoring guidance for new tests where FastMoq already has a clearer first-party pattern
 
-Warnings are the default for compatibility and obsolete-surface cleanup that is usually actionable immediately. That includes `.Object`, provider-native `Reset()`, `VerifyLogger(...)`, `MockOptional`, `Initialize<T>(...)`, `Strict`, mixed `GetMock<T>()` leftovers in files that already use `GetOrCreateMock<T>()`, and provider-specific FastMoq APIs without an explicit provider selection.
+Warnings are the default for compatibility and obsolete-surface cleanup that is usually actionable immediately. That includes `.Object`, provider-native `Reset()`, `VerifyLogger(...)`, `MockOptional`, `Initialize<T>(...)`, `Strict`, safe standalone `GetMock<T>()` replacement candidates, legacy `GetRequiredMock<T>()` compatibility retrieval, legacy Moq mock-creation and lifecycle helpers that need manual migration, mixed `GetMock<T>()` leftovers in files that already use `GetOrCreateMock<T>()`, and provider-specific FastMoq APIs without an explicit provider selection.
 
 Current examples include:
 
@@ -213,7 +213,7 @@ Open these only when you hit the relevant problem. That keeps this page short wi
 - [Provider, package, and compatibility guidance](./provider-and-compatibility.md): migration-specific provider bootstrap, package-to-namespace mapping, and Moq-to-NSubstitute arrangement translation.
 - [bUnit and Blazor test migration](./bunit-and-blazor-testing.md): package-level and helper-level migration guidance for `FastMoq.Web`, `MockerBlazorTestBase<T>`, `RenderParameter`, nested rendered-component helpers, authorization wrappers, and navigation assertions.
 - [Framework and web helper migration](./framework-and-web-helpers.md): shared-helper rewrites, keyed DI, Azure Functions `InstanceServices`, `FastMoq.Web` helper usage, principals, and controller-context migration.
-- [API replacements and migration exceptions](./api-replacements-and-exceptions.md): old-to-new API guidance for `Initialize<T>(...)`, HTTP helpers, `VerifyLogger(...)`, `TimesSpec`, `Strict`, `GetMock<T>()`, `AddType(...)`, `DbContext`, `MockOptional`, provider-first access, and expected raw-Moq pockets.
+- [API replacements and migration exceptions](./api-replacements-and-exceptions.md): old-to-new API guidance for `Initialize<T>(...)`, HTTP helpers, `VerifyLogger(...)`, `TimesSpec`, `Strict`, `GetMock<T>()`, `GetRequiredMock<T>()`, legacy mock-creation helpers, `AddType(...)`, `DbContext`, `MockOptional`, provider-first access, and expected raw-Moq pockets.
 - [Copilot migration prompts](./copilot-prompts.md): reusable prompt entry points for staged migration and stricter obsolete-surface cleanup.
 
 ## Recommended migration order

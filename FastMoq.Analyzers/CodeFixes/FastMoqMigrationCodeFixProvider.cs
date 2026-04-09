@@ -19,6 +19,7 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.UseProviderFirstReset,
             DiagnosticIds.UseVerifyLogged,
             DiagnosticIds.UseConsistentMockRetrieval,
+            DiagnosticIds.UseProviderFirstMockRetrieval,
             DiagnosticIds.UseExplicitOptionalParameterResolution,
             DiagnosticIds.ReplaceInitializeCompatibilityWrapper);
 
@@ -88,6 +89,7 @@ namespace FastMoq.Analyzers.CodeFixes
                     }
 
                 case DiagnosticIds.UseConsistentMockRetrieval:
+                case DiagnosticIds.UseProviderFirstMockRetrieval:
                     {
                         var memberAccess = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<MemberAccessExpressionSyntax>();
                         if (memberAccess is null || memberAccess.Name.Identifier.ValueText != "GetMock")
@@ -99,7 +101,7 @@ namespace FastMoq.Analyzers.CodeFixes
                             CodeAction.Create(
                                 "Use GetOrCreateMock<T>()",
                                 cancellationToken => ReplaceGetMockAsync(document, memberAccess, cancellationToken),
-                                nameof(DiagnosticIds.UseConsistentMockRetrieval)),
+                                diagnostic.Id),
                             diagnostic);
                         break;
                     }

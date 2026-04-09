@@ -34,7 +34,11 @@ namespace FastMoq.Analyzers
         private const string FASTMOQ_DEFAULT_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqDefaultProviderAttribute";
         private const string FASTMOQ_REGISTER_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqRegisterProviderAttribute";
         private const string FASTMOQ_MOCKER_TEST_BASE_METADATA_NAME = "MockerTestBase`1";
+        private const string CONTROLLER_CONTEXT_TYPE = "Microsoft.AspNetCore.Mvc.ControllerContext";
+        private const string DEFAULT_HTTP_CONTEXT_TYPE = "Microsoft.AspNetCore.Http.DefaultHttpContext";
         private const string FROM_KEYED_SERVICES_ATTRIBUTE = "Microsoft.Extensions.DependencyInjection.FromKeyedServicesAttribute";
+        private const string FUNCTION_CONTEXT_TYPE = "Microsoft.Azure.Functions.Worker.FunctionContext";
+        private const string FUNCTION_CONTEXT_INSTANCE_SERVICES_PROPERTY = "InstanceServices";
         private const string SERVICE_PROVIDER_TYPE = "System.IServiceProvider";
 
         private static readonly HashSet<string> DisallowedMixedRetrievalMembers = new(StringComparer.Ordinal)
@@ -275,7 +279,7 @@ namespace FastMoq.Analyzers
                     IsFastMoqMockerMethod(method, "GetOrCreateMock"));
         }
 
-        public static bool IsSafeMixedRetrievalCandidate(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public static bool IsSafeProviderFirstMockRetrievalCandidate(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
             {
@@ -306,6 +310,11 @@ namespace FastMoq.Analyzers
             }
 
             return true;
+        }
+
+        public static bool IsSafeMixedRetrievalCandidate(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            return IsSafeProviderFirstMockRetrievalCandidate(invocationExpression, semanticModel, cancellationToken);
         }
 
         public static string GetMinimalTypeName(ITypeSymbol serviceType, SemanticModel semanticModel, int position)
@@ -492,6 +501,34 @@ namespace FastMoq.Analyzers
             return false;
         }
 
+        public static bool TryGetRawWebHelperSuggestion(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out string helperName, out string setupKind)
+        {
+            helperName = string.Empty;
+            setupKind = string.Empty;
+
+            var type = semanticModel.GetTypeInfo(expression, cancellationToken).Type;
+            if (type?.ToDisplayString() != DEFAULT_HTTP_CONTEXT_TYPE)
+            {
+                return false;
+            }
+
+            if (IsInsideFastMoqWebRegistration(expression, semanticModel, cancellationToken))
+            {
+                return false;
+            }
+
+            if (IsControllerContextHttpContextInitializer(expression, semanticModel, cancellationToken))
+            {
+                helperName = "CreateControllerContext(...)";
+                setupKind = "ControllerContext";
+                return true;
+            }
+
+            helperName = "CreateHttpContext(...)";
+            setupKind = "DefaultHttpContext";
+            return true;
+        }
+
         public static bool TryGetProviderNeutralHttpHelperSuggestion(IMethodSymbol method, out string apiName)
         {
             apiName = string.Empty;
@@ -537,6 +574,41 @@ namespace FastMoq.Analyzers
             }
 
             currentApi = $"{method.Name}<IServiceProvider>()";
+            return true;
+        }
+
+        public static bool TryGetFunctionContextInstanceServicesHelperSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string currentApi)
+        {
+            currentApi = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name is not "Setup" and not "SetupGet" and not "SetupProperty")
+            {
+                return false;
+            }
+
+            if (invocationExpression.ArgumentList.Arguments.Count == 0)
+            {
+                return false;
+            }
+
+            var candidateExpression = Unwrap(invocationExpression.ArgumentList.Arguments[0].Expression);
+            if (candidateExpression is not LambdaExpressionSyntax lambdaExpression ||
+                lambdaExpression.Body is not MemberAccessExpressionSyntax memberAccessExpression ||
+                !TryGetPropertySymbol(memberAccessExpression, semanticModel, cancellationToken, out var property) ||
+                property is null ||
+                property.Name != FUNCTION_CONTEXT_INSTANCE_SERVICES_PROPERTY ||
+                property.ContainingType.ToDisplayString() != FUNCTION_CONTEXT_TYPE)
+            {
+                return false;
+            }
+
+            currentApi = $"{method.Name}(x => x.InstanceServices)";
             return true;
         }
 
@@ -667,6 +739,39 @@ namespace FastMoq.Analyzers
                 if (declaration?.Initializer?.Value is ExpressionSyntax initializer)
                 {
                     return ContainsServiceKeyAssignment(initializer, semanticModel, cancellationToken);
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsControllerContextHttpContextInitializer(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            if (node.Parent is not AssignmentExpressionSyntax assignmentExpression ||
+                assignmentExpression.Left is not IdentifierNameSyntax identifierName ||
+                identifierName.Identifier.ValueText != "HttpContext")
+            {
+                return false;
+            }
+
+            return assignmentExpression
+                .Ancestors()
+                .OfType<BaseObjectCreationExpressionSyntax>()
+                .Any(objectCreation => semanticModel.GetTypeInfo(objectCreation, cancellationToken).Type?.ToDisplayString() == CONTROLLER_CONTEXT_TYPE);
+        }
+
+        private static bool IsInsideFastMoqWebRegistration(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            foreach (var invocationExpression in node.Ancestors().OfType<InvocationExpressionSyntax>())
+            {
+                if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
+                {
+                    continue;
+                }
+
+                if (TryGetFastMoqWebHelperSuggestion(method, out _, out _))
+                {
+                    return true;
                 }
             }
 

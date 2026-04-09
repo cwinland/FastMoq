@@ -11,6 +11,7 @@ namespace FastMoq.Models
     {
         #region Fields / Backing
         private Mock? legacyMock; // lazy hydrated legacy mock
+        private readonly ObservableExceptionLog? exceptionLog;
         #endregion
 
         #region Properties
@@ -70,6 +71,8 @@ namespace FastMoq.Models
         /// </summary>
         public virtual Type Type { get; }
 
+        internal ObservableExceptionLog? ExceptionLog => exceptionLog;
+
         #endregion
 
         #region Construction
@@ -78,11 +81,12 @@ namespace FastMoq.Models
         /// Provider-first constructor (preferred). Accepts an <see cref="IFastMock"/> created by a provider.
         /// Attempts to hydrate the legacy Moq <see cref="Mock"/> property when the underlying provider is Moq.
         /// </summary>
-        internal MockModel(IFastMock fastMock, bool nonPublic = false)
+        internal MockModel(IFastMock fastMock, bool nonPublic = false, ObservableExceptionLog? exceptionLog = null)
         {
             FastMock = fastMock ?? throw new ArgumentNullException(nameof(fastMock));
             Type = fastMock.MockedType ?? throw new ArgumentNullException(nameof(fastMock.MockedType));
             NonPublic = nonPublic;
+            this.exceptionLog = exceptionLog;
             // Legacy hydration deferred until first access to Mock (lazy) for performance / provider agnosticism.
         }
 
@@ -90,11 +94,12 @@ namespace FastMoq.Models
         /// Legacy constructor used while migration is in progress.
         /// Wraps the provided legacy mock through the registered provider infrastructure.
         /// </summary>
-        internal MockModel(Type type, Mock mock, bool nonPublic = false)
+        internal MockModel(Type type, Mock mock, bool nonPublic = false, ObservableExceptionLog? exceptionLog = null)
         {
             Type = type ?? throw new ArgumentNullException(nameof(type));
             legacyMock = mock ?? throw new ArgumentNullException(nameof(mock));
             NonPublic = nonPublic;
+            this.exceptionLog = exceptionLog;
             FastMock = MockingProviderRegistry.WrapLegacy(mock, type);
         }
 
@@ -153,9 +158,10 @@ namespace FastMoq.Models
                     legacyMock = m; // hydrate legacy surface
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Ignore – provider not Moq or structure changed.
+                var message = ex.InnerException?.Message ?? ex.Message;
+                exceptionLog?.Add($"Failed to hydrate legacy Moq surface for tracked mock type {Type.FullName}: {message}");
             }
         }
         #endregion

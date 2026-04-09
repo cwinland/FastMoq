@@ -109,7 +109,7 @@ Blazor and web-oriented testing helpers.
 Moq compatibility provider package for v4 migration and existing Moq-heavy tests.
 
 - [Moq provider types](api/FastMoq.Providers.MoqProvider.yml)
-- [MockWrapper&lt;T&gt;](api/FastMoq.Core.Providers.MockWrapper-1.yml)
+- [IFastMock&lt;T&gt;](api/FastMoq.Providers.IFastMock-1.yml)
 - [MockingProviderRegistry](api/FastMoq.Providers.MockingProviderRegistry.yml)
 
 ### FastMoq.Provider.NSubstitute

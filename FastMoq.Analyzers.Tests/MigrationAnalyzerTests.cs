@@ -19,6 +19,9 @@ namespace FastMoq.Analyzers.Tests
             { new TrackedMockResetAnalyzer(), DiagnosticDescriptors.UseProviderFirstReset },
             { new VerifyLoggerAnalyzer(), DiagnosticDescriptors.UseVerifyLogged },
             { new MixedMockRetrievalAnalyzer(), DiagnosticDescriptors.UseConsistentMockRetrieval },
+            { new GetMockCompatibilityAnalyzer(), DiagnosticDescriptors.UseProviderFirstMockRetrieval },
+            { new GetRequiredMockCompatibilityAnalyzer(), DiagnosticDescriptors.AvoidLegacyRequiredMockRetrieval },
+            { new LegacyMoqCreationLifecycleAnalyzer(), DiagnosticDescriptors.AvoidLegacyMockCreationAndLifecycleApis },
             { new MockOptionalAnalyzer(), DiagnosticDescriptors.UseExplicitOptionalParameterResolution },
             { new InitializeCompatibilityAnalyzer(), DiagnosticDescriptors.ReplaceInitializeCompatibilityWrapper },
             { new StrictCompatibilityAnalyzer(), DiagnosticDescriptors.AvoidStrictCompatibilityProperty },
@@ -38,6 +41,9 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.UseProviderFirstReset, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.UseVerifyLogged, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.UseConsistentMockRetrieval, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.UseProviderFirstMockRetrieval, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.AvoidLegacyRequiredMockRetrieval, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.AvoidLegacyMockCreationAndLifecycleApis, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.UseExplicitOptionalParameterResolution, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.ReplaceInitializeCompatibilityWrapper, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.AvoidStrictCompatibilityProperty, DiagnosticSeverity.Warning },
@@ -221,6 +227,147 @@ class Sample
         }
 
         [Fact]
+        public async Task GetMockCompatibilityAnalyzer_ShouldReportAndFix_StandaloneGetMockUsage()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var logger = Mocks.GetMock<ILogger<Sample>>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new GetMockCompatibilityAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.UseProviderFirstMockRetrieval));
+            Assert.Equal(DiagnosticIds.UseProviderFirstMockRetrieval, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new GetMockCompatibilityAnalyzer(), codeFixProvider, DiagnosticIds.UseProviderFirstMockRetrieval);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var logger = Mocks.GetOrCreateMock<ILogger<Sample>>();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task GetMockCompatibilityAnalyzer_ShouldNotReport_WhenDocumentAlreadyUsesGetOrCreateMock()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var tracked = Mocks.GetOrCreateMock<ILogger<Sample>>();
+        var legacy = Mocks.GetMock<ILogger<Sample>>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new GetMockCompatibilityAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.UseProviderFirstMockRetrieval);
+        }
+
+        [Fact]
+        public async Task GetRequiredMockCompatibilityAnalyzer_ShouldReport_WhenLegacyGetRequiredMockIsUsed()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var logger = Mocks.GetRequiredMock<ILogger<Sample>>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new GetRequiredMockCompatibilityAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidLegacyRequiredMockRetrieval));
+            Assert.Equal(DiagnosticIds.AvoidLegacyRequiredMockRetrieval, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task GetRequiredMockCompatibilityAnalyzer_ShouldReport_WhenLegacyGetRequiredMockTypeOverloadIsUsed()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var logger = Mocks.GetRequiredMock(typeof(ILogger<Sample>));
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new GetRequiredMockCompatibilityAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidLegacyRequiredMockRetrieval));
+            Assert.Equal(DiagnosticIds.AvoidLegacyRequiredMockRetrieval, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task LegacyMoqCreationLifecycleAnalyzer_ShouldReport_WhenCreateDetachedMockIsUsed()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var logger = Mocks.CreateDetachedMock<ILogger<Sample>>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LegacyMoqCreationLifecycleAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidLegacyMockCreationAndLifecycleApis));
+            Assert.Equal(DiagnosticIds.AvoidLegacyMockCreationAndLifecycleApis, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task LegacyMoqCreationLifecycleAnalyzer_ShouldReport_WhenAddMockIsUsed()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Moq;
+
+class Sample
+{
+    interface IService
+    {
+    }
+
+    void Execute(Mocker Mocks, Mock<IService> legacy)
+    {
+        Mocks.AddMock(legacy);
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LegacyMoqCreationLifecycleAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidLegacyMockCreationAndLifecycleApis));
+            Assert.Equal(DiagnosticIds.AvoidLegacyMockCreationAndLifecycleApis, diagnostic.Id);
+        }
+
+        [Fact]
         public async Task MockOptionalAnalyzer_ShouldReportAndFix_TrueAssignment()
         {
             const string SOURCE = @"
@@ -265,6 +412,36 @@ class Sample
     void Execute(Mocker Mocks)
     {
         var serviceProvider = Mocks.GetOrCreateMock<IServiceProvider>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ServiceProviderShimAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
+            Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldReport_WhenFunctionContextInstanceServicesIsMockedDirectly()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+namespace Microsoft.Azure.Functions.Worker
+{
+    abstract class FunctionContext
+    {
+        public virtual IServiceProvider InstanceServices { get; set; }
+    }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var context = Mocks.GetOrCreateMock<Microsoft.Azure.Functions.Worker.FunctionContext>();
+        context.Setup(x => x.InstanceServices);
     }
 }";
 
@@ -974,6 +1151,73 @@ class Sample
     void Execute(Mocker mocks)
     {
         mocks.AddType<IHttpContextAccessor, HttpContextAccessor>(_ => new HttpContextAccessor());
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new WebHelperAuthoringAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferWebTestHelpers));
+            Assert.Equal(DiagnosticIds.PreferWebTestHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task WebHelperAuthoringAnalyzer_ShouldReportOnce_WhenAddTypeRegistersHttpContextAccessorWithNestedHttpContext()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.AspNetCore.Http;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.AddType<IHttpContextAccessor, HttpContextAccessor>(_ => new HttpContextAccessor
+        {
+            HttpContext = new DefaultHttpContext()
+        });
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new WebHelperAuthoringAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferWebTestHelpers));
+            Assert.Equal(DiagnosticIds.PreferWebTestHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task WebHelperAuthoringAnalyzer_ShouldReport_WhenDefaultHttpContextIsConstructedDirectly()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.AspNetCore.Http;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var context = new DefaultHttpContext();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new WebHelperAuthoringAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferWebTestHelpers));
+            Assert.Equal(DiagnosticIds.PreferWebTestHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task WebHelperAuthoringAnalyzer_ShouldReport_WhenControllerContextUsesDefaultHttpContextInitializer()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var controllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
     }
 }";
 

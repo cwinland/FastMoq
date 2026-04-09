@@ -1,4 +1,5 @@
 using FastMoq.Providers;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace FastMoq
@@ -51,6 +52,124 @@ namespace FastMoq
         {
             ArgumentNullException.ThrowIfNull(type);
             return GetOrCreateFastMock(type, options);
+        }
+
+        /// <summary>
+        /// Attempts to get an already tracked provider-backed mock without creating one.
+        /// </summary>
+        public bool TryGetTrackedMock<T>([NotNullWhen(true)] out IFastMock<T>? mock) where T : class
+        {
+            if (!TryGetMockModel(typeof(T), out var model))
+            {
+                mock = null;
+                return false;
+            }
+
+            mock = GetTypedFastMockFromModel<T>(model);
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to get an already tracked keyed provider-backed mock without creating one.
+        /// </summary>
+        public bool TryGetTrackedMock<T>(object serviceKey, [NotNullWhen(true)] out IFastMock<T>? mock) where T : class
+        {
+            if (!TryGetMockModel(typeof(T), serviceKey, out var model))
+            {
+                mock = null;
+                return false;
+            }
+
+            mock = GetTypedFastMockFromModel<T>(model);
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to get an already tracked provider-backed mock for the supplied runtime type without creating one.
+        /// </summary>
+        public bool TryGetTrackedMock(Type type, [NotNullWhen(true)] out IFastMock? mock)
+        {
+            type = ValidateTrackedMockLookupType(type, nameof(type));
+            if (!TryGetMockModel(type, out var model))
+            {
+                mock = null;
+                return false;
+            }
+
+            mock = model.FastMock;
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to get an already tracked keyed provider-backed mock for the supplied runtime type without creating one.
+        /// </summary>
+        public bool TryGetTrackedMock(Type type, object serviceKey, [NotNullWhen(true)] out IFastMock? mock)
+        {
+            type = ValidateTrackedMockLookupType(type, nameof(type));
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            if (!TryGetMockModel(type, serviceKey, out var model))
+            {
+                mock = null;
+                return false;
+            }
+
+            mock = model.FastMock;
+            return true;
+        }
+
+        /// <summary>
+        /// Gets an already tracked provider-backed mock and throws when no tracked mock exists.
+        /// </summary>
+        public IFastMock<T> GetRequiredTrackedMock<T>() where T : class
+        {
+            if (TryGetTrackedMock<T>(out var mock))
+            {
+                return mock;
+            }
+
+            throw CreateTrackedMockNotFoundException(typeof(T));
+        }
+
+        /// <summary>
+        /// Gets an already tracked keyed provider-backed mock and throws when no tracked mock exists for the supplied service key.
+        /// </summary>
+        public IFastMock<T> GetRequiredTrackedMock<T>(object serviceKey) where T : class
+        {
+            if (TryGetTrackedMock<T>(serviceKey, out var mock))
+            {
+                return mock;
+            }
+
+            throw CreateTrackedMockNotFoundException(typeof(T), serviceKey);
+        }
+
+        /// <summary>
+        /// Gets an already tracked provider-backed mock for the supplied runtime type and throws when no tracked mock exists.
+        /// </summary>
+        public IFastMock GetRequiredTrackedMock(Type type)
+        {
+            type = ValidateTrackedMockLookupType(type, nameof(type));
+            if (TryGetTrackedMock(type, out var mock))
+            {
+                return mock;
+            }
+
+            throw CreateTrackedMockNotFoundException(type);
+        }
+
+        /// <summary>
+        /// Gets an already tracked keyed provider-backed mock for the supplied runtime type and throws when no tracked mock exists for the supplied service key.
+        /// </summary>
+        public IFastMock GetRequiredTrackedMock(Type type, object serviceKey)
+        {
+            type = ValidateTrackedMockLookupType(type, nameof(type));
+            if (TryGetTrackedMock(type, serviceKey, out var mock))
+            {
+                return mock;
+            }
+
+            throw CreateTrackedMockNotFoundException(type, serviceKey);
         }
 
         /// <summary>

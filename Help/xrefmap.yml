@@ -782,6 +782,59 @@ references:
   commentId: N:FastMoq
   fullName: FastMoq
   nameWithType: FastMoq
+- uid: FastMoq.AzureFunctions.Extensions
+  name: FastMoq.AzureFunctions.Extensions
+  href: api/FastMoq.AzureFunctions.Extensions.html
+  commentId: N:FastMoq.AzureFunctions.Extensions
+  fullName: FastMoq.AzureFunctions.Extensions
+  nameWithType: FastMoq.AzureFunctions.Extensions
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  name: FunctionContextTestExtensions
+  href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html
+  commentId: T:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  nameWithType: FunctionContextTestExtensions
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  name: AddFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool, bool)
+  href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_System_Boolean_
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  name.vb: AddFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool, bool)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean, Boolean)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool, bool)
+  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  name: AddFunctionContextInstanceServices(Mocker, IServiceProvider, bool)
+  href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  name.vb: AddFunctionContextInstanceServices(Mocker, IServiceProvider, Boolean)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.IServiceProvider, bool)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.IServiceProvider, Boolean)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, IServiceProvider, bool)
+  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, IServiceProvider, Boolean)
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices*
+  name: AddFunctionContextInstanceServices
+  href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  name: CreateFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool)
+  href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_CreateFunctionContextInstanceServices_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  name.vb: CreateFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
+  nameWithType: FunctionContextTestExtensions.CreateFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool)
+  nameWithType.vb: FunctionContextTestExtensions.CreateFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean)
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices*
+  name: CreateFunctionContextInstanceServices
+  href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_CreateFunctionContextInstanceServices_
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices
+  nameWithType: FunctionContextTestExtensions.CreateFunctionContextInstanceServices
 - uid: FastMoq.BuiltInTypeResolutionFlags
   name: BuiltInTypeResolutionFlags
   href: api/FastMoq.BuiltInTypeResolutionFlags.html
@@ -836,100 +889,6 @@ references:
   commentId: F:FastMoq.BuiltInTypeResolutionFlags.Uri
   fullName: FastMoq.BuiltInTypeResolutionFlags.Uri
   nameWithType: BuiltInTypeResolutionFlags.Uri
-- uid: FastMoq.Core.Providers
-  name: FastMoq.Core.Providers
-  href: api/FastMoq.Core.Providers.html
-  commentId: N:FastMoq.Core.Providers
-  fullName: FastMoq.Core.Providers
-  nameWithType: FastMoq.Core.Providers
-- uid: FastMoq.Core.Providers.MockWrapper`1
-  name: MockWrapper<T>
-  href: api/FastMoq.Core.Providers.MockWrapper-1.html
-  commentId: T:FastMoq.Core.Providers.MockWrapper`1
-  name.vb: MockWrapper(Of T)
-  fullName: FastMoq.Core.Providers.MockWrapper<T>
-  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T)
-  nameWithType: MockWrapper<T>
-  nameWithType.vb: MockWrapper(Of T)
-- uid: FastMoq.Core.Providers.MockWrapper`1.Instance
-  name: Instance
-  href: api/FastMoq.Core.Providers.MockWrapper-1.html#FastMoq_Core_Providers_MockWrapper_1_Instance
-  commentId: P:FastMoq.Core.Providers.MockWrapper`1.Instance
-  fullName: FastMoq.Core.Providers.MockWrapper<T>.Instance
-  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T).Instance
-  nameWithType: MockWrapper<T>.Instance
-  nameWithType.vb: MockWrapper(Of T).Instance
-- uid: FastMoq.Core.Providers.MockWrapper`1.Instance*
-  name: Instance
-  href: api/FastMoq.Core.Providers.MockWrapper-1.html#FastMoq_Core_Providers_MockWrapper_1_Instance_
-  commentId: Overload:FastMoq.Core.Providers.MockWrapper`1.Instance
-  isSpec: "True"
-  fullName: FastMoq.Core.Providers.MockWrapper<T>.Instance
-  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T).Instance
-  nameWithType: MockWrapper<T>.Instance
-  nameWithType.vb: MockWrapper(Of T).Instance
-- uid: FastMoq.Core.Providers.MockWrapper`1.NativeMock
-  name: NativeMock
-  href: api/FastMoq.Core.Providers.MockWrapper-1.html#FastMoq_Core_Providers_MockWrapper_1_NativeMock
-  commentId: P:FastMoq.Core.Providers.MockWrapper`1.NativeMock
-  fullName: FastMoq.Core.Providers.MockWrapper<T>.NativeMock
-  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T).NativeMock
-  nameWithType: MockWrapper<T>.NativeMock
-  nameWithType.vb: MockWrapper(Of T).NativeMock
-- uid: FastMoq.Core.Providers.MockWrapper`1.NativeMock*
-  name: NativeMock
-  href: api/FastMoq.Core.Providers.MockWrapper-1.html#FastMoq_Core_Providers_MockWrapper_1_NativeMock_
-  commentId: Overload:FastMoq.Core.Providers.MockWrapper`1.NativeMock
-  isSpec: "True"
-  fullName: FastMoq.Core.Providers.MockWrapper<T>.NativeMock
-  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T).NativeMock
-  nameWithType: MockWrapper<T>.NativeMock
-  nameWithType.vb: MockWrapper(Of T).NativeMock
-- uid: FastMoq.Core.Providers.MockWrapper`1.Setup(System.Linq.Expressions.Expression{System.Action{`0}})
-  name: Setup(Expression<Action<T>>)
-  href: api/FastMoq.Core.Providers.MockWrapper-1.html#FastMoq_Core_Providers_MockWrapper_1_Setup_System_Linq_Expressions_Expression_System_Action__0___
-  commentId: M:FastMoq.Core.Providers.MockWrapper`1.Setup(System.Linq.Expressions.Expression{System.Action{`0}})
-  name.vb: Setup(Expression(Of Action(Of T)))
-  fullName: FastMoq.Core.Providers.MockWrapper<T>.Setup(System.Linq.Expressions.Expression<System.Action<T>>)
-  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T).Setup(System.Linq.Expressions.Expression(Of System.Action(Of T)))
-  nameWithType: MockWrapper<T>.Setup(Expression<Action<T>>)
-  nameWithType.vb: MockWrapper(Of T).Setup(Expression(Of Action(Of T)))
-- uid: FastMoq.Core.Providers.MockWrapper`1.Setup*
-  name: Setup
-  href: api/FastMoq.Core.Providers.MockWrapper-1.html#FastMoq_Core_Providers_MockWrapper_1_Setup_
-  commentId: Overload:FastMoq.Core.Providers.MockWrapper`1.Setup
-  isSpec: "True"
-  fullName: FastMoq.Core.Providers.MockWrapper<T>.Setup
-  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T).Setup
-  nameWithType: MockWrapper<T>.Setup
-  nameWithType.vb: MockWrapper(Of T).Setup
-- uid: FastMoq.Core.Providers.MockWrapper`1.Setup``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
-  name: Setup<TResult>(Expression<Func<T, TResult>>)
-  href: api/FastMoq.Core.Providers.MockWrapper-1.html#FastMoq_Core_Providers_MockWrapper_1_Setup__1_System_Linq_Expressions_Expression_System_Func__0___0___
-  commentId: M:FastMoq.Core.Providers.MockWrapper`1.Setup``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})
-  name.vb: Setup(Of TResult)(Expression(Of Func(Of T, TResult)))
-  fullName: FastMoq.Core.Providers.MockWrapper<T>.Setup<TResult>(System.Linq.Expressions.Expression<System.Func<T, TResult>>)
-  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T).Setup(Of TResult)(System.Linq.Expressions.Expression(Of System.Func(Of T, TResult)))
-  nameWithType: MockWrapper<T>.Setup<TResult>(Expression<Func<T, TResult>>)
-  nameWithType.vb: MockWrapper(Of T).Setup(Of TResult)(Expression(Of Func(Of T, TResult)))
-- uid: FastMoq.Core.Providers.MockWrapper`1.Verify(System.Linq.Expressions.Expression{System.Action{`0}},System.Nullable{FastMoq.Providers.TimesSpec})
-  name: Verify(Expression<Action<T>>, TimesSpec?)
-  href: api/FastMoq.Core.Providers.MockWrapper-1.html#FastMoq_Core_Providers_MockWrapper_1_Verify_System_Linq_Expressions_Expression_System_Action__0___System_Nullable_FastMoq_Providers_TimesSpec__
-  commentId: M:FastMoq.Core.Providers.MockWrapper`1.Verify(System.Linq.Expressions.Expression{System.Action{`0}},System.Nullable{FastMoq.Providers.TimesSpec})
-  name.vb: Verify(Expression(Of Action(Of T)), TimesSpec?)
-  fullName: FastMoq.Core.Providers.MockWrapper<T>.Verify(System.Linq.Expressions.Expression<System.Action<T>>, FastMoq.Providers.TimesSpec?)
-  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T).Verify(System.Linq.Expressions.Expression(Of System.Action(Of T)), FastMoq.Providers.TimesSpec?)
-  nameWithType: MockWrapper<T>.Verify(Expression<Action<T>>, TimesSpec?)
-  nameWithType.vb: MockWrapper(Of T).Verify(Expression(Of Action(Of T)), TimesSpec?)
-- uid: FastMoq.Core.Providers.MockWrapper`1.Verify*
-  name: Verify
-  href: api/FastMoq.Core.Providers.MockWrapper-1.html#FastMoq_Core_Providers_MockWrapper_1_Verify_
-  commentId: Overload:FastMoq.Core.Providers.MockWrapper`1.Verify
-  isSpec: "True"
-  fullName: FastMoq.Core.Providers.MockWrapper<T>.Verify
-  fullName.vb: FastMoq.Core.Providers.MockWrapper(Of T).Verify
-  nameWithType: MockWrapper<T>.Verify
-  nameWithType.vb: MockWrapper(Of T).Verify
 - uid: FastMoq.DbContextHandleOptions`1
   name: DbContextHandleOptions<TContext>
   href: api/FastMoq.DbContextHandleOptions-1.html
@@ -1167,53 +1126,6 @@ references:
   commentId: N:FastMoq.Extensions
   fullName: FastMoq.Extensions
   nameWithType: FastMoq.Extensions
-- uid: FastMoq.Extensions.FunctionContextTestExtensions
-  name: FunctionContextTestExtensions
-  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html
-  commentId: T:FastMoq.Extensions.FunctionContextTestExtensions
-  fullName: FastMoq.Extensions.FunctionContextTestExtensions
-  nameWithType: FunctionContextTestExtensions
-- uid: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
-  name: AddFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool, bool)
-  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html#FastMoq_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_System_Boolean_
-  commentId: M:FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
-  name.vb: AddFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
-  fullName: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool, bool)
-  fullName.vb: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean, Boolean)
-  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool, bool)
-  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
-- uid: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
-  name: AddFunctionContextInstanceServices(Mocker, IServiceProvider, bool)
-  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html#FastMoq_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
-  commentId: M:FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
-  name.vb: AddFunctionContextInstanceServices(Mocker, IServiceProvider, Boolean)
-  fullName: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.IServiceProvider, bool)
-  fullName.vb: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.IServiceProvider, Boolean)
-  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, IServiceProvider, bool)
-  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, IServiceProvider, Boolean)
-- uid: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices*
-  name: AddFunctionContextInstanceServices
-  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html#FastMoq_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_
-  commentId: Overload:FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices
-  isSpec: "True"
-  fullName: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices
-  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices
-- uid: FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
-  name: CreateFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool)
-  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html#FastMoq_Extensions_FunctionContextTestExtensions_CreateFunctionContextInstanceServices_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
-  commentId: M:FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
-  name.vb: CreateFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean)
-  fullName: FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool)
-  fullName.vb: FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
-  nameWithType: FunctionContextTestExtensions.CreateFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool)
-  nameWithType.vb: FunctionContextTestExtensions.CreateFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean)
-- uid: FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices*
-  name: CreateFunctionContextInstanceServices
-  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html#FastMoq_Extensions_FunctionContextTestExtensions_CreateFunctionContextInstanceServices_
-  commentId: Overload:FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices
-  isSpec: "True"
-  fullName: FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices
-  nameWithType: FunctionContextTestExtensions.CreateFunctionContextInstanceServices
 - uid: FastMoq.Extensions.IdentityHelperExtensions
   name: IdentityHelperExtensions
   href: api/FastMoq.Extensions.IdentityHelperExtensions.html
@@ -3341,6 +3253,46 @@ references:
   fullName.vb: FastMoq.Mocker.GetRequiredObject(Of T)()
   nameWithType: Mocker.GetRequiredObject<T>()
   nameWithType.vb: Mocker.GetRequiredObject(Of T)()
+- uid: FastMoq.Mocker.GetRequiredTrackedMock(System.Type)
+  name: GetRequiredTrackedMock(Type)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredTrackedMock_System_Type_
+  commentId: M:FastMoq.Mocker.GetRequiredTrackedMock(System.Type)
+  fullName: FastMoq.Mocker.GetRequiredTrackedMock(System.Type)
+  nameWithType: Mocker.GetRequiredTrackedMock(Type)
+- uid: FastMoq.Mocker.GetRequiredTrackedMock(System.Type,System.Object)
+  name: GetRequiredTrackedMock(Type, object)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredTrackedMock_System_Type_System_Object_
+  commentId: M:FastMoq.Mocker.GetRequiredTrackedMock(System.Type,System.Object)
+  name.vb: GetRequiredTrackedMock(Type, Object)
+  fullName: FastMoq.Mocker.GetRequiredTrackedMock(System.Type, object)
+  fullName.vb: FastMoq.Mocker.GetRequiredTrackedMock(System.Type, Object)
+  nameWithType: Mocker.GetRequiredTrackedMock(Type, object)
+  nameWithType.vb: Mocker.GetRequiredTrackedMock(Type, Object)
+- uid: FastMoq.Mocker.GetRequiredTrackedMock*
+  name: GetRequiredTrackedMock
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredTrackedMock_
+  commentId: Overload:FastMoq.Mocker.GetRequiredTrackedMock
+  isSpec: "True"
+  fullName: FastMoq.Mocker.GetRequiredTrackedMock
+  nameWithType: Mocker.GetRequiredTrackedMock
+- uid: FastMoq.Mocker.GetRequiredTrackedMock``1
+  name: GetRequiredTrackedMock<T>()
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredTrackedMock__1
+  commentId: M:FastMoq.Mocker.GetRequiredTrackedMock``1
+  name.vb: GetRequiredTrackedMock(Of T)()
+  fullName: FastMoq.Mocker.GetRequiredTrackedMock<T>()
+  fullName.vb: FastMoq.Mocker.GetRequiredTrackedMock(Of T)()
+  nameWithType: Mocker.GetRequiredTrackedMock<T>()
+  nameWithType.vb: Mocker.GetRequiredTrackedMock(Of T)()
+- uid: FastMoq.Mocker.GetRequiredTrackedMock``1(System.Object)
+  name: GetRequiredTrackedMock<T>(object)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredTrackedMock__1_System_Object_
+  commentId: M:FastMoq.Mocker.GetRequiredTrackedMock``1(System.Object)
+  name.vb: GetRequiredTrackedMock(Of T)(Object)
+  fullName: FastMoq.Mocker.GetRequiredTrackedMock<T>(object)
+  fullName.vb: FastMoq.Mocker.GetRequiredTrackedMock(Of T)(Object)
+  nameWithType: Mocker.GetRequiredTrackedMock<T>(object)
+  nameWithType.vb: Mocker.GetRequiredTrackedMock(Of T)(Object)
 - uid: FastMoq.Mocker.GetStringContent(System.Net.Http.HttpContent)
   name: GetStringContent(HttpContent?)
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetStringContent_System_Net_Http_HttpContent_
@@ -3515,6 +3467,49 @@ references:
   fullName.vb: FastMoq.Mocker.Scenario(Of T)(T)
   nameWithType: Mocker.Scenario<T>(T?)
   nameWithType.vb: Mocker.Scenario(Of T)(T)
+- uid: FastMoq.Mocker.TryGetTrackedMock(System.Type,FastMoq.Providers.IFastMock@)
+  name: TryGetTrackedMock(Type, out IFastMock?)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_TryGetTrackedMock_System_Type_FastMoq_Providers_IFastMock__
+  commentId: M:FastMoq.Mocker.TryGetTrackedMock(System.Type,FastMoq.Providers.IFastMock@)
+  name.vb: TryGetTrackedMock(Type, IFastMock)
+  fullName: FastMoq.Mocker.TryGetTrackedMock(System.Type, out FastMoq.Providers.IFastMock?)
+  fullName.vb: FastMoq.Mocker.TryGetTrackedMock(System.Type, FastMoq.Providers.IFastMock)
+  nameWithType: Mocker.TryGetTrackedMock(Type, out IFastMock?)
+  nameWithType.vb: Mocker.TryGetTrackedMock(Type, IFastMock)
+- uid: FastMoq.Mocker.TryGetTrackedMock(System.Type,System.Object,FastMoq.Providers.IFastMock@)
+  name: TryGetTrackedMock(Type, object, out IFastMock?)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_TryGetTrackedMock_System_Type_System_Object_FastMoq_Providers_IFastMock__
+  commentId: M:FastMoq.Mocker.TryGetTrackedMock(System.Type,System.Object,FastMoq.Providers.IFastMock@)
+  name.vb: TryGetTrackedMock(Type, Object, IFastMock)
+  fullName: FastMoq.Mocker.TryGetTrackedMock(System.Type, object, out FastMoq.Providers.IFastMock?)
+  fullName.vb: FastMoq.Mocker.TryGetTrackedMock(System.Type, Object, FastMoq.Providers.IFastMock)
+  nameWithType: Mocker.TryGetTrackedMock(Type, object, out IFastMock?)
+  nameWithType.vb: Mocker.TryGetTrackedMock(Type, Object, IFastMock)
+- uid: FastMoq.Mocker.TryGetTrackedMock*
+  name: TryGetTrackedMock
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_TryGetTrackedMock_
+  commentId: Overload:FastMoq.Mocker.TryGetTrackedMock
+  isSpec: "True"
+  fullName: FastMoq.Mocker.TryGetTrackedMock
+  nameWithType: Mocker.TryGetTrackedMock
+- uid: FastMoq.Mocker.TryGetTrackedMock``1(FastMoq.Providers.IFastMock{``0}@)
+  name: TryGetTrackedMock<T>(out IFastMock<T>?)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_TryGetTrackedMock__1_FastMoq_Providers_IFastMock___0___
+  commentId: M:FastMoq.Mocker.TryGetTrackedMock``1(FastMoq.Providers.IFastMock{``0}@)
+  name.vb: TryGetTrackedMock(Of T)(IFastMock(Of T))
+  fullName: FastMoq.Mocker.TryGetTrackedMock<T>(out FastMoq.Providers.IFastMock<T>?)
+  fullName.vb: FastMoq.Mocker.TryGetTrackedMock(Of T)(FastMoq.Providers.IFastMock(Of T))
+  nameWithType: Mocker.TryGetTrackedMock<T>(out IFastMock<T>?)
+  nameWithType.vb: Mocker.TryGetTrackedMock(Of T)(IFastMock(Of T))
+- uid: FastMoq.Mocker.TryGetTrackedMock``1(System.Object,FastMoq.Providers.IFastMock{``0}@)
+  name: TryGetTrackedMock<T>(object, out IFastMock<T>?)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_TryGetTrackedMock__1_System_Object_FastMoq_Providers_IFastMock___0___
+  commentId: M:FastMoq.Mocker.TryGetTrackedMock``1(System.Object,FastMoq.Providers.IFastMock{``0}@)
+  name.vb: TryGetTrackedMock(Of T)(Object, IFastMock(Of T))
+  fullName: FastMoq.Mocker.TryGetTrackedMock<T>(object, out FastMoq.Providers.IFastMock<T>?)
+  fullName.vb: FastMoq.Mocker.TryGetTrackedMock(Of T)(Object, FastMoq.Providers.IFastMock(Of T))
+  nameWithType: Mocker.TryGetTrackedMock<T>(object, out IFastMock<T>?)
+  nameWithType.vb: Mocker.TryGetTrackedMock(Of T)(Object, IFastMock(Of T))
 - uid: FastMoq.Mocker.Uri
   name: Uri
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_Uri
@@ -10112,6 +10107,33 @@ references:
   fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker, Microsoft.AspNetCore.Http.HttpContext, Boolean, ParamArray String())
   nameWithType: TestWebExtensions.AddHttpContext(Mocker, HttpContext?, bool, params string[])
   nameWithType.vb: TestWebExtensions.AddHttpContext(Mocker, HttpContext, Boolean, ParamArray String())
+- uid: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker,System.Action{Microsoft.AspNetCore.Http.HttpContext},System.Boolean)
+  name: AddHttpContext(Mocker, Action<HttpContext>, bool)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_AddHttpContext_FastMoq_Mocker_System_Action_Microsoft_AspNetCore_Http_HttpContext__System_Boolean_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker,System.Action{Microsoft.AspNetCore.Http.HttpContext},System.Boolean)
+  name.vb: AddHttpContext(Mocker, Action(Of HttpContext), Boolean)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker, System.Action<Microsoft.AspNetCore.Http.HttpContext>, bool)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker, System.Action(Of Microsoft.AspNetCore.Http.HttpContext), Boolean)
+  nameWithType: TestWebExtensions.AddHttpContext(Mocker, Action<HttpContext>, bool)
+  nameWithType.vb: TestWebExtensions.AddHttpContext(Mocker, Action(Of HttpContext), Boolean)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Action{Microsoft.AspNetCore.Http.HttpContext},System.Boolean)
+  name: AddHttpContext(Mocker, ClaimsPrincipal, Action<HttpContext>, bool)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_AddHttpContext_FastMoq_Mocker_System_Security_Claims_ClaimsPrincipal_System_Action_Microsoft_AspNetCore_Http_HttpContext__System_Boolean_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Action{Microsoft.AspNetCore.Http.HttpContext},System.Boolean)
+  name.vb: AddHttpContext(Mocker, ClaimsPrincipal, Action(Of HttpContext), Boolean)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, System.Action<Microsoft.AspNetCore.Http.HttpContext>, bool)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, System.Action(Of Microsoft.AspNetCore.Http.HttpContext), Boolean)
+  nameWithType: TestWebExtensions.AddHttpContext(Mocker, ClaimsPrincipal, Action<HttpContext>, bool)
+  nameWithType.vb: TestWebExtensions.AddHttpContext(Mocker, ClaimsPrincipal, Action(Of HttpContext), Boolean)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Boolean)
+  name: AddHttpContext(Mocker, ClaimsPrincipal, bool)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_AddHttpContext_FastMoq_Mocker_System_Security_Claims_ClaimsPrincipal_System_Boolean_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Boolean)
+  name.vb: AddHttpContext(Mocker, ClaimsPrincipal, Boolean)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, bool)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, Boolean)
+  nameWithType: TestWebExtensions.AddHttpContext(Mocker, ClaimsPrincipal, bool)
+  nameWithType.vb: TestWebExtensions.AddHttpContext(Mocker, ClaimsPrincipal, Boolean)
 - uid: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContext*
   name: AddHttpContext
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_AddHttpContext_
@@ -10128,6 +10150,33 @@ references:
   fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker, Microsoft.AspNetCore.Http.HttpContext, Boolean, ParamArray String())
   nameWithType: TestWebExtensions.AddHttpContextAccessor(Mocker, HttpContext?, bool, params string[])
   nameWithType.vb: TestWebExtensions.AddHttpContextAccessor(Mocker, HttpContext, Boolean, ParamArray String())
+- uid: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker,System.Action{Microsoft.AspNetCore.Http.HttpContext},System.Boolean)
+  name: AddHttpContextAccessor(Mocker, Action<HttpContext>, bool)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_AddHttpContextAccessor_FastMoq_Mocker_System_Action_Microsoft_AspNetCore_Http_HttpContext__System_Boolean_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker,System.Action{Microsoft.AspNetCore.Http.HttpContext},System.Boolean)
+  name.vb: AddHttpContextAccessor(Mocker, Action(Of HttpContext), Boolean)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker, System.Action<Microsoft.AspNetCore.Http.HttpContext>, bool)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker, System.Action(Of Microsoft.AspNetCore.Http.HttpContext), Boolean)
+  nameWithType: TestWebExtensions.AddHttpContextAccessor(Mocker, Action<HttpContext>, bool)
+  nameWithType.vb: TestWebExtensions.AddHttpContextAccessor(Mocker, Action(Of HttpContext), Boolean)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Action{Microsoft.AspNetCore.Http.HttpContext},System.Boolean)
+  name: AddHttpContextAccessor(Mocker, ClaimsPrincipal, Action<HttpContext>, bool)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_AddHttpContextAccessor_FastMoq_Mocker_System_Security_Claims_ClaimsPrincipal_System_Action_Microsoft_AspNetCore_Http_HttpContext__System_Boolean_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Action{Microsoft.AspNetCore.Http.HttpContext},System.Boolean)
+  name.vb: AddHttpContextAccessor(Mocker, ClaimsPrincipal, Action(Of HttpContext), Boolean)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, System.Action<Microsoft.AspNetCore.Http.HttpContext>, bool)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, System.Action(Of Microsoft.AspNetCore.Http.HttpContext), Boolean)
+  nameWithType: TestWebExtensions.AddHttpContextAccessor(Mocker, ClaimsPrincipal, Action<HttpContext>, bool)
+  nameWithType.vb: TestWebExtensions.AddHttpContextAccessor(Mocker, ClaimsPrincipal, Action(Of HttpContext), Boolean)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Boolean)
+  name: AddHttpContextAccessor(Mocker, ClaimsPrincipal, bool)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_AddHttpContextAccessor_FastMoq_Mocker_System_Security_Claims_ClaimsPrincipal_System_Boolean_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Boolean)
+  name.vb: AddHttpContextAccessor(Mocker, ClaimsPrincipal, Boolean)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, bool)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, Boolean)
+  nameWithType: TestWebExtensions.AddHttpContextAccessor(Mocker, ClaimsPrincipal, bool)
+  nameWithType.vb: TestWebExtensions.AddHttpContextAccessor(Mocker, ClaimsPrincipal, Boolean)
 - uid: FastMoq.Web.Extensions.TestWebExtensions.AddHttpContextAccessor*
   name: AddHttpContextAccessor
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_AddHttpContextAccessor_
@@ -10166,6 +10215,15 @@ references:
   commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,Microsoft.AspNetCore.Http.HttpContext)
   fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, Microsoft.AspNetCore.Http.HttpContext)
   nameWithType: TestWebExtensions.CreateControllerContext(Mocker, HttpContext)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Action{Microsoft.AspNetCore.Http.HttpContext})
+  name: CreateControllerContext(Mocker, Action<HttpContext>)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_Action_Microsoft_AspNetCore_Http_HttpContext__
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Action{Microsoft.AspNetCore.Http.HttpContext})
+  name.vb: CreateControllerContext(Mocker, Action(Of HttpContext))
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Action<Microsoft.AspNetCore.Http.HttpContext>)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Action(Of Microsoft.AspNetCore.Http.HttpContext))
+  nameWithType: TestWebExtensions.CreateControllerContext(Mocker, Action<HttpContext>)
+  nameWithType.vb: TestWebExtensions.CreateControllerContext(Mocker, Action(Of HttpContext))
 - uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
   name: CreateControllerContext(Mocker, IEnumerable<Claim>)
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__
@@ -10190,6 +10248,15 @@ references:
   commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
   fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal)
   nameWithType: TestWebExtensions.CreateControllerContext(Mocker, ClaimsPrincipal)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Action{Microsoft.AspNetCore.Http.HttpContext})
+  name: CreateControllerContext(Mocker, ClaimsPrincipal, Action<HttpContext>)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_Security_Claims_ClaimsPrincipal_System_Action_Microsoft_AspNetCore_Http_HttpContext__
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Action{Microsoft.AspNetCore.Http.HttpContext})
+  name.vb: CreateControllerContext(Mocker, ClaimsPrincipal, Action(Of HttpContext))
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, System.Action<Microsoft.AspNetCore.Http.HttpContext>)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, System.Action(Of Microsoft.AspNetCore.Http.HttpContext))
+  nameWithType: TestWebExtensions.CreateControllerContext(Mocker, ClaimsPrincipal, Action<HttpContext>)
+  nameWithType.vb: TestWebExtensions.CreateControllerContext(Mocker, ClaimsPrincipal, Action(Of HttpContext))
 - uid: FastMoq.Web.Extensions.TestWebExtensions.CreateControllerContext(FastMoq.Mocker,System.String[])
   name: CreateControllerContext(Mocker, params string[])
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateControllerContext_FastMoq_Mocker_System_String___
@@ -10215,6 +10282,15 @@ references:
   fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, FastMoq.Web.TestClaimsPrincipalOptions, ParamArray String())
   nameWithType: TestWebExtensions.CreateHttpContext(Mocker, TestClaimsPrincipalOptions, params string[])
   nameWithType.vb: TestWebExtensions.CreateHttpContext(Mocker, TestClaimsPrincipalOptions, ParamArray String())
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Action{Microsoft.AspNetCore.Http.HttpContext})
+  name: CreateHttpContext(Mocker, Action<HttpContext>)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_Action_Microsoft_AspNetCore_Http_HttpContext__
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Action{Microsoft.AspNetCore.Http.HttpContext})
+  name.vb: CreateHttpContext(Mocker, Action(Of HttpContext))
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Action<Microsoft.AspNetCore.Http.HttpContext>)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Action(Of Microsoft.AspNetCore.Http.HttpContext))
+  nameWithType: TestWebExtensions.CreateHttpContext(Mocker, Action<HttpContext>)
+  nameWithType.vb: TestWebExtensions.CreateHttpContext(Mocker, Action(Of HttpContext))
 - uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
   name: CreateHttpContext(Mocker, IEnumerable<Claim>)
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_Collections_Generic_IEnumerable_System_Security_Claims_Claim__
@@ -10239,6 +10315,15 @@ references:
   commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal)
   fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal)
   nameWithType: TestWebExtensions.CreateHttpContext(Mocker, ClaimsPrincipal)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Action{Microsoft.AspNetCore.Http.HttpContext})
+  name: CreateHttpContext(Mocker, ClaimsPrincipal, Action<HttpContext>)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_Security_Claims_ClaimsPrincipal_System_Action_Microsoft_AspNetCore_Http_HttpContext__
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.Security.Claims.ClaimsPrincipal,System.Action{Microsoft.AspNetCore.Http.HttpContext})
+  name.vb: CreateHttpContext(Mocker, ClaimsPrincipal, Action(Of HttpContext))
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, System.Action<Microsoft.AspNetCore.Http.HttpContext>)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker, System.Security.Claims.ClaimsPrincipal, System.Action(Of Microsoft.AspNetCore.Http.HttpContext))
+  nameWithType: TestWebExtensions.CreateHttpContext(Mocker, ClaimsPrincipal, Action<HttpContext>)
+  nameWithType.vb: TestWebExtensions.CreateHttpContext(Mocker, ClaimsPrincipal, Action(Of HttpContext))
 - uid: FastMoq.Web.Extensions.TestWebExtensions.CreateHttpContext(FastMoq.Mocker,System.String[])
   name: CreateHttpContext(Mocker, params string[])
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_CreateHttpContext_FastMoq_Mocker_System_String___

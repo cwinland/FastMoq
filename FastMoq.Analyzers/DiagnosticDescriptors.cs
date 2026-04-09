@@ -42,6 +42,33 @@ namespace FastMoq.Analyzers
             isEnabledByDefault: true,
             description: "When a file or helper layer already uses provider-first retrieval, remaining obsolete GetMock<T>() calls are usually migration leftovers that should be normalized.");
 
+        public static readonly DiagnosticDescriptor UseProviderFirstMockRetrieval = new(
+            DiagnosticIds.UseProviderFirstMockRetrieval,
+            "Use provider-first mock retrieval",
+            "Use 'GetOrCreateMock<T>()' instead of obsolete 'GetMock<T>()' when the call only needs a tracked FastMoq mock",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "GetMock<T>() is a Moq compatibility surface. Prefer GetOrCreateMock<T>() for provider-first tracked mock retrieval when the call site does not depend on raw Mock<T>-shaped behavior. Mixed files continue to use the stronger consistency diagnostic.");
+
+        public static readonly DiagnosticDescriptor AvoidLegacyRequiredMockRetrieval = new(
+            DiagnosticIds.AvoidLegacyRequiredMockRetrieval,
+            "Avoid legacy GetRequiredMock retrieval",
+            "'GetRequiredMock(...)' is a legacy Moq compatibility API. Prefer provider-first retrieval based on intent: 'GetRequiredTrackedMock(...)', 'TryGetTrackedMock(...)', 'GetOrCreateMock(...)', 'GetObject(...)', or 'GetRequiredObject(...)'.",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "GetRequiredMock(...) is a Moq-only compatibility path with no single safe automatic replacement. Use GetRequiredTrackedMock(...) or TryGetTrackedMock(...) when the dependency must already be tracked, GetOrCreateMock(...) when creating the tracked mock is acceptable, or GetObject(...) / GetRequiredObject(...) when only the instance is needed.");
+
+        public static readonly DiagnosticDescriptor AvoidLegacyMockCreationAndLifecycleApis = new(
+            DiagnosticIds.AvoidLegacyMockCreationAndLifecycleApis,
+            "Avoid legacy Moq creation and lifecycle APIs",
+            "API '{0}(...)' is a legacy Moq compatibility surface. Prefer {1}.",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "Compatibility creation and lifecycle APIs such as CreateMock(...), CreateMockInstance(...), CreateDetachedMock(...), AddMock(...), and RemoveMock(...) are not the preferred provider-first end state. Prefer tracked provider-first mocks, AddType(...), or dedicated Mocker scopes instead of expanding the legacy Mock<T>-shaped surface.");
+
         public static readonly DiagnosticDescriptor UseExplicitOptionalParameterResolution = new(
             DiagnosticIds.UseExplicitOptionalParameterResolution,
             "Use explicit optional-parameter resolution",
@@ -103,7 +130,7 @@ namespace FastMoq.Analyzers
             Category,
             DiagnosticSeverity.Info,
             isEnabledByDefault: true,
-            description: "Prefer CreateHttpContext(...), CreateControllerContext(...), AddHttpContext(...), and AddHttpContextAccessor(...) over hand-rolled AddType(...) setup for common web test primitives.");
+            description: "Prefer CreateHttpContext(...), CreateControllerContext(...), AddHttpContext(...), and AddHttpContextAccessor(...) over hand-rolled AddType(...), DefaultHttpContext, or ControllerContext setup for common web test primitives.");
 
         public static readonly DiagnosticDescriptor PreferProviderNeutralHttpHelpers = new(
             DiagnosticIds.PreferProviderNeutralHttpHelpers,
@@ -117,11 +144,11 @@ namespace FastMoq.Analyzers
         public static readonly DiagnosticDescriptor PreferTypedServiceProviderHelpers = new(
             DiagnosticIds.PreferTypedServiceProviderHelpers,
             "Prefer typed IServiceProvider helpers",
-            "Prefer 'CreateTypedServiceProvider(...)' or 'AddServiceProvider(...)' instead of '{0}' for IServiceProvider test setup",
+            "Prefer FastMoq's typed service-provider helpers instead of '{0}' for framework service-provider test setup",
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "Mocking IServiceProvider directly often creates one-object-for-all-types shims. Prefer the typed FastMoq service-provider helpers so framework code resolves services by requested type.");
+            description: "Mocking IServiceProvider directly or manually wiring FunctionContext.InstanceServices often creates one-object-for-all-types shims. Prefer CreateTypedServiceProvider(...), AddServiceProvider(...), CreateFunctionContextInstanceServices(...), or AddFunctionContextInstanceServices(...) so framework code resolves services by requested type.");
 
         public static readonly DiagnosticDescriptor PreferKnownTypeRegistrations = new(
             DiagnosticIds.PreferKnownTypeRegistrations,

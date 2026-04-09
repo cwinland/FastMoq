@@ -52,6 +52,62 @@ namespace FastMoq.Tests
 
         [Theory]
         [MemberData(nameof(ProviderNames))]
+        public void TryGetTrackedMock_ShouldReturnFalse_WhenTrackedMockDoesNotExist(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+
+            var found = mocker.TryGetTrackedMock<IProviderDependency>(out var trackedMock);
+
+            found.Should().BeFalse();
+            trackedMock.Should().BeNull();
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
+        public void GetRequiredTrackedMock_ShouldReturnTrackedMock_WhenTrackedMockExists(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var trackedMock = mocker.GetOrCreateMock<IProviderDependency>();
+
+            var required = mocker.GetRequiredTrackedMock<IProviderDependency>();
+
+            required.Should().BeSameAs(trackedMock);
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
+        public void GetRequiredTrackedMock_ShouldThrowHelpfulMessage_WhenTrackedMockDoesNotExist(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+
+            Action action = () => _ = mocker.GetRequiredTrackedMock<IProviderDependency>();
+
+            var exception = action.Should().Throw<InvalidOperationException>().Which;
+            exception.Message.Should().Contain("No tracked mock exists for type IProviderDependency");
+            exception.Message.Should().Contain("GetOrCreateMock<IProviderDependency>()");
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
+        public void GetRequiredTrackedMock_WithServiceKey_ShouldReturnTrackedMock_WhenTrackedMockExists(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var trackedMock = mocker.GetOrCreateMock<IProviderDependency>(new MockRequestOptions
+            {
+                ServiceKey = "alpha",
+            });
+
+            var required = mocker.GetRequiredTrackedMock(typeof(IProviderDependency), "alpha");
+
+            required.Should().BeSameAs(trackedMock);
+        }
+
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
         public void Verify_ShouldWork_ForSelectedProvider(string providerName)
         {
             using var providerScope = PushProvider(providerName);

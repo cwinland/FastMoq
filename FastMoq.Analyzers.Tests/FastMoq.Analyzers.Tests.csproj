@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FastMoq.Analyzers\FastMoq.Analyzers.csproj" />
+    <ProjectReference Include="..\FastMoq.Analyzers\FastMoq.Analyzers.csproj" OutputItemType="Analyzer" />
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.Moq\FastMoq.Provider.Moq.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.NSubstitute\FastMoq.Provider.NSubstitute.csproj" />

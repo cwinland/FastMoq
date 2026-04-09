@@ -211,9 +211,9 @@
 </tr>
 </tbody>
 </table>
-<p>Package note: <code>FastMoq</code> is the aggregate package. Provider contracts live in <code>FastMoq.Abstractions</code>, <code>FastMoq.Core</code> stays lighter, EF-specific helpers live in <code>FastMoq.Database</code>, Azure Functions worker helpers live in <code>FastMoq.AzureFunctions</code>, provider-specific adapters live in <code>FastMoq.Provider.*</code>, and web helpers live in <code>FastMoq.Web</code> while the primary calls stay in the <code>FastMoq</code> or <code>FastMoq.Extensions</code> namespaces.</p>
+<p>Package note: <code>FastMoq</code> is the aggregate package. Provider contracts live in <code>FastMoq.Abstractions</code>, <code>FastMoq.Core</code> stays lighter, EF-specific helpers live in <code>FastMoq.Database</code>, Azure Functions worker helpers live in <code>FastMoq.AzureFunctions.Extensions</code>, provider-specific adapters live in <code>FastMoq.Provider.*</code>, and web helpers live in <code>FastMoq.Web.Extensions</code> while the primary runtime calls stay in the <code>FastMoq</code> or <code>FastMoq.Extensions</code> namespaces.</p>
 <p>Web helper note: if your test project references the aggregate <code>FastMoq</code> package, the web helpers are already included. If your test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.Web</code> before using helpers such as <code>CreateHttpContext(...)</code>, <code>CreateControllerContext(...)</code>, <code>SetupClaimsPrincipal(...)</code>, <code>AddHttpContext(...)</code>, or <code>AddHttpContextAccessor(...)</code>.</p>
-<p>Azure Functions helper note: if your test project references the aggregate <code>FastMoq</code> package, the Azure Functions helpers are already included. If your test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.AzureFunctions</code> before using <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code>.</p>
+<p>Azure Functions helper note: if your test project references the aggregate <code>FastMoq</code> package, the Azure Functions helpers are already included. If your test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.AzureFunctions</code> and import <code>FastMoq.AzureFunctions.Extensions</code> before using <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code>.</p>
 <p>See <a href="getting-started/README.html#package-choices">Getting Started package choices</a> when you need the full install matrix instead of a quick reminder.</p>
 <h2 id="-key-advantages">🏆 Key Advantages</h2>
 <p>FastMoq is designed for <strong>developer productivity</strong> and <strong>maintainable tests</strong>:</p>
@@ -322,7 +322,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 19:00 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 23:07 UTC</span></div>
       
           </div>
         </div>

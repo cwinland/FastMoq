@@ -102,7 +102,7 @@
 <h3 id="azure-functions-worker-typed-instanceservices">Azure Functions worker: typed <code>InstanceServices</code></h3>
 <p>Azure Functions worker tests deserve one explicit warning: <code>FunctionContext.InstanceServices</code> should behave like a typed <code>IServiceProvider</code>, not like a shim that returns the same object for every requested service type.</p>
 <p>If the suite uses Azure Functions worker helpers, prefer the built-in typed helper path:</p>
-<pre><code class="lang-csharp">using FastMoq.Extensions;
+<pre><code class="lang-csharp">using FastMoq.AzureFunctions.Extensions;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -117,7 +117,7 @@ var clock = context.InstanceServices.GetRequiredService&lt;WidgetClock&gt;();
 <p>Package note:</p>
 <ul>
 <li>if the test project references the aggregate <code>FastMoq</code> package, these Azure Functions helpers are already included</li>
-<li>if the test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.AzureFunctions</code> before using <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code></li>
+<li>if the test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.AzureFunctions</code> and import <code>FastMoq.AzureFunctions.Extensions</code> before using <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code></li>
 <li>the generic typed <code>IServiceProvider</code> helpers stay in <code>FastMoq.Core</code></li>
 </ul>
 <p>If a suite already has a local Azure helper wrapper, re-point that wrapper to <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code> first and keep the existing call sites stable until the suite is green.</p>
@@ -288,7 +288,7 @@ public class OrdersControllerClaimTests : MockerTestBase&lt;OrdersController&gt;
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 19:00 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 23:07 UTC</span></div>
       
           </div>
         </div>

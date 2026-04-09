@@ -173,7 +173,7 @@ Web-helper note:
 Azure Functions helper note:
 
 - if you install the aggregate `FastMoq` package, the Azure Functions helpers are included
-- if you install `FastMoq.Core` directly, add `FastMoq.AzureFunctions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
+- if you install `FastMoq.Core` directly, add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
 - the typed `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` helpers remain in `FastMoq.Core`
 
 Typical split-package install:
@@ -187,7 +187,7 @@ dotnet add package FastMoq.Web
 
 `GetMockDbContext<TContext>()` keeps the same main call shape in the `FastMoq` namespace. If you install `FastMoq`, the EF helpers are included. If you install `FastMoq.Core` directly, add `FastMoq.Database` for DbContext support.
 
-`CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` also keep the same `FastMoq.Extensions` call shape, but direct `FastMoq.Core` consumers should add `FastMoq.AzureFunctions` for Azure Functions worker support.
+`CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` live in `FastMoq.AzureFunctions.Extensions`, while the generic `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` helpers stay in `FastMoq.Extensions`.
 
 `GetMockDbContext<TContext>()` remains the default mocked-sets entry point. For explicit mode selection between mocked DbSets and a real EF in-memory context, use `GetDbContextHandle<TContext>(new DbContextHandleOptions<TContext> { ... })`.
 

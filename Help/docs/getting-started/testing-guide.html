@@ -134,7 +134,9 @@ repoMock.Setup(x =&gt; x.Load(123)).Returns(order);
 });
 </code></pre>
 <p>Use <code>CreateFunctionContextInstanceServices(...)</code> and <code>AddFunctionContextInstanceServices(...)</code> for Azure Functions worker tests instead of hand-writing <code>FunctionContext.InstanceServices</code> plumbing:</p>
-<pre><code class="lang-csharp">Mocks.AddFunctionContextInstanceServices(services =&gt;
+<pre><code class="lang-csharp">using FastMoq.AzureFunctions.Extensions;
+
+Mocks.AddFunctionContextInstanceServices(services =&gt;
 {
     services.AddSingleton(new WidgetClock());
 });
@@ -145,7 +147,7 @@ var clock = context.InstanceServices.GetRequiredService&lt;WidgetClock&gt;();
 <p>Package note:</p>
 <ul>
 <li><code>CreateTypedServiceProvider(...)</code> and <code>AddServiceProvider(...)</code> remain part of <code>FastMoq.Core</code></li>
-<li>direct <code>FastMoq.Core</code> consumers should add <code>FastMoq.AzureFunctions</code> before using <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code></li>
+<li>direct <code>FastMoq.Core</code> consumers should add <code>FastMoq.AzureFunctions</code> and import <code>FastMoq.AzureFunctions.Extensions</code> before using <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code></li>
 <li>the aggregate <code>FastMoq</code> package includes the Azure Functions helper package already</li>
 </ul>
 <p>Analyzer note:</p>
@@ -658,7 +660,7 @@ Mocks.UseLenientPreset();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 19:00 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 23:07 UTC</span></div>
       
           </div>
         </div>

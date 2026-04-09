@@ -150,7 +150,7 @@ Mocks.Verify&lt;ICustomerRepository&gt;(
 <tr>
 <td>Azure Functions worker helpers while using <code>FastMoq.Core</code></td>
 <td><code>FastMoq.AzureFunctions</code></td>
-<td>Adds <code>CreateFunctionContextInstanceServices(...)</code> and <code>AddFunctionContextInstanceServices(...)</code> while keeping the typed <code>IServiceProvider</code> helpers in core</td>
+<td>Adds <code>CreateFunctionContextInstanceServices(...)</code> and <code>AddFunctionContextInstanceServices(...)</code> in <code>FastMoq.AzureFunctions.Extensions</code> while keeping the typed <code>IServiceProvider</code> helpers in core</td>
 </tr>
 <tr>
 <td>DbContext and EF-specific helpers while using <code>FastMoq.Core</code></td>
@@ -234,6 +234,11 @@ using Moq; // Only needed when you intentionally use Moq-specific compatibility 
 using FluentAssertions; // Used in examples (free version)
 </code></pre>
 <p><code>FastMoq.Extensions</code> is especially useful because it contains logger verification helpers and other testing utilities.</p>
+<p>Package-specific helper namespaces:</p>
+<ul>
+<li>Azure Functions worker helpers: <code>using FastMoq.AzureFunctions.Extensions;</code></li>
+<li>Web helpers: <code>using FastMoq.Web.Extensions;</code></li>
+</ul>
 <h2 id="your-first-test">Your First Test</h2>
 <p>Let's create a simple service and write a test for it using FastMoq.</p>
 <h3 id="1-create-a-service-to-test">1. Create a Service to Test</h3>
@@ -523,7 +528,7 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 19:00 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 23:07 UTC</span></div>
       
           </div>
         </div>

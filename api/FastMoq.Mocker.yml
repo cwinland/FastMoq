@@ -71,6 +71,10 @@ items:
   - FastMoq.Mocker.GetOrCreateMock(System.Type,FastMoq.MockRequestOptions)
   - FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
   - FastMoq.Mocker.GetRequiredObject``1
+  - FastMoq.Mocker.GetRequiredTrackedMock(System.Type)
+  - FastMoq.Mocker.GetRequiredTrackedMock(System.Type,System.Object)
+  - FastMoq.Mocker.GetRequiredTrackedMock``1
+  - FastMoq.Mocker.GetRequiredTrackedMock``1(System.Object)
   - FastMoq.Mocker.GetStringContent(System.Net.Http.HttpContent)
   - FastMoq.Mocker.HasParameterlessConstructor(System.Type,System.Boolean)
   - FastMoq.Mocker.HttpClient
@@ -85,6 +89,10 @@ items:
   - FastMoq.Mocker.OptionalParameterResolution
   - FastMoq.Mocker.Policy
   - FastMoq.Mocker.Scenario``1(``0)
+  - FastMoq.Mocker.TryGetTrackedMock(System.Type,FastMoq.Providers.IFastMock@)
+  - FastMoq.Mocker.TryGetTrackedMock(System.Type,System.Object,FastMoq.Providers.IFastMock@)
+  - FastMoq.Mocker.TryGetTrackedMock``1(FastMoq.Providers.IFastMock{``0}@)
+  - FastMoq.Mocker.TryGetTrackedMock``1(System.Object,FastMoq.Providers.IFastMock{``0}@)
   - FastMoq.Mocker.Uri
   - FastMoq.Mocker.UseLenientPreset
   - FastMoq.Mocker.UseStrictPreset
@@ -1449,7 +1457,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddInjections
     path: FastMoq.Core/Mocker.cs
-    startLine: 718
+    startLine: 730
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1493,7 +1501,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 743
+    startLine: 755
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1534,7 +1542,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 799
+    startLine: 811
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1574,7 +1582,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 892
+    startLine: 904
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1609,7 +1617,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 933
+    startLine: 945
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1665,7 +1673,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 937
+    startLine: 949
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1703,7 +1711,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 942
+    startLine: 954
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1741,7 +1749,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 947
+    startLine: 959
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1781,7 +1789,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 952
+    startLine: 964
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1819,7 +1827,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
-    startLine: 988
+    startLine: 1000
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1859,7 +1867,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
-    startLine: 1037
+    startLine: 1049
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1899,7 +1907,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
-    startLine: 1044
+    startLine: 1056
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1937,7 +1945,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
-    startLine: 1050
+    startLine: 1062
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1977,7 +1985,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
-    startLine: 1096
+    startLine: 1108
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2015,7 +2023,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
-    startLine: 1104
+    startLine: 1116
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2055,7 +2063,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: HasParameterlessConstructor
     path: FastMoq.Core/Mocker.cs
-    startLine: 1438
+    startLine: 1450
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2093,7 +2101,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1769
+    startLine: 1791
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2129,7 +2137,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
-    startLine: 1785
+    startLine: 1807
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2170,7 +2178,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockModel
     path: FastMoq.Core/Mocker.cs
-    startLine: 1797
+    startLine: 1819
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2205,7 +2213,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
-    startLine: 1987
+    startLine: 2039
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2241,7 +2249,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
-    startLine: 1996
+    startLine: 2048
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2271,7 +2279,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 2001
+    startLine: 2053
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2311,7 +2319,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 2015
+    startLine: 2067
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2351,7 +2359,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
-    startLine: 2029
+    startLine: 2081
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2393,7 +2401,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2044
+    startLine: 2096
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2429,7 +2437,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2052
+    startLine: 2104
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2467,7 +2475,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodDefaultData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2070
+    startLine: 2122
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2503,7 +2511,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2083
+    startLine: 2135
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2538,7 +2546,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2091
+    startLine: 2143
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2576,7 +2584,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
-    startLine: 2097
+    startLine: 2149
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2614,7 +2622,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2186
+    startLine: 2238
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2656,7 +2664,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2195
+    startLine: 2247
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2700,7 +2708,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2226
+    startLine: 2278
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2744,7 +2752,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2235
+    startLine: 2287
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2790,7 +2798,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2267
+    startLine: 2319
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2832,7 +2840,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2273
+    startLine: 2325
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2876,7 +2884,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2282
+    startLine: 2334
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2916,7 +2924,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2291
+    startLine: 2343
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2958,7 +2966,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2313
+    startLine: 2365
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -2994,7 +3002,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2318
+    startLine: 2370
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3032,7 +3040,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2323
+    startLine: 2375
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3072,7 +3080,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2328
+    startLine: 2380
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3114,7 +3122,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2333
+    startLine: 2385
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3150,7 +3158,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
-    startLine: 2338
+    startLine: 2390
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3188,7 +3196,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
-    startLine: 2343
+    startLine: 2395
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3228,7 +3236,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
-    startLine: 2354
+    startLine: 2406
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3270,7 +3278,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetStringContent
     path: FastMoq.Core/Mocker.cs
-    startLine: 2382
+    startLine: 2434
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3306,7 +3314,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredObject
     path: FastMoq.Core/Mocker.cs
-    startLine: 2387
+    startLine: 2439
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3341,7 +3349,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 40
+    startLine: 41
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3418,7 +3426,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 49
+    startLine: 50
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3441,6 +3449,330 @@ items:
   nameWithType.vb: Mocker.GetOrCreateMock(Type, MockRequestOptions)
   fullName.vb: FastMoq.Mocker.GetOrCreateMock(System.Type, FastMoq.MockRequestOptions)
   name.vb: GetOrCreateMock(Type, MockRequestOptions)
+- uid: FastMoq.Mocker.TryGetTrackedMock``1(FastMoq.Providers.IFastMock{``0}@)
+  commentId: M:FastMoq.Mocker.TryGetTrackedMock``1(FastMoq.Providers.IFastMock{``0}@)
+  id: TryGetTrackedMock``1(FastMoq.Providers.IFastMock{``0}@)
+  parent: FastMoq.Mocker
+  langs:
+  - csharp
+  - vb
+  name: TryGetTrackedMock<T>(out IFastMock<T>?)
+  nameWithType: Mocker.TryGetTrackedMock<T>(out IFastMock<T>?)
+  fullName: FastMoq.Mocker.TryGetTrackedMock<T>(out FastMoq.Providers.IFastMock<T>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Mocker.ProviderVerify.cs
+      branch: AnalyzersAndHelpers
+      repo: https://github.com/cwinland/FastMoq.git
+    id: TryGetTrackedMock
+    path: FastMoq.Core/Mocker.ProviderVerify.cs
+    startLine: 59
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Attempts to get an already tracked provider-backed mock without creating one.
+  example: []
+  syntax:
+    content: 'public bool TryGetTrackedMock<T>(out IFastMock<T>? mock) where T : class'
+    parameters:
+    - id: mock
+      type: FastMoq.Providers.IFastMock{{T}}
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullWhenAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullWhenAttribute.#ctor(System.Boolean)
+        arguments:
+        - type: System.Boolean
+          value: true
+    typeParameters:
+    - id: T
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetTrackedMock(Of T As Class)(mock As IFastMock(Of T)) As Boolean
+  overload: FastMoq.Mocker.TryGetTrackedMock*
+  nameWithType.vb: Mocker.TryGetTrackedMock(Of T)(IFastMock(Of T))
+  fullName.vb: FastMoq.Mocker.TryGetTrackedMock(Of T)(FastMoq.Providers.IFastMock(Of T))
+  name.vb: TryGetTrackedMock(Of T)(IFastMock(Of T))
+- uid: FastMoq.Mocker.TryGetTrackedMock``1(System.Object,FastMoq.Providers.IFastMock{``0}@)
+  commentId: M:FastMoq.Mocker.TryGetTrackedMock``1(System.Object,FastMoq.Providers.IFastMock{``0}@)
+  id: TryGetTrackedMock``1(System.Object,FastMoq.Providers.IFastMock{``0}@)
+  parent: FastMoq.Mocker
+  langs:
+  - csharp
+  - vb
+  name: TryGetTrackedMock<T>(object, out IFastMock<T>?)
+  nameWithType: Mocker.TryGetTrackedMock<T>(object, out IFastMock<T>?)
+  fullName: FastMoq.Mocker.TryGetTrackedMock<T>(object, out FastMoq.Providers.IFastMock<T>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Mocker.ProviderVerify.cs
+      branch: AnalyzersAndHelpers
+      repo: https://github.com/cwinland/FastMoq.git
+    id: TryGetTrackedMock
+    path: FastMoq.Core/Mocker.ProviderVerify.cs
+    startLine: 74
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Attempts to get an already tracked keyed provider-backed mock without creating one.
+  example: []
+  syntax:
+    content: 'public bool TryGetTrackedMock<T>(object serviceKey, out IFastMock<T>? mock) where T : class'
+    parameters:
+    - id: serviceKey
+      type: System.Object
+    - id: mock
+      type: FastMoq.Providers.IFastMock{{T}}
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullWhenAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullWhenAttribute.#ctor(System.Boolean)
+        arguments:
+        - type: System.Boolean
+          value: true
+    typeParameters:
+    - id: T
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetTrackedMock(Of T As Class)(serviceKey As Object, mock As IFastMock(Of T)) As Boolean
+  overload: FastMoq.Mocker.TryGetTrackedMock*
+  nameWithType.vb: Mocker.TryGetTrackedMock(Of T)(Object, IFastMock(Of T))
+  fullName.vb: FastMoq.Mocker.TryGetTrackedMock(Of T)(Object, FastMoq.Providers.IFastMock(Of T))
+  name.vb: TryGetTrackedMock(Of T)(Object, IFastMock(Of T))
+- uid: FastMoq.Mocker.TryGetTrackedMock(System.Type,FastMoq.Providers.IFastMock@)
+  commentId: M:FastMoq.Mocker.TryGetTrackedMock(System.Type,FastMoq.Providers.IFastMock@)
+  id: TryGetTrackedMock(System.Type,FastMoq.Providers.IFastMock@)
+  parent: FastMoq.Mocker
+  langs:
+  - csharp
+  - vb
+  name: TryGetTrackedMock(Type, out IFastMock?)
+  nameWithType: Mocker.TryGetTrackedMock(Type, out IFastMock?)
+  fullName: FastMoq.Mocker.TryGetTrackedMock(System.Type, out FastMoq.Providers.IFastMock?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Mocker.ProviderVerify.cs
+      branch: AnalyzersAndHelpers
+      repo: https://github.com/cwinland/FastMoq.git
+    id: TryGetTrackedMock
+    path: FastMoq.Core/Mocker.ProviderVerify.cs
+    startLine: 89
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Attempts to get an already tracked provider-backed mock for the supplied runtime type without creating one.
+  example: []
+  syntax:
+    content: public bool TryGetTrackedMock(Type type, out IFastMock? mock)
+    parameters:
+    - id: type
+      type: System.Type
+    - id: mock
+      type: FastMoq.Providers.IFastMock
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullWhenAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullWhenAttribute.#ctor(System.Boolean)
+        arguments:
+        - type: System.Boolean
+          value: true
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetTrackedMock(type As Type, mock As IFastMock) As Boolean
+  overload: FastMoq.Mocker.TryGetTrackedMock*
+  nameWithType.vb: Mocker.TryGetTrackedMock(Type, IFastMock)
+  fullName.vb: FastMoq.Mocker.TryGetTrackedMock(System.Type, FastMoq.Providers.IFastMock)
+  name.vb: TryGetTrackedMock(Type, IFastMock)
+- uid: FastMoq.Mocker.TryGetTrackedMock(System.Type,System.Object,FastMoq.Providers.IFastMock@)
+  commentId: M:FastMoq.Mocker.TryGetTrackedMock(System.Type,System.Object,FastMoq.Providers.IFastMock@)
+  id: TryGetTrackedMock(System.Type,System.Object,FastMoq.Providers.IFastMock@)
+  parent: FastMoq.Mocker
+  langs:
+  - csharp
+  - vb
+  name: TryGetTrackedMock(Type, object, out IFastMock?)
+  nameWithType: Mocker.TryGetTrackedMock(Type, object, out IFastMock?)
+  fullName: FastMoq.Mocker.TryGetTrackedMock(System.Type, object, out FastMoq.Providers.IFastMock?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Mocker.ProviderVerify.cs
+      branch: AnalyzersAndHelpers
+      repo: https://github.com/cwinland/FastMoq.git
+    id: TryGetTrackedMock
+    path: FastMoq.Core/Mocker.ProviderVerify.cs
+    startLine: 105
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Attempts to get an already tracked keyed provider-backed mock for the supplied runtime type without creating one.
+  example: []
+  syntax:
+    content: public bool TryGetTrackedMock(Type type, object serviceKey, out IFastMock? mock)
+    parameters:
+    - id: type
+      type: System.Type
+    - id: serviceKey
+      type: System.Object
+    - id: mock
+      type: FastMoq.Providers.IFastMock
+      attributes:
+      - type: System.Diagnostics.CodeAnalysis.NotNullWhenAttribute
+        ctor: System.Diagnostics.CodeAnalysis.NotNullWhenAttribute.#ctor(System.Boolean)
+        arguments:
+        - type: System.Boolean
+          value: true
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetTrackedMock(type As Type, serviceKey As Object, mock As IFastMock) As Boolean
+  overload: FastMoq.Mocker.TryGetTrackedMock*
+  nameWithType.vb: Mocker.TryGetTrackedMock(Type, Object, IFastMock)
+  fullName.vb: FastMoq.Mocker.TryGetTrackedMock(System.Type, Object, FastMoq.Providers.IFastMock)
+  name.vb: TryGetTrackedMock(Type, Object, IFastMock)
+- uid: FastMoq.Mocker.GetRequiredTrackedMock``1
+  commentId: M:FastMoq.Mocker.GetRequiredTrackedMock``1
+  id: GetRequiredTrackedMock``1
+  parent: FastMoq.Mocker
+  langs:
+  - csharp
+  - vb
+  name: GetRequiredTrackedMock<T>()
+  nameWithType: Mocker.GetRequiredTrackedMock<T>()
+  fullName: FastMoq.Mocker.GetRequiredTrackedMock<T>()
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Mocker.ProviderVerify.cs
+      branch: AnalyzersAndHelpers
+      repo: https://github.com/cwinland/FastMoq.git
+    id: GetRequiredTrackedMock
+    path: FastMoq.Core/Mocker.ProviderVerify.cs
+    startLine: 123
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets an already tracked provider-backed mock and throws when no tracked mock exists.
+  example: []
+  syntax:
+    content: 'public IFastMock<T> GetRequiredTrackedMock<T>() where T : class'
+    typeParameters:
+    - id: T
+    return:
+      type: FastMoq.Providers.IFastMock{{T}}
+    content.vb: Public Function GetRequiredTrackedMock(Of T As Class)() As IFastMock(Of T)
+  overload: FastMoq.Mocker.GetRequiredTrackedMock*
+  nameWithType.vb: Mocker.GetRequiredTrackedMock(Of T)()
+  fullName.vb: FastMoq.Mocker.GetRequiredTrackedMock(Of T)()
+  name.vb: GetRequiredTrackedMock(Of T)()
+- uid: FastMoq.Mocker.GetRequiredTrackedMock``1(System.Object)
+  commentId: M:FastMoq.Mocker.GetRequiredTrackedMock``1(System.Object)
+  id: GetRequiredTrackedMock``1(System.Object)
+  parent: FastMoq.Mocker
+  langs:
+  - csharp
+  - vb
+  name: GetRequiredTrackedMock<T>(object)
+  nameWithType: Mocker.GetRequiredTrackedMock<T>(object)
+  fullName: FastMoq.Mocker.GetRequiredTrackedMock<T>(object)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Mocker.ProviderVerify.cs
+      branch: AnalyzersAndHelpers
+      repo: https://github.com/cwinland/FastMoq.git
+    id: GetRequiredTrackedMock
+    path: FastMoq.Core/Mocker.ProviderVerify.cs
+    startLine: 136
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets an already tracked keyed provider-backed mock and throws when no tracked mock exists for the supplied service key.
+  example: []
+  syntax:
+    content: 'public IFastMock<T> GetRequiredTrackedMock<T>(object serviceKey) where T : class'
+    parameters:
+    - id: serviceKey
+      type: System.Object
+    typeParameters:
+    - id: T
+    return:
+      type: FastMoq.Providers.IFastMock{{T}}
+    content.vb: Public Function GetRequiredTrackedMock(Of T As Class)(serviceKey As Object) As IFastMock(Of T)
+  overload: FastMoq.Mocker.GetRequiredTrackedMock*
+  nameWithType.vb: Mocker.GetRequiredTrackedMock(Of T)(Object)
+  fullName.vb: FastMoq.Mocker.GetRequiredTrackedMock(Of T)(Object)
+  name.vb: GetRequiredTrackedMock(Of T)(Object)
+- uid: FastMoq.Mocker.GetRequiredTrackedMock(System.Type)
+  commentId: M:FastMoq.Mocker.GetRequiredTrackedMock(System.Type)
+  id: GetRequiredTrackedMock(System.Type)
+  parent: FastMoq.Mocker
+  langs:
+  - csharp
+  - vb
+  name: GetRequiredTrackedMock(Type)
+  nameWithType: Mocker.GetRequiredTrackedMock(Type)
+  fullName: FastMoq.Mocker.GetRequiredTrackedMock(System.Type)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Mocker.ProviderVerify.cs
+      branch: AnalyzersAndHelpers
+      repo: https://github.com/cwinland/FastMoq.git
+    id: GetRequiredTrackedMock
+    path: FastMoq.Core/Mocker.ProviderVerify.cs
+    startLine: 149
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets an already tracked provider-backed mock for the supplied runtime type and throws when no tracked mock exists.
+  example: []
+  syntax:
+    content: public IFastMock GetRequiredTrackedMock(Type type)
+    parameters:
+    - id: type
+      type: System.Type
+    return:
+      type: FastMoq.Providers.IFastMock
+    content.vb: Public Function GetRequiredTrackedMock(type As Type) As IFastMock
+  overload: FastMoq.Mocker.GetRequiredTrackedMock*
+- uid: FastMoq.Mocker.GetRequiredTrackedMock(System.Type,System.Object)
+  commentId: M:FastMoq.Mocker.GetRequiredTrackedMock(System.Type,System.Object)
+  id: GetRequiredTrackedMock(System.Type,System.Object)
+  parent: FastMoq.Mocker
+  langs:
+  - csharp
+  - vb
+  name: GetRequiredTrackedMock(Type, object)
+  nameWithType: Mocker.GetRequiredTrackedMock(Type, object)
+  fullName: FastMoq.Mocker.GetRequiredTrackedMock(System.Type, object)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Mocker.ProviderVerify.cs
+      branch: AnalyzersAndHelpers
+      repo: https://github.com/cwinland/FastMoq.git
+    id: GetRequiredTrackedMock
+    path: FastMoq.Core/Mocker.ProviderVerify.cs
+    startLine: 163
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Gets an already tracked keyed provider-backed mock for the supplied runtime type and throws when no tracked mock exists for the supplied service key.
+  example: []
+  syntax:
+    content: public IFastMock GetRequiredTrackedMock(Type type, object serviceKey)
+    parameters:
+    - id: type
+      type: System.Type
+    - id: serviceKey
+      type: System.Object
+    return:
+      type: FastMoq.Providers.IFastMock
+    content.vb: Public Function GetRequiredTrackedMock(type As Type, serviceKey As Object) As IFastMock
+  overload: FastMoq.Mocker.GetRequiredTrackedMock*
+  nameWithType.vb: Mocker.GetRequiredTrackedMock(Type, Object)
+  fullName.vb: FastMoq.Mocker.GetRequiredTrackedMock(System.Type, Object)
+  name.vb: GetRequiredTrackedMock(Type, Object)
 - uid: FastMoq.Mocker.Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
   commentId: M:FastMoq.Mocker.Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
   id: Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})
@@ -3459,7 +3791,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 58
+    startLine: 177
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3497,7 +3829,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 73
+    startLine: 192
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3530,7 +3862,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateFastMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
-    startLine: 83
+    startLine: 202
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -13856,6 +14188,18 @@ references:
   name: IFastMock
   nameWithType: IFastMock
   fullName: FastMoq.Providers.IFastMock
+- uid: FastMoq.Mocker.TryGetTrackedMock*
+  commentId: Overload:FastMoq.Mocker.TryGetTrackedMock
+  href: FastMoq.Mocker.html#FastMoq_Mocker_TryGetTrackedMock__1_FastMoq_Providers_IFastMock___0___
+  name: TryGetTrackedMock
+  nameWithType: Mocker.TryGetTrackedMock
+  fullName: FastMoq.Mocker.TryGetTrackedMock
+- uid: FastMoq.Mocker.GetRequiredTrackedMock*
+  commentId: Overload:FastMoq.Mocker.GetRequiredTrackedMock
+  href: FastMoq.Mocker.html#FastMoq_Mocker_GetRequiredTrackedMock__1
+  name: GetRequiredTrackedMock
+  nameWithType: Mocker.GetRequiredTrackedMock
+  fullName: FastMoq.Mocker.GetRequiredTrackedMock
 - uid: FastMoq.Mocker.Verify*
   commentId: Overload:FastMoq.Mocker.Verify
   href: FastMoq.Mocker.html#FastMoq_Mocker_Verify__1_System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__

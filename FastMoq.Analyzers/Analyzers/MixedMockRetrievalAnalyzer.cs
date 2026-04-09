@@ -38,7 +38,7 @@ namespace FastMoq.Analyzers.Analyzers
 
             context.ReportDiagnostic(Diagnostic.Create(
                 DiagnosticDescriptors.UseConsistentMockRetrieval,
-                memberAccess.Name.GetLocation()));
+                invocationExpression.Expression.GetLocation()));
         }
     }
 }

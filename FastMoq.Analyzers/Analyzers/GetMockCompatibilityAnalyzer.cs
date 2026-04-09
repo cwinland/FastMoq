@@ -6,9 +6,9 @@ using System.Collections.Immutable;
 namespace FastMoq.Analyzers.Analyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ServiceProviderShimAnalyzer : DiagnosticAnalyzer
+    public sealed class GetMockCompatibilityAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DiagnosticDescriptors.PreferTypedServiceProviderHelpers);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DiagnosticDescriptors.UseProviderFirstMockRetrieval);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -20,22 +20,20 @@ namespace FastMoq.Analyzers.Analyzers
         private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
-            if (!FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) ||
-                method is null)
+            if (!FastMoqAnalysisHelpers.IsSafeProviderFirstMockRetrievalCandidate(invocationExpression, context.SemanticModel, context.CancellationToken))
             {
                 return;
             }
 
-            if (!FastMoqAnalysisHelpers.TryGetTypedServiceProviderHelperSuggestion(method, out var currentApi) &&
-                !FastMoqAnalysisHelpers.TryGetFunctionContextInstanceServicesHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out currentApi))
+            var root = invocationExpression.SyntaxTree.GetRoot(context.CancellationToken);
+            if (FastMoqAnalysisHelpers.ContainsGetOrCreateMock(root, context.SemanticModel, context.CancellationToken))
             {
                 return;
             }
 
             context.ReportDiagnostic(Diagnostic.Create(
-                DiagnosticDescriptors.PreferTypedServiceProviderHelpers,
-                FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
-                currentApi));
+                DiagnosticDescriptors.UseProviderFirstMockRetrieval,
+                invocationExpression.Expression.GetLocation()));
         }
     }
 }

@@ -6,9 +6,9 @@ using System.Collections.Immutable;
 namespace FastMoq.Analyzers.Analyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ServiceProviderShimAnalyzer : DiagnosticAnalyzer
+    public sealed class GetRequiredMockCompatibilityAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DiagnosticDescriptors.PreferTypedServiceProviderHelpers);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DiagnosticDescriptors.AvoidLegacyRequiredMockRetrieval);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -21,21 +21,15 @@ namespace FastMoq.Analyzers.Analyzers
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
             if (!FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) ||
-                method is null)
-            {
-                return;
-            }
-
-            if (!FastMoqAnalysisHelpers.TryGetTypedServiceProviderHelperSuggestion(method, out var currentApi) &&
-                !FastMoqAnalysisHelpers.TryGetFunctionContextInstanceServicesHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out currentApi))
+                method is null ||
+                !FastMoqAnalysisHelpers.IsFastMoqMockerMethod(method, "GetRequiredMock"))
             {
                 return;
             }
 
             context.ReportDiagnostic(Diagnostic.Create(
-                DiagnosticDescriptors.PreferTypedServiceProviderHelpers,
-                FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
-                currentApi));
+                DiagnosticDescriptors.AvoidLegacyRequiredMockRetrieval,
+                invocationExpression.Expression.GetLocation()));
         }
     }
 }

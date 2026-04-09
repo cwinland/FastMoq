@@ -81,7 +81,7 @@ Use this table when you are deciding which package line your test project should
 | --- | --- | --- |
 | simplest all-in-one experience | `FastMoq` | Aggregate package that includes the primary runtime, database helpers, web support, and the FastMoq analyzer pack by default |
 | lighter core-only usage | `FastMoq.Core` | Provider-first runtime without the extra EF, web-specific, or analyzer package payloads |
-| Azure Functions worker helpers while using `FastMoq.Core` | `FastMoq.AzureFunctions` | Adds `CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` while keeping the typed `IServiceProvider` helpers in core |
+| Azure Functions worker helpers while using `FastMoq.Core` | `FastMoq.AzureFunctions` | Adds `CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` in `FastMoq.AzureFunctions.Extensions` while keeping the typed `IServiceProvider` helpers in core |
 | DbContext and EF-specific helpers while using `FastMoq.Core` | `FastMoq.Database` | Adds `GetMockDbContext<TContext>()` and the explicit DbContext handle modes |
 | controller, `HttpContext`, `IHttpContextAccessor`, or claims-principal helpers while using `FastMoq.Core` | `FastMoq.Web` | Adds `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, and `AddHttpContextAccessor(...)` |
 | Moq-specific tracked-mock extension methods during migration | `FastMoq.Provider.Moq` | Adds provider-package extension methods such as `AsMoq()`, `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, and `Protected()` on `IFastMock<T>` |
@@ -169,6 +169,11 @@ using FluentAssertions; // Used in examples (free version)
 ```
 
 `FastMoq.Extensions` is especially useful because it contains logger verification helpers and other testing utilities.
+
+Package-specific helper namespaces:
+
+- Azure Functions worker helpers: `using FastMoq.AzureFunctions.Extensions;`
+- Web helpers: `using FastMoq.Web.Extensions;`
 
 ## Your First Test
 

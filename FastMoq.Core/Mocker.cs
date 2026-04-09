@@ -657,6 +657,18 @@ namespace FastMoq
 
         internal bool HasKeyedTypeModel(Type type, object serviceKey) => keyedTypeMap.ContainsKey(CreateServiceRegistrationKey(type, serviceKey));
         internal static Type CleanType(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Mock<>) ? type.GetGenericArguments()[0] : type;
+        internal static Type ValidateTrackedMockLookupType(Type type, string paramName)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+
+            type = CleanType(type);
+            if (!type.IsClass && !type.IsInterface)
+            {
+                throw new ArgumentException("Type must be a class or interface.", paramName);
+            }
+
+            return type;
+        }
         private static ServiceRegistrationKey CreateServiceRegistrationKey(Type type, object serviceKey)
         {
             ArgumentNullException.ThrowIfNull(type);
@@ -1637,7 +1649,7 @@ namespace FastMoq
                 }
                 return existing;
             }
-            var model = new MockModel(fastMock, nonPublic);
+            var model = new MockModel(fastMock, nonPublic, ExceptionLog);
             mockCollection.Add(model);
             return model;
         }
@@ -1657,7 +1669,7 @@ namespace FastMoq
                 return mm;
             }
             // No existing model – create using adapter wrapper.
-            mockCollection.Add(new MockModel(type, mock, nonPublic));
+            mockCollection.Add(new MockModel(type, mock, nonPublic, ExceptionLog));
             return GetMockModel(type);
         }
         /// <summary>
@@ -1674,6 +1686,16 @@ namespace FastMoq
             }
 
             return null;
+        }
+
+        private static InvalidOperationException CreateTrackedMockNotFoundException(Type type, object? serviceKey = null)
+        {
+            if (serviceKey == null)
+            {
+                return new InvalidOperationException($"No tracked mock exists for type {type.Name}. Call GetOrCreateMock<{type.Name}>() first.");
+            }
+
+            return new InvalidOperationException($"No tracked mock exists for type {type.Name} with service key '{serviceKey}'. Call GetOrCreateMock<{type.Name}>(new MockRequestOptions {{ ServiceKey = ... }}) first.");
         }
 
         private static NotSupportedException CreateLegacyMoqSurfaceUnavailableException(Type type, string apiName, IFastMock? fastMock = null)
@@ -1896,6 +1918,11 @@ namespace FastMoq
                 ? GetMockModelFast(typeof(T), allowNonPublicConstructors, args)
                 : GetKeyedMockModelFast(typeof(T), options.ServiceKey, allowNonPublicConstructors, args);
 
+            return GetTypedFastMockFromModel<T>(model);
+        }
+
+        private IFastMock<T> GetTypedFastMockFromModel<T>(MockModel model) where T : class
+        {
             if (model.FastMock is IFastMock<T> typedFastMock)
             {
                 return typedFastMock;
@@ -1948,7 +1975,32 @@ namespace FastMoq
         }
         internal bool HasTypeRegistration(Type type) => typeMap.ContainsKey(type);
         internal bool Contains<T>() => Contains(typeof(T));
-        internal MockModel GetMockModel(Type type, Mock? mock = null, bool autoCreate = true) => mockCollection.First(m => m.Type == type);
+
+        internal bool TryGetMockModel(Type type, out MockModel? model)
+        {
+            type = CleanType(type);
+            model = mockCollection.FirstOrDefault(m => m.Type == type);
+            return model != null;
+        }
+
+        internal bool TryGetMockModel(Type type, object serviceKey, out MockModel? model)
+        {
+            ArgumentNullException.ThrowIfNull(serviceKey);
+
+            type = CleanType(type);
+            return keyedMockCollection.TryGetValue(CreateServiceRegistrationKey(type, serviceKey), out model);
+        }
+
+        internal MockModel GetMockModel(Type type, Mock? mock = null, bool autoCreate = true)
+        {
+            type = CleanType(type);
+            if (TryGetMockModel(type, out var model))
+            {
+                return model;
+            }
+
+            throw CreateTrackedMockNotFoundException(type);
+        }
 
         private MockModel CreateKeyedMock(Type type, object serviceKey, bool nonPublic = false, params object?[] args)
         {
@@ -1975,7 +2027,7 @@ namespace FastMoq
             var fast = provider.CreateMock(type, options);
             SetupFastMock(type, fast);
 
-            var model = new MockModel(fast, nonPublic);
+            var model = new MockModel(fast, nonPublic, ExceptionLog);
             keyedMockCollection[registrationKey] = model;
             return model;
         }

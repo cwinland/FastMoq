@@ -94,7 +94,7 @@
 <li>If the migration fails because provider-specific APIs do not behave as expected, go to <a href="../getting-started/provider-selection.html">Provider Selection and Setup</a> and <a href="provider-and-compatibility.html">Provider, package, and compatibility guidance</a>.</li>
 <li>If the migration churn is in <code>MockerBlazorTestBase&lt;T&gt;</code>, nested component targeting, render parameters, authorization helpers, or navigation assertions after the bUnit upgrade, go to <a href="bunit-and-blazor-testing.html">bUnit and Blazor test migration</a>.</li>
 <li>If the churn is in controller helpers, principals, <code>HttpContext</code>, <code>IHttpContextAccessor</code>, keyed DI, or framework service-provider shims, go to <a href="framework-and-web-helpers.html">Framework and web helper migration</a>.</li>
-<li>If you are replacing a specific API such as <code>Initialize&lt;T&gt;(...)</code>, <code>VerifyLogger(...)</code>, <code>Strict</code>, <code>MockOptional</code>, or <code>GetMock&lt;T&gt;()</code>, go to <a href="api-replacements-and-exceptions.html">API replacements and migration exceptions</a>.</li>
+<li>If you are replacing a specific API such as <code>Initialize&lt;T&gt;(...)</code>, <code>VerifyLogger(...)</code>, <code>Strict</code>, <code>MockOptional</code>, <code>GetMock&lt;T&gt;()</code>, <code>GetRequiredMock&lt;T&gt;()</code>, or <code>CreateDetachedMock&lt;T&gt;()</code>, go to <a href="api-replacements-and-exceptions.html">API replacements and migration exceptions</a>.</li>
 <li>If you want a reusable AI workflow instead of writing prompts from scratch, go to <a href="copilot-prompts.html">Copilot migration prompts</a>.</li>
 </ul>
 <h2 id="scope">Scope</h2>
@@ -106,13 +106,13 @@
 <p>This is migration guidance for the current v4 release line. Some references point to repository-backed examples and current documentation structure, but the migration behavior described here is intended to match the published v4 package surface.</p>
 <h2 id="what-good-looks-like">What good looks like</h2>
 <p>The goal is provider-centric tests by default, not removal of all provider-specific APIs.</p>
-<p>If your test project references the aggregate <code>FastMoq</code> package, the FastMoq Roslyn analyzers ship with it by default. That means common migration leftovers such as <code>.Object</code>, provider-native <code>Reset()</code>, <code>VerifyLogger(...)</code>, and obvious mixed <code>GetMock&lt;T&gt;()</code> / <code>GetOrCreateMock&lt;T&gt;()</code> usage can be surfaced while you modernize tests. Core-only consumers can opt in separately with <code>FastMoq.Analyzers</code>.</p>
+<p>If your test project references the aggregate <code>FastMoq</code> package, the FastMoq Roslyn analyzers ship with it by default. That means common migration leftovers such as <code>.Object</code>, provider-native <code>Reset()</code>, <code>VerifyLogger(...)</code>, safe standalone <code>GetMock&lt;T&gt;()</code> usage, legacy <code>GetRequiredMock&lt;T&gt;()</code> usage, legacy <code>CreateMock(...)</code> / <code>CreateDetachedMock(...)</code> / <code>AddMock(...)</code> usage, and obvious mixed <code>GetMock&lt;T&gt;()</code> / <code>GetOrCreateMock&lt;T&gt;()</code> usage can be surfaced while you modernize tests. Core-only consumers can opt in separately with <code>FastMoq.Analyzers</code>.</p>
 <p>The analyzer pack now has two roles:</p>
 <ul>
 <li>migration guidance for mechanical provider-first rewrites and compatibility cleanup</li>
 <li>low-noise authoring guidance for new tests where FastMoq already has a clearer first-party pattern</li>
 </ul>
-<p>Warnings are the default for compatibility and obsolete-surface cleanup that is usually actionable immediately. That includes <code>.Object</code>, provider-native <code>Reset()</code>, <code>VerifyLogger(...)</code>, <code>MockOptional</code>, <code>Initialize&lt;T&gt;(...)</code>, <code>Strict</code>, mixed <code>GetMock&lt;T&gt;()</code> leftovers in files that already use <code>GetOrCreateMock&lt;T&gt;()</code>, and provider-specific FastMoq APIs without an explicit provider selection.</p>
+<p>Warnings are the default for compatibility and obsolete-surface cleanup that is usually actionable immediately. That includes <code>.Object</code>, provider-native <code>Reset()</code>, <code>VerifyLogger(...)</code>, <code>MockOptional</code>, <code>Initialize&lt;T&gt;(...)</code>, <code>Strict</code>, safe standalone <code>GetMock&lt;T&gt;()</code> replacement candidates, legacy <code>GetRequiredMock&lt;T&gt;()</code> compatibility retrieval, legacy Moq mock-creation and lifecycle helpers that need manual migration, mixed <code>GetMock&lt;T&gt;()</code> leftovers in files that already use <code>GetOrCreateMock&lt;T&gt;()</code>, and provider-specific FastMoq APIs without an explicit provider selection.</p>
 <p>Current examples include:</p>
 <ul>
 <li><code>FMOQ0010</code> for preferring typed provider escape hatches such as <code>AsMoq()</code> or <code>AsNSubstitute()</code> over raw <code>NativeMock</code> / <code>GetNativeMock(...)</code></li>
@@ -284,7 +284,7 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
 <li><a href="provider-and-compatibility.html">Provider, package, and compatibility guidance</a>: migration-specific provider bootstrap, package-to-namespace mapping, and Moq-to-NSubstitute arrangement translation.</li>
 <li><a href="bunit-and-blazor-testing.html">bUnit and Blazor test migration</a>: package-level and helper-level migration guidance for <code>FastMoq.Web</code>, <code>MockerBlazorTestBase&lt;T&gt;</code>, <code>RenderParameter</code>, nested rendered-component helpers, authorization wrappers, and navigation assertions.</li>
 <li><a href="framework-and-web-helpers.html">Framework and web helper migration</a>: shared-helper rewrites, keyed DI, Azure Functions <code>InstanceServices</code>, <code>FastMoq.Web</code> helper usage, principals, and controller-context migration.</li>
-<li><a href="api-replacements-and-exceptions.html">API replacements and migration exceptions</a>: old-to-new API guidance for <code>Initialize&lt;T&gt;(...)</code>, HTTP helpers, <code>VerifyLogger(...)</code>, <code>TimesSpec</code>, <code>Strict</code>, <code>GetMock&lt;T&gt;()</code>, <code>AddType(...)</code>, <code>DbContext</code>, <code>MockOptional</code>, provider-first access, and expected raw-Moq pockets.</li>
+<li><a href="api-replacements-and-exceptions.html">API replacements and migration exceptions</a>: old-to-new API guidance for <code>Initialize&lt;T&gt;(...)</code>, HTTP helpers, <code>VerifyLogger(...)</code>, <code>TimesSpec</code>, <code>Strict</code>, <code>GetMock&lt;T&gt;()</code>, <code>GetRequiredMock&lt;T&gt;()</code>, legacy mock-creation helpers, <code>AddType(...)</code>, <code>DbContext</code>, <code>MockOptional</code>, provider-first access, and expected raw-Moq pockets.</li>
 <li><a href="copilot-prompts.html">Copilot migration prompts</a>: reusable prompt entry points for staged migration and stricter obsolete-surface cleanup.</li>
 </ul>
 <h2 id="recommended-migration-order">Recommended migration order</h2>
@@ -334,7 +334,7 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 19:00 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 23:07 UTC</span></div>
       
           </div>
         </div>
