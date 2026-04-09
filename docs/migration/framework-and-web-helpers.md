@@ -42,26 +42,69 @@ For the fuller keyed example, see [Testing Guide: Keyed Services And Same-Type D
 
 Azure Functions worker tests deserve one explicit warning: `FunctionContext.InstanceServices` should behave like a typed `IServiceProvider`, not like a shim that returns the same object for every requested service type.
 
-If the suite uses Azure Functions worker helpers, prefer a real or type-aware service provider shape:
+If the suite uses Azure Functions worker helpers, prefer the built-in typed helper path:
 
 ```csharp
-using FastMoq.Providers.MoqProvider;
+using FastMoq.Extensions;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 
-var services = new ServiceCollection();
-services.AddLogging();
-services.AddOptions();
-services.Configure<WorkerOptions>(_ => { });
+Mocks.AddFunctionContextInstanceServices(services =>
+{
+    services.AddSingleton(new WidgetClock());
+});
 
-var instanceServices = services.BuildServiceProvider();
-
-Mocks.GetOrCreateMock<FunctionContext>()
-    .Setup(x => x.InstanceServices)
-    .Returns(instanceServices);
+var context = Mocks.GetObject<FunctionContext>();
+var clock = context.InstanceServices.GetRequiredService<WidgetClock>();
 ```
 
+Package note:
+
+- if the test project references the aggregate `FastMoq` package, these Azure Functions helpers are already included
+- if the test project references `FastMoq.Core` directly, add `FastMoq.AzureFunctions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
+- the generic typed `IServiceProvider` helpers stay in `FastMoq.Core`
+
+If a suite already has a local Azure helper wrapper, re-point that wrapper to `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)` first and keep the existing call sites stable until the suite is green.
+
 Avoid helpers that return one object such as `ILoggerFactory` for every `GetService(Type)` request. Those shims can let the suite keep running while hiding cast failures for typed services such as `IOptions<WorkerOptions>`.
+
+### Typed `IServiceProvider` helpers
+
+The same rule applies outside Azure Functions.
+
+If a base class or helper still does this:
+
+```csharp
+var provider = Mocks.GetOrCreateMock<IServiceProvider>();
+provider.Setup(x => x.GetService(It.IsAny<Type>())).Returns(someSharedObject);
+```
+
+replace it with a typed provider shape:
+
+```csharp
+Mocks.AddServiceProvider(services =>
+{
+    services.AddLogging();
+    services.AddOptions();
+    services.AddSingleton(new WidgetClock());
+});
+```
+
+That migration is usually the highest-leverage cleanup in suites that centralize framework bootstrap inside a shared helper. One helper rewrite removes a noisy anti-pattern from many tests at once.
+
+Analyzer note:
+
+- `FMOQ0013` warns on direct FastMoq `IServiceProvider` mock setup so those helpers move toward `CreateTypedServiceProvider(...)` or `AddServiceProvider(...)`.
+
+### Temporary compatibility cleanup in shared helpers
+
+When you are already touching shared framework helpers, treat these as high-priority cleanup targets:
+
+- `GetMock<IServiceProvider>()` or `GetOrCreateMock<IServiceProvider>()` used to emulate typed DI
+- context-aware compatibility `AddType(...)` overloads that are really framework-type customizations
+- local `FunctionContext.InstanceServices` wrappers that do not build a real provider
+
+Those patterns are still supported to keep v4 migrations moving, but they are the exact spots where a small helper rewrite gives the biggest long-term payback.
 
 ## Web test helpers
 

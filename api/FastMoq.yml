@@ -19,6 +19,7 @@ items:
   - FastMoq.MockerPolicyOptions
   - FastMoq.MockerTestBase`1
   - FastMoq.OptionalParameterResolutionMode
+  - FastMoq.PropertyValueCapture`1
   - FastMoq.ScenarioBuilder`1
   langs:
   - csharp
@@ -125,6 +126,31 @@ references:
   name: OptionalParameterResolutionMode
   nameWithType: OptionalParameterResolutionMode
   fullName: FastMoq.OptionalParameterResolutionMode
+- uid: FastMoq.PropertyValueCapture`1
+  commentId: T:FastMoq.PropertyValueCapture`1
+  href: FastMoq.PropertyValueCapture-1.html
+  name: PropertyValueCapture<TValue>
+  nameWithType: PropertyValueCapture<TValue>
+  fullName: FastMoq.PropertyValueCapture<TValue>
+  nameWithType.vb: PropertyValueCapture(Of TValue)
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue)
+  name.vb: PropertyValueCapture(Of TValue)
+  spec.csharp:
+  - uid: FastMoq.PropertyValueCapture`1
+    name: PropertyValueCapture
+    href: FastMoq.PropertyValueCapture-1.html
+  - name: <
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.PropertyValueCapture`1
+    name: PropertyValueCapture
+    href: FastMoq.PropertyValueCapture-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
 - uid: FastMoq.ScenarioBuilder`1
   commentId: T:FastMoq.ScenarioBuilder`1
   parent: FastMoq

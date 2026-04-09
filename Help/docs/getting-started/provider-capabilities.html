@@ -180,7 +180,7 @@
 </tr>
 <tr>
 <td><code>SetupSet(...)</code></td>
-<td>Prefer a fake or stub registered with <code>AddType(...)</code> that captures assigned values, or verify the observable downstream behavior instead of the setter interception itself.</td>
+<td>Prefer a fake or stub registered with <code>AddType(...)</code> that captures assigned values, usually with <code>PropertyValueCapture&lt;TValue&gt;</code>, or verify the observable downstream behavior instead of the setter interception itself.</td>
 <td>When the setter interception is the important behavior and introducing a fake would create more churn than value.</td>
 </tr>
 <tr>
@@ -257,6 +257,24 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(&quot;alpha&quot;), TimesSpe
     .AsMoq()
     .SetupSet(x =&gt; x.Mode = It.IsAny&lt;string&gt;());
 </code></pre>
+<p>For <code>SetupSet(...)</code>-heavy tests, the preferred first-party answer is usually a small fake plus <a class="xref" href="../../api/FastMoq.PropertyValueCapture-1.html">PropertyValueCapture&lt;TValue&gt;</a>:</p>
+<pre><code class="lang-csharp">var modeCapture = new PropertyValueCapture&lt;string?&gt;();
+Mocks.AddType&lt;IOrderGateway&gt;(_ =&gt; new OrderGatewayStub(modeCapture));
+
+Component.Run();
+
+modeCapture.Value.Should().Be(&quot;fast&quot;);
+
+sealed class OrderGatewayStub(PropertyValueCapture&lt;string?&gt; capture) : IOrderGateway
+{
+    public string? Mode
+    {
+        get =&gt; capture.Value;
+        set =&gt; capture.Record(value);
+    }
+}
+</code></pre>
+<p>That pattern stays portable across providers, makes the arranged state explicit, and avoids tying the test to Moq-only setter interception when the important behavior is the assigned value.</p>
 <p>Repo-backed references:</p>
 <ul>
 <li><code>FastMoq.Tests/MoqProviderExtensionTests.cs</code></li>
@@ -308,7 +326,7 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(&quot;alpha&quot;), TimesSpe
 <li><code>SetupSequence(...)</code> becomes <code>Returns(value1, value2, ...)</code></li>
 <li><code>SetupGet(...)</code> becomes a direct property <code>Returns(...)</code></li>
 </ul>
-<p>If a migrated test still needs <code>SetupSet(...)</code>, <code>Protected()</code>, <code>SetupAllProperties()</code>, or <code>CallBase</code>, that test should usually stay on Moq or move to a fake rather than trying to force an NSubstitute equivalent.</p>
+<p>If a migrated test still needs <code>SetupSet(...)</code>, <code>Protected()</code>, <code>SetupAllProperties()</code>, or <code>CallBase</code>, that test should usually stay on Moq or move to a fake rather than trying to force an NSubstitute equivalent. <code>PropertyValueCapture&lt;TValue&gt;</code> is the default FastMoq answer when the test only needs to observe property assignments rather than exercise Moq itself.</p>
 <p>Repo-backed references:</p>
 <ul>
 <li><code>FastMoq.Tests/NSubstituteProviderExtensionTests.cs</code></li>
@@ -407,7 +425,7 @@ Mocks.VerifyNoOtherCalls&lt;IOrderGateway&gt;();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 21:12 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 19:00 UTC</span></div>
       
           </div>
         </div>

@@ -763,7 +763,6 @@ references:
   nameWithType: TKey
   fullName: TKey
 - uid: TValue
-  commentId: '!:TValue'
   name: TValue
   nameWithType: TValue
   fullName: TValue

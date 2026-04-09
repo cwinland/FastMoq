@@ -195,6 +195,9 @@ items:
   - FastMoq.Mocker.FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequest(System.Net.Http.HttpMethod,System.String,System.Func{System.Net.Http.HttpResponseMessage})
   - FastMoq.Mocker.FastMoq.Extensions.MockerHttpExtensions.WhenHttpRequestJson(System.Net.Http.HttpMethod,System.String,System.String,System.Net.HttpStatusCode)
   - FastMoq.Mocker.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
+  - FastMoq.Mocker.FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  - FastMoq.Mocker.FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(System.IServiceProvider,System.Boolean)
+  - FastMoq.Mocker.FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
   - FastMoq.Mocker.FastMoq.Extensions.TestClassExtensions.GetAmbiguousConstructorImplementationException(System.Type)
   - FastMoq.Mocker.FastMoq.Extensions.TestClassExtensions.GetAmbiguousImplementationException(System.String)
   - FastMoq.Mocker.FastMoq.Extensions.TestClassExtensions.GetAmbiguousImplementationException(System.Type,System.Collections.Generic.ICollection{System.Type})
@@ -5606,6 +5609,181 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: FastMoq.Mocker.FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  parent: FastMoq.Extensions.ServiceProviderTestExtensions
+  definition: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  name: AddServiceProvider(Mocker, Action<IServiceCollection>, bool)
+  nameWithType: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action<IServiceCollection>, bool)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
+  name.vb: AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+    name: AddServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    name: IServiceCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+    name: AddServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    name: IServiceCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FastMoq.Mocker.FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(System.IServiceProvider,System.Boolean)
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  parent: FastMoq.Extensions.ServiceProviderTestExtensions
+  definition: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  name: AddServiceProvider(Mocker, IServiceProvider, bool)
+  nameWithType: ServiceProviderTestExtensions.AddServiceProvider(Mocker, IServiceProvider, bool)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.IServiceProvider, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, IServiceProvider, Boolean)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.IServiceProvider, Boolean)
+  name.vb: AddServiceProvider(Mocker, IServiceProvider, Boolean)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+    name: AddServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+    name: AddServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FastMoq.Mocker.FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+  parent: FastMoq.Extensions.ServiceProviderTestExtensions
+  definition: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+  href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__
+  name: CreateTypedServiceProvider(Mocker, Action<IServiceCollection>)
+  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action<IServiceCollection>)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>)
+  nameWithType.vb: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection))
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection))
+  name.vb: CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection))
+  spec.csharp:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+    name: CreateTypedServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    name: IServiceCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+    name: CreateTypedServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    name: IServiceCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  - name: )
+  - name: )
 - uid: FastMoq.Mocker.FastMoq.Extensions.TestClassExtensions.GetAmbiguousConstructorImplementationException(System.Type)
   commentId: M:FastMoq.Extensions.TestClassExtensions.GetAmbiguousConstructorImplementationException(FastMoq.Mocker,System.Type)
   parent: FastMoq.Extensions.TestClassExtensions
@@ -9354,6 +9532,185 @@ references:
   name: ObjectExtensions
   nameWithType: ObjectExtensions
   fullName: FastMoq.Extensions.ObjectExtensions
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  isExternal: true
+  href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  name: AddServiceProvider(Mocker, Action<IServiceCollection>, bool)
+  nameWithType: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action<IServiceCollection>, bool)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
+  name.vb: AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+    name: AddServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    name: IServiceCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+    name: AddServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    name: IServiceCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions
+  commentId: T:FastMoq.Extensions.ServiceProviderTestExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.ServiceProviderTestExtensions.html
+  name: ServiceProviderTestExtensions
+  nameWithType: ServiceProviderTestExtensions
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  isExternal: true
+  href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  name: AddServiceProvider(Mocker, IServiceProvider, bool)
+  nameWithType: ServiceProviderTestExtensions.AddServiceProvider(Mocker, IServiceProvider, bool)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.IServiceProvider, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, IServiceProvider, Boolean)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.IServiceProvider, Boolean)
+  name.vb: AddServiceProvider(Mocker, IServiceProvider, Boolean)
+  spec.csharp:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+    name: AddServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+    name: AddServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+  isExternal: true
+  href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__
+  name: CreateTypedServiceProvider(Mocker, Action<IServiceCollection>)
+  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action<IServiceCollection>)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>)
+  nameWithType.vb: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection))
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection))
+  name.vb: CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection))
+  spec.csharp:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+    name: CreateTypedServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    name: IServiceCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+    name: CreateTypedServiceProvider
+    href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    name: IServiceCollection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  - name: )
+  - name: )
 - uid: FastMoq.Extensions.TestClassExtensions.GetAmbiguousConstructorImplementationException(FastMoq.Mocker,System.Type)
   commentId: M:FastMoq.Extensions.TestClassExtensions.GetAmbiguousConstructorImplementationException(FastMoq.Mocker,System.Type)
   isExternal: true

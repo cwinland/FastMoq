@@ -3,6 +3,13 @@
 # Default severity for analyzer diagnostics with category 'StyleCop.CSharp.DocumentationRules'
 dotnet_analyzer_diagnostic.category-stylecop.csharp.documentationrules.severity = none
 
+# IDE1006: Naming Styles
+dotnet_diagnostic.IDE1006.severity = suggestion
+
+# All code under Tests/ folders
+[**/*.Tests*/**/*Tests.cs]
+dotnet_diagnostic.CS0618.severity = none
+
 [*.{asax,ascx,aspx,axaml,cs,cshtml,css,htm,html,js,jsx,master,paml,razor,skin,ts,tsx,vb,xaml,xamlx,xoml}]
 indent_style = space
 indent_size = 4

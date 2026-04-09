@@ -1167,6 +1167,53 @@ references:
   commentId: N:FastMoq.Extensions
   fullName: FastMoq.Extensions
   nameWithType: FastMoq.Extensions
+- uid: FastMoq.Extensions.FunctionContextTestExtensions
+  name: FunctionContextTestExtensions
+  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html
+  commentId: T:FastMoq.Extensions.FunctionContextTestExtensions
+  fullName: FastMoq.Extensions.FunctionContextTestExtensions
+  nameWithType: FunctionContextTestExtensions
+- uid: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  name: AddFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool, bool)
+  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html#FastMoq_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_System_Boolean_
+  commentId: M:FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  name.vb: AddFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+  fullName: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool, bool)
+  fullName.vb: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean, Boolean)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool, bool)
+  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+- uid: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  name: AddFunctionContextInstanceServices(Mocker, IServiceProvider, bool)
+  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html#FastMoq_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  commentId: M:FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  name.vb: AddFunctionContextInstanceServices(Mocker, IServiceProvider, Boolean)
+  fullName: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.IServiceProvider, bool)
+  fullName.vb: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.IServiceProvider, Boolean)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, IServiceProvider, bool)
+  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, IServiceProvider, Boolean)
+- uid: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices*
+  name: AddFunctionContextInstanceServices
+  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html#FastMoq_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_
+  commentId: Overload:FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices
+  isSpec: "True"
+  fullName: FastMoq.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices
+- uid: FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  name: CreateFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool)
+  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html#FastMoq_Extensions_FunctionContextTestExtensions_CreateFunctionContextInstanceServices_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  commentId: M:FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  name.vb: CreateFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean)
+  fullName: FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool)
+  fullName.vb: FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
+  nameWithType: FunctionContextTestExtensions.CreateFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool)
+  nameWithType.vb: FunctionContextTestExtensions.CreateFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean)
+- uid: FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices*
+  name: CreateFunctionContextInstanceServices
+  href: api/FastMoq.Extensions.FunctionContextTestExtensions.html#FastMoq_Extensions_FunctionContextTestExtensions_CreateFunctionContextInstanceServices_
+  commentId: Overload:FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices
+  isSpec: "True"
+  fullName: FastMoq.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices
+  nameWithType: FunctionContextTestExtensions.CreateFunctionContextInstanceServices
 - uid: FastMoq.Extensions.IdentityHelperExtensions
   name: IdentityHelperExtensions
   href: api/FastMoq.Extensions.IdentityHelperExtensions.html
@@ -1700,6 +1747,53 @@ references:
   fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
   nameWithType: ObjectExtensions.RaiseIfNull<T>(T?, string?, string?, int?, string?)
   nameWithType.vb: ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions
+  name: ServiceProviderTestExtensions
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html
+  commentId: T:FastMoq.Extensions.ServiceProviderTestExtensions
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions
+  nameWithType: ServiceProviderTestExtensions
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  name: AddServiceProvider(Mocker, Action<IServiceCollection>?, bool)
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  name.vb: AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
+  nameWithType: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action<IServiceCollection>?, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  name: AddServiceProvider(Mocker, IServiceProvider, bool)
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  name.vb: AddServiceProvider(Mocker, IServiceProvider, Boolean)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.IServiceProvider, bool)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.IServiceProvider, Boolean)
+  nameWithType: ServiceProviderTestExtensions.AddServiceProvider(Mocker, IServiceProvider, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, IServiceProvider, Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider*
+  name: AddServiceProvider
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_
+  commentId: Overload:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider
+  isSpec: "True"
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider
+  nameWithType: ServiceProviderTestExtensions.AddServiceProvider
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+  name: CreateTypedServiceProvider(Mocker, Action<IServiceCollection>?)
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+  name.vb: CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection))
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection))
+  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action<IServiceCollection>?)
+  nameWithType.vb: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection))
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider*
+  name: CreateTypedServiceProvider
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_
+  commentId: Overload:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider
+  isSpec: "True"
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider
+  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceProvider
 - uid: FastMoq.Extensions.TestClassExtensions
   name: TestClassExtensions
   href: api/FastMoq.Extensions.TestClassExtensions.html
@@ -5922,6 +6016,100 @@ references:
   commentId: F:FastMoq.OptionalParameterResolutionMode.UseDefaultOrNull
   fullName: FastMoq.OptionalParameterResolutionMode.UseDefaultOrNull
   nameWithType: OptionalParameterResolutionMode.UseDefaultOrNull
+- uid: FastMoq.PropertyValueCapture`1
+  name: PropertyValueCapture<TValue>
+  href: api/FastMoq.PropertyValueCapture-1.html
+  commentId: T:FastMoq.PropertyValueCapture`1
+  name.vb: PropertyValueCapture(Of TValue)
+  fullName: FastMoq.PropertyValueCapture<TValue>
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue)
+  nameWithType: PropertyValueCapture<TValue>
+  nameWithType.vb: PropertyValueCapture(Of TValue)
+- uid: FastMoq.PropertyValueCapture`1.Clear
+  name: Clear()
+  href: api/FastMoq.PropertyValueCapture-1.html#FastMoq_PropertyValueCapture_1_Clear
+  commentId: M:FastMoq.PropertyValueCapture`1.Clear
+  fullName: FastMoq.PropertyValueCapture<TValue>.Clear()
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue).Clear()
+  nameWithType: PropertyValueCapture<TValue>.Clear()
+  nameWithType.vb: PropertyValueCapture(Of TValue).Clear()
+- uid: FastMoq.PropertyValueCapture`1.Clear*
+  name: Clear
+  href: api/FastMoq.PropertyValueCapture-1.html#FastMoq_PropertyValueCapture_1_Clear_
+  commentId: Overload:FastMoq.PropertyValueCapture`1.Clear
+  isSpec: "True"
+  fullName: FastMoq.PropertyValueCapture<TValue>.Clear
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue).Clear
+  nameWithType: PropertyValueCapture<TValue>.Clear
+  nameWithType.vb: PropertyValueCapture(Of TValue).Clear
+- uid: FastMoq.PropertyValueCapture`1.HasValue
+  name: HasValue
+  href: api/FastMoq.PropertyValueCapture-1.html#FastMoq_PropertyValueCapture_1_HasValue
+  commentId: P:FastMoq.PropertyValueCapture`1.HasValue
+  fullName: FastMoq.PropertyValueCapture<TValue>.HasValue
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue).HasValue
+  nameWithType: PropertyValueCapture<TValue>.HasValue
+  nameWithType.vb: PropertyValueCapture(Of TValue).HasValue
+- uid: FastMoq.PropertyValueCapture`1.HasValue*
+  name: HasValue
+  href: api/FastMoq.PropertyValueCapture-1.html#FastMoq_PropertyValueCapture_1_HasValue_
+  commentId: Overload:FastMoq.PropertyValueCapture`1.HasValue
+  isSpec: "True"
+  fullName: FastMoq.PropertyValueCapture<TValue>.HasValue
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue).HasValue
+  nameWithType: PropertyValueCapture<TValue>.HasValue
+  nameWithType.vb: PropertyValueCapture(Of TValue).HasValue
+- uid: FastMoq.PropertyValueCapture`1.History
+  name: History
+  href: api/FastMoq.PropertyValueCapture-1.html#FastMoq_PropertyValueCapture_1_History
+  commentId: P:FastMoq.PropertyValueCapture`1.History
+  fullName: FastMoq.PropertyValueCapture<TValue>.History
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue).History
+  nameWithType: PropertyValueCapture<TValue>.History
+  nameWithType.vb: PropertyValueCapture(Of TValue).History
+- uid: FastMoq.PropertyValueCapture`1.History*
+  name: History
+  href: api/FastMoq.PropertyValueCapture-1.html#FastMoq_PropertyValueCapture_1_History_
+  commentId: Overload:FastMoq.PropertyValueCapture`1.History
+  isSpec: "True"
+  fullName: FastMoq.PropertyValueCapture<TValue>.History
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue).History
+  nameWithType: PropertyValueCapture<TValue>.History
+  nameWithType.vb: PropertyValueCapture(Of TValue).History
+- uid: FastMoq.PropertyValueCapture`1.Record(`0)
+  name: Record(TValue)
+  href: api/FastMoq.PropertyValueCapture-1.html#FastMoq_PropertyValueCapture_1_Record__0_
+  commentId: M:FastMoq.PropertyValueCapture`1.Record(`0)
+  fullName: FastMoq.PropertyValueCapture<TValue>.Record(TValue)
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue).Record(TValue)
+  nameWithType: PropertyValueCapture<TValue>.Record(TValue)
+  nameWithType.vb: PropertyValueCapture(Of TValue).Record(TValue)
+- uid: FastMoq.PropertyValueCapture`1.Record*
+  name: Record
+  href: api/FastMoq.PropertyValueCapture-1.html#FastMoq_PropertyValueCapture_1_Record_
+  commentId: Overload:FastMoq.PropertyValueCapture`1.Record
+  isSpec: "True"
+  fullName: FastMoq.PropertyValueCapture<TValue>.Record
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue).Record
+  nameWithType: PropertyValueCapture<TValue>.Record
+  nameWithType.vb: PropertyValueCapture(Of TValue).Record
+- uid: FastMoq.PropertyValueCapture`1.Value
+  name: Value
+  href: api/FastMoq.PropertyValueCapture-1.html#FastMoq_PropertyValueCapture_1_Value
+  commentId: P:FastMoq.PropertyValueCapture`1.Value
+  fullName: FastMoq.PropertyValueCapture<TValue>.Value
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue).Value
+  nameWithType: PropertyValueCapture<TValue>.Value
+  nameWithType.vb: PropertyValueCapture(Of TValue).Value
+- uid: FastMoq.PropertyValueCapture`1.Value*
+  name: Value
+  href: api/FastMoq.PropertyValueCapture-1.html#FastMoq_PropertyValueCapture_1_Value_
+  commentId: Overload:FastMoq.PropertyValueCapture`1.Value
+  isSpec: "True"
+  fullName: FastMoq.PropertyValueCapture<TValue>.Value
+  fullName.vb: FastMoq.PropertyValueCapture(Of TValue).Value
+  nameWithType: PropertyValueCapture<TValue>.Value
+  nameWithType.vb: PropertyValueCapture(Of TValue).Value
 - uid: FastMoq.Providers
   name: FastMoq.Providers
   href: api/FastMoq.Providers.html

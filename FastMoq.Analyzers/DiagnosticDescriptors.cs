@@ -113,5 +113,32 @@ namespace FastMoq.Analyzers
             DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             description: "Prefer WhenHttpRequest(...) or WhenHttpRequestJson(...) over Moq-specific protected HttpMessageHandler compatibility helpers when the test only configures request and response behavior.");
+
+        public static readonly DiagnosticDescriptor PreferTypedServiceProviderHelpers = new(
+            DiagnosticIds.PreferTypedServiceProviderHelpers,
+            "Prefer typed IServiceProvider helpers",
+            "Prefer 'CreateTypedServiceProvider(...)' or 'AddServiceProvider(...)' instead of '{0}' for IServiceProvider test setup",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "Mocking IServiceProvider directly often creates one-object-for-all-types shims. Prefer the typed FastMoq service-provider helpers so framework code resolves services by requested type.");
+
+        public static readonly DiagnosticDescriptor PreferKnownTypeRegistrations = new(
+            DiagnosticIds.PreferKnownTypeRegistrations,
+            "Prefer AddKnownType for framework-style resolution",
+            "Use 'AddKnownType(...)' instead of '{0}' when the registration depends on requested-type or framework-style resolution context",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "Context-aware AddType overloads are a compatibility path. Prefer AddKnownType(...) when a registration depends on requested-type resolution context, mock post-processing, or framework-style defaults.");
+
+        public static readonly DiagnosticDescriptor PreserveKeyedServiceDistinctness = new(
+            DiagnosticIds.PreserveKeyedServiceDistinctness,
+            "Preserve keyed same-type dependencies",
+            "Type '{0}' has multiple keyed '{1}' constructor dependencies. Avoid unkeyed '{2}' here; use keyed mocks, AddKeyedType(...), or explicit separate doubles instead.",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "When the system under test has multiple same-type keyed constructor dependencies, an unkeyed test double can collapse distinct roles into one object and hide routing bugs. Prefer keyed FastMoq setup or explicit separate doubles.");
     }
 }

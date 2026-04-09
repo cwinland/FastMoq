@@ -106,9 +106,11 @@ Practical guidance for moving from the `3.0.0` public release toward the current
 | **Background Jobs** | [Background Services](./cookbook/README.md#background-services-testing) | [Executable Testing Examples](./samples/testing-examples.md) |
 | **Blazor Apps** | [bUnit and Blazor test migration](./migration/bunit-and-blazor-testing.md) | [Executable Testing Examples](./samples/testing-examples.md) |
 
-Package note: `FastMoq` is the aggregate package. Provider contracts live in `FastMoq.Abstractions`, `FastMoq.Core` stays lighter, EF-specific helpers live in `FastMoq.Database`, provider-specific adapters live in `FastMoq.Provider.*`, and web helpers live in `FastMoq.Web` while the primary calls stay in the `FastMoq` namespace.
+Package note: `FastMoq` is the aggregate package. Provider contracts live in `FastMoq.Abstractions`, `FastMoq.Core` stays lighter, EF-specific helpers live in `FastMoq.Database`, Azure Functions worker helpers live in `FastMoq.AzureFunctions`, provider-specific adapters live in `FastMoq.Provider.*`, and web helpers live in `FastMoq.Web` while the primary calls stay in the `FastMoq` or `FastMoq.Extensions` namespaces.
 
 Web helper note: if your test project references the aggregate `FastMoq` package, the web helpers are already included. If your test project references `FastMoq.Core` directly, add `FastMoq.Web` before using helpers such as `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, or `AddHttpContextAccessor(...)`.
+
+Azure Functions helper note: if your test project references the aggregate `FastMoq` package, the Azure Functions helpers are already included. If your test project references `FastMoq.Core` directly, add `FastMoq.AzureFunctions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`.
 
 See [Getting Started package choices](./getting-started/README.md#package-choices) when you need the full install matrix instead of a quick reminder.
 

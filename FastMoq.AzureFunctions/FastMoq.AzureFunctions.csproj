@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Authors>Winland, $(AssemblyName)</Authors>
+    <Company>$(Authors)</Company>
+    <Copyright>Copyright(c) 2026 Christopher Winland</Copyright>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Description>Azure Functions worker helpers for FastMoq, including typed FunctionContext.InstanceServices setup.</Description>
+    <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>FastMoq;AzureFunctions;FunctionContext;testing;mocking</PackageTags>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsPackable>true</IsPackable>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
+  </ItemGroup>
+</Project>

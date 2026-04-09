@@ -148,6 +148,11 @@ Mocks.Verify&lt;ICustomerRepository&gt;(
 <td>Provider-first runtime without the extra EF, web-specific, or analyzer package payloads</td>
 </tr>
 <tr>
+<td>Azure Functions worker helpers while using <code>FastMoq.Core</code></td>
+<td><code>FastMoq.AzureFunctions</code></td>
+<td>Adds <code>CreateFunctionContextInstanceServices(...)</code> and <code>AddFunctionContextInstanceServices(...)</code> while keeping the typed <code>IServiceProvider</code> helpers in core</td>
+</tr>
+<tr>
 <td>DbContext and EF-specific helpers while using <code>FastMoq.Core</code></td>
 <td><code>FastMoq.Database</code></td>
 <td>Adds <code>GetMockDbContext&lt;TContext&gt;()</code> and the explicit DbContext handle modes</td>
@@ -176,12 +181,13 @@ Mocks.Verify&lt;ICustomerRepository&gt;(
 </table>
 <p>Important package boundaries in the current v4 line:</p>
 <ul>
-<li><code>FastMoq</code> already includes the common end-user surface, including web and database helpers</li>
+<li><code>FastMoq</code> already includes the common end-user surface, including web, database, and Azure Functions helpers</li>
 <li><code>FastMoq</code> also includes the FastMoq analyzer assets by default so most test projects get migration guidance without extra setup</li>
-<li><code>FastMoq.Core</code> stays lighter on purpose, so EF helpers and web helpers are separate package decisions when you consume core directly</li>
+<li><code>FastMoq.Core</code> stays lighter on purpose, so EF helpers, Azure Functions helpers, and web helpers are separate package decisions when you consume core directly</li>
 <li><code>FastMoq.Core</code> does not include analyzer assets; add <code>FastMoq.Analyzers</code> explicitly if you want analyzer guidance in a core-only package graph</li>
 <li><code>FastMoq.Core</code> includes the built-in <code>reflection</code> provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as <code>Setup(...)</code> and <code>Protected()</code> still belong to the <code>FastMoq.Provider.Moq</code> package</li>
 <li>provider-package extension methods still follow the provider-package docs and selection rules described in <a href="provider-selection.html">Provider Selection and Setup</a></li>
+<li>if you are wiring Azure Functions worker tests through <code>FunctionContext.InstanceServices</code>, add <code>FastMoq.AzureFunctions</code> when you consume <code>FastMoq.Core</code> directly</li>
 <li>if you are unsure whether your web tests need another package, see the web-helper notes in <a href="testing-guide.html#controller-testing">Testing Guide</a> and the migration-specific notes in <a href="../migration/framework-and-web-helpers.html#web-test-helpers">Framework and web helper migration</a></li>
 </ul>
 <p>If your team wants the aggregate runtime package without analyzer diagnostics in a specific test project, you can opt out with:</p>
@@ -192,6 +198,7 @@ Mocks.Verify&lt;ICustomerRepository&gt;(
 </code></pre>
 <p>If you prefer the split packages instead of the aggregate package:</p>
 <pre><code class="lang-bash">dotnet add package FastMoq.Core
+dotnet add package FastMoq.AzureFunctions
 dotnet add package FastMoq.Database
 dotnet add package FastMoq.Web
 dotnet add package FastMoq.Provider.Moq
@@ -204,13 +211,14 @@ dotnet add package FastMoq.Provider.Moq
 </code></pre>
 <p>Split-package example:</p>
 <pre><code class="lang-xml">&lt;PackageReference Include=&quot;FastMoq.Core&quot; Version=&quot;4.*&quot; /&gt;
+&lt;PackageReference Include=&quot;FastMoq.AzureFunctions&quot; Version=&quot;4.*&quot; /&gt;
 &lt;PackageReference Include=&quot;FastMoq.Database&quot; Version=&quot;4.*&quot; /&gt;
 &lt;PackageReference Include=&quot;FastMoq.Web&quot; Version=&quot;4.*&quot; /&gt;
 &lt;PackageReference Include=&quot;FastMoq.Provider.Moq&quot; Version=&quot;4.*&quot; /&gt;
 </code></pre>
 <blockquote>
 <p>Note: this guide targets the current v4 release line. For the release delta relative to the last public <code>3.0.0</code> package, see <a href="../whats-new/README.html">What's New Since 3.0.0</a>.
-Note: in the current repository, <code>GetMockDbContext&lt;TContext&gt;()</code> keeps the same <code>FastMoq</code> namespace call shape, but direct <code>FastMoq.Core</code> consumers should add <code>FastMoq.Database</code> for EF-specific helpers. Direct web-helper consumers should add <code>FastMoq.Web</code>.</p>
+Note: in the current repository, <code>GetMockDbContext&lt;TContext&gt;()</code> keeps the same <code>FastMoq</code> namespace call shape, but direct <code>FastMoq.Core</code> consumers should add <code>FastMoq.Database</code> for EF-specific helpers. Direct Azure Functions helper consumers should add <code>FastMoq.AzureFunctions</code>. Direct web-helper consumers should add <code>FastMoq.Web</code>.</p>
 </blockquote>
 <p>In the current v4 transition layout, <code>FastMoq.Core</code> bundles the built-in <code>moq</code> provider and the internal <code>reflection</code> fallback. The default provider is <code>reflection</code>. Optional providers such as <code>nsubstitute</code> can be added explicitly and then selected by their canonical name once the package is present, or registered manually under a custom alias. You can also register your own provider by implementing <code>IMockingProvider</code>; the bundled providers are examples, not the only supported choices.</p>
 <p>The DbContext helper path now exposes explicit modes through <code>GetDbContextHandle&lt;TContext&gt;(...)</code>. <code>GetMockDbContext&lt;TContext&gt;()</code> remains the mocked-sets convenience entry point, and <code>DbContextTestMode.RealInMemory</code> is the real EF-backed option. The mocked-sets implementation still uses the existing moved Moq-based <code>DbContextMock&lt;TContext&gt;</code> path internally.</p>
@@ -515,7 +523,7 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 21:12 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 19:00 UTC</span></div>
       
           </div>
         </div>

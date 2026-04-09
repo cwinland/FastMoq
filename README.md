@@ -152,9 +152,10 @@ The FastMoq version removes explicit mock declarations, subject construction, an
 
 ## Packages
 
-- FastMoq - Aggregate package that combines the primary FastMoq runtime, database helpers, and web support.
+- FastMoq - Aggregate package that combines the primary FastMoq runtime, database helpers, Azure Functions helpers, and web support.
 - FastMoq.Abstractions - Shared provider contracts used by core and provider packages.
 - FastMoq.Core - Core testing Mocker and provider-first resolution pipeline.
+- FastMoq.AzureFunctions - Azure Functions worker helpers for typed FunctionContext.InstanceServices setup.
 - FastMoq.Database - Entity Framework and DbContext-focused helpers.
 - FastMoq.Provider.Moq - Moq compatibility provider and Moq-specific convenience extensions for v4 migration.
 - FastMoq.Provider.NSubstitute - Optional NSubstitute provider package.
@@ -169,15 +170,24 @@ Web-helper note:
 - for migration-specific guidance, start with [Migration Guide](./docs/migration/README.md#web-test-helpers) and then use [Testing Guide](./docs/getting-started/testing-guide.md#controller-testing) for the day-to-day helper rules
 - for the full package-choice overview, use [Getting Started](./docs/getting-started/README.md#package-choices)
 
+Azure Functions helper note:
+
+- if you install the aggregate `FastMoq` package, the Azure Functions helpers are included
+- if you install `FastMoq.Core` directly, add `FastMoq.AzureFunctions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
+- the typed `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` helpers remain in `FastMoq.Core`
+
 Typical split-package install:
 
 ```bash
 dotnet add package FastMoq.Core
+dotnet add package FastMoq.AzureFunctions
 dotnet add package FastMoq.Database
 dotnet add package FastMoq.Web
 ```
 
 `GetMockDbContext<TContext>()` keeps the same main call shape in the `FastMoq` namespace. If you install `FastMoq`, the EF helpers are included. If you install `FastMoq.Core` directly, add `FastMoq.Database` for DbContext support.
+
+`CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` also keep the same `FastMoq.Extensions` call shape, but direct `FastMoq.Core` consumers should add `FastMoq.AzureFunctions` for Azure Functions worker support.
 
 `GetMockDbContext<TContext>()` remains the default mocked-sets entry point. For explicit mode selection between mocked DbSets and a real EF in-memory context, use `GetDbContextHandle<TContext>(new DbContextHandleOptions<TContext> { ... })`.
 

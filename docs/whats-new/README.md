@@ -66,6 +66,7 @@ Notable additions and changes:
 - `FastMoq.Abstractions` now carries the provider contracts shared by core and provider packages.
 - `FastMoq.Provider.Moq` now owns the Moq compatibility provider and Moq-specific convenience extensions.
 - `FastMoq.Provider.NSubstitute` adds an optional NSubstitute provider package.
+- `FastMoq.AzureFunctions` now owns the Azure Functions worker helpers for `FunctionContext.InstanceServices`.
 - `FastMoq.Database` now owns the EF- and DbContext-specific helpers that previously lived in core.
 - `FastMoq.Core` stays lighter and focuses on provider-neutral construction, tracking, verification, and built-in known-type handling.
 

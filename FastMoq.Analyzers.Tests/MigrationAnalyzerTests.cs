@@ -27,6 +27,9 @@ namespace FastMoq.Analyzers.Tests
             { new NativeMockAuthoringAnalyzer(), DiagnosticDescriptors.PreferTypedProviderExtensions },
             { new WebHelperAuthoringAnalyzer(), DiagnosticDescriptors.PreferWebTestHelpers },
             { new HttpRequestHelperAuthoringAnalyzer(), DiagnosticDescriptors.PreferProviderNeutralHttpHelpers },
+            { new ServiceProviderShimAnalyzer(), DiagnosticDescriptors.PreferTypedServiceProviderHelpers },
+            { new KnownTypeAuthoringAnalyzer(), DiagnosticDescriptors.PreferKnownTypeRegistrations },
+            { new KeyedDependencyAnalyzer(), DiagnosticDescriptors.PreserveKeyedServiceDistinctness },
         };
 
         public static TheoryData<DiagnosticDescriptor, DiagnosticSeverity> DescriptorSeverityPairs => new()
@@ -43,6 +46,9 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.PreferTypedProviderExtensions, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferWebTestHelpers, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferProviderNeutralHttpHelpers, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.PreferTypedServiceProviderHelpers, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.PreferKnownTypeRegistrations, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.PreserveKeyedServiceDistinctness, DiagnosticSeverity.Warning },
         };
 
         [Theory]
@@ -245,6 +251,139 @@ class Sample
 }");
 
             Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldReport_WhenServiceProviderIsMockedDirectly()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var serviceProvider = Mocks.GetOrCreateMock<IServiceProvider>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ServiceProviderShimAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
+            Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task KnownTypeAuthoringAnalyzer_ShouldReport_WhenContextAwareAddTypeOverloadIsUsed()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.AddType(typeof(string), typeof(string), (mocker, context) => context.ToString());
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new KnownTypeAuthoringAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferKnownTypeRegistrations));
+            Assert.Equal(DiagnosticIds.PreferKnownTypeRegistrations, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task KeyedDependencyAnalyzer_ShouldReport_WhenUnkeyedMockIsUsedForSameTypeKeyedDependencies()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Microsoft.Extensions.DependencyInjection
+{
+    [AttributeUsage(AttributeTargets.Parameter)]
+    sealed class FromKeyedServicesAttribute : Attribute
+    {
+        public FromKeyedServicesAttribute(object serviceKey)
+        {
+        }
+    }
+}
+
+class SampleTests : MockerTestBase<KeyedSample>
+{
+    void Execute()
+    {
+        var dependency = Mocks.GetOrCreateMock<IKeyedDependency>();
+    }
+}
+
+interface IKeyedDependency
+{
+}
+
+class KeyedSample
+{
+    public KeyedSample(
+        [FromKeyedServices(""primary"")] IKeyedDependency primary,
+        [FromKeyedServices(""secondary"")] IKeyedDependency secondary)
+    {
+    }
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new KeyedDependencyAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreserveKeyedServiceDistinctness));
+            Assert.Equal(DiagnosticIds.PreserveKeyedServiceDistinctness, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task KeyedDependencyAnalyzer_ShouldNotReport_WhenKeyedMockOptionsAreUsed()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Microsoft.Extensions.DependencyInjection
+{
+    [AttributeUsage(AttributeTargets.Parameter)]
+    sealed class FromKeyedServicesAttribute : Attribute
+    {
+        public FromKeyedServicesAttribute(object serviceKey)
+        {
+        }
+    }
+}
+
+class SampleTests : MockerTestBase<KeyedSample>
+{
+    void Execute()
+    {
+        var dependency = Mocks.GetOrCreateMock<IKeyedDependency>(new MockRequestOptions
+        {
+            ServiceKey = ""primary""
+        });
+    }
+}
+
+interface IKeyedDependency
+{
+}
+
+class KeyedSample
+{
+    public KeyedSample(
+        [FromKeyedServices(""primary"")] IKeyedDependency primary,
+        [FromKeyedServices(""secondary"")] IKeyedDependency secondary)
+    {
+    }
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new KeyedDependencyAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreserveKeyedServiceDistinctness);
         }
 
         [Fact]

@@ -79,6 +79,7 @@
 <li>Use <a class="xref" href="../../api/FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> when you want FastMoq to create the component under test and manage its dependencies.</li>
 <li>Use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">Mocks.GetOrCreateMock&lt;T&gt;()</a> when you want the normal FastMoq tracked mock path for a dependency.</li>
 <li>Use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddType__1_System_Func_FastMoq_Mocker___0__System_Boolean_System_Object___">AddType(...)</a> when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.</li>
+<li>Use <code>CreateTypedServiceProvider(...)</code> and <code>AddServiceProvider(...)</code> when framework code expects a typed <code>IServiceProvider</code> rather than a one-object-for-all-types shim.</li>
 <li>If the constructor uses the same abstraction more than once under different DI service keys, use keyed mocks, keyed registrations, or explicit constructor injection for tests where dependency selection matters.</li>
 <li>Use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddKnownType_FastMoq_KnownTypeRegistration_System_Boolean_">AddKnownType(...)</a> when a framework-style type needs special resolution or post-processing behavior.</li>
 <li>Use <a class="xref" href="../../api/FastMoq.DbContextMockerExtensions.html#FastMoq_DbContextMockerExtensions_GetMockDbContext__1_FastMoq_Mocker_">GetMockDbContext&lt;TContext&gt;()</a> when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.</li>
@@ -114,6 +115,43 @@ repoMock.Setup(x =&gt; x.Load(123)).Returns(order);
 </code></pre>
 <h3 id="practical-rule">Practical rule</h3>
 <p>If the dependency is still conceptually a mock, prefer <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;()</a>. If you are changing how the type is resolved, prefer <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddType__1_System_Func_FastMoq_Mocker___0__System_Boolean_System_Object___">AddType(...)</a>.</p>
+<h2 id="typed-iserviceprovider-helpers">Typed IServiceProvider Helpers</h2>
+<p>Framework-heavy tests should not fake <code>IServiceProvider</code> with a single mocked <code>GetService(Type)</code> callback that returns the same object for every request.</p>
+<p>That shape is convenient, but it hides real failures when code asks for multiple service types such as <code>ILoggerFactory</code>, <code>IOptions&lt;T&gt;</code>, or a concrete singleton.</p>
+<p>Use <code>CreateTypedServiceProvider(...)</code> when you need a real provider instance:</p>
+<pre><code class="lang-csharp">var instanceServices = Mocks.CreateTypedServiceProvider(services =&gt;
+{
+    services.AddLogging();
+    services.AddOptions();
+    services.AddSingleton(new Uri(&quot;https://fastmoq.dev&quot;));
+});
+</code></pre>
+<p>Use <code>AddServiceProvider(...)</code> when the system under test resolves <code>IServiceProvider</code> or <code>IServiceScopeFactory</code> from the current <a class="xref" href="../../api/FastMoq.Mocker.html">Mocker</a>:</p>
+<pre><code class="lang-csharp">Mocks.AddServiceProvider(services =&gt;
+{
+    services.AddLogging();
+    services.AddSingleton(new WidgetClock());
+});
+</code></pre>
+<p>Use <code>CreateFunctionContextInstanceServices(...)</code> and <code>AddFunctionContextInstanceServices(...)</code> for Azure Functions worker tests instead of hand-writing <code>FunctionContext.InstanceServices</code> plumbing:</p>
+<pre><code class="lang-csharp">Mocks.AddFunctionContextInstanceServices(services =&gt;
+{
+    services.AddSingleton(new WidgetClock());
+});
+
+var context = Mocks.GetObject&lt;FunctionContext&gt;();
+var clock = context.InstanceServices.GetRequiredService&lt;WidgetClock&gt;();
+</code></pre>
+<p>Package note:</p>
+<ul>
+<li><code>CreateTypedServiceProvider(...)</code> and <code>AddServiceProvider(...)</code> remain part of <code>FastMoq.Core</code></li>
+<li>direct <code>FastMoq.Core</code> consumers should add <code>FastMoq.AzureFunctions</code> before using <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code></li>
+<li>the aggregate <code>FastMoq</code> package includes the Azure Functions helper package already</li>
+</ul>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0013</code> warns on direct <code>GetOrCreateMock&lt;IServiceProvider&gt;()</code>, <code>GetMock&lt;IServiceProvider&gt;()</code>, and <code>GetRequiredMock&lt;IServiceProvider&gt;()</code> setup so those shims migrate toward the typed helper path.</li>
+</ul>
 <h2 id="construction-apis">Construction APIs</h2>
 <p>FastMoq still supports the older entry points:</p>
 <ul>
@@ -241,6 +279,15 @@ fileSystem.File.WriteAllText(&quot;/tmp/test.txt&quot;, &quot;hello&quot;);
 
 handle.Context.Database.EnsureCreated();
 </code></pre>
+<p>Known-type override example:</p>
+<pre><code class="lang-csharp">Mocks.AddKnownType&lt;ApplicationDbContext&gt;(
+    managedInstanceFactory: (mocker, _) =&gt; mocker.GetDbContextHandle&lt;ApplicationDbContext&gt;(new DbContextHandleOptions&lt;ApplicationDbContext&gt;
+    {
+        Mode = DbContextTestMode.RealInMemory,
+    }).Context,
+    replace: true);
+</code></pre>
+<p>Use that pattern when the test needs the context to resolve through FastMoq's known-type pipeline rather than through a one-off <code>AddType(...)</code> mapping.</p>
 <h3 id="httpcontext-and-ihttpcontextaccessor"><code>HttpContext</code> and <code>IHttpContextAccessor</code></h3>
 <p>FastMoq applies built-in setup for <code>HttpContext</code>, <code>IHttpContextAccessor</code>, and <code>HttpContextAccessor</code> so common web tests have a usable context object without repetitive setup.</p>
 <p>When you want explicit test setup for headers, query strings, or authenticated users, use the <code>FastMoq.Web.Extensions</code> helpers instead of wiring those pieces by hand.</p>
@@ -418,6 +465,10 @@ var resolvedPublicRepo = Mocks.GetKeyedObject&lt;IBlobRepository&gt;(&quot;publi
 <li>if both concerns matter, keep most tests explicit and add one small keyed wiring-focused test</li>
 </ul>
 <p>Ordinary unit tests can stay ordinary. The important rule is: if swapping the keyed dependencies would be a bug, the test should not collapse them into one double.</p>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0015</code> warns on unkeyed <code>GetOrCreateMock&lt;T&gt;()</code>, <code>GetMock&lt;T&gt;()</code>, <code>GetRequiredMock&lt;T&gt;()</code>, and <code>AddType&lt;T&gt;(...)</code> usage when the target type has multiple keyed constructor parameters of that same abstraction and the current file is not already using keyed setup.</li>
+</ul>
 <h2 id="extending-known-types">Extending Known Types</h2>
 <p>Use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddKnownType_FastMoq_KnownTypeRegistration_System_Boolean_">AddKnownType(...)</a> when a framework-style type needs special handling that does not belong in the normal type map.</p>
 <p>Custom registrations are scoped to the current <code>Mocker</code> instance. They do not mutate global process state.</p>
@@ -483,6 +534,10 @@ var resolvedPublicRepo = Mocks.GetKeyedObject&lt;IBlobRepository&gt;(&quot;publi
 <ul>
 <li>&quot;Am I replacing one dependency?&quot; -&gt; <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddType__1_System_Func_FastMoq_Mocker___0__System_Boolean_System_Object___">AddType(...)</a></li>
 <li>&quot;Am I teaching FastMoq how to treat this kind of framework-heavy type?&quot; -&gt; <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddKnownType_FastMoq_KnownTypeRegistration_System_Boolean_">AddKnownType(...)</a></li>
+</ul>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0014</code> warns on the context-aware compatibility <code>AddType(...)</code> overloads and points them back toward <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddKnownType_FastMoq_KnownTypeRegistration_System_Boolean_">AddKnownType(...)</a>.</li>
 </ul>
 <h3 id="example-override-a-built-in-direct-instance">Example: override a built-in direct instance</h3>
 <pre><code class="lang-csharp">var customFileSystem = new MockFileSystem().FileSystem;
@@ -603,7 +658,7 @@ Mocks.UseLenientPreset();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 21:12 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 19:00 UTC</span></div>
       
           </div>
         </div>

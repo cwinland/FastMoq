@@ -27,6 +27,7 @@ Use this table when package names and in-editor namespace discovery drift apart 
 | Package | Common namespace imports | Typical surfaces you expect to appear |
 | --- | --- | --- |
 | `FastMoq.Core` | `FastMoq`, `FastMoq.Extensions`, `FastMoq.Providers` | `Mocker`, `MockerTestBase<T>`, `GetOrCreateMock<T>()`, `GetObject<T>()`, `Verify(...)`, `VerifyLogged(...)`, `MockingProviderRegistry` |
+| `FastMoq.AzureFunctions` | `FastMoq.Extensions` | `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)` |
 | `FastMoq.Provider.Moq` | `FastMoq.Providers.MoqProvider` | `MoqMockingProvider`, `AsMoq()`, `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, `Protected()` |
 | `FastMoq.Provider.NSubstitute` | `FastMoq.Providers.NSubstituteProvider` | `NSubstituteMockingProvider`, `AsNSubstitute()`, `Received(...)`, `DidNotReceive()` |
 | `FastMoq.Web` | `FastMoq.Web`, `FastMoq.Web.Extensions` | `TestClaimsPrincipalOptions`, `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, `AddHttpContextAccessor(...)` |
@@ -150,6 +151,31 @@ This keeps existing suites stable for v4 while steering new code toward the prov
 
 If you are following the stabilize-first path, the most important action is explicit Moq selection for the test assembly. If you are following the modernization path, treat explicit Moq selection as a narrow compatibility tool rather than the long-term destination.
 
+## Temporary compatibility APIs: keep them narrow
+
+FastMoq v4 still carries several compatibility APIs so migrated suites can stay green while they move toward the provider-first shape.
+
+Treat these APIs as temporary migration tools, not as the target style for new helpers:
+
+| Compatibility path | Preferred destination |
+| --- | --- |
+| `GetMock<T>()`, `GetRequiredMock<T>()`, raw `Mock<T>` access | `GetOrCreateMock<T>()` plus provider-first verification, or provider-native escape hatches only where they still add value |
+| `MockOptional` | `OptionalParameterResolutionMode.ResolveViaMocker` or explicit `InvocationOptions` / `InstanceCreationFlags` |
+| `Strict` bundle toggles | `Mocker.Policy.DefaultStrictMockCreation` and explicit built-in resolution flags |
+| context-aware `AddType(...)` overloads | `AddKnownType(...)` |
+| mocked `IServiceProvider` shims | `CreateTypedServiceProvider(...)`, `AddServiceProvider(...)`, and `AddFunctionContextInstanceServices(...)` with `FastMoq.AzureFunctions` installed for the `FunctionContext` helper path |
+
+Two practical rules help here:
+
+- keep compatibility APIs at the edge of the suite, usually in a temporary wrapper or base-class migration layer
+- when a shared helper already needs editing, prefer jumping straight to the provider-first or typed-helper destination instead of preserving the compatibility shape one more time
+
+Analyzer notes:
+
+- `FMOQ0013` warns on raw `IServiceProvider` mock setup and pushes it toward the typed helper path
+- `FMOQ0014` warns on context-aware compatibility `AddType(...)` usage and pushes it toward `AddKnownType(...)`
+- `FMOQ0015` warns when same-type keyed constructor dependencies are accidentally collapsed into one unkeyed double
+
 ## Replacing `Setup(...)` when moving from Moq to NSubstitute
 
 There is not a single provider-neutral replacement for `Setup(...)`.
@@ -202,3 +228,5 @@ Cases that do not translate cleanly:
 - some `out` / `ref` verification patterns
 
 When a test depends on those features, either keep it on the Moq provider or replace the collaborator with a fake or stub through `AddType(...)`.
+
+For `SetupSet(...)`-heavy tests, the preferred non-Moq migration target is usually a fake that records assignments through `PropertyValueCapture<TValue>`.

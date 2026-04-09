@@ -105,6 +105,11 @@
 <td><code>Mocker</code>, <code>MockerTestBase&lt;T&gt;</code>, <code>GetOrCreateMock&lt;T&gt;()</code>, <code>GetObject&lt;T&gt;()</code>, <code>Verify(...)</code>, <code>VerifyLogged(...)</code>, <code>MockingProviderRegistry</code></td>
 </tr>
 <tr>
+<td><code>FastMoq.AzureFunctions</code></td>
+<td><code>FastMoq.Extensions</code></td>
+<td><code>CreateFunctionContextInstanceServices(...)</code>, <code>AddFunctionContextInstanceServices(...)</code></td>
+</tr>
+<tr>
 <td><code>FastMoq.Provider.Moq</code></td>
 <td><code>FastMoq.Providers.MoqProvider</code></td>
 <td><code>MoqMockingProvider</code>, <code>AsMoq()</code>, <code>Setup(...)</code>, <code>SetupGet(...)</code>, <code>SetupSequence(...)</code>, <code>Protected()</code></td>
@@ -217,6 +222,50 @@ public sealed class TestAssemblyProviderBootstrap
 </ul>
 <p>This keeps existing suites stable for v4 while steering new code toward the provider-neutral shape that will carry forward cleanly.</p>
 <p>If you are following the stabilize-first path, the most important action is explicit Moq selection for the test assembly. If you are following the modernization path, treat explicit Moq selection as a narrow compatibility tool rather than the long-term destination.</p>
+<h2 id="temporary-compatibility-apis-keep-them-narrow">Temporary compatibility APIs: keep them narrow</h2>
+<p>FastMoq v4 still carries several compatibility APIs so migrated suites can stay green while they move toward the provider-first shape.</p>
+<p>Treat these APIs as temporary migration tools, not as the target style for new helpers:</p>
+<table>
+<thead>
+<tr>
+<th>Compatibility path</th>
+<th>Preferred destination</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetMock&lt;T&gt;()</code>, <code>GetRequiredMock&lt;T&gt;()</code>, raw <code>Mock&lt;T&gt;</code> access</td>
+<td><code>GetOrCreateMock&lt;T&gt;()</code> plus provider-first verification, or provider-native escape hatches only where they still add value</td>
+</tr>
+<tr>
+<td><code>MockOptional</code></td>
+<td><code>OptionalParameterResolutionMode.ResolveViaMocker</code> or explicit <code>InvocationOptions</code> / <code>InstanceCreationFlags</code></td>
+</tr>
+<tr>
+<td><code>Strict</code> bundle toggles</td>
+<td><code>Mocker.Policy.DefaultStrictMockCreation</code> and explicit built-in resolution flags</td>
+</tr>
+<tr>
+<td>context-aware <code>AddType(...)</code> overloads</td>
+<td><code>AddKnownType(...)</code></td>
+</tr>
+<tr>
+<td>mocked <code>IServiceProvider</code> shims</td>
+<td><code>CreateTypedServiceProvider(...)</code>, <code>AddServiceProvider(...)</code>, and <code>AddFunctionContextInstanceServices(...)</code> with <code>FastMoq.AzureFunctions</code> installed for the <code>FunctionContext</code> helper path</td>
+</tr>
+</tbody>
+</table>
+<p>Two practical rules help here:</p>
+<ul>
+<li>keep compatibility APIs at the edge of the suite, usually in a temporary wrapper or base-class migration layer</li>
+<li>when a shared helper already needs editing, prefer jumping straight to the provider-first or typed-helper destination instead of preserving the compatibility shape one more time</li>
+</ul>
+<p>Analyzer notes:</p>
+<ul>
+<li><code>FMOQ0013</code> warns on raw <code>IServiceProvider</code> mock setup and pushes it toward the typed helper path</li>
+<li><code>FMOQ0014</code> warns on context-aware compatibility <code>AddType(...)</code> usage and pushes it toward <code>AddKnownType(...)</code></li>
+<li><code>FMOQ0015</code> warns when same-type keyed constructor dependencies are accidentally collapsed into one unkeyed double</li>
+</ul>
 <h2 id="replacing-setup-when-moving-from-moq-to-nsubstitute">Replacing <code>Setup(...)</code> when moving from Moq to NSubstitute</h2>
 <p>There is not a single provider-neutral replacement for <code>Setup(...)</code>.</p>
 <p><code>Setup(...)</code> is Moq-native arrangement syntax. When you move a test to NSubstitute, replace the arrange side with native NSubstitute calls and keep FastMoq's provider-neutral verification on the assert side when that reads better.</p>
@@ -283,6 +332,7 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Run(&quot;alpha&quot;), TimesSpec.On
 <li>some <code>out</code> / <code>ref</code> verification patterns</li>
 </ul>
 <p>When a test depends on those features, either keep it on the Moq provider or replace the collaborator with a fake or stub through <code>AddType(...)</code>.</p>
+<p>For <code>SetupSet(...)</code>-heavy tests, the preferred non-Moq migration target is usually a fake that records assignments through <code>PropertyValueCapture&lt;TValue&gt;</code>.</p>
 
 </article>
           </div>
@@ -305,7 +355,7 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Run(&quot;alpha&quot;), TimesSpec.On
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-08 21:12 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 19:00 UTC</span></div>
       
           </div>
         </div>

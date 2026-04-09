@@ -5,6 +5,7 @@
         {
           "files": [
             "FastMoq.Abstractions/FastMoq.Abstractions.csproj",
+            "FastMoq.AzureFunctions/FastMoq.AzureFunctions.csproj",
             "FastMoq.Core/FastMoq.Core.csproj",
             "FastMoq.Database/FastMoq.Database.csproj",
             "FastMoq.Provider.Moq/FastMoq.Provider.Moq.csproj",

@@ -33,6 +33,9 @@ namespace FastMoq.Analyzers
     {
         private const string FASTMOQ_DEFAULT_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqDefaultProviderAttribute";
         private const string FASTMOQ_REGISTER_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqRegisterProviderAttribute";
+        private const string FASTMOQ_MOCKER_TEST_BASE_METADATA_NAME = "MockerTestBase`1";
+        private const string FROM_KEYED_SERVICES_ATTRIBUTE = "Microsoft.Extensions.DependencyInjection.FromKeyedServicesAttribute";
+        private const string SERVICE_PROVIDER_TYPE = "System.IServiceProvider";
 
         private static readonly HashSet<string> DisallowedMixedRetrievalMembers = new(StringComparer.Ordinal)
         {
@@ -514,6 +517,255 @@ namespace FastMoq.Analyzers
             }
 
             return false;
+        }
+
+        public static bool TryGetTypedServiceProviderHelperSuggestion(IMethodSymbol method, out string currentApi)
+        {
+            method = method.ReducedFrom ?? method;
+            currentApi = string.Empty;
+
+            if (!IsFastMoqMockerMethod(method, "GetOrCreateMock") &&
+                !IsFastMoqMockerMethod(method, "GetMock") &&
+                !IsFastMoqMockerMethod(method, "GetRequiredMock"))
+            {
+                return false;
+            }
+
+            if (method.TypeArguments.Length != 1 || method.TypeArguments[0].ToDisplayString() != SERVICE_PROVIDER_TYPE)
+            {
+                return false;
+            }
+
+            currentApi = $"{method.Name}<IServiceProvider>()";
+            return true;
+        }
+
+        public static bool TryGetKnownTypeRegistrationSuggestion(IMethodSymbol method, out string currentApi)
+        {
+            method = method.ReducedFrom ?? method;
+            currentApi = string.Empty;
+
+            if (!IsFastMoqMockerMethod(method, "AddType"))
+            {
+                return false;
+            }
+
+            if (!method.Parameters.Any(parameter => IsContextAwareFactoryParameter(parameter.Type)))
+            {
+                return false;
+            }
+
+            currentApi = "AddType(...)";
+            return true;
+        }
+
+        public static bool TryGetUnkeyedDependencyCandidate(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out ITypeSymbol? serviceType, out string apiName)
+        {
+            serviceType = null;
+            apiName = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+
+            if ((IsFastMoqMockerMethod(method, "GetOrCreateMock") ||
+                 IsFastMoqMockerMethod(method, "GetMock") ||
+                 IsFastMoqMockerMethod(method, "GetRequiredMock")) &&
+                method.TypeArguments.Length == 1)
+            {
+                if (IsFastMoqMockerMethod(method, "GetOrCreateMock") && invocationExpression.ArgumentList.Arguments.Count > 0)
+                {
+                    if (invocationExpression.ArgumentList.Arguments.Any(argument => ContainsServiceKeyAssignment(argument.Expression, semanticModel, cancellationToken)))
+                    {
+                        return false;
+                    }
+
+                    return false;
+                }
+
+                serviceType = method.TypeArguments[0];
+                apiName = method.Name + "<>()";
+                return true;
+            }
+
+            if (!IsFastMoqMockerMethod(method, "AddType") || method.TypeArguments.Length == 0 || method.Parameters.Any(parameter => IsContextAwareFactoryParameter(parameter.Type)))
+            {
+                return false;
+            }
+
+            serviceType = method.TypeArguments[0];
+            apiName = method.TypeArguments.Length == 1 ? "AddType<T>(...)" : "AddType<TInterface, TClass>(...)";
+            return true;
+        }
+
+        public static bool DocumentContainsKeyedRegistration(SyntaxNode root, SemanticModel semanticModel, ITypeSymbol serviceType, CancellationToken cancellationToken)
+        {
+            foreach (var invocationExpression in root.DescendantNodes().OfType<InvocationExpressionSyntax>())
+            {
+                if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
+                {
+                    continue;
+                }
+
+                method = method.ReducedFrom ?? method;
+                if (IsFastMoqMockerMethod(method, "AddKeyedType") && method.TypeArguments.Length > 0 && SymbolEqualityComparer.Default.Equals(method.TypeArguments[0], serviceType))
+                {
+                    return true;
+                }
+
+                if (IsFastMoqMockerMethod(method, "GetOrCreateMock") && method.TypeArguments.Length == 1 && SymbolEqualityComparer.Default.Equals(method.TypeArguments[0], serviceType))
+                {
+                    if (invocationExpression.ArgumentList.Arguments.Any(argument => ContainsServiceKeyAssignment(argument.Expression, semanticModel, cancellationToken)))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static bool TryGetTargetTypeWithDuplicateKeyedDependency(SyntaxNode node, SemanticModel semanticModel, ITypeSymbol serviceType, CancellationToken cancellationToken, out string targetTypeName)
+        {
+            foreach (var targetType in GetCandidateTestTargetTypes(node, semanticModel, cancellationToken))
+            {
+                if (HasDuplicateKeyedDependencies(targetType, serviceType))
+                {
+                    targetTypeName = targetType.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+                    return true;
+                }
+            }
+
+            targetTypeName = string.Empty;
+            return false;
+        }
+
+        private static bool ContainsServiceKeyAssignment(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = Unwrap(expression);
+
+            if (expression is ObjectCreationExpressionSyntax objectCreationExpression)
+            {
+                return objectCreationExpression.Initializer?.Expressions
+                    .OfType<AssignmentExpressionSyntax>()
+                    .Any(assignment => assignment.Left.ToString().EndsWith("ServiceKey", StringComparison.Ordinal)) == true;
+            }
+
+            if (expression is ImplicitObjectCreationExpressionSyntax implicitObjectCreationExpression)
+            {
+                return implicitObjectCreationExpression.Initializer?.Expressions
+                    .OfType<AssignmentExpressionSyntax>()
+                    .Any(assignment => assignment.Left.ToString().EndsWith("ServiceKey", StringComparison.Ordinal)) == true;
+            }
+
+            if (expression is IdentifierNameSyntax identifierName && semanticModel.GetSymbolInfo(identifierName, cancellationToken).Symbol is ILocalSymbol localSymbol)
+            {
+                var declaration = localSymbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax(cancellationToken) as VariableDeclaratorSyntax;
+                if (declaration?.Initializer?.Value is ExpressionSyntax initializer)
+                {
+                    return ContainsServiceKeyAssignment(initializer, semanticModel, cancellationToken);
+                }
+            }
+
+            return false;
+        }
+
+        private static IEnumerable<INamedTypeSymbol> GetCandidateTestTargetTypes(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            var results = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
+
+            if (TryGetContainingMockerTestBaseTargetType(node, semanticModel, cancellationToken, out var baseTargetType))
+            {
+                results.Add(baseTargetType);
+            }
+
+            var scope = node.AncestorsAndSelf().FirstOrDefault(ancestor =>
+                ancestor is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax)
+                ?? node.SyntaxTree.GetRoot(cancellationToken);
+
+            foreach (var invocationExpression in scope.DescendantNodes().OfType<InvocationExpressionSyntax>())
+            {
+                if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
+                {
+                    continue;
+                }
+
+                method = method.ReducedFrom ?? method;
+                if (IsFastMoqMockerMethod(method, "CreateInstance") && method.TypeArguments.Length == 1 && method.TypeArguments[0] is INamedTypeSymbol createInstanceType)
+                {
+                    results.Add(createInstanceType);
+                }
+            }
+
+            return results;
+        }
+
+        private static bool TryGetContainingMockerTestBaseTargetType(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken, out INamedTypeSymbol targetType)
+        {
+            var typeDeclaration = node.AncestorsAndSelf().OfType<TypeDeclarationSyntax>().FirstOrDefault();
+            if (typeDeclaration is null || semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken) is not INamedTypeSymbol containingType)
+            {
+                targetType = default!;
+                return false;
+            }
+
+            for (var current = containingType.BaseType; current is not null; current = current.BaseType)
+            {
+                if (current.OriginalDefinition.MetadataName == FASTMOQ_MOCKER_TEST_BASE_METADATA_NAME &&
+                    current.OriginalDefinition.ContainingNamespace.ToDisplayString() == "FastMoq" &&
+                    current.TypeArguments.Length == 1 &&
+                    current.TypeArguments[0] is INamedTypeSymbol namedTargetType)
+                {
+                    targetType = namedTargetType;
+                    return true;
+                }
+            }
+
+            targetType = default!;
+            return false;
+        }
+
+        private static bool HasDuplicateKeyedDependencies(INamedTypeSymbol targetType, ITypeSymbol serviceType)
+        {
+            foreach (var constructor in targetType.InstanceConstructors)
+            {
+                if (constructor.IsStatic)
+                {
+                    continue;
+                }
+
+                var keyedParameters = constructor.Parameters
+                    .Where(parameter => SymbolEqualityComparer.Default.Equals(parameter.Type, serviceType) && HasFromKeyedServicesAttribute(parameter))
+                    .ToArray();
+
+                if (keyedParameters.Length >= 2)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool HasFromKeyedServicesAttribute(IParameterSymbol parameter)
+        {
+            return parameter.GetAttributes().Any(attribute => attribute.AttributeClass?.ToDisplayString() == FROM_KEYED_SERVICES_ATTRIBUTE);
+        }
+
+        private static bool IsContextAwareFactoryParameter(ITypeSymbol type)
+        {
+            if (type is not INamedTypeSymbol namedType || namedType.DelegateInvokeMethod is null)
+            {
+                return false;
+            }
+
+            var invokeMethod = namedType.DelegateInvokeMethod;
+            return namedType.Name == "Func" &&
+                   invokeMethod.Parameters.Length == 2 &&
+                   invokeMethod.Parameters[0].Type.ToDisplayString() == "FastMoq.Mocker";
         }
 
         public static bool IsProviderSelectedByDefault(Compilation compilation, string providerName, CancellationToken cancellationToken)

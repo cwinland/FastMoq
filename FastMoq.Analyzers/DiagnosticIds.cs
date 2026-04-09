@@ -14,5 +14,8 @@ namespace FastMoq.Analyzers
         public const string PreferTypedProviderExtensions = "FMOQ0010";
         public const string PreferWebTestHelpers = "FMOQ0011";
         public const string PreferProviderNeutralHttpHelpers = "FMOQ0012";
+        public const string PreferTypedServiceProviderHelpers = "FMOQ0013";
+        public const string PreferKnownTypeRegistrations = "FMOQ0014";
+        public const string PreserveKeyedServiceDistinctness = "FMOQ0015";
     }
 }

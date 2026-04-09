@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Core", "FastMoq.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Database", "FastMoq.Database\FastMoq.Database.csproj", "{D58D5C37-1488-43F7-B9A3-FCB22D836181}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.AzureFunctions", "FastMoq.AzureFunctions\FastMoq.AzureFunctions.csproj", "{C454C90C-608E-4E49-BEB2-F5AC65B08FA2}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Provider.Moq", "FastMoq.Provider.Moq\FastMoq.Provider.Moq.csproj", "{67C1E7B7-6CFB-4717-A298-5463BEAF7A76}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Provider.NSubstitute", "FastMoq.Provider.NSubstitute\FastMoq.Provider.NSubstitute.csproj", "{2D0DB9A4-C2C8-4A1C-8A0F-0D2B9810E907}"
@@ -41,6 +43,10 @@ Global
 		{D58D5C37-1488-43F7-B9A3-FCB22D836181}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{D58D5C37-1488-43F7-B9A3-FCB22D836181}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D58D5C37-1488-43F7-B9A3-FCB22D836181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C454C90C-608E-4E49-BEB2-F5AC65B08FA2}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{C454C90C-608E-4E49-BEB2-F5AC65B08FA2}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{C454C90C-608E-4E49-BEB2-F5AC65B08FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C454C90C-608E-4E49-BEB2-F5AC65B08FA2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{67C1E7B7-6CFB-4717-A298-5463BEAF7A76}.Debug|Any CPU.ActiveCfg = Release|Any CPU
 		{67C1E7B7-6CFB-4717-A298-5463BEAF7A76}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{67C1E7B7-6CFB-4717-A298-5463BEAF7A76}.Release|Any CPU.ActiveCfg = Release|Any CPU

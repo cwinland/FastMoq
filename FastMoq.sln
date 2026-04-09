@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Provider.NSubstitut
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Database", "FastMoq.Database\FastMoq.Database.csproj", "{709A0700-13A7-46D3-AE74-B1BEE6F378A3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.AzureFunctions", "FastMoq.AzureFunctions\FastMoq.AzureFunctions.csproj", "{C454C90C-608E-4E49-BEB2-F5AC65B08FA2}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Web", "FastMoq.Web\FastMoq.Web.csproj", "{05BDE42B-E317-4837-B435-BA18C6C4F112}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Analyzers", "FastMoq.Analyzers\FastMoq.Analyzers.csproj", "{9C23B820-1B56-4FEE-9ED7-7D7F0F2327A4}"
@@ -71,6 +73,10 @@ Global
 		{709A0700-13A7-46D3-AE74-B1BEE6F378A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{709A0700-13A7-46D3-AE74-B1BEE6F378A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{709A0700-13A7-46D3-AE74-B1BEE6F378A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C454C90C-608E-4E49-BEB2-F5AC65B08FA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C454C90C-608E-4E49-BEB2-F5AC65B08FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C454C90C-608E-4E49-BEB2-F5AC65B08FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C454C90C-608E-4E49-BEB2-F5AC65B08FA2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{05BDE42B-E317-4837-B435-BA18C6C4F112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{05BDE42B-E317-4837-B435-BA18C6C4F112}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05BDE42B-E317-4837-B435-BA18C6C4F112}.Release|Any CPU.ActiveCfg = Release|Any CPU
