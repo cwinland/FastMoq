@@ -154,7 +154,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.BuiltInTypeResolutionFlags",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.BuiltInTypeResolutionFlags.yml\" sourcestartlinenumber=\"1\">Specifies which built-in framework and utility types <xref href=\"FastMoq.Mocker\" data-throw-if-not-resolved=\"false\"></xref> may resolve automatically.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -546,7 +546,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Models.IDbContextMock<TEntity>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.IDbContextMock-1.yml\" sourcestartlinenumber=\"1\">Describes a strongly typed FastMoq DbContext mock wrapper.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -560,7 +560,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Models.IDbContextMock",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.IDbContextMock.yml\" sourcestartlinenumber=\"1\">Describes the DbContext-specific setup operations exposed by FastMoq's legacy DbContext mock wrappers.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -574,7 +574,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Models.IDbSetMock",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.IDbSetMock.yml\" sourcestartlinenumber=\"1\">Describes the setup operations used to prepare DbSet mocks for synchronous and asynchronous query execution.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -616,7 +616,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Models.InstanceFunction<T>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.InstanceFunction-1.yml\" sourcestartlinenumber=\"1\">Stores a strongly typed factory delegate that creates instances of <code class=\"typeparamref\">T</code>.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -630,7 +630,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Models.InstanceFunction",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.InstanceFunction.yml\" sourcestartlinenumber=\"1\">Stores a late-bound factory delegate that can create an instance of a specific runtime type.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -686,7 +686,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Models.MockAsyncEnumerable<T>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.MockAsyncEnumerable-1.yml\" sourcestartlinenumber=\"1\">Wraps an enumerable or expression tree so EF Core async query APIs can enumerate it through <xref href=\"System.Collections.Generic.IAsyncEnumerable%601\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -700,7 +700,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Models.MockAsyncEnumerator<T>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.MockAsyncEnumerator-1.yml\" sourcestartlinenumber=\"1\">Adapts a synchronous enumerator to <xref href=\"System.Collections.Generic.IAsyncEnumerator%601\" data-throw-if-not-resolved=\"false\"></xref> for EF Core async query testing.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -714,7 +714,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Models.MockDbContextOptions<T>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.MockDbContextOptions-1.yml\" sourcestartlinenumber=\"1\">Legacy Moq wrapper for <xref href=\"Microsoft.EntityFrameworkCore.DbContextOptions%601\" data-throw-if-not-resolved=\"false\"></xref> used by older DbContext mock creation paths.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -756,7 +756,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Models.ObservableExceptionLog",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.ObservableExceptionLog.yml\" sourcestartlinenumber=\"1\">Exposes a read-only, observable view of exception messages captured by a <xref href=\"FastMoq.Mocker\" data-throw-if-not-resolved=\"false\"></xref> during resolution and invocation.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -770,7 +770,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.Models.ObservableLogEntries",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/FastMoq.Models.ObservableLogEntries.yml\" sourcestartlinenumber=\"1\">Exposes a read-only, observable view of <xref href=\"FastMoq.Models.LogEntry\" data-throw-if-not-resolved=\"false\"></xref> values captured by FastMoq logger interception.</p>\n"
     },
     {
       "type": "ManagedReference",

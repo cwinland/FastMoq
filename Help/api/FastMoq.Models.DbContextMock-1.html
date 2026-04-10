@@ -357,50 +357,6 @@ Implements the <span class="xref">Moq.Mock&lt;T&gt;</span></p>
       </tr>
     </tbody>
   </table>
-  <h5 id="FastMoq_Models_DbContextMock_1_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>Any interface type can be used for mocking, but for classes, only abstract and virtual members can be mocked.</p>
-<p>
-  The behavior of the mock with regards to the setups and the actual calls is determined by the optional
-  <span class="xref">Moq.MockBehavior</span> that can be passed to the <span class="xref">Moq.Mock&lt;T&gt;.Mock(Moq.MockBehavior)</span> constructor.
-</p>
-</div>
-  <h5 id="FastMoq_Models_DbContextMock_1_examples"><strong>Examples</strong></h5>
-  <p>The following example shows establishing setups with specific values for method invocations:</p>
-<pre><code class="lang-csharp">// Arrange
-var order = new Order(TALISKER, 50);
-var warehouse = new Mock&lt;IWarehouse&gt;();
-warehouse.Setup(w =&gt; w.HasInventory(TALISKER, 50)).Returns(true);
-
-// Act
-order.Fill(warehouse.Object);
-
-// Assert
-Assert.True(order.IsFilled);</code></pre>
-
-  <p>The following example shows how to use the <span class="xref">Moq.It</span> class
-to specify conditions for arguments instead of specific values:</p>
-<pre><code class="lang-csharp">// Arrange
-var order = new Order(TALISKER, 50);
-var warehouse = new Mock&lt;IWarehouse&gt;();
-
-// shows how to expect a value within a range:
-warehouse.Setup(x =&gt; x.HasInventory(
-                         It.IsAny&lt;string&gt;(),
-                         It.IsInRange(0, 100, Range.Inclusive)))
-         .Returns(false);
-
-// shows how to throw for unexpected calls.
-warehouse.Setup(x =&gt; x.Remove(
-                         It.IsAny&lt;string&gt;(),
-                         It.IsAny&lt;int&gt;()))
-         .Throws(new InvalidOperationException());
-
-// Act
-order.Fill(warehouse.Object);
-
-// Assert
-Assert.False(order.IsFilled);</code></pre>
-
   <h3 id="constructors">Constructors
 </h3>
   <a id="FastMoq_Models_DbContextMock_1__ctor_" data-uid="FastMoq.Models.DbContextMock`1.#ctor*"></a>
@@ -588,7 +544,8 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
 </h3>
   <a id="FastMoq_Models_DbContextMock_1_SetupDbContextSetMethods_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbContextSetMethods*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_SetupDbContextSetMethods_System_Reflection_PropertyInfo_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbContextSetMethods(System.Reflection.PropertyInfo)">SetupDbContextSetMethods(PropertyInfo)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures the <code>Set&lt;TEntity&gt;</code> style methods on the mocked DbContext for the supplied DbSet property.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -607,13 +564,15 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a></td>
         <td><span class="parametername">propertyInfo</span></td>
-        <td></td>
+        <td><p>The DbSet property being mapped back to the corresponding <code>Set&lt;TEntity&gt;</code> methods.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_DbContextMock_1_SetupDbSetProperties_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetProperties*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_SetupDbSetProperties_System_Reflection_PropertyInfo_System_Object_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetProperties(System.Reflection.PropertyInfo,System.Object)">SetupDbSetProperties(PropertyInfo, object)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures DbSet-related properties on the mocked DbContext.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -632,18 +591,21 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a></td>
         <td><span class="parametername">propertyInfo</span></td>
-        <td></td>
+        <td><p>The DbSet property to configure.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
         <td><span class="parametername">value</span></td>
-        <td></td>
+        <td><p>The value the property should return.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_DbContextMock_1_SetupDbSetPropertyGet_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetPropertyGet*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_SetupDbSetPropertyGet_System_Reflection_PropertyInfo_System_Object_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSetPropertyGet(System.Reflection.PropertyInfo,System.Object)">SetupDbSetPropertyGet(PropertyInfo, object)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures the getter for a DbSet property on the mocked DbContext.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -662,18 +624,21 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a></td>
         <td><span class="parametername">propertyInfo</span></td>
-        <td></td>
+        <td><p>The DbSet property whose getter should be configured.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
         <td><span class="parametername">value</span></td>
-        <td></td>
+        <td><p>The value the getter should return.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_DbContextMock_1_SetupDbSets_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSets*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_SetupDbSets_FastMoq_Mocker_" data-uid="FastMoq.Models.DbContextMock`1.SetupDbSets(FastMoq.Mocker)">SetupDbSets(Mocker)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures all DbSet properties and related helper methods for the current DbContext mock.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -692,7 +657,8 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocks</span></td>
-        <td></td>
+        <td><p>The owning mocker used to resolve nested set dependencies.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -707,13 +673,15 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
     <tbody>
       <tr>
         <td><a class="xref" href="FastMoq.Models.DbContextMock-1.html">DbContextMock</a>&lt;TEntity&gt;</td>
-        <td></td>
+        <td><p>The current DbContext mock instance for fluent chaining.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_DbContextMock_1_SetupSetMethod_" data-uid="FastMoq.Models.DbContextMock`1.SetupSetMethod*"></a>
   <h4 id="FastMoq_Models_DbContextMock_1_SetupSetMethod_System_Type_System_Delegate_System_Type___System_Object___" data-uid="FastMoq.Models.DbContextMock`1.SetupSetMethod(System.Type,System.Delegate,System.Type[],System.Object[])">SetupSetMethod(Type, Delegate, Type[]?, object?[]?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures the generic <code>Set&lt;TEntity&gt;</code> method for the supplied entity type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -732,22 +700,26 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">setType</span></td>
-        <td></td>
+        <td><p>The entity type represented by the configured DbSet.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Delegate</a></td>
         <td><span class="parametername">propValueDelegate</span></td>
-        <td></td>
+        <td><p>A delegate that returns the DbSet instance for the configured entity type.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>[]</td>
         <td><span class="parametername">types</span></td>
-        <td></td>
+        <td><p>Optional generic type arguments to apply when building the setup expression.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
         <td><span class="parametername">parameters</span></td>
-        <td></td>
+        <td><p>Optional method parameters to use while building the setup expression.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -854,7 +826,7 @@ Defaults to <a href="https://learn.microsoft.com/dotnet/csharp/language-referenc
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 23:07 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

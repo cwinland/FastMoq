@@ -22,10 +22,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IDbSetMock
     path: FastMoq.Database/Models/IDbSetMock.cs
-    startLine: 2
+    startLine: 5
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Describes the setup operations used to prepare DbSet mocks for synchronous and asynchronous query execution.
+  example: []
   syntax:
     content: public interface IDbSetMock
     content.vb: Public Interface IDbSetMock
@@ -69,10 +71,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAsyncListMethods
     path: FastMoq.Database/Models/IDbSetMock.cs
-    startLine: 4
+    startLine: 10
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures the asynchronous enumeration members required for EF Core async query support.
+  example: []
   syntax:
     content: void SetupAsyncListMethods()
     content.vb: Sub SetupAsyncListMethods()
@@ -95,10 +99,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupListMethods
     path: FastMoq.Database/Models/IDbSetMock.cs
-    startLine: 5
+    startLine: 15
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures the synchronous list and query members on the DbSet mock.
+  example: []
   syntax:
     content: void SetupListMethods()
     content.vb: Sub SetupListMethods()
@@ -121,10 +127,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockMethods
     path: FastMoq.Database/Models/IDbSetMock.cs
-    startLine: 6
+    startLine: 20
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Runs the full default setup pipeline for the DbSet mock.
+  example: []
   syntax:
     content: void SetupMockMethods()
     content.vb: Sub SetupMockMethods()

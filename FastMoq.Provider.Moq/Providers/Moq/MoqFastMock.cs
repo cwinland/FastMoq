@@ -1,5 +1,3 @@
-using Moq;
-
 namespace FastMoq.Providers.MoqProvider
 {
     internal class MoqFastMock : IFastMock

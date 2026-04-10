@@ -37,7 +37,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MoqMockingProvider
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 10
+    startLine: 9
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -96,7 +96,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 15
+    startLine: 14
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -125,7 +125,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Capabilities
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 24
+    startLine: 23
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -158,7 +158,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsCallBase
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 29
+    startLine: 28
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -191,7 +191,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsSetupAllProperties
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 34
+    startLine: 33
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -224,7 +224,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsProtectedMembers
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 39
+    startLine: 38
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -257,7 +257,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsInvocationTracking
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 44
+    startLine: 43
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -290,7 +290,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsLoggerCapture
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 49
+    startLine: 48
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -323,7 +323,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 54
+    startLine: 53
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -360,7 +360,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 63
+    startLine: 62
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -400,7 +400,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 84
+    startLine: 83
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -440,7 +440,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAllProperties
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 109
+    startLine: 108
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -473,7 +473,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetCallBase
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 118
+    startLine: 117
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -511,7 +511,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 130
+    startLine: 129
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -553,7 +553,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 176
+    startLine: 175
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -586,7 +586,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureProperties
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 206
+    startLine: 205
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -619,7 +619,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 217
+    startLine: 216
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -657,7 +657,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetLegacy
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 239
+    startLine: 238
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -692,7 +692,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TryWrapLegacy
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-    startLine: 248
+    startLine: 247
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider

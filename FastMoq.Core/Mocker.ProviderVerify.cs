@@ -59,7 +59,7 @@ namespace FastMoq
         /// </summary>
         public bool TryGetTrackedMock<T>([NotNullWhen(true)] out IFastMock<T>? mock) where T : class
         {
-            if (!TryGetMockModel(typeof(T), out var model))
+            if (!TryGetMockModel(typeof(T), out var model) || model is null)
             {
                 mock = null;
                 return false;
@@ -74,7 +74,7 @@ namespace FastMoq
         /// </summary>
         public bool TryGetTrackedMock<T>(object serviceKey, [NotNullWhen(true)] out IFastMock<T>? mock) where T : class
         {
-            if (!TryGetMockModel(typeof(T), serviceKey, out var model))
+            if (!TryGetMockModel(typeof(T), serviceKey, out var model) || model is null)
             {
                 mock = null;
                 return false;
@@ -90,7 +90,7 @@ namespace FastMoq
         public bool TryGetTrackedMock(Type type, [NotNullWhen(true)] out IFastMock? mock)
         {
             type = ValidateTrackedMockLookupType(type, nameof(type));
-            if (!TryGetMockModel(type, out var model))
+            if (!TryGetMockModel(type, out var model) || model is null)
             {
                 mock = null;
                 return false;
@@ -108,7 +108,7 @@ namespace FastMoq
             type = ValidateTrackedMockLookupType(type, nameof(type));
             ArgumentNullException.ThrowIfNull(serviceKey);
 
-            if (!TryGetMockModel(type, serviceKey, out var model))
+            if (!TryGetMockModel(type, serviceKey, out var model) || model is null)
             {
                 mock = null;
                 return false;

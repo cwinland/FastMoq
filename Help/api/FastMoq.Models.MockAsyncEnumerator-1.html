@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class MockAsyncEnumerator&lt;T&gt; | FastMoq ">
     
-    
+    <meta name="description" content="Adapts a synchronous enumerator to  for EF Core async query testing.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -81,7 +81,8 @@
 
 
   <h1 id="FastMoq_Models_MockAsyncEnumerator_1" data-uid="FastMoq.Models.MockAsyncEnumerator`1" class="text-break">Class MockAsyncEnumerator&lt;T&gt;</h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Adapts a synchronous enumerator to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerator-1">IAsyncEnumerator&lt;T&gt;</a> for EF Core async query testing.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -134,7 +135,8 @@
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The element type returned by the enumerator.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -142,7 +144,8 @@
 </h3>
   <a id="FastMoq_Models_MockAsyncEnumerator_1__ctor_" data-uid="FastMoq.Models.MockAsyncEnumerator`1.#ctor*"></a>
   <h4 id="FastMoq_Models_MockAsyncEnumerator_1__ctor_System_Collections_Generic_IEnumerator__0__" data-uid="FastMoq.Models.MockAsyncEnumerator`1.#ctor(System.Collections.Generic.IEnumerator{`0})">MockAsyncEnumerator(IEnumerator&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes the async enumerator wrapper.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -161,7 +164,8 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;T&gt;</td>
         <td><span class="parametername">inner</span></td>
-        <td></td>
+        <td><p>The underlying synchronous enumerator.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -169,7 +173,7 @@
 </h3>
   <a id="FastMoq_Models_MockAsyncEnumerator_1_Current_" data-uid="FastMoq.Models.MockAsyncEnumerator`1.Current*"></a>
   <h4 id="FastMoq_Models_MockAsyncEnumerator_1_Current" data-uid="FastMoq.Models.MockAsyncEnumerator`1.Current">Current</h4>
-  <div class="markdown level1 summary"><p>Gets the element in the collection at the current position of the enumerator.</p>
+  <div class="markdown level1 summary"><p>Gets the current element in the underlying enumeration.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -187,8 +191,7 @@
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td><p>The element in the collection at the current position of the enumerator.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -196,7 +199,7 @@
 </h3>
   <a id="FastMoq_Models_MockAsyncEnumerator_1_DisposeAsync_" data-uid="FastMoq.Models.MockAsyncEnumerator`1.DisposeAsync*"></a>
   <h4 id="FastMoq_Models_MockAsyncEnumerator_1_DisposeAsync" data-uid="FastMoq.Models.MockAsyncEnumerator`1.DisposeAsync">DisposeAsync()</h4>
-  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.</p>
+  <div class="markdown level1 summary"><p>Disposes the underlying synchronous enumerator.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -214,14 +217,14 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
-        <td><p>A task that represents the asynchronous dispose operation.</p>
+        <td><p>A completed <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_MockAsyncEnumerator_1_MoveNextAsync_" data-uid="FastMoq.Models.MockAsyncEnumerator`1.MoveNextAsync*"></a>
   <h4 id="FastMoq_Models_MockAsyncEnumerator_1_MoveNextAsync" data-uid="FastMoq.Models.MockAsyncEnumerator`1.MoveNextAsync">MoveNextAsync()</h4>
-  <div class="markdown level1 summary"><p>Advances the enumerator asynchronously to the next element of the collection.</p>
+  <div class="markdown level1 summary"><p>Advances the underlying enumerator to the next element.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -239,7 +242,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</td>
-        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask&lt;TResult&gt;</a> that will complete with a result of <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the enumerator was successfully advanced to the next element, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if the enumerator has passed the end of the collection.</p>
+        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask&lt;TResult&gt;</a> whose result indicates whether the enumerator advanced successfully.</p>
 </td>
       </tr>
     </tbody>
@@ -331,7 +334,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-09 23:07 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

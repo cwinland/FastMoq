@@ -23,14 +23,17 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceFunction
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 63
+    startLine: 89
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Stores a strongly typed factory delegate that creates instances of <code class="typeparamref">T</code>.
+  example: []
   syntax:
     content: 'public class InstanceFunction<T> : InstanceFunction'
     typeParameters:
     - id: T
+      description: The runtime type produced by the stored factory delegate.
     content.vb: Public Class InstanceFunction(Of T) Inherits InstanceFunction
   inheritance:
   - System.Object
@@ -88,10 +91,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 66
+    startLine: 94
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Initializes an empty instance function for <code class="typeparamref">T</code>.
+  example: []
   syntax:
     content: public InstanceFunction()
     content.vb: Public Sub New()
@@ -117,15 +122,18 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 68
+    startLine: 100
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Initializes the instance function with a factory that accepts only the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref>.
+  example: []
   syntax:
     content: public InstanceFunction(Func<Mocker, T?> singleParamFunc)
     parameters:
     - id: singleParamFunc
       type: System.Func{FastMoq.Mocker,{T}}
+      description: The factory delegate to invoke when no extra parameter value is supplied.
     content.vb: Public Sub New(singleParamFunc As Func(Of Mocker, T))
   overload: FastMoq.Models.InstanceFunction`1.#ctor*
   nameWithType.vb: InstanceFunction(Of T).New(Func(Of Mocker, T))
@@ -149,15 +157,18 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 73
+    startLine: 109
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Initializes the instance function with a factory that accepts the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> and one extra parameter value.
+  example: []
   syntax:
     content: public InstanceFunction(Func<Mocker, object?, T?> doubleParamFunc)
     parameters:
     - id: doubleParamFunc
       type: System.Func{FastMoq.Mocker,System.Object,{T}}
+      description: The factory delegate to invoke when one extra parameter value is supplied.
     content.vb: Public Sub New(doubleParamFunc As Func(Of Mocker, Object, T))
   overload: FastMoq.Models.InstanceFunction`1.#ctor*
   nameWithType.vb: InstanceFunction(Of T).New(Func(Of Mocker, Object, T))
@@ -181,21 +192,30 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Invoke
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 78
+    startLine: 121
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Invokes the stored strongly typed factory delegate.
+  example: []
   syntax:
     content: public T? Invoke(Mocker mocker, params object?[]? parameters)
     parameters:
     - id: mocker
       type: FastMoq.Mocker
+      description: The active mocker used as the first delegate argument.
     - id: parameters
       type: System.Object[]
+      description: Optional extra parameters passed to delegates that accept a second argument.
     return:
       type: '{T}'
+      description: The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when the stored delegate returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
     content.vb: Public Function Invoke(mocker As Mocker, ParamArray parameters As Object()) As T
   overload: FastMoq.Models.InstanceFunction`1.Invoke*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when no compatible delegate has been assigned.
   nameWithType.vb: InstanceFunction(Of T).Invoke(Mocker, ParamArray Object())
   fullName.vb: FastMoq.Models.InstanceFunction(Of T).Invoke(FastMoq.Mocker, ParamArray Object())
   name.vb: Invoke(Mocker, ParamArray Object())
@@ -3535,6 +3555,13 @@ references:
   nameWithType.vb: InstanceFunction(Of T).New
   fullName.vb: FastMoq.Models.InstanceFunction(Of T).New
   name.vb: New
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
 - uid: System.Func{FastMoq.Mocker,{T}}
   commentId: T:System.Func{FastMoq.Mocker,``0}
   parent: System
@@ -3574,6 +3601,12 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: FastMoq
+  commentId: N:FastMoq
+  href: FastMoq.html
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq
 - uid: System.Func`2
   commentId: T:System.Func`2
   isExternal: true
@@ -3699,6 +3732,13 @@ references:
   - name: " "
   - name: TResult
   - name: )
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
 - uid: FastMoq.Models.InstanceFunction`1.Invoke*
   commentId: Overload:FastMoq.Models.InstanceFunction`1.Invoke
   href: FastMoq.Models.InstanceFunction-1.html#FastMoq_Models_InstanceFunction_1_Invoke_FastMoq_Mocker_System_Object___
@@ -3707,13 +3747,6 @@ references:
   fullName: FastMoq.Models.InstanceFunction<T>.Invoke
   nameWithType.vb: InstanceFunction(Of T).Invoke
   fullName.vb: FastMoq.Models.InstanceFunction(Of T).Invoke
-- uid: FastMoq.Mocker
-  commentId: T:FastMoq.Mocker
-  parent: FastMoq
-  href: FastMoq.Mocker.html
-  name: Mocker
-  nameWithType: Mocker
-  fullName: FastMoq.Mocker
 - uid: System.Object[]
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system.object
@@ -3743,12 +3776,6 @@ references:
   name: T
   nameWithType: T
   fullName: T
-- uid: FastMoq
-  commentId: N:FastMoq
-  href: FastMoq.html
-  name: FastMoq
-  nameWithType: FastMoq
-  fullName: FastMoq
 - uid: T
   name: T
   nameWithType: T

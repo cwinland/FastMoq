@@ -31,7 +31,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockModel
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 9
+    startLine: 8
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -108,10 +108,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TypedFastMock
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 24
+    startLine: 30
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Gets the provider-agnostic typed fast mock wrapper for <code class="typeparamref">T</code>.
+  example: []
   syntax:
     content: public IFastMock<T> TypedFastMock { get; }
     parameters: []
@@ -139,11 +141,11 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Type
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 25
+    startLine: 35
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Mocked type exposed by the current <xref href="FastMoq.Providers.IFastMock" data-throw-if-not-resolved="false"></xref> instance.
+  summary: Gets the mocked type represented by this model.
   example: []
   syntax:
     content: public override Type Type { get; }
@@ -173,10 +175,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 26
+    startLine: 40
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Gets the typed mocked instance produced by the active provider.
+  example: []
   syntax:
     content: public T Instance { get; }
     parameters: []
@@ -204,31 +208,28 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CompareTo
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 44
+    startLine: 64
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
+  summary: Compares the current model with another object by using the mocked type full name.
   example: []
   syntax:
     content: public override int CompareTo(object? obj)
     parameters:
     - id: obj
       type: System.Object
-      description: An object to compare with this instance.
+      description: The object to compare with the current instance.
     return:
       type: System.Int32
-      description: >-
-        A value that indicates the relative order of the objects being compared. The return value has these meanings:  
-
-         <table><thead><tr><th class="term"> Value</th><th class="description"> Meaning</th></tr></thead><tbody><tr><td class="term"> Less than zero</td><td class="description"> This instance precedes <code class="paramref">obj</code> in the sort order.</td></tr><tr><td class="term"> Zero</td><td class="description"> This instance occurs in the same position in the sort order as <code class="paramref">obj</code>.</td></tr><tr><td class="term"> Greater than zero</td><td class="description"> This instance follows <code class="paramref">obj</code> in the sort order.</td></tr></tbody></table>
+      description: A value indicating the relative sort order of the compared objects.
     content.vb: Public Overrides Function CompareTo(obj As Object) As Integer
   overridden: FastMoq.Models.MockModel.CompareTo(System.Object)
   overload: FastMoq.Models.MockModel`1.CompareTo*
   exceptions:
   - type: System.ArgumentException
     commentId: T:System.ArgumentException
-    description: <code class="paramref">obj</code> is not the same type as this instance.
+    description: Thrown when <code class="paramref">obj</code> is not a <xref href="FastMoq.Models.MockModel%601" data-throw-if-not-resolved="false"></xref>.
   nameWithType.vb: MockModel(Of T).CompareTo(Object)
   fullName.vb: FastMoq.Models.MockModel(Of T).CompareTo(Object)
   name.vb: CompareTo(Object)
@@ -250,21 +251,21 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 47
+    startLine: 72
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Determines whether the specified object is equal to the current object.
+  summary: Determines whether the current typed mock model represents the same mocked type as another object.
   example: []
   syntax:
     content: public override bool Equals(object? obj)
     parameters:
     - id: obj
       type: System.Object
-      description: The object to compare with the current object.
+      description: The object to compare with the current instance.
     return:
       type: System.Boolean
-      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the specified object  is equal to the current object; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when <code class="paramref">obj</code> is a matching <xref href="FastMoq.Models.MockModel%601" data-throw-if-not-resolved="false"></xref>; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
     content.vb: Public Overrides Function Equals(obj As Object) As Boolean
   overridden: FastMoq.Models.MockModel.Equals(System.Object)
   overload: FastMoq.Models.MockModel`1.Equals*
@@ -289,11 +290,11 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetHashCode
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 49
+    startLine: 78
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Serves as the default hash function.
+  summary: Returns a hash code based on the mocked type represented by this model.
   example: []
   syntax:
     content: >-
@@ -302,7 +303,7 @@ items:
       public override int GetHashCode()
     return:
       type: System.Int32
-      description: A hash code for the current object.
+      description: A hash code for the mocked type.
     content.vb: >-
       <ExcludeFromCodeCoverage>
 
@@ -333,10 +334,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: op_Equality
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 52
+    startLine: 87
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Determines whether two typed mock models describe the same mocked type.
+  example: []
   syntax:
     content: >-
       [ExcludeFromCodeCoverage]
@@ -345,10 +348,13 @@ items:
     parameters:
     - id: a
       type: FastMoq.Models.MockModel`1
+      description: The first model to compare.
     - id: b
       type: FastMoq.Models.MockModel`1
+      description: The second model to compare.
     return:
       type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the models are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
     content.vb: >-
       <ExcludeFromCodeCoverage>
 
@@ -379,10 +385,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: op_Inequality
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 54
+    startLine: 96
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Determines whether two typed mock models do not describe the same mocked type.
+  example: []
   syntax:
     content: >-
       [ExcludeFromCodeCoverage]
@@ -391,10 +399,13 @@ items:
     parameters:
     - id: a
       type: FastMoq.Models.MockModel`1
+      description: The first model to compare.
     - id: b
       type: FastMoq.Models.MockModel`1
+      description: The second model to compare.
     return:
       type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the models are not equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
     content.vb: >-
       <ExcludeFromCodeCoverage>
 
@@ -425,11 +436,11 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CompareTo
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 57
+    startLine: 104
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
+  summary: Compares the current typed model with another typed model by using the mocked type full name.
   example: []
   syntax:
     content: >-
@@ -439,13 +450,10 @@ items:
     parameters:
     - id: other
       type: FastMoq.Models.MockModel`1
-      description: An object to compare with this instance.
+      description: The other model to compare against.
     return:
       type: System.Int32
-      description: >-
-        A value that indicates the relative order of the objects being compared. The return value has these meanings:  
-
-         <table><thead><tr><th class="term"> Value</th><th class="description"> Meaning</th></tr></thead><tbody><tr><td class="term"> Less than zero</td><td class="description"> This instance precedes <code class="paramref">other</code> in the sort order.</td></tr><tr><td class="term"> Zero</td><td class="description"> This instance occurs in the same position in the sort order as <code class="paramref">other</code>.</td></tr><tr><td class="term"> Greater than zero</td><td class="description"> This instance follows <code class="paramref">other</code> in the sort order.</td></tr></tbody></table>
+      description: A value indicating the relative sort order of the compared models.
     content.vb: >-
       <ExcludeFromCodeCoverage>
 
@@ -478,11 +486,11 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 60
+    startLine: 113
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Determines whether the specified objects are equal.
+  summary: Determines whether two supplied typed mock models are equal.
   example: []
   syntax:
     content: >-
@@ -492,13 +500,13 @@ items:
     parameters:
     - id: x
       type: FastMoq.Models.MockModel`1
-      description: The first object of type <code class="paramref">T</code> to compare.
+      description: The first model to compare.
     - id: y
       type: FastMoq.Models.MockModel`1
-      description: The second object of type <code class="paramref">T</code> to compare.
+      description: The second model to compare.
     return:
       type: System.Boolean
-      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the specified objects are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the models are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
     content.vb: >-
       <ExcludeFromCodeCoverage>
 
@@ -531,11 +539,11 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetHashCode
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 63
+    startLine: 121
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Returns a hash code for the specified object.
+  summary: Returns a hash code for the supplied typed mock model.
   example: []
   syntax:
     content: >-
@@ -545,19 +553,15 @@ items:
     parameters:
     - id: obj
       type: FastMoq.Models.MockModel`1
-      description: The <xref href="System.Object" data-throw-if-not-resolved="false"></xref> for which a hash code is to be returned.
+      description: The model whose hash code should be returned.
     return:
       type: System.Int32
-      description: A hash code for the specified object.
+      description: A hash code for <code class="paramref">obj</code>.
     content.vb: >-
       <ExcludeFromCodeCoverage>
 
       Public Function GetHashCode(obj As MockModel(Of T)) As Integer
   overload: FastMoq.Models.MockModel`1.GetHashCode*
-  exceptions:
-  - type: System.ArgumentNullException
-    commentId: T:System.ArgumentNullException
-    description: The type of <code class="paramref">obj</code> is a reference type and <code class="paramref">obj</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
   implements:
   - System.Collections.Generic.IEqualityComparer{FastMoq.Models.MockModel`1}.GetHashCode(FastMoq.Models.MockModel{{T}})
   attributes:
@@ -585,11 +589,11 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/MockModelT.cs
-    startLine: 66
+    startLine: 129
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Indicates whether the current object is equal to another object of the same type.
+  summary: Determines whether the current typed model equals another typed model.
   example: []
   syntax:
     content: >-
@@ -599,10 +603,10 @@ items:
     parameters:
     - id: other
       type: FastMoq.Models.MockModel`1
-      description: An object to compare with this object.
+      description: The other model to compare against.
     return:
       type: System.Boolean
-      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the models are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
     content.vb: >-
       <ExcludeFromCodeCoverage>
 
@@ -4452,13 +4456,6 @@ references:
   - uid: FastMoq.Providers
     name: Providers
     href: FastMoq.Providers.html
-- uid: FastMoq.Providers.IFastMock
-  commentId: T:FastMoq.Providers.IFastMock
-  parent: FastMoq.Providers
-  href: FastMoq.Providers.IFastMock.html
-  name: IFastMock
-  nameWithType: IFastMock
-  fullName: FastMoq.Providers.IFastMock
 - uid: FastMoq.Models.MockModel.Type
   commentId: P:FastMoq.Models.MockModel.Type
   parent: FastMoq.Models.MockModel
@@ -4500,6 +4497,32 @@ references:
   name: T
   nameWithType: T
   fullName: T
+- uid: FastMoq.Models.MockModel`1
+  commentId: T:FastMoq.Models.MockModel`1
+  parent: FastMoq.Models
+  href: FastMoq.Models.MockModel-1.html
+  name: MockModel<T>
+  nameWithType: MockModel<T>
+  fullName: FastMoq.Models.MockModel<T>
+  nameWithType.vb: MockModel(Of T)
+  fullName.vb: FastMoq.Models.MockModel(Of T)
+  name.vb: MockModel(Of T)
+  spec.csharp:
+  - uid: FastMoq.Models.MockModel`1
+    name: MockModel
+    href: FastMoq.Models.MockModel-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: FastMoq.Models.MockModel`1
+    name: MockModel
+    href: FastMoq.Models.MockModel-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: System.ArgumentException
   commentId: T:System.ArgumentException
   isExternal: true
@@ -4649,32 +4672,6 @@ references:
   - uid: FastMoq.Models.MockModel`1.op_Equality*
     name: ==
     href: FastMoq.Models.MockModel-1.html#FastMoq_Models_MockModel_1_op_Equality_FastMoq_Models_MockModel__0__FastMoq_Models_MockModel__0__
-- uid: FastMoq.Models.MockModel`1
-  commentId: T:FastMoq.Models.MockModel`1
-  parent: FastMoq.Models
-  href: FastMoq.Models.MockModel-1.html
-  name: MockModel<T>
-  nameWithType: MockModel<T>
-  fullName: FastMoq.Models.MockModel<T>
-  nameWithType.vb: MockModel(Of T)
-  fullName.vb: FastMoq.Models.MockModel(Of T)
-  name.vb: MockModel(Of T)
-  spec.csharp:
-  - uid: FastMoq.Models.MockModel`1
-    name: MockModel
-    href: FastMoq.Models.MockModel-1.html
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: FastMoq.Models.MockModel`1
-    name: MockModel
-    href: FastMoq.Models.MockModel-1.html
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
 - uid: FastMoq.Models.MockModel`1.op_Inequality*
   commentId: Overload:FastMoq.Models.MockModel`1.op_Inequality
   href: FastMoq.Models.MockModel-1.html#FastMoq_Models_MockModel_1_op_Inequality_FastMoq_Models_MockModel__0__FastMoq_Models_MockModel__0__
@@ -4842,13 +4839,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: System.ArgumentNullException
-  commentId: T:System.ArgumentNullException
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
-  name: ArgumentNullException
-  nameWithType: ArgumentNullException
-  fullName: System.ArgumentNullException
 - uid: System.Collections.Generic.IEqualityComparer{FastMoq.Models.MockModel`1}.GetHashCode(FastMoq.Models.MockModel{{T}})
   commentId: M:System.Collections.Generic.IEqualityComparer{FastMoq.Models.MockModel`1}.GetHashCode(FastMoq.Models.MockModel{`0})
   parent: System.Collections.Generic.IEqualityComparer{FastMoq.Models.MockModel`1}

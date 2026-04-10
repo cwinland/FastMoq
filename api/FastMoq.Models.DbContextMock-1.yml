@@ -30,7 +30,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContextMock
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 16
+    startLine: 12
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -38,71 +38,7 @@ items:
     Wrapper for Mock.
 
     Implements the <xref href="Moq.Mock%601" data-throw-if-not-resolved="false"></xref>
-  remarks: >-
-    Any interface type can be used for mocking, but for classes, only abstract and virtual members can be mocked.
-
-
-    <p>
-      The behavior of the mock with regards to the setups and the actual calls is determined by the optional
-      <xref href="Moq.MockBehavior" data-throw-if-not-resolved="false"></xref> that can be passed to the <xref href="Moq.Mock%601.%23ctor(Moq.MockBehavior)" data-throw-if-not-resolved="false"></xref> constructor.
-    </p>
-  example:
-  - >-
-    The following example shows establishing setups with specific values for method invocations:
-
-
-    <pre><code class="lang-csharp">// Arrange
-
-    var order = new Order(TALISKER, 50);
-
-    var warehouse = new Mock&lt;IWarehouse&gt;();
-
-    warehouse.Setup(w =&gt; w.HasInventory(TALISKER, 50)).Returns(true);
-
-
-    // Act
-
-    order.Fill(warehouse.Object);
-
-
-    // Assert
-
-    Assert.True(order.IsFilled);</code></pre>
-  - >-
-    The following example shows how to use the <xref href="Moq.It" data-throw-if-not-resolved="false"></xref> class
-
-    to specify conditions for arguments instead of specific values:
-
-
-    <pre><code class="lang-csharp">// Arrange
-
-    var order = new Order(TALISKER, 50);
-
-    var warehouse = new Mock&lt;IWarehouse&gt;();
-
-
-    // shows how to expect a value within a range:
-
-    warehouse.Setup(x =&gt; x.HasInventory(
-                             It.IsAny&lt;string&gt;(),
-                             It.IsInRange(0, 100, Range.Inclusive)))
-             .Returns(false);
-
-    // shows how to throw for unexpected calls.
-
-    warehouse.Setup(x =&gt; x.Remove(
-                             It.IsAny&lt;string&gt;(),
-                             It.IsAny&lt;int&gt;()))
-             .Throws(new InvalidOperationException());
-
-    // Act
-
-    order.Fill(warehouse.Object);
-
-
-    // Assert
-
-    Assert.False(order.IsFilled);</code></pre>
+  example: []
   syntax:
     content: 'public class DbContextMock<TEntity> : Mock<TEntity>, IMock<TEntity>, IDbContextMock<TEntity>, IDbContextMock where TEntity : DbContext'
     typeParameters:
@@ -243,7 +179,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CallBase
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 19
+    startLine: 15
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -280,7 +216,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 28
+    startLine: 24
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -312,7 +248,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 31
+    startLine: 27
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -348,7 +284,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 34
+    startLine: 30
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -391,7 +327,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 37
+    startLine: 33
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -433,7 +369,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 42
+    startLine: 38
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
@@ -478,16 +414,18 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbContextSetMethods
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 65
+    startLine: 61
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures the <code>Set&lt;TEntity&gt;</code> style methods on the mocked DbContext for the supplied DbSet property.
   example: []
   syntax:
     content: public void SetupDbContextSetMethods(PropertyInfo propertyInfo)
     parameters:
     - id: propertyInfo
       type: System.Reflection.PropertyInfo
+      description: The DbSet property being mapped back to the corresponding <code>Set&lt;TEntity&gt;</code> methods.
     content.vb: Public Sub SetupDbContextSetMethods(propertyInfo As PropertyInfo)
   overload: FastMoq.Models.DbContextMock`1.SetupDbContextSetMethods*
   implements:
@@ -512,18 +450,21 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetProperties
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 87
+    startLine: 83
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures DbSet-related properties on the mocked DbContext.
   example: []
   syntax:
     content: public virtual void SetupDbSetProperties(PropertyInfo propertyInfo, object value)
     parameters:
     - id: propertyInfo
       type: System.Reflection.PropertyInfo
+      description: The DbSet property to configure.
     - id: value
       type: System.Object
+      description: The value the property should return.
     content.vb: Public Overridable Sub SetupDbSetProperties(propertyInfo As PropertyInfo, value As Object)
   overload: FastMoq.Models.DbContextMock`1.SetupDbSetProperties*
   implements:
@@ -549,18 +490,21 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetPropertyGet
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 94
+    startLine: 90
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures the getter for a DbSet property on the mocked DbContext.
   example: []
   syntax:
     content: public void SetupDbSetPropertyGet(PropertyInfo propertyInfo, object value)
     parameters:
     - id: propertyInfo
       type: System.Reflection.PropertyInfo
+      description: The DbSet property whose getter should be configured.
     - id: value
       type: System.Object
+      description: The value the getter should return.
     content.vb: Public Sub SetupDbSetPropertyGet(propertyInfo As PropertyInfo, value As Object)
   overload: FastMoq.Models.DbContextMock`1.SetupDbSetPropertyGet*
   implements:
@@ -586,22 +530,27 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupSetMethod
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 103
+    startLine: 99
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures the generic <code>Set&lt;TEntity&gt;</code> method for the supplied entity type.
   example: []
   syntax:
     content: public void SetupSetMethod(Type setType, Delegate propValueDelegate, Type[]? types = null, object?[]? parameters = null)
     parameters:
     - id: setType
       type: System.Type
+      description: The entity type represented by the configured DbSet.
     - id: propValueDelegate
       type: System.Delegate
+      description: A delegate that returns the DbSet instance for the configured entity type.
     - id: types
       type: System.Type[]
+      description: Optional generic type arguments to apply when building the setup expression.
     - id: parameters
       type: System.Object[]
+      description: Optional method parameters to use while building the setup expression.
     content.vb: Public Sub SetupSetMethod(setType As Type, propValueDelegate As [Delegate], types As Type() = Nothing, parameters As Object() = Nothing)
   overload: FastMoq.Models.DbContextMock`1.SetupSetMethod*
   implements:
@@ -627,18 +576,21 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSets
     path: FastMoq.Database/Models/DbContextMock.cs
-    startLine: 133
+    startLine: 129
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures all DbSet properties and related helper methods for the current DbContext mock.
   example: []
   syntax:
     content: public DbContextMock<TEntity> SetupDbSets(Mocker mocks)
     parameters:
     - id: mocks
       type: FastMoq.Mocker
+      description: The owning mocker used to resolve nested set dependencies.
     return:
       type: FastMoq.Models.DbContextMock`1
+      description: The current DbContext mock instance for fluent chaining.
     content.vb: Public Function SetupDbSets(mocks As Mocker) As DbContextMock(Of TEntity)
   overload: FastMoq.Models.DbContextMock`1.SetupDbSets*
   implements:
@@ -671,44 +623,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: Moq.MockBehavior
-  commentId: T:Moq.MockBehavior
-  parent: Moq
-  isExternal: true
-  name: MockBehavior
-  nameWithType: MockBehavior
-  fullName: Moq.MockBehavior
-- uid: Moq.Mock`1.#ctor(Moq.MockBehavior)
-  commentId: M:Moq.Mock`1.#ctor(Moq.MockBehavior)
-  isExternal: true
-  name: Mock(MockBehavior)
-  nameWithType: Mock<T>.Mock(MockBehavior)
-  fullName: Moq.Mock<T>.Mock(Moq.MockBehavior)
-  nameWithType.vb: Mock(Of T).New(MockBehavior)
-  fullName.vb: Moq.Mock(Of T).New(Moq.MockBehavior)
-  name.vb: New(MockBehavior)
-  spec.csharp:
-  - uid: Moq.Mock`1.#ctor(Moq.MockBehavior)
-    name: Mock
-    isExternal: true
-  - name: (
-  - uid: Moq.MockBehavior
-    name: MockBehavior
-    isExternal: true
-  - name: )
-  spec.vb:
-  - name: New
-  - name: (
-  - uid: Moq.MockBehavior
-    name: MockBehavior
-    isExternal: true
-  - name: )
-- uid: Moq.It
-  commentId: T:Moq.It
-  isExternal: true
-  name: It
-  nameWithType: It
-  fullName: Moq.It
 - uid: FastMoq.Models
   commentId: N:FastMoq.Models
   href: FastMoq.html
@@ -6591,12 +6505,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
-- uid: Moq
-  commentId: N:Moq
-  isExternal: true
-  name: Moq
-  nameWithType: Moq
-  fullName: Moq
 - uid: System
   commentId: N:System
   isExternal: true
@@ -6604,6 +6512,12 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: Moq
+  commentId: N:Moq
+  isExternal: true
+  name: Moq
+  nameWithType: Moq
+  fullName: Moq
 - uid: Moq.IMock`1
   commentId: T:Moq.IMock`1
   isExternal: true
@@ -11734,6 +11648,13 @@ references:
   nameWithType.vb: DbContextMock(Of TEntity).New
   fullName.vb: FastMoq.Models.DbContextMock(Of TEntity).New
   name.vb: New
+- uid: Moq.MockBehavior
+  commentId: T:Moq.MockBehavior
+  parent: Moq
+  isExternal: true
+  name: MockBehavior
+  nameWithType: MockBehavior
+  fullName: Moq.MockBehavior
 - uid: System.Object[]
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system.object

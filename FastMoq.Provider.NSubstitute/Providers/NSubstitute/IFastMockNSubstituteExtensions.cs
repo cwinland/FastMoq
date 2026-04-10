@@ -1,4 +1,3 @@
-using NSubstitute;
 using NSubstitute.Exceptions;
 
 namespace FastMoq.Providers.NSubstituteProvider

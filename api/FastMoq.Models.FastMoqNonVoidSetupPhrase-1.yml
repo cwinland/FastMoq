@@ -21,7 +21,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: FastMoqNonVoidSetupPhrase
     path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
-    startLine: 13
+    startLine: 12
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -85,7 +85,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
-    startLine: 13
+    startLine: 12
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -121,7 +121,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Returns
     path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
-    startLine: 20
+    startLine: 19
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models

@@ -3,8 +3,8 @@ using FastMoq.Extensions;
 using FastMoq.Models;
 using FastMoq.Providers;
 using Microsoft.Extensions.Logging;
-using Moq;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Reflection;
@@ -1976,14 +1976,14 @@ namespace FastMoq
         internal bool HasTypeRegistration(Type type) => typeMap.ContainsKey(type);
         internal bool Contains<T>() => Contains(typeof(T));
 
-        internal bool TryGetMockModel(Type type, out MockModel? model)
+        internal bool TryGetMockModel(Type type, [NotNullWhen(true)] out MockModel? model)
         {
             type = CleanType(type);
             model = mockCollection.FirstOrDefault(m => m.Type == type);
             return model != null;
         }
 
-        internal bool TryGetMockModel(Type type, object serviceKey, out MockModel? model)
+        internal bool TryGetMockModel(Type type, object serviceKey, [NotNullWhen(true)] out MockModel? model)
         {
             ArgumentNullException.ThrowIfNull(serviceKey);
 
@@ -1994,7 +1994,7 @@ namespace FastMoq
         internal MockModel GetMockModel(Type type, Mock? mock = null, bool autoCreate = true)
         {
             type = CleanType(type);
-            if (TryGetMockModel(type, out var model))
+            if (TryGetMockModel(type, out var model) && model is not null)
             {
                 return model;
             }

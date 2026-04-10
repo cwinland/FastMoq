@@ -6,10 +6,19 @@ namespace FastMoq
     /// </summary>
     public sealed class MockerPolicyOptions
     {
+        /// <summary>
+        /// Controls which built-in type resolutions FastMoq applies automatically when a requested type has not been explicitly registered by the test.
+        /// </summary>
         public BuiltInTypeResolutionFlags EnabledBuiltInTypeResolutions { get; set; } = BuiltInTypeResolutionFlags.LenientDefaults;
 
+        /// <summary>
+        /// Indicates whether instance creation should fall back to non-public constructors by default when no public constructor can satisfy the request.
+        /// </summary>
         public bool DefaultFallbackToNonPublicConstructors { get; set; } = true;
 
+        /// <summary>
+        /// Indicates whether method invocation helpers should consider non-public methods by default when matching a target member.
+        /// </summary>
         public bool DefaultFallbackToNonPublicMethods { get; set; } = true;
 
         /// <summary>

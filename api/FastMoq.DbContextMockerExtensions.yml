@@ -24,7 +24,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContextMockerExtensions
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 11
+    startLine: 9
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -62,7 +62,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetDbContextHandle
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 16
+    startLine: 14
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -103,7 +103,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockDbContext
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 46
+    startLine: 44
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -142,7 +142,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockDbContext
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 55
+    startLine: 53
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -177,21 +177,27 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: TryCreateManagedDbContextInstance
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 71
+    startLine: 76
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
+  summary: Attempts to create and track a managed DbContext instance for the requested type when the type represents an Entity Framework DbContext that is not already tracked.
+  example: []
   syntax:
     content: public static bool TryCreateManagedDbContextInstance(Mocker mocker, Type requestedType, out object? instance)
     parameters:
     - id: mocker
       type: FastMoq.Mocker
+      description: The mocker that should own the tracked DbContext instance.
     - id: requestedType
       type: System.Type
+      description: The requested runtime type.
     - id: instance
       type: System.Object
+      description: When this method returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, contains the tracked DbContext instance.
     return:
       type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when a managed DbContext instance was created; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
     content.vb: Public Shared Function TryCreateManagedDbContextInstance(mocker As Mocker, requestedType As Type, instance As Object) As Boolean
   overload: FastMoq.DbContextMockerExtensions.TryCreateManagedDbContextInstance*
   nameWithType.vb: DbContextMockerExtensions.TryCreateManagedDbContextInstance(Mocker, Type, Object)
@@ -215,21 +221,27 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateLegacyDbContextMock
     path: FastMoq.Database/DbContextMockerExtensions.cs
-    startLine: 145
+    startLine: 157
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
+  summary: Creates the legacy Moq-based DbContext mock used by the database helper package.
+  example: []
   syntax:
     content: public static Mock? CreateLegacyDbContextMock(Type requestedType, MockBehavior behavior, object?[] constructorArgs)
     parameters:
     - id: requestedType
       type: System.Type
+      description: The DbContext runtime type to mock.
     - id: behavior
       type: Moq.MockBehavior
+      description: The Moq behavior that should be applied to the created mock.
     - id: constructorArgs
       type: System.Object[]
+      description: The constructor arguments to pass through when a DbContext constructor requires them.
     return:
       type: Moq.Mock
+      description: A legacy <xref href="Moq.Mock" data-throw-if-not-resolved="false"></xref> instance for the requested DbContext type.
     content.vb: Public Shared Function CreateLegacyDbContextMock(requestedType As Type, behavior As MockBehavior, constructorArgs As Object()) As Mock
   overload: FastMoq.DbContextMockerExtensions.CreateLegacyDbContextMock*
   nameWithType.vb: DbContextMockerExtensions.CreateLegacyDbContextMock(Type, MockBehavior, Object())

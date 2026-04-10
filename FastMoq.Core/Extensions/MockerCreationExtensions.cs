@@ -1,5 +1,4 @@
 ﻿using FastMoq.Models;
-using Moq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -50,6 +49,15 @@ namespace FastMoq.Extensions
         public static T? CreateInstance<T, TParam1>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstance<T, TParam1>(InstanceCreationFlags.None, data);
 
+        /// <summary>
+        /// Creates an instance of <c>T</c> by selecting the constructor that matches <typeparamref name="TParam1"/> and applying the supplied creation flags.
+        /// </summary>
+        /// <typeparam name="T">The concrete type to create.</typeparam>
+        /// <typeparam name="TParam1">The explicitly supplied constructor parameter type used to identify the target constructor.</typeparam>
+        /// <param name="mocker">The FastMoq container used to resolve the remaining constructor dependencies.</param>
+        /// <param name="flags">The constructor-selection and optional-parameter behavior overrides to apply for this creation request.</param>
+        /// <param name="data">A map of constructor parameter types to explicit values that should be injected when creating the instance.</param>
+        /// <returns>The created instance, or <see langword="null"/> when resolution cannot produce one.</returns>
         public static T? CreateInstance<T, TParam1>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
                 model => mocker.FindConstructorByType(model.InstanceType, ResolvePublicOnlyOverride(flags), typeof(TParam1)),
@@ -70,6 +78,16 @@ namespace FastMoq.Extensions
         public static T? CreateInstance<T, TParam1, TParam2>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstance<T, TParam1, TParam2>(InstanceCreationFlags.None, data);
 
+        /// <summary>
+        /// Creates an instance of <c>T</c> by targeting the constructor that matches <typeparamref name="TParam1"/> and <typeparamref name="TParam2"/>, while honoring the supplied creation flags.
+        /// </summary>
+        /// <typeparam name="T">The concrete type to create.</typeparam>
+        /// <typeparam name="TParam1">The first constructor parameter type used to identify the target constructor.</typeparam>
+        /// <typeparam name="TParam2">The second constructor parameter type used to identify the target constructor.</typeparam>
+        /// <param name="mocker">The FastMoq container used to resolve remaining constructor dependencies.</param>
+        /// <param name="flags">The constructor-selection and optional-parameter behavior overrides to apply for this call.</param>
+        /// <param name="data">A map of explicit constructor argument types to values.</param>
+        /// <returns>The created instance, or <see langword="null"/> when construction fails.</returns>
         public static T? CreateInstance<T, TParam1, TParam2>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
                 model => mocker.FindConstructorByType(model.InstanceType, ResolvePublicOnlyOverride(flags), typeof(TParam1), typeof(TParam2)),
@@ -91,6 +109,17 @@ namespace FastMoq.Extensions
         public static T? CreateInstance<T, TParam1, TParam2, TParam3>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstance<T, TParam1, TParam2, TParam3>(InstanceCreationFlags.None, data);
 
+        /// <summary>
+        /// Creates an instance of <c>T</c> by targeting the constructor that matches three explicit parameter types and applying the supplied creation flags.
+        /// </summary>
+        /// <typeparam name="T">The concrete type to create.</typeparam>
+        /// <typeparam name="TParam1">The first constructor parameter type used to identify the target constructor.</typeparam>
+        /// <typeparam name="TParam2">The second constructor parameter type used to identify the target constructor.</typeparam>
+        /// <typeparam name="TParam3">The third constructor parameter type used to identify the target constructor.</typeparam>
+        /// <param name="mocker">The FastMoq container used to resolve remaining constructor dependencies.</param>
+        /// <param name="flags">The constructor-selection and optional-parameter behavior overrides to apply for this call.</param>
+        /// <param name="data">A map of explicit constructor argument types to values.</param>
+        /// <returns>The created instance, or <see langword="null"/> when construction fails.</returns>
         public static T? CreateInstance<T, TParam1, TParam2, TParam3>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
                 model => mocker.FindConstructorByType(model.InstanceType, ResolvePublicOnlyOverride(flags), typeof(TParam1), typeof(TParam2), typeof(TParam3)),
@@ -113,6 +142,18 @@ namespace FastMoq.Extensions
         public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(InstanceCreationFlags.None, data);
 
+        /// <summary>
+        /// Creates an instance of <c>T</c> by targeting the constructor that matches four explicit parameter types and applying the supplied creation flags.
+        /// </summary>
+        /// <typeparam name="T">The concrete type to create.</typeparam>
+        /// <typeparam name="TParam1">The first constructor parameter type used to identify the target constructor.</typeparam>
+        /// <typeparam name="TParam2">The second constructor parameter type used to identify the target constructor.</typeparam>
+        /// <typeparam name="TParam3">The third constructor parameter type used to identify the target constructor.</typeparam>
+        /// <typeparam name="TParam4">The fourth constructor parameter type used to identify the target constructor.</typeparam>
+        /// <param name="mocker">The FastMoq container used to resolve remaining constructor dependencies.</param>
+        /// <param name="flags">The constructor-selection and optional-parameter behavior overrides to apply for this call.</param>
+        /// <param name="data">A map of explicit constructor argument types to values.</param>
+        /// <returns>The created instance, or <see langword="null"/> when construction fails.</returns>
         public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
                 model => mocker.FindConstructorByType(model.InstanceType, ResolvePublicOnlyOverride(flags), typeof(TParam1), typeof(TParam2), typeof(TParam3), typeof(TParam4)),
@@ -136,6 +177,19 @@ namespace FastMoq.Extensions
         public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(this Mocker mocker, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(InstanceCreationFlags.None, data);
 
+        /// <summary>
+        /// Creates an instance of <c>T</c> by targeting the constructor that matches five explicit parameter types and applying the supplied creation flags.
+        /// </summary>
+        /// <typeparam name="T">The concrete type to create.</typeparam>
+        /// <typeparam name="TParam1">The first constructor parameter type used to identify the target constructor.</typeparam>
+        /// <typeparam name="TParam2">The second constructor parameter type used to identify the target constructor.</typeparam>
+        /// <typeparam name="TParam3">The third constructor parameter type used to identify the target constructor.</typeparam>
+        /// <typeparam name="TParam4">The fourth constructor parameter type used to identify the target constructor.</typeparam>
+        /// <typeparam name="TParam5">The fifth constructor parameter type used to identify the target constructor.</typeparam>
+        /// <param name="mocker">The FastMoq container used to resolve remaining constructor dependencies.</param>
+        /// <param name="flags">The constructor-selection and optional-parameter behavior overrides to apply for this call.</param>
+        /// <param name="data">A map of explicit constructor argument types to values.</param>
+        /// <returns>The created instance, or <see langword="null"/> when construction fails.</returns>
         public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class =>
             mocker.CreateInstanceInternal<T>(
                 model => mocker.FindConstructorByType(model.InstanceType, ResolvePublicOnlyOverride(flags), typeof(TParam1), typeof(TParam2), typeof(TParam3), typeof(TParam4), typeof(TParam5)),
@@ -431,6 +485,13 @@ namespace FastMoq.Extensions
             mock.Setup(getterExpression).Returns(value);
         }
 
+        /// <summary>
+        /// Sets up a readable property on a mock by using a strongly typed property expression.
+        /// </summary>
+        /// <typeparam name="TMock">The mocked type that exposes the property.</typeparam>
+        /// <param name="mock">The mock whose property getter should be configured.</param>
+        /// <param name="propertyExpression">An expression that selects the property to configure.</param>
+        /// <param name="value">The value the property getter should return.</param>
         public static void SetupMockProperty<TMock>(this Mock<TMock> mock, Expression<Func<TMock, object>> propertyExpression, object value)
             where TMock : class
         {

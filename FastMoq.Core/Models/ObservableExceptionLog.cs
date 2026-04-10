@@ -5,11 +5,17 @@ using System.ComponentModel;
 
 namespace FastMoq.Models
 {
+    /// <summary>
+    /// Exposes a read-only, observable view of exception messages captured by a <see cref="Mocker"/> during resolution and invocation.
+    /// </summary>
     public class ObservableExceptionLog : IReadOnlyCollection<string>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         private readonly ObservableCollection<string> internalCollection = [];
         private readonly ReadOnlyObservableCollection<string> readOnlyCollection;
 
+        /// <summary>
+        /// Initializes an empty observable exception log.
+        /// </summary>
         public ObservableExceptionLog()
         {
             readOnlyCollection = new ReadOnlyObservableCollection<string>(internalCollection);
@@ -21,7 +27,9 @@ namespace FastMoq.Models
             internalCollection.Add(item);
         }
 
-        // Public read-only property
+        /// <summary>
+        /// Gets the captured exception messages as a read-only observable collection.
+        /// </summary>
         public IReadOnlyCollection<string> Items => readOnlyCollection;
 
         /// <inheritdoc />

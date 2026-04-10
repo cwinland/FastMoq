@@ -1011,7 +1011,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 89
+    startLine: 99
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1077,7 +1077,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 109
+    startLine: 119
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1121,7 +1121,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 122
+    startLine: 132
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1168,7 +1168,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 144
+    startLine: 154
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1218,7 +1218,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 177
+    startLine: 187
   assemblies:
   - FastMoq.Core
   namespace: FastMoq

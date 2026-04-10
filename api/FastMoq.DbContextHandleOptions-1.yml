@@ -22,7 +22,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContextHandleOptions
     path: FastMoq.Database/DbContextHandleOptions.cs
-    startLine: 7
+    startLine: 5
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -83,7 +83,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Mode
     path: FastMoq.Database/DbContextHandleOptions.cs
-    startLine: 12
+    startLine: 10
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -116,7 +116,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DatabaseName
     path: FastMoq.Database/DbContextHandleOptions.cs
-    startLine: 17
+    startLine: 15
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -149,7 +149,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: RealContextFactory
     path: FastMoq.Database/DbContextHandleOptions.cs
-    startLine: 22
+    startLine: 20
   assemblies:
   - FastMoq.Database
   namespace: FastMoq

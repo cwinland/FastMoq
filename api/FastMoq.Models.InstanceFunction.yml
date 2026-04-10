@@ -25,10 +25,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceFunction
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 4
+    startLine: 8
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Stores a late-bound factory delegate that can create an instance of a specific runtime type.
+  example: []
   syntax:
     content: public class InstanceFunction
     content.vb: Public Class InstanceFunction
@@ -82,15 +84,18 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 4
+    startLine: 8
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Stores a late-bound factory delegate that can create an instance of a specific runtime type.
+  example: []
   syntax:
     content: public InstanceFunction(Type type)
     parameters:
     - id: type
       type: System.Type
+      description: The runtime type produced by the stored factory delegate.
     content.vb: Public Sub New(type As Type)
   overload: FastMoq.Models.InstanceFunction.#ctor*
   nameWithType.vb: InstanceFunction.New(Type)
@@ -114,10 +119,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceType
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 6
+    startLine: 13
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Gets the runtime type that this factory produces.
+  example: []
   syntax:
     content: public Type InstanceType { get; }
     parameters: []
@@ -143,10 +150,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Function
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 9
+    startLine: 18
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Gets or sets the factory delegate used to create the instance.
+  example: []
   syntax:
     content: public Delegate? Function { get; set; }
     parameters: []
@@ -172,15 +181,18 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetFunction
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 12
+    startLine: 24
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Assigns the factory delegate used to create the instance.
+  example: []
   syntax:
     content: public void SetFunction(Delegate function)
     parameters:
     - id: function
       type: System.Delegate
+      description: The delegate to store for later invocation.
     content.vb: Public Sub SetFunction([function] As [Delegate])
   overload: FastMoq.Models.InstanceFunction.SetFunction*
 - uid: FastMoq.Models.InstanceFunction.Invoke(FastMoq.Mocker,System.Object[])
@@ -201,21 +213,30 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Invoke
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 17
+    startLine: 36
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Invokes the stored factory delegate with the supplied <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> and optional parameter values.
+  example: []
   syntax:
     content: public object? Invoke(Mocker mocker, params object?[]? parameters)
     parameters:
     - id: mocker
       type: FastMoq.Mocker
+      description: The active mocker used as the first delegate argument.
     - id: parameters
       type: System.Object[]
+      description: Optional extra parameters passed to delegates that accept a second argument.
     return:
       type: System.Object
+      description: The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when the stored delegate returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.
     content.vb: Public Function Invoke(mocker As Mocker, ParamArray parameters As Object()) As Object
   overload: FastMoq.Models.InstanceFunction.Invoke*
+  exceptions:
+  - type: System.InvalidOperationException
+    commentId: T:System.InvalidOperationException
+    description: Thrown when no compatible delegate has been assigned.
   nameWithType.vb: InstanceFunction.Invoke(Mocker, ParamArray Object())
   fullName.vb: FastMoq.Models.InstanceFunction.Invoke(FastMoq.Mocker, ParamArray Object())
   name.vb: Invoke(Mocker, ParamArray Object())
@@ -237,17 +258,21 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Models/InstanceFunction.cs
-    startLine: 57
+    startLine: 79
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Creates a new <xref href="FastMoq.Models.InstanceFunction" data-throw-if-not-resolved="false"></xref> placeholder for the specified runtime type.
+  example: []
   syntax:
     content: public static InstanceFunction CreateInstance(Type type)
     parameters:
     - id: type
       type: System.Type
+      description: The runtime type the instance function should describe.
     return:
       type: FastMoq.Models.InstanceFunction
+      description: A new <xref href="FastMoq.Models.InstanceFunction" data-throw-if-not-resolved="false"></xref> for <code class="paramref">type</code>.
     content.vb: Public Shared Function CreateInstance(type As Type) As InstanceFunction
   overload: FastMoq.Models.InstanceFunction.CreateInstance*
 references:
@@ -3343,12 +3368,6 @@ references:
   name: SetFunction
   nameWithType: InstanceFunction.SetFunction
   fullName: FastMoq.Models.InstanceFunction.SetFunction
-- uid: FastMoq.Models.InstanceFunction.Invoke*
-  commentId: Overload:FastMoq.Models.InstanceFunction.Invoke
-  href: FastMoq.Models.InstanceFunction.html#FastMoq_Models_InstanceFunction_Invoke_FastMoq_Mocker_System_Object___
-  name: Invoke
-  nameWithType: InstanceFunction.Invoke
-  fullName: FastMoq.Models.InstanceFunction.Invoke
 - uid: FastMoq.Mocker
   commentId: T:FastMoq.Mocker
   parent: FastMoq
@@ -3356,6 +3375,19 @@ references:
   name: Mocker
   nameWithType: Mocker
   fullName: FastMoq.Mocker
+- uid: System.InvalidOperationException
+  commentId: T:System.InvalidOperationException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.invalidoperationexception
+  name: InvalidOperationException
+  nameWithType: InvalidOperationException
+  fullName: System.InvalidOperationException
+- uid: FastMoq.Models.InstanceFunction.Invoke*
+  commentId: Overload:FastMoq.Models.InstanceFunction.Invoke
+  href: FastMoq.Models.InstanceFunction.html#FastMoq_Models_InstanceFunction_Invoke_FastMoq_Mocker_System_Object___
+  name: Invoke
+  nameWithType: InstanceFunction.Invoke
+  fullName: FastMoq.Models.InstanceFunction.Invoke
 - uid: System.Object[]
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system.object
@@ -3385,12 +3417,6 @@ references:
   name: FastMoq
   nameWithType: FastMoq
   fullName: FastMoq
-- uid: FastMoq.Models.InstanceFunction.CreateInstance*
-  commentId: Overload:FastMoq.Models.InstanceFunction.CreateInstance
-  href: FastMoq.Models.InstanceFunction.html#FastMoq_Models_InstanceFunction_CreateInstance_System_Type_
-  name: CreateInstance
-  nameWithType: InstanceFunction.CreateInstance
-  fullName: FastMoq.Models.InstanceFunction.CreateInstance
 - uid: FastMoq.Models.InstanceFunction
   commentId: T:FastMoq.Models.InstanceFunction
   parent: FastMoq.Models
@@ -3398,3 +3424,9 @@ references:
   name: InstanceFunction
   nameWithType: InstanceFunction
   fullName: FastMoq.Models.InstanceFunction
+- uid: FastMoq.Models.InstanceFunction.CreateInstance*
+  commentId: Overload:FastMoq.Models.InstanceFunction.CreateInstance
+  href: FastMoq.Models.InstanceFunction.html#FastMoq_Models_InstanceFunction_CreateInstance_System_Type_
+  name: CreateInstance
+  nameWithType: InstanceFunction.CreateInstance
+  fullName: FastMoq.Models.InstanceFunction.CreateInstance

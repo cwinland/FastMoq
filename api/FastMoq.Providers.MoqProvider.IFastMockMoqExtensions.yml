@@ -32,7 +32,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMockMoqExtensions
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 13
+    startLine: 10
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -75,7 +75,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AsMoq
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 37
+    startLine: 34
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -141,7 +141,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AsMoq
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 57
+    startLine: 54
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -187,7 +187,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Setup
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 72
+    startLine: 69
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -228,7 +228,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Setup
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 81
+    startLine: 78
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -270,7 +270,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupGet
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 90
+    startLine: 87
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -312,7 +312,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupSequence
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 99
+    startLine: 96
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -354,7 +354,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Protected
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 108
+    startLine: 105
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -393,7 +393,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 116
+    startLine: 113
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -434,7 +434,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 124
+    startLine: 121
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -477,7 +477,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 133
+    startLine: 130
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -522,7 +522,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 141
+    startLine: 138
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -569,7 +569,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupLoggerCallback
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 150
+    startLine: 147
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -606,7 +606,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupLoggerCallback
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 158
+    startLine: 155
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider

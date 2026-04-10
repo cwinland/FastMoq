@@ -25,6 +25,12 @@ namespace FastMoq.Providers
             Register("moq", MoqMockingProvider.Instance, setAsDefault: false);
         }
 
+        /// <summary>
+        /// Registers a mocking provider under the supplied name.
+        /// </summary>
+        /// <param name="name">The provider name used to look up the registration later.</param>
+        /// <param name="provider">The provider implementation to register.</param>
+        /// <param name="setAsDefault">When <see langword="true"/>, also makes the provider the global default provider.</param>
         public static void Register(string name, IMockingProvider provider, bool setAsDefault = false)
         {
             ArgumentNullException.ThrowIfNull(name);
@@ -36,6 +42,12 @@ namespace FastMoq.Providers
             }
         }
 
+        /// <summary>
+        /// Attempts to resolve a registered provider by name.
+        /// </summary>
+        /// <param name="name">The provider name to look up.</param>
+        /// <param name="provider">When this method returns <see langword="true"/>, contains the resolved provider.</param>
+        /// <returns><see langword="true"/> when the provider was found or loaded; otherwise, <see langword="false"/>.</returns>
         public static bool TryGet(string name, out IMockingProvider provider)
         {
             ArgumentNullException.ThrowIfNull(name);
@@ -48,10 +60,24 @@ namespace FastMoq.Providers
             return TryEnsureOptionalProviderRegistered(name) && _providers.TryGetValue(name, out provider!);
         }
 
+        /// <summary>
+        /// Gets the registered provider names ordered alphabetically.
+        /// </summary>
         public static IReadOnlyCollection<string> RegisteredProviderNames => _providers.Keys.OrderBy(name => name, StringComparer.OrdinalIgnoreCase).ToArray();
 
+        /// <summary>
+        /// Gets the effective provider for the current async flow.
+        /// A scoped provider pushed with <see cref="Push(IMockingProvider)"/> or <see cref="Push(string)"/> takes precedence over the global default.
+        /// </summary>
         public static IMockingProvider Default => _current.Value ?? _default ?? throw new InvalidOperationException("No mocking provider registered. Register one via MockingProviderRegistry.Register().");
 
+        /// <summary>
+        /// Wraps a legacy provider-specific mock object in the provider-agnostic <see cref="IFastMock"/> abstraction.
+        /// </summary>
+        /// <param name="legacyMock">The legacy provider-specific mock object to wrap.</param>
+        /// <param name="mockedType">The mocked type represented by <paramref name="legacyMock"/>.</param>
+        /// <returns>A provider-agnostic wrapper for the legacy mock object.</returns>
+        /// <exception cref="NotSupportedException">Thrown when no registered provider can adapt the supplied legacy mock.</exception>
         public static IFastMock WrapLegacy(object legacyMock, Type mockedType)
         {
             ArgumentNullException.ThrowIfNull(legacyMock);
@@ -84,6 +110,10 @@ namespace FastMoq.Providers
             throw new NotSupportedException($"No registered mocking provider can wrap legacy instance '{legacyMock.GetType().FullName}' for mocked type '{mockedType.FullName}'.");
         }
 
+        /// <summary>
+        /// Sets the global default provider by name.
+        /// </summary>
+        /// <param name="name">The name of the provider to make the global default.</param>
         public static void SetDefault(string name)
         {
             ArgumentNullException.ThrowIfNull(name);
@@ -97,8 +127,10 @@ namespace FastMoq.Providers
         }
 
         /// <summary>
-        /// Push a provider for the current async context returning a disposable that restores the previous value.
+        /// Pushes a provider for the current async context and returns a disposable that restores the previous provider when disposed.
         /// </summary>
+        /// <param name="provider">The provider to make active for the current async flow.</param>
+        /// <returns>A disposable scope that restores the prior provider when disposed.</returns>
         public static IDisposable Push(IMockingProvider provider)
         {
             var prior = _current.Value;
@@ -106,6 +138,11 @@ namespace FastMoq.Providers
             return new PopDisposable(prior);
         }
 
+        /// <summary>
+        /// Pushes a named provider for the current async context and returns a disposable that restores the previous provider when disposed.
+        /// </summary>
+        /// <param name="name">The registered provider name to activate for the current async flow.</param>
+        /// <returns>A disposable scope that restores the prior provider when disposed.</returns>
         public static IDisposable Push(string name)
         {
             ArgumentNullException.ThrowIfNull(name);
@@ -118,6 +155,9 @@ namespace FastMoq.Providers
             return Push(provider);
         }
 
+        /// <summary>
+        /// Clears all provider registrations and resets both the global and scoped provider selections.
+        /// </summary>
         public static void Clear()
         {
             _providers.Clear();

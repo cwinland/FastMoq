@@ -1,5 +1,4 @@
 using FastMoq.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace FastMoq
 {

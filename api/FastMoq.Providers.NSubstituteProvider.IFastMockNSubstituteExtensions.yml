@@ -26,7 +26,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMockNSubstituteExtensions
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 10
+    startLine: 9
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -69,7 +69,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: AsNSubstitute
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 28
+    startLine: 27
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -125,7 +125,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Received
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 46
+    startLine: 45
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -164,7 +164,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: Received
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 54
+    startLine: 53
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -205,7 +205,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ReceivedWithAnyArgs
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 62
+    startLine: 61
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -244,7 +244,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DidNotReceive
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 70
+    startLine: 69
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -283,7 +283,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DidNotReceiveWithAnyArgs
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 78
+    startLine: 77
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -322,7 +322,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: ClearReceivedCalls
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 86
+    startLine: 85
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider

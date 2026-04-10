@@ -19,14 +19,17 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MockDbContextOptions
     path: FastMoq.Database/Models/MockDbContextOptions.cs
-    startLine: 5
+    startLine: 6
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Legacy Moq wrapper for <xref href="Microsoft.EntityFrameworkCore.DbContextOptions%601" data-throw-if-not-resolved="false"></xref> used by older DbContext mock creation paths.
+  example: []
   syntax:
     content: 'public class MockDbContextOptions<T> : Mock<DbContextOptions<T>>, IMock<DbContextOptions<T>> where T : DbContext'
     typeParameters:
     - id: T
+      description: The DbContext type associated with the options object.
     content.vb: Public Class MockDbContextOptions(Of T As DbContext) Inherits Mock(Of DbContextOptions(Of T)) Implements IMock(Of DbContextOptions(Of T))
   inheritance:
   - System.Object
@@ -141,6 +144,34 @@ items:
   fullName.vb: FastMoq.Models.MockDbContextOptions(Of T)
   name.vb: MockDbContextOptions(Of T)
 references:
+- uid: Microsoft.EntityFrameworkCore.DbContextOptions`1
+  commentId: T:Microsoft.EntityFrameworkCore.DbContextOptions`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.dbcontextoptions-1
+  name: DbContextOptions<TContext>
+  nameWithType: DbContextOptions<TContext>
+  fullName: Microsoft.EntityFrameworkCore.DbContextOptions<TContext>
+  nameWithType.vb: DbContextOptions(Of TContext)
+  fullName.vb: Microsoft.EntityFrameworkCore.DbContextOptions(Of TContext)
+  name.vb: DbContextOptions(Of TContext)
+  spec.csharp:
+  - uid: Microsoft.EntityFrameworkCore.DbContextOptions`1
+    name: DbContextOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.dbcontextoptions-1
+  - name: <
+  - name: TContext
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.EntityFrameworkCore.DbContextOptions`1
+    name: DbContextOptions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.dbcontextoptions-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TContext
+  - name: )
 - uid: FastMoq.Models
   commentId: N:FastMoq.Models
   href: FastMoq.html

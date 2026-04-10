@@ -1,6 +1,4 @@
 using FastMoq.Models;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -69,6 +67,13 @@ namespace FastMoq
                 ?? throw new InvalidOperationException($"Unable to create DbContext mock for {dbContextType.Name}.");
         }
 
+        /// <summary>
+        /// Attempts to create and track a managed DbContext instance for the requested type when the type represents an Entity Framework DbContext that is not already tracked.
+        /// </summary>
+        /// <param name="mocker">The mocker that should own the tracked DbContext instance.</param>
+        /// <param name="requestedType">The requested runtime type.</param>
+        /// <param name="instance">When this method returns <see langword="true"/>, contains the tracked DbContext instance.</param>
+        /// <returns><see langword="true"/> when a managed DbContext instance was created; otherwise, <see langword="false"/>.</returns>
         public static bool TryCreateManagedDbContextInstance(Mocker mocker, Type requestedType, out object? instance)
         {
             ArgumentNullException.ThrowIfNull(mocker);
@@ -143,6 +148,13 @@ namespace FastMoq
             return handle;
         }
 
+        /// <summary>
+        /// Creates the legacy Moq-based DbContext mock used by the database helper package.
+        /// </summary>
+        /// <param name="requestedType">The DbContext runtime type to mock.</param>
+        /// <param name="behavior">The Moq behavior that should be applied to the created mock.</param>
+        /// <param name="constructorArgs">The constructor arguments to pass through when a DbContext constructor requires them.</param>
+        /// <returns>A legacy <see cref="Mock"/> instance for the requested DbContext type.</returns>
         public static Mock? CreateLegacyDbContextMock(Type requestedType, MockBehavior behavior, object?[] constructorArgs)
         {
             ArgumentNullException.ThrowIfNull(requestedType);

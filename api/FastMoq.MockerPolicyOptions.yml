@@ -82,10 +82,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: EnabledBuiltInTypeResolutions
     path: FastMoq.Core/MockerPolicyOptions.cs
-    startLine: 8
+    startLine: 11
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Controls which built-in type resolutions FastMoq applies automatically when a requested type has not been explicitly registered by the test.
+  example: []
   syntax:
     content: public BuiltInTypeResolutionFlags EnabledBuiltInTypeResolutions { get; set; }
     parameters: []
@@ -111,10 +113,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DefaultFallbackToNonPublicConstructors
     path: FastMoq.Core/MockerPolicyOptions.cs
-    startLine: 10
+    startLine: 16
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Indicates whether instance creation should fall back to non-public constructors by default when no public constructor can satisfy the request.
+  example: []
   syntax:
     content: public bool DefaultFallbackToNonPublicConstructors { get; set; }
     parameters: []
@@ -140,10 +144,12 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DefaultFallbackToNonPublicMethods
     path: FastMoq.Core/MockerPolicyOptions.cs
-    startLine: 12
+    startLine: 21
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Indicates whether method invocation helpers should consider non-public methods by default when matching a target member.
+  example: []
   syntax:
     content: public bool DefaultFallbackToNonPublicMethods { get; set; }
     parameters: []
@@ -169,7 +175,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: DefaultStrictMockCreation
     path: FastMoq.Core/MockerPolicyOptions.cs
-    startLine: 20
+    startLine: 29
   assemblies:
   - FastMoq.Core
   namespace: FastMoq

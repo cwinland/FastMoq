@@ -1,6 +1,4 @@
 using Microsoft.Extensions.Logging;
-using NSubstitute;
-using NSubstitute.Core;
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 

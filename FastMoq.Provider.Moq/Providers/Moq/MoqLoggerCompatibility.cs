@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Moq;
 using System.Linq.Expressions;
 
 namespace FastMoq.Providers.MoqProvider

@@ -1,7 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Moq;
-using Moq.Language.Flow;
-using Moq.Protected;
 using System.Linq.Expressions;
 
 namespace FastMoq.Providers.MoqProvider

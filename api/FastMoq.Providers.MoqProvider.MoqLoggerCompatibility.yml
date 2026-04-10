@@ -28,7 +28,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: MoqLoggerCompatibility
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 9
+    startLine: 8
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -66,7 +66,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 14
+    startLine: 13
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -107,7 +107,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 20
+    startLine: 19
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -150,7 +150,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 27
+    startLine: 26
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -195,7 +195,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 33
+    startLine: 32
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -242,7 +242,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 40
+    startLine: 39
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -289,7 +289,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 50
+    startLine: 49
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -336,7 +336,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 60
+    startLine: 59
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -383,7 +383,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 70
+    startLine: 69
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -431,7 +431,7 @@ items:
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupLoggerCallback
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 81
+    startLine: 80
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
