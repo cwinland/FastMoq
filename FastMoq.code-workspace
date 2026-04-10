@@ -1,0 +1,94 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": ".config"
+		},
+		{
+			"path": ".gdn"
+		},
+		{
+			"path": ".git"
+		},
+		{
+			"path": ".github"
+		},
+		{
+			"path": ".vs"
+		},
+		{
+			"path": ".vscode"
+		},
+		{
+			"path": "api"
+		},
+		{
+			"path": "artifacts-local"
+		},
+		{
+			"path": "docfx-template"
+		},
+		{
+			"path": "docs"
+		},
+		{
+			"path": "FastMoq"
+		},
+		{
+			"path": "FastMoq.Abstractions"
+		},
+		{
+			"path": "FastMoq.Analyzers"
+		},
+		{
+			"path": "FastMoq.Analyzers.Tests"
+		},
+		{
+			"path": "FastMoq.Core"
+		},
+		{
+			"path": "FastMoq.Database"
+		},
+		{
+			"path": "FastMoq.Provider.Moq"
+		},
+		{
+			"path": "FastMoq.Provider.NSubstitute"
+		},
+		{
+			"path": "FastMoq.TestingExample"
+		},
+		{
+			"path": "FastMoq.Tests"
+		},
+		{
+			"path": "FastMoq.Tests.Blazor"
+		},
+		{
+			"path": "FastMoq.Tests.Web"
+		},
+		{
+			"path": "FastMoq.Web"
+		},
+		{
+			"path": "Help"
+		},
+		{
+			"path": "scripts"
+		},
+		{
+			"path": "test"
+		},
+		{
+			"path": "TestResults"
+		},
+		{
+			"path": "FastMoq.AzureFunctions"
+		},
+		{
+			"path": "FastMoq.Azure"
+		}
+	]
+}
