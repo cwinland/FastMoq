@@ -101,17 +101,20 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-    - name: Build (manual single TFM for CodeQL - release scope)
+    - name: Build (manual CodeQL build - release scope)
       if: matrix.language == 'csharp' && matrix.build-mode == 'manual'
       run: |
         set -euo pipefail
-        echo "Manual build for CodeQL semantic extraction (net10.0) using release solution"
+        echo "Manual build for CodeQL semantic extraction using release solution"
         SLN=FastMoq-Release.sln
         if [ ! -f "$SLN" ]; then
           echo "Release solution not found; falling back to FastMoq.sln"
           SLN=FastMoq.sln
         fi
-        dotnet build "$SLN" -c Release -f net10.0 /p:UseSharedCompilation=false --no-restore
+        # The release solution contains mixed-target projects, including the analyzer
+        # package on netstandard2.0. Forcing a single -f on the entire solution breaks
+        # restore/build graph resolution for those projects under CodeQL.
+        dotnet build "$SLN" -c Release /p:UseSharedCompilation=false --no-restore
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
