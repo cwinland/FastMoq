@@ -20,7 +20,7 @@ namespace FastMoq.Azure.Pageable
         /// </summary>
         /// <param name="status">The HTTP status code to expose.</param>
         /// <param name="reasonPhrase">The reason phrase to expose.</param>
-        /// <param name="headers">Optional headers to expose through <see cref="Headers" />.</param>
+        /// <param name="headers">Optional headers to expose through <see cref="Response.Headers" />.</param>
         /// <param name="contentStream">An optional content stream.</param>
         /// <param name="clientRequestId">An optional client request identifier.</param>
         /// <param name="isError">True to mark the response as an error response.</param>
