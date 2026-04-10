@@ -12,6 +12,35 @@ namespace FastMoq.Azure.Storage
     public static class StorageClientTestExtensions
     {
         /// <summary>
+        /// Registers an <see cref="AzureStorageClientFactory" /> singleton in the supplied service collection.
+        /// </summary>
+        /// <param name="services">The service collection to update.</param>
+        /// <param name="storageClientFactory">The storage client factory to register.</param>
+        /// <returns>The current <see cref="IServiceCollection" /> instance.</returns>
+        public static IServiceCollection AddAzureStorageClientFactory(this IServiceCollection services, AzureStorageClientFactory storageClientFactory)
+        {
+            ArgumentNullException.ThrowIfNull(services);
+            ArgumentNullException.ThrowIfNull(storageClientFactory);
+
+            return services.AddAzureClient(storageClientFactory);
+        }
+
+        /// <summary>
+        /// Registers an <see cref="AzureStorageClientFactory" /> for the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="storageClientFactory">The storage client factory to register.</param>
+        /// <param name="replace">True to replace an existing registration.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddAzureStorageClientFactory(this Mocker mocker, AzureStorageClientFactory storageClientFactory, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(storageClientFactory);
+
+            return mocker.AddAzureClient(storageClientFactory, replace);
+        }
+
+        /// <summary>
         /// Registers a <see cref="TableClient" /> singleton in the supplied service collection.
         /// </summary>
         /// <param name="services">The service collection to update.</param>
@@ -81,6 +110,132 @@ namespace FastMoq.Azure.Storage
             ArgumentNullException.ThrowIfNull(blobClient);
 
             return services.AddAzureClient(blobClient);
+        }
+
+        /// <summary>
+        /// Creates and registers a <see cref="TableClient" /> from the supplied <see cref="AzureStorageClientFactory" />.
+        /// </summary>
+        /// <param name="services">The service collection to update.</param>
+        /// <param name="storageClientFactory">The storage client factory to use.</param>
+        /// <param name="tableName">The table name.</param>
+        /// <returns>The current <see cref="IServiceCollection" /> instance.</returns>
+        public static IServiceCollection AddTableClient(this IServiceCollection services, AzureStorageClientFactory storageClientFactory, string tableName)
+        {
+            ArgumentNullException.ThrowIfNull(services);
+            ArgumentNullException.ThrowIfNull(storageClientFactory);
+
+            return services.AddTableClient(storageClientFactory.CreateTableClient(tableName));
+        }
+
+        /// <summary>
+        /// Creates and registers a <see cref="TableClient" /> from the supplied <see cref="AzureStorageClientFactory" />.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="storageClientFactory">The storage client factory to use.</param>
+        /// <param name="tableName">The table name.</param>
+        /// <param name="replace">True to replace an existing registration.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddTableClient(this Mocker mocker, AzureStorageClientFactory storageClientFactory, string tableName, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(storageClientFactory);
+
+            return mocker.AddTableClient(storageClientFactory.CreateTableClient(tableName), replace);
+        }
+
+        /// <summary>
+        /// Creates and registers a <see cref="BlobContainerClient" /> from the supplied <see cref="AzureStorageClientFactory" />.
+        /// </summary>
+        /// <param name="services">The service collection to update.</param>
+        /// <param name="storageClientFactory">The storage client factory to use.</param>
+        /// <param name="containerName">The container name.</param>
+        /// <returns>The current <see cref="IServiceCollection" /> instance.</returns>
+        public static IServiceCollection AddBlobContainerClient(this IServiceCollection services, AzureStorageClientFactory storageClientFactory, string containerName)
+        {
+            ArgumentNullException.ThrowIfNull(services);
+            ArgumentNullException.ThrowIfNull(storageClientFactory);
+
+            return services.AddBlobContainerClient(storageClientFactory.CreateBlobContainerClient(containerName));
+        }
+
+        /// <summary>
+        /// Creates and registers a <see cref="BlobContainerClient" /> from the supplied <see cref="AzureStorageClientFactory" />.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="storageClientFactory">The storage client factory to use.</param>
+        /// <param name="containerName">The container name.</param>
+        /// <param name="replace">True to replace an existing registration.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddBlobContainerClient(this Mocker mocker, AzureStorageClientFactory storageClientFactory, string containerName, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(storageClientFactory);
+
+            return mocker.AddBlobContainerClient(storageClientFactory.CreateBlobContainerClient(containerName), replace);
+        }
+
+        /// <summary>
+        /// Creates and registers a <see cref="BlobClient" /> from the supplied <see cref="AzureStorageClientFactory" />.
+        /// </summary>
+        /// <param name="services">The service collection to update.</param>
+        /// <param name="storageClientFactory">The storage client factory to use.</param>
+        /// <param name="containerName">The container name.</param>
+        /// <param name="blobName">The blob name.</param>
+        /// <returns>The current <see cref="IServiceCollection" /> instance.</returns>
+        public static IServiceCollection AddBlobClient(this IServiceCollection services, AzureStorageClientFactory storageClientFactory, string containerName, string blobName)
+        {
+            ArgumentNullException.ThrowIfNull(services);
+            ArgumentNullException.ThrowIfNull(storageClientFactory);
+
+            return services.AddBlobClient(storageClientFactory.CreateBlobClient(containerName, blobName));
+        }
+
+        /// <summary>
+        /// Creates and registers a <see cref="BlobClient" /> from the supplied <see cref="AzureStorageClientFactory" />.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="storageClientFactory">The storage client factory to use.</param>
+        /// <param name="containerName">The container name.</param>
+        /// <param name="blobName">The blob name.</param>
+        /// <param name="replace">True to replace an existing registration.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddBlobClient(this Mocker mocker, AzureStorageClientFactory storageClientFactory, string containerName, string blobName, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(storageClientFactory);
+
+            return mocker.AddBlobClient(storageClientFactory.CreateBlobClient(containerName, blobName), replace);
+        }
+
+        /// <summary>
+        /// Creates and registers a <see cref="QueueClient" /> from the supplied <see cref="AzureStorageClientFactory" />.
+        /// </summary>
+        /// <param name="services">The service collection to update.</param>
+        /// <param name="storageClientFactory">The storage client factory to use.</param>
+        /// <param name="queueName">The queue name.</param>
+        /// <returns>The current <see cref="IServiceCollection" /> instance.</returns>
+        public static IServiceCollection AddQueueClient(this IServiceCollection services, AzureStorageClientFactory storageClientFactory, string queueName)
+        {
+            ArgumentNullException.ThrowIfNull(services);
+            ArgumentNullException.ThrowIfNull(storageClientFactory);
+
+            return services.AddQueueClient(storageClientFactory.CreateQueueClient(queueName));
+        }
+
+        /// <summary>
+        /// Creates and registers a <see cref="QueueClient" /> from the supplied <see cref="AzureStorageClientFactory" />.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="storageClientFactory">The storage client factory to use.</param>
+        /// <param name="queueName">The queue name.</param>
+        /// <param name="replace">True to replace an existing registration.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddQueueClient(this Mocker mocker, AzureStorageClientFactory storageClientFactory, string queueName, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(storageClientFactory);
+
+            return mocker.AddQueueClient(storageClientFactory.CreateQueueClient(queueName), replace);
         }
 
         /// <summary>

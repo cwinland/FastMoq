@@ -24,16 +24,12 @@ namespace FastMoq.Azure.Credentials
         /// <inheritdoc />
         public override AccessToken GetToken(TokenRequestContext requestContext, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(requestContext);
-
             return _accessToken;
         }
 
         /// <inheritdoc />
         public override ValueTask<AccessToken> GetTokenAsync(TokenRequestContext requestContext, CancellationToken cancellationToken)
         {
-            ArgumentNullException.ThrowIfNull(requestContext);
-
             return ValueTask.FromResult(_accessToken);
         }
     }

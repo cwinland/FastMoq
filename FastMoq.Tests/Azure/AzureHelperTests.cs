@@ -7,7 +7,9 @@ using Azure;
 using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Azure.Data.Tables;
 using Azure.Storage.Blobs;
+using Azure.Storage.Queues;
 using FastMoq;
 using FastMoq.Azure.Credentials;
 using FastMoq.Azure.DependencyInjection;
@@ -73,7 +75,7 @@ namespace FastMoq.Tests.Azure
 
             mocker.AddTokenCredential("token-value");
 
-            var credential = mocker.GetObject<TokenCredential>();
+            var credential = mocker.GetRequiredObject<TokenCredential>();
             var accessToken = credential.GetToken(new TokenRequestContext(new[] { "https://storage.azure.com/.default" }), CancellationToken.None);
 
             accessToken.Token.Should().Be("token-value");
@@ -86,8 +88,8 @@ namespace FastMoq.Tests.Azure
 
             mocker.AddDefaultAzureCredential("default-token");
 
-            var defaultCredential = mocker.GetObject<DefaultAzureCredential>();
-            var tokenCredential = mocker.GetObject<TokenCredential>();
+            var defaultCredential = mocker.GetRequiredObject<DefaultAzureCredential>();
+            var tokenCredential = mocker.GetRequiredObject<TokenCredential>();
             var accessToken = defaultCredential.GetToken(new TokenRequestContext(new[] { "scope" }), CancellationToken.None);
 
             tokenCredential.Should().BeSameAs(defaultCredential);
@@ -126,9 +128,9 @@ namespace FastMoq.Tests.Azure
 
             mocker.AddAzureServiceProvider(provider);
 
-            mocker.GetObject<IServiceProvider>().Should().BeSameAs(provider);
-            mocker.GetObject<IConfiguration>()["Azure:Storage:QueueName"].Should().Be("jobs");
-            mocker.GetObject<IConfigurationRoot>().Should().NotBeNull();
+            mocker.GetRequiredObject<IServiceProvider>().Should().BeSameAs(provider);
+            mocker.GetRequiredObject<IConfiguration>()["Azure:Storage:QueueName"].Should().Be("jobs");
+            mocker.GetRequiredObject<IConfigurationRoot>().Should().NotBeNull();
         }
 
         [Fact]
@@ -146,10 +148,77 @@ namespace FastMoq.Tests.Azure
 
             var provider = services.BuildServiceProvider();
 
-            mocker.GetObject<SecretClient>().Should().BeSameAs(secretClient);
-            mocker.GetObject<BlobContainerClient>().Should().BeSameAs(blobContainerClient);
+            mocker.GetRequiredObject<SecretClient>().Should().BeSameAs(secretClient);
+            mocker.GetRequiredObject<BlobContainerClient>().Should().BeSameAs(blobContainerClient);
             provider.GetRequiredService<SecretClient>().Should().BeSameAs(secretClient);
             provider.GetRequiredService<BlobContainerClient>().Should().BeSameAs(blobContainerClient);
+        }
+
+        [Fact]
+        public void AzureStorageClientFactory_ShouldCreateClientsFromConnectionString()
+        {
+            var factory = AzureStorageClientFactory.FromConnectionString("UseDevelopmentStorage=true");
+
+            var blobContainerClient = factory.CreateBlobContainerClient("orders");
+            var blobClient = factory.CreateBlobClient("orders", "payloads/order.json");
+            var queueClient = factory.CreateQueueClient("jobs");
+            var tableClient = factory.CreateTableClient("status");
+
+            factory.UsesConnectionString.Should().BeTrue();
+            factory.SupportsBlobClients.Should().BeTrue();
+            factory.SupportsQueueClients.Should().BeTrue();
+            factory.SupportsTableClients.Should().BeTrue();
+            blobContainerClient.Uri.AbsoluteUri.Should().Contain("/orders");
+            blobClient.Uri.AbsoluteUri.Should().Contain("/orders/payloads/order.json");
+            queueClient.Uri.AbsoluteUri.Should().Contain("/jobs");
+            tableClient.Uri.AbsoluteUri.Should().Contain("/status");
+        }
+
+        [Fact]
+        public void AzureStorageClientFactory_ShouldCreateClientsFromServiceUris()
+        {
+            var credential = new TestTokenCredential("storage-token");
+            var blobFactory = AzureStorageClientFactory.FromBlobServiceUri("https://fastmoqstorage.blob.core.windows.net", credential);
+            var queueFactory = AzureStorageClientFactory.FromQueueServiceUri("https://fastmoqstorage.queue.core.windows.net", credential);
+            var tableFactory = AzureStorageClientFactory.FromTableServiceUri("https://fastmoqstorage.table.core.windows.net", credential);
+
+            blobFactory.CreateBlobContainerClient("orders").Uri.Should().Be(new Uri("https://fastmoqstorage.blob.core.windows.net/orders"));
+            blobFactory.CreateBlobClient("orders", "payload.json").Uri.Should().Be(new Uri("https://fastmoqstorage.blob.core.windows.net/orders/payload.json"));
+            queueFactory.CreateQueueClient("jobs").Uri.Should().Be(new Uri("https://fastmoqstorage.queue.core.windows.net/jobs"));
+            tableFactory.CreateTableClient("status").Uri.Should().Be(new Uri("https://fastmoqstorage.table.core.windows.net/status"));
+
+            Action invalidQueueCreate = () => blobFactory.CreateQueueClient("jobs");
+            invalidQueueCreate.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void AzureStorageClientFactoryRegistrationHelpers_ShouldRegisterFactoryAndDerivedClients()
+        {
+            var mocker = new Mocker();
+            var factory = AzureStorageClientFactory.FromConnectionString("UseDevelopmentStorage=true");
+            var services = new ServiceCollection();
+
+            mocker.AddAzureStorageClientFactory(factory);
+            mocker.AddBlobContainerClient(factory, "orders");
+            mocker.AddQueueClient(factory, "jobs");
+            mocker.AddTableClient(factory, "status");
+
+            services.AddAzureStorageClientFactory(factory);
+            services.AddBlobContainerClient(factory, "orders");
+            services.AddQueueClient(factory, "jobs");
+            services.AddTableClient(factory, "status");
+
+            var provider = services.BuildServiceProvider();
+
+            mocker.GetRequiredObject<AzureStorageClientFactory>().Should().BeSameAs(factory);
+            mocker.GetRequiredObject<BlobContainerClient>().Uri.AbsoluteUri.Should().Contain("/orders");
+            mocker.GetRequiredObject<QueueClient>().Uri.AbsoluteUri.Should().Contain("/jobs");
+            mocker.GetRequiredObject<TableClient>().Uri.AbsoluteUri.Should().Contain("/status");
+
+            provider.GetRequiredService<AzureStorageClientFactory>().Should().BeSameAs(factory);
+            provider.GetRequiredService<BlobContainerClient>().Uri.AbsoluteUri.Should().Contain("/orders");
+            provider.GetRequiredService<QueueClient>().Uri.AbsoluteUri.Should().Contain("/jobs");
+            provider.GetRequiredService<TableClient>().Uri.AbsoluteUri.Should().Contain("/status");
         }
     }
 }
