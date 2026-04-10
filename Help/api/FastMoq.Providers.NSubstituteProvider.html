@@ -87,10 +87,12 @@ Classes
 </h3>
       <h4><a class="xref" href="FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html">IFastMockNSubstituteExtensions</a></h4>
       <section><p>NSubstitute-specific convenience extensions for <a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock&lt;T&gt;</a>.
-These stay in the provider package so the core abstractions remain provider agnostic.</p>
+These stay in the provider package so the core abstractions remain provider agnostic.
+Prefer provider-first members such as <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance">Instance</a>, <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset">Reset()</a>, and FastMoq verification helpers first, and use these extensions when the test intentionally needs NSubstitute-specific APIs.</p>
 </section>
       <h4><a class="xref" href="FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider.html">NSubstituteMockingProvider</a></h4>
-      <section></section>
+      <section><p>Provider implementation that adapts NSubstitute to the provider-neutral FastMoq abstractions.</p>
+</section>
 
 
 </article>
@@ -114,7 +116,7 @@ These stay in the provider package so the core abstractions remain provider agno
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

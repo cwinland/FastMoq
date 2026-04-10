@@ -24,11 +24,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockingProviderRegistry
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 9
+    startLine: 10
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
@@ -61,23 +61,28 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Register
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 23
+    startLine: 33
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
+  summary: Registers a mocking provider under the supplied name.
+  example: []
   syntax:
     content: public static void Register(string name, IMockingProvider provider, bool setAsDefault = false)
     parameters:
     - id: name
       type: System.String
+      description: The provider name used to look up the registration later.
     - id: provider
       type: FastMoq.Providers.IMockingProvider
+      description: The provider implementation to register.
     - id: setAsDefault
       type: System.Boolean
+      description: When <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, also makes the provider the global default provider.
     content.vb: Public Shared Sub Register(name As String, provider As IMockingProvider, setAsDefault As Boolean = False)
   overload: FastMoq.Providers.MockingProviderRegistry.Register*
   nameWithType.vb: MockingProviderRegistry.Register(String, IMockingProvider, Boolean)
@@ -97,23 +102,28 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGet
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 34
+    startLine: 50
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
+  summary: Attempts to resolve a registered provider by name.
+  example: []
   syntax:
     content: public static bool TryGet(string name, out IMockingProvider provider)
     parameters:
     - id: name
       type: System.String
+      description: The provider name to look up.
     - id: provider
       type: FastMoq.Providers.IMockingProvider
+      description: When this method returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, contains the resolved provider.
     return:
       type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the provider was found or loaded; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
     content.vb: Public Shared Function TryGet(name As String, provider As IMockingProvider) As Boolean
   overload: FastMoq.Providers.MockingProviderRegistry.TryGet*
   nameWithType.vb: MockingProviderRegistry.TryGet(String, IMockingProvider)
@@ -133,14 +143,16 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: RegisteredProviderNames
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 36
+    startLine: 65
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
+  summary: Gets the registered provider names ordered alphabetically.
+  example: []
   syntax:
     content: public static IReadOnlyCollection<string> RegisteredProviderNames { get; }
     parameters: []
@@ -162,14 +174,19 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Default
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 38
+    startLine: 71
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
+  summary: >-
+    Gets the effective provider for the current async flow.
+
+    A scoped provider pushed with <xref href="FastMoq.Providers.MockingProviderRegistry.Push(FastMoq.Providers.IMockingProvider)" data-throw-if-not-resolved="false"></xref> or <xref href="FastMoq.Providers.MockingProviderRegistry.Push(System.String)" data-throw-if-not-resolved="false"></xref> takes precedence over the global default.
+  example: []
   syntax:
     content: public static IMockingProvider Default { get; }
     parameters: []
@@ -191,25 +208,34 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WrapLegacy
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 40
+    startLine: 80
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
+  summary: Wraps a legacy provider-specific mock object in the provider-agnostic <xref href="FastMoq.Providers.IFastMock" data-throw-if-not-resolved="false"></xref> abstraction.
+  example: []
   syntax:
     content: public static IFastMock WrapLegacy(object legacyMock, Type mockedType)
     parameters:
     - id: legacyMock
       type: System.Object
+      description: The legacy provider-specific mock object to wrap.
     - id: mockedType
       type: System.Type
+      description: The mocked type represented by <code class="paramref">legacyMock</code>.
     return:
       type: FastMoq.Providers.IFastMock
+      description: A provider-agnostic wrapper for the legacy mock object.
     content.vb: Public Shared Function WrapLegacy(legacyMock As Object, mockedType As Type) As IFastMock
   overload: FastMoq.Providers.MockingProviderRegistry.WrapLegacy*
+  exceptions:
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: Thrown when no registered provider can adapt the supplied legacy mock.
   nameWithType.vb: MockingProviderRegistry.WrapLegacy(Object, Type)
   fullName.vb: FastMoq.Providers.MockingProviderRegistry.WrapLegacy(Object, System.Type)
   name.vb: WrapLegacy(Object, Type)
@@ -227,19 +253,22 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetDefault
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 72
+    startLine: 116
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
+  summary: Sets the global default provider by name.
+  example: []
   syntax:
     content: public static void SetDefault(string name)
     parameters:
     - id: name
       type: System.String
+      description: The name of the provider to make the global default.
     content.vb: Public Shared Sub SetDefault(name As String)
   overload: FastMoq.Providers.MockingProviderRegistry.SetDefault*
   nameWithType.vb: MockingProviderRegistry.SetDefault(String)
@@ -259,23 +288,25 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 87
+    startLine: 133
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
-  summary: Push a provider for the current async context returning a disposable that restores the previous value.
+  summary: Pushes a provider for the current async context and returns a disposable that restores the previous provider when disposed.
   example: []
   syntax:
     content: public static IDisposable Push(IMockingProvider provider)
     parameters:
     - id: provider
       type: FastMoq.Providers.IMockingProvider
+      description: The provider to make active for the current async flow.
     return:
       type: System.IDisposable
+      description: A disposable scope that restores the prior provider when disposed.
     content.vb: Public Shared Function Push(provider As IMockingProvider) As IDisposable
   overload: FastMoq.Providers.MockingProviderRegistry.Push*
 - uid: FastMoq.Providers.MockingProviderRegistry.Push(System.String)
@@ -292,21 +323,25 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 94
+    startLine: 145
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
+  summary: Pushes a named provider for the current async context and returns a disposable that restores the previous provider when disposed.
+  example: []
   syntax:
     content: public static IDisposable Push(string name)
     parameters:
     - id: name
       type: System.String
+      description: The registered provider name to activate for the current async flow.
     return:
       type: System.IDisposable
+      description: A disposable scope that restores the prior provider when disposed.
     content.vb: Public Shared Function Push(name As String) As IDisposable
   overload: FastMoq.Providers.MockingProviderRegistry.Push*
   nameWithType.vb: MockingProviderRegistry.Push(String)
@@ -326,14 +361,16 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Clear
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-    startLine: 106
+    startLine: 160
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Providers
+  summary: Clears all provider registrations and resets both the global and scoped provider selections.
+  example: []
   syntax:
     content: public static void Clear()
     content.vb: Public Shared Sub Clear()
@@ -745,12 +782,80 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: FastMoq.Providers.MockingProviderRegistry.Push(FastMoq.Providers.IMockingProvider)
+  commentId: M:FastMoq.Providers.MockingProviderRegistry.Push(FastMoq.Providers.IMockingProvider)
+  href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_Push_FastMoq_Providers_IMockingProvider_
+  name: Push(IMockingProvider)
+  nameWithType: MockingProviderRegistry.Push(IMockingProvider)
+  fullName: FastMoq.Providers.MockingProviderRegistry.Push(FastMoq.Providers.IMockingProvider)
+  spec.csharp:
+  - uid: FastMoq.Providers.MockingProviderRegistry.Push(FastMoq.Providers.IMockingProvider)
+    name: Push
+    href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_Push_FastMoq_Providers_IMockingProvider_
+  - name: (
+  - uid: FastMoq.Providers.IMockingProvider
+    name: IMockingProvider
+    href: FastMoq.Providers.IMockingProvider.html
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.MockingProviderRegistry.Push(FastMoq.Providers.IMockingProvider)
+    name: Push
+    href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_Push_FastMoq_Providers_IMockingProvider_
+  - name: (
+  - uid: FastMoq.Providers.IMockingProvider
+    name: IMockingProvider
+    href: FastMoq.Providers.IMockingProvider.html
+  - name: )
+- uid: FastMoq.Providers.MockingProviderRegistry.Push(System.String)
+  commentId: M:FastMoq.Providers.MockingProviderRegistry.Push(System.String)
+  isExternal: true
+  href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_Push_System_String_
+  name: Push(string)
+  nameWithType: MockingProviderRegistry.Push(string)
+  fullName: FastMoq.Providers.MockingProviderRegistry.Push(string)
+  nameWithType.vb: MockingProviderRegistry.Push(String)
+  fullName.vb: FastMoq.Providers.MockingProviderRegistry.Push(String)
+  name.vb: Push(String)
+  spec.csharp:
+  - uid: FastMoq.Providers.MockingProviderRegistry.Push(System.String)
+    name: Push
+    href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_Push_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.MockingProviderRegistry.Push(System.String)
+    name: Push
+    href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_Push_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
 - uid: FastMoq.Providers.MockingProviderRegistry.Default*
   commentId: Overload:FastMoq.Providers.MockingProviderRegistry.Default
   href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_Default
   name: Default
   nameWithType: MockingProviderRegistry.Default
   fullName: FastMoq.Providers.MockingProviderRegistry.Default
+- uid: FastMoq.Providers.IFastMock
+  commentId: T:FastMoq.Providers.IFastMock
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IFastMock.html
+  name: IFastMock
+  nameWithType: IFastMock
+  fullName: FastMoq.Providers.IFastMock
+- uid: System.NotSupportedException
+  commentId: T:System.NotSupportedException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.notsupportedexception
+  name: NotSupportedException
+  nameWithType: NotSupportedException
+  fullName: System.NotSupportedException
 - uid: FastMoq.Providers.MockingProviderRegistry.WrapLegacy*
   commentId: Overload:FastMoq.Providers.MockingProviderRegistry.WrapLegacy
   href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_WrapLegacy_System_Object_System_Type_
@@ -765,13 +870,6 @@ references:
   name: Type
   nameWithType: Type
   fullName: System.Type
-- uid: FastMoq.Providers.IFastMock
-  commentId: T:FastMoq.Providers.IFastMock
-  parent: FastMoq.Providers
-  href: FastMoq.Providers.IFastMock.html
-  name: IFastMock
-  nameWithType: IFastMock
-  fullName: FastMoq.Providers.IFastMock
 - uid: FastMoq.Providers.MockingProviderRegistry.SetDefault*
   commentId: Overload:FastMoq.Providers.MockingProviderRegistry.SetDefault
   href: FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_SetDefault_System_String_

@@ -58,7 +58,7 @@ When that happens, use this rule:
 | `VerifyLogger(...)` | Prefer `VerifyLogged(...)` when the provider supports logger capture. If the provider does not support logger capture, register a collecting logger fake via `AddType(...)`. | When you are intentionally preserving older Moq-shaped logger assertions with minimal churn. |
 | `Protected()` for `HttpMessageHandler` | Prefer `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` for HTTP behavior. | When the test really depends on direct protected-member interception rather than request/response behavior. |
 | `Protected()` for arbitrary protected members | Prefer testing through a public seam, extracted collaborator, or concrete fake. | When the implementation cannot reasonably be reshaped and protected-member interception is the behavior under test. |
-| `SetupSet(...)` | Prefer a fake or stub registered with `AddType(...)` that captures assigned values, or verify the observable downstream behavior instead of the setter interception itself. | When the setter interception is the important behavior and introducing a fake would create more churn than value. |
+| `SetupSet(...)` | Prefer a fake or stub registered with `AddType(...)` that captures assigned values, usually with `PropertyValueCapture<TValue>`, or verify the observable downstream behavior instead of the setter interception itself. | When the setter interception is the important behavior and introducing a fake would create more churn than value. |
 | `SetupAllProperties()` | Prefer a concrete fake or lightweight test double with real property state. For ordinary collaborator behavior, use `AddType(...)` or a purpose-built fake instead of expecting provider-managed property backing. | When you specifically want mocking-library-managed property backing without creating a custom fake. |
 | `CallBase` / partial mock behavior | Prefer a real instance or `AddType(...)` factory for the concrete collaborator. | When the test intentionally relies on partial mocking rather than a real implementation or fake. |
 | `out` / `ref` verification with `It.Ref<T>.IsAny` | Prefer wrapping the dependency behind a simpler interface, or assert on the public result / side effect instead of the raw `out` / `ref` interaction. | When the API shape is fixed and the `out` / `ref` interaction itself is important to the test. |
@@ -128,6 +128,28 @@ Mocks.GetOrCreateMock<IOrderGateway>()
     .SetupSet(x => x.Mode = It.IsAny<string>());
 ```
 
+For `SetupSet(...)`-heavy tests, the preferred first-party answer is usually a small fake plus [PropertyValueCapture&lt;TValue&gt;](xref:FastMoq.PropertyValueCapture`1):
+
+```csharp
+var modeCapture = new PropertyValueCapture<string?>();
+Mocks.AddType<IOrderGateway>(_ => new OrderGatewayStub(modeCapture));
+
+Component.Run();
+
+modeCapture.Value.Should().Be("fast");
+
+sealed class OrderGatewayStub(PropertyValueCapture<string?> capture) : IOrderGateway
+{
+    public string? Mode
+    {
+        get => capture.Value;
+        set => capture.Record(value);
+    }
+}
+```
+
+That pattern stays portable across providers, makes the arranged state explicit, and avoids tying the test to Moq-only setter interception when the important behavior is the assigned value.
+
 Repo-backed references:
 
 - `FastMoq.Tests/MoqProviderExtensionTests.cs`
@@ -183,7 +205,7 @@ Quick Moq-to-NSubstitute translation rules:
 - `SetupSequence(...)` becomes `Returns(value1, value2, ...)`
 - `SetupGet(...)` becomes a direct property `Returns(...)`
 
-If a migrated test still needs `SetupSet(...)`, `Protected()`, `SetupAllProperties()`, or `CallBase`, that test should usually stay on Moq or move to a fake rather than trying to force an NSubstitute equivalent.
+If a migrated test still needs `SetupSet(...)`, `Protected()`, `SetupAllProperties()`, or `CallBase`, that test should usually stay on Moq or move to a fake rather than trying to force an NSubstitute equivalent. `PropertyValueCapture<TValue>` is the default FastMoq answer when the test only needs to observe property assignments rather than exercise Moq itself.
 
 Repo-backed references:
 

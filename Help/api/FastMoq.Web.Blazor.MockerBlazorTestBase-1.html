@@ -87,58 +87,64 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-    <div class="level1"><span class="xref">TestContextBase</span></div>
-    <div class="level2"><span class="xref">TestContext</span></div>
-    <div class="level3"><span class="xref">MockerBlazorTestBase&lt;T&gt;</span></div>
+    <div class="level1"><span class="xref">BunitContext</span></div>
+    <div class="level2"><span class="xref">MockerBlazorTestBase&lt;T&gt;</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a></div>
     <div><a class="xref" href="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html">IMockerBlazorTestHelpers</a>&lt;T&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">TestContext.RenderComponent&lt;TComponent&gt;(params ComponentParameter[])</span>
+      <span class="xref">BunitContext.Dispose()</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">TestContext.RenderComponent&lt;TComponent&gt;(Action&lt;ComponentParameterCollectionBuilder&lt;TComponent&gt;&gt;)</a>
+      <span class="xref">BunitContext.DisposeAsync()</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.renderfragment">TestContext.Render&lt;TComponent&gt;(RenderFragment)</a>
+      <span class="xref">BunitContext.DisposeAsyncCore()</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.renderfragment">TestContext.Render(RenderFragment)</a>
+      <span class="xref">BunitContext.DisposeComponentsAsync()</span>
     </div>
     <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.rendering.rendertreebuilder">TestContext.BuildRenderTree(RenderTreeBuilder)</a>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">BunitContext.Render&lt;TComponent&gt;(Action&lt;ComponentParameterCollectionBuilder&lt;TComponent&gt;&gt;)</a>
     </div>
     <div>
-      <span class="xref">TestContext.CreateTestRenderer()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.renderfragment">BunitContext.Render&lt;TComponent&gt;(RenderFragment)</a>
     </div>
     <div>
-      <span class="xref">TestContext.JSInterop</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.renderfragment">BunitContext.Render(RenderFragment)</a>
     </div>
     <div>
-      <span class="xref">TestContextBase.Dispose()</span>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.rendering.rendertreebuilder">BunitContext.BuildRenderTree(RenderTreeBuilder)</a>
     </div>
     <div>
-      <span class="xref">TestContextBase.DisposeComponents()</span>
+      <span class="xref">BunitContext.AddAuthorization()</span>
     </div>
     <div>
-      <span class="xref">TestContextBase.DefaultWaitTimeout</span>
+      <span class="xref">BunitContext.AddBunitPersistentComponentState()</span>
     </div>
     <div>
-      <span class="xref">TestContextBase.Renderer</span>
+      <span class="xref">BunitContext.DefaultWaitTimeout</span>
     </div>
     <div>
-      <span class="xref">TestContextBase.Services</span>
+      <span class="xref">BunitContext.Renderer</span>
     </div>
     <div>
-      <span class="xref">TestContextBase.RenderTree</span>
+      <span class="xref">BunitContext.JSInterop</span>
     </div>
     <div>
-      <span class="xref">TestContextBase.ComponentFactories</span>
+      <span class="xref">BunitContext.Services</span>
+    </div>
+    <div>
+      <span class="xref">BunitContext.RenderTree</span>
+    </div>
+    <div>
+      <span class="xref">BunitContext.ComponentFactories</span>
     </div>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
@@ -166,7 +172,7 @@
   <h6><strong>Assembly</strong>: FastMoq.Web.dll</h6>
   <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class MockerBlazorTestBase&lt;T&gt; : TestContext, IDisposable, IMockerBlazorTestHelpers&lt;T&gt; where T : ComponentBase</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class MockerBlazorTestBase&lt;T&gt; : BunitContext, IDisposable, IAsyncDisposable, IMockerBlazorTestHelpers&lt;T&gt; where T : ComponentBase</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -223,7 +229,7 @@ ClickButton(&quot;button[type='submit']&quot;, () =&gt; NavigationManager.Histor
 </h3>
   <a id="FastMoq_Web_Blazor_MockerBlazorTestBase_1__ctor_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.#ctor*"></a>
   <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1__ctor" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.#ctor">MockerBlazorTestBase()</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <span class="xref">Bunit.TestContext</span> class.</p>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <span class="xref">Bunit.BunitContext</span> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -290,7 +296,7 @@ ClickButton(&quot;button[type='submit']&quot;, () =&gt; NavigationManager.Histor
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TestAuthorizationContext</span></td>
+        <td><a class="xref" href="Bunit.TestDoubles.TestAuthorizationContext.html">TestAuthorizationContext</a></td>
         <td><p>The authentication context.</p>
 </td>
       </tr>
@@ -498,7 +504,7 @@ protected virtual Action&lt;TestServiceProvider, IConfiguration, Mocker&gt; Conf
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<span class="xref">TestServiceProvider</span>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a>, <a class="xref" href="FastMoq.Mocker.html">Mocker</a>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-3">Action</a>&lt;<a class="xref" href="Bunit.TestServiceProvider.html">TestServiceProvider</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.configuration.iconfiguration">IConfiguration</a>, <a class="xref" href="FastMoq.Mocker.html">Mocker</a>&gt;</td>
         <td><p>The configure services.</p>
 </td>
       </tr>
@@ -581,12 +587,16 @@ protected virtual Action&lt;TestServiceProvider, IConfiguration, Mocker&gt; Conf
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">FakeNavigationManager</span></td>
+        <td><a class="xref" href="Bunit.TestDoubles.FakeNavigationManager.html">FakeNavigationManager</a></td>
         <td><p>The navigation manager.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_NavigationManager_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This property returns FastMoq's compatibility wrapper over bUnit 2's navigation manager so existing navigation
+assertions can usually stay unchanged during migration.</p>
+</div>
   <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_NavigationManager_examples">Examples</h5>
   <p>Click Button by class, tag, or id and check the navigation manager for changes.</p>
 <pre><code class="lang-cs">NavigationManager.History.Count.Should().Be(2);</code></pre>
@@ -600,7 +610,7 @@ runs.</p>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[ExcludeFromCodeCoverage]
-protected virtual List&lt;ComponentParameter&gt; RenderParameters { get; }</code></pre>
+protected virtual List&lt;RenderParameter&gt; RenderParameters { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-condensed">
@@ -612,12 +622,22 @@ protected virtual List&lt;ComponentParameter&gt; RenderParameters { get; }</code
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<span class="xref">ComponentParameter</span>&gt;</td>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="FastMoq.Web.Blazor.Models.RenderParameter.html">RenderParameter</a>&gt;</td>
         <td><p>The render parameters.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_RenderParameters_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This list now uses <a class="xref" href="FastMoq.Web.Blazor.Models.RenderParameter.html">RenderParameter</a> instead of bUnit's older public parameter type.
+Add direct parameters with <a class="xref" href="FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_Create_System_String_System_Object_">Create(string, object?)</a> and cascading values with
+<a class="xref" href="FastMoq.Web.Blazor.Models.RenderParameter.html#FastMoq_Web_Blazor_Models_RenderParameter_CreateCascading_System_String_System_Object_">CreateCascading(string, object?)</a>.</p>
+</div>
+  <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_RenderParameters_examples">Examples</h5>
+  <p>Configure direct and cascading parameters before <a class="xref" href="FastMoq.Web.Blazor.MockerBlazorTestBase-1.html#FastMoq_Web_Blazor_MockerBlazorTestBase_1_Setup_Bunit_InvocationMatcher_System_Boolean_">Setup(InvocationMatcher?, bool)</a> runs.</p>
+<pre><code class="lang-cs">RenderParameters.Add((nameof(OrdersMigrationPage.Title), "Queued Orders"));
+RenderParameters.Add(("Accent", "Ocean", true));</code></pre>
+
   <a id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetupComponent_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupComponent*"></a>
   <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetupComponent" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetupComponent">SetupComponent</h4>
   <div class="markdown level1 summary"><p>Gets or sets the setup component action. This is used to setup a component before the test constructor runs.</p>
@@ -1181,9 +1201,8 @@ protected virtual Action&lt;Mocker&gt; SetupComponent { get; set; }</code></pre>
   </table>
   <a id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_Dispose_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.Dispose*"></a>
   <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_Dispose_System_Boolean_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.Dispose(System.Boolean)">Dispose(bool)</h4>
-  <div class="markdown level1 summary"><p>Disposes of the test context resources, in particular it disposes the <span class="xref">Bunit.TestContextBase.Services</span>
-service provider. Any async services registered with the service provider will disposed first,
-but their disposal will not be awaited..</p>
+  <div class="markdown level1 summary"><p>Disposes of the test context resources, in particular it disposes the <span class="xref">Bunit.BunitContext.Services</span>
+service provider.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -1203,16 +1222,16 @@ but their disposal will not be awaited..</p>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">disposing</span></td>
-        <td><p>Set to true if called from <span class="xref">Bunit.TestContextBase.Dispose()</span>, false if called from a finalizer.f.</p>
+        <td><p>Set to true if called from <span class="xref">Bunit.BunitContext.Dispose()</span>, false if called from a finalizer.f.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">TestContextBase.Dispose(bool)</a></div>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">BunitContext.Dispose(bool)</a></div>
   <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_Dispose_System_Boolean__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The disposing parameter should be false when called from a finalizer, and true when called from the
-<span class="xref">Bunit.TestContextBase.Dispose()</span> method. In other words, it is true when deterministically called and false when non-deterministically called.</p>
+<span class="xref">Bunit.BunitContext.Dispose()</span> method. In other words, it is true when deterministically called and false when non-deterministically called.</p>
 </div>
   <a id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_FindAllByTag_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.FindAllByTag*"></a>
   <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_FindAllByTag_System_String_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.FindAllByTag(System.String)">FindAllByTag(string)</h4>
@@ -2189,12 +2208,17 @@ but their disposal will not be awaited..</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_RenderComponent_System_Action_Bunit_ComponentParameterCollectionBuilder__0___System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Use this overload for direct parameter changes. If the test needs to persist or mutate named cascading parameters,
+update <code>RenderParameters</code> and call <a class="xref" href="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_RenderComponent_System_Boolean_">RenderComponent(bool)</a> so the helper can choose the compatible
+rerender path.</p>
+</div>
   <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_RenderComponent_System_Action_Bunit_ComponentParameterCollectionBuilder__0___System_Boolean__examples">Examples</h5>
   <p>Render again with parameters without losing context.</p>
-<pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()));</code></pre>
+<pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.Title, "Reviewed Orders"));</code></pre>
 
   <p>Force an initial render with parameters.</p>
-<pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()), true);</code></pre>
+<pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.Title, "Reviewed Orders"), true);</code></pre>
 
   <a id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_RenderComponent_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderComponent*"></a>
   <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_RenderComponent_System_Boolean_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.RenderComponent(System.Boolean)">RenderComponent(bool)</h4>
@@ -2308,13 +2332,13 @@ but their disposal will not be awaited..</p>
     </tbody>
   </table>
   <a id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementCheck_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck*"></a>
-  <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)">SetElementCheck&lt;TComponent&gt;(string, bool, Func&lt;bool&gt;, TimeSpan?, IRenderedFragment?)</h4>
+  <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})">SetElementCheck&lt;TComponent&gt;(string, bool, Func&lt;bool&gt;, TimeSpan?, IRenderedComponent&lt;IComponent&gt;?)</h4>
   <div class="markdown level1 summary"><p>Sets the element check.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IMockerBlazorTestHelpers&lt;T&gt; SetElementCheck&lt;TComponent&gt;(string cssSelector, bool isChecked, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null) where TComponent : class, IComponent</code></pre>
+    <pre><code class="lang-csharp hljs">public IMockerBlazorTestHelpers&lt;T&gt; SetElementCheck&lt;TComponent&gt;(string cssSelector, bool isChecked, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent&lt;IComponent&gt;? startingPoint = null) where TComponent : class, IComponent</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -2351,9 +2375,9 @@ but their disposal will not be awaited..</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">IRenderedFragment</span></td>
+        <td><span class="xref">IRenderedComponent</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent">IComponent</a>&gt;</td>
         <td><span class="parametername">startingPoint</span></td>
-        <td><p>The starting point.</p>
+        <td><p>An optional rendered child component used to scope the lookup to a nested subtree.</p>
 </td>
       </tr>
     </tbody>
@@ -2390,6 +2414,10 @@ but their disposal will not be awaited..</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent___examples">Examples</h5>
+  <pre><code class="lang-csharp">var secondaryEditor = GetComponent&lt;OrderMigrationEditor&gt;(x =&gt; x.Instance.EditorId == "secondary");
+SetElementCheck&lt;OrderMigrationEditor&gt;("input.include-archived", true, () =&gt; secondaryEditor.Instance.IncludeArchived, startingPoint: secondaryEditor);</code></pre>
+
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-condensed">
     <thead>
@@ -2411,13 +2439,13 @@ but their disposal will not be awaited..</p>
     </tbody>
   </table>
   <a id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementSwitch_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch*"></a>
-  <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)">SetElementSwitch&lt;TComponent&gt;(string, bool, Func&lt;bool&gt;, TimeSpan?, IRenderedFragment?)</h4>
+  <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})">SetElementSwitch&lt;TComponent&gt;(string, bool, Func&lt;bool&gt;, TimeSpan?, IRenderedComponent&lt;IComponent&gt;?)</h4>
   <div class="markdown level1 summary"><p>Sets the element switch.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IMockerBlazorTestHelpers&lt;T&gt; SetElementSwitch&lt;TComponent&gt;(string cssSelector, bool isChecked, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null) where TComponent : class, IComponent</code></pre>
+    <pre><code class="lang-csharp hljs">public IMockerBlazorTestHelpers&lt;T&gt; SetElementSwitch&lt;TComponent&gt;(string cssSelector, bool isChecked, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent&lt;IComponent&gt;? startingPoint = null) where TComponent : class, IComponent</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -2454,9 +2482,9 @@ but their disposal will not be awaited..</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">IRenderedFragment</span></td>
+        <td><span class="xref">IRenderedComponent</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent">IComponent</a>&gt;</td>
         <td><span class="parametername">startingPoint</span></td>
-        <td><p>The starting point.</p>
+        <td><p>An optional rendered child component used to scope the lookup to a nested subtree.</p>
 </td>
       </tr>
     </tbody>
@@ -2571,13 +2599,13 @@ but their disposal will not be awaited..</p>
     </tbody>
   </table>
   <a id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementText_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText*"></a>
-  <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)">SetElementText(string, string, Func&lt;bool&gt;, TimeSpan?, IRenderedFragment?)</h4>
+  <h4 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__" data-uid="FastMoq.Web.Blazor.MockerBlazorTestBase`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})">SetElementText(string, string, Func&lt;bool&gt;, TimeSpan?, IRenderedComponent&lt;IComponent&gt;?)</h4>
   <div class="markdown level1 summary"><p>Sets the element text.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IMockerBlazorTestHelpers&lt;T&gt; SetElementText(string cssSelector, string text, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public IMockerBlazorTestHelpers&lt;T&gt; SetElementText(string cssSelector, string text, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent&lt;IComponent&gt;? startingPoint = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -2614,9 +2642,9 @@ but their disposal will not be awaited..</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">IRenderedFragment</span></td>
+        <td><span class="xref">IRenderedComponent</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent">IComponent</a>&gt;</td>
         <td><span class="parametername">startingPoint</span></td>
-        <td><p>The starting point.</p>
+        <td><p>An optional rendered child component used to scope the lookup to a nested subtree.</p>
 </td>
       </tr>
     </tbody>
@@ -2637,6 +2665,10 @@ but their disposal will not be awaited..</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Web_Blazor_MockerBlazorTestBase_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent___examples">Examples</h5>
+  <pre><code class="lang-csharp">var secondaryEditor = GetComponent&lt;OrderMigrationEditor&gt;(x =&gt; x.Instance.EditorId == "secondary");
+SetElementText("input.order-filter", "approved", () =&gt; secondaryEditor.Instance.FilterText == "approved", startingPoint: secondaryEditor);</code></pre>
+
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-condensed">
     <thead>
@@ -2961,7 +2993,7 @@ but their disposal will not be awaited..</p>
     <tbody>
       <tr>
         <td><a class="xref" href="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html">IMockerBlazorTestHelpers</a>&lt;T&gt;</td>
-        <td><p><code>true</code> if XXXX, <code>false</code> otherwise.</p>
+        <td><p>The current helper instance.</p>
 </td>
       </tr>
     </tbody>
@@ -2971,9 +3003,15 @@ but their disposal will not be awaited..</p>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a>
   </div>
   <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>
+  </div>
+  <div>
       <a class="xref" href="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html">IMockerBlazorTestHelpers&lt;T&gt;</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Bunit.TestAuthorizationExtensions.html#Bunit_TestAuthorizationExtensions_AddTestAuthorization_Bunit_BunitContext_">TestAuthorizationExtensions.AddTestAuthorization(BunitContext)</a>
+  </div>
   <div>
       <a class="xref" href="FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_">ObjectExtensions.RaiseIfNull&lt;T&gt;(T?, string?, string?, int?, string?)</a>
   </div>
@@ -3058,7 +3096,7 @@ but their disposal will not be awaited..</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

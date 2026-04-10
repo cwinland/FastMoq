@@ -37,12 +37,12 @@ namespace FastMoq.TestingExample
 
         }
 
-        internal TestClassNormalTestsSetupBase(IFileSystem fs, IFile f) : base(SetupMocks, mocker =>  new TestClassNormal(new MockFileSystem()))
+        internal TestClassNormalTestsSetupBase(IFileSystem fs, IFile f) : base(SetupMocks, mocker => new TestClassNormal(new MockFileSystem()))
         {
 
         }
 
-        internal TestClassNormalTestsSetupBase(IFile f) : base(SetupMocks, mocker => new TestClassNormal(new MockFileSystem()), normal => {})
+        internal TestClassNormalTestsSetupBase(IFile f) : base(SetupMocks, mocker => new TestClassNormal(new MockFileSystem()), normal => { })
         {
 
         }
@@ -61,7 +61,7 @@ namespace FastMoq.TestingExample
             var iFile = new FileSystem().File;
             mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
             mocks.GetMock<IFileSystem>().Setup(x => x.File).Returns(iFile);
-            mocks.GetMock<IFileSystem>().Setup(x => x.Directory).Returns((IDirectory)null!);
+            mocks.GetMock<IFileSystem>().Setup(x => x.Directory).Returns((IDirectory) null!);
         }
     }
 

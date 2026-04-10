@@ -105,9 +105,11 @@ Implements the <span class="xref">Moq.Mock&lt;T&gt;</span></p>
       <section><p>Class FastMoqNonVoidSetupPhrase.</p>
 </section>
       <h4><a class="xref" href="FastMoq.Models.InstanceFunction.html">InstanceFunction</a></h4>
-      <section></section>
+      <section><p>Stores a late-bound factory delegate that can create an instance of a specific runtime type.</p>
+</section>
       <h4><a class="xref" href="FastMoq.Models.InstanceFunction-1.html">InstanceFunction&lt;T&gt;</a></h4>
-      <section></section>
+      <section><p>Stores a strongly typed factory delegate that creates instances of <code class="typeparamref">T</code>.</p>
+</section>
       <h4><a class="xref" href="FastMoq.Models.InstanceModel.html">InstanceModel</a></h4>
       <section><p>Class InstanceModel represents a type and how to create that type's instance.
 Implements the <a class="xref" href="FastMoq.Models.InstanceModel.html">InstanceModel</a></p>
@@ -120,11 +122,14 @@ Implements the <a class="xref" href="FastMoq.Models.InstanceModel.html">Instance
       <section><p>Captured provider-agnostic logger event emitted by an ILogger mock configured through FastMoq.</p>
 </section>
       <h4><a class="xref" href="FastMoq.Models.MockAsyncEnumerable-1.html">MockAsyncEnumerable&lt;T&gt;</a></h4>
-      <section></section>
+      <section><p>Wraps an enumerable or expression tree so EF Core async query APIs can enumerate it through <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable&lt;T&gt;</a>.</p>
+</section>
       <h4><a class="xref" href="FastMoq.Models.MockAsyncEnumerator-1.html">MockAsyncEnumerator&lt;T&gt;</a></h4>
-      <section></section>
+      <section><p>Adapts a synchronous enumerator to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerator-1">IAsyncEnumerator&lt;T&gt;</a> for EF Core async query testing.</p>
+</section>
       <h4><a class="xref" href="FastMoq.Models.MockDbContextOptions-1.html">MockDbContextOptions&lt;T&gt;</a></h4>
-      <section></section>
+      <section><p>Legacy Moq wrapper for <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.dbcontextoptions-1">DbContextOptions&lt;TContext&gt;</a> used by older DbContext mock creation paths.</p>
+</section>
       <h4><a class="xref" href="FastMoq.Models.MockModel.html">MockModel</a></h4>
       <section><p>Contains provider-agnostic mock and Type information.</p>
 </section>
@@ -132,18 +137,23 @@ Implements the <a class="xref" href="FastMoq.Models.InstanceModel.html">Instance
       <section><p>Generic mock model wrapper (provider-first, Moq legacy compatible).</p>
 </section>
       <h4><a class="xref" href="FastMoq.Models.ObservableExceptionLog.html">ObservableExceptionLog</a></h4>
-      <section></section>
+      <section><p>Exposes a read-only, observable view of exception messages captured by a <a class="xref" href="FastMoq.Mocker.html">Mocker</a> during resolution and invocation.</p>
+</section>
       <h4><a class="xref" href="FastMoq.Models.ObservableLogEntries.html">ObservableLogEntries</a></h4>
-      <section></section>
+      <section><p>Exposes a read-only, observable view of <a class="xref" href="FastMoq.Models.LogEntry.html">LogEntry</a> values captured by FastMoq logger interception.</p>
+</section>
     <h3 id="interfaces">
 Interfaces
 </h3>
       <h4><a class="xref" href="FastMoq.Models.IDbContextMock.html">IDbContextMock</a></h4>
-      <section></section>
+      <section><p>Describes the DbContext-specific setup operations exposed by FastMoq's legacy DbContext mock wrappers.</p>
+</section>
       <h4><a class="xref" href="FastMoq.Models.IDbContextMock-1.html">IDbContextMock&lt;TEntity&gt;</a></h4>
-      <section></section>
+      <section><p>Describes a strongly typed FastMoq DbContext mock wrapper.</p>
+</section>
       <h4><a class="xref" href="FastMoq.Models.IDbSetMock.html">IDbSetMock</a></h4>
-      <section></section>
+      <section><p>Describes the setup operations used to prepare DbSet mocks for synchronous and asynchronous query execution.</p>
+</section>
       <h4><a class="xref" href="FastMoq.Models.IHistoryModel.html">IHistoryModel</a></h4>
       <section><p>Interface IHistoryModel used for identifying objects that can be put in the history model.</p>
 </section>
@@ -173,7 +183,7 @@ Interfaces
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

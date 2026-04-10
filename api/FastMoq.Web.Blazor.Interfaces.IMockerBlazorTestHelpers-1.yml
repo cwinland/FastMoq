@@ -30,10 +30,10 @@ items:
   - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.RenderComponent(System.Action{Bunit.ComponentParameterCollectionBuilder{`0}},System.Boolean)
   - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.RenderComponent(System.Boolean)
   - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetAutoComplete(System.String,System.String,System.Func{System.Boolean},System.String)
-  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(AngleSharp.Dom.IElement,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan})
-  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.WaitDelay(System.Nullable{System.TimeSpan})
   - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.WaitForExists(System.String,System.Nullable{System.TimeSpan})
   - FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.WaitForNotExists(System.String,System.Nullable{System.TimeSpan})
@@ -48,7 +48,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IMockerBlazorTestHelpers
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -103,7 +103,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -147,7 +147,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -191,7 +191,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -241,7 +241,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -289,7 +289,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -340,7 +340,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickDropdownItem
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -390,7 +390,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClickDropdownItem
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -437,7 +437,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: FindAllByTag
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -475,7 +475,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: FindById
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -513,7 +513,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -551,7 +551,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -600,7 +600,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -642,7 +642,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -691,7 +691,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -733,7 +733,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -770,7 +770,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -807,7 +807,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -847,7 +847,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -887,7 +887,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -924,7 +924,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -961,7 +961,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1000,7 +1000,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IsExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1041,7 +1041,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
@@ -1087,24 +1087,30 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 280
+    startLine: 285
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Renders the component. If the component is already rendered, it will act like a stateChanged.
+  remarks: >-
+    Use this overload for direct parameter changes. If the test needs to persist or mutate named cascading parameters,
+
+    update <code>RenderParameters</code> and call <xref href="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers%601.RenderComponent(System.Boolean)" data-throw-if-not-resolved="false"></xref> so the helper can choose the compatible
+
+    rerender path.
   example:
   - >-
     <p>Render again with parameters without losing context.</p>
 
-    <pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()));</code></pre>
+    <pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.Title, "Reviewed Orders"));</code></pre>
   - >-
     <p>Force an initial render with parameters.</p>
 
-    <pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()), true);</code></pre>
+    <pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.Title, "Reviewed Orders"), true);</code></pre>
   syntax:
     content: IRenderedComponent<T> RenderComponent(Action<ComponentParameterCollectionBuilder<T>> parameterBuilder, bool forceNew = false)
     parameters:
@@ -1136,11 +1142,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetAutoComplete
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 290
+    startLine: 295
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1169,32 +1175,36 @@ items:
   nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetAutoComplete(String, String, Func(Of Boolean), String)
   fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetAutoComplete(String, String, System.Func(Of Boolean), String)
   name.vb: SetAutoComplete(String, String, Func(Of Boolean), String)
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  id: SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  id: SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   parent: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
   langs:
   - csharp
   - vb
-  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
+  name: SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementCheck<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
   type: Method
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementCheck
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 304
+    startLine: 315
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Sets the element check.
-  example: []
+  example:
+  - >-
+    <pre><code class="lang-csharp">var secondaryEditor = GetComponent&lt;OrderMigrationEditor&gt;(x =&gt; x.Instance.EditorId == "secondary");
+
+    SetElementCheck&lt;OrderMigrationEditor&gt;("input.include-archived", true, () =&gt; secondaryEditor.Instance.IncludeArchived, startingPoint: secondaryEditor);</code></pre>
   syntax:
-    content: 'IMockerBlazorTestHelpers<T> SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null) where TComponent : class, IComponent'
+    content: 'IMockerBlazorTestHelpers<T> SetElementCheck<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent<IComponent>? startingPoint = null) where TComponent : class, IComponent'
     parameters:
     - id: cssSelector
       type: System.String
@@ -1209,15 +1219,15 @@ items:
       type: System.Nullable{System.TimeSpan}
       description: The wait timeout.
     - id: startingPoint
-      type: Bunit.IRenderedFragment
-      description: The starting point.
+      type: Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+      description: An optional rendered child component used to scope the lookup to a nested subtree.
     typeParameters:
     - id: TComponent
       description: The type of the t component.
     return:
       type: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
       description: IMockerBlazorTestHelpers&lt;T&gt;.
-    content.vb: Function SetElementCheck(Of TComponent As {Class, IComponent})(cssSelector As String, isChecked As Boolean, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedFragment = Nothing) As IMockerBlazorTestHelpers(Of T)
+    content.vb: Function SetElementCheck(Of TComponent As {Class, IComponent})(cssSelector As String, isChecked As Boolean, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedComponent(Of IComponent) = Nothing) As IMockerBlazorTestHelpers(Of T)
   overload: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck*
   exceptions:
   - type: System.ArgumentNullException
@@ -1226,35 +1236,35 @@ items:
   - type: Bunit.ElementNotFoundException
     commentId: T:Bunit.ElementNotFoundException
     description: ''
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  id: SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementCheck(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementCheck(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  id: SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   parent: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
   langs:
   - csharp
   - vb
-  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedFragment?)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
+  name: SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementSwitch<TComponent>(string, bool, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
   type: Method
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementSwitch
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 319
+    startLine: 330
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Sets the element switch.
   example: []
   syntax:
-    content: 'IMockerBlazorTestHelpers<T> SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null) where TComponent : class, IComponent'
+    content: 'IMockerBlazorTestHelpers<T> SetElementSwitch<TComponent>(string cssSelector, bool isChecked, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent<IComponent>? startingPoint = null) where TComponent : class, IComponent'
     parameters:
     - id: cssSelector
       type: System.String
@@ -1269,23 +1279,23 @@ items:
       type: System.Nullable{System.TimeSpan}
       description: The wait timeout.
     - id: startingPoint
-      type: Bunit.IRenderedFragment
-      description: The starting point.
+      type: Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+      description: An optional rendered child component used to scope the lookup to a nested subtree.
     typeParameters:
     - id: TComponent
       description: The type of the t component.
     return:
       type: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
       description: IMockerBlazorTestHelpers&lt;T&gt;.
-    content.vb: Function SetElementSwitch(Of TComponent As {Class, IComponent})(cssSelector As String, isChecked As Boolean, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedFragment = Nothing) As IMockerBlazorTestHelpers(Of T)
+    content.vb: Function SetElementSwitch(Of TComponent As {Class, IComponent})(cssSelector As String, isChecked As Boolean, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedComponent(Of IComponent) = Nothing) As IMockerBlazorTestHelpers(Of T)
   overload: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch*
   exceptions:
   - type: System.ArgumentNullException
     commentId: T:System.ArgumentNullException
     description: cssSelector
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementSwitch(Of TComponent)(String, Boolean, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementSwitch(Of TComponent)(String, Boolean, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(AngleSharp.Dom.IElement,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan})
   commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(AngleSharp.Dom.IElement,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan})
   id: SetElementText(AngleSharp.Dom.IElement,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan})
@@ -1300,11 +1310,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 331
+    startLine: 342
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1333,32 +1343,36 @@ items:
   nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementText(IElement, String, Func(Of Boolean), TimeSpan?)
   fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementText(AngleSharp.Dom.IElement, String, System.Func(Of Boolean), System.TimeSpan?)
   name.vb: SetElementText(IElement, String, Func(Of Boolean), TimeSpan?)
-- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
-  id: SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
+  id: SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})
   parent: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
   langs:
   - csharp
   - vb
-  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment?)
-  nameWithType: IMockerBlazorTestHelpers<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedFragment?)
-  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedFragment?)
+  name: SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  nameWithType: IMockerBlazorTestHelpers<T>.SetElementText(string, string, Func<bool>, TimeSpan?, IRenderedComponent<IComponent>?)
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementText(string, string, System.Func<bool>, System.TimeSpan?, Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>?)
   type: Method
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 343
+    startLine: 360
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
   summary: Sets the element text.
-  example: []
+  example:
+  - >-
+    <pre><code class="lang-csharp">var secondaryEditor = GetComponent&lt;OrderMigrationEditor&gt;(x =&gt; x.Instance.EditorId == "secondary");
+
+    SetElementText("input.order-filter", "approved", () =&gt; secondaryEditor.Instance.FilterText == "approved", startingPoint: secondaryEditor);</code></pre>
   syntax:
-    content: IMockerBlazorTestHelpers<T> SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null)
+    content: IMockerBlazorTestHelpers<T> SetElementText(string cssSelector, string text, Func<bool> waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent<IComponent>? startingPoint = null)
     parameters:
     - id: cssSelector
       type: System.String
@@ -1373,20 +1387,20 @@ items:
       type: System.Nullable{System.TimeSpan}
       description: The wait timeout.
     - id: startingPoint
-      type: Bunit.IRenderedFragment
-      description: The starting point.
+      type: Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+      description: An optional rendered child component used to scope the lookup to a nested subtree.
     return:
       type: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
       description: IMockerBlazorTestHelpers&lt;T&gt;.
-    content.vb: Function SetElementText(cssSelector As String, text As String, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedFragment = Nothing) As IMockerBlazorTestHelpers(Of T)
+    content.vb: Function SetElementText(cssSelector As String, text As String, waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing, startingPoint As IRenderedComponent(Of IComponent) = Nothing) As IMockerBlazorTestHelpers(Of T)
   overload: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText*
   exceptions:
   - type: System.ArgumentNullException
     commentId: T:System.ArgumentNullException
     description: cssSelector
-  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
-  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedFragment)
-  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedFragment)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementText(String, String, System.Func(Of Boolean), System.TimeSpan?, Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent))
+  name.vb: SetElementText(String, String, Func(Of Boolean), TimeSpan?, IRenderedComponent(Of IComponent))
 - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.WaitDelay(System.Nullable{System.TimeSpan})
   commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.WaitDelay(System.Nullable{System.TimeSpan})
   id: WaitDelay(System.Nullable{System.TimeSpan})
@@ -1401,11 +1415,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitDelay
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 352
+    startLine: 369
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1438,11 +1452,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 360
+    startLine: 377
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1479,11 +1493,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForNotExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 368
+    startLine: 385
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1520,11 +1534,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitForState
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
-    startLine: 376
+    startLine: 393
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Blazor.Interfaces
@@ -1541,7 +1555,7 @@ items:
       description: The wait timeout.
     return:
       type: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1
-      description: <code>true</code> if XXXX, <code>false</code> otherwise.
+      description: The current helper instance.
     content.vb: Function WaitForState(waitFunc As Func(Of Boolean), waitTimeout As TimeSpan? = Nothing) As IMockerBlazorTestHelpers(Of T)
   overload: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.WaitForState*
   nameWithType.vb: IMockerBlazorTestHelpers(Of T).WaitForState(Func(Of Boolean), TimeSpan?)
@@ -4821,7 +4835,7 @@ references:
   - name: )
 - uid: Bunit
   commentId: N:Bunit
-  isExternal: true
+  href: Bunit.html
   name: Bunit
   nameWithType: Bunit
   fullName: Bunit
@@ -5352,6 +5366,36 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.RenderComponent(System.Boolean)
+  commentId: M:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.RenderComponent(System.Boolean)
+  isExternal: true
+  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_RenderComponent_System_Boolean_
+  name: RenderComponent(bool)
+  nameWithType: IMockerBlazorTestHelpers<T>.RenderComponent(bool)
+  fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.RenderComponent(bool)
+  nameWithType.vb: IMockerBlazorTestHelpers(Of T).RenderComponent(Boolean)
+  fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).RenderComponent(Boolean)
+  name.vb: RenderComponent(Boolean)
+  spec.csharp:
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.RenderComponent(System.Boolean)
+    name: RenderComponent
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_RenderComponent_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.RenderComponent(System.Boolean)
+    name: RenderComponent
+    href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_RenderComponent_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: System.Action{Bunit.ComponentParameterCollectionBuilder{{T}}}
   commentId: T:System.Action{Bunit.ComponentParameterCollectionBuilder{`0}}
   parent: System
@@ -5482,22 +5526,48 @@ references:
   fullName: Bunit.ElementNotFoundException
 - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck*
   commentId: Overload:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck
-  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   name: SetElementCheck
   nameWithType: IMockerBlazorTestHelpers<T>.SetElementCheck
   fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementCheck
   nameWithType.vb: IMockerBlazorTestHelpers(Of T).SetElementCheck
   fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).SetElementCheck
-- uid: Bunit.IRenderedFragment
-  commentId: T:Bunit.IRenderedFragment
+- uid: Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
+  commentId: T:Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent}
   parent: Bunit
-  isExternal: true
-  name: IRenderedFragment
-  nameWithType: IRenderedFragment
-  fullName: Bunit.IRenderedFragment
+  definition: Bunit.IRenderedComponent`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  name: IRenderedComponent<IComponent>
+  nameWithType: IRenderedComponent<IComponent>
+  fullName: Bunit.IRenderedComponent<Microsoft.AspNetCore.Components.IComponent>
+  nameWithType.vb: IRenderedComponent(Of IComponent)
+  fullName.vb: Bunit.IRenderedComponent(Of Microsoft.AspNetCore.Components.IComponent)
+  name.vb: IRenderedComponent(Of IComponent)
+  spec.csharp:
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
+    isExternal: true
+  - name: <
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: '>'
+  spec.vb:
+  - uid: Bunit.IRenderedComponent`1
+    name: IRenderedComponent
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.AspNetCore.Components.IComponent
+    name: IComponent
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent
+  - name: )
 - uid: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch*
   commentId: Overload:FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch
-  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_
+  href: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__
   name: SetElementSwitch
   nameWithType: IMockerBlazorTestHelpers<T>.SetElementSwitch
   fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.SetElementSwitch

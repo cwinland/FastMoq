@@ -85,11 +85,21 @@
     <h3 id="classes">
 Classes
 </h3>
+      <h4><a class="xref" href="FastMoq.Providers.FastMoqDefaultProviderAttribute.html">FastMoqDefaultProviderAttribute</a></h4>
+      <section><p>Declares the default FastMoq provider for the current assembly.</p>
+</section>
+      <h4><a class="xref" href="FastMoq.Providers.FastMoqRegisterProviderAttribute.html">FastMoqRegisterProviderAttribute</a></h4>
+      <section><p>Registers a FastMoq provider for the current assembly.</p>
+</section>
       <h4><a class="xref" href="FastMoq.Providers.MockCreationOptions.html">MockCreationOptions</a></h4>
       <section><p>Options to influence mock creation in a provider agnostic manner.</p>
 </section>
       <h4><a class="xref" href="FastMoq.Providers.MockingProviderRegistry.html">MockingProviderRegistry</a></h4>
       <section><p>Global registry for available mocking providers with support for scoped overrides.</p>
+</section>
+      <h4><a class="xref" href="FastMoq.Providers.ProviderSelectionDiagnostics.html">ProviderSelectionDiagnostics</a></h4>
+      <section><p>Builds consistent provider-selection guidance for provider-specific FastMoq APIs.
+This keeps runtime messages aligned across the compatibility surface and provider-specific escape hatches.</p>
 </section>
     <h3 id="structs">
 Structs
@@ -102,10 +112,11 @@ Uses a single verification mode with an optional count where applicable.</p>
 Interfaces
 </h3>
       <h4><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></h4>
-      <section><p>Non generic abstraction for a created mock instance. Named IFastMock to avoid collision with provider library IMock types.</p>
+      <section><p>Non generic abstraction for a created mock instance.
+Prefer <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance">Instance</a> and <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset">Reset()</a> for provider-first flows, and treat <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_NativeMock">NativeMock</a> as the provider-native escape hatch.</p>
 </section>
       <h4><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock&lt;T&gt;</a></h4>
-      <section><p>Generic variant for convenience strongly typing Instance.</p>
+      <section><p>Generic variant for convenience strongly typing <a class="xref" href="FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance">Instance</a>.</p>
 </section>
       <h4><a class="xref" href="FastMoq.Providers.IMockingProvider.html">IMockingProvider</a></h4>
       <section><p>Abstraction implemented by concrete mocking libraries (Moq, NSubstitute, etc.).</p>
@@ -117,7 +128,8 @@ Interfaces
 Enums
 </h3>
       <h4><a class="xref" href="FastMoq.Providers.TimesSpecMode.html">TimesSpecMode</a></h4>
-      <section></section>
+      <section><p>Identifies the verification strategy represented by a <a class="xref" href="FastMoq.Providers.TimesSpec.html">TimesSpec</a> value.</p>
+</section>
 
 
 </article>
@@ -141,7 +153,7 @@ Enums
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

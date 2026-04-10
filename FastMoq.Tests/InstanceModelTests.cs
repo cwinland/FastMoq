@@ -1,7 +1,7 @@
-﻿using System;
+﻿using FastMoq.Models;
+using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
-using FastMoq.Models;
 
 #pragma warning disable CS8604 // Possible null reference argument for parameter.
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -28,7 +28,7 @@ namespace FastMoq.Tests
         [Fact]
         public void CreateNullType()
         {
-            Action a = () => _ = new InstanceModel(null, null) { CreateFunc = new InstanceFunction<IFileSystem>( _ => new FileSystem()) };
+            Action a = () => _ = new InstanceModel(null, null) { CreateFunc = new InstanceFunction<IFileSystem>(_ => new FileSystem()) };
             a.Should().Throw<ArgumentNullException>();
 
             var im = new InstanceModel<IFileSystem>(default(Func<Mocker, IFileSystem>));

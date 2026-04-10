@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Provider Capabilities | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Provider Capabilities | FastMoq ">
+    
+    
+      <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+      <link rel="shortcut icon" href="../../favicon.svg">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="provider-capabilities">Provider Capabilities</h1>
+
+<p>This page answers a practical question: what works with each FastMoq provider today, and what remains provider-specific or unsupported.</p>
+<p>Use it together with <a href="provider-selection.html">Provider Selection and Setup</a>:</p>
+<ul>
+<li>that page explains how provider registration and selection works</li>
+<li>this page explains what each provider can actually do once selected</li>
+</ul>
+<h2 id="why-this-page-exists">Why this page exists</h2>
+<p>FastMoq has two different layers of behavior:</p>
+<ul>
+<li>provider-neutral APIs such as <code>GetOrCreateMock(...)</code>, <code>Verify(...)</code>, <code>VerifyNoOtherCalls(...)</code>, and <code>VerifyLogged(...)</code></li>
+<li>provider-specific capabilities and convenience APIs exposed by the selected provider</li>
+</ul>
+<p>The selected provider determines whether features such as protected-member access, automatic property backing, base-call behavior, and logger capture are available.</p>
+<h2 id="capability-matrix">Capability matrix</h2>
+<p>These values come from <code>IMockingProviderCapabilities</code> in the current repo.</p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Moq</th>
+<th>NSubstitute</th>
+<th>Reflection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SupportsCallBase</code></td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>SupportsSetupAllProperties</code></td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>SupportsProtectedMembers</code></td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>SupportsInvocationTracking</code></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>SupportsLoggerCapture</code></td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-remains-portable-across-providers">What remains portable across providers</h2>
+<p>These are the safest v4 APIs to document as provider-first or provider-neutral:</p>
+<ul>
+<li><code>GetOrCreateMock&lt;T&gt;()</code></li>
+<li><code>GetObject&lt;T&gt;()</code></li>
+<li><code>Verify(...)</code></li>
+<li><code>VerifyNoOtherCalls(...)</code></li>
+<li><code>TimesSpec</code></li>
+<li><code>VerifyLogged(...)</code> when the selected provider supports logger capture</li>
+<li>scenario-builder flows that rely on provider-neutral verification</li>
+</ul>
+<p>If you want migration guidance that will carry forward into v5 cleanly, start from those APIs first.</p>
+<h2 id="alternatives-when-a-moq-feature-is-unavailable">Alternatives when a Moq feature is unavailable</h2>
+<p>Some APIs are strongest in Moq today and do not have a fully equivalent provider-neutral shape.</p>
+<p>When that happens, use this rule:</p>
+<ul>
+<li>prefer a provider-neutral FastMoq API when one exists</li>
+<li>otherwise prefer a fake, stub, or real test double through <code>AddType(...)</code></li>
+<li>keep Moq only when the test fundamentally depends on behavior the other providers do not expose cleanly</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Moq-oriented feature</th>
+<th>Alternative outside Moq</th>
+<th>When Moq is still the right tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Setup(...)</code> expression-based arrangement</td>
+<td>Use the selected provider's native arrangement style when it exists. For NSubstitute, translate <code>Setup(...)</code> into direct substitute calls such as <code>substitute.Method(...).Returns(...)</code>, <code>substitute.When(...).Do(...)</code>, <code>Arg.Any&lt;T&gt;()</code>, and <code>Arg.Is&lt;T&gt;(...)</code>, or replace the collaborator with a fake/stub through <code>AddType(...)</code> when you want a provider-neutral path. Keep FastMoq's verification APIs for the assert side when possible.</td>
+<td>When you are intentionally preserving existing Moq-shaped setup chains with minimal churn, or when the test depends on Moq-only expression setup behavior.</td>
+</tr>
+<tr>
+<td><code>VerifyLogger(...)</code></td>
+<td>Prefer <code>VerifyLogged(...)</code> when the provider supports logger capture. If the provider does not support logger capture, register a collecting logger fake via <code>AddType(...)</code>.</td>
+<td>When you are intentionally preserving older Moq-shaped logger assertions with minimal churn.</td>
+</tr>
+<tr>
+<td><code>Protected()</code> for <code>HttpMessageHandler</code></td>
+<td>Prefer <code>WhenHttpRequest(...)</code> or <code>WhenHttpRequestJson(...)</code> for HTTP behavior.</td>
+<td>When the test really depends on direct protected-member interception rather than request/response behavior.</td>
+</tr>
+<tr>
+<td><code>Protected()</code> for arbitrary protected members</td>
+<td>Prefer testing through a public seam, extracted collaborator, or concrete fake.</td>
+<td>When the implementation cannot reasonably be reshaped and protected-member interception is the behavior under test.</td>
+</tr>
+<tr>
+<td><code>SetupSet(...)</code></td>
+<td>Prefer a fake or stub registered with <code>AddType(...)</code> that captures assigned values, usually with <code>PropertyValueCapture&lt;TValue&gt;</code>, or verify the observable downstream behavior instead of the setter interception itself.</td>
+<td>When the setter interception is the important behavior and introducing a fake would create more churn than value.</td>
+</tr>
+<tr>
+<td><code>SetupAllProperties()</code></td>
+<td>Prefer a concrete fake or lightweight test double with real property state. For ordinary collaborator behavior, use <code>AddType(...)</code> or a purpose-built fake instead of expecting provider-managed property backing.</td>
+<td>When you specifically want mocking-library-managed property backing without creating a custom fake.</td>
+</tr>
+<tr>
+<td><code>CallBase</code> / partial mock behavior</td>
+<td>Prefer a real instance or <code>AddType(...)</code> factory for the concrete collaborator.</td>
+<td>When the test intentionally relies on partial mocking rather than a real implementation or fake.</td>
+</tr>
+<tr>
+<td><code>out</code> / <code>ref</code> verification with <code>It.Ref&lt;T&gt;.IsAny</code></td>
+<td>Prefer wrapping the dependency behind a simpler interface, or assert on the public result / side effect instead of the raw <code>out</code> / <code>ref</code> interaction.</td>
+<td>When the API shape is fixed and the <code>out</code> / <code>ref</code> interaction itself is important to the test.</td>
+</tr>
+</tbody>
+</table>
+<p>These alternatives are not identical replacements. They are the practical ways to stay productive when the provider-neutral or non-Moq providers do not expose the same mocking semantics.</p>
+<h2 id="moq-provider">Moq provider</h2>
+<p>Provider package / namespace:</p>
+<ul>
+<li>package: <code>FastMoq.Provider.Moq</code></li>
+<li>namespace for tracked-mock extensions: <code>FastMoq.Providers.MoqProvider</code></li>
+</ul>
+<p>Best fit:</p>
+<ul>
+<li>lowest-churn migration from older Moq-shaped suites</li>
+<li>tests that need protected-member access</li>
+<li>tests that need automatic property backing or call-base semantics</li>
+<li>tests that still rely on Moq-native verification or setup patterns</li>
+</ul>
+<p>Supported capability flags:</p>
+<ul>
+<li>call base</li>
+<li>setup all properties</li>
+<li>protected members</li>
+<li>invocation tracking</li>
+<li>logger capture</li>
+</ul>
+<p>Provider-specific tracked-mock conveniences already exposed on <code>IFastMock&lt;T&gt;</code>:</p>
+<ul>
+<li><code>AsMoq()</code></li>
+<li><code>Setup(...)</code></li>
+<li><code>SetupGet(...)</code></li>
+<li><code>SetupSequence(...)</code></li>
+<li><code>Protected()</code></li>
+<li><code>VerifyLogger(...)</code></li>
+<li><code>SetupLoggerCallback(...)</code></li>
+</ul>
+<p>Practical note:</p>
+<ul>
+<li>if you need Moq-only APIs that are not wrapped as <code>IFastMock&lt;T&gt;</code> extensions, use <code>GetOrCreateMock&lt;T&gt;().AsMoq()</code> first</li>
+<li>keep obsolete <code>GetMock&lt;T&gt;()</code> only as a compatibility path when preserving the old Moq shape is materially cheaper than rewriting the test</li>
+</ul>
+<p>Common Moq-only pockets:</p>
+<ul>
+<li><code>SetupSet(...)</code></li>
+<li>direct <code>Mock&lt;T&gt;</code> APIs not wrapped by FastMoq provider extensions</li>
+<li><code>out</code> / <code>ref</code> verification patterns using <code>It.Ref&lt;T&gt;.IsAny</code></li>
+</ul>
+<p>Recommended style:</p>
+<pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push(&quot;moq&quot;);
+var dependency = Mocks.GetOrCreateMock&lt;IOrderGateway&gt;();
+
+dependency.Setup(x =&gt; x.Publish(&quot;alpha&quot;));
+dependency.Instance.Publish(&quot;alpha&quot;);
+
+Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(&quot;alpha&quot;), TimesSpec.Once);
+</code></pre>
+<p>When you need Moq-native behavior that is not exposed as a tracked shortcut, step through <code>AsMoq()</code>:</p>
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IOrderGateway&gt;()
+    .AsMoq()
+    .SetupSet(x =&gt; x.Mode = It.IsAny&lt;string&gt;());
+</code></pre>
+<p>For <code>SetupSet(...)</code>-heavy tests, the preferred first-party answer is usually a small fake plus <a class="xref" href="../../api/FastMoq.PropertyValueCapture-1.html">PropertyValueCapture&lt;TValue&gt;</a>:</p>
+<pre><code class="lang-csharp">var modeCapture = new PropertyValueCapture&lt;string?&gt;();
+Mocks.AddType&lt;IOrderGateway&gt;(_ =&gt; new OrderGatewayStub(modeCapture));
+
+Component.Run();
+
+modeCapture.Value.Should().Be(&quot;fast&quot;);
+
+sealed class OrderGatewayStub(PropertyValueCapture&lt;string?&gt; capture) : IOrderGateway
+{
+    public string? Mode
+    {
+        get =&gt; capture.Value;
+        set =&gt; capture.Record(value);
+    }
+}
+</code></pre>
+<p>That pattern stays portable across providers, makes the arranged state explicit, and avoids tying the test to Moq-only setter interception when the important behavior is the assigned value.</p>
+<p>Repo-backed references:</p>
+<ul>
+<li><code>FastMoq.Tests/MoqProviderExtensionTests.cs</code></li>
+<li><code>FastMoq.Tests/ProviderTests.cs</code></li>
+</ul>
+<h2 id="nsubstitute-provider">NSubstitute provider</h2>
+<p>Provider package / namespace:</p>
+<ul>
+<li>package: <code>FastMoq.Provider.NSubstitute</code></li>
+<li>namespace for tracked-mock extensions: <code>FastMoq.Providers.NSubstituteProvider</code></li>
+</ul>
+<p>Best fit:</p>
+<ul>
+<li>suites intentionally written against NSubstitute behavior</li>
+<li>teams that want provider-neutral verification with NSubstitute-backed arrangement code</li>
+</ul>
+<p>Supported capability flags:</p>
+<ul>
+<li>invocation tracking</li>
+<li>logger capture</li>
+</ul>
+<p>Not supported by the provider capabilities:</p>
+<ul>
+<li>call base</li>
+<li>setup all properties</li>
+<li>protected members</li>
+</ul>
+<p>Practical note:</p>
+<ul>
+<li>prefer portable FastMoq verification APIs after arranging substitute behavior</li>
+<li>if a test fundamentally depends on protected members or auto-backed property semantics, NSubstitute is not the right provider for that test shape today</li>
+</ul>
+<p>Recommended style:</p>
+<pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push(&quot;nsubstitute&quot;);
+var dependency = Mocks.GetOrCreateMock&lt;IOrderGateway&gt;();
+
+dependency.AsNSubstitute().GetValue().Returns(&quot;configured&quot;);
+dependency.Instance.Publish(&quot;alpha&quot;);
+
+dependency.Received(1).Publish(&quot;alpha&quot;);
+Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(&quot;alpha&quot;), TimesSpec.Once);
+</code></pre>
+<p>Quick Moq-to-NSubstitute translation rules:</p>
+<ul>
+<li><code>Setup(x =&gt; x.Method()).Returns(value)</code> becomes <code>AsNSubstitute().Method().Returns(value)</code></li>
+<li><code>Setup(x =&gt; x.Method(It.IsAny&lt;T&gt;()))</code> becomes <code>AsNSubstitute().Method(Arg.Any&lt;T&gt;())</code></li>
+<li><code>Setup(x =&gt; x.Method(It.Is&lt;T&gt;(predicate)))</code> becomes <code>AsNSubstitute().Method(Arg.Is&lt;T&gt;(predicate))</code></li>
+<li><code>Setup(x =&gt; x.VoidMethod()).Callback(...)</code> becomes <code>AsNSubstitute().When(x =&gt; x.VoidMethod()).Do(...)</code></li>
+<li><code>SetupSequence(...)</code> becomes <code>Returns(value1, value2, ...)</code></li>
+<li><code>SetupGet(...)</code> becomes a direct property <code>Returns(...)</code></li>
+</ul>
+<p>If a migrated test still needs <code>SetupSet(...)</code>, <code>Protected()</code>, <code>SetupAllProperties()</code>, or <code>CallBase</code>, that test should usually stay on Moq or move to a fake rather than trying to force an NSubstitute equivalent. <code>PropertyValueCapture&lt;TValue&gt;</code> is the default FastMoq answer when the test only needs to observe property assignments rather than exercise Moq itself.</p>
+<p>Repo-backed references:</p>
+<ul>
+<li><code>FastMoq.Tests/NSubstituteProviderExtensionTests.cs</code></li>
+<li><code>FastMoq.Tests/ProviderTests.cs</code></li>
+</ul>
+<h2 id="reflection-provider">Reflection provider</h2>
+<p>Provider package / namespace:</p>
+<ul>
+<li>built into <code>FastMoq.Core</code></li>
+<li>namespace: <code>FastMoq.Providers.ReflectionProvider</code></li>
+</ul>
+<p>Best fit:</p>
+<ul>
+<li>dependency-light provider-neutral baseline</li>
+<li>suites that want FastMoq without bringing in an external mocking library</li>
+<li>tests that only need interface interception plus provider-neutral verification</li>
+</ul>
+<p>Supported capability flags:</p>
+<ul>
+<li>invocation tracking</li>
+</ul>
+<p>Not supported by the provider capabilities:</p>
+<ul>
+<li>call base</li>
+<li>setup all properties</li>
+<li>protected members</li>
+<li>logger capture</li>
+</ul>
+<p>Important implementation constraints:</p>
+<ul>
+<li>interface interception is supported through <code>DispatchProxy</code></li>
+<li>non-interface types fall back to public parameterless construction and do not get full interception behavior</li>
+<li>reflection is the default provider when you do nothing</li>
+</ul>
+<p>Practical note:</p>
+<ul>
+<li>this is a baseline provider, not a drop-in replacement for full Moq semantics</li>
+<li>if your migrated tests rely on <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>Protected()</code>, or <code>VerifyLogger(...)</code>, they should not stay on reflection</li>
+</ul>
+<p>Recommended style:</p>
+<pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push(&quot;reflection&quot;);
+var dependency = Mocks.GetOrCreateMock&lt;IOrderGateway&gt;();
+
+dependency.Instance.Publish(&quot;alpha&quot;);
+
+Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(&quot;alpha&quot;), TimesSpec.Once);
+Mocks.VerifyNoOtherCalls&lt;IOrderGateway&gt;();
+</code></pre>
+<p>Repo-backed references:</p>
+<ul>
+<li><code>FastMoq.Tests/ProviderTests.cs</code></li>
+</ul>
+<h2 id="custom-providers">Custom providers</h2>
+<p>Custom providers should document the same things this page documents for the built-in ones:</p>
+<ul>
+<li>capability flags from <code>IMockingProviderCapabilities</code></li>
+<li>supported tracked-mock convenience APIs, if any</li>
+<li>known unsupported behaviors</li>
+<li>migration caveats for provider-specific patterns</li>
+</ul>
+<p>Important extension-model note:</p>
+<ul>
+<li>the built-in providers are not inheritance extension points</li>
+<li>if you want custom behavior, implement a new <code>IMockingProvider</code></li>
+<li>when the change is incremental rather than a full rewrite, prefer a wrapper or decorator provider that delegates to an existing provider and adjusts only the behavior you need</li>
+</ul>
+<p>If your team writes its own provider, treat this matrix format as the minimum documentation bar.</p>
+<h2 id="recommended-documentation-pattern">Recommended documentation pattern</h2>
+<p>For future provider docs, keep the structure consistent:</p>
+<ol>
+<li>What the provider is for.</li>
+<li>Which <code>IMockingProviderCapabilities</code> flags are true or false.</li>
+<li>Which provider-specific helpers or namespaces are required.</li>
+<li>Which common test shapes still need a different provider.</li>
+</ol>
+<p>That keeps migration guidance, provider selection, and provider-specific limitations aligned instead of scattering the rules across multiple pages.</p>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -92,6 +92,32 @@ inventoryGateway
 
 That is the main migration pattern: replace `Setup(...)` with direct substitute calls plus `Returns(...)` or `When(...).Do(...)`, then keep FastMoq verification where it still reads well.
 
+### Side-by-side: `SetupSet(...)` migration versus provider-neutral capture
+
+When a test only needs to observe which value was assigned to a property, prefer a fake plus `PropertyValueCapture<TValue>` over keeping the test tied to Moq setter interception.
+
+Moq-specific shape:
+
+```csharp
+using var providerScope = MockingProviderRegistry.Push("moq");
+var gateway = Mocks.GetOrCreateMock<IOrderGateway>();
+
+gateway.AsMoq().SetupSet(x => x.Mode = It.IsAny<string>());
+```
+
+Provider-neutral shape:
+
+```csharp
+var modeCapture = new PropertyValueCapture<string?>();
+Mocks.AddType<IOrderGateway>(_ => new OrderGatewayStub(modeCapture));
+
+await Component.RunAsync();
+
+modeCapture.Value.Should().Be("fast");
+```
+
+That migration keeps the test portable across providers and usually makes the asserted behavior clearer.
+
 The source of truth for these examples is the test project itself:
 
 - `FastMoq.TestingExample/RealWorldExampleServices.cs`
@@ -107,6 +133,7 @@ They demonstrate:
 - `MockerTestBase<TComponent>` for normal component creation and dependency auto-injection
 - `Mocks.GetOrCreateMock<T>()` for tracked arrange flows
 - built-in `IFileSystem` behavior via the predefined `MockFileSystem`
+- typed `IServiceProvider` and Azure Functions `InstanceServices` helper patterns for framework-heavy tests
 - `VerifyLogged(...)` for provider-safe structured logging assertions
 - `Scenario.With(...).When(...).Then(...).Verify(...)` for the fluent scenario style inside `MockerTestBase<TComponent>`
 - provider-first verification through `TimesSpec.Once`, `TimesSpec.NeverCalled`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, and `TimesSpec.AtMost(...)`

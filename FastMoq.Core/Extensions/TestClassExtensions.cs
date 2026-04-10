@@ -1,10 +1,9 @@
-﻿using FastMoq.Models;
-using FastMoq.Internal.MoqCompatibility;
+﻿using FastMoq.Internal.MoqCompatibility;
+using FastMoq.Models;
 using FastMoq.Providers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
-using Moq;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.IO.Abstractions.TestingHelpers;
@@ -465,6 +464,14 @@ namespace FastMoq.Extensions
             return new AmbiguousImplementationException(message);
         }
 
+        /// <summary>
+        /// Adds a batch of files to the supplied mock file system.
+        /// </summary>
+        /// <param name="fileSystem">The file system to seed.</param>
+        /// <param name="files">The files to add, keyed by path.</param>
+        /// <remarks>
+        /// Use this helper when a test needs to seed several files up front without repeating individual <c>AddFile</c> calls.
+        /// </remarks>
         public static void AddFiles(this MockFileSystem fileSystem, IDictionary<string, MockFileData> files)
         {
             foreach (var mockFileData in files)
@@ -703,11 +710,31 @@ namespace FastMoq.Extensions
                 where TException : Exception =>
             CoreMoqLoggerCompatibility.VerifyLogger(loggerMock, logLevel, message, exception, eventId, times);
 
+        /// <summary>
+        /// Verifies that a non-generic <see cref="ILogger"/> mock recorded a matching entry using a Moq <see cref="Times"/> specification.
+        /// </summary>
+        /// <typeparam name="TException">The expected exception type associated with the log entry.</typeparam>
+        /// <param name="loggerMock">The logger mock to verify.</param>
+        /// <param name="logLevel">The expected log level.</param>
+        /// <param name="message">The expected formatted log message.</param>
+        /// <param name="exception">The expected exception instance, or <see langword="null"/> when no exception is expected.</param>
+        /// <param name="eventId">The expected event identifier, or <see langword="null"/> to ignore event id matching.</param>
+        /// <param name="times">The Moq count specification that must be satisfied.</param>
         [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Times times)
             where TException : Exception =>
             CoreMoqLoggerCompatibility.VerifyLogger(loggerMock, logLevel, message, exception, eventId, times);
 
+        /// <summary>
+        /// Verifies that a non-generic <see cref="ILogger"/> mock recorded a matching entry using a lazily evaluated Moq <see cref="Times"/> specification.
+        /// </summary>
+        /// <typeparam name="TException">The expected exception type associated with the log entry.</typeparam>
+        /// <param name="loggerMock">The logger mock to verify.</param>
+        /// <param name="logLevel">The expected log level.</param>
+        /// <param name="message">The expected formatted log message.</param>
+        /// <param name="exception">The expected exception instance, or <see langword="null"/> when no exception is expected.</param>
+        /// <param name="eventId">The expected event identifier, or <see langword="null"/> to ignore event id matching.</param>
+        /// <param name="times">A factory that returns the Moq count specification to apply during verification.</param>
         [Obsolete("Use Mocks.VerifyLogged(...) for provider-agnostic logger assertions. This Moq compatibility helper will move to the Moq provider package in v5.")]
         public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Func<Times> times)
             where TException : Exception =>

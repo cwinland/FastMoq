@@ -27,7 +27,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IMockingProvider
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
@@ -77,14 +77,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Capabilities
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 10
+    startLine: 13
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets the capabilities exposed by the current provider implementation.
+  example: []
   syntax:
     content: IMockingProviderCapabilities Capabilities { get; }
     parameters: []
@@ -106,20 +108,24 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 12
+    startLine: 20
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Builds a provider-specific boolean expression scaffold for the mocked type.
+  example: []
   syntax:
     content: Expression<Func<T, bool>> BuildExpression<T>()
     typeParameters:
     - id: T
+      description: The mocked type.
     return:
       type: System.Linq.Expressions.Expression{System.Func{{T},System.Boolean}}
+      description: An expression that can be used by provider-specific setup or verification flows.
     content.vb: Function BuildExpression(Of T)() As Expression(Of Func(Of T, Boolean))
   overload: FastMoq.Providers.IMockingProvider.BuildExpression*
   nameWithType.vb: IMockingProvider.BuildExpression(Of T)()
@@ -139,23 +145,28 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 14
+    startLine: 28
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Creates a mock wrapper for the specified type.
+  example: []
   syntax:
     content: 'IFastMock<T> CreateMock<T>(MockCreationOptions? options = null) where T : class'
     parameters:
     - id: options
       type: FastMoq.Providers.MockCreationOptions
+      description: Optional creation settings for the mock.
     typeParameters:
     - id: T
+      description: The mocked type.
     return:
       type: FastMoq.Providers.IFastMock{{T}}
+      description: A provider-backed mock wrapper.
     content.vb: Function CreateMock(Of T As Class)(options As MockCreationOptions = Nothing) As IFastMock(Of T)
   overload: FastMoq.Providers.IMockingProvider.CreateMock*
   nameWithType.vb: IMockingProvider.CreateMock(Of T)(MockCreationOptions)
@@ -175,23 +186,28 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 15
+    startLine: 36
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Creates a mock wrapper for the specified runtime type.
+  example: []
   syntax:
     content: IFastMock CreateMock(Type type, MockCreationOptions? options = null)
     parameters:
     - id: type
       type: System.Type
+      description: The mocked runtime type.
     - id: options
       type: FastMoq.Providers.MockCreationOptions
+      description: Optional creation settings for the mock.
     return:
       type: FastMoq.Providers.IFastMock
+      description: A provider-backed mock wrapper.
     content.vb: Function CreateMock(type As Type, options As MockCreationOptions = Nothing) As IFastMock
   overload: FastMoq.Providers.IMockingProvider.CreateMock*
   nameWithType.vb: IMockingProvider.CreateMock(Type, MockCreationOptions)
@@ -211,19 +227,22 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAllProperties
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 17
+    startLine: 42
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Configures the mock so settable properties behave like auto-properties.
+  example: []
   syntax:
     content: void SetupAllProperties(IFastMock mock)
     parameters:
     - id: mock
       type: FastMoq.Providers.IFastMock
+      description: The mock to configure.
     content.vb: Sub SetupAllProperties(mock As IFastMock)
   overload: FastMoq.Providers.IMockingProvider.SetupAllProperties*
 - uid: FastMoq.Providers.IMockingProvider.SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)
@@ -240,21 +259,25 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetCallBase
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 18
+    startLine: 49
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Enables or disables call-through behavior to the underlying implementation.
+  example: []
   syntax:
     content: void SetCallBase(IFastMock mock, bool value)
     parameters:
     - id: mock
       type: FastMoq.Providers.IFastMock
+      description: The mock to configure.
     - id: value
       type: System.Boolean
+      description: True to call the base implementation; otherwise false.
     content.vb: Sub SetCallBase(mock As IFastMock, value As Boolean)
   overload: FastMoq.Providers.IMockingProvider.SetCallBase*
   nameWithType.vb: IMockingProvider.SetCallBase(IFastMock, Boolean)
@@ -274,25 +297,31 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 20
+    startLine: 58
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Verifies that the specified call expression was invoked on the mock.
+  example: []
   syntax:
     content: 'void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class'
     parameters:
     - id: mock
       type: FastMoq.Providers.IFastMock{{T}}
+      description: The mock to verify.
     - id: expression
       type: System.Linq.Expressions.Expression{System.Action{{T}}}
+      description: The invocation expression to verify.
     - id: times
       type: System.Nullable{FastMoq.Providers.TimesSpec}
+      description: The expected invocation count.
     typeParameters:
     - id: T
+      description: The mocked type.
     content.vb: Sub Verify(Of T As Class)(mock As IFastMock(Of T), expression As Expression(Of Action(Of T)), times As TimesSpec? = Nothing)
   overload: FastMoq.Providers.IMockingProvider.Verify*
   nameWithType.vb: IMockingProvider.Verify(Of T)(IFastMock(Of T), Expression(Of Action(Of T)), TimesSpec?)
@@ -312,19 +341,22 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 21
+    startLine: 64
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Verifies that no unexpected invocations remain on the mock.
+  example: []
   syntax:
     content: void VerifyNoOtherCalls(IFastMock mock)
     parameters:
     - id: mock
       type: FastMoq.Providers.IFastMock
+      description: The mock to verify.
     content.vb: Sub VerifyNoOtherCalls(mock As IFastMock)
   overload: FastMoq.Providers.IMockingProvider.VerifyNoOtherCalls*
 - uid: FastMoq.Providers.IMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)
@@ -341,19 +373,22 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureProperties
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 23
+    startLine: 70
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Configures tracked properties for the supplied mock.
+  example: []
   syntax:
     content: void ConfigureProperties(IFastMock mock)
     parameters:
     - id: mock
       type: FastMoq.Providers.IFastMock
+      description: The mock to configure.
     content.vb: Sub ConfigureProperties(mock As IFastMock)
   overload: FastMoq.Providers.IMockingProvider.ConfigureProperties*
 - uid: FastMoq.Providers.IMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})
@@ -370,21 +405,25 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureLogger
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 24
+    startLine: 77
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Configures logger behavior for the supplied mock.
+  example: []
   syntax:
     content: void ConfigureLogger(IFastMock mock, Action<LogLevel, EventId, string, Exception?> callback)
     parameters:
     - id: mock
       type: FastMoq.Providers.IFastMock
+      description: The logger mock to configure.
     - id: callback
       type: System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+      description: A callback that receives log details for each invocation.
     content.vb: Sub ConfigureLogger(mock As IFastMock, callback As Action(Of LogLevel, EventId, String, Exception))
   overload: FastMoq.Providers.IMockingProvider.ConfigureLogger*
   nameWithType.vb: IMockingProvider.ConfigureLogger(IFastMock, Action(Of LogLevel, EventId, String, Exception))
@@ -404,21 +443,25 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetLegacy
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 25
+    startLine: 84
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Attempts to retrieve the provider's native legacy mock object for the supplied wrapper.
+  example: []
   syntax:
     content: object? TryGetLegacy(IFastMock mock)
     parameters:
     - id: mock
       type: FastMoq.Providers.IFastMock
+      description: The wrapped mock.
     return:
       type: System.Object
+      description: The native legacy mock instance when available; otherwise null.
     content.vb: Function TryGetLegacy(mock As IFastMock) As Object
   overload: FastMoq.Providers.IMockingProvider.TryGetLegacy*
 - uid: FastMoq.Providers.IMockingProvider.TryWrapLegacy(System.Object,System.Type)
@@ -435,23 +478,28 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TryWrapLegacy
     path: FastMoq.Abstractions/Providers/IMockingProvider.cs
-    startLine: 26
+    startLine: 92
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Attempts to wrap a provider-specific legacy mock instance in a FastMoq abstraction.
+  example: []
   syntax:
     content: IFastMock? TryWrapLegacy(object legacyMock, Type mockedType)
     parameters:
     - id: legacyMock
       type: System.Object
+      description: The provider-specific mock instance.
     - id: mockedType
       type: System.Type
+      description: The mocked type represented by the legacy mock.
     return:
       type: FastMoq.Providers.IFastMock
+      description: A FastMoq wrapper when the object can be adapted; otherwise null.
     content.vb: Function TryWrapLegacy(legacyMock As Object, mockedType As Type) As IFastMock
   overload: FastMoq.Providers.IMockingProvider.TryWrapLegacy*
   nameWithType.vb: IMockingProvider.TryWrapLegacy(Object, Type)

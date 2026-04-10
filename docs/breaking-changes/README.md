@@ -8,6 +8,31 @@ This page tracks intentional v4 breaking changes relative to the last public `3.
 
 ## Current breaking changes
 
+### `FastMoq.Web` Blazor helpers now align with bUnit 2
+
+The current branch upgrades `FastMoq.Web` from bUnit `1.38.5` to `2.7.2`.
+
+What changed:
+
+- `MockerBlazorTestBase<T>.RenderParameters` now uses `FastMoq.Web.Blazor.Models.RenderParameter`
+- nested helper methods such as `SetElementText(...)`, `SetElementCheck(...)`, and `SetElementSwitch(...)` now take `IRenderedComponent<IComponent>?` for `startingPoint`
+- direct bUnit examples should use `BunitContext` instead of the old `TestContext`
+- FastMoq added compatibility wrappers for `TestServiceProvider`, `TestAuthorizationContext`, and `FakeNavigationManager` to keep migration churn lower
+
+What did not require a rewrite:
+
+- most existing `MockerBlazorTestBase<T>` tests can keep the same base class
+- authorization and navigation helpers still exist under the familiar FastMoq-facing names
+- component discovery helpers such as `GetComponent(...)` and `GetComponents(...)` still work, but their implementation now understands bUnit 2's renderer state shape
+
+Migration guidance:
+
+- replace any stored `ComponentParameter` usage with `RenderParameter`
+- update nested helper `startingPoint` arguments to pass rendered child components
+- keep using the compatibility wrappers first, then simplify later only if the direct bUnit 2 APIs are clearer for your suite
+
+For the step-by-step migration path and repo-backed examples, see [bUnit and Blazor test migration](../migration/bunit-and-blazor-testing.md).
+
 ### Moq-specific HTTP setup helpers moved packages
 
 The older Moq-shaped HTTP setup helpers such as `SetupHttpMessage(...)` are no longer provided by `FastMoq.Core`.

@@ -1,7 +1,7 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using System.Security.Claims;
 
 namespace FastMoq.Web.Extensions
 {
@@ -110,13 +110,30 @@ namespace FastMoq.Web.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentNullException.ThrowIfNull(principal);
 
-            return new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = principal,
-                },
-            };
+            return mocker.CreateControllerContext(principal, static _ => { });
+        }
+
+        /// <summary>
+        /// Creates a <see cref="ControllerContext" /> from an existing principal and applies additional HTTP-context configuration.
+        /// </summary>
+        public static ControllerContext CreateControllerContext(this Mocker mocker, ClaimsPrincipal principal, Action<HttpContext> configureHttpContext)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(principal);
+            ArgumentNullException.ThrowIfNull(configureHttpContext);
+
+            return mocker.CreateControllerContext(mocker.CreateHttpContext(principal, configureHttpContext));
+        }
+
+        /// <summary>
+        /// Creates an anonymous <see cref="ControllerContext" /> and applies additional HTTP-context configuration.
+        /// </summary>
+        public static ControllerContext CreateControllerContext(this Mocker mocker, Action<HttpContext> configureHttpContext)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(configureHttpContext);
+
+            return mocker.CreateControllerContext(mocker.CreateHttpContext(configureHttpContext));
         }
 
         /// <summary>
@@ -126,13 +143,7 @@ namespace FastMoq.Web.Extensions
         {
             ArgumentNullException.ThrowIfNull(mocker);
 
-            return new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = mocker.SetupClaimsPrincipal(principalOptions, roleNames),
-                },
-            };
+            return mocker.CreateControllerContext(mocker.SetupClaimsPrincipal(principalOptions, roleNames));
         }
 
         /// <summary>
@@ -181,10 +192,38 @@ namespace FastMoq.Web.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentNullException.ThrowIfNull(principal);
 
-            return new DefaultHttpContext
+            return mocker.CreateHttpContext(principal, static _ => { });
+        }
+
+        /// <summary>
+        /// Creates an <see cref="HttpContext" /> from an existing principal and applies additional HTTP-context configuration.
+        /// </summary>
+        public static HttpContext CreateHttpContext(this Mocker mocker, ClaimsPrincipal principal, Action<HttpContext> configureHttpContext)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(principal);
+            ArgumentNullException.ThrowIfNull(configureHttpContext);
+
+            var httpContext = new DefaultHttpContext
             {
                 User = principal,
             };
+
+            configureHttpContext(httpContext);
+            return httpContext;
+        }
+
+        /// <summary>
+        /// Creates an anonymous <see cref="HttpContext" /> and applies additional HTTP-context configuration.
+        /// </summary>
+        public static HttpContext CreateHttpContext(this Mocker mocker, Action<HttpContext> configureHttpContext)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(configureHttpContext);
+
+            var httpContext = new DefaultHttpContext();
+            configureHttpContext(httpContext);
+            return httpContext;
         }
 
         /// <summary>
@@ -194,10 +233,7 @@ namespace FastMoq.Web.Extensions
         {
             ArgumentNullException.ThrowIfNull(mocker);
 
-            return new DefaultHttpContext
-            {
-                User = mocker.SetupClaimsPrincipal(principalOptions, roleNames),
-            };
+            return mocker.CreateHttpContext(mocker.SetupClaimsPrincipal(principalOptions, roleNames));
         }
 
         /// <summary>
@@ -208,6 +244,40 @@ namespace FastMoq.Web.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
 
             return mocker.AddType(_ => httpContext ?? mocker.CreateHttpContext(roleNames), replace);
+        }
+
+        /// <summary>
+        /// Registers an authenticated <see cref="HttpContext" /> for controller, middleware, or accessor-based tests.
+        /// </summary>
+        public static Mocker AddHttpContext(this Mocker mocker, ClaimsPrincipal principal, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(principal);
+
+            return mocker.AddHttpContext(principal, static _ => { }, replace);
+        }
+
+        /// <summary>
+        /// Registers an authenticated and configured <see cref="HttpContext" /> for controller, middleware, or accessor-based tests.
+        /// </summary>
+        public static Mocker AddHttpContext(this Mocker mocker, ClaimsPrincipal principal, Action<HttpContext> configureHttpContext, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(principal);
+            ArgumentNullException.ThrowIfNull(configureHttpContext);
+
+            return mocker.AddHttpContext(mocker.CreateHttpContext(principal, configureHttpContext), replace);
+        }
+
+        /// <summary>
+        /// Registers an anonymously configured <see cref="HttpContext" /> for controller, middleware, or accessor-based tests.
+        /// </summary>
+        public static Mocker AddHttpContext(this Mocker mocker, Action<HttpContext> configureHttpContext, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(configureHttpContext);
+
+            return mocker.AddHttpContext(mocker.CreateHttpContext(configureHttpContext), replace);
         }
 
         /// <summary>
@@ -226,6 +296,40 @@ namespace FastMoq.Web.Extensions
             mocker.AddType<HttpContext>(_ => resolvedHttpContext, replace);
             mocker.AddType<HttpContextAccessor>(_ => accessor, replace);
             return mocker.AddType<IHttpContextAccessor, HttpContextAccessor>(_ => accessor, replace);
+        }
+
+        /// <summary>
+        /// Registers an <see cref="IHttpContextAccessor" /> backed by an authenticated <see cref="HttpContext" />.
+        /// </summary>
+        public static Mocker AddHttpContextAccessor(this Mocker mocker, ClaimsPrincipal principal, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(principal);
+
+            return mocker.AddHttpContextAccessor(principal, static _ => { }, replace);
+        }
+
+        /// <summary>
+        /// Registers an <see cref="IHttpContextAccessor" /> backed by an authenticated and configured <see cref="HttpContext" />.
+        /// </summary>
+        public static Mocker AddHttpContextAccessor(this Mocker mocker, ClaimsPrincipal principal, Action<HttpContext> configureHttpContext, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(principal);
+            ArgumentNullException.ThrowIfNull(configureHttpContext);
+
+            return mocker.AddHttpContextAccessor(mocker.CreateHttpContext(principal, configureHttpContext), replace);
+        }
+
+        /// <summary>
+        /// Registers an <see cref="IHttpContextAccessor" /> backed by an anonymously configured <see cref="HttpContext" />.
+        /// </summary>
+        public static Mocker AddHttpContextAccessor(this Mocker mocker, Action<HttpContext> configureHttpContext, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(configureHttpContext);
+
+            return mocker.AddHttpContextAccessor(mocker.CreateHttpContext(configureHttpContext), replace);
         }
 
         /// <summary>
@@ -315,7 +419,7 @@ namespace FastMoq.Web.Extensions
 
             var current = httpContext.Request.Query.ToDictionary(
                 pair => pair.Key,
-                pair => (string?)pair.Value.ToString(),
+                pair => (string?) pair.Value.ToString(),
                 StringComparer.OrdinalIgnoreCase);
             current[name] = value;
             return httpContext.SetQueryParameters(current);

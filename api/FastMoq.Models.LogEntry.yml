@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/LogEntry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: LogEntry
     path: FastMoq.Core/Models/LogEntry.cs
@@ -78,7 +78,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/LogEntry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/LogEntry.cs
@@ -118,7 +118,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/LogEntry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: LogLevel
     path: FastMoq.Core/Models/LogEntry.cs
@@ -147,7 +147,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/LogEntry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: EventId
     path: FastMoq.Core/Models/LogEntry.cs
@@ -176,7 +176,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/LogEntry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Message
     path: FastMoq.Core/Models/LogEntry.cs
@@ -205,7 +205,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/LogEntry.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Exception
     path: FastMoq.Core/Models/LogEntry.cs

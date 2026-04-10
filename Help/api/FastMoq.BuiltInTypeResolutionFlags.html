@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Enum BuiltInTypeResolutionFlags | FastMoq ">
     
-    
+    <meta name="description" content="Specifies which built-in framework and utility types  may resolve automatically.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -82,7 +82,8 @@
 
 
   <h1 id="FastMoq_BuiltInTypeResolutionFlags" data-uid="FastMoq.BuiltInTypeResolutionFlags" class="text-break">Enum BuiltInTypeResolutionFlags</h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Specifies which built-in framework and utility types <a class="xref" href="FastMoq.Mocker.html">Mocker</a> may resolve automatically.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a></h6>
   <h6><strong>Assembly</strong>: FastMoq.Core.dll</h6>
@@ -91,6 +92,20 @@
     <pre><code class="lang-csharp hljs">[Flags]
 public enum BuiltInTypeResolutionFlags</code></pre>
   </div>
+  <h5 id="FastMoq_BuiltInTypeResolutionFlags_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>
+These flags control FastMoq's built-in object creation behavior for well-known types that are commonly
+needed during unit and integration-style test setup.
+</p>
+<p>
+The values can be combined to enable multiple categories at once, or compared against the provided preset
+values such as <a class="xref" href="FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_StrictCompatibilityDefaults">StrictCompatibilityDefaults</a> and <a class="xref" href="FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_LenientDefaults">LenientDefaults</a>.
+</p>
+<p>
+Use <a class="xref" href="FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_None">None</a> to disable all built-in resolutions and require explicit registrations, or use
+<a class="xref" href="FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_All">All</a> to enable every built-in category currently supported.
+</p>
+</div>
   <h3 id="fields">Fields
 </h3>
   <table class="table table-bordered table-condensed">
@@ -103,35 +118,43 @@ public enum BuiltInTypeResolutionFlags</code></pre>
     </thead></thead><tbody>
       <tr>
         <td id="FastMoq_BuiltInTypeResolutionFlags_All">All</td>
-        <td></td>
+        <td><p>Enables every built-in type resolution category currently supported.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_BuiltInTypeResolutionFlags_DbContext">DbContext</td>
-        <td></td>
+        <td><p>Enables automatic resolution for database context types.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_BuiltInTypeResolutionFlags_FileSystem">FileSystem</td>
-        <td></td>
+        <td><p>Enables automatic resolution for file system abstractions.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_BuiltInTypeResolutionFlags_HttpClient">HttpClient</td>
-        <td></td>
+        <td><p>Enables automatic resolution for <a class="xref" href="FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_HttpClient">HttpClient</a> instances.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_BuiltInTypeResolutionFlags_LenientDefaults">LenientDefaults</td>
-        <td></td>
+        <td><p>Enables the lenient preset used for maximum built-in convenience.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_BuiltInTypeResolutionFlags_None">None</td>
-        <td></td>
+        <td><p>Disables all built-in type resolution.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_BuiltInTypeResolutionFlags_StrictCompatibilityDefaults">StrictCompatibilityDefaults</td>
-        <td></td>
+        <td><p>Enables the conservative compatibility preset used for stricter legacy behavior.</p>
+</td>
       </tr>
       <tr>
         <td id="FastMoq_BuiltInTypeResolutionFlags_Uri">Uri</td>
-        <td></td>
+        <td><p>Enables automatic resolution for <a class="xref" href="FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_Uri">Uri</a> values.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -190,7 +213,7 @@ public enum BuiltInTypeResolutionFlags</code></pre>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

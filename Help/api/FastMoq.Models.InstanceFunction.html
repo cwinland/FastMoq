@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class InstanceFunction | FastMoq ">
     
-    
+    <meta name="description" content="Stores a late-bound factory delegate that can create an instance of a specific runtime type.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -81,7 +81,8 @@
 
 
   <h1 id="FastMoq_Models_InstanceFunction" data-uid="FastMoq.Models.InstanceFunction" class="text-break">Class InstanceFunction</h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Stores a late-bound factory delegate that can create an instance of a specific runtime type.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -123,7 +124,8 @@
 </h3>
   <a id="FastMoq_Models_InstanceFunction__ctor_" data-uid="FastMoq.Models.InstanceFunction.#ctor*"></a>
   <h4 id="FastMoq_Models_InstanceFunction__ctor_System_Type_" data-uid="FastMoq.Models.InstanceFunction.#ctor(System.Type)">InstanceFunction(Type)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Stores a late-bound factory delegate that can create an instance of a specific runtime type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -142,7 +144,8 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">type</span></td>
-        <td></td>
+        <td><p>The runtime type produced by the stored factory delegate.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -150,7 +153,8 @@
 </h3>
   <a id="FastMoq_Models_InstanceFunction_Function_" data-uid="FastMoq.Models.InstanceFunction.Function*"></a>
   <h4 id="FastMoq_Models_InstanceFunction_Function" data-uid="FastMoq.Models.InstanceFunction.Function">Function</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the factory delegate used to create the instance.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -173,7 +177,8 @@
   </table>
   <a id="FastMoq_Models_InstanceFunction_InstanceType_" data-uid="FastMoq.Models.InstanceFunction.InstanceType*"></a>
   <h4 id="FastMoq_Models_InstanceFunction_InstanceType" data-uid="FastMoq.Models.InstanceFunction.InstanceType">InstanceType</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the runtime type that this factory produces.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -198,7 +203,8 @@
 </h3>
   <a id="FastMoq_Models_InstanceFunction_CreateInstance_" data-uid="FastMoq.Models.InstanceFunction.CreateInstance*"></a>
   <h4 id="FastMoq_Models_InstanceFunction_CreateInstance_System_Type_" data-uid="FastMoq.Models.InstanceFunction.CreateInstance(System.Type)">CreateInstance(Type)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="FastMoq.Models.InstanceFunction.html">InstanceFunction</a> placeholder for the specified runtime type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -217,7 +223,8 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">type</span></td>
-        <td></td>
+        <td><p>The runtime type the instance function should describe.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -232,13 +239,15 @@
     <tbody>
       <tr>
         <td><a class="xref" href="FastMoq.Models.InstanceFunction.html">InstanceFunction</a></td>
-        <td></td>
+        <td><p>A new <a class="xref" href="FastMoq.Models.InstanceFunction.html">InstanceFunction</a> for <code class="paramref">type</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_InstanceFunction_Invoke_" data-uid="FastMoq.Models.InstanceFunction.Invoke*"></a>
   <h4 id="FastMoq_Models_InstanceFunction_Invoke_FastMoq_Mocker_System_Object___" data-uid="FastMoq.Models.InstanceFunction.Invoke(FastMoq.Mocker,System.Object[])">Invoke(Mocker, params object?[]?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes the stored factory delegate with the supplied <a class="xref" href="FastMoq.Mocker.html">Mocker</a> and optional parameter values.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -257,12 +266,14 @@
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocker</span></td>
-        <td></td>
+        <td><p>The active mocker used as the first delegate argument.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
         <td><span class="parametername">parameters</span></td>
-        <td></td>
+        <td><p>Optional extra parameters passed to delegates that accept a second argument.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -277,13 +288,31 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td></td>
+        <td><p>The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when the stored delegate returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when no compatible delegate has been assigned.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_InstanceFunction_SetFunction_" data-uid="FastMoq.Models.InstanceFunction.SetFunction*"></a>
   <h4 id="FastMoq_Models_InstanceFunction_SetFunction_System_Delegate_" data-uid="FastMoq.Models.InstanceFunction.SetFunction(System.Delegate)">SetFunction(Delegate)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Assigns the factory delegate used to create the instance.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -302,7 +331,8 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.delegate">Delegate</a></td>
         <td><span class="parametername">function</span></td>
-        <td></td>
+        <td><p>The delegate to store for later invocation.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -386,7 +416,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

@@ -47,7 +47,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" VersionOverride="10.*" Condition="'$(TargetFramework)' == 'net10.0'">
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Moq" />
   </ItemGroup>
 
   <ItemGroup>

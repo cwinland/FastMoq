@@ -1,8 +1,6 @@
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
-using Microsoft.Extensions.Logging;
-using NSubstitute;
-using NSubstitute.Core;
 
 namespace FastMoq.Providers.NSubstituteProvider
 {
@@ -74,7 +72,7 @@ namespace FastMoq.Providers.NSubstituteProvider
             }
             else
             {
-                substitute = (T)Substitute.For(new[] { typeof(T) }, options.ConstructorArgs ?? Array.Empty<object?>());
+                substitute = (T) Substitute.For(new[] { typeof(T) }, options.ConstructorArgs ?? Array.Empty<object?>());
             }
 
             return new NSubFastMock<T>(substitute);
@@ -90,7 +88,7 @@ namespace FastMoq.Providers.NSubstituteProvider
             options ??= new();
             var substitute = Substitute.For(new[] { type }, options.ConstructorArgs ?? Array.Empty<object?>());
             var wrapper = typeof(NSubFastMock<>).MakeGenericType(type);
-            return (IFastMock)Activator.CreateInstance(wrapper, substitute)!;
+            return (IFastMock) Activator.CreateInstance(wrapper, substitute)!;
         }
 
         /// <summary>

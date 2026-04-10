@@ -1,7 +1,7 @@
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
-using Microsoft.Extensions.Logging;
 
 namespace FastMoq.Providers.ReflectionProvider
 {
@@ -38,10 +38,10 @@ namespace FastMoq.Providers.ReflectionProvider
             {
                 // Non-interface fallback: attempt parameterless construction (no interception)
                 var inst = TryCreateConcrete(typeof(T)) ?? throw new NotSupportedException($"Reflection provider only supports interfaces or classes with a public parameterless constructor. Type: {typeof(T).Name}");
-                return new ReflectionFastMock<T>((T)inst, TrackNoOp);
+                return new ReflectionFastMock<T>((T) inst, TrackNoOp);
             }
             var proxy = DispatchProxy.Create<T, TrackingDispatchProxy>();
-            ((TrackingDispatchProxy)(object)proxy!).Initialize((m, a, r) => Track(proxy!, m, a));
+            ((TrackingDispatchProxy) (object) proxy!).Initialize((m, a, r) => Track(proxy!, m, a));
             return new ReflectionFastMock<T>(proxy!, (m, a, r) => Track(proxy!, m, a));
         }
 
@@ -49,7 +49,7 @@ namespace FastMoq.Providers.ReflectionProvider
         {
             var method = typeof(ReflectionMockingProvider).GetMethod(nameof(CreateGeneric), BindingFlags.NonPublic | BindingFlags.Instance)!
                 .MakeGenericMethod(type);
-            return (IFastMock)method.Invoke(this, new object?[] { options })!;
+            return (IFastMock) method.Invoke(this, new object?[] { options })!;
         }
 
         private IFastMock CreateGeneric<T>(MockCreationOptions? options) where T : class => CreateMock<T>(options);

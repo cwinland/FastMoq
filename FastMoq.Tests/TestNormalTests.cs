@@ -11,7 +11,7 @@ namespace FastMoq.Tests
         public void CanCreate()
         {
             Component.Should().NotBeNull();
-            var value = (ConstructorModel)Mocks.ConstructorHistory[0].Value[0];
+            var value = (ConstructorModel) Mocks.ConstructorHistory[0].Value[0];
             value.ParameterList.Should().HaveCount(2); // Used constructor with 2 parameters instead of empty constructor.
         }
 

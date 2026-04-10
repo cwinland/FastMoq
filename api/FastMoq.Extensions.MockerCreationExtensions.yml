@@ -30,11 +30,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerCreationExtensions
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 24
+    startLine: 23
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -81,11 +81,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 49
+    startLine: 48
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -143,28 +143,36 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 52
+    startLine: 60
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
+  summary: Creates an instance of <code>T</code> by selecting the constructor that matches <code class="typeparamref">TParam1</code> and applying the supplied creation flags.
+  example: []
   syntax:
     content: 'public static T? CreateInstance<T, TParam1>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class'
     parameters:
     - id: mocker
       type: FastMoq.Mocker
+      description: The FastMoq container used to resolve the remaining constructor dependencies.
     - id: flags
       type: FastMoq.InstanceCreationFlags
+      description: The constructor-selection and optional-parameter behavior overrides to apply for this creation request.
     - id: data
       type: System.Collections.Generic.Dictionary{System.Type,System.Object}
+      description: A map of constructor parameter types to explicit values that should be injected when creating the instance.
     typeParameters:
     - id: T
+      description: The concrete type to create.
     - id: TParam1
+      description: The explicitly supplied constructor parameter type used to identify the target constructor.
     return:
       type: '{T}'
+      description: The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when resolution cannot produce one.
     content.vb: Public Shared Function CreateInstance(Of T As Class, TParam1)(mocker As Mocker, flags As InstanceCreationFlags, data As Dictionary(Of Type, Object)) As T
   overload: FastMoq.Extensions.MockerCreationExtensions.CreateInstance*
   nameWithType.vb: MockerCreationExtensions.CreateInstance(Of T, TParam1)(Mocker, InstanceCreationFlags, Dictionary(Of Type, Object))
@@ -185,11 +193,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 69
+    startLine: 77
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -234,29 +242,38 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 72
+    startLine: 90
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
+  summary: Creates an instance of <code>T</code> by targeting the constructor that matches <code class="typeparamref">TParam1</code> and <code class="typeparamref">TParam2</code>, while honoring the supplied creation flags.
+  example: []
   syntax:
     content: 'public static T? CreateInstance<T, TParam1, TParam2>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class'
     parameters:
     - id: mocker
       type: FastMoq.Mocker
+      description: The FastMoq container used to resolve remaining constructor dependencies.
     - id: flags
       type: FastMoq.InstanceCreationFlags
+      description: The constructor-selection and optional-parameter behavior overrides to apply for this call.
     - id: data
       type: System.Collections.Generic.Dictionary{System.Type,System.Object}
+      description: A map of explicit constructor argument types to values.
     typeParameters:
     - id: T
+      description: The concrete type to create.
     - id: TParam1
+      description: The first constructor parameter type used to identify the target constructor.
     - id: TParam2
+      description: The second constructor parameter type used to identify the target constructor.
     return:
       type: '{T}'
+      description: The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when construction fails.
     content.vb: Public Shared Function CreateInstance(Of T As Class, TParam1, TParam2)(mocker As Mocker, flags As InstanceCreationFlags, data As Dictionary(Of Type, Object)) As T
   overload: FastMoq.Extensions.MockerCreationExtensions.CreateInstance*
   nameWithType.vb: MockerCreationExtensions.CreateInstance(Of T, TParam1, TParam2)(Mocker, InstanceCreationFlags, Dictionary(Of Type, Object))
@@ -277,11 +294,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 90
+    startLine: 108
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -328,30 +345,40 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 93
+    startLine: 122
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
+  summary: Creates an instance of <code>T</code> by targeting the constructor that matches three explicit parameter types and applying the supplied creation flags.
+  example: []
   syntax:
     content: 'public static T? CreateInstance<T, TParam1, TParam2, TParam3>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class'
     parameters:
     - id: mocker
       type: FastMoq.Mocker
+      description: The FastMoq container used to resolve remaining constructor dependencies.
     - id: flags
       type: FastMoq.InstanceCreationFlags
+      description: The constructor-selection and optional-parameter behavior overrides to apply for this call.
     - id: data
       type: System.Collections.Generic.Dictionary{System.Type,System.Object}
+      description: A map of explicit constructor argument types to values.
     typeParameters:
     - id: T
+      description: The concrete type to create.
     - id: TParam1
+      description: The first constructor parameter type used to identify the target constructor.
     - id: TParam2
+      description: The second constructor parameter type used to identify the target constructor.
     - id: TParam3
+      description: The third constructor parameter type used to identify the target constructor.
     return:
       type: '{T}'
+      description: The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when construction fails.
     content.vb: Public Shared Function CreateInstance(Of T As Class, TParam1, TParam2, TParam3)(mocker As Mocker, flags As InstanceCreationFlags, data As Dictionary(Of Type, Object)) As T
   overload: FastMoq.Extensions.MockerCreationExtensions.CreateInstance*
   nameWithType.vb: MockerCreationExtensions.CreateInstance(Of T, TParam1, TParam2, TParam3)(Mocker, InstanceCreationFlags, Dictionary(Of Type, Object))
@@ -372,11 +399,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 112
+    startLine: 141
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -425,31 +452,42 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 115
+    startLine: 156
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
+  summary: Creates an instance of <code>T</code> by targeting the constructor that matches four explicit parameter types and applying the supplied creation flags.
+  example: []
   syntax:
     content: 'public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class'
     parameters:
     - id: mocker
       type: FastMoq.Mocker
+      description: The FastMoq container used to resolve remaining constructor dependencies.
     - id: flags
       type: FastMoq.InstanceCreationFlags
+      description: The constructor-selection and optional-parameter behavior overrides to apply for this call.
     - id: data
       type: System.Collections.Generic.Dictionary{System.Type,System.Object}
+      description: A map of explicit constructor argument types to values.
     typeParameters:
     - id: T
+      description: The concrete type to create.
     - id: TParam1
+      description: The first constructor parameter type used to identify the target constructor.
     - id: TParam2
+      description: The second constructor parameter type used to identify the target constructor.
     - id: TParam3
+      description: The third constructor parameter type used to identify the target constructor.
     - id: TParam4
+      description: The fourth constructor parameter type used to identify the target constructor.
     return:
       type: '{T}'
+      description: The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when construction fails.
     content.vb: Public Shared Function CreateInstance(Of T As Class, TParam1, TParam2, TParam3, TParam4)(mocker As Mocker, flags As InstanceCreationFlags, data As Dictionary(Of Type, Object)) As T
   overload: FastMoq.Extensions.MockerCreationExtensions.CreateInstance*
   nameWithType.vb: MockerCreationExtensions.CreateInstance(Of T, TParam1, TParam2, TParam3, TParam4)(Mocker, InstanceCreationFlags, Dictionary(Of Type, Object))
@@ -470,11 +508,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 135
+    startLine: 176
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -525,32 +563,44 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 138
+    startLine: 192
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
+  summary: Creates an instance of <code>T</code> by targeting the constructor that matches five explicit parameter types and applying the supplied creation flags.
+  example: []
   syntax:
     content: 'public static T? CreateInstance<T, TParam1, TParam2, TParam3, TParam4, TParam5>(this Mocker mocker, InstanceCreationFlags flags, Dictionary<Type, object?> data) where T : class'
     parameters:
     - id: mocker
       type: FastMoq.Mocker
+      description: The FastMoq container used to resolve remaining constructor dependencies.
     - id: flags
       type: FastMoq.InstanceCreationFlags
+      description: The constructor-selection and optional-parameter behavior overrides to apply for this call.
     - id: data
       type: System.Collections.Generic.Dictionary{System.Type,System.Object}
+      description: A map of explicit constructor argument types to values.
     typeParameters:
     - id: T
+      description: The concrete type to create.
     - id: TParam1
+      description: The first constructor parameter type used to identify the target constructor.
     - id: TParam2
+      description: The second constructor parameter type used to identify the target constructor.
     - id: TParam3
+      description: The third constructor parameter type used to identify the target constructor.
     - id: TParam4
+      description: The fourth constructor parameter type used to identify the target constructor.
     - id: TParam5
+      description: The fifth constructor parameter type used to identify the target constructor.
     return:
       type: '{T}'
+      description: The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when construction fails.
     content.vb: Public Shared Function CreateInstance(Of T As Class, TParam1, TParam2, TParam3, TParam4, TParam5)(mocker As Mocker, flags As InstanceCreationFlags, data As Dictionary(Of Type, Object)) As T
   overload: FastMoq.Extensions.MockerCreationExtensions.CreateInstance*
   nameWithType.vb: MockerCreationExtensions.CreateInstance(Of T, TParam1, TParam2, TParam3, TParam4, TParam5)(Mocker, InstanceCreationFlags, Dictionary(Of Type, Object))
@@ -571,11 +621,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInternal
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 200
+    startLine: 254
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -620,11 +670,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInternal
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 213
+    startLine: 267
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -675,11 +725,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 404
+    startLine: 458
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -720,11 +770,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 417
+    startLine: 471
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -765,25 +815,31 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
-    startLine: 433
+    startLine: 494
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
+  summary: Sets up a readable property on a mock by using a strongly typed property expression.
+  example: []
   syntax:
     content: 'public static void SetupMockProperty<TMock>(this Mock<TMock> mock, Expression<Func<TMock, object>> propertyExpression, object value) where TMock : class'
     parameters:
     - id: mock
       type: Moq.Mock{{TMock}}
+      description: The mock whose property getter should be configured.
     - id: propertyExpression
       type: System.Linq.Expressions.Expression{System.Func{{TMock},System.Object}}
+      description: An expression that selects the property to configure.
     - id: value
       type: System.Object
+      description: The value the property getter should return.
     typeParameters:
     - id: TMock
+      description: The mocked type that exposes the property.
     content.vb: Public Shared Sub SetupMockProperty(Of TMock As Class)(mock As Mock(Of TMock), propertyExpression As Expression(Of Func(Of TMock, Object)), value As Object)
   overload: FastMoq.Extensions.MockerCreationExtensions.SetupMockProperty*
   nameWithType.vb: MockerCreationExtensions.SetupMockProperty(Of TMock)(Mock(Of TMock), Expression(Of Func(Of TMock, Object)), Object)

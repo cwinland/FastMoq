@@ -19,14 +19,16 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IDbContextMock
     path: FastMoq.Database/Models/IDbContextMock.cs
-    startLine: 4
+    startLine: 7
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Describes the DbContext-specific setup operations exposed by FastMoq's legacy DbContext mock wrappers.
+  example: []
   syntax:
     content: public interface IDbContextMock
     content.vb: Public Interface IDbContextMock
@@ -66,19 +68,22 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbContextSetMethods
     path: FastMoq.Database/Models/IDbContextMock.cs
-    startLine: 6
+    startLine: 13
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures the <code>Set&lt;TEntity&gt;</code> style methods on the mocked DbContext for the supplied DbSet property.
+  example: []
   syntax:
     content: void SetupDbContextSetMethods(PropertyInfo propertyInfo)
     parameters:
     - id: propertyInfo
       type: System.Reflection.PropertyInfo
+      description: The DbSet property being mapped back to the corresponding <code>Set&lt;TEntity&gt;</code> methods.
     content.vb: Sub SetupDbContextSetMethods(propertyInfo As PropertyInfo)
   overload: FastMoq.Models.IDbContextMock.SetupDbContextSetMethods*
 - uid: FastMoq.Models.IDbContextMock.SetupDbSetProperties(System.Reflection.PropertyInfo,System.Object)
@@ -95,21 +100,25 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetProperties
     path: FastMoq.Database/Models/IDbContextMock.cs
-    startLine: 7
+    startLine: 20
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures DbSet-related properties on the mocked DbContext.
+  example: []
   syntax:
     content: void SetupDbSetProperties(PropertyInfo propertyInfo, object value)
     parameters:
     - id: propertyInfo
       type: System.Reflection.PropertyInfo
+      description: The DbSet property to configure.
     - id: value
       type: System.Object
+      description: The value the property should return.
     content.vb: Sub SetupDbSetProperties(propertyInfo As PropertyInfo, value As Object)
   overload: FastMoq.Models.IDbContextMock.SetupDbSetProperties*
   nameWithType.vb: IDbContextMock.SetupDbSetProperties(PropertyInfo, Object)
@@ -129,21 +138,25 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetPropertyGet
     path: FastMoq.Database/Models/IDbContextMock.cs
-    startLine: 8
+    startLine: 27
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures the getter for a DbSet property on the mocked DbContext.
+  example: []
   syntax:
     content: void SetupDbSetPropertyGet(PropertyInfo propertyInfo, object value)
     parameters:
     - id: propertyInfo
       type: System.Reflection.PropertyInfo
+      description: The DbSet property whose getter should be configured.
     - id: value
       type: System.Object
+      description: The value the getter should return.
     content.vb: Sub SetupDbSetPropertyGet(propertyInfo As PropertyInfo, value As Object)
   overload: FastMoq.Models.IDbContextMock.SetupDbSetPropertyGet*
   nameWithType.vb: IDbContextMock.SetupDbSetPropertyGet(PropertyInfo, Object)
@@ -163,25 +176,31 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupSetMethod
     path: FastMoq.Database/Models/IDbContextMock.cs
-    startLine: 9
+    startLine: 36
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures the generic <code>Set&lt;TEntity&gt;</code> method for the supplied entity type.
+  example: []
   syntax:
     content: void SetupSetMethod(Type setType, Delegate propValueDelegate, Type[]? types = null, object?[]? parameters = null)
     parameters:
     - id: setType
       type: System.Type
+      description: The entity type represented by the configured DbSet.
     - id: propValueDelegate
       type: System.Delegate
+      description: A delegate that returns the DbSet instance for the configured entity type.
     - id: types
       type: System.Type[]
+      description: Optional generic type arguments to apply when building the setup expression.
     - id: parameters
       type: System.Object[]
+      description: Optional method parameters to use while building the setup expression.
     content.vb: Sub SetupSetMethod(setType As Type, propValueDelegate As [Delegate], types As Type() = Nothing, parameters As Object() = Nothing)
   overload: FastMoq.Models.IDbContextMock.SetupSetMethod*
   nameWithType.vb: IDbContextMock.SetupSetMethod(Type, Delegate, Type(), Object())

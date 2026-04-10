@@ -21,14 +21,16 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ObservableExceptionLog
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
-    startLine: 7
+    startLine: 10
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Exposes a read-only, observable view of exception messages captured by a <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> during resolution and invocation.
+  example: []
   syntax:
     content: 'public class ObservableExceptionLog : IReadOnlyCollection<string>, IEnumerable<string>, IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged'
     content.vb: Public Class ObservableExceptionLog Implements IReadOnlyCollection(Of String), IEnumerable(Of String), IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged
@@ -82,14 +84,16 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
-    startLine: 12
+    startLine: 18
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Initializes an empty observable exception log.
+  example: []
   syntax:
     content: public ObservableExceptionLog()
     content.vb: Public Sub New()
@@ -111,14 +115,16 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Items
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
-    startLine: 24
+    startLine: 32
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Gets the captured exception messages as a read-only observable collection.
+  example: []
   syntax:
     content: public IReadOnlyCollection<string> Items { get; }
     parameters: []
@@ -140,11 +146,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CollectionChanged
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
-    startLine: 27
+    startLine: 35
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -171,11 +177,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: PropertyChanged
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
-    startLine: 34
+    startLine: 42
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -202,11 +208,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetEnumerator
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
-    startLine: 41
+    startLine: 49
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -235,11 +241,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Count
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
-    startLine: 47
+    startLine: 55
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -256,6 +262,13 @@ items:
   implements:
   - System.Collections.Generic.IReadOnlyCollection{System.String}.Count
 references:
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
 - uid: FastMoq.Models
   commentId: N:FastMoq.Models
   href: FastMoq.html
@@ -2035,6 +2048,12 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: FastMoq
+  commentId: N:FastMoq
+  href: FastMoq.html
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq
 - uid: System
   commentId: N:System
   isExternal: true

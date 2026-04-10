@@ -16,18 +16,21 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMockT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IDbContextMock
     path: FastMoq.Database/Models/IDbContextMockT.cs
-    startLine: 4
+    startLine: 6
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Describes a strongly typed FastMoq DbContext mock wrapper.
+  example: []
   syntax:
     content: 'public interface IDbContextMock<TEntity> : IDbContextMock where TEntity : DbContext'
     typeParameters:
     - id: TEntity
+      description: The concrete DbContext type being mocked.
     content.vb: Public Interface IDbContextMock(Of TEntity As DbContext) Inherits IDbContextMock
   derivedClasses:
   - FastMoq.Models.DbContextMock`1
@@ -73,21 +76,25 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMockT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSets
     path: FastMoq.Database/Models/IDbContextMockT.cs
-    startLine: 6
+    startLine: 13
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Configures all DbSet properties and related helper methods for the current DbContext mock.
+  example: []
   syntax:
     content: DbContextMock<TEntity> SetupDbSets(Mocker mocks)
     parameters:
     - id: mocks
       type: FastMoq.Mocker
+      description: The owning mocker used to resolve nested set dependencies.
     return:
       type: FastMoq.Models.DbContextMock{{TEntity}}
+      description: The current DbContext mock instance for fluent chaining.
     content.vb: Function SetupDbSets(mocks As Mocker) As DbContextMock(Of TEntity)
   overload: FastMoq.Models.IDbContextMock`1.SetupDbSets*
   nameWithType.vb: IDbContextMock(Of TEntity).SetupDbSets(Mocker)

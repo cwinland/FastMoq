@@ -32,6 +32,10 @@ namespace FastMoq.Models
         /// <inheritdoc />
         public InstanceModel() : this(default(Func<Mocker, TClass>)) { }
 
+        /// <summary>
+        /// Initializes a new instance model that creates <typeparamref name="TClass"/> values by using a factory delegate that can inspect the current <see cref="Mocker"/> and an optional context value.
+        /// </summary>
+        /// <param name="createFunc">The factory delegate used to create instances, or <see langword="null"/> to rely on constructor-based resolution.</param>
         public InstanceModel(Func<Mocker, object?, TClass>? createFunc) : base(typeof(TClass), typeof(TClass), createFunc) { }
 
         /// <inheritdoc />

@@ -100,15 +100,17 @@ Practical guidance for moving from the `3.0.0` public release toward the current
 | Use Case | Documentation | Sample Code |
 | -------- | ------------- | ----------- |
 | **Web APIs** | [API Controller Testing](./cookbook/README.md#api-controller-testing) | [E-Commerce Sample](./samples/ecommerce-orders/README.md) |
-| **Web helper migration** | [Migration Guide web-helper section](./migration/README.md#web-test-helpers) | [Repo-native testing guide](./getting-started/testing-guide.md#controller-testing) |
+| **Web helper migration** | [Framework and web helper migration](./migration/framework-and-web-helpers.md#web-test-helpers) | [Repo-native testing guide](./getting-started/testing-guide.md#controller-testing) |
 | **Database Testing** | [EF Core Testing](./cookbook/README.md#entity-framework-core-testing) | [Repository Patterns](./samples/ecommerce-orders/README.md) |
 | **Azure Integration** | [Sample Applications](./samples/README.md) | [Complete Azure App](./samples/ecommerce-orders/README.md) |
 | **Background Jobs** | [Background Services](./cookbook/README.md#background-services-testing) | [Executable Testing Examples](./samples/testing-examples.md) |
-| **Blazor Apps** | [Getting Started](./getting-started/README.md) | [Executable Testing Examples](./samples/testing-examples.md) |
+| **Blazor Apps** | [bUnit and Blazor test migration](./migration/bunit-and-blazor-testing.md) | [Executable Testing Examples](./samples/testing-examples.md) |
 
-Package note: `FastMoq` is the aggregate package. Provider contracts live in `FastMoq.Abstractions`, `FastMoq.Core` stays lighter, EF-specific helpers live in `FastMoq.Database`, provider-specific adapters live in `FastMoq.Provider.*`, and web helpers live in `FastMoq.Web` while the primary calls stay in the `FastMoq` namespace.
+Package note: `FastMoq` is the aggregate package. Provider contracts live in `FastMoq.Abstractions`, `FastMoq.Core` stays lighter, EF-specific helpers live in `FastMoq.Database`, Azure Functions worker helpers live in `FastMoq.AzureFunctions.Extensions`, provider-specific adapters live in `FastMoq.Provider.*`, and web helpers live in `FastMoq.Web.Extensions` while the primary runtime calls stay in the `FastMoq` or `FastMoq.Extensions` namespaces.
 
 Web helper note: if your test project references the aggregate `FastMoq` package, the web helpers are already included. If your test project references `FastMoq.Core` directly, add `FastMoq.Web` before using helpers such as `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, or `AddHttpContextAccessor(...)`.
+
+Azure Functions helper note: if your test project references the aggregate `FastMoq` package, the Azure Functions helpers are already included. If your test project references `FastMoq.Core` directly, add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`.
 
 See [Getting Started package choices](./getting-started/README.md#package-choices) when you need the full install matrix instead of a quick reminder.
 

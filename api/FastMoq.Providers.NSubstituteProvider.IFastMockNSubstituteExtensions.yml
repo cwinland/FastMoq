@@ -22,7 +22,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMockNSubstituteExtensions
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
@@ -34,6 +34,8 @@ items:
     NSubstitute-specific convenience extensions for <xref href="FastMoq.Providers.IFastMock%601" data-throw-if-not-resolved="false"></xref>.
 
     These stay in the provider package so the core abstractions remain provider agnostic.
+
+    Prefer provider-first members such as <xref href="FastMoq.Providers.IFastMock.Instance" data-throw-if-not-resolved="false"></xref>, <xref href="FastMoq.Providers.IFastMock.Reset" data-throw-if-not-resolved="false"></xref>, and FastMoq verification helpers first, and use these extensions when the test intentionally needs NSubstitute-specific APIs.
   example: []
   syntax:
     content: public static class IFastMockNSubstituteExtensions
@@ -63,16 +65,33 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AsNSubstitute
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 14
+    startLine: 27
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
-  summary: Returns the tracked substitute instance after validating that the active provider produced an NSubstitute substitute.
-  example: []
+  summary: >-
+    Returns the tracked substitute instance after validating that the active provider produced an NSubstitute substitute.
+
+    Use this when the test intentionally needs NSubstitute-specific APIs such as <code>Received()</code>.
+  example:
+  - >-
+    <p>Select the NSubstitute provider first, then use <xref href="FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute%60%601(FastMoq.Providers.IFastMock%7b%60%600%7d)" data-throw-if-not-resolved="false"></xref> as the provider-native escape hatch when the test truly needs NSubstitute semantics.</p>
+
+    <pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push("nsubstitute");
+
+
+    var mocker = new Mocker();
+
+    var gateway = mocker.GetOrCreateMock&lt;IOrderGateway&gt;();
+
+
+    gateway.AsNSubstitute().Publish(42);
+
+    gateway.Received().Publish(42);</code></pre>
   syntax:
     content: 'public static T AsNSubstitute<T>(this IFastMock<T> fastMock) where T : class'
     parameters:
@@ -102,11 +121,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Received
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 32
+    startLine: 45
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -141,11 +160,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Received
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 40
+    startLine: 53
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -182,11 +201,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ReceivedWithAnyArgs
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 48
+    startLine: 61
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -221,11 +240,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: DidNotReceive
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 56
+    startLine: 69
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -260,11 +279,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: DidNotReceiveWithAnyArgs
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 64
+    startLine: 77
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -299,11 +318,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ClearReceivedCalls
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-    startLine: 72
+    startLine: 85
   assemblies:
   - FastMoq.Provider.NSubstitute
   namespace: FastMoq.Providers.NSubstituteProvider
@@ -346,6 +365,32 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+- uid: FastMoq.Providers.IFastMock.Instance
+  commentId: P:FastMoq.Providers.IFastMock.Instance
+  parent: FastMoq.Providers.IFastMock
+  href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance
+  name: Instance
+  nameWithType: IFastMock.Instance
+  fullName: FastMoq.Providers.IFastMock.Instance
+- uid: FastMoq.Providers.IFastMock.Reset
+  commentId: M:FastMoq.Providers.IFastMock.Reset
+  parent: FastMoq.Providers.IFastMock
+  href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
+  name: Reset()
+  nameWithType: IFastMock.Reset()
+  fullName: FastMoq.Providers.IFastMock.Reset()
+  spec.csharp:
+  - uid: FastMoq.Providers.IFastMock.Reset
+    name: Reset
+    href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IFastMock.Reset
+    name: Reset
+    href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
+  - name: (
   - name: )
 - uid: FastMoq.Providers.NSubstituteProvider
   commentId: N:FastMoq.Providers.NSubstituteProvider
@@ -607,6 +652,13 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
+- uid: FastMoq.Providers.IFastMock
+  commentId: T:FastMoq.Providers.IFastMock
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IFastMock.html
+  name: IFastMock
+  nameWithType: IFastMock
+  fullName: FastMoq.Providers.IFastMock
 - uid: System
   commentId: N:System
   isExternal: true
@@ -614,6 +666,71 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: FastMoq.Providers
+  commentId: N:FastMoq.Providers
+  href: FastMoq.html
+  name: FastMoq.Providers
+  nameWithType: FastMoq.Providers
+  fullName: FastMoq.Providers
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+- uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute``1(FastMoq.Providers.IFastMock{``0})
+  commentId: M:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute``1(FastMoq.Providers.IFastMock{``0})
+  href: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_AsNSubstitute__1_FastMoq_Providers_IFastMock___0__
+  name: AsNSubstitute<T>(IFastMock<T>)
+  nameWithType: IFastMockNSubstituteExtensions.AsNSubstitute<T>(IFastMock<T>)
+  fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute<T>(FastMoq.Providers.IFastMock<T>)
+  nameWithType.vb: IFastMockNSubstituteExtensions.AsNSubstitute(Of T)(IFastMock(Of T))
+  fullName.vb: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute(Of T)(FastMoq.Providers.IFastMock(Of T))
+  name.vb: AsNSubstitute(Of T)(IFastMock(Of T))
+  spec.csharp:
+  - uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute``1(FastMoq.Providers.IFastMock{``0})
+    name: AsNSubstitute
+    href: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_AsNSubstitute__1_FastMoq_Providers_IFastMock___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute``1(FastMoq.Providers.IFastMock{``0})
+    name: AsNSubstitute
+    href: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_AsNSubstitute__1_FastMoq_Providers_IFastMock___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
 - uid: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute*
   commentId: Overload:FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.AsNSubstitute
   href: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html#FastMoq_Providers_NSubstituteProvider_IFastMockNSubstituteExtensions_AsNSubstitute__1_FastMoq_Providers_IFastMock___0__
@@ -653,28 +770,6 @@ references:
   name: T
   nameWithType: T
   fullName: T
-- uid: FastMoq.Providers
-  commentId: N:FastMoq.Providers
-  href: FastMoq.html
-  name: FastMoq.Providers
-  nameWithType: FastMoq.Providers
-  fullName: FastMoq.Providers
-  spec.csharp:
-  - uid: FastMoq
-    name: FastMoq
-    href: FastMoq.html
-  - name: .
-  - uid: FastMoq.Providers
-    name: Providers
-    href: FastMoq.Providers.html
-  spec.vb:
-  - uid: FastMoq
-    name: FastMoq
-    href: FastMoq.html
-  - name: .
-  - uid: FastMoq.Providers
-    name: Providers
-    href: FastMoq.Providers.html
 - uid: T
   name: T
   nameWithType: T

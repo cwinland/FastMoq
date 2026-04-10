@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.AzureFunctions.Extensions
+  commentId: N:FastMoq.AzureFunctions.Extensions
+  id: FastMoq.AzureFunctions.Extensions
+  children:
+  - FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: FastMoq.AzureFunctions.Extensions
+  nameWithType: FastMoq.AzureFunctions.Extensions
+  fullName: FastMoq.AzureFunctions.Extensions
+  type: Namespace
+  assemblies:
+  - FastMoq.AzureFunctions
+references:
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  commentId: T:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html
+  name: FunctionContextTestExtensions
+  nameWithType: FunctionContextTestExtensions
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions

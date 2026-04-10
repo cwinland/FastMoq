@@ -20,11 +20,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerHttpMoqExtensions
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 13
+    startLine: 11
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions
@@ -63,11 +63,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupHttpMessage
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 19
+    startLine: 17
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions
@@ -107,11 +107,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessage
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 42
+    startLine: 40
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions
@@ -149,11 +149,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageAsync
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 58
+    startLine: 56
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions
@@ -191,11 +191,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageProtected
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 74
+    startLine: 72
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions
@@ -235,11 +235,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageProtectedAsync
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
-    startLine: 90
+    startLine: 88
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Extensions

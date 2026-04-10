@@ -167,7 +167,8 @@
 </h3>
   <a id="FastMoq_Models_MockModel_1_Instance_" data-uid="FastMoq.Models.MockModel`1.Instance*"></a>
   <h4 id="FastMoq_Models_MockModel_1_Instance" data-uid="FastMoq.Models.MockModel`1.Instance">Instance</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the typed mocked instance produced by the active provider.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -190,7 +191,7 @@
   </table>
   <a id="FastMoq_Models_MockModel_1_Type_" data-uid="FastMoq.Models.MockModel`1.Type*"></a>
   <h4 id="FastMoq_Models_MockModel_1_Type" data-uid="FastMoq.Models.MockModel`1.Type">Type</h4>
-  <div class="markdown level1 summary"><p>Mocked type exposed by the current <a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a> instance.</p>
+  <div class="markdown level1 summary"><p>Gets the mocked type represented by this model.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -216,7 +217,8 @@
   <div><a class="xref" href="FastMoq.Models.MockModel.html#FastMoq_Models_MockModel_Type">MockModel.Type</a></div>
   <a id="FastMoq_Models_MockModel_1_TypedFastMock_" data-uid="FastMoq.Models.MockModel`1.TypedFastMock*"></a>
   <h4 id="FastMoq_Models_MockModel_1_TypedFastMock" data-uid="FastMoq.Models.MockModel`1.TypedFastMock">TypedFastMock</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the provider-agnostic typed fast mock wrapper for <code class="typeparamref">T</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -241,7 +243,7 @@
 </h3>
   <a id="FastMoq_Models_MockModel_1_CompareTo_" data-uid="FastMoq.Models.MockModel`1.CompareTo*"></a>
   <h4 id="FastMoq_Models_MockModel_1_CompareTo_FastMoq_Models_MockModel__0__" data-uid="FastMoq.Models.MockModel`1.CompareTo(FastMoq.Models.MockModel{`0})">CompareTo(MockModel&lt;T&gt;?)</h4>
-  <div class="markdown level1 summary"><p>Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.</p>
+  <div class="markdown level1 summary"><p>Compares the current typed model with another typed model by using the mocked type full name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -262,7 +264,7 @@ public int CompareTo(MockModel&lt;T&gt;? other)</code></pre>
       <tr>
         <td><a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel</a>&lt;T&gt;</td>
         <td><span class="parametername">other</span></td>
-        <td><p>An object to compare with this instance.</p>
+        <td><p>The other model to compare against.</p>
 </td>
       </tr>
     </tbody>
@@ -278,15 +280,14 @@ public int CompareTo(MockModel&lt;T&gt;? other)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><p>A value that indicates the relative order of the objects being compared. The return value has these meanings:</p>
- <table><thead><tr><th class="term"> Value</th><th class="description"> Meaning</th></tr></thead><tbody><tr><td class="term"> Less than zero</td><td class="description"> This instance precedes <code class="paramref">other</code> in the sort order.</td></tr><tr><td class="term"> Zero</td><td class="description"> This instance occurs in the same position in the sort order as <code class="paramref">other</code>.</td></tr><tr><td class="term"> Greater than zero</td><td class="description"> This instance follows <code class="paramref">other</code> in the sort order.</td></tr></tbody></table>
+        <td><p>A value indicating the relative sort order of the compared models.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_MockModel_1_CompareTo_" data-uid="FastMoq.Models.MockModel`1.CompareTo*"></a>
   <h4 id="FastMoq_Models_MockModel_1_CompareTo_System_Object_" data-uid="FastMoq.Models.MockModel`1.CompareTo(System.Object)">CompareTo(object?)</h4>
-  <div class="markdown level1 summary"><p>Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.</p>
+  <div class="markdown level1 summary"><p>Compares the current model with another object by using the mocked type full name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -306,7 +307,7 @@ public int CompareTo(MockModel&lt;T&gt;? other)</code></pre>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
         <td><span class="parametername">obj</span></td>
-        <td><p>An object to compare with this instance.</p>
+        <td><p>The object to compare with the current instance.</p>
 </td>
       </tr>
     </tbody>
@@ -322,8 +323,7 @@ public int CompareTo(MockModel&lt;T&gt;? other)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><p>A value that indicates the relative order of the objects being compared. The return value has these meanings:</p>
- <table><thead><tr><th class="term"> Value</th><th class="description"> Meaning</th></tr></thead><tbody><tr><td class="term"> Less than zero</td><td class="description"> This instance precedes <code class="paramref">obj</code> in the sort order.</td></tr><tr><td class="term"> Zero</td><td class="description"> This instance occurs in the same position in the sort order as <code class="paramref">obj</code>.</td></tr><tr><td class="term"> Greater than zero</td><td class="description"> This instance follows <code class="paramref">obj</code> in the sort order.</td></tr></tbody></table>
+        <td><p>A value indicating the relative sort order of the compared objects.</p>
 </td>
       </tr>
     </tbody>
@@ -341,14 +341,14 @@ public int CompareTo(MockModel&lt;T&gt;? other)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p><code class="paramref">obj</code> is not the same type as this instance.</p>
+        <td><p>Thrown when <code class="paramref">obj</code> is not a <a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel&lt;T&gt;</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_MockModel_1_Equals_" data-uid="FastMoq.Models.MockModel`1.Equals*"></a>
   <h4 id="FastMoq_Models_MockModel_1_Equals_FastMoq_Models_MockModel__0__" data-uid="FastMoq.Models.MockModel`1.Equals(FastMoq.Models.MockModel{`0})">Equals(MockModel&lt;T&gt;?)</h4>
-  <div class="markdown level1 summary"><p>Indicates whether the current object is equal to another object of the same type.</p>
+  <div class="markdown level1 summary"><p>Determines whether the current typed model equals another typed model.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -369,7 +369,7 @@ public bool Equals(MockModel&lt;T&gt;? other)</code></pre>
       <tr>
         <td><a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel</a>&lt;T&gt;</td>
         <td><span class="parametername">other</span></td>
-        <td><p>An object to compare with this object.</p>
+        <td><p>The other model to compare against.</p>
 </td>
       </tr>
     </tbody>
@@ -385,14 +385,14 @@ public bool Equals(MockModel&lt;T&gt;? other)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the models are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_MockModel_1_Equals_" data-uid="FastMoq.Models.MockModel`1.Equals*"></a>
   <h4 id="FastMoq_Models_MockModel_1_Equals_FastMoq_Models_MockModel__0__FastMoq_Models_MockModel__0__" data-uid="FastMoq.Models.MockModel`1.Equals(FastMoq.Models.MockModel{`0},FastMoq.Models.MockModel{`0})">Equals(MockModel&lt;T&gt;?, MockModel&lt;T&gt;?)</h4>
-  <div class="markdown level1 summary"><p>Determines whether the specified objects are equal.</p>
+  <div class="markdown level1 summary"><p>Determines whether two supplied typed mock models are equal.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -413,13 +413,13 @@ public bool Equals(MockModel&lt;T&gt;? x, MockModel&lt;T&gt;? y)</code></pre>
       <tr>
         <td><a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel</a>&lt;T&gt;</td>
         <td><span class="parametername">x</span></td>
-        <td><p>The first object of type <code class="paramref">T</code> to compare.</p>
+        <td><p>The first model to compare.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel</a>&lt;T&gt;</td>
         <td><span class="parametername">y</span></td>
-        <td><p>The second object of type <code class="paramref">T</code> to compare.</p>
+        <td><p>The second model to compare.</p>
 </td>
       </tr>
     </tbody>
@@ -435,14 +435,14 @@ public bool Equals(MockModel&lt;T&gt;? x, MockModel&lt;T&gt;? y)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the specified objects are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the models are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_MockModel_1_Equals_" data-uid="FastMoq.Models.MockModel`1.Equals*"></a>
   <h4 id="FastMoq_Models_MockModel_1_Equals_System_Object_" data-uid="FastMoq.Models.MockModel`1.Equals(System.Object)">Equals(object?)</h4>
-  <div class="markdown level1 summary"><p>Determines whether the specified object is equal to the current object.</p>
+  <div class="markdown level1 summary"><p>Determines whether the current typed mock model represents the same mocked type as another object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -462,7 +462,7 @@ public bool Equals(MockModel&lt;T&gt;? x, MockModel&lt;T&gt;? y)</code></pre>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
         <td><span class="parametername">obj</span></td>
-        <td><p>The object to compare with the current object.</p>
+        <td><p>The object to compare with the current instance.</p>
 </td>
       </tr>
     </tbody>
@@ -478,7 +478,7 @@ public bool Equals(MockModel&lt;T&gt;? x, MockModel&lt;T&gt;? y)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the specified object  is equal to the current object; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when <code class="paramref">obj</code> is a matching <a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel&lt;T&gt;</a>; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -487,7 +487,7 @@ public bool Equals(MockModel&lt;T&gt;? x, MockModel&lt;T&gt;? y)</code></pre>
   <div><a class="xref" href="FastMoq.Models.MockModel.html#FastMoq_Models_MockModel_Equals_System_Object_">MockModel.Equals(object?)</a></div>
   <a id="FastMoq_Models_MockModel_1_GetHashCode_" data-uid="FastMoq.Models.MockModel`1.GetHashCode*"></a>
   <h4 id="FastMoq_Models_MockModel_1_GetHashCode" data-uid="FastMoq.Models.MockModel`1.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>Serves as the default hash function.</p>
+  <div class="markdown level1 summary"><p>Returns a hash code based on the mocked type represented by this model.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -506,7 +506,7 @@ public override int GetHashCode()</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><p>A hash code for the current object.</p>
+        <td><p>A hash code for the mocked type.</p>
 </td>
       </tr>
     </tbody>
@@ -515,7 +515,7 @@ public override int GetHashCode()</code></pre>
   <div><a class="xref" href="FastMoq.Models.MockModel.html#FastMoq_Models_MockModel_GetHashCode">MockModel.GetHashCode()</a></div>
   <a id="FastMoq_Models_MockModel_1_GetHashCode_" data-uid="FastMoq.Models.MockModel`1.GetHashCode*"></a>
   <h4 id="FastMoq_Models_MockModel_1_GetHashCode_FastMoq_Models_MockModel__0__" data-uid="FastMoq.Models.MockModel`1.GetHashCode(FastMoq.Models.MockModel{`0})">GetHashCode(MockModel&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"><p>Returns a hash code for the specified object.</p>
+  <div class="markdown level1 summary"><p>Returns a hash code for the supplied typed mock model.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -536,7 +536,7 @@ public int GetHashCode(MockModel&lt;T&gt; obj)</code></pre>
       <tr>
         <td><a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel</a>&lt;T&gt;</td>
         <td><span class="parametername">obj</span></td>
-        <td><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a> for which a hash code is to be returned.</p>
+        <td><p>The model whose hash code should be returned.</p>
 </td>
       </tr>
     </tbody>
@@ -552,23 +552,7 @@ public int GetHashCode(MockModel&lt;T&gt; obj)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><p>A hash code for the specified object.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>The type of <code class="paramref">obj</code> is a reference type and <code class="paramref">obj</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+        <td><p>A hash code for <code class="paramref">obj</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -577,7 +561,8 @@ public int GetHashCode(MockModel&lt;T&gt; obj)</code></pre>
 </h3>
   <a id="FastMoq_Models_MockModel_1_op_Equality_" data-uid="FastMoq.Models.MockModel`1.op_Equality*"></a>
   <h4 id="FastMoq_Models_MockModel_1_op_Equality_FastMoq_Models_MockModel__0__FastMoq_Models_MockModel__0__" data-uid="FastMoq.Models.MockModel`1.op_Equality(FastMoq.Models.MockModel{`0},FastMoq.Models.MockModel{`0})">operator ==(MockModel&lt;T&gt;?, MockModel&lt;T&gt;?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Determines whether two typed mock models describe the same mocked type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -597,12 +582,14 @@ public static bool operator ==(MockModel&lt;T&gt;? a, MockModel&lt;T&gt;? b)</co
       <tr>
         <td><a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel</a>&lt;T&gt;</td>
         <td><span class="parametername">a</span></td>
-        <td></td>
+        <td><p>The first model to compare.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel</a>&lt;T&gt;</td>
         <td><span class="parametername">b</span></td>
-        <td></td>
+        <td><p>The second model to compare.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -617,13 +604,15 @@ public static bool operator ==(MockModel&lt;T&gt;? a, MockModel&lt;T&gt;? b)</co
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td></td>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the models are equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_MockModel_1_op_Inequality_" data-uid="FastMoq.Models.MockModel`1.op_Inequality*"></a>
   <h4 id="FastMoq_Models_MockModel_1_op_Inequality_FastMoq_Models_MockModel__0__FastMoq_Models_MockModel__0__" data-uid="FastMoq.Models.MockModel`1.op_Inequality(FastMoq.Models.MockModel{`0},FastMoq.Models.MockModel{`0})">operator !=(MockModel&lt;T&gt;?, MockModel&lt;T&gt;?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Determines whether two typed mock models do not describe the same mocked type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -643,12 +632,14 @@ public static bool operator !=(MockModel&lt;T&gt;? a, MockModel&lt;T&gt;? b)</co
       <tr>
         <td><a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel</a>&lt;T&gt;</td>
         <td><span class="parametername">a</span></td>
-        <td></td>
+        <td><p>The first model to compare.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.Models.MockModel-1.html">MockModel</a>&lt;T&gt;</td>
         <td><span class="parametername">b</span></td>
-        <td></td>
+        <td><p>The second model to compare.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -663,7 +654,8 @@ public static bool operator !=(MockModel&lt;T&gt;? a, MockModel&lt;T&gt;? b)</co
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td></td>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the models are not equal; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -769,7 +761,7 @@ public static bool operator !=(MockModel&lt;T&gt;? a, MockModel&lt;T&gt;? b)</co
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

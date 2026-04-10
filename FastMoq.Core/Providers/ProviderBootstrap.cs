@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices;
 using FastMoq.Providers;
+using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("FastMoq.Tests")]
 
@@ -15,6 +15,9 @@ namespace FastMoq.Core.Providers
             if (Interlocked.Exchange(ref _initialized, 1) == 1) return;
             // Force the registry type initializer to run so built-in providers are registered once.
             _ = MockingProviderRegistry.RegisteredProviderNames;
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            MockingProviderRegistry.ApplyAssemblyProviderRegistrations(assemblies);
+            MockingProviderRegistry.ApplyAssemblyDefaultProviders(assemblies);
         }
     }
 }

@@ -11,7 +11,7 @@
     <Company>$(Authors)</Company>
     <Copyright>Copyright(c) 2021-2022 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
-    <Description>Complete FastMoq package for automatic test double creation, constructor injection, EF testing helpers, and Blazor/web testing support. Includes the core runtime plus database and web integrations.</Description>
+    <Description>Complete FastMoq package for automatic test double creation, constructor injection, EF testing helpers, Azure Functions worker helpers, and Blazor/web testing support. Includes the core runtime plus optional framework helper integrations.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -31,11 +31,15 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.pdb" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" Condition="Exists('..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.pdb')" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FastMoq.Analyzers\FastMoq.Analyzers.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
+    <ProjectReference Include="..\FastMoq.AzureFunctions\FastMoq.AzureFunctions.csproj" />
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
     <ProjectReference Include="..\FastMoq.Database\FastMoq.Database.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.Moq\FastMoq.Provider.Moq.csproj" />

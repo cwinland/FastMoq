@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IMockingProviderCapabilities
     path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
@@ -70,14 +70,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsCallBase
     path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-    startLine: 7
+    startLine: 10
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets a value indicating whether the provider can call through to base implementations.
+  example: []
   syntax:
     content: bool SupportsCallBase { get; }
     parameters: []
@@ -99,14 +101,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsSetupAllProperties
     path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-    startLine: 8
+    startLine: 15
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets a value indicating whether the provider can automatically back settable properties.
+  example: []
   syntax:
     content: bool SupportsSetupAllProperties { get; }
     parameters: []
@@ -128,14 +132,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsProtectedMembers
     path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-    startLine: 9
+    startLine: 20
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets a value indicating whether the provider can configure or verify protected members.
+  example: []
   syntax:
     content: bool SupportsProtectedMembers { get; }
     parameters: []
@@ -157,14 +163,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsInvocationTracking
     path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-    startLine: 10
+    startLine: 25
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets a value indicating whether the provider can track performed invocations for verification.
+  example: []
   syntax:
     content: bool SupportsInvocationTracking { get; }
     parameters: []
@@ -186,14 +194,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsLoggerCapture
     path: FastMoq.Abstractions/Providers/IMockingProviderCapabilities.cs
-    startLine: 11
+    startLine: 30
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets a value indicating whether the provider can capture logger invocations through framework helpers.
+  example: []
   syntax:
     content: bool SupportsLoggerCapture { get; }
     parameters: []

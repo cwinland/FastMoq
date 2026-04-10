@@ -1,5 +1,25 @@
 ### YamlMime:TableOfContent
 items:
+- uid: Bunit
+  name: Bunit
+  type: Namespace
+  items:
+  - uid: Bunit.TestAuthorizationExtensions
+    name: TestAuthorizationExtensions
+    type: Class
+  - uid: Bunit.TestServiceProvider
+    name: TestServiceProvider
+    type: Class
+- uid: Bunit.TestDoubles
+  name: Bunit.TestDoubles
+  type: Namespace
+  items:
+  - uid: Bunit.TestDoubles.FakeNavigationManager
+    name: FakeNavigationManager
+    type: Class
+  - uid: Bunit.TestDoubles.TestAuthorizationContext
+    name: TestAuthorizationContext
+    type: Class
 - uid: FastMoq
   name: FastMoq
   type: Namespace
@@ -49,8 +69,18 @@ items:
   - uid: FastMoq.OptionalParameterResolutionMode
     name: OptionalParameterResolutionMode
     type: Enum
+  - uid: FastMoq.PropertyValueCapture`1
+    name: PropertyValueCapture<TValue>
+    type: Class
   - uid: FastMoq.ScenarioBuilder`1
     name: ScenarioBuilder<T>
+    type: Class
+- uid: FastMoq.AzureFunctions.Extensions
+  name: FastMoq.AzureFunctions.Extensions
+  type: Namespace
+  items:
+  - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+    name: FunctionContextTestExtensions
     type: Class
 - uid: FastMoq.Extensions
   name: FastMoq.Extensions
@@ -73,6 +103,9 @@ items:
     type: Class
   - uid: FastMoq.Extensions.ObjectExtensions
     name: ObjectExtensions
+    type: Class
+  - uid: FastMoq.Extensions.ServiceProviderTestExtensions
+    name: ServiceProviderTestExtensions
     type: Class
   - uid: FastMoq.Extensions.TestClassExtensions
     name: TestClassExtensions
@@ -151,6 +184,12 @@ items:
   name: FastMoq.Providers
   type: Namespace
   items:
+  - uid: FastMoq.Providers.FastMoqDefaultProviderAttribute
+    name: FastMoqDefaultProviderAttribute
+    type: Class
+  - uid: FastMoq.Providers.FastMoqRegisterProviderAttribute
+    name: FastMoqRegisterProviderAttribute
+    type: Class
   - uid: FastMoq.Providers.IFastMock
     name: IFastMock
     type: Interface
@@ -168,6 +207,9 @@ items:
     type: Class
   - uid: FastMoq.Providers.MockingProviderRegistry
     name: MockingProviderRegistry
+    type: Class
+  - uid: FastMoq.Providers.ProviderSelectionDiagnostics
+    name: ProviderSelectionDiagnostics
     type: Class
   - uid: FastMoq.Providers.TimesSpec
     name: TimesSpec
@@ -235,6 +277,9 @@ items:
   - uid: FastMoq.Web.Blazor.Models.ComponentState`1
     name: ComponentState<T>
     type: Class
+  - uid: FastMoq.Web.Blazor.Models.RenderParameter
+    name: RenderParameter
+    type: Struct
 - uid: FastMoq.Web.Extensions
   name: FastMoq.Web.Extensions
   type: Namespace

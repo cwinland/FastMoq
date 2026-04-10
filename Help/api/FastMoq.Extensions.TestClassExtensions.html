@@ -129,7 +129,8 @@
 </h3>
   <a id="FastMoq_Extensions_TestClassExtensions_AddFiles_" data-uid="FastMoq.Extensions.TestClassExtensions.AddFiles*"></a>
   <h4 id="FastMoq_Extensions_TestClassExtensions_AddFiles_System_IO_Abstractions_TestingHelpers_MockFileSystem_System_Collections_Generic_IDictionary_System_String_System_IO_Abstractions_TestingHelpers_MockFileData__" data-uid="FastMoq.Extensions.TestClassExtensions.AddFiles(System.IO.Abstractions.TestingHelpers.MockFileSystem,System.Collections.Generic.IDictionary{System.String,System.IO.Abstractions.TestingHelpers.MockFileData})">AddFiles(MockFileSystem, IDictionary&lt;string, MockFileData&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Adds a batch of files to the supplied mock file system.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -148,15 +149,20 @@
       <tr>
         <td><span class="xref">MockFileSystem</span></td>
         <td><span class="parametername">fileSystem</span></td>
-        <td></td>
+        <td><p>The file system to seed.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <span class="xref">MockFileData</span>&gt;</td>
         <td><span class="parametername">files</span></td>
-        <td></td>
+        <td><p>The files to add, keyed by path.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Extensions_TestClassExtensions_AddFiles_System_IO_Abstractions_TestingHelpers_MockFileSystem_System_Collections_Generic_IDictionary_System_String_System_IO_Abstractions_TestingHelpers_MockFileData___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Use this helper when a test needs to seed several files up front without repeating individual <code>AddFile</code> calls.</p>
+</div>
   <a id="FastMoq_Extensions_TestClassExtensions_CallGenericMethod_" data-uid="FastMoq.Extensions.TestClassExtensions.CallGenericMethod*"></a>
   <h4 id="FastMoq_Extensions_TestClassExtensions_CallGenericMethod_System_Type_System_Object_System_String_System_Type___System_Object___" data-uid="FastMoq.Extensions.TestClassExtensions.CallGenericMethod(System.Type,System.Object,System.String,System.Type[],System.Object[])">CallGenericMethod(Type, object, string?, Type[]?, object[]?)</h4>
   <div class="markdown level1 summary"><p>Calls the generic method.</p>
@@ -1967,7 +1973,7 @@ Defaults to at least one matching log entry when no explicit count specification
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

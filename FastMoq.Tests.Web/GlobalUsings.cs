@@ -1,5 +1,5 @@
-﻿global using Moq;
+﻿global using Bunit;
 global using FastMoq.Web.Blazor;
-global using Bunit;
-global using Xunit;
 global using FluentAssertions;
+global using Moq;
+global using Xunit;

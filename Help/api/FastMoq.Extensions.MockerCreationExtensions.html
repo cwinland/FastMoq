@@ -133,7 +133,8 @@ new Dictionary&lt;Type, object?&gt;
 </h3>
   <a id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance_" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance*"></a>
   <h4 id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance__2_FastMoq_Mocker_FastMoq_InstanceCreationFlags_System_Collections_Generic_Dictionary_System_Type_System_Object__" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance``2(FastMoq.Mocker,FastMoq.InstanceCreationFlags,System.Collections.Generic.Dictionary{System.Type,System.Object})">CreateInstance&lt;T, TParam1&gt;(Mocker, InstanceCreationFlags, Dictionary&lt;Type, object?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of <code>T</code> by selecting the constructor that matches <code class="typeparamref">TParam1</code> and applying the supplied creation flags.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -152,17 +153,20 @@ new Dictionary&lt;Type, object?&gt;
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocker</span></td>
-        <td></td>
+        <td><p>The FastMoq container used to resolve the remaining constructor dependencies.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.InstanceCreationFlags.html">InstanceCreationFlags</a></td>
         <td><span class="parametername">flags</span></td>
-        <td></td>
+        <td><p>The constructor-selection and optional-parameter behavior overrides to apply for this creation request.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
         <td><span class="parametername">data</span></td>
-        <td></td>
+        <td><p>A map of constructor parameter types to explicit values that should be injected when creating the instance.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -177,7 +181,8 @@ new Dictionary&lt;Type, object?&gt;
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td></td>
+        <td><p>The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when resolution cannot produce one.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -192,11 +197,13 @@ new Dictionary&lt;Type, object?&gt;
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The concrete type to create.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam1</span></td>
-        <td></td>
+        <td><p>The explicitly supplied constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -283,7 +290,8 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
 
   <a id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance_" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance*"></a>
   <h4 id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance__3_FastMoq_Mocker_FastMoq_InstanceCreationFlags_System_Collections_Generic_Dictionary_System_Type_System_Object__" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance``3(FastMoq.Mocker,FastMoq.InstanceCreationFlags,System.Collections.Generic.Dictionary{System.Type,System.Object})">CreateInstance&lt;T, TParam1, TParam2&gt;(Mocker, InstanceCreationFlags, Dictionary&lt;Type, object?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of <code>T</code> by targeting the constructor that matches <code class="typeparamref">TParam1</code> and <code class="typeparamref">TParam2</code>, while honoring the supplied creation flags.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -302,17 +310,20 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocker</span></td>
-        <td></td>
+        <td><p>The FastMoq container used to resolve remaining constructor dependencies.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.InstanceCreationFlags.html">InstanceCreationFlags</a></td>
         <td><span class="parametername">flags</span></td>
-        <td></td>
+        <td><p>The constructor-selection and optional-parameter behavior overrides to apply for this call.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
         <td><span class="parametername">data</span></td>
-        <td></td>
+        <td><p>A map of explicit constructor argument types to values.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -327,7 +338,8 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td></td>
+        <td><p>The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when construction fails.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -342,15 +354,18 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The concrete type to create.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam1</span></td>
-        <td></td>
+        <td><p>The first constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam2</span></td>
-        <td></td>
+        <td><p>The second constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -430,7 +445,8 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
   </table>
   <a id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance_" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance*"></a>
   <h4 id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance__4_FastMoq_Mocker_FastMoq_InstanceCreationFlags_System_Collections_Generic_Dictionary_System_Type_System_Object__" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance``4(FastMoq.Mocker,FastMoq.InstanceCreationFlags,System.Collections.Generic.Dictionary{System.Type,System.Object})">CreateInstance&lt;T, TParam1, TParam2, TParam3&gt;(Mocker, InstanceCreationFlags, Dictionary&lt;Type, object?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of <code>T</code> by targeting the constructor that matches three explicit parameter types and applying the supplied creation flags.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -449,17 +465,20 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocker</span></td>
-        <td></td>
+        <td><p>The FastMoq container used to resolve remaining constructor dependencies.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.InstanceCreationFlags.html">InstanceCreationFlags</a></td>
         <td><span class="parametername">flags</span></td>
-        <td></td>
+        <td><p>The constructor-selection and optional-parameter behavior overrides to apply for this call.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
         <td><span class="parametername">data</span></td>
-        <td></td>
+        <td><p>A map of explicit constructor argument types to values.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -474,7 +493,8 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td></td>
+        <td><p>The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when construction fails.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -489,19 +509,23 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The concrete type to create.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam1</span></td>
-        <td></td>
+        <td><p>The first constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam2</span></td>
-        <td></td>
+        <td><p>The second constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam3</span></td>
-        <td></td>
+        <td><p>The third constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -586,7 +610,8 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
   </table>
   <a id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance_" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance*"></a>
   <h4 id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance__5_FastMoq_Mocker_FastMoq_InstanceCreationFlags_System_Collections_Generic_Dictionary_System_Type_System_Object__" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance``5(FastMoq.Mocker,FastMoq.InstanceCreationFlags,System.Collections.Generic.Dictionary{System.Type,System.Object})">CreateInstance&lt;T, TParam1, TParam2, TParam3, TParam4&gt;(Mocker, InstanceCreationFlags, Dictionary&lt;Type, object?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of <code>T</code> by targeting the constructor that matches four explicit parameter types and applying the supplied creation flags.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -605,17 +630,20 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocker</span></td>
-        <td></td>
+        <td><p>The FastMoq container used to resolve remaining constructor dependencies.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.InstanceCreationFlags.html">InstanceCreationFlags</a></td>
         <td><span class="parametername">flags</span></td>
-        <td></td>
+        <td><p>The constructor-selection and optional-parameter behavior overrides to apply for this call.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
         <td><span class="parametername">data</span></td>
-        <td></td>
+        <td><p>A map of explicit constructor argument types to values.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -630,7 +658,8 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td></td>
+        <td><p>The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when construction fails.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -645,23 +674,28 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The concrete type to create.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam1</span></td>
-        <td></td>
+        <td><p>The first constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam2</span></td>
-        <td></td>
+        <td><p>The second constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam3</span></td>
-        <td></td>
+        <td><p>The third constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam4</span></td>
-        <td></td>
+        <td><p>The fourth constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -751,7 +785,8 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
   </table>
   <a id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance_" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance*"></a>
   <h4 id="FastMoq_Extensions_MockerCreationExtensions_CreateInstance__6_FastMoq_Mocker_FastMoq_InstanceCreationFlags_System_Collections_Generic_Dictionary_System_Type_System_Object__" data-uid="FastMoq.Extensions.MockerCreationExtensions.CreateInstance``6(FastMoq.Mocker,FastMoq.InstanceCreationFlags,System.Collections.Generic.Dictionary{System.Type,System.Object})">CreateInstance&lt;T, TParam1, TParam2, TParam3, TParam4, TParam5&gt;(Mocker, InstanceCreationFlags, Dictionary&lt;Type, object?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an instance of <code>T</code> by targeting the constructor that matches five explicit parameter types and applying the supplied creation flags.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -770,17 +805,20 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocker</span></td>
-        <td></td>
+        <td><p>The FastMoq container used to resolve remaining constructor dependencies.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.InstanceCreationFlags.html">InstanceCreationFlags</a></td>
         <td><span class="parametername">flags</span></td>
-        <td></td>
+        <td><p>The constructor-selection and optional-parameter behavior overrides to apply for this call.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</td>
         <td><span class="parametername">data</span></td>
-        <td></td>
+        <td><p>A map of explicit constructor argument types to values.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -795,7 +833,8 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td></td>
+        <td><p>The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when construction fails.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -810,27 +849,33 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The concrete type to create.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam1</span></td>
-        <td></td>
+        <td><p>The first constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam2</span></td>
-        <td></td>
+        <td><p>The second constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam3</span></td>
-        <td></td>
+        <td><p>The third constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam4</span></td>
-        <td></td>
+        <td><p>The fourth constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
       <tr>
         <td><span class="parametername">TParam5</span></td>
-        <td></td>
+        <td><p>The fifth constructor parameter type used to identify the target constructor.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1093,7 +1138,8 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
   </table>
   <a id="FastMoq_Extensions_MockerCreationExtensions_SetupMockProperty_" data-uid="FastMoq.Extensions.MockerCreationExtensions.SetupMockProperty*"></a>
   <h4 id="FastMoq_Extensions_MockerCreationExtensions_SetupMockProperty__1_Moq_Mock___0__System_Linq_Expressions_Expression_System_Func___0_System_Object___System_Object_" data-uid="FastMoq.Extensions.MockerCreationExtensions.SetupMockProperty``1(Moq.Mock{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Object)">SetupMockProperty&lt;TMock&gt;(Mock&lt;TMock&gt;, Expression&lt;Func&lt;TMock, object&gt;&gt;, object)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Sets up a readable property on a mock by using a strongly typed property expression.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -1112,17 +1158,20 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
       <tr>
         <td><span class="xref">Mock</span>&lt;TMock&gt;</td>
         <td><span class="parametername">mock</span></td>
-        <td></td>
+        <td><p>The mock whose property getter should be configured.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TMock, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</td>
         <td><span class="parametername">propertyExpression</span></td>
-        <td></td>
+        <td><p>An expression that selects the property to configure.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
         <td><span class="parametername">value</span></td>
-        <td></td>
+        <td><p>The value the property getter should return.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1137,7 +1186,8 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
     <tbody>
       <tr>
         <td><span class="parametername">TMock</span></td>
-        <td></td>
+        <td><p>The mocked type that exposes the property.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1273,7 +1323,7 @@ handler!.TenantName.Should().Be(&quot;contoso&quot;);</p></code></pre>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

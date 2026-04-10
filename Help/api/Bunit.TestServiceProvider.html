@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class TestServiceProvider | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class TestServiceProvider | FastMoq ">
+    
+    <meta name="description" content="Backward-compatible wrapper around  for FastMoq Blazor helpers.">
+      <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+      <link rel="shortcut icon" href="../favicon.svg">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <link rel="stylesheet" href="../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Bunit.TestServiceProvider">
+
+
+
+  <h1 id="Bunit_TestServiceProvider" data-uid="Bunit.TestServiceProvider" class="text-break">Class TestServiceProvider</h1>
+  <div class="markdown level0 summary"><p>Backward-compatible wrapper around <span class="xref">Bunit.BunitServiceProvider</span> for FastMoq Blazor helpers.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">TestServiceProvider</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Bunit.html">Bunit</a></h6>
+  <h6><strong>Assembly</strong>: FastMoq.Web.dll</h6>
+  <h5 id="Bunit_TestServiceProvider_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class TestServiceProvider : IServiceCollection, IList&lt;ServiceDescriptor&gt;, ICollection&lt;ServiceDescriptor&gt;, IEnumerable&lt;ServiceDescriptor&gt;, IEnumerable, IServiceProvider, IDisposable, IAsyncDisposable</code></pre>
+  </div>
+  <h5 id="Bunit_TestServiceProvider_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Keep this wrapper when migrating existing FastMoq Blazor tests with minimal churn.
+It preserves the older helper name while delegating to the current bUnit 2 service-provider implementation.</p>
+</div>
+  <h3 id="constructors">Constructors
+</h3>
+  <a id="Bunit_TestServiceProvider__ctor_" data-uid="Bunit.TestServiceProvider.#ctor*"></a>
+  <h4 id="Bunit_TestServiceProvider__ctor_Bunit_BunitServiceProvider_" data-uid="Bunit.TestServiceProvider.#ctor(Bunit.BunitServiceProvider)">TestServiceProvider(BunitServiceProvider)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Bunit.TestServiceProvider.html">TestServiceProvider</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TestServiceProvider(BunitServiceProvider inner)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BunitServiceProvider</span></td>
+        <td><span class="parametername">inner</span></td>
+        <td><p>The underlying bUnit service provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <a id="Bunit_TestServiceProvider_Count_" data-uid="Bunit.TestServiceProvider.Count*"></a>
+  <h4 id="Bunit_TestServiceProvider_Count" data-uid="Bunit.TestServiceProvider.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Gets the number of elements contained in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><p>The number of elements contained in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_InnerProvider_" data-uid="Bunit.TestServiceProvider.InnerProvider*"></a>
+  <h4 id="Bunit_TestServiceProvider_InnerProvider" data-uid="Bunit.TestServiceProvider.InnerProvider">InnerProvider</h4>
+  <div class="markdown level1 summary"><p>Gets the underlying bUnit service provider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BunitServiceProvider InnerProvider { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BunitServiceProvider</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_IsProviderInitialized_" data-uid="Bunit.TestServiceProvider.IsProviderInitialized*"></a>
+  <h4 id="Bunit_TestServiceProvider_IsProviderInitialized" data-uid="Bunit.TestServiceProvider.IsProviderInitialized">IsProviderInitialized</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the underlying provider has been initialized.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsProviderInitialized { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_IsReadOnly_" data-uid="Bunit.TestServiceProvider.IsReadOnly*"></a>
+  <h4 id="Bunit_TestServiceProvider_IsReadOnly" data-uid="Bunit.TestServiceProvider.IsReadOnly">IsReadOnly</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a> is read-only.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsReadOnly { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a> is read-only; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_Item_" data-uid="Bunit.TestServiceProvider.Item*"></a>
+  <h4 id="Bunit_TestServiceProvider_Item_System_Int32_" data-uid="Bunit.TestServiceProvider.Item(System.Int32)">this[int]</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the element at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ServiceDescriptor this[int index] { get; set; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The zero-based index of the element to get or set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a></td>
+        <td><p>The element at the specified index.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p><code class="paramref">index</code> is not a valid index in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>The property is set and the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a> is read-only.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_Options_" data-uid="Bunit.TestServiceProvider.Options*"></a>
+  <h4 id="Bunit_TestServiceProvider_Options" data-uid="Bunit.TestServiceProvider.Options">Options</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the service provider options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ServiceProviderOptions Options { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovideroptions">ServiceProviderOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <a id="Bunit_TestServiceProvider_Add_" data-uid="Bunit.TestServiceProvider.Add*"></a>
+  <h4 id="Bunit_TestServiceProvider_Add_Microsoft_Extensions_DependencyInjection_ServiceDescriptor_" data-uid="Bunit.TestServiceProvider.Add(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)">Add(ServiceDescriptor)</h4>
+  <div class="markdown level1 summary"><p>Adds an item to the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(ServiceDescriptor item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a></td>
+        <td><span class="parametername">item</span></td>
+        <td><p>The object to add to the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a> is read-only.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_AddFallbackServiceProvider_" data-uid="Bunit.TestServiceProvider.AddFallbackServiceProvider*"></a>
+  <h4 id="Bunit_TestServiceProvider_AddFallbackServiceProvider_System_IServiceProvider_" data-uid="Bunit.TestServiceProvider.AddFallbackServiceProvider(System.IServiceProvider)">AddFallbackServiceProvider(IServiceProvider)</h4>
+  <div class="markdown level1 summary"><p>Adds a fallback service provider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddFallbackServiceProvider(IServiceProvider fallbackServiceProvider)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></td>
+        <td><span class="parametername">fallbackServiceProvider</span></td>
+        <td><p>The fallback provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_Clear_" data-uid="Bunit.TestServiceProvider.Clear*"></a>
+  <h4 id="Bunit_TestServiceProvider_Clear" data-uid="Bunit.TestServiceProvider.Clear">Clear()</h4>
+  <div class="markdown level1 summary"><p>Removes all items from the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+  </div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a> is read-only.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_Contains_" data-uid="Bunit.TestServiceProvider.Contains*"></a>
+  <h4 id="Bunit_TestServiceProvider_Contains_Microsoft_Extensions_DependencyInjection_ServiceDescriptor_" data-uid="Bunit.TestServiceProvider.Contains(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)">Contains(ServiceDescriptor)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a> contains a specific value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(ServiceDescriptor item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a></td>
+        <td><span class="parametername">item</span></td>
+        <td><p>The object to locate in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">item</code> is found in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_CopyTo_" data-uid="Bunit.TestServiceProvider.CopyTo*"></a>
+  <h4 id="Bunit_TestServiceProvider_CopyTo_Microsoft_Extensions_DependencyInjection_ServiceDescriptor___System_Int32_" data-uid="Bunit.TestServiceProvider.CopyTo(Microsoft.Extensions.DependencyInjection.ServiceDescriptor[],System.Int32)">CopyTo(ServiceDescriptor[], int)</h4>
+  <div class="markdown level1 summary"><p>Copies the elements of the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a> to an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array">Array</a>, starting at a particular <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array">Array</a> index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyTo(ServiceDescriptor[] array, int arrayIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a>[]</td>
+        <td><span class="parametername">array</span></td>
+        <td><p>The one-dimensional <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array">Array</a> that is the destination of the elements copied from <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>. The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array">Array</a> must have zero-based indexing.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">arrayIndex</span></td>
+        <td><p>The zero-based index in <code class="paramref">array</code> at which copying begins.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p><code class="paramref">array</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p><code class="paramref">arrayIndex</code> is less than 0.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>The number of elements in the source <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a> is greater than the available space from <code class="paramref">arrayIndex</code> to the end of the destination <code class="paramref">array</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_Dispose_" data-uid="Bunit.TestServiceProvider.Dispose*"></a>
+  <h4 id="Bunit_TestServiceProvider_Dispose" data-uid="Bunit.TestServiceProvider.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <a id="Bunit_TestServiceProvider_DisposeAsync_" data-uid="Bunit.TestServiceProvider.DisposeAsync*"></a>
+  <h4 id="Bunit_TestServiceProvider_DisposeAsync" data-uid="Bunit.TestServiceProvider.DisposeAsync">DisposeAsync()</h4>
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask DisposeAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td><p>A task that represents the asynchronous dispose operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_GetEnumerator_" data-uid="Bunit.TestServiceProvider.GetEnumerator*"></a>
+  <h4 id="Bunit_TestServiceProvider_GetEnumerator" data-uid="Bunit.TestServiceProvider.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"><p>Returns an enumerator that iterates through the collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;ServiceDescriptor&gt; GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a>&gt;</td>
+        <td><p>An enumerator that can be used to iterate through the collection.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_GetKeyedService_" data-uid="Bunit.TestServiceProvider.GetKeyedService*"></a>
+  <h4 id="Bunit_TestServiceProvider_GetKeyedService_System_Type_System_Object_" data-uid="Bunit.TestServiceProvider.GetKeyedService(System.Type,System.Object)">GetKeyedService(Type, object)</h4>
+  <div class="markdown level1 summary"><p>Gets a keyed service from the underlying provider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object? GetKeyedService(Type serviceType, object serviceKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">serviceType</span></td>
+        <td><p>The service type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">serviceKey</span></td>
+        <td><p>The service key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><p>The resolved service, if available.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_GetRequiredKeyedService_" data-uid="Bunit.TestServiceProvider.GetRequiredKeyedService*"></a>
+  <h4 id="Bunit_TestServiceProvider_GetRequiredKeyedService_System_Type_System_Object_" data-uid="Bunit.TestServiceProvider.GetRequiredKeyedService(System.Type,System.Object)">GetRequiredKeyedService(Type, object)</h4>
+  <div class="markdown level1 summary"><p>Gets a required keyed service from the underlying provider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object GetRequiredKeyedService(Type serviceType, object serviceKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">serviceType</span></td>
+        <td><p>The service type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">serviceKey</span></td>
+        <td><p>The service key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><p>The resolved service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_GetService_" data-uid="Bunit.TestServiceProvider.GetService*"></a>
+  <h4 id="Bunit_TestServiceProvider_GetService_System_Type_" data-uid="Bunit.TestServiceProvider.GetService(System.Type)">GetService(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets the service object of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object? GetService(Type serviceType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">serviceType</span></td>
+        <td><p>An object that specifies the type of service object to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><p>A service object of type <code class="paramref">serviceType</code>.</p>
+<p>-or-</p>
+<p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if there is no service object of type <code class="paramref">serviceType</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_GetService_" data-uid="Bunit.TestServiceProvider.GetService*"></a>
+  <h4 id="Bunit_TestServiceProvider_GetService__1" data-uid="Bunit.TestServiceProvider.GetService``1">GetService&lt;TService&gt;()</h4>
+  <div class="markdown level1 summary"><p>Gets a service from the underlying provider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TService? GetService&lt;TService&gt;()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TService</span></td>
+        <td><p>The resolved service, if available.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TService</span></td>
+        <td><p>The service type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_IndexOf_" data-uid="Bunit.TestServiceProvider.IndexOf*"></a>
+  <h4 id="Bunit_TestServiceProvider_IndexOf_Microsoft_Extensions_DependencyInjection_ServiceDescriptor_" data-uid="Bunit.TestServiceProvider.IndexOf(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)">IndexOf(ServiceDescriptor)</h4>
+  <div class="markdown level1 summary"><p>Determines the index of a specific item in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int IndexOf(ServiceDescriptor item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a></td>
+        <td><span class="parametername">item</span></td>
+        <td><p>The object to locate in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><p>The index of <code class="paramref">item</code> if found in the list; otherwise, -1.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_InitializeProvider_" data-uid="Bunit.TestServiceProvider.InitializeProvider*"></a>
+  <h4 id="Bunit_TestServiceProvider_InitializeProvider" data-uid="Bunit.TestServiceProvider.InitializeProvider">InitializeProvider()</h4>
+  <div class="markdown level1 summary"><p>Initializes the underlying provider.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InitializeProvider()</code></pre>
+  </div>
+  <h5 id="Bunit_TestServiceProvider_InitializeProvider_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>bUnit 2 no longer exposes the exact same initialization path as earlier versions.
+FastMoq keeps this method so existing helper code can continue to force provider initialization when needed.</p>
+</div>
+  <a id="Bunit_TestServiceProvider_Insert_" data-uid="Bunit.TestServiceProvider.Insert*"></a>
+  <h4 id="Bunit_TestServiceProvider_Insert_System_Int32_Microsoft_Extensions_DependencyInjection_ServiceDescriptor_" data-uid="Bunit.TestServiceProvider.Insert(System.Int32,Microsoft.Extensions.DependencyInjection.ServiceDescriptor)">Insert(int, ServiceDescriptor)</h4>
+  <div class="markdown level1 summary"><p>Inserts an item to the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a> at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Insert(int index, ServiceDescriptor item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The zero-based index at which <code class="paramref">item</code> should be inserted.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a></td>
+        <td><span class="parametername">item</span></td>
+        <td><p>The object to insert into the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p><code class="paramref">index</code> is not a valid index in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a> is read-only.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_Remove_" data-uid="Bunit.TestServiceProvider.Remove*"></a>
+  <h4 id="Bunit_TestServiceProvider_Remove_Microsoft_Extensions_DependencyInjection_ServiceDescriptor_" data-uid="Bunit.TestServiceProvider.Remove(Microsoft.Extensions.DependencyInjection.ServiceDescriptor)">Remove(ServiceDescriptor)</h4>
+  <div class="markdown level1 summary"><p>Removes the first occurrence of a specific object from the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(ServiceDescriptor item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.servicedescriptor">ServiceDescriptor</a></td>
+        <td><span class="parametername">item</span></td>
+        <td><p>The object to remove from the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">item</code> was successfully removed from the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>. This method also returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if <code class="paramref">item</code> is not found in the original <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a> is read-only.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_RemoveAt_" data-uid="Bunit.TestServiceProvider.RemoveAt*"></a>
+  <h4 id="Bunit_TestServiceProvider_RemoveAt_System_Int32_" data-uid="Bunit.TestServiceProvider.RemoveAt(System.Int32)">RemoveAt(int)</h4>
+  <div class="markdown level1 summary"><p>Removes the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a> item at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveAt(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The zero-based index of the item to remove.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p><code class="paramref">index</code> is not a valid index in the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>The <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a> is read-only.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_UseServiceProviderFactory_" data-uid="Bunit.TestServiceProvider.UseServiceProviderFactory*"></a>
+  <h4 id="Bunit_TestServiceProvider_UseServiceProviderFactory_System_Func_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_IServiceProvider__" data-uid="Bunit.TestServiceProvider.UseServiceProviderFactory(System.Func{Microsoft.Extensions.DependencyInjection.IServiceCollection,System.IServiceProvider})">UseServiceProviderFactory(Func&lt;IServiceCollection, IServiceProvider&gt;)</h4>
+  <div class="markdown level1 summary"><p>Configures the underlying service provider factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UseServiceProviderFactory(Func&lt;IServiceCollection, IServiceProvider&gt; serviceProviderFactory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a>&gt;</td>
+        <td><span class="parametername">serviceProviderFactory</span></td>
+        <td><p>The factory used to create the provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="Bunit_TestServiceProvider_UseServiceProviderFactory_" data-uid="Bunit.TestServiceProvider.UseServiceProviderFactory*"></a>
+  <h4 id="Bunit_TestServiceProvider_UseServiceProviderFactory__1_Microsoft_Extensions_DependencyInjection_IServiceProviderFactory___0__System_Action___0__" data-uid="Bunit.TestServiceProvider.UseServiceProviderFactory``1(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory{``0},System.Action{``0})">UseServiceProviderFactory&lt;TContainerBuilder&gt;(IServiceProviderFactory&lt;TContainerBuilder&gt;, Action&lt;TContainerBuilder&gt;)</h4>
+  <div class="markdown level1 summary"><p>Configures the underlying service provider factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UseServiceProviderFactory&lt;TContainerBuilder&gt;(IServiceProviderFactory&lt;TContainerBuilder&gt; serviceProviderFactory, Action&lt;TContainerBuilder&gt; configureContainer) where TContainerBuilder : notnull</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iserviceproviderfactory-1">IServiceProviderFactory</a>&lt;TContainerBuilder&gt;</td>
+        <td><span class="parametername">serviceProviderFactory</span></td>
+        <td><p>The service provider factory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;TContainerBuilder&gt;</td>
+        <td><span class="parametername">configureContainer</span></td>
+        <td><p>The container configuration callback.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TContainerBuilder</span></td>
+        <td><p>The container builder type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_">ObjectExtensions.RaiseIfNull&lt;T&gt;(T?, string?, string?, int?, string?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_">TestClassExtensions.GetFieldValue&lt;TObject&gt;(TObject, string, TObject?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_">TestClassExtensions.GetField&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___">TestClassExtensions.GetMemberName&lt;T, TValue&gt;(T, Expression&lt;Func&lt;T, TValue&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___">TestClassExtensions.GetMember&lt;T, TValue&gt;(T, Expression&lt;Func&lt;T, TValue&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___">TestClassExtensions.GetMethodValue&lt;TObject&gt;(TObject, string, object?, params object[])</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_">TestClassExtensions.GetMethod&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.GetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_">TestClassExtensions.GetProperty&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_">TestClassExtensions.SetFieldValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.SetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_">MockerHttpMoqExtensions.SetupHttpMessage(object, Func&lt;HttpResponseMessage&gt;, Expression?, Expression?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__">MockerHttpMoqExtensions.SetupMessageAsync&lt;TMock, TReturn&gt;(object, Expression&lt;Func&lt;TMock, Task&lt;TReturn&gt;&gt;&gt;, Func&lt;TReturn&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___">MockerHttpMoqExtensions.SetupMessageProtectedAsync&lt;TMock, TReturn&gt;(object, string, Func&lt;TReturn&gt;, params object?[]?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___">MockerHttpMoqExtensions.SetupMessageProtected&lt;TMock, TReturn&gt;(object, string, Func&lt;TReturn&gt;, params object?[]?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__">MockerHttpMoqExtensions.SetupMessage&lt;TMock, TReturn&gt;(object, Expression&lt;Func&lt;TMock, TReturn&gt;&gt;, Func&lt;TReturn&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_">TestClassExtensions.GetFieldInfo&lt;TType&gt;(object, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_">TestClassExtensions.GetFieldValue&lt;T&gt;(object?, FieldInfo)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_">TestClassExtensions.GetFieldValue&lt;T, TType&gt;(object, string)</a>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

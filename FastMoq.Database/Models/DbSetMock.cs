@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Moq;
-
 namespace FastMoq.Models
 {
     /// <summary>

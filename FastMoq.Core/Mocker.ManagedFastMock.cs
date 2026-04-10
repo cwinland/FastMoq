@@ -1,5 +1,5 @@
-using System.Reflection;
 using FastMoq.Providers;
+using System.Reflection;
 
 namespace FastMoq
 {
@@ -15,12 +15,12 @@ namespace FastMoq
                 .GetMethod(nameof(CreateManagedFastMockCore), BindingFlags.NonPublic | BindingFlags.Static)!
                 .MakeGenericMethod(type);
 
-            return (IFastMock)method.Invoke(null, [instance])!;
+            return (IFastMock) method.Invoke(null, [instance])!;
         }
 
         private static IFastMock CreateManagedFastMockCore<T>(object instance) where T : class
         {
-            return new ManagedFastMock<T>((T)instance);
+            return new ManagedFastMock<T>((T) instance);
         }
 
         private sealed class ManagedFastMock<T>(T instance) : IFastMock<T> where T : class

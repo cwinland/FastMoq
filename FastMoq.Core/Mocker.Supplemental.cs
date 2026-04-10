@@ -1,5 +1,5 @@
-using System.Linq.Expressions;
 using FastMoq.Providers;
+using System.Linq.Expressions;
 
 namespace FastMoq
 {

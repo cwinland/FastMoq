@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockCreationOptions
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
@@ -78,27 +78,31 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-    startLine: 5
+    startLine: 14
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
-  summary: Options to influence mock creation in a provider agnostic manner.
+  summary: Initializes a new instance of the <xref href="FastMoq.Providers.MockCreationOptions" data-throw-if-not-resolved="false"></xref> record.
   example: []
   syntax:
     content: public MockCreationOptions(bool Strict = false, bool CallBase = true, object?[]? ConstructorArgs = null, bool AllowNonPublic = false)
     parameters:
     - id: Strict
       type: System.Boolean
+      description: True to request strict mock behavior; otherwise false.
     - id: CallBase
       type: System.Boolean
+      description: True to allow base implementation calls when the provider supports it; otherwise false.
     - id: ConstructorArgs
       type: System.Object[]
+      description: Optional constructor arguments to use when creating the mock target.
     - id: AllowNonPublic
       type: System.Boolean
+      description: True to allow non-public constructors during mock creation; otherwise false.
     content.vb: Public Sub New(Strict As Boolean = False, CallBase As Boolean = True, ConstructorArgs As Object() = Nothing, AllowNonPublic As Boolean = False)
   overload: FastMoq.Providers.MockCreationOptions.#ctor*
   nameWithType.vb: MockCreationOptions.New(Boolean, Boolean, Object(), Boolean)
@@ -118,14 +122,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Strict
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-    startLine: 6
+    startLine: 29
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets a value indicating whether strict mock behavior should be used.
+  example: []
   syntax:
     content: public bool Strict { get; init; }
     parameters: []
@@ -147,14 +153,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallBase
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-    startLine: 7
+    startLine: 34
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets a value indicating whether base implementation calls are allowed when supported.
+  example: []
   syntax:
     content: public bool CallBase { get; init; }
     parameters: []
@@ -176,14 +184,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorArgs
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-    startLine: 8
+    startLine: 39
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets the constructor arguments to use when the provider creates the mock target.
+  example: []
   syntax:
     content: public object?[]? ConstructorArgs { get; init; }
     parameters: []
@@ -205,14 +215,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AllowNonPublic
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-    startLine: 9
+    startLine: 44
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets a value indicating whether non-public constructors may be used during mock creation.
+  example: []
   syntax:
     content: public bool AllowNonPublic { get; init; }
     parameters: []
@@ -3307,6 +3319,13 @@ references:
   - uid: FastMoq.Extensions
     name: Extensions
     href: FastMoq.Extensions.html
+- uid: FastMoq.Providers.MockCreationOptions
+  commentId: T:FastMoq.Providers.MockCreationOptions
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.MockCreationOptions.html
+  name: MockCreationOptions
+  nameWithType: MockCreationOptions
+  fullName: FastMoq.Providers.MockCreationOptions
 - uid: FastMoq.Providers.MockCreationOptions.#ctor*
   commentId: Overload:FastMoq.Providers.MockCreationOptions.#ctor
   href: FastMoq.Providers.MockCreationOptions.html#FastMoq_Providers_MockCreationOptions__ctor_System_Boolean_System_Boolean_System_Object___System_Boolean_

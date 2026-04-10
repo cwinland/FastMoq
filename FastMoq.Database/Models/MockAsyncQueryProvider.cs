@@ -43,7 +43,7 @@ namespace FastMoq.Models
                 .MakeGenericMethod(expectedResultType)
                 .Invoke(this, [expression]);
 
-            return (TResult)typeof(Task)
+            return (TResult) typeof(Task)
                 .GetMethod(nameof(Task.FromResult))
                 ?.MakeGenericMethod(expectedResultType)
                 .Invoke(null, [executionResult]);

@@ -24,14 +24,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MoqLoggerCompatibility
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 6
+    startLine: 8
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Provides Moq-based logger verification and callback helpers used by the compatibility layer.
+  example: []
   syntax:
     content: public static class MoqLoggerCompatibility
     content.vb: Public Module MoqLoggerCompatibility
@@ -60,14 +62,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 8
+    startLine: 13
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Verifies a non-generic logger mock was written to the expected number of times.
+  example: []
   syntax:
     content: public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, int times = 1)
     parameters:
@@ -99,14 +103,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 11
+    startLine: 19
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Verifies a generic logger mock was written to the expected number of times.
+  example: []
   syntax:
     content: 'public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, int times = 1) where TLogger : class, ILogger'
     parameters:
@@ -140,14 +146,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 15
+    startLine: 26
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Verifies a non-generic logger mock was written with the expected exception payload.
+  example: []
   syntax:
     content: public static void VerifyLogger(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null, int times = 1)
     parameters:
@@ -183,14 +191,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 18
+    startLine: 32
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Verifies a generic logger mock was written with the expected exception payload.
+  example: []
   syntax:
     content: 'public static void VerifyLogger<TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, Exception? exception, int? eventId = null, int times = 1) where TLogger : class, ILogger'
     parameters:
@@ -228,14 +238,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 22
+    startLine: 39
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Verifies a non-generic logger mock using an exception type-specific matcher and an exact call count.
+  example: []
   syntax:
     content: 'public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1) where TException : Exception'
     parameters:
@@ -273,14 +285,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 29
+    startLine: 49
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Verifies a non-generic logger mock using an exception type-specific matcher and a Moq <xref href="Moq.Times" data-throw-if-not-resolved="false"></xref> constraint.
+  example: []
   syntax:
     content: 'public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Times times) where TException : Exception'
     parameters:
@@ -318,14 +332,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 36
+    startLine: 59
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Verifies a non-generic logger mock using an exception type-specific matcher and a deferred Moq <xref href="Moq.Times" data-throw-if-not-resolved="false"></xref> constraint.
+  example: []
   syntax:
     content: 'public static void VerifyLogger<TException>(this Mock<ILogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId, Func<Times> times) where TException : Exception'
     parameters:
@@ -363,14 +379,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 43
+    startLine: 69
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Verifies a generic logger mock using an exception type-specific matcher and an exact call count.
+  example: []
   syntax:
     content: 'public static void VerifyLogger<TException, TLogger>(this Mock<TLogger> loggerMock, LogLevel logLevel, string message, TException? exception, int? eventId = null, int times = 1) where TException : Exception where TLogger : class, ILogger'
     parameters:
@@ -409,14 +427,16 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupLoggerCallback
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-    startLine: 51
+    startLine: 80
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
+  summary: Registers a callback that receives normalized logger invocations from a Moq logger mock.
+  example: []
   syntax:
     content: 'public static void SetupLoggerCallback<TLogger>(this Mock<TLogger> logger, Action<LogLevel, EventId, string, Exception?> callback) where TLogger : class, ILogger'
     parameters:

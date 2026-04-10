@@ -2,19 +2,38 @@
 
 namespace FastMoq.Models
 {
+    /// <summary>
+    /// Stores a late-bound factory delegate that can create an instance of a specific runtime type.
+    /// </summary>
+    /// <param name="type">The runtime type produced by the stored factory delegate.</param>
     public class InstanceFunction(Type type)
     {
+        /// <summary>
+        /// Gets the runtime type that this factory produces.
+        /// </summary>
         public Type InstanceType { get; } = type;
 
-        // Property to hold the function
+        /// <summary>
+        /// Gets or sets the factory delegate used to create the instance.
+        /// </summary>
         public Delegate? Function { get; set; }
 
-        // Method to set the function
+        /// <summary>
+        /// Assigns the factory delegate used to create the instance.
+        /// </summary>
+        /// <param name="function">The delegate to store for later invocation.</param>
         public void SetFunction(Delegate function)
         {
             this.Function = function;
         }
 
+        /// <summary>
+        /// Invokes the stored factory delegate with the supplied <see cref="Mocker"/> and optional parameter values.
+        /// </summary>
+        /// <param name="mocker">The active mocker used as the first delegate argument.</param>
+        /// <param name="parameters">Optional extra parameters passed to delegates that accept a second argument.</param>
+        /// <returns>The created instance, or <see langword="null"/> when the stored delegate returns <see langword="null"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when no compatible delegate has been assigned.</exception>
         public object? Invoke(Mocker mocker, params object?[]? parameters)
         {
             Function.RaiseIfNull();
@@ -53,29 +72,53 @@ namespace FastMoq.Models
             throw new InvalidOperationException("Function is not a valid double parameter function.");
         }
 
-
-        // Overloaded CreateInstance for singleParamFunc
+        /// <summary>
+        /// Creates a new <see cref="InstanceFunction"/> placeholder for the specified runtime type.
+        /// </summary>
+        /// <param name="type">The runtime type the instance function should describe.</param>
+        /// <returns>A new <see cref="InstanceFunction"/> for <paramref name="type"/>.</returns>
         public static InstanceFunction CreateInstance(Type type)
         {
             return new InstanceFunction(type);
         }
     }
 
+    /// <summary>
+    /// Stores a strongly typed factory delegate that creates instances of <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The runtime type produced by the stored factory delegate.</typeparam>
     public class InstanceFunction<T> : InstanceFunction
     {
-        // Constructor
+        /// <summary>
+        /// Initializes an empty instance function for <typeparamref name="T"/>.
+        /// </summary>
         public InstanceFunction() : base(typeof(T)) { }
 
+        /// <summary>
+        /// Initializes the instance function with a factory that accepts only the current <see cref="Mocker"/>.
+        /// </summary>
+        /// <param name="singleParamFunc">The factory delegate to invoke when no extra parameter value is supplied.</param>
         public InstanceFunction(Func<Mocker, T?> singleParamFunc) : base(typeof(T))
         {
             Function = singleParamFunc;
         }
 
+        /// <summary>
+        /// Initializes the instance function with a factory that accepts the current <see cref="Mocker"/> and one extra parameter value.
+        /// </summary>
+        /// <param name="doubleParamFunc">The factory delegate to invoke when one extra parameter value is supplied.</param>
         public InstanceFunction(Func<Mocker, object?, T?> doubleParamFunc) : base(typeof(T))
         {
             Function = doubleParamFunc;
         }
 
+        /// <summary>
+        /// Invokes the stored strongly typed factory delegate.
+        /// </summary>
+        /// <param name="mocker">The active mocker used as the first delegate argument.</param>
+        /// <param name="parameters">Optional extra parameters passed to delegates that accept a second argument.</param>
+        /// <returns>The created instance, or <see langword="null"/> when the stored delegate returns <see langword="null"/>.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when no compatible delegate has been assigned.</exception>
         public new T? Invoke(Mocker mocker, params object?[]? parameters)
         {
             if (Function is Func<Mocker, T?> singleParamFunc && (parameters == null || parameters.Length == 0))

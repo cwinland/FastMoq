@@ -9,7 +9,7 @@ namespace FastMoq.TestingExample
     public class ProviderSelectionExampleTests : MockerTestBase<ProviderSelectionService>
     {
         [Fact]
-        public void TestAssemblyBootstrap_ShouldSetMoqAsAppWideDefault()
+        public void AssemblyDefaultProviderAttribute_ShouldSetMoqAsAppWideDefault()
         {
             MockingProviderRegistry.Default.Should().BeSameAs(MoqMockingProvider.Instance);
         }

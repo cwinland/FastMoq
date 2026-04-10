@@ -123,7 +123,8 @@
 </h3>
   <a id="FastMoq_DbContextMockerExtensions_CreateLegacyDbContextMock_" data-uid="FastMoq.DbContextMockerExtensions.CreateLegacyDbContextMock*"></a>
   <h4 id="FastMoq_DbContextMockerExtensions_CreateLegacyDbContextMock_System_Type_Moq_MockBehavior_System_Object___" data-uid="FastMoq.DbContextMockerExtensions.CreateLegacyDbContextMock(System.Type,Moq.MockBehavior,System.Object[])">CreateLegacyDbContextMock(Type, MockBehavior, object?[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates the legacy Moq-based DbContext mock used by the database helper package.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -142,17 +143,20 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">requestedType</span></td>
-        <td></td>
+        <td><p>The DbContext runtime type to mock.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">MockBehavior</span></td>
         <td><span class="parametername">behavior</span></td>
-        <td></td>
+        <td><p>The Moq behavior that should be applied to the created mock.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
         <td><span class="parametername">constructorArgs</span></td>
-        <td></td>
+        <td><p>The constructor arguments to pass through when a DbContext constructor requires them.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -167,7 +171,8 @@
     <tbody>
       <tr>
         <td><span class="xref">Mock</span></td>
-        <td></td>
+        <td><p>A legacy <span class="xref">Moq.Mock</span> instance for the requested DbContext type.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -336,7 +341,8 @@
   </table>
   <a id="FastMoq_DbContextMockerExtensions_TryCreateManagedDbContextInstance_" data-uid="FastMoq.DbContextMockerExtensions.TryCreateManagedDbContextInstance*"></a>
   <h4 id="FastMoq_DbContextMockerExtensions_TryCreateManagedDbContextInstance_FastMoq_Mocker_System_Type_System_Object__" data-uid="FastMoq.DbContextMockerExtensions.TryCreateManagedDbContextInstance(FastMoq.Mocker,System.Type,System.Object@)">TryCreateManagedDbContextInstance(Mocker, Type, out object?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to create and track a managed DbContext instance for the requested type when the type represents an Entity Framework DbContext that is not already tracked.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -355,17 +361,20 @@
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocker</span></td>
-        <td></td>
+        <td><p>The mocker that should own the tracked DbContext instance.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">requestedType</span></td>
-        <td></td>
+        <td><p>The requested runtime type.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
         <td><span class="parametername">instance</span></td>
-        <td></td>
+        <td><p>When this method returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, contains the tracked DbContext instance.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -380,7 +389,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td></td>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when a managed DbContext instance was created; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -406,7 +416,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class InstanceFunction&lt;T&gt; | FastMoq ">
     
-    
+    <meta name="description" content="Stores a strongly typed factory delegate that creates instances of T.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -81,7 +81,8 @@
 
 
   <h1 id="FastMoq_Models_InstanceFunction_1" data-uid="FastMoq.Models.InstanceFunction`1" class="text-break">Class InstanceFunction&lt;T&gt;</h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Stores a strongly typed factory delegate that creates instances of <code class="typeparamref">T</code>.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -142,7 +143,8 @@
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The runtime type produced by the stored factory delegate.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -150,7 +152,8 @@
 </h3>
   <a id="FastMoq_Models_InstanceFunction_1__ctor_" data-uid="FastMoq.Models.InstanceFunction`1.#ctor*"></a>
   <h4 id="FastMoq_Models_InstanceFunction_1__ctor" data-uid="FastMoq.Models.InstanceFunction`1.#ctor">InstanceFunction()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes an empty instance function for <code class="typeparamref">T</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -158,7 +161,8 @@
   </div>
   <a id="FastMoq_Models_InstanceFunction_1__ctor_" data-uid="FastMoq.Models.InstanceFunction`1.#ctor*"></a>
   <h4 id="FastMoq_Models_InstanceFunction_1__ctor_System_Func_FastMoq_Mocker_System_Object__0__" data-uid="FastMoq.Models.InstanceFunction`1.#ctor(System.Func{FastMoq.Mocker,System.Object,`0})">InstanceFunction(Func&lt;Mocker, object?, T?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes the instance function with a factory that accepts the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> and one extra parameter value.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -177,13 +181,15 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-3">Func</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>, T&gt;</td>
         <td><span class="parametername">doubleParamFunc</span></td>
-        <td></td>
+        <td><p>The factory delegate to invoke when one extra parameter value is supplied.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_InstanceFunction_1__ctor_" data-uid="FastMoq.Models.InstanceFunction`1.#ctor*"></a>
   <h4 id="FastMoq_Models_InstanceFunction_1__ctor_System_Func_FastMoq_Mocker__0__" data-uid="FastMoq.Models.InstanceFunction`1.#ctor(System.Func{FastMoq.Mocker,`0})">InstanceFunction(Func&lt;Mocker, T?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes the instance function with a factory that accepts only the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -202,7 +208,8 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="FastMoq.Mocker.html">Mocker</a>, T&gt;</td>
         <td><span class="parametername">singleParamFunc</span></td>
-        <td></td>
+        <td><p>The factory delegate to invoke when no extra parameter value is supplied.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -210,7 +217,8 @@
 </h3>
   <a id="FastMoq_Models_InstanceFunction_1_Invoke_" data-uid="FastMoq.Models.InstanceFunction`1.Invoke*"></a>
   <h4 id="FastMoq_Models_InstanceFunction_1_Invoke_FastMoq_Mocker_System_Object___" data-uid="FastMoq.Models.InstanceFunction`1.Invoke(FastMoq.Mocker,System.Object[])">Invoke(Mocker, params object?[]?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invokes the stored strongly typed factory delegate.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -229,12 +237,14 @@
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><span class="parametername">mocker</span></td>
-        <td></td>
+        <td><p>The active mocker used as the first delegate argument.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
         <td><span class="parametername">parameters</span></td>
-        <td></td>
+        <td><p>Optional extra parameters passed to delegates that accept a second argument.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -249,7 +259,24 @@
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td></td>
+        <td><p>The created instance, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> when the stored delegate returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when no compatible delegate has been assigned.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -333,7 +360,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

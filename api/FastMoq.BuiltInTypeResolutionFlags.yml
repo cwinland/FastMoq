@@ -23,14 +23,40 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: BuiltInTypeResolutionFlags
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 2
+    startLine: 19
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Specifies which built-in framework and utility types <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> may resolve automatically.
+  remarks: >-
+    <p>
+
+    These flags control FastMoq's built-in object creation behavior for well-known types that are commonly
+
+    needed during unit and integration-style test setup.
+
+    </p>
+
+    <p>
+
+    The values can be combined to enable multiple categories at once, or compared against the provided preset
+
+    values such as <xref href="FastMoq.BuiltInTypeResolutionFlags.StrictCompatibilityDefaults" data-throw-if-not-resolved="false"></xref> and <xref href="FastMoq.BuiltInTypeResolutionFlags.LenientDefaults" data-throw-if-not-resolved="false"></xref>.
+
+    </p>
+
+    <p>
+
+    Use <xref href="FastMoq.BuiltInTypeResolutionFlags.None" data-throw-if-not-resolved="false"></xref> to disable all built-in resolutions and require explicit registrations, or use
+
+    <xref href="FastMoq.BuiltInTypeResolutionFlags.All" data-throw-if-not-resolved="false"></xref> to enable every built-in category currently supported.
+
+    </p>
+  example: []
   syntax:
     content: >-
       [Flags]
@@ -70,14 +96,20 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: None
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 5
+    startLine: 29
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Disables all built-in type resolution.
+  remarks: >-
+    When this value is used, FastMoq will not automatically provide any built-in framework objects and will
+
+    instead rely on explicit registrations, known types, or provider-created mocks.
+  example: []
   syntax:
     content: None = 0
     return:
@@ -96,14 +128,20 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: FileSystem
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 6
+    startLine: 38
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Enables automatic resolution for file system abstractions.
+  remarks: >-
+    This flag is intended for scenarios where tests depend on common file system services and FastMoq can
+
+    provide a built-in implementation or mapping without requiring manual setup.
+  example: []
   syntax:
     content: FileSystem = 1
     return:
@@ -122,14 +160,20 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: HttpClient
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 7
+    startLine: 47
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Enables automatic resolution for <xref href="FastMoq.BuiltInTypeResolutionFlags.HttpClient" data-throw-if-not-resolved="false"></xref> instances.
+  remarks: >-
+    When enabled, FastMoq may construct or supply an <xref href="FastMoq.BuiltInTypeResolutionFlags.HttpClient" data-throw-if-not-resolved="false"></xref> using its built-in HTTP test
+
+    support so consuming components can be created with minimal ceremony.
+  example: []
   syntax:
     content: HttpClient = 2
     return:
@@ -148,14 +192,20 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 8
+    startLine: 56
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Enables automatic resolution for <xref href="FastMoq.BuiltInTypeResolutionFlags.Uri" data-throw-if-not-resolved="false"></xref> values.
+  remarks: >-
+    This flag is commonly used together with <xref href="FastMoq.BuiltInTypeResolutionFlags.HttpClient" data-throw-if-not-resolved="false"></xref> support so tests can receive a matching
+
+    base address or related URI dependency without registering one explicitly.
+  example: []
   syntax:
     content: Uri = 4
     return:
@@ -174,14 +224,20 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContext
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 9
+    startLine: 65
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Enables automatic resolution for database context types.
+  remarks: >-
+    This allows FastMoq to provide supported database context handling through its built-in database support,
+
+    which is especially useful for tests that expect a tracked or mocked context instance.
+  example: []
   syntax:
     content: DbContext = 8
     return:
@@ -200,14 +256,20 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: All
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 10
+    startLine: 74
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Enables every built-in type resolution category currently supported.
+  remarks: >-
+    This is the broadest preset and is equivalent to combining <xref href="FastMoq.BuiltInTypeResolutionFlags.FileSystem" data-throw-if-not-resolved="false"></xref>,
+
+    <xref href="FastMoq.BuiltInTypeResolutionFlags.HttpClient" data-throw-if-not-resolved="false"></xref>, <xref href="FastMoq.BuiltInTypeResolutionFlags.Uri" data-throw-if-not-resolved="false"></xref>, and <xref href="FastMoq.BuiltInTypeResolutionFlags.DbContext" data-throw-if-not-resolved="false"></xref>.
+  example: []
   syntax:
     content: All = FileSystem | HttpClient | Uri | DbContext
     return:
@@ -227,14 +289,20 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: StrictCompatibilityDefaults
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 11
+    startLine: 83
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Enables the conservative compatibility preset used for stricter legacy behavior.
+  remarks: >-
+    This preset currently includes only <xref href="FastMoq.BuiltInTypeResolutionFlags.DbContext" data-throw-if-not-resolved="false"></xref> resolution so that other built-in helpers stay
+
+    disabled unless explicitly requested.
+  example: []
   syntax:
     content: StrictCompatibilityDefaults = 8
     return:
@@ -253,20 +321,57 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: LenientDefaults
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-    startLine: 12
+    startLine: 92
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
+  summary: Enables the lenient preset used for maximum built-in convenience.
+  remarks: >-
+    This preset is equivalent to <xref href="FastMoq.BuiltInTypeResolutionFlags.All" data-throw-if-not-resolved="false"></xref> and turns on every built-in category supported by the
+
+    current version of FastMoq.
+  example: []
   syntax:
     content: LenientDefaults = FileSystem | HttpClient | Uri | DbContext
     return:
       type: FastMoq.BuiltInTypeResolutionFlags
     content.vb: LenientDefaults = FileSystem Or HttpClient Or Uri Or DbContext
 references:
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
+- uid: FastMoq.BuiltInTypeResolutionFlags.StrictCompatibilityDefaults
+  commentId: F:FastMoq.BuiltInTypeResolutionFlags.StrictCompatibilityDefaults
+  href: FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_StrictCompatibilityDefaults
+  name: StrictCompatibilityDefaults
+  nameWithType: BuiltInTypeResolutionFlags.StrictCompatibilityDefaults
+  fullName: FastMoq.BuiltInTypeResolutionFlags.StrictCompatibilityDefaults
+- uid: FastMoq.BuiltInTypeResolutionFlags.LenientDefaults
+  commentId: F:FastMoq.BuiltInTypeResolutionFlags.LenientDefaults
+  href: FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_LenientDefaults
+  name: LenientDefaults
+  nameWithType: BuiltInTypeResolutionFlags.LenientDefaults
+  fullName: FastMoq.BuiltInTypeResolutionFlags.LenientDefaults
+- uid: FastMoq.BuiltInTypeResolutionFlags.None
+  commentId: F:FastMoq.BuiltInTypeResolutionFlags.None
+  href: FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_None
+  name: None
+  nameWithType: BuiltInTypeResolutionFlags.None
+  fullName: FastMoq.BuiltInTypeResolutionFlags.None
+- uid: FastMoq.BuiltInTypeResolutionFlags.All
+  commentId: F:FastMoq.BuiltInTypeResolutionFlags.All
+  href: FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_All
+  name: All
+  nameWithType: BuiltInTypeResolutionFlags.All
+  fullName: FastMoq.BuiltInTypeResolutionFlags.All
 - uid: FastMoq
   commentId: N:FastMoq
   href: FastMoq.html
@@ -2059,3 +2164,27 @@ references:
   name: BuiltInTypeResolutionFlags
   nameWithType: BuiltInTypeResolutionFlags
   fullName: FastMoq.BuiltInTypeResolutionFlags
+- uid: FastMoq.BuiltInTypeResolutionFlags.HttpClient
+  commentId: F:FastMoq.BuiltInTypeResolutionFlags.HttpClient
+  href: FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_HttpClient
+  name: HttpClient
+  nameWithType: BuiltInTypeResolutionFlags.HttpClient
+  fullName: FastMoq.BuiltInTypeResolutionFlags.HttpClient
+- uid: FastMoq.BuiltInTypeResolutionFlags.Uri
+  commentId: F:FastMoq.BuiltInTypeResolutionFlags.Uri
+  href: FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_Uri
+  name: Uri
+  nameWithType: BuiltInTypeResolutionFlags.Uri
+  fullName: FastMoq.BuiltInTypeResolutionFlags.Uri
+- uid: FastMoq.BuiltInTypeResolutionFlags.FileSystem
+  commentId: F:FastMoq.BuiltInTypeResolutionFlags.FileSystem
+  href: FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_FileSystem
+  name: FileSystem
+  nameWithType: BuiltInTypeResolutionFlags.FileSystem
+  fullName: FastMoq.BuiltInTypeResolutionFlags.FileSystem
+- uid: FastMoq.BuiltInTypeResolutionFlags.DbContext
+  commentId: F:FastMoq.BuiltInTypeResolutionFlags.DbContext
+  href: FastMoq.BuiltInTypeResolutionFlags.html#FastMoq_BuiltInTypeResolutionFlags_DbContext
+  name: DbContext
+  nameWithType: BuiltInTypeResolutionFlags.DbContext
+  fullName: FastMoq.BuiltInTypeResolutionFlags.DbContext

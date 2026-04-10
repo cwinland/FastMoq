@@ -21,14 +21,16 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ObservableLogEntries
     path: FastMoq.Core/Models/ObservableLogEntries.cs
-    startLine: 7
+    startLine: 10
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Exposes a read-only, observable view of <xref href="FastMoq.Models.LogEntry" data-throw-if-not-resolved="false"></xref> values captured by FastMoq logger interception.
+  example: []
   syntax:
     content: 'public class ObservableLogEntries : IReadOnlyCollection<LogEntry>, IEnumerable<LogEntry>, IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged'
     content.vb: Public Class ObservableLogEntries Implements IReadOnlyCollection(Of LogEntry), IEnumerable(Of LogEntry), IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged
@@ -82,14 +84,16 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/ObservableLogEntries.cs
-    startLine: 12
+    startLine: 18
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Initializes an empty observable log entry collection.
+  example: []
   syntax:
     content: public ObservableLogEntries()
     content.vb: Public Sub New()
@@ -111,14 +115,16 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Items
     path: FastMoq.Core/Models/ObservableLogEntries.cs
-    startLine: 22
+    startLine: 31
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Gets the captured log entries as a read-only observable collection.
+  example: []
   syntax:
     content: public IReadOnlyCollection<LogEntry> Items { get; }
     parameters: []
@@ -140,15 +146,15 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CollectionChanged
     path: FastMoq.Core/Models/ObservableLogEntries.cs
-    startLine: 24
+    startLine: 36
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Occurs when the collection changes.
+  summary: Occurs when the captured log entry collection changes.
   example: []
   syntax:
     content: public event NotifyCollectionChangedEventHandler? CollectionChanged
@@ -171,15 +177,15 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: PropertyChanged
     path: FastMoq.Core/Models/ObservableLogEntries.cs
-    startLine: 30
+    startLine: 45
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Occurs when a property value changes.
+  summary: Occurs when one of the collection properties, such as <xref href="FastMoq.Models.ObservableLogEntries.Count" data-throw-if-not-resolved="false"></xref>, changes.
   example: []
   syntax:
     content: public event PropertyChangedEventHandler? PropertyChanged
@@ -202,21 +208,21 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetEnumerator
     path: FastMoq.Core/Models/ObservableLogEntries.cs
-    startLine: 36
+    startLine: 55
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Returns an enumerator that iterates through the collection.
+  summary: Returns an enumerator that iterates through the captured log entries.
   example: []
   syntax:
     content: public IEnumerator<LogEntry> GetEnumerator()
     return:
       type: System.Collections.Generic.IEnumerator{FastMoq.Models.LogEntry}
-      description: An enumerator that can be used to iterate through the collection.
+      description: An enumerator over the captured log entries.
     content.vb: Public Function GetEnumerator() As IEnumerator(Of LogEntry)
   overload: FastMoq.Models.ObservableLogEntries.GetEnumerator*
   implements:
@@ -235,27 +241,32 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Count
     path: FastMoq.Core/Models/ObservableLogEntries.cs
-    startLine: 40
+    startLine: 62
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
-  summary: Gets the number of elements in the collection.
+  summary: Gets the number of captured log entries.
   example: []
   syntax:
     content: public int Count { get; }
     parameters: []
     return:
       type: System.Int32
-      description: The number of elements in the collection.
     content.vb: Public ReadOnly Property Count As Integer
   overload: FastMoq.Models.ObservableLogEntries.Count*
   implements:
   - System.Collections.Generic.IReadOnlyCollection{FastMoq.Models.LogEntry}.Count
 references:
+- uid: FastMoq.Models.LogEntry
+  commentId: T:FastMoq.Models.LogEntry
+  href: FastMoq.Models.LogEntry.html
+  name: LogEntry
+  nameWithType: LogEntry
+  fullName: FastMoq.Models.LogEntry
 - uid: FastMoq.Models
   commentId: N:FastMoq.Models
   href: FastMoq.html
@@ -3610,6 +3621,12 @@ references:
   name: NotifyCollectionChangedEventHandler
   nameWithType: NotifyCollectionChangedEventHandler
   fullName: System.Collections.Specialized.NotifyCollectionChangedEventHandler
+- uid: FastMoq.Models.ObservableLogEntries.Count
+  commentId: P:FastMoq.Models.ObservableLogEntries.Count
+  href: FastMoq.Models.ObservableLogEntries.html#FastMoq_Models_ObservableLogEntries_Count
+  name: Count
+  nameWithType: ObservableLogEntries.Count
+  fullName: FastMoq.Models.ObservableLogEntries.Count
 - uid: System.ComponentModel.INotifyPropertyChanged.PropertyChanged
   commentId: E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged
   parent: System.ComponentModel.INotifyPropertyChanged

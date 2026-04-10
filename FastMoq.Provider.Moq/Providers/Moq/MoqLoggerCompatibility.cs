@@ -1,6 +1,5 @@
-using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
-using Moq;
+using System.Linq.Expressions;
 
 namespace FastMoq.Providers.MoqProvider
 {
@@ -91,7 +90,7 @@ namespace FastMoq.Providers.MoqProvider
                     It.IsAny<EventId>(),
                     It.IsAny<It.IsAnyType>(),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()))
+                    (Func<It.IsAnyType, Exception?, string>) It.IsAny<object>()))
                 .Callback((LogLevel logLevel, EventId eventId, object state, Exception? exception, Delegate formatter) =>
                 {
                     var message = formatter.DynamicInvoke(state, exception);

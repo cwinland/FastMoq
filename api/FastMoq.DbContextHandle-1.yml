@@ -19,11 +19,11 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandle.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContextHandle
     path: FastMoq.Database/DbContextHandle.cs
-    startLine: 8
+    startLine: 7
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -80,11 +80,11 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandle.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Mode
     path: FastMoq.Database/DbContextHandle.cs
-    startLine: 20
+    startLine: 19
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -113,11 +113,11 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandle.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Context
     path: FastMoq.Database/DbContextHandle.cs
-    startLine: 25
+    startLine: 24
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -146,11 +146,11 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandle.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Mock
     path: FastMoq.Database/DbContextHandle.cs
-    startLine: 30
+    startLine: 29
   assemblies:
   - FastMoq.Database
   namespace: FastMoq
@@ -179,11 +179,11 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandle.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IsMocked
     path: FastMoq.Database/DbContextHandle.cs
-    startLine: 35
+    startLine: 34
   assemblies:
   - FastMoq.Database
   namespace: FastMoq

@@ -2,6 +2,26 @@
 
 This page summarizes the release delta between the last public `3.0.0` package and the current v4 code line in this repository.
 
+## 4.0.3
+
+FastMoq.Web now uses `bunit` `2.7.2` for Blazor component tests. The FastMoq Blazor helper layer was updated to keep existing test suites moving with low source churn while matching bUnit 2's renderer, parameter, authorization, and navigation changes.
+
+Consumer impact:
+
+- `MockerBlazorTestBase<T>` and `ComponentState` were updated for bUnit 2's renamed test doubles, unified render APIs, and renderer state shape
+- `MockerBlazorTestBase<T>.RenderParameters` now uses `FastMoq.Web.Blazor.Models.RenderParameter` because bUnit 2 no longer exposes the old `ComponentParameter` type to consumers
+- `SetElementCheck(...)`, `SetElementSwitch(...)`, and `SetElementText(...)` now accept `IRenderedComponent<IComponent>?` for `startingPoint` because bUnit 2 removed `IRenderedFragment`
+- compatibility shims for `TestServiceProvider`, `TestAuthorizationContext`, and `FakeNavigationManager` keep common Blazor test patterns compiling with lower migration churn
+
+Validation run for this change:
+
+- `dotnet build .\FastMoq.Web\FastMoq.Web.csproj -c Debug`
+- `dotnet test .\FastMoq.Tests.Web\FastMoq.Tests.Web.csproj -c Debug`
+- `dotnet test .\FastMoq.sln -c Debug`
+- `powershell -ExecutionPolicy Bypass -File .\scripts\Generate-ApiDocs.ps1`
+
+Migration details are documented in [bUnit and Blazor test migration](../migration/bunit-and-blazor-testing.md).
+
 ## Release baseline
 
 - Last public release: `3.0.0`
@@ -46,6 +66,7 @@ Notable additions and changes:
 - `FastMoq.Abstractions` now carries the provider contracts shared by core and provider packages.
 - `FastMoq.Provider.Moq` now owns the Moq compatibility provider and Moq-specific convenience extensions.
 - `FastMoq.Provider.NSubstitute` adds an optional NSubstitute provider package.
+- `FastMoq.AzureFunctions` now owns the Azure Functions worker helpers for `FunctionContext.InstanceServices`.
 - `FastMoq.Database` now owns the EF- and DbContext-specific helpers that previously lived in core.
 - `FastMoq.Core` stays lighter and focuses on provider-neutral construction, tracking, verification, and built-in known-type handling.
 

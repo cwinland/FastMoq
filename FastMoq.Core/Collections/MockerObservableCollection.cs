@@ -27,7 +27,7 @@ namespace FastMoq.Collections
         /// <exception cref="ArgumentNullException"> collection is a null reference </exception>
         /// <inheritdoc />
         public MockerObservableCollection(IEnumerable<T> collection) : base(
-            [..collection ?? throw new ArgumentNullException(nameof(collection))]
+            [.. collection ?? throw new ArgumentNullException(nameof(collection))]
         )
         {
             base.PropertyChanged += OnChanged;

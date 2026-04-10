@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Provider, Package, And Compatibility Guidance | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Provider, Package, And Compatibility Guidance | FastMoq ">
+    
+    
+      <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+      <link rel="shortcut icon" href="../../favicon.svg">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="provider-package-and-compatibility-guidance">Provider, Package, And Compatibility Guidance</h1>
+
+<p>This page collects the migration details that matter when package installation, namespace visibility, and active provider selection drift apart.</p>
+<p>Open this page when tests compile but provider-specific behavior still fails, or when you are translating Moq-shaped arrangements to another provider.</p>
+<p>Use this page together with <a href="../getting-started/provider-selection.html">Provider Selection and Setup</a> when a migration issue looks like a package or bootstrap problem rather than a test-shape problem.</p>
+<h2 id="provider-selection-first">Provider selection first</h2>
+<p>The current v4 repository behavior differs from <code>3.0.0</code> in one important way:</p>
+<ul>
+<li><code>FastMoq.Core</code> now bundles both <code>reflection</code> and <code>moq</code></li>
+<li><code>reflection</code> is the default provider if you do nothing</li>
+<li>tests carried forward from previous FastMoq versions that rely on <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>Protected()</code>, or <code>VerifyLogger(...)</code> should select <code>moq</code> explicitly for the test assembly</li>
+</ul>
+<p>This is easy to miss during migration because package installation, extension-method availability, and active-provider selection are three separate things:</p>
+<ul>
+<li>installing a provider package gives you its implementation and extension methods</li>
+<li>importing its namespace makes those extension methods visible</li>
+<li>declaring or setting the default provider is what actually makes FastMoq use it for new mocks</li>
+</ul>
+<h3 id="package-to-namespace-quick-map">Package-to-namespace quick map</h3>
+<p>Use this table when package names and in-editor namespace discovery drift apart during migration.</p>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Common namespace imports</th>
+<th>Typical surfaces you expect to appear</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FastMoq.Core</code></td>
+<td><code>FastMoq</code>, <code>FastMoq.Extensions</code>, <code>FastMoq.Providers</code></td>
+<td><code>Mocker</code>, <code>MockerTestBase&lt;T&gt;</code>, <code>GetOrCreateMock&lt;T&gt;()</code>, <code>GetObject&lt;T&gt;()</code>, <code>Verify(...)</code>, <code>VerifyLogged(...)</code>, <code>MockingProviderRegistry</code></td>
+</tr>
+<tr>
+<td><code>FastMoq.AzureFunctions</code></td>
+<td><code>FastMoq.AzureFunctions.Extensions</code></td>
+<td><code>CreateFunctionContextInstanceServices(...)</code>, <code>AddFunctionContextInstanceServices(...)</code></td>
+</tr>
+<tr>
+<td><code>FastMoq.Provider.Moq</code></td>
+<td><code>FastMoq.Providers.MoqProvider</code></td>
+<td><code>MoqMockingProvider</code>, <code>AsMoq()</code>, <code>Setup(...)</code>, <code>SetupGet(...)</code>, <code>SetupSequence(...)</code>, <code>Protected()</code></td>
+</tr>
+<tr>
+<td><code>FastMoq.Provider.NSubstitute</code></td>
+<td><code>FastMoq.Providers.NSubstituteProvider</code></td>
+<td><code>NSubstituteMockingProvider</code>, <code>AsNSubstitute()</code>, <code>Received(...)</code>, <code>DidNotReceive()</code></td>
+</tr>
+<tr>
+<td><code>FastMoq.Web</code></td>
+<td><code>FastMoq.Web</code>, <code>FastMoq.Web.Extensions</code></td>
+<td><code>TestClaimsPrincipalOptions</code>, <code>CreateHttpContext(...)</code>, <code>CreateControllerContext(...)</code>, <code>SetupClaimsPrincipal(...)</code>, <code>AddHttpContext(...)</code>, <code>AddHttpContextAccessor(...)</code></td>
+</tr>
+<tr>
+<td><code>FastMoq.Database</code></td>
+<td><code>FastMoq</code></td>
+<td><code>GetMockDbContext&lt;TContext&gt;()</code>, <code>GetDbContextHandle&lt;TContext&gt;()</code>, <code>DbContextHandleOptions&lt;TContext&gt;</code>, <code>DbContextTestMode</code></td>
+</tr>
+</tbody>
+</table>
+<p>Packages control availability. Namespaces control extension discovery and which APIs light up in the editor.</p>
+<p>Installing <code>FastMoq.Core</code> plus <code>FastMoq.Provider.Moq</code> is not enough by itself. The Moq provider still needs to be selected as the default for that test assembly.</p>
+<p>FastMoq is also not limited to the bundled providers. If your suite uses another mocking library, you can implement <code>IMockingProvider</code> and register your own provider instead of adopting <code>moq</code> or <code>nsubstitute</code>.</p>
+<p>If you need a provider-by-provider answer for what is supported today, see <a href="../getting-started/provider-capabilities.html">Provider Capabilities</a>.</p>
+<p>Treat explicit assembly-default selection as mandatory whenever the migrated test project still uses any non-default provider-specific compatibility or extension surface.</p>
+<p>For example, <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>VerifyLogger(...)</code>, and <code>Protected()</code> still mean <code>moq</code>, while <code>AsNSubstitute()</code> and <code>Received(...)</code> mean <code>nsubstitute</code>.</p>
+<p>For the built-in <code>moq</code> provider, and for <code>nsubstitute</code> after its package is referenced, the shortest path is <a href="../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html">FastMoqDefaultProviderAttribute</a>:</p>
+<pre><code class="lang-csharp">using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider(&quot;moq&quot;)]
+</code></pre>
+<p>That attribute works with xUnit too; it is not tied to a particular test framework. It selects the default provider by canonical name during FastMoq bootstrap.</p>
+<p>When the provider must be registered and selected together at assembly scope, use <a href="../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html">FastMoqRegisterProviderAttribute</a>:</p>
+<pre><code class="lang-csharp">using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider(&quot;moq&quot;, typeof(MoqMockingProvider), SetAsDefault = true)]
+</code></pre>
+<p>That form registers the provider type and makes it the assembly default during FastMoq bootstrap, without depending on a framework-specific startup hook.</p>
+<p>Use the startup-code examples below only when you need more than declarative assembly metadata. Common cases are:</p>
+<ul>
+<li>choosing the provider dynamically at runtime from configuration, environment, or target-specific logic</li>
+<li>combining provider selection with other one-time test bootstrap work in the same startup path</li>
+<li>running custom registration logic that cannot be expressed as a provider type plus <code>SetAsDefault</code></li>
+</ul>
+<h3 id="copy-paste-startup-hook-examples">Copy-paste startup-hook examples</h3>
+<h4 id="xunit">xUnit</h4>
+<p>If you need startup code in xUnit, a module initializer is a portable option that works well for provider registration and default-provider selection. Consumers on xUnit v3 may also choose assembly fixtures or test pipeline startup when those fit their broader test-bootstrap model:</p>
+<pre><code class="lang-csharp">using System.Runtime.CompilerServices;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+namespace MyTests;
+
+public static class TestAssemblyProviderBootstrap
+{
+    [ModuleInitializer]
+    public static void Initialize()
+    {
+        MockingProviderRegistry.Register(&quot;moq&quot;, MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+</code></pre>
+<p>Module-initializer note:</p>
+<ul>
+<li>some analyzers warn on <code>[ModuleInitializer]</code> usage in test projects, commonly <code>CA2255</code></li>
+<li>for a dedicated test bootstrap type, a targeted suppression is an expected choice when you intentionally use the module-initializer pattern</li>
+<li>if your framework already offers a one-time assembly startup hook, use that hook instead of forcing the xUnit pattern into every test project</li>
+</ul>
+<h4 id="nunit">NUnit</h4>
+<pre><code class="lang-csharp">using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using NUnit.Framework;
+
+namespace MyTests;
+
+[SetUpFixture]
+public sealed class TestAssemblyProviderBootstrap
+{
+    [OneTimeSetUp]
+    public void Initialize()
+    {
+        MockingProviderRegistry.Register(&quot;moq&quot;, MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+</code></pre>
+<h4 id="mstest">MSTest</h4>
+<pre><code class="lang-csharp">using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace MyTests;
+
+[TestClass]
+public sealed class TestAssemblyProviderBootstrap
+{
+    [AssemblyInitialize]
+    public static void Initialize(TestContext _)
+    {
+        MockingProviderRegistry.Register(&quot;moq&quot;, MoqMockingProvider.Instance, setAsDefault: true);
+    }
+}
+</code></pre>
+<p>Migration guidance for v4:</p>
+<ul>
+<li>prefer provider-neutral surfaces such as <code>GetOrCreateMock(...)</code> and <code>VerifyLogged(...)</code> for new or actively refactored tests</li>
+<li>keep using Moq compatibility APIs where they materially reduce migration churn</li>
+<li>isolate Moq-specific usage behind an assembly-level provider selection so the tests that still depend on it are explicit, whether that is the attribute form or a startup hook</li>
+</ul>
+<p>This keeps existing suites stable for v4 while steering new code toward the provider-neutral shape that will carry forward cleanly.</p>
+<p>If you are following the stabilize-first path, the most important action is explicit Moq selection for the test assembly. If you are following the modernization path, treat explicit Moq selection as a narrow compatibility tool rather than the long-term destination.</p>
+<h2 id="temporary-compatibility-apis-keep-them-narrow">Temporary compatibility APIs: keep them narrow</h2>
+<p>FastMoq v4 still carries several compatibility APIs so migrated suites can stay green while they move toward the provider-first shape.</p>
+<p>Treat these APIs as temporary migration tools, not as the target style for new helpers:</p>
+<table>
+<thead>
+<tr>
+<th>Compatibility path</th>
+<th>Preferred destination</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetMock&lt;T&gt;()</code>, <code>GetRequiredMock&lt;T&gt;()</code>, raw <code>Mock&lt;T&gt;</code> access</td>
+<td><code>GetOrCreateMock&lt;T&gt;()</code> plus provider-first verification, or provider-native escape hatches only where they still add value</td>
+</tr>
+<tr>
+<td><code>MockOptional</code></td>
+<td><code>OptionalParameterResolutionMode.ResolveViaMocker</code> or explicit <code>InvocationOptions</code> / <code>InstanceCreationFlags</code></td>
+</tr>
+<tr>
+<td><code>Strict</code> bundle toggles</td>
+<td><code>Mocker.Policy.DefaultStrictMockCreation</code> and explicit built-in resolution flags</td>
+</tr>
+<tr>
+<td>context-aware <code>AddType(...)</code> overloads</td>
+<td><code>AddKnownType(...)</code></td>
+</tr>
+<tr>
+<td>mocked <code>IServiceProvider</code> shims</td>
+<td><code>CreateTypedServiceProvider(...)</code>, <code>AddServiceProvider(...)</code>, and <code>AddFunctionContextInstanceServices(...)</code> with <code>FastMoq.AzureFunctions</code> installed for the <code>FunctionContext</code> helper path</td>
+</tr>
+</tbody>
+</table>
+<p>Two practical rules help here:</p>
+<ul>
+<li>keep compatibility APIs at the edge of the suite, usually in a temporary wrapper or base-class migration layer</li>
+<li>when a shared helper already needs editing, prefer jumping straight to the provider-first or typed-helper destination instead of preserving the compatibility shape one more time</li>
+</ul>
+<p>Analyzer notes:</p>
+<ul>
+<li><code>FMOQ0013</code> warns on raw <code>IServiceProvider</code> mock setup and pushes it toward the typed helper path</li>
+<li><code>FMOQ0014</code> warns on context-aware compatibility <code>AddType(...)</code> usage and pushes it toward <code>AddKnownType(...)</code></li>
+<li><code>FMOQ0015</code> warns when same-type keyed constructor dependencies are accidentally collapsed into one unkeyed double</li>
+</ul>
+<h2 id="replacing-setup-when-moving-from-moq-to-nsubstitute">Replacing <code>Setup(...)</code> when moving from Moq to NSubstitute</h2>
+<p>There is not a single provider-neutral replacement for <code>Setup(...)</code>.</p>
+<p><code>Setup(...)</code> is Moq-native arrangement syntax. When you move a test to NSubstitute, replace the arrange side with native NSubstitute calls and keep FastMoq's provider-neutral verification on the assert side when that reads better.</p>
+<p>Use this rule of thumb:</p>
+<ul>
+<li>Moq <code>Setup(...)</code> becomes a direct call specification on the substitute plus <code>Returns(...)</code>, <code>ReturnsForAnyArgs(...)</code>, or <code>When(...).Do(...)</code></li>
+<li>Moq argument matchers such as <code>It.IsAny&lt;T&gt;()</code> and <code>It.Is&lt;T&gt;(...)</code> become <code>Arg.Any&lt;T&gt;()</code> and <code>Arg.Is&lt;T&gt;(...)</code></li>
+<li>Moq <code>Verify(...)</code> can often become either <code>Received(...)</code> or FastMoq <code>Mocks.Verify(...)</code></li>
+</ul>
+<p>Common translations:</p>
+<table>
+<thead>
+<tr>
+<th>Moq shape</th>
+<th>NSubstitute shape</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dependency.Setup(x =&gt; x.GetValue()).Returns(&quot;configured&quot;);</code></td>
+<td><code>dependency.AsNSubstitute().GetValue().Returns(&quot;configured&quot;);</code></td>
+</tr>
+<tr>
+<td><code>dependency.Setup(x =&gt; x.GetValue(It.IsAny&lt;string&gt;())).Returns(&quot;configured&quot;);</code></td>
+<td><code>dependency.AsNSubstitute().GetValue(Arg.Any&lt;string&gt;()).Returns(&quot;configured&quot;);</code></td>
+</tr>
+<tr>
+<td><code>dependency.Setup(x =&gt; x.GetValue(It.Is&lt;string&gt;(x =&gt; x.StartsWith(&quot;a&quot;)))).Returns(&quot;configured&quot;);</code></td>
+<td><code>dependency.AsNSubstitute().GetValue(Arg.Is&lt;string&gt;(x =&gt; x.StartsWith(&quot;a&quot;))).Returns(&quot;configured&quot;);</code></td>
+</tr>
+<tr>
+<td><code>dependency.Setup(x =&gt; x.Run(&quot;alpha&quot;)).Callback(() =&gt; observed = true);</code></td>
+<td><code>dependency.AsNSubstitute().When(x =&gt; x.Run(&quot;alpha&quot;)).Do(_ =&gt; observed = true);</code></td>
+</tr>
+<tr>
+<td><code>dependency.SetupSequence(x =&gt; x.GetValue()).Returns(&quot;first&quot;).Returns(&quot;second&quot;);</code></td>
+<td><code>dependency.AsNSubstitute().GetValue().Returns(&quot;first&quot;, &quot;second&quot;);</code></td>
+</tr>
+<tr>
+<td><code>dependency.SetupGet(x =&gt; x.Mode).Returns(&quot;fast&quot;);</code></td>
+<td><code>dependency.AsNSubstitute().Mode.Returns(&quot;fast&quot;);</code></td>
+</tr>
+</tbody>
+</table>
+<p>Equivalent FastMoq-first examples:</p>
+<pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push(&quot;nsubstitute&quot;);
+var dependency = Mocks.GetOrCreateMock&lt;IOrderGateway&gt;();
+
+dependency.AsNSubstitute().GetValue().Returns(&quot;configured&quot;);
+dependency.Instance.Run(&quot;alpha&quot;);
+
+Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Run(&quot;alpha&quot;), TimesSpec.Once);
+</code></pre>
+<p>You can also arrange through <code>dependency.Instance</code> because the NSubstitute-backed instance is the substitute:</p>
+<pre><code class="lang-csharp">dependency.Instance.GetValue().Returns(&quot;configured&quot;);
+</code></pre>
+<p>That is why NSubstitute migration usually looks like a syntax translation rather than a FastMoq wrapper translation.</p>
+<p>Cases that do not translate cleanly:</p>
+<ul>
+<li><code>SetupSet(...)</code></li>
+<li><code>SetupAllProperties()</code></li>
+<li><code>Protected()</code></li>
+<li>Moq <code>CallBase</code></li>
+<li>some <code>out</code> / <code>ref</code> verification patterns</li>
+</ul>
+<p>When a test depends on those features, either keep it on the Moq provider or replace the collaborator with a fake or stub through <code>AddType(...)</code>.</p>
+<p>For <code>SetupSet(...)</code>-heavy tests, the preferred non-Moq migration target is usually a fake that records assignments through <code>PropertyValueCapture&lt;TValue&gt;</code>.</p>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

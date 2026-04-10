@@ -47,7 +47,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerTestBase
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
@@ -163,7 +163,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Component
     path: FastMoq.Core/MockerTestBase.cs
@@ -197,7 +197,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CustomMocks
     path: FastMoq.Core/MockerTestBase.cs
@@ -231,7 +231,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateComponentAction
     path: FastMoq.Core/MockerTestBase.cs
@@ -265,7 +265,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMocksAction
     path: FastMoq.Core/MockerTestBase.cs
@@ -299,7 +299,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreatedComponentAction
     path: FastMoq.Core/MockerTestBase.cs
@@ -333,7 +333,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureMockerPolicy
     path: FastMoq.Core/MockerTestBase.cs
@@ -366,7 +366,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Mocks
     path: FastMoq.Core/MockerTestBase.cs
@@ -400,7 +400,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Scenario
     path: FastMoq.Core/MockerTestBase.cs
@@ -433,7 +433,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
@@ -487,7 +487,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
@@ -532,7 +532,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
@@ -580,7 +580,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateComponent
     path: FastMoq.Core/MockerTestBase.cs
@@ -630,7 +630,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/MockerTestBase.cs
@@ -667,7 +667,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/MockerTestBase.cs
@@ -699,7 +699,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ComponentCreationFlags
     path: FastMoq.Core/MockerTestBase_Constructors.cs
@@ -735,7 +735,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
@@ -766,7 +766,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
@@ -799,7 +799,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
@@ -834,7 +834,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
@@ -869,7 +869,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
@@ -902,7 +902,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
@@ -937,7 +937,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
@@ -970,7 +970,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
@@ -1007,11 +1007,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 89
+    startLine: 99
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1073,11 +1073,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 109
+    startLine: 119
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1117,11 +1117,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 122
+    startLine: 132
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1164,11 +1164,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 144
+    startLine: 154
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1214,11 +1214,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 177
+    startLine: 187
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1279,7 +1279,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetConstructor
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
@@ -1316,7 +1316,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TestAllConstructorParameters
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
@@ -1360,7 +1360,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TestConstructorParameters
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
@@ -1438,7 +1438,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TestConstructorParameters
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs

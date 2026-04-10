@@ -10,7 +10,7 @@ If you only remember four things from this page, make them these:
 
 1. `reflection` stays the default provider unless you explicitly change it.
 2. Installing `FastMoq.Provider.Moq` or another provider package does not select that provider automatically.
-3. If the test project still uses `GetMock<T>()`, direct `Mock<T>` access, `VerifyLogger(...)`, `Protected()`, or other Moq compatibility APIs, register `moq` as the test-assembly default before running the suite.
+3. If the test project uses any non-default provider-specific compatibility or extension APIs, declare the matching provider as the test-assembly default before running the suite.
 4. You are not limited to the bundled providers. Any library can be used through FastMoq if you implement [IMockingProvider](../../api/FastMoq.Providers.IMockingProvider.yml) and register it with `MockingProviderRegistry`.
 
 ## Current defaults
@@ -20,20 +20,21 @@ For the current v4 release line:
 - `FastMoq.Core` bundles the internal `reflection` provider and the bundled `moq` provider.
 - `reflection` is the default provider if you do nothing.
 - `moq` is still available without adding another package.
-- optional providers such as `nsubstitute` must be added explicitly and registered with `MockingProviderRegistry`.
+- optional providers such as `nsubstitute` must still be added explicitly, but once the package is present you can select the canonical provider name directly or register it manually under a custom alias.
 
 Important boundary:
 
 - adding `FastMoq.Provider.Moq` gives you the Moq provider package and its extension methods
 - it does not change the default provider by itself
-- if the test assembly still uses `GetMock<T>()`, direct `Mock<T>` access, `VerifyLogger(...)`, `Protected()`, or other Moq compatibility APIs, register Moq explicitly as the default provider
-- the same rule applies to any other provider package or custom provider implementation: registration controls selection
+- if the test assembly uses provider-specific APIs, declare the matching provider explicitly as the default provider
+- selection can happen through [FastMoqDefaultProviderAttribute](../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.yml), [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml), `SetDefault(...)`, `Push(...)`, or `Register(..., setAsDefault: true)`
+- custom providers still need registration before they can be selected
 
 Why this matters:
 
 - provider-neutral APIs such as `GetOrCreateMock(...)`, `VerifyLogged(...)`, and the scenario builder can work with any registered provider that supports the needed capability.
 - Moq compatibility APIs such as `GetMock<T>()`, `VerifyLogger(...)`, `Protected()`, and direct `Mock<T>` setup require the Moq provider to be selected.
-- provider-package extensions such as `AsMoq()`, `Setup(...)` on `IFastMock<T>`, and `AsNSubstitute()` also require their corresponding provider package and selected provider.
+- provider-package extensions such as `AsMoq()`, `Setup(...)` on `IFastMock<T>`, `AsNSubstitute()`, and `Received(...)` also require their corresponding provider package and selected provider.
 
 ## First decision: do you need a non-default provider?
 
@@ -44,15 +45,48 @@ Use this quick check before reading the rest of the page:
 - switch to `nsubstitute` only when the test project is intentionally written against NSubstitute behavior
 - register a custom provider if your team uses a different mocking library or needs provider behavior that the bundled packages do not cover
 
-## Mandatory bootstrap when the test assembly must not stay on `reflection`
+## Mandatory assembly default when the test assembly must not stay on `reflection`
 
-If a migrated test project still uses the Moq compatibility surface, or if the suite is intentionally standardizing on another non-default provider, treat provider bootstrap as required setup, not as an optional cleanup step.
+If a migrated test project still uses any non-default provider-specific compatibility or extension surface, treat assembly-wide provider selection as required setup, not as an optional cleanup step.
 
-The examples below show the common Moq migration case, but the same assembly-startup rule applies to `nsubstitute` and custom providers: register the provider and set it as the default before the suite creates `Mocker` instances.
+For example, `GetMock<T>()`, direct `Mock<T>` access, `VerifyLogger(...)`, and `Protected()` still mean `moq`, while `AsNSubstitute()` and `Received(...)` mean `nsubstitute`.
+
+For the built-in `moq` provider, and for `nsubstitute` after its package is referenced, the shortest path is [FastMoqDefaultProviderAttribute](../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.yml):
+
+```csharp
+using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider("moq")]
+```
+
+That keeps the test assembly explicit without requiring a startup hook. This works with xUnit, NUnit, MSTest, or any other test framework because FastMoq reads the assembly attribute during its own provider bootstrap.
+
+The attribute selects the assembly-wide default provider by name. It does not create a new provider registration or alias.
+
+When registration and selection need to happen together at assembly scope, use [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml):
+
+```csharp
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider("moq", typeof(MoqMockingProvider), SetAsDefault = true)]
+```
+
+That registers the provider and makes it the assembly default during FastMoq bootstrap, without requiring framework-specific startup code.
+
+Use startup code instead when you need more than declarative assembly metadata. Common cases are:
+
+- choosing the provider dynamically at runtime from configuration, environment, or target-specific logic
+- combining provider selection with other one-time test bootstrap work in the same startup path
+- running custom registration logic that cannot be expressed as a provider type plus `SetAsDefault`
+
+### Assembly startup alternatives
+
+The examples below are alternatives to the assembly attributes. Use them when registration and selection need to happen together before the suite creates `Mocker` instances, but the decision cannot be expressed with `FastMoqDefaultProvider(...)` or `FastMoqRegisterProvider(...)`.
 
 ### xUnit
 
-Use a module initializer:
+If you need startup code in xUnit, a module initializer is a portable option that works well for provider registration and default-provider selection. Consumers on xUnit v3 may also choose assembly fixtures or test pipeline startup when those fit their broader test-bootstrap model.
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -84,7 +118,7 @@ In practice, still use the canonical names from the docs for built-in and packag
 Module-initializer note:
 
 - some analyzers warn on `[ModuleInitializer]` usage in test projects, commonly `CA2255`
-- for a dedicated test bootstrap type, a targeted suppression is a normal choice when xUnit is the active framework
+- for a dedicated test bootstrap type, a targeted suppression is a normal choice when you intentionally use the module-initializer pattern
 - if your framework already offers a one-time assembly startup hook, use that hook instead of forcing the xUnit pattern into every test project
 
 ### NUnit
@@ -127,7 +161,7 @@ public sealed class TestAssemblyProviderBootstrap
 }
 ```
 
-Without one of those bootstrap patterns, the active default remains `reflection`.
+Without the assembly attribute or one of those bootstrap patterns, the active default remains `reflection`.
 
 ## How provider selection works
 
@@ -146,10 +180,12 @@ Use these rules:
 Resolution order:
 
 1. Use the current async-scoped override set by `Push(...)` if one exists.
-2. Otherwise use the app-wide default provider.
+2. Otherwise use the app-wide default provider, whether it came from [FastMoqDefaultProviderAttribute](../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.yml), [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml), `SetDefault(...)`, or `Register(..., setAsDefault: true)`.
 
-The important methods are:
+The important entry points are:
 
+- `[assembly: FastMoqDefaultProvider("name")]`
+- `[assembly: FastMoqRegisterProvider("name", typeof(...), SetAsDefault = true)]`
 - `MockingProviderRegistry.Register(name, provider, setAsDefault: false)`
 - `MockingProviderRegistry.SetDefault(name)`
 - `MockingProviderRegistry.Push(name)`
@@ -157,10 +193,18 @@ The important methods are:
 
 What each method is for:
 
+- `FastMoqDefaultProviderAttribute` is the declarative assembly-wide default when the provider name is already resolvable
+- `FastMoqRegisterProviderAttribute` is the declarative assembly-wide register-and-select path when FastMoq must instantiate the provider type first
 - `SetDefault(name)` changes the app-wide default provider that new `Mocker` instances will use when no scoped override is active
 - `Push(name)` is the temporary async-scoped override; use it when one test or one code path needs a different provider than the assembly default
 - `TryGet(name, out provider)` is only a lookup and guard API; it tells you whether a provider name is registered, but it does not activate or switch anything
 - `Default` returns the effective provider for the current context, which means the pushed provider if one is active, otherwise the app-wide default
+
+In practice:
+
+- use `[assembly: FastMoqDefaultProvider("moq")]` or `[assembly: FastMoqDefaultProvider("nsubstitute")]` when the canonical provider name is already known to FastMoq
+- use `[assembly: FastMoqRegisterProvider("name", typeof(...), SetAsDefault = true)]` when the provider must be registered first, including explicit package bootstrap, a custom provider, or a stable custom alias
+- use startup code when provider choice is dynamic or registration requires additional logic beyond declarative assembly metadata
 
 Example mental model:
 
@@ -169,9 +213,28 @@ Example mental model:
 
 ## Recommended pattern: app-wide default for the test assembly
 
-If a whole test project should use one provider, register it once at assembly startup and set it as the default.
+If a whole test project should use one provider, declare it once at assembly level.
 
-For the bundled Moq provider in v4:
+For the bundled Moq provider in v4, the shortest form is:
+
+```csharp
+using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider("moq")]
+```
+
+That is also the simplest path for `nsubstitute` once the package is referenced.
+
+If you want the assembly to register the provider type and select it in one step, use:
+
+```csharp
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider("moq", typeof(MoqMockingProvider), SetAsDefault = true)]
+```
+
+Use the startup-hook form when registration and selection need to happen together but the decision is dynamic, needs custom construction logic, or belongs with broader startup work:
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -201,7 +264,7 @@ MockingProviderRegistry.SetDefault("moq");
 
 ## Optional providers
 
-Optional providers are not available until you add their package and register them.
+Optional providers are not available until you add their package.
 
 Example package reference for NSubstitute:
 
@@ -209,7 +272,26 @@ Example package reference for NSubstitute:
 <PackageReference Include="FastMoq.Provider.NSubstitute" Version="4.*" />
 ```
 
-Then register it:
+Once the package is present, the shortest selection path is:
+
+```csharp
+using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider("nsubstitute")]
+```
+
+FastMoq can resolve the canonical `nsubstitute` provider name on demand when that package is available.
+
+Use the assembly registration attribute when you want a custom alias or want registration and selection to stay declarative:
+
+```csharp
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+
+[assembly: FastMoqRegisterProvider("nsubstitute", typeof(NSubstituteMockingProvider), SetAsDefault = true)]
+```
+
+Use startup code instead when registration needs additional runtime logic:
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -233,6 +315,18 @@ public static class TestAssemblyProviderBootstrap
 You do not have to use the bundled FastMoq providers.
 
 If your team wants to integrate a different mocking library, implement [IMockingProvider](../../api/FastMoq.Providers.IMockingProvider.yml), expose the needed [IMockingProviderCapabilities](../../api/FastMoq.Providers.IMockingProviderCapabilities.yml), and register that implementation with `MockingProviderRegistry`.
+
+For custom providers, [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml) is the shortest declarative path when the provider type exposes a public static `Instance` or a public parameterless constructor.
+
+Declarative custom-provider example:
+
+```csharp
+using FastMoq.Providers;
+
+[assembly: FastMoqRegisterProvider("my-provider", typeof(MyMockingProvider), SetAsDefault = true)]
+```
+
+Use a startup hook instead when the provider must be created with runtime state, external dependencies, or other initialization that cannot be expressed as `typeof(MyMockingProvider)` alone.
 
 Typical shape:
 
@@ -271,12 +365,12 @@ That override applies only to the current async flow and is restored when the `I
 
 ## Real executable example in this repo
 
-The repo now includes an executable provider bootstrap example in:
+The repo now includes an executable provider-selection example in:
 
 - `FastMoq.TestingExample/ProviderSelectionBootstrap.cs`
 - `FastMoq.TestingExample/ProviderSelectionExampleTests.cs`
 
-That example sets Moq as the app-wide default for the example test assembly and then uses the Moq compatibility surface in a real xUnit test.
+That example declares Moq as the app-wide default for the example test assembly and then uses the Moq compatibility surface in a real xUnit test.
 
 ## When to choose which provider in v4
 
@@ -291,8 +385,8 @@ The planned v5 direction is:
 
 - `FastMoq.Core` keeps `reflection` as the default provider.
 - bundled Moq compatibility is removed from core.
-- provider packages such as Moq or NSubstitute are added explicitly, then registered and selected by the consuming test assembly.
+- provider packages such as Moq or NSubstitute are added explicitly, then selected by canonical name or registered under a custom alias by the consuming test assembly.
 
-In other words, the registry entry in core goes away, but the provider model does not. In `v5`, adding the Moq package alone will not activate Moq. The consuming test assembly must still register a provider implementation such as `MoqMockingProvider.Instance` and make it the default when the suite depends on Moq behavior.
+In other words, the registry entry in core goes away, but the provider model does not. In `v5`, adding the Moq package alone will not activate Moq. The consuming test assembly must still make its intended provider explicit when the suite depends on provider-specific behavior.
 
-That means the app-wide bootstrap pattern shown above is the forward-compatible way to select a provider.
+That means the assembly-default pattern shown above, whether via the attribute for known provider names or a startup hook for custom registration, is the forward-compatible way to select a provider.

@@ -47,11 +47,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TestClassExtensions
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 32
+    startLine: 31
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -95,11 +95,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CallGenericMethod
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 63
+    startLine: 62
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -153,11 +153,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: EnsureNullCheckThrown
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 90
+    startLine: 89
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -202,11 +202,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: EnsureNullCheckThrown
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 127
+    startLine: 126
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -247,11 +247,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetDefaultValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 136
+    startLine: 135
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -283,11 +283,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetField
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 153
+    startLine: 152
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -328,11 +328,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldInfo
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 164
+    startLine: 163
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -373,11 +373,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 178
+    startLine: 177
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -420,11 +420,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 187
+    startLine: 186
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -465,11 +465,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 197
+    startLine: 196
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -513,11 +513,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMember
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 208
+    startLine: 207
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -560,11 +560,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberExpression
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 217
+    startLine: 216
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -602,11 +602,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberExpression
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 224
+    startLine: 223
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -638,11 +638,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberName
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 234
+    startLine: 233
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -685,11 +685,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberName
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 242
+    startLine: 241
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -721,11 +721,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethod
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 251
+    startLine: 250
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -766,11 +766,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 264
+    startLine: 263
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -817,11 +817,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetProperty
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 275
+    startLine: 274
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -862,11 +862,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetPropertyValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 287
+    startLine: 286
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -910,11 +910,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetTestData
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 298
+    startLine: 297
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -955,11 +955,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetTypeFromInterface
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 309
+    startLine: 308
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1004,11 +1004,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 461
+    startLine: 460
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1046,21 +1046,26 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AddFiles
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 467
+    startLine: 474
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
+  summary: Adds a batch of files to the supplied mock file system.
+  remarks: Use this helper when a test needs to seed several files up front without repeating individual <code>AddFile</code> calls.
+  example: []
   syntax:
     content: public static void AddFiles(this MockFileSystem fileSystem, IDictionary<string, MockFileData> files)
     parameters:
     - id: fileSystem
       type: System.IO.Abstractions.TestingHelpers.MockFileSystem
+      description: The file system to seed.
     - id: files
       type: System.Collections.Generic.IDictionary{System.String,System.IO.Abstractions.TestingHelpers.MockFileData}
+      description: The files to add, keyed by path.
     content.vb: Public Shared Sub AddFiles(fileSystem As MockFileSystem, files As IDictionary(Of String, MockFileData))
   overload: FastMoq.Extensions.TestClassExtensions.AddFiles*
   nameWithType.vb: TestClassExtensions.AddFiles(MockFileSystem, IDictionary(Of String, MockFileData))
@@ -1081,11 +1086,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 482
+    startLine: 489
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1126,11 +1131,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousConstructorImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 501
+    startLine: 508
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1165,11 +1170,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 511
+    startLine: 518
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1210,11 +1215,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetPropertyValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 521
+    startLine: 528
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1255,11 +1260,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 535
+    startLine: 542
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1301,11 +1306,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 541
+    startLine: 548
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1342,11 +1347,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 547
+    startLine: 554
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1383,11 +1388,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 554
+    startLine: 561
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1429,11 +1434,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 560
+    startLine: 567
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1474,11 +1479,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 566
+    startLine: 573
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions

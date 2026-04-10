@@ -1,13 +1,13 @@
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq.Protected;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FastMoq.Tests
 {
@@ -38,8 +38,10 @@ namespace FastMoq.Tests
 
             Action action = () => dependency.AsMoq();
 
-            action.Should().Throw<NotSupportedException>()
-                .WithMessage("*not backed by Moq*");
+            var exception = action.Should().Throw<NotSupportedException>().Which;
+            exception.Message.Should().Contain("requires the 'moq' provider");
+            exception.Message.Should().Contain($"active provider is '{providerName}'");
+            exception.Message.Should().Contain("MockingProviderRegistry.Push(\"moq\")");
         }
 
         [Fact]

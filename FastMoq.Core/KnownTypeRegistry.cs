@@ -1,15 +1,35 @@
-using System.IO.Abstractions;
-using System.Security.Claims;
 using FastMoq.Extensions;
 using FastMoq.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.IO.Abstractions;
+using System.Reflection;
+using System.Security.Claims;
 
 namespace FastMoq
 {
     internal static class KnownTypeRegistry
     {
+        private static readonly Type ReflectionMetadataFixtureType = typeof(ReflectionMetadataFixture);
+        private static readonly ConstructorInfo ReflectionMetadataConstructor = ReflectionMetadataFixtureType.GetConstructors().Single();
+        private static readonly ParameterInfo ReflectionMetadataParameter = ReflectionMetadataConstructor.GetParameters().Single();
+        private static readonly MethodInfo ReflectionMetadataMethod = ReflectionMetadataFixtureType.GetMethod(nameof(ReflectionMetadataFixture.Execute), [typeof(int)])!;
+        private static readonly PropertyInfo ReflectionMetadataProperty = ReflectionMetadataFixtureType.GetProperty(nameof(ReflectionMetadataFixture.Name))!;
+        private static readonly FieldInfo ReflectionMetadataField = ReflectionMetadataFixtureType.GetField(nameof(ReflectionMetadataFixture.Counter))!;
+        private static readonly EventInfo ReflectionMetadataEvent = ReflectionMetadataFixtureType.GetEvent(nameof(ReflectionMetadataFixture.Changed))!;
+        private static readonly TypeInfo ReflectionMetadataTypeInfo = ReflectionMetadataFixtureType.GetTypeInfo();
+        private static readonly object[] ReflectionMetadataMembers =
+        [
+            ReflectionMetadataConstructor,
+            ReflectionMetadataMethod,
+            ReflectionMetadataProperty,
+            ReflectionMetadataField,
+            ReflectionMetadataEvent,
+            ReflectionMetadataTypeInfo,
+            ReflectionMetadataFixtureType,
+        ];
+
         private static readonly IReadOnlyList<KnownTypeRegistration> BuiltInRegistrations =
         [
             new KnownTypeRegistration(typeof(IFileSystem))
@@ -25,6 +45,17 @@ namespace FastMoq
             new KnownTypeRegistration(typeof(Uri))
             {
                 DirectInstanceFactory = TryGetBuiltInUri,
+            },
+            new KnownTypeRegistration(typeof(MemberInfo))
+            {
+                IncludeDerivedTypes = true,
+                DirectInstanceFactory = TryGetBuiltInReflectionMemberInfo,
+                ManagedInstanceFactory = TryGetBuiltInReflectionMemberInfo,
+            },
+            new KnownTypeRegistration(typeof(ParameterInfo))
+            {
+                DirectInstanceFactory = TryGetBuiltInParameterInfo,
+                ManagedInstanceFactory = TryGetBuiltInParameterInfo,
             },
             new KnownTypeRegistration(typeof(HttpContext))
             {
@@ -203,6 +234,18 @@ namespace FastMoq
             return mocker.Uri;
         }
 
+        private static object? TryGetBuiltInReflectionMemberInfo(Mocker _, Type type)
+        {
+            return ReflectionMetadataMembers.FirstOrDefault(type.IsInstanceOfType);
+        }
+
+        private static object? TryGetBuiltInParameterInfo(Mocker _, Type type)
+        {
+            return type.IsInstanceOfType(ReflectionMetadataParameter)
+                ? ReflectionMetadataParameter
+                : null;
+        }
+
         private static object? TryGetBuiltInHttpContextAccessor(Mocker mocker, Type type)
         {
             if (!typeof(IHttpContextAccessor).IsAssignableFrom(type) || mocker.Contains<IHttpContextAccessor>())
@@ -311,6 +354,26 @@ namespace FastMoq
             fileSystemMock.SetupMockProperty(x => x.FileStream, fileSystem.FileStream);
             fileSystemMock.SetupMockProperty(x => x.DriveInfo, fileSystem.DriveInfo);
             fileSystemMock.SetupMockProperty(x => x.DirectoryInfo, fileSystem.DirectoryInfo);
+        }
+
+        private sealed class ReflectionMetadataFixture
+        {
+            public int Counter;
+
+            public ReflectionMetadataFixture(string name)
+            {
+                Name = name;
+            }
+
+            public string Name { get; }
+
+            public event EventHandler? Changed;
+
+            public void Execute(int count)
+            {
+                Counter = count;
+                Changed?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

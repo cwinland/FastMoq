@@ -3177,7 +3177,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_GetNativeMock_" data-uid="FastMoq.Mocker.GetNativeMock*"></a>
   <h4 id="FastMoq_Mocker_GetNativeMock_System_Type_" data-uid="FastMoq.Mocker.GetNativeMock(System.Type)">GetNativeMock(Type)</h4>
-  <div class="markdown level1 summary"><p>Gets the provider-native mock object for the supplied runtime type.</p>
+  <div class="markdown level1 summary"><p>Gets the provider-native mock object for the supplied runtime type.
+Prefer <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock_System_Type_FastMoq_MockRequestOptions_">GetOrCreateMock(Type, MockRequestOptions?)</a> plus provider-typed escape hatches when the test intentionally needs provider-specific APIs, and prefer <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetObject_System_Type_System_Action_System_Object__">GetObject(Type, Action&lt;object?&gt;?)</a> or <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock_System_Type_FastMoq_MockRequestOptions_">GetOrCreateMock(Type, MockRequestOptions?)</a> for provider-first flows.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -3218,7 +3219,8 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
   </table>
   <a id="FastMoq_Mocker_GetNativeMock_" data-uid="FastMoq.Mocker.GetNativeMock*"></a>
   <h4 id="FastMoq_Mocker_GetNativeMock__1_System_Object___" data-uid="FastMoq.Mocker.GetNativeMock``1(System.Object[])">GetNativeMock&lt;T&gt;(params object?[])</h4>
-  <div class="markdown level1 summary"><p>Gets the provider-native mock object for the supplied type parameter.</p>
+  <div class="markdown level1 summary"><p>Gets the provider-native mock object for the supplied type parameter.
+Prefer <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;(MockRequestOptions?)</a> plus provider-typed escape hatches such as <code>AsMoq()</code> or <code>AsNSubstitute()</code> when the test intentionally needs a provider-specific API surface.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -3404,7 +3406,10 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
     </tbody>
   </table>
   <h5 id="FastMoq_Mocker_GetObject__1_examples">Examples</h5>
-  <p>Resolve a dependency after configuring a concrete registration through the provider-first pipeline.</p>
+  <p>Use <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetObject__1">GetObject&lt;T&gt;()</a> when older code only needed <code>GetMock&lt;T&gt;().Object</code> and does not need the tracked mock handle itself.</p>
+<pre><code class="lang-csharp">var mocker = new Mocker();
+var gateway = mocker.GetObject&lt;IOrderGateway&gt;();</code></pre>
+<p>Resolve a dependency after configuring a concrete registration through the provider-first pipeline.</p>
 <pre><code class="lang-csharp">var fileSystem = new MockFileSystem();
 fileSystem.AddDirectory(@"c:\exports");
 <p>var mocker = new Mocker()
@@ -3526,7 +3531,8 @@ fileSystem.AddDirectory(@"c:\exports");
   </table>
   <a id="FastMoq_Mocker_GetOrCreateMock_" data-uid="FastMoq.Mocker.GetOrCreateMock*"></a>
   <h4 id="FastMoq_Mocker_GetOrCreateMock_System_Type_FastMoq_MockRequestOptions_" data-uid="FastMoq.Mocker.GetOrCreateMock(System.Type,FastMoq.MockRequestOptions)">GetOrCreateMock(Type, MockRequestOptions?)</h4>
-  <div class="markdown level1 summary"><p>Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.</p>
+  <div class="markdown level1 summary"><p>Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.
+Use the returned <a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a> when the test needs the tracked handle itself, and prefer <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetObject_System_Type_System_Action_System_Object__">GetObject(Type, Action&lt;object?&gt;?)</a> when only the instance is needed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -3628,6 +3634,7 @@ fileSystem.AddDirectory(@"c:\exports");
   </table>
   <h5 id="FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions__examples">Examples</h5>
   <p>Use <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;(MockRequestOptions?)</a> when the test needs the tracked mock handle itself, not just automatic constructor resolution.</p>
+<p><code>fastMock.Instance</code> is the provider-first replacement for older <code>GetMock&lt;T&gt;().Object</code> access when the test still wants the tracked handle.</p>
 <p><code>GetOrCreateMock</code> uses the active FastMoq provider. It does not require the Moq provider to be selected unless the test later calls Moq-specific extensions such as <code>AsMoq()</code>, <code>Setup(...)</code>, or <code>Protected()</code>.</p>
 <pre><code class="lang-csharp">var mocker = new Mocker();
 var gateway = mocker.GetOrCreateMock&lt;IOrderGateway&gt;();
@@ -3664,6 +3671,188 @@ submitter.Submit(42);</p>
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker_GetRequiredTrackedMock_" data-uid="FastMoq.Mocker.GetRequiredTrackedMock*"></a>
+  <h4 id="FastMoq_Mocker_GetRequiredTrackedMock_System_Type_" data-uid="FastMoq.Mocker.GetRequiredTrackedMock(System.Type)">GetRequiredTrackedMock(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets an already tracked provider-backed mock for the supplied runtime type and throws when no tracked mock exists.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IFastMock GetRequiredTrackedMock(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker_GetRequiredTrackedMock_" data-uid="FastMoq.Mocker.GetRequiredTrackedMock*"></a>
+  <h4 id="FastMoq_Mocker_GetRequiredTrackedMock_System_Type_System_Object_" data-uid="FastMoq.Mocker.GetRequiredTrackedMock(System.Type,System.Object)">GetRequiredTrackedMock(Type, object)</h4>
+  <div class="markdown level1 summary"><p>Gets an already tracked keyed provider-backed mock for the supplied runtime type and throws when no tracked mock exists for the supplied service key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IFastMock GetRequiredTrackedMock(Type type, object serviceKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">serviceKey</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker_GetRequiredTrackedMock_" data-uid="FastMoq.Mocker.GetRequiredTrackedMock*"></a>
+  <h4 id="FastMoq_Mocker_GetRequiredTrackedMock__1" data-uid="FastMoq.Mocker.GetRequiredTrackedMock``1">GetRequiredTrackedMock&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Gets an already tracked provider-backed mock and throws when no tracked mock exists.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IFastMock&lt;T&gt; GetRequiredTrackedMock&lt;T&gt;() where T : class</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker_GetRequiredTrackedMock_" data-uid="FastMoq.Mocker.GetRequiredTrackedMock*"></a>
+  <h4 id="FastMoq_Mocker_GetRequiredTrackedMock__1_System_Object_" data-uid="FastMoq.Mocker.GetRequiredTrackedMock``1(System.Object)">GetRequiredTrackedMock&lt;T&gt;(object)</h4>
+  <div class="markdown level1 summary"><p>Gets an already tracked keyed provider-backed mock and throws when no tracked mock exists for the supplied service key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IFastMock&lt;T&gt; GetRequiredTrackedMock&lt;T&gt;(object serviceKey) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">serviceKey</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -4227,6 +4416,220 @@ submitter.Submit(42);</p>
       </tr>
     </tbody>
   </table>
+  <a id="FastMoq_Mocker_TryGetTrackedMock_" data-uid="FastMoq.Mocker.TryGetTrackedMock*"></a>
+  <h4 id="FastMoq_Mocker_TryGetTrackedMock_System_Type_FastMoq_Providers_IFastMock__" data-uid="FastMoq.Mocker.TryGetTrackedMock(System.Type,FastMoq.Providers.IFastMock@)">TryGetTrackedMock(Type, out IFastMock?)</h4>
+  <div class="markdown level1 summary"><p>Attempts to get an already tracked provider-backed mock for the supplied runtime type without creating one.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetTrackedMock(Type type, out IFastMock? mock)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td><span class="parametername">mock</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker_TryGetTrackedMock_" data-uid="FastMoq.Mocker.TryGetTrackedMock*"></a>
+  <h4 id="FastMoq_Mocker_TryGetTrackedMock_System_Type_System_Object_FastMoq_Providers_IFastMock__" data-uid="FastMoq.Mocker.TryGetTrackedMock(System.Type,System.Object,FastMoq.Providers.IFastMock@)">TryGetTrackedMock(Type, object, out IFastMock?)</h4>
+  <div class="markdown level1 summary"><p>Attempts to get an already tracked keyed provider-backed mock for the supplied runtime type without creating one.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetTrackedMock(Type type, object serviceKey, out IFastMock? mock)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">serviceKey</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td><span class="parametername">mock</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker_TryGetTrackedMock_" data-uid="FastMoq.Mocker.TryGetTrackedMock*"></a>
+  <h4 id="FastMoq_Mocker_TryGetTrackedMock__1_FastMoq_Providers_IFastMock___0___" data-uid="FastMoq.Mocker.TryGetTrackedMock``1(FastMoq.Providers.IFastMock{``0}@)">TryGetTrackedMock&lt;T&gt;(out IFastMock&lt;T&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Attempts to get an already tracked provider-backed mock without creating one.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetTrackedMock&lt;T&gt;(out IFastMock&lt;T&gt;? mock) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td><span class="parametername">mock</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker_TryGetTrackedMock_" data-uid="FastMoq.Mocker.TryGetTrackedMock*"></a>
+  <h4 id="FastMoq_Mocker_TryGetTrackedMock__1_System_Object_FastMoq_Providers_IFastMock___0___" data-uid="FastMoq.Mocker.TryGetTrackedMock``1(System.Object,FastMoq.Providers.IFastMock{``0}@)">TryGetTrackedMock&lt;T&gt;(object, out IFastMock&lt;T&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Attempts to get an already tracked keyed provider-backed mock without creating one.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetTrackedMock&lt;T&gt;(object serviceKey, out IFastMock&lt;T&gt;? mock) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">serviceKey</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td><span class="parametername">mock</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="FastMoq_Mocker_UseLenientPreset_" data-uid="FastMoq.Mocker.UseLenientPreset*"></a>
   <h4 id="FastMoq_Mocker_UseLenientPreset" data-uid="FastMoq.Mocker.UseLenientPreset">UseLenientPreset()</h4>
   <div class="markdown level1 summary"><p>Applies the predefined lenient behavior preset.
@@ -4385,6 +4788,15 @@ This is broader than <span class="xref">FastMoq.Mocker.Strict</span>, which is r
       <a class="xref" href="FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_">ObjectExtensions.RaiseIfNull&lt;T&gt;(T?, string?, string?, int?, string?)</a>
   </div>
   <div>
+      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_">ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action&lt;IServiceCollection&gt;?, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_">ServiceProviderTestExtensions.AddServiceProvider(Mocker, IServiceProvider, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__">ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action&lt;IServiceCollection&gt;?)</a>
+  </div>
+  <div>
       <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetAmbiguousConstructorImplementationException_FastMoq_Mocker_System_Type_">TestClassExtensions.GetAmbiguousConstructorImplementationException(Mocker, Type)</a>
   </div>
   <div>
@@ -4490,7 +4902,7 @@ This is broader than <span class="xref">FastMoq.Mocker.Strict</span>, which is r
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

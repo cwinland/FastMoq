@@ -55,7 +55,17 @@ namespace FastMoq
         /// Create instance and setting mock resolution. Mock resolution is on by default.
         /// When it is off, it may not be able to fill in properties or other injections of components.
         /// </summary>
-        protected MockerTestBase(bool innerMockResolution) : this() => Mocks.InnerMockResolution = innerMockResolution;
+        protected MockerTestBase(bool innerMockResolution) : this()
+        {
+            if (innerMockResolution)
+            {
+                Mocks.Behavior.Enable(MockFeatures.ResolveNestedMembers);
+            }
+            else
+            {
+                Mocks.Behavior.Disable(MockFeatures.ResolveNestedMembers);
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MockerTestBase{TComponent}" /> class with explicit hooks for arranging mocks, overriding construction, and applying post-creation setup.

@@ -1,6 +1,4 @@
 using FastMoq.Extensions;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -11,8 +9,6 @@ namespace FastMoq.Models
     ///     Implements the <see cref="Mock{TEntity}" />
     /// </summary>
     /// <typeparam name="TEntity">The type of the t entity.</typeparam>
-    /// <inheritdoc cref="IDbContextMock{TEntity}" />
-    /// <inheritdoc cref="Mock{TEntity}" />
     /// <seealso cref="Mock{TEntity}" />
     public class DbContextMock<TEntity> : Mock<TEntity>, IDbContextMock<TEntity> where TEntity : DbContext
     {
@@ -36,7 +32,8 @@ namespace FastMoq.Models
 
         /// <inheritdoc />
         public DbContextMock(Expression<Func<TEntity>> newExpression, MockBehavior behavior = MockBehavior.Default) :
-            base(newExpression, behavior) { }
+            base(newExpression, behavior)
+        { }
 
         /// <inheritdoc />
         public DbContextMock(MockBehavior behavior, params object[] args) : base(behavior, args) { }
@@ -55,7 +52,7 @@ namespace FastMoq.Models
             addMockMethod.MakeGenericMethod(x).Invoke(mocks, [value, true, x.IsNotPublic]);
             var obj = value.Object;
 
-            var dbSetMock = (IDbSetMock)value;
+            var dbSetMock = (IDbSetMock) value;
             dbSetMock.SetupMockMethods();
 
             return obj;

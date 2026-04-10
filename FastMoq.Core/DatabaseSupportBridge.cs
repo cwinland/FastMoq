@@ -1,5 +1,5 @@
-using System.Reflection;
 using Moq;
+using System.Reflection;
 
 namespace FastMoq
 {

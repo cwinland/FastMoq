@@ -1,9 +1,9 @@
-﻿using Bunit;
+using Bunit;
 using Bunit.Rendering;
 using FastMoq.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using System.ComponentModel;
+using System.Collections;
 using System.Reflection;
 using IComponent = Microsoft.AspNetCore.Components.IComponent;
 
@@ -30,22 +30,29 @@ namespace FastMoq.Web.Blazor.Models
         /// <summary>
         ///     Initializes a new instance of the <see cref="ComponentState{T}"/> class.
         /// </summary>
-        /// <param name="obj">The object.</param>
+        /// <param name="obj">The raw renderer state object.</param>
         /// <param name="renderer">The renderer.</param>
-        public ComponentState(object? obj, TestRenderer renderer) : base(obj, renderer) => ComponentType = typeof(T);
+        /// <param name="rootComponent">The rendered root component used for nested component lookups when needed.</param>
+        public ComponentState(object? obj, BunitRenderer renderer, IRenderedComponent<IComponent>? rootComponent = null)
+            : base(obj, renderer, rootComponent)
+        {
+            ComponentType = typeof(T);
+        }
     }
 
     /// <summary>
-    ///     Class ComponentState.
-    ///     Implements the <see cref="FastMoq.Web.Blazor.Models.ComponentState" />
+    /// Wrapper around the renderer state used by FastMoq's Blazor helpers.
     /// </summary>
-    /// <seealso cref="FastMoq.Web.Blazor.Models.ComponentState" />
+    /// <remarks>
+    /// FastMoq uses this wrapper instead of exposing raw renderer internals directly because bUnit 2 changed the shape of the
+    /// renderer state it stores for rendered components. Consumers should prefer <see cref="GetOrCreateRenderedComponent(Type)"/>
+    /// or <see cref="GetOrCreateRenderedComponent{T}()"/> over reflecting on renderer state objects themselves.
+    /// </remarks>
     public class ComponentState
     {
-        /// <summary>
-        ///     The renderer
-        /// </summary>
-        private readonly TestRenderer renderer;
+        private readonly BunitRenderer _renderer;
+        private readonly IRenderedComponent<IComponent>? _rootComponent;
+        private readonly object? _stateObject;
 
         #region Properties
 
@@ -90,49 +97,95 @@ namespace FastMoq.Web.Blazor.Models
         /// <summary>
         ///     Initializes a new instance of the <see cref="ComponentState" /> class.
         /// </summary>
-        /// <param name="obj">The object.</param>
+        /// <param name="obj">The raw renderer state object.</param>
         /// <param name="renderer">The renderer.</param>
+        /// <param name="rootComponent">The rendered root component used for nested component lookups when needed.</param>
         /// <exception cref="System.ArgumentNullException">renderer</exception>
-        /// <exception cref="System.ArgumentNullException">services</exception>
-        public ComponentState(object? obj, TestRenderer renderer)
+        public ComponentState(object? obj, BunitRenderer renderer, IRenderedComponent<IComponent>? rootComponent = null)
         {
-            this.renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
+            _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
+            _rootComponent = rootComponent;
+            _stateObject = obj;
 
-            if (obj == null ||
-                !(obj.GetType().FullName ?? string.Empty).Equals("Microsoft.AspNetCore.Components.Rendering.ComponentState", StringComparison.OrdinalIgnoreCase))
+            if (obj == null)
             {
                 return;
             }
 
-            var parentState = obj.GetPropertyValue(nameof(ParentComponentState));
-            ComponentId = int.TryParse(obj.GetPropertyValue(nameof(ComponentId))?.ToString() ?? "0", out var id) ? id : 0;
-            Component = obj.GetPropertyValue(nameof(Component)) as IComponent;
+            var component = obj.GetPropertyValue(nameof(Component)) as IComponent;
+            var componentIdValue = obj.GetPropertyValue(nameof(ComponentId));
+
+            if (component == null && componentIdValue == null)
+            {
+                return;
+            }
+
+            var parentState = obj.GetPropertyValue("LogicalParentComponentState") ?? obj.GetPropertyValue(nameof(ParentComponentState));
+            ComponentId = int.TryParse(componentIdValue?.ToString() ?? "0", out var id) ? id : 0;
+            Component = component;
             CurrentRenderTree = obj.GetPropertyValue(nameof(CurrentRenderTree)) as RenderTreeBuilder;
-            ParentComponentState = parentState != null ? new ComponentState(parentState, renderer) : null;
+            ParentComponentState = parentState != null ? new ComponentState(parentState, renderer, rootComponent) : null;
             IsComponentBase = Component?.GetType().IsAssignableTo(typeof(ComponentBase)) ?? false;
-            ComponentType = typeof(Component);
+            ComponentType = Component?.GetType() ?? typeof(IComponent);
         }
 
         /// <summary>
         ///     Gets the or create rendered component.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns>System ofNullable&lt;IRenderedComponentBase&lt;ComponentBase&gt;&gt; of the or create rendered component.</returns>
-        public IRenderedComponentBase<ComponentBase>? GetOrCreateRenderedComponent(Type type)
+        /// <returns>System ofNullable&lt;IRenderedComponent&lt;IComponent&gt;&gt; of the or create rendered component.</returns>
+        /// <remarks>
+        /// This method understands both direct rendered-component state values and the fallback lookup path required by bUnit 2's
+        /// renderer state dictionary.
+        /// </remarks>
+        public IRenderedComponent<IComponent>? GetOrCreateRenderedComponent(Type type)
         {
-            var d1 = typeof(TestRenderer).GetRuntimeMethods().First(x => x.Name.StartsWith("GetOrCreateRenderedComponent"));
-            var makeMe = d1.MakeGenericMethod(type);
-            var d = new Mocker().CreateInstance<RenderTreeFrameDictionary>(InstanceCreationFlags.AllowNonPublicConstructorFallback);
-            var args = new object?[] { d, ComponentId, Component };
-            return (IRenderedComponentBase<ComponentBase>?)makeMe.Invoke(renderer, args);
+            if (_stateObject is IRenderedComponent<IComponent> renderedComponent && Component != null && type.IsAssignableFrom(Component.GetType()))
+            {
+                return renderedComponent;
+            }
+
+            if (_rootComponent == null)
+            {
+                return null;
+            }
+
+            var findComponents = typeof(BunitRenderer).GetRuntimeMethods()
+                .First(x => x.Name.Equals("FindComponents", StringComparison.Ordinal) && x.GetParameters().Length == 1);
+            var makeMe = findComponents.MakeGenericMethod(type);
+            var renderedComponents = makeMe.Invoke(_renderer, new object?[] { _rootComponent }) as IEnumerable;
+
+            if (renderedComponents == null)
+            {
+                return null;
+            }
+
+            foreach (var candidate in renderedComponents)
+            {
+                var candidateId = candidate.GetPropertyValue(nameof(ComponentId));
+                var instance = candidate.GetPropertyValue("Instance");
+
+                if (ReferenceEquals(instance, Component) || Equals(candidateId, ComponentId))
+                {
+                    return candidate as IRenderedComponent<IComponent>;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
         ///     Gets the or create rendered component.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns>System ofNullable&lt;IRenderedComponentBase&lt;T&gt;&gt; of the or create rendered component.</returns>
-        public virtual IRenderedComponentBase<T>? GetOrCreateRenderedComponent<T>() where T : ComponentBase =>
-            (IRenderedComponentBase<T>?)GetOrCreateRenderedComponent(typeof(T));
+        /// <typeparam name="T">The component type.</typeparam>
+        /// <returns>System ofNullable&lt;IRenderedComponent&lt;T&gt;&gt; of the or create rendered component.</returns>
+        /// <example>
+        /// <code language="csharp"><![CDATA[
+        /// var state = GetAllComponents<FetchData>().First().Value as ComponentState<FetchData>;
+        /// var rendered = state?.GetOrCreateRenderedComponent<FetchData>();
+        /// ]]></code>
+        /// </example>
+        public virtual IRenderedComponent<T>? GetOrCreateRenderedComponent<T>() where T : ComponentBase =>
+            GetOrCreateRenderedComponent(typeof(T)) as IRenderedComponent<T>;
     }
 }

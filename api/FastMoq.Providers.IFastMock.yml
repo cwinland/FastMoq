@@ -19,15 +19,18 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMock
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 5
+    startLine: 6
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
-  summary: Non generic abstraction for a created mock instance. Named IFastMock to avoid collision with provider library IMock types.
+  summary: >-
+    Non generic abstraction for a created mock instance.
+
+    Prefer <xref href="FastMoq.Providers.IFastMock.Instance" data-throw-if-not-resolved="false"></xref> and <xref href="FastMoq.Providers.IFastMock.Reset" data-throw-if-not-resolved="false"></xref> for provider-first flows, and treat <xref href="FastMoq.Providers.IFastMock.NativeMock" data-throw-if-not-resolved="false"></xref> as the provider-native escape hatch.
   example: []
   syntax:
     content: public interface IFastMock
@@ -70,14 +73,16 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockedType
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 7
+    startLine: 11
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: Gets the type being mocked.
+  example: []
   syntax:
     content: Type MockedType { get; }
     parameters: []
@@ -99,14 +104,19 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 8
+    startLine: 17
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: >-
+    Gets the usable mocked instance.
+
+    In provider-first migrations, this is the tracked replacement for older <code>GetMock&lt;T&gt;().Object</code> access.
+  example: []
   syntax:
     content: object Instance { get; }
     parameters: []
@@ -128,14 +138,19 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: NativeMock
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 9
+    startLine: 23
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: >-
+    Gets the provider-specific underlying mock object.
+
+    Prefer <xref href="FastMoq.Providers.IFastMock.Instance" data-throw-if-not-resolved="false"></xref> and provider-first helpers first, and use this only when the test intentionally needs a provider-specific API surface.
+  example: []
   syntax:
     content: object NativeMock { get; }
     parameters: []
@@ -157,19 +172,57 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Reset
     path: FastMoq.Abstractions/Providers/IMock.cs
-    startLine: 10
+    startLine: 29
   assemblies:
   - FastMoq.Abstractions
   namespace: FastMoq.Providers
+  summary: >-
+    Resets or clears tracked mock state through the active provider.
+
+    Use this provider-first path instead of calling provider-native reset APIs directly when the test can stay provider neutral.
+  example: []
   syntax:
     content: void Reset()
     content.vb: Sub Reset()
   overload: FastMoq.Providers.IFastMock.Reset*
 references:
+- uid: FastMoq.Providers.IFastMock.Instance
+  commentId: P:FastMoq.Providers.IFastMock.Instance
+  parent: FastMoq.Providers.IFastMock
+  href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance
+  name: Instance
+  nameWithType: IFastMock.Instance
+  fullName: FastMoq.Providers.IFastMock.Instance
+- uid: FastMoq.Providers.IFastMock.Reset
+  commentId: M:FastMoq.Providers.IFastMock.Reset
+  parent: FastMoq.Providers.IFastMock
+  href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
+  name: Reset()
+  nameWithType: IFastMock.Reset()
+  fullName: FastMoq.Providers.IFastMock.Reset()
+  spec.csharp:
+  - uid: FastMoq.Providers.IFastMock.Reset
+    name: Reset
+    href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IFastMock.Reset
+    name: Reset
+    href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
+  - name: (
+  - name: )
+- uid: FastMoq.Providers.IFastMock.NativeMock
+  commentId: P:FastMoq.Providers.IFastMock.NativeMock
+  parent: FastMoq.Providers.IFastMock
+  href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_NativeMock
+  name: NativeMock
+  nameWithType: IFastMock.NativeMock
+  fullName: FastMoq.Providers.IFastMock.NativeMock
 - uid: FastMoq.Providers
   commentId: N:FastMoq.Providers
   href: FastMoq.html
@@ -1651,6 +1704,13 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: FastMoq.Providers.IFastMock
+  commentId: T:FastMoq.Providers.IFastMock
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IFastMock.html
+  name: IFastMock
+  nameWithType: IFastMock
+  fullName: FastMoq.Providers.IFastMock
 - uid: FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
   commentId: M:FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(``0,System.String,System.String,System.Nullable{System.Int32},System.String)
   isExternal: true

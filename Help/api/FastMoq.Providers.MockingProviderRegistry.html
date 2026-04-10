@@ -123,7 +123,9 @@
 </h3>
   <a id="FastMoq_Providers_MockingProviderRegistry_Default_" data-uid="FastMoq.Providers.MockingProviderRegistry.Default*"></a>
   <h4 id="FastMoq_Providers_MockingProviderRegistry_Default" data-uid="FastMoq.Providers.MockingProviderRegistry.Default">Default</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the effective provider for the current async flow.
+A scoped provider pushed with <a class="xref" href="FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_Push_FastMoq_Providers_IMockingProvider_">Push(IMockingProvider)</a> or <a class="xref" href="FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_Push_System_String_">Push(string)</a> takes precedence over the global default.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -146,7 +148,8 @@
   </table>
   <a id="FastMoq_Providers_MockingProviderRegistry_RegisteredProviderNames_" data-uid="FastMoq.Providers.MockingProviderRegistry.RegisteredProviderNames*"></a>
   <h4 id="FastMoq_Providers_MockingProviderRegistry_RegisteredProviderNames" data-uid="FastMoq.Providers.MockingProviderRegistry.RegisteredProviderNames">RegisteredProviderNames</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the registered provider names ordered alphabetically.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -171,7 +174,8 @@
 </h3>
   <a id="FastMoq_Providers_MockingProviderRegistry_Clear_" data-uid="FastMoq.Providers.MockingProviderRegistry.Clear*"></a>
   <h4 id="FastMoq_Providers_MockingProviderRegistry_Clear" data-uid="FastMoq.Providers.MockingProviderRegistry.Clear">Clear()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Clears all provider registrations and resets both the global and scoped provider selections.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -179,7 +183,7 @@
   </div>
   <a id="FastMoq_Providers_MockingProviderRegistry_Push_" data-uid="FastMoq.Providers.MockingProviderRegistry.Push*"></a>
   <h4 id="FastMoq_Providers_MockingProviderRegistry_Push_FastMoq_Providers_IMockingProvider_" data-uid="FastMoq.Providers.MockingProviderRegistry.Push(FastMoq.Providers.IMockingProvider)">Push(IMockingProvider)</h4>
-  <div class="markdown level1 summary"><p>Push a provider for the current async context returning a disposable that restores the previous value.</p>
+  <div class="markdown level1 summary"><p>Pushes a provider for the current async context and returns a disposable that restores the previous provider when disposed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -199,7 +203,8 @@
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IMockingProvider.html">IMockingProvider</a></td>
         <td><span class="parametername">provider</span></td>
-        <td></td>
+        <td><p>The provider to make active for the current async flow.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -214,13 +219,15 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></td>
-        <td></td>
+        <td><p>A disposable scope that restores the prior provider when disposed.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_MockingProviderRegistry_Push_" data-uid="FastMoq.Providers.MockingProviderRegistry.Push*"></a>
   <h4 id="FastMoq_Providers_MockingProviderRegistry_Push_System_String_" data-uid="FastMoq.Providers.MockingProviderRegistry.Push(System.String)">Push(string)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Pushes a named provider for the current async context and returns a disposable that restores the previous provider when disposed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -239,7 +246,8 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The registered provider name to activate for the current async flow.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -254,13 +262,15 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></td>
-        <td></td>
+        <td><p>A disposable scope that restores the prior provider when disposed.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_MockingProviderRegistry_Register_" data-uid="FastMoq.Providers.MockingProviderRegistry.Register*"></a>
   <h4 id="FastMoq_Providers_MockingProviderRegistry_Register_System_String_FastMoq_Providers_IMockingProvider_System_Boolean_" data-uid="FastMoq.Providers.MockingProviderRegistry.Register(System.String,FastMoq.Providers.IMockingProvider,System.Boolean)">Register(string, IMockingProvider, bool)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Registers a mocking provider under the supplied name.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -279,23 +289,27 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The provider name used to look up the registration later.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IMockingProvider.html">IMockingProvider</a></td>
         <td><span class="parametername">provider</span></td>
-        <td></td>
+        <td><p>The provider implementation to register.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">setAsDefault</span></td>
-        <td></td>
+        <td><p>When <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, also makes the provider the global default provider.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_MockingProviderRegistry_SetDefault_" data-uid="FastMoq.Providers.MockingProviderRegistry.SetDefault*"></a>
   <h4 id="FastMoq_Providers_MockingProviderRegistry_SetDefault_System_String_" data-uid="FastMoq.Providers.MockingProviderRegistry.SetDefault(System.String)">SetDefault(string)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Sets the global default provider by name.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -314,13 +328,15 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The name of the provider to make the global default.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_MockingProviderRegistry_TryGet_" data-uid="FastMoq.Providers.MockingProviderRegistry.TryGet*"></a>
   <h4 id="FastMoq_Providers_MockingProviderRegistry_TryGet_System_String_FastMoq_Providers_IMockingProvider__" data-uid="FastMoq.Providers.MockingProviderRegistry.TryGet(System.String,FastMoq.Providers.IMockingProvider@)">TryGet(string, out IMockingProvider)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to resolve a registered provider by name.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -339,12 +355,14 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">name</span></td>
-        <td></td>
+        <td><p>The provider name to look up.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IMockingProvider.html">IMockingProvider</a></td>
         <td><span class="parametername">provider</span></td>
-        <td></td>
+        <td><p>When this method returns <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a>, contains the resolved provider.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -359,13 +377,15 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td></td>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when the provider was found or loaded; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_MockingProviderRegistry_WrapLegacy_" data-uid="FastMoq.Providers.MockingProviderRegistry.WrapLegacy*"></a>
   <h4 id="FastMoq_Providers_MockingProviderRegistry_WrapLegacy_System_Object_System_Type_" data-uid="FastMoq.Providers.MockingProviderRegistry.WrapLegacy(System.Object,System.Type)">WrapLegacy(object, Type)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Wraps a legacy provider-specific mock object in the provider-agnostic <a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a> abstraction.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -384,12 +404,14 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
         <td><span class="parametername">legacyMock</span></td>
-        <td></td>
+        <td><p>The legacy provider-specific mock object to wrap.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">mockedType</span></td>
-        <td></td>
+        <td><p>The mocked type represented by <code class="paramref">legacyMock</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -404,7 +426,24 @@
     <tbody>
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
-        <td></td>
+        <td><p>A provider-agnostic wrapper for the legacy mock object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a></td>
+        <td><p>Thrown when no registered provider can adapt the supplied legacy mock.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -430,7 +469,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

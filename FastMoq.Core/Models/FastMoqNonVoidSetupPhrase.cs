@@ -1,5 +1,4 @@
-﻿using Moq.Language.Flow;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace FastMoq.Models
 {

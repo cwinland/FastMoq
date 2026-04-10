@@ -28,11 +28,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMockMoqExtensions
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 12
+    startLine: 10
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -40,6 +40,8 @@ items:
     Moq-specific convenience extensions for <xref href="FastMoq.Providers.IFastMock" data-throw-if-not-resolved="false"></xref> and <xref href="FastMoq.Providers.IFastMock%601" data-throw-if-not-resolved="false"></xref>.
 
     These stay in the provider package so the core abstractions remain provider agnostic.
+
+    Prefer provider-first members such as <xref href="FastMoq.Providers.IFastMock.Instance" data-throw-if-not-resolved="false"></xref>, <xref href="FastMoq.Providers.IFastMock.Reset" data-throw-if-not-resolved="false"></xref>, and FastMoq verification helpers first, and use these extensions when the test intentionally needs Moq-specific APIs.
   example: []
   syntax:
     content: public static class IFastMockMoqExtensions
@@ -69,16 +71,33 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AsMoq
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 22
+    startLine: 34
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
-  summary: Returns the provider-native <xref href="Moq.Mock%601" data-throw-if-not-resolved="false"></xref> instance for a tracked FastMoq mock.
-  example: []
+  summary: >-
+    Returns the provider-native <xref href="Moq.Mock%601" data-throw-if-not-resolved="false"></xref> instance for a tracked FastMoq mock.
+
+    Use this when the test intentionally needs a Moq-only API such as <code>Setup(...)</code> or <code>Protected()</code>.
+  example:
+  - >-
+    <p>Select the Moq provider first, then use <xref href="FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq%60%601(FastMoq.Providers.IFastMock%7b%60%600%7d)" data-throw-if-not-resolved="false"></xref> as the provider-native escape hatch when the test truly needs Moq semantics.</p>
+
+    <pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push("moq");
+
+
+    var mocker = new Mocker();
+
+    var gateway = mocker.GetOrCreateMock&lt;IOrderGateway&gt;();
+
+
+    gateway.AsMoq()
+        .Setup(x =&gt; x.Publish(42))
+        .Returns(true);</code></pre>
   syntax:
     content: 'public static Mock<T> AsMoq<T>(this IFastMock<T> fastMock) where T : class'
     parameters:
@@ -118,15 +137,18 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AsMoq
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 41
+    startLine: 54
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
-  summary: Returns the provider-native non-generic <xref href="Moq.Mock" data-throw-if-not-resolved="false"></xref> instance for a tracked FastMoq mock.
+  summary: >-
+    Returns the provider-native non-generic <xref href="Moq.Mock" data-throw-if-not-resolved="false"></xref> instance for a tracked FastMoq mock.
+
+    Use this only when the test intentionally needs Moq's non-generic APIs.
   example: []
   syntax:
     content: public static Mock AsMoq(this IFastMock fastMock)
@@ -161,11 +183,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Setup
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 56
+    startLine: 69
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -202,11 +224,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Setup
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 65
+    startLine: 78
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -244,11 +266,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupGet
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 74
+    startLine: 87
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -286,11 +308,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupSequence
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 83
+    startLine: 96
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -328,11 +350,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Protected
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 92
+    startLine: 105
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -367,11 +389,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 100
+    startLine: 113
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -408,11 +430,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 108
+    startLine: 121
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -451,11 +473,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 117
+    startLine: 130
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -496,11 +518,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 125
+    startLine: 138
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -543,11 +565,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupLoggerCallback
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 134
+    startLine: 147
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -580,11 +602,11 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupLoggerCallback
     path: FastMoq.Provider.Moq/Providers/Moq/IFastMockMoqExtensions.cs
-    startLine: 142
+    startLine: 155
   assemblies:
   - FastMoq.Provider.Moq
   namespace: FastMoq.Providers.MoqProvider
@@ -636,6 +658,32 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+- uid: FastMoq.Providers.IFastMock.Instance
+  commentId: P:FastMoq.Providers.IFastMock.Instance
+  parent: FastMoq.Providers.IFastMock
+  href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Instance
+  name: Instance
+  nameWithType: IFastMock.Instance
+  fullName: FastMoq.Providers.IFastMock.Instance
+- uid: FastMoq.Providers.IFastMock.Reset
+  commentId: M:FastMoq.Providers.IFastMock.Reset
+  parent: FastMoq.Providers.IFastMock
+  href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
+  name: Reset()
+  nameWithType: IFastMock.Reset()
+  fullName: FastMoq.Providers.IFastMock.Reset()
+  spec.csharp:
+  - uid: FastMoq.Providers.IFastMock.Reset
+    name: Reset
+    href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.IFastMock.Reset
+    name: Reset
+    href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
+  - name: (
   - name: )
 - uid: FastMoq.Providers.MoqProvider
   commentId: N:FastMoq.Providers.MoqProvider
@@ -950,6 +998,49 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+- uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq``1(FastMoq.Providers.IFastMock{``0})
+  commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq``1(FastMoq.Providers.IFastMock{``0})
+  href: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq__1_FastMoq_Providers_IFastMock___0__
+  name: AsMoq<T>(IFastMock<T>)
+  nameWithType: IFastMockMoqExtensions.AsMoq<T>(IFastMock<T>)
+  fullName: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq<T>(FastMoq.Providers.IFastMock<T>)
+  nameWithType.vb: IFastMockMoqExtensions.AsMoq(Of T)(IFastMock(Of T))
+  fullName.vb: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq(Of T)(FastMoq.Providers.IFastMock(Of T))
+  name.vb: AsMoq(Of T)(IFastMock(Of T))
+  spec.csharp:
+  - uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq``1(FastMoq.Providers.IFastMock{``0})
+    name: AsMoq
+    href: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq__1_FastMoq_Providers_IFastMock___0__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq``1(FastMoq.Providers.IFastMock{``0})
+    name: AsMoq
+    href: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq__1_FastMoq_Providers_IFastMock___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: FastMoq.Providers.IFastMock`1
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
   - name: )
 - uid: System.ArgumentNullException
   commentId: T:System.ArgumentNullException

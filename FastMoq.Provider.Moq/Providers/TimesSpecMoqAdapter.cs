@@ -1,5 +1,3 @@
-using Moq;
-
 namespace FastMoq.Providers
 {
     internal static class TimesSpecMoqAdapter

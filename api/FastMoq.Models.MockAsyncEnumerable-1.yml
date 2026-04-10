@@ -18,18 +18,21 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockAsyncEnumerable.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: MockAsyncEnumerable
     path: FastMoq.Database/Models/MockAsyncEnumerable.cs
-    startLine: 4
+    startLine: 8
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Wraps an enumerable or expression tree so EF Core async query APIs can enumerate it through <xref href="System.Collections.Generic.IAsyncEnumerable%601" data-throw-if-not-resolved="false"></xref>.
+  example: []
   syntax:
     content: 'public class MockAsyncEnumerable<T> : EnumerableQuery<T>, IOrderedQueryable<T>, IOrderedQueryable, IQueryProvider, IAsyncEnumerable<T>, IQueryable<T>, IEnumerable<T>, IQueryable, IEnumerable'
     typeParameters:
     - id: T
+      description: The element type exposed by the queryable sequence.
     content.vb: Public Class MockAsyncEnumerable(Of T) Inherits EnumerableQuery(Of T) Implements IOrderedQueryable(Of T), IOrderedQueryable, IQueryProvider, IAsyncEnumerable(Of T), IQueryable(Of T), IEnumerable(Of T), IQueryable, IEnumerable
   inheritance:
   - System.Object
@@ -89,19 +92,22 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockAsyncEnumerable.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/MockAsyncEnumerable.cs
-    startLine: 6
+    startLine: 14
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Initializes the async enumerable from an existing in-memory sequence.
+  example: []
   syntax:
     content: public MockAsyncEnumerable(IEnumerable<T> enumerable)
     parameters:
     - id: enumerable
       type: System.Collections.Generic.IEnumerable{{T}}
+      description: The sequence to expose through async query APIs.
     content.vb: Public Sub New(enumerable As IEnumerable(Of T))
   overload: FastMoq.Models.MockAsyncEnumerable`1.#ctor*
   nameWithType.vb: MockAsyncEnumerable(Of T).New(IEnumerable(Of T))
@@ -121,19 +127,22 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockAsyncEnumerable.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/MockAsyncEnumerable.cs
-    startLine: 7
+    startLine: 20
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
+  summary: Initializes the async enumerable from an expression tree.
+  example: []
   syntax:
     content: public MockAsyncEnumerable(Expression expression)
     parameters:
     - id: expression
       type: System.Linq.Expressions.Expression
+      description: The expression tree that defines the query.
     content.vb: Public Sub New(expression As Expression)
   overload: FastMoq.Models.MockAsyncEnumerable`1.#ctor*
   nameWithType.vb: MockAsyncEnumerable(Of T).New(Expression)
@@ -153,25 +162,25 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockAsyncEnumerable.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: GetAsyncEnumerator
     path: FastMoq.Database/Models/MockAsyncEnumerable.cs
-    startLine: 9
+    startLine: 27
   assemblies:
   - FastMoq.Database
   namespace: FastMoq.Models
-  summary: Returns an enumerator that iterates asynchronously through the collection.
+  summary: Returns an async enumerator over the wrapped sequence.
   example: []
   syntax:
     content: public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     parameters:
     - id: cancellationToken
       type: System.Threading.CancellationToken
-      description: A <xref href="System.Threading.CancellationToken" data-throw-if-not-resolved="false"></xref> that may be used to cancel the asynchronous iteration.
+      description: A cancellation token that is ignored by this in-memory test implementation.
     return:
       type: System.Collections.Generic.IAsyncEnumerator{{T}}
-      description: An enumerator that can be used to iterate asynchronously through the collection.
+      description: An async enumerator over the wrapped sequence.
     content.vb: Public Function GetAsyncEnumerator(cancellationToken As CancellationToken = Nothing) As IAsyncEnumerator(Of T)
   overload: FastMoq.Models.MockAsyncEnumerable`1.GetAsyncEnumerator*
   implements:
@@ -179,6 +188,34 @@ items:
   nameWithType.vb: MockAsyncEnumerable(Of T).GetAsyncEnumerator(CancellationToken)
   fullName.vb: FastMoq.Models.MockAsyncEnumerable(Of T).GetAsyncEnumerator(System.Threading.CancellationToken)
 references:
+- uid: System.Collections.Generic.IAsyncEnumerable`1
+  commentId: T:System.Collections.Generic.IAsyncEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<T>
+  nameWithType: IAsyncEnumerable<T>
+  fullName: System.Collections.Generic.IAsyncEnumerable<T>
+  nameWithType.vb: IAsyncEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of T)
+  name.vb: IAsyncEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: FastMoq.Models
   commentId: N:FastMoq.Models
   href: FastMoq.html
@@ -2339,34 +2376,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: System.Collections.Generic.IAsyncEnumerable`1
-  commentId: T:System.Collections.Generic.IAsyncEnumerable`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
-  name: IAsyncEnumerable<T>
-  nameWithType: IAsyncEnumerable<T>
-  fullName: System.Collections.Generic.IAsyncEnumerable<T>
-  nameWithType.vb: IAsyncEnumerable(Of T)
-  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of T)
-  name.vb: IAsyncEnumerable(Of T)
-  spec.csharp:
-  - uid: System.Collections.Generic.IAsyncEnumerable`1
-    name: IAsyncEnumerable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: System.Collections.Generic.IAsyncEnumerable`1
-    name: IAsyncEnumerable
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
 - uid: System.Collections.Generic
   commentId: N:System.Collections.Generic
   isExternal: true
@@ -3921,14 +3930,6 @@ references:
     name: Expressions
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
-- uid: System.Threading.CancellationToken
-  commentId: T:System.Threading.CancellationToken
-  parent: System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
-  name: CancellationToken
-  nameWithType: CancellationToken
-  fullName: System.Threading.CancellationToken
 - uid: FastMoq.Models.MockAsyncEnumerable`1.GetAsyncEnumerator*
   commentId: Overload:FastMoq.Models.MockAsyncEnumerable`1.GetAsyncEnumerator
   href: FastMoq.Models.MockAsyncEnumerable-1.html#FastMoq_Models_MockAsyncEnumerable_1_GetAsyncEnumerator_System_Threading_CancellationToken_
@@ -3969,6 +3970,14 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
   - name: )
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
 - uid: System.Collections.Generic.IAsyncEnumerator{{T}}
   commentId: T:System.Collections.Generic.IAsyncEnumerator{`0}
   parent: System.Collections.Generic
@@ -3998,33 +4007,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: System.Threading
-  commentId: N:System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Threading
-  nameWithType: System.Threading
-  fullName: System.Threading
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: System.Collections.Generic.IAsyncEnumerable`1.GetAsyncEnumerator(System.Threading.CancellationToken)
   commentId: M:System.Collections.Generic.IAsyncEnumerable`1.GetAsyncEnumerator(System.Threading.CancellationToken)
   isExternal: true
@@ -4056,6 +4038,33 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
   - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: System.Collections.Generic.IAsyncEnumerator`1
   commentId: T:System.Collections.Generic.IAsyncEnumerator`1
   isExternal: true

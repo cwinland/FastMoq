@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class ObservableLogEntries | FastMoq ">
     
-    
+    <meta name="description" content="Exposes a read-only, observable view of  values captured by FastMoq logger interception.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -81,7 +81,8 @@
 
 
   <h1 id="FastMoq_Models_ObservableLogEntries" data-uid="FastMoq.Models.ObservableLogEntries" class="text-break">Class ObservableLogEntries</h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Exposes a read-only, observable view of <a class="xref" href="FastMoq.Models.LogEntry.html">LogEntry</a> values captured by FastMoq logger interception.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -130,7 +131,8 @@
 </h3>
   <a id="FastMoq_Models_ObservableLogEntries__ctor_" data-uid="FastMoq.Models.ObservableLogEntries.#ctor*"></a>
   <h4 id="FastMoq_Models_ObservableLogEntries__ctor" data-uid="FastMoq.Models.ObservableLogEntries.#ctor">ObservableLogEntries()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes an empty observable log entry collection.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -140,7 +142,7 @@
 </h3>
   <a id="FastMoq_Models_ObservableLogEntries_Count_" data-uid="FastMoq.Models.ObservableLogEntries.Count*"></a>
   <h4 id="FastMoq_Models_ObservableLogEntries_Count" data-uid="FastMoq.Models.ObservableLogEntries.Count">Count</h4>
-  <div class="markdown level1 summary"><p>Gets the number of elements in the collection.</p>
+  <div class="markdown level1 summary"><p>Gets the number of captured log entries.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -158,14 +160,14 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><p>The number of elements in the collection.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Models_ObservableLogEntries_Items_" data-uid="FastMoq.Models.ObservableLogEntries.Items*"></a>
   <h4 id="FastMoq_Models_ObservableLogEntries_Items" data-uid="FastMoq.Models.ObservableLogEntries.Items">Items</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the captured log entries as a read-only observable collection.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -190,7 +192,7 @@
 </h3>
   <a id="FastMoq_Models_ObservableLogEntries_GetEnumerator_" data-uid="FastMoq.Models.ObservableLogEntries.GetEnumerator*"></a>
   <h4 id="FastMoq_Models_ObservableLogEntries_GetEnumerator" data-uid="FastMoq.Models.ObservableLogEntries.GetEnumerator">GetEnumerator()</h4>
-  <div class="markdown level1 summary"><p>Returns an enumerator that iterates through the collection.</p>
+  <div class="markdown level1 summary"><p>Returns an enumerator that iterates through the captured log entries.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -208,7 +210,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="FastMoq.Models.LogEntry.html">LogEntry</a>&gt;</td>
-        <td><p>An enumerator that can be used to iterate through the collection.</p>
+        <td><p>An enumerator over the captured log entries.</p>
 </td>
       </tr>
     </tbody>
@@ -216,7 +218,7 @@
   <h3 id="events">Events
 </h3>
   <h4 id="FastMoq_Models_ObservableLogEntries_CollectionChanged" data-uid="FastMoq.Models.ObservableLogEntries.CollectionChanged">CollectionChanged</h4>
-  <div class="markdown level1 summary"><p>Occurs when the collection changes.</p>
+  <div class="markdown level1 summary"><p>Occurs when the captured log entry collection changes.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -239,7 +241,7 @@
     </tbody>
   </table>
   <h4 id="FastMoq_Models_ObservableLogEntries_PropertyChanged" data-uid="FastMoq.Models.ObservableLogEntries.PropertyChanged">PropertyChanged</h4>
-  <div class="markdown level1 summary"><p>Occurs when a property value changes.</p>
+  <div class="markdown level1 summary"><p>Occurs when one of the collection properties, such as <a class="xref" href="FastMoq.Models.ObservableLogEntries.html#FastMoq_Models_ObservableLogEntries_Count">Count</a>, changes.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -357,7 +359,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

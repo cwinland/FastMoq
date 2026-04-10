@@ -1397,12 +1397,17 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_RenderComponent_System_Action_Bunit_ComponentParameterCollectionBuilder__0___System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Use this overload for direct parameter changes. If the test needs to persist or mutate named cascading parameters,
+update <code>RenderParameters</code> and call <a class="xref" href="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html#FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_RenderComponent_System_Boolean_">RenderComponent(bool)</a> so the helper can choose the compatible
+rerender path.</p>
+</div>
   <h5 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_RenderComponent_System_Action_Bunit_ComponentParameterCollectionBuilder__0___System_Boolean__examples">Examples</h5>
   <p>Render again with parameters without losing context.</p>
-<pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()));</code></pre>
+<pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.Title, "Reviewed Orders"));</code></pre>
 
   <p>Force an initial render with parameters.</p>
-<pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.WeatherService, Mocks.GetObject&lt;IWeatherForecastService&gt;()), true);</code></pre>
+<pre><code class="lang-csharp">RenderComponent(b =&gt; b.Add(x =&gt; x.Title, "Reviewed Orders"), true);</code></pre>
 
   <a id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_RenderComponent_" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.RenderComponent*"></a>
   <h4 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_RenderComponent_System_Boolean_" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.RenderComponent(System.Boolean)">RenderComponent(bool)</h4>
@@ -1516,13 +1521,13 @@
     </tbody>
   </table>
   <a id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck_" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck*"></a>
-  <h4 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)">SetElementCheck&lt;TComponent&gt;(string, bool, Func&lt;bool&gt;, TimeSpan?, IRenderedFragment?)</h4>
+  <h4 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementCheck``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})">SetElementCheck&lt;TComponent&gt;(string, bool, Func&lt;bool&gt;, TimeSpan?, IRenderedComponent&lt;IComponent&gt;?)</h4>
   <div class="markdown level1 summary"><p>Sets the element check.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IMockerBlazorTestHelpers&lt;T&gt; SetElementCheck&lt;TComponent&gt;(string cssSelector, bool isChecked, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null) where TComponent : class, IComponent</code></pre>
+    <pre><code class="lang-csharp hljs">IMockerBlazorTestHelpers&lt;T&gt; SetElementCheck&lt;TComponent&gt;(string cssSelector, bool isChecked, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent&lt;IComponent&gt;? startingPoint = null) where TComponent : class, IComponent</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -1559,9 +1564,9 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">IRenderedFragment</span></td>
+        <td><span class="xref">IRenderedComponent</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent">IComponent</a>&gt;</td>
         <td><span class="parametername">startingPoint</span></td>
-        <td><p>The starting point.</p>
+        <td><p>An optional rendered child component used to scope the lookup to a nested subtree.</p>
 </td>
       </tr>
     </tbody>
@@ -1598,6 +1603,10 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementCheck__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent___examples">Examples</h5>
+  <pre><code class="lang-csharp">var secondaryEditor = GetComponent&lt;OrderMigrationEditor&gt;(x =&gt; x.Instance.EditorId == "secondary");
+SetElementCheck&lt;OrderMigrationEditor&gt;("input.include-archived", true, () =&gt; secondaryEditor.Instance.IncludeArchived, startingPoint: secondaryEditor);</code></pre>
+
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-condensed">
     <thead>
@@ -1619,13 +1628,13 @@
     </tbody>
   </table>
   <a id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch_" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch*"></a>
-  <h4 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)">SetElementSwitch&lt;TComponent&gt;(string, bool, Func&lt;bool&gt;, TimeSpan?, IRenderedFragment?)</h4>
+  <h4 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementSwitch__1_System_String_System_Boolean_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementSwitch``1(System.String,System.Boolean,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})">SetElementSwitch&lt;TComponent&gt;(string, bool, Func&lt;bool&gt;, TimeSpan?, IRenderedComponent&lt;IComponent&gt;?)</h4>
   <div class="markdown level1 summary"><p>Sets the element switch.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IMockerBlazorTestHelpers&lt;T&gt; SetElementSwitch&lt;TComponent&gt;(string cssSelector, bool isChecked, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null) where TComponent : class, IComponent</code></pre>
+    <pre><code class="lang-csharp hljs">IMockerBlazorTestHelpers&lt;T&gt; SetElementSwitch&lt;TComponent&gt;(string cssSelector, bool isChecked, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent&lt;IComponent&gt;? startingPoint = null) where TComponent : class, IComponent</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -1662,9 +1671,9 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">IRenderedFragment</span></td>
+        <td><span class="xref">IRenderedComponent</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent">IComponent</a>&gt;</td>
         <td><span class="parametername">startingPoint</span></td>
-        <td><p>The starting point.</p>
+        <td><p>An optional rendered child component used to scope the lookup to a nested subtree.</p>
 </td>
       </tr>
     </tbody>
@@ -1779,13 +1788,13 @@
     </tbody>
   </table>
   <a id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText*"></a>
-  <h4 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedFragment_" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedFragment)">SetElementText(string, string, Func&lt;bool&gt;, TimeSpan?, IRenderedFragment?)</h4>
+  <h4 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent__" data-uid="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers`1.SetElementText(System.String,System.String,System.Func{System.Boolean},System.Nullable{System.TimeSpan},Bunit.IRenderedComponent{Microsoft.AspNetCore.Components.IComponent})">SetElementText(string, string, Func&lt;bool&gt;, TimeSpan?, IRenderedComponent&lt;IComponent&gt;?)</h4>
   <div class="markdown level1 summary"><p>Sets the element text.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IMockerBlazorTestHelpers&lt;T&gt; SetElementText(string cssSelector, string text, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedFragment? startingPoint = null)</code></pre>
+    <pre><code class="lang-csharp hljs">IMockerBlazorTestHelpers&lt;T&gt; SetElementText(string cssSelector, string text, Func&lt;bool&gt; waitFunc, TimeSpan? waitTimeout = null, IRenderedComponent&lt;IComponent&gt;? startingPoint = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -1822,9 +1831,9 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">IRenderedFragment</span></td>
+        <td><span class="xref">IRenderedComponent</span>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.components.icomponent">IComponent</a>&gt;</td>
         <td><span class="parametername">startingPoint</span></td>
-        <td><p>The starting point.</p>
+        <td><p>An optional rendered child component used to scope the lookup to a nested subtree.</p>
 </td>
       </tr>
     </tbody>
@@ -1845,6 +1854,10 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="FastMoq_Web_Blazor_Interfaces_IMockerBlazorTestHelpers_1_SetElementText_System_String_System_String_System_Func_System_Boolean__System_Nullable_System_TimeSpan__Bunit_IRenderedComponent_Microsoft_AspNetCore_Components_IComponent___examples">Examples</h5>
+  <pre><code class="lang-csharp">var secondaryEditor = GetComponent&lt;OrderMigrationEditor&gt;(x =&gt; x.Instance.EditorId == "secondary");
+SetElementText("input.order-filter", "approved", () =&gt; secondaryEditor.Instance.FilterText == "approved", startingPoint: secondaryEditor);</code></pre>
+
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-condensed">
     <thead>
@@ -2048,7 +2061,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html">IMockerBlazorTestHelpers</a>&lt;T&gt;</td>
-        <td><p><code>true</code> if XXXX, <code>false</code> otherwise.</p>
+        <td><p>The current helper instance.</p>
 </td>
       </tr>
     </tbody>
@@ -2133,7 +2146,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

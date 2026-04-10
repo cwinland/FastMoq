@@ -94,7 +94,8 @@
 </h3>
   <a id="FastMoq_Providers_IMockingProvider_Capabilities_" data-uid="FastMoq.Providers.IMockingProvider.Capabilities*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_Capabilities" data-uid="FastMoq.Providers.IMockingProvider.Capabilities">Capabilities</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the capabilities exposed by the current provider implementation.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -119,7 +120,8 @@
 </h3>
   <a id="FastMoq_Providers_IMockingProvider_BuildExpression_" data-uid="FastMoq.Providers.IMockingProvider.BuildExpression*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_BuildExpression__1" data-uid="FastMoq.Providers.IMockingProvider.BuildExpression``1">BuildExpression&lt;T&gt;()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Builds a provider-specific boolean expression scaffold for the mocked type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -136,7 +138,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;&gt;</td>
-        <td></td>
+        <td><p>An expression that can be used by provider-specific setup or verification flows.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -151,13 +154,15 @@
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The mocked type.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_IMockingProvider_ConfigureLogger_" data-uid="FastMoq.Providers.IMockingProvider.ConfigureLogger*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_ConfigureLogger_FastMoq_Providers_IFastMock_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__" data-uid="FastMoq.Providers.IMockingProvider.ConfigureLogger(FastMoq.Providers.IFastMock,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception})">ConfigureLogger(IFastMock, Action&lt;LogLevel, EventId, string, Exception?&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures logger behavior for the supplied mock.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -176,18 +181,21 @@
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
         <td><span class="parametername">mock</span></td>
-        <td></td>
+        <td><p>The logger mock to configure.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-4">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a>&gt;</td>
         <td><span class="parametername">callback</span></td>
-        <td></td>
+        <td><p>A callback that receives log details for each invocation.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_IMockingProvider_ConfigureProperties_" data-uid="FastMoq.Providers.IMockingProvider.ConfigureProperties*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_ConfigureProperties_FastMoq_Providers_IFastMock_" data-uid="FastMoq.Providers.IMockingProvider.ConfigureProperties(FastMoq.Providers.IFastMock)">ConfigureProperties(IFastMock)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures tracked properties for the supplied mock.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -206,13 +214,15 @@
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
         <td><span class="parametername">mock</span></td>
-        <td></td>
+        <td><p>The mock to configure.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_IMockingProvider_CreateMock_" data-uid="FastMoq.Providers.IMockingProvider.CreateMock*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_CreateMock_System_Type_FastMoq_Providers_MockCreationOptions_" data-uid="FastMoq.Providers.IMockingProvider.CreateMock(System.Type,FastMoq.Providers.MockCreationOptions)">CreateMock(Type, MockCreationOptions?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a mock wrapper for the specified runtime type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -231,12 +241,14 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">type</span></td>
-        <td></td>
+        <td><p>The mocked runtime type.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.Providers.MockCreationOptions.html">MockCreationOptions</a></td>
         <td><span class="parametername">options</span></td>
-        <td></td>
+        <td><p>Optional creation settings for the mock.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -251,13 +263,15 @@
     <tbody>
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
-        <td></td>
+        <td><p>A provider-backed mock wrapper.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_IMockingProvider_CreateMock_" data-uid="FastMoq.Providers.IMockingProvider.CreateMock*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_CreateMock__1_FastMoq_Providers_MockCreationOptions_" data-uid="FastMoq.Providers.IMockingProvider.CreateMock``1(FastMoq.Providers.MockCreationOptions)">CreateMock&lt;T&gt;(MockCreationOptions?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a mock wrapper for the specified type.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -276,7 +290,8 @@
       <tr>
         <td><a class="xref" href="FastMoq.Providers.MockCreationOptions.html">MockCreationOptions</a></td>
         <td><span class="parametername">options</span></td>
-        <td></td>
+        <td><p>Optional creation settings for the mock.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -291,7 +306,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
-        <td></td>
+        <td><p>A provider-backed mock wrapper.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -306,13 +322,15 @@
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The mocked type.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_IMockingProvider_SetCallBase_" data-uid="FastMoq.Providers.IMockingProvider.SetCallBase*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_SetCallBase_FastMoq_Providers_IFastMock_System_Boolean_" data-uid="FastMoq.Providers.IMockingProvider.SetCallBase(FastMoq.Providers.IFastMock,System.Boolean)">SetCallBase(IFastMock, bool)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Enables or disables call-through behavior to the underlying implementation.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -331,18 +349,21 @@
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
         <td><span class="parametername">mock</span></td>
-        <td></td>
+        <td><p>The mock to configure.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">value</span></td>
-        <td></td>
+        <td><p>True to call the base implementation; otherwise false.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_IMockingProvider_SetupAllProperties_" data-uid="FastMoq.Providers.IMockingProvider.SetupAllProperties*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_SetupAllProperties_FastMoq_Providers_IFastMock_" data-uid="FastMoq.Providers.IMockingProvider.SetupAllProperties(FastMoq.Providers.IFastMock)">SetupAllProperties(IFastMock)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures the mock so settable properties behave like auto-properties.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -361,13 +382,15 @@
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
         <td><span class="parametername">mock</span></td>
-        <td></td>
+        <td><p>The mock to configure.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_IMockingProvider_TryGetLegacy_" data-uid="FastMoq.Providers.IMockingProvider.TryGetLegacy*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_TryGetLegacy_FastMoq_Providers_IFastMock_" data-uid="FastMoq.Providers.IMockingProvider.TryGetLegacy(FastMoq.Providers.IFastMock)">TryGetLegacy(IFastMock)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to retrieve the provider's native legacy mock object for the supplied wrapper.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -386,7 +409,8 @@
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
         <td><span class="parametername">mock</span></td>
-        <td></td>
+        <td><p>The wrapped mock.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -401,13 +425,15 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td></td>
+        <td><p>The native legacy mock instance when available; otherwise null.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_IMockingProvider_TryWrapLegacy_" data-uid="FastMoq.Providers.IMockingProvider.TryWrapLegacy*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_TryWrapLegacy_System_Object_System_Type_" data-uid="FastMoq.Providers.IMockingProvider.TryWrapLegacy(System.Object,System.Type)">TryWrapLegacy(object, Type)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Attempts to wrap a provider-specific legacy mock instance in a FastMoq abstraction.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -426,12 +452,14 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
         <td><span class="parametername">legacyMock</span></td>
-        <td></td>
+        <td><p>The provider-specific mock instance.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
         <td><span class="parametername">mockedType</span></td>
-        <td></td>
+        <td><p>The mocked type represented by the legacy mock.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -446,13 +474,15 @@
     <tbody>
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
-        <td></td>
+        <td><p>A FastMoq wrapper when the object can be adapted; otherwise null.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_IMockingProvider_VerifyNoOtherCalls_" data-uid="FastMoq.Providers.IMockingProvider.VerifyNoOtherCalls*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_VerifyNoOtherCalls_FastMoq_Providers_IFastMock_" data-uid="FastMoq.Providers.IMockingProvider.VerifyNoOtherCalls(FastMoq.Providers.IFastMock)">VerifyNoOtherCalls(IFastMock)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies that no unexpected invocations remain on the mock.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -471,13 +501,15 @@
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
         <td><span class="parametername">mock</span></td>
-        <td></td>
+        <td><p>The mock to verify.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <a id="FastMoq_Providers_IMockingProvider_Verify_" data-uid="FastMoq.Providers.IMockingProvider.Verify*"></a>
   <h4 id="FastMoq_Providers_IMockingProvider_Verify__1_FastMoq_Providers_IFastMock___0__System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__" data-uid="FastMoq.Providers.IMockingProvider.Verify``1(FastMoq.Providers.IFastMock{``0},System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})">Verify&lt;T&gt;(IFastMock&lt;T&gt;, Expression&lt;Action&lt;T&gt;&gt;, TimesSpec?)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies that the specified call expression was invoked on the mock.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
@@ -496,17 +528,20 @@
       <tr>
         <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
         <td><span class="parametername">mock</span></td>
-        <td></td>
+        <td><p>The mock to verify.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;T&gt;&gt;</td>
         <td><span class="parametername">expression</span></td>
-        <td></td>
+        <td><p>The invocation expression to verify.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="FastMoq.Providers.TimesSpec.html">TimesSpec</a>?</td>
         <td><span class="parametername">times</span></td>
-        <td></td>
+        <td><p>The expected invocation count.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -521,7 +556,8 @@
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>The mocked type.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -605,7 +641,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

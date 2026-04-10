@@ -79,6 +79,8 @@
 <li>Use <a class="xref" href="../../api/FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> when you want FastMoq to create the component under test and manage its dependencies.</li>
 <li>Use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">Mocks.GetOrCreateMock&lt;T&gt;()</a> when you want the normal FastMoq tracked mock path for a dependency.</li>
 <li>Use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddType__1_System_Func_FastMoq_Mocker___0__System_Boolean_System_Object___">AddType(...)</a> when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.</li>
+<li>Use <code>CreateTypedServiceProvider(...)</code> and <code>AddServiceProvider(...)</code> when framework code expects a typed <code>IServiceProvider</code> rather than a one-object-for-all-types shim.</li>
+<li>If the constructor uses the same abstraction more than once under different DI service keys, use keyed mocks, keyed registrations, or explicit constructor injection for tests where dependency selection matters.</li>
 <li>Use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddKnownType_FastMoq_KnownTypeRegistration_System_Boolean_">AddKnownType(...)</a> when a framework-style type needs special resolution or post-processing behavior.</li>
 <li>Use <a class="xref" href="../../api/FastMoq.DbContextMockerExtensions.html#FastMoq_DbContextMockerExtensions_GetMockDbContext__1_FastMoq_Mocker_">GetMockDbContext&lt;TContext&gt;()</a> when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.</li>
 </ol>
@@ -98,6 +100,7 @@
 <li>You only need to arrange or verify behavior.</li>
 <li>You want the dependency tracked as the mock FastMoq would have created anyway.</li>
 </ul>
+<p>The example below assumes the Moq provider extensions are in use for the arrange step. The tracked-mock concept is provider-first, but the <code>.Setup(...)</code> syntax itself is provider-specific. See <a href="provider-capabilities.html">Provider Capabilities</a> when you need the equivalent arrangement style for another provider.</p>
 <pre><code class="lang-csharp">var repoMock = Mocks.GetOrCreateMock&lt;IOrderRepository&gt;();
 repoMock.Setup(x =&gt; x.Load(123)).Returns(order);
 </code></pre>
@@ -112,6 +115,45 @@ repoMock.Setup(x =&gt; x.Load(123)).Returns(order);
 </code></pre>
 <h3 id="practical-rule">Practical rule</h3>
 <p>If the dependency is still conceptually a mock, prefer <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;()</a>. If you are changing how the type is resolved, prefer <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddType__1_System_Func_FastMoq_Mocker___0__System_Boolean_System_Object___">AddType(...)</a>.</p>
+<h2 id="typed-iserviceprovider-helpers">Typed IServiceProvider Helpers</h2>
+<p>Framework-heavy tests should not fake <code>IServiceProvider</code> with a single mocked <code>GetService(Type)</code> callback that returns the same object for every request.</p>
+<p>That shape is convenient, but it hides real failures when code asks for multiple service types such as <code>ILoggerFactory</code>, <code>IOptions&lt;T&gt;</code>, or a concrete singleton.</p>
+<p>Use <code>CreateTypedServiceProvider(...)</code> when you need a real provider instance:</p>
+<pre><code class="lang-csharp">var instanceServices = Mocks.CreateTypedServiceProvider(services =&gt;
+{
+    services.AddLogging();
+    services.AddOptions();
+    services.AddSingleton(new Uri(&quot;https://fastmoq.dev&quot;));
+});
+</code></pre>
+<p>Use <code>AddServiceProvider(...)</code> when the system under test resolves <code>IServiceProvider</code> or <code>IServiceScopeFactory</code> from the current <a class="xref" href="../../api/FastMoq.Mocker.html">Mocker</a>:</p>
+<pre><code class="lang-csharp">Mocks.AddServiceProvider(services =&gt;
+{
+    services.AddLogging();
+    services.AddSingleton(new WidgetClock());
+});
+</code></pre>
+<p>Use <code>CreateFunctionContextInstanceServices(...)</code> and <code>AddFunctionContextInstanceServices(...)</code> for Azure Functions worker tests instead of hand-writing <code>FunctionContext.InstanceServices</code> plumbing:</p>
+<pre><code class="lang-csharp">using FastMoq.AzureFunctions.Extensions;
+
+Mocks.AddFunctionContextInstanceServices(services =&gt;
+{
+    services.AddSingleton(new WidgetClock());
+});
+
+var context = Mocks.GetObject&lt;FunctionContext&gt;();
+var clock = context.InstanceServices.GetRequiredService&lt;WidgetClock&gt;();
+</code></pre>
+<p>Package note:</p>
+<ul>
+<li><code>CreateTypedServiceProvider(...)</code> and <code>AddServiceProvider(...)</code> remain part of <code>FastMoq.Core</code></li>
+<li>direct <code>FastMoq.Core</code> consumers should add <code>FastMoq.AzureFunctions</code> and import <code>FastMoq.AzureFunctions.Extensions</code> before using <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code></li>
+<li>the aggregate <code>FastMoq</code> package includes the Azure Functions helper package already</li>
+</ul>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0013</code> warns on direct <code>GetOrCreateMock&lt;IServiceProvider&gt;()</code>, <code>GetMock&lt;IServiceProvider&gt;()</code>, and <code>GetRequiredMock&lt;IServiceProvider&gt;()</code> setup so those shims migrate toward the typed helper path.</li>
+</ul>
 <h2 id="construction-apis">Construction APIs</h2>
 <p>FastMoq still supports the older entry points:</p>
 <ul>
@@ -239,9 +281,24 @@ fileSystem.File.WriteAllText(&quot;/tmp/test.txt&quot;, &quot;hello&quot;);
 
 handle.Context.Database.EnsureCreated();
 </code></pre>
+<p>Known-type override example:</p>
+<pre><code class="lang-csharp">Mocks.AddKnownType&lt;ApplicationDbContext&gt;(
+    managedInstanceFactory: (mocker, _) =&gt; mocker.GetDbContextHandle&lt;ApplicationDbContext&gt;(new DbContextHandleOptions&lt;ApplicationDbContext&gt;
+    {
+        Mode = DbContextTestMode.RealInMemory,
+    }).Context,
+    replace: true);
+</code></pre>
+<p>Use that pattern when the test needs the context to resolve through FastMoq's known-type pipeline rather than through a one-off <code>AddType(...)</code> mapping.</p>
 <h3 id="httpcontext-and-ihttpcontextaccessor"><code>HttpContext</code> and <code>IHttpContextAccessor</code></h3>
 <p>FastMoq applies built-in setup for <code>HttpContext</code>, <code>IHttpContextAccessor</code>, and <code>HttpContextAccessor</code> so common web tests have a usable context object without repetitive setup.</p>
 <p>When you want explicit test setup for headers, query strings, or authenticated users, use the <code>FastMoq.Web.Extensions</code> helpers instead of wiring those pieces by hand.</p>
+<p>Package note:</p>
+<ul>
+<li>if your project references the aggregate <code>FastMoq</code> package, the web helpers are already available</li>
+<li>if your project references <code>FastMoq.Core</code> directly, add <code>FastMoq.Web</code> before using <code>FastMoq.Web.Extensions</code></li>
+<li>for the broader package-choice rules, see <a href="README.html#package-choices">Getting Started installation and package choices</a></li>
+</ul>
 <h2 id="controller-testing">Controller Testing</h2>
 <p>For controller and request-driven tests, prefer building the request shape explicitly with the web helpers.</p>
 <pre><code class="lang-csharp">using FastMoq.Web.Extensions;
@@ -288,6 +345,44 @@ public class OrdersControllerTests : MockerTestBase&lt;OrdersController&gt;
 <li>Use <a href="../../api/FastMoq.Web.Extensions.TestWebExtensions.html">CreateControllerContext(...)</a> when the controller itself reads from <code>ControllerContext.HttpContext.User</code>.</li>
 <li>Use <a href="../../api/FastMoq.Web.Extensions.TestWebExtensions.html">GetOkObjectResult()</a>, <a href="../../api/FastMoq.Web.Extensions.TestWebExtensions.html">GetBadRequestObjectResult()</a>, <a href="../../api/FastMoq.Web.Extensions.TestWebExtensions.html">GetConflictObjectResult()</a>, and <a href="../../api/FastMoq.Web.Extensions.TestWebExtensions.html">GetObjectResultContent&lt;T&gt;()</a> to keep result assertions short.</li>
 </ol>
+<p>Quick decision table:</p>
+<table>
+<thead>
+<tr>
+<th>If the test needs...</th>
+<th>Prefer...</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>role-only authenticated user setup</td>
+<td><code>SetupClaimsPrincipal(params roles)</code> or <code>CreateControllerContext(params roles)</code></td>
+<td>Fast path for common controller and request tests</td>
+</tr>
+<tr>
+<td>exact custom claims</td>
+<td><code>SetupClaimsPrincipal(claims, options)</code></td>
+<td>Use <code>IncludeDefaultIdentityClaims = false</code> when exact claim preservation matters</td>
+</tr>
+<tr>
+<td>controller reads <code>ControllerContext.HttpContext.User</code></td>
+<td><code>CreateControllerContext(...)</code></td>
+<td>Keeps controller user setup aligned with the underlying <code>HttpContext</code></td>
+</tr>
+<tr>
+<td><code>HttpContext</code> or <code>IHttpContextAccessor</code> from DI</td>
+<td><code>AddHttpContext(...)</code> or <code>AddHttpContextAccessor(...)</code></td>
+<td>Replaces hand-rolled accessor wiring</td>
+</tr>
+</tbody>
+</table>
+<p>Important note for custom-claim tests:</p>
+<ul>
+<li>role-only helpers and custom-claim helpers are not identical because <code>FastMoq.Web</code> adds compatibility identity claims by default</li>
+<li>if the test is asserting exact <code>ClaimTypes.Name</code>, email, or related identity values, pass <code>IncludeDefaultIdentityClaims = false</code></li>
+<li>if your suite already has local wrappers for these helpers, re-point those wrappers to <code>FastMoq.Web</code> first and simplify call sites later</li>
+</ul>
 <h2 id="accessor-and-middleware-testing">Accessor And Middleware Testing</h2>
 <p>The same helper surface works for middleware and <code>IHttpContextAccessor</code>-driven services.</p>
 <pre><code class="lang-csharp">using FastMoq.Web.Extensions;
@@ -316,6 +411,66 @@ public class RequestContextReaderTests : MockerTestBase&lt;RequestContextReader&
 }
 </code></pre>
 <p>Use this pattern when the system under test reads directly from <code>IHttpContextAccessor</code>, middleware <code>InvokeAsync(HttpContext)</code>, or request headers/query collections without needing MVC controller infrastructure.</p>
+<h2 id="keyed-services-and-same-type-dependencies">Keyed Services And Same-Type Dependencies</h2>
+<p>When the constructor under test takes the same interface more than once and production distinguishes those parameters with DI service keys, a single unkeyed <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;()</a> or <code>GetMock&lt;T&gt;()</code> collapses those dependencies into one double.</p>
+<p>That is fine for ordinary tests that only need &quot;some <code>IBlobRepository</code>&quot;, but it is too weak for tests where public vs private, primary vs secondary, or similar selection is part of the behavior.</p>
+<p>Use separate doubles when:</p>
+<ul>
+<li>the constructor uses keyed DI attributes such as <code>FromKeyedServices</code></li>
+<li>swapping the dependencies would be a user-visible bug</li>
+<li>the test is asserting routing or repository-selection behavior</li>
+</ul>
+<p>Use keyed tracked mocks when the dependency is still conceptually a mock:</p>
+<pre><code class="lang-csharp">var publicRepo = Mocks.GetOrCreateMock&lt;IBlobRepository&gt;(new MockRequestOptions
+{
+    ServiceKey = &quot;public&quot;,
+});
+
+var privateRepo = Mocks.GetOrCreateMock&lt;IBlobRepository&gt;(new MockRequestOptions
+{
+    ServiceKey = &quot;private&quot;,
+});
+
+var controller = Mocks.CreateInstance&lt;BlobAccessController&gt;();
+</code></pre>
+<p>FastMoq keeps those tracked mocks separate. When the constructor uses <code>[FromKeyedServices(&quot;public&quot;)]</code> and <code>[FromKeyedServices(&quot;private&quot;)]</code>, <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_CreateInstance__1_FastMoq_InstanceCreationFlags_System_Object___">CreateInstance(...)</a> and <a class="xref" href="../../api/FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> resolve the matching keyed dependency instead of collapsing them to one unkeyed instance.</p>
+<p>Use <a href="../../api/FastMoq.Mocker.html">AddKeyedType(...)</a> and <a href="../../api/FastMoq.Mocker.html">GetKeyedObject&lt;T&gt;()</a> when a fake or fixed instance reads better than a mock:</p>
+<pre><code class="lang-csharp">var publicRepo = new FakeBlobRepository();
+var privateRepo = new FakeBlobRepository();
+
+Mocks.AddKeyedType&lt;IBlobRepository&gt;(&quot;public&quot;, publicRepo);
+Mocks.AddKeyedType&lt;IBlobRepository&gt;(&quot;private&quot;, privateRepo);
+
+var controller = Mocks.CreateInstance&lt;BlobAccessController&gt;();
+var resolvedPublicRepo = Mocks.GetKeyedObject&lt;IBlobRepository&gt;(&quot;public&quot;);
+</code></pre>
+<p>If repo selection itself is the behavior under test, explicit constructor injection with two separate doubles is equally valid and is often the clearest test shape.</p>
+<h3 id="choosing-explicit-doubles-vs-keyed-fastmoq-setup">Choosing explicit doubles vs keyed FastMoq setup</h3>
+<p>Pick explicit constructor injection with two separate doubles when:</p>
+<ul>
+<li>the test is about controller or service logic, not DI wiring</li>
+<li>you want the two roles to be obvious in the arrange step</li>
+<li>manual construction makes the test shorter or easier to read</li>
+<li>you do not need the test to prove that keyed constructor metadata is honored</li>
+</ul>
+<p>Pick keyed FastMoq setup when:</p>
+<ul>
+<li>you want to keep <a class="xref" href="../../api/FastMoq.MockerTestBase-1.html">MockerTestBase&lt;TComponent&gt;</a> or <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_CreateInstance__1_FastMoq_InstanceCreationFlags_System_Object___">CreateInstance(...)</a> as the construction path</li>
+<li>you want the test to mirror the production keyed DI contract closely</li>
+<li>the constructor metadata itself is part of what you are trying to protect</li>
+<li>the suite already uses FastMoq auto-construction heavily and keyed setup removes custom wiring noise</li>
+</ul>
+<p>Practical default:</p>
+<ul>
+<li>use explicit separate doubles for most behavior-focused unit tests</li>
+<li>use keyed FastMoq setup for tests that should fail if the keyed constructor resolution changes</li>
+<li>if both concerns matter, keep most tests explicit and add one small keyed wiring-focused test</li>
+</ul>
+<p>Ordinary unit tests can stay ordinary. The important rule is: if swapping the keyed dependencies would be a bug, the test should not collapse them into one double.</p>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0015</code> warns on unkeyed <code>GetOrCreateMock&lt;T&gt;()</code>, <code>GetMock&lt;T&gt;()</code>, <code>GetRequiredMock&lt;T&gt;()</code>, and <code>AddType&lt;T&gt;(...)</code> usage when the target type has multiple keyed constructor parameters of that same abstraction and the current file is not already using keyed setup.</li>
+</ul>
 <h2 id="extending-known-types">Extending Known Types</h2>
 <p>Use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddKnownType_FastMoq_KnownTypeRegistration_System_Boolean_">AddKnownType(...)</a> when a framework-style type needs special handling that does not belong in the normal type map.</p>
 <p>Custom registrations are scoped to the current <code>Mocker</code> instance. They do not mutate global process state.</p>
@@ -382,6 +537,10 @@ public class RequestContextReaderTests : MockerTestBase&lt;RequestContextReader&
 <li>&quot;Am I replacing one dependency?&quot; -&gt; <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddType__1_System_Func_FastMoq_Mocker___0__System_Boolean_System_Object___">AddType(...)</a></li>
 <li>&quot;Am I teaching FastMoq how to treat this kind of framework-heavy type?&quot; -&gt; <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddKnownType_FastMoq_KnownTypeRegistration_System_Boolean_">AddKnownType(...)</a></li>
 </ul>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0014</code> warns on the context-aware compatibility <code>AddType(...)</code> overloads and points them back toward <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddKnownType_FastMoq_KnownTypeRegistration_System_Boolean_">AddKnownType(...)</a>.</li>
+</ul>
 <h3 id="example-override-a-built-in-direct-instance">Example: override a built-in direct instance</h3>
 <pre><code class="lang-csharp">var customFileSystem = new MockFileSystem().FileSystem;
 
@@ -410,7 +569,7 @@ Mocks.AddKnownType&lt;IFileSystem&gt;(
 <li>Assume Moq compatibility is currently strongest, but new extension points should avoid hard-coding Moq assumptions unless the scenario is explicitly Moq-only.</li>
 </ol>
 <p><a class="xref" href="../../api/FastMoq.ScenarioBuilder-1.html">ScenarioBuilder</a> still works with each registered provider because it only orchestrates arrange, act, and assert steps and forwards provider-first verification through <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_Verify__1_System_Linq_Expressions_Expression_System_Action___0___System_Nullable_FastMoq_Providers_TimesSpec__">Mocker.Verify(...)</a>. The provider-specific part is still the arrangement code you put inside <code>With(...)</code> or <code>When(...)</code>.</p>
-<p><a href="../../api/FastMoq.Extensions.TestClassExtensions.html">VerifyLogged(...)</a> now follows the same default expectation model as provider-first verification: if you do not specify a count, it means at least once. Use <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec</a> when you need <a href="../../api/FastMoq.Providers.TimesSpec.html">Exactly</a>, <a href="../../api/FastMoq.Providers.TimesSpec.html">AtLeast</a>, <a href="../../api/FastMoq.Providers.TimesSpec.html">AtMost</a>, or <a href="../../api/FastMoq.Providers.TimesSpec.html">Never</a> semantics for captured log entries.</p>
+<p><a href="../../api/FastMoq.Extensions.TestClassExtensions.html">VerifyLogged(...)</a> now follows the same default expectation model as provider-first verification: if you do not specify a count, it means at least once. Use <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec</a> when you need <a href="../../api/FastMoq.Providers.TimesSpec.html">Exactly</a>, <a href="../../api/FastMoq.Providers.TimesSpec.html">AtLeast</a>, <a href="../../api/FastMoq.Providers.TimesSpec.html">AtMost</a>, or the zero-invocation aliases <a href="../../api/FastMoq.Providers.TimesSpec.html">NeverCalled</a> / <a href="../../api/FastMoq.Providers.TimesSpec.html">Never()</a> semantics for captured log entries.</p>
 <p>If you need provider-specific behavior for a tracked mock, prefer the typed provider-package extensions first, such as <a href="../../api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html">AsMoq()</a> or <a href="../../api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html">AsNSubstitute()</a>.</p>
 <p>Use <a href="../../api/FastMoq.Mocker.html">GetNativeMock(...)</a> or <a href="../../api/FastMoq.Models.MockModel.html">MockModel.NativeMock</a> only when you truly need the raw provider object beyond those typed helpers.</p>
 <p>You can also retrieve the provider-first abstraction directly:</p>
@@ -422,13 +581,13 @@ var moqMock = fastMock.AsMoq();
 fastMock.AsNSubstitute().Load(123).Returns(order);
 </code></pre>
 <h2 id="strict-vs-presets"><code>Strict</code> vs Presets</h2>
-<p><code>Strict</code> is now best understood as a compatibility alias for <code>MockFeatures.FailOnUnconfigured</code>.</p>
+<p><code>Strict</code> is now best understood as a compatibility alias for <a href="../../api/FastMoq.MockFeatures.html">MockFeatures.FailOnUnconfigured</a>.</p>
 <p>That means:</p>
 <pre><code class="lang-csharp">Mocks.Strict = true;
 </code></pre>
-<p>turns on fail-on-unconfigured behavior, but it does not replace the rest of the current <code>Behavior</code> flags.</p>
+<p>turns on fail-on-unconfigured behavior, but it does not replace the rest of the current <a href="../../api/FastMoq.Mocker.html">Behavior</a> flags.</p>
 <p>It also still influences some compatibility-era fallback rules, such as whether FastMoq falls back to non-public constructors or methods when public resolution fails.</p>
-<p>If you want to switch the whole behavior profile, use the explicit helpers instead:</p>
+<p>If you want to switch the whole behavior profile, use the explicit <a href="../../api/FastMoq.Mocker.html">UseStrictPreset()</a> and <a href="../../api/FastMoq.Mocker.html">UseLenientPreset()</a> helpers instead:</p>
 <pre><code class="lang-csharp">Mocks.UseStrictPreset();
 Mocks.UseLenientPreset();
 </code></pre>
@@ -453,7 +612,7 @@ Mocks.UseLenientPreset();
 <li>built-in <code>IFileSystem</code> behavior</li>
 <li>logger verification</li>
 <li>fluent <code>Scenario</code> usage with parameterless arrange/act/assert overloads</li>
-<li>provider-first verification with <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec.Once</a>, <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec.Exactly(...)</a>, <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec.AtLeast(...)</a>, <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec.AtMost(...)</a>, and <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec.Never()</a></li>
+<li>provider-first verification with <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec.Once</a>, <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec.NeverCalled</a>, <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec.Exactly(...)</a>, <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec.AtLeast(...)</a>, and <a href="../../api/FastMoq.Providers.TimesSpec.html">TimesSpec.AtMost(...)</a></li>
 </ul>
 <p>See <a href="../samples/testing-examples.html">Executable Testing Examples</a>.</p>
 <h2 id="recommended-test-flow">Recommended Test Flow</h2>
@@ -468,6 +627,7 @@ Mocks.UseLenientPreset();
 <h2 id="pitfalls-to-avoid">Pitfalls to Avoid</h2>
 <ul>
 <li>Do not use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddType__1_System_Func_FastMoq_Mocker___0__System_Boolean_System_Object___">AddType(...)</a> as a general replacement for <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;()</a>.</li>
+<li>Do not collapse two keyed constructor dependencies into one unkeyed mock or registration when selection between them is part of the behavior under test.</li>
 <li>Do not bypass <a class="xref" href="../../api/FastMoq.DbContextMockerExtensions.html#FastMoq_DbContextMockerExtensions_GetMockDbContext__1_FastMoq_Mocker_">GetMockDbContext&lt;TContext&gt;()</a> unless FastMoq's EF Core support is the thing you are explicitly testing around.</li>
 <li>Do not assume <code>CreateInstanceByType(...)</code> alone is the best API for new code. Use <code>InstanceCreationFlags</code> when you need to express constructor-selection intent explicitly.</li>
 <li>Do not make known-type extensions global. Keep them scoped to the <code>Mocker</code> used by the test.</li>
@@ -500,7 +660,7 @@ Mocks.UseLenientPreset();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-07 11:46 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
       
           </div>
         </div>

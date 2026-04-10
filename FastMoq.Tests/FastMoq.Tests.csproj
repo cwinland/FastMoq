@@ -6,7 +6,7 @@
     <LangVersion>preview</LangVersion>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <NoWarn>1701;1702;S1309;S4018;S2436;CS8618</NoWarn>
+    <NoWarn>1701;1702;S1309;S4018;S2436;CS8618;CS0618</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FastMoq.AzureFunctions\FastMoq.AzureFunctions.csproj" />
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
     <ProjectReference Include="..\FastMoq.Database\FastMoq.Database.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.Moq\FastMoq.Provider.Moq.csproj" />

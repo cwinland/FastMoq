@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>API Replacements And Migration Exceptions | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="API Replacements And Migration Exceptions | FastMoq ">
+    
+    
+      <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+      <link rel="shortcut icon" href="../../favicon.svg">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="api-replacements-and-migration-exceptions">API Replacements And Migration Exceptions</h1>
+
+<p>This page collects the high-churn API replacement rules, compatibility-only exceptions, and worked migration examples that used to live in the main migration guide.</p>
+<p>Open it when you know the specific API or helper you are replacing and need the detailed guidance rather than the front-door migration flow.</p>
+<h2 id="real-world-gotchas">Real-world gotchas</h2>
+<p>These are small migration edges that cause disproportionate churn in provider-first rewrites.</p>
+<table>
+<thead>
+<tr>
+<th>Legacy habit</th>
+<th>Preferred v4 move</th>
+<th>Why it trips people up</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mock.Object</code> or <code>GetMock&lt;T&gt;().Object</code></td>
+<td><code>fastMock.Instance</code> or <code>Mocks.GetObject&lt;T&gt;()</code></td>
+<td><code>GetOrCreateMock&lt;T&gt;()</code> returns <code>IFastMock&lt;T&gt;</code>, not a raw <code>Mock&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td><code>mock.Reset()</code></td>
+<td><code>fastMock.Reset()</code></td>
+<td>The provider-first handle already has a reset surface; <code>AsMoq()</code> is only needed when you truly need raw Moq APIs</td>
+</tr>
+<tr>
+<td><code>TimesSpec.Never</code> during bulk conversion</td>
+<td><code>TimesSpec.Never()</code> or preferably <code>TimesSpec.NeverCalled</code></td>
+<td>The method call is easy to miss, and <code>NeverCalled</code> avoids the missing-parentheses mistake entirely</td>
+</tr>
+<tr>
+<td>one unkeyed mock for two keyed constructor dependencies</td>
+<td>keyed <code>MockRequestOptions.ServiceKey</code>, <code>AddKeyedType(...)</code>, or explicit constructor injection</td>
+<td>a single type-based double cannot catch public or private or primary or secondary swaps</td>
+</tr>
+<tr>
+<td>shared helper signatures such as <code>Func&lt;Times&gt;</code></td>
+<td>deliberate helper pass to <code>TimesSpec</code></td>
+<td>Fixing the helper boundary first is cheaper than patching repeated leaf call sites</td>
+</tr>
+</tbody>
+</table>
+<p>If you still need raw Moq APIs after moving to <code>GetOrCreateMock&lt;T&gt;()</code>, step through <code>AsMoq()</code> explicitly. Otherwise stay on <code>Instance</code>, <code>Reset()</code>, <code>GetObject&lt;T&gt;()</code>, and the provider-neutral verification surface.</p>
+<p>Shared helper signature example:</p>
+<pre><code class="lang-csharp">// Old helper boundary
+void AssertLogged(Mock&lt;ILogger&gt; logger, Func&lt;Times&gt; times)
+
+// Deliberate migration boundary
+void AssertLogged(Mocker mocker, TimesSpec times)
+</code></pre>
+<h2 id="old-to-new-guidance">Old to new guidance</h2>
+<h3 id="initializet"><code>Initialize&lt;T&gt;(...)</code></h3>
+<p>Old pattern:</p>
+<pre><code class="lang-csharp">Mocks.Initialize&lt;IOrderRepository&gt;(mock =&gt;
+    mock.Setup(x =&gt; x.Load(123)).Returns(order));
+</code></pre>
+<p>Current guidance:</p>
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IOrderRepository&gt;()
+    .Setup(x =&gt; x.Load(123))
+    .Returns(order);
+</code></pre>
+<p>Why:</p>
+<ul>
+<li><code>Initialize&lt;T&gt;(...)</code> is now a compatibility wrapper, not the recommended setup entry point.</li>
+<li><code>GetOrCreateMock&lt;T&gt;()</code> plus the Moq provider extensions is the preferred v4 transition path for Moq-specific setup.</li>
+<li><code>GetMock&lt;T&gt;()</code> remains only as an obsolete compatibility surface when the assembly is explicitly using the bundled Moq compatibility provider.</li>
+</ul>
+<p>If you are already refactoring the test and do not specifically need a raw <code>Moq.Mock&lt;T&gt;</code>, prefer moving toward provider-neutral retrieval and verification instead of expanding direct <code>GetMock&lt;T&gt;()</code> usage further.</p>
+<p>There is not yet a single provider-neutral drop-in replacement for <code>Initialize&lt;T&gt;(...)</code>, because <code>Initialize&lt;T&gt;(...)</code> wraps a Moq <code>Setup(...)</code> callback.</p>
+<p>In the v4 transition, the preferred provider-package shortcut for Moq-specific setup is now:</p>
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IOrderRepository&gt;()
+    .Setup(x =&gt; x.Load(123))
+    .Returns(order);
+</code></pre>
+<p>That shortcut comes from <code>FastMoq.Provider.Moq</code> and forwards to <code>AsMoq()</code> internally. It keeps the core abstractions provider agnostic while giving Moq-based test suites a smoother migration path.</p>
+<p>Required namespace for those fluent Moq-backed shortcuts:</p>
+<pre><code class="lang-csharp">using FastMoq.Providers.MoqProvider;
+</code></pre>
+<p>Without that namespace, <code>Setup(...)</code>, <code>SetupGet(...)</code>, <code>SetupSequence(...)</code>, and <code>Protected()</code> on <code>IFastMock&lt;T&gt;</code> can appear to have &quot;disappeared&quot; even though the provider package is installed.</p>
+<p>Practical rule:</p>
+<ul>
+<li>use <code>GetOrCreateMock&lt;T&gt;()</code> plus the Moq provider extensions when you want tracked provider-first access with Moq-specific setup convenience in v4</li>
+<li>keep existing <code>GetMock&lt;T&gt;()</code> usage only when the test still depends on older direct <code>Mock&lt;T&gt;</code>-shaped compatibility code and you are minimizing churn during the v4 transition</li>
+<li>use <code>GetOrCreateMock(...)</code>, <code>Verify(...)</code>, and <code>VerifyLogged(...)</code> when the test can move forward without Moq-specific setup semantics</li>
+<li>use <code>AddType(...)</code> when the cleaner provider-neutral move is to supply a fake, stub, factory, or fixed instance rather than configure a mocking-library setup chain</li>
+</ul>
+<p>Provider-neutral replacement depends on what the old <code>Initialize&lt;T&gt;(...)</code> callback was doing:</p>
+<ul>
+<li>if the old code mainly existed to verify later calls, start from <code>GetOrCreateMock&lt;T&gt;()</code> and provider-neutral verification</li>
+<li>if the old code mainly existed to supply behavior, prefer <code>AddType(...)</code> with a fake, stub, or fixed instance when practical</li>
+<li>if the old code still needs Moq <code>Setup(...)</code> semantics, prefer moving it to <code>GetOrCreateMock&lt;T&gt;()</code> with the Moq provider extensions and keep <code>GetMock&lt;T&gt;()</code> only when preserving the old Moq shape is materially cheaper than rewriting the test</li>
+</ul>
+<h3 id="setuphttpmessage-and-http-helpers"><code>SetupHttpMessage(...)</code> and HTTP helpers</h3>
+<p>Old Moq-oriented pattern:</p>
+<pre><code class="lang-csharp">Mocks.SetupHttpMessage(HttpStatusCode.OK, &quot;{\&quot;id\&quot;:42}&quot;);
+</code></pre>
+<p>Current guidance for new or refactored tests:</p>
+<pre><code class="lang-csharp">Mocks.WhenHttpRequestJson(HttpMethod.Get, &quot;/orders/42&quot;, &quot;{\&quot;id\&quot;:42}&quot;);
+</code></pre>
+<p>Or, when the response needs full control:</p>
+<pre><code class="lang-csharp">Mocks.WhenHttpRequest(HttpMethod.Get, &quot;/orders/42&quot;, () =&gt;
+    new HttpResponseMessage(HttpStatusCode.OK));
+</code></pre>
+<p>Why:</p>
+<ul>
+<li>the provider-neutral HTTP behavior helpers now live in core and are the preferred long-term path</li>
+<li>the older Moq-shaped HTTP setup helpers are compatibility APIs for suites that still depend on Moq-specific behavior such as protected <code>SendAsync</code> setups</li>
+<li>the migration concern is package ownership, not namespace churn</li>
+</ul>
+<p>Compatibility detail:</p>
+<ul>
+<li>keep <code>using FastMoq.Extensions;</code></li>
+<li>keep or add the <code>FastMoq.Provider.Moq</code> package when you still need <code>SetupHttpMessage(...)</code></li>
+<li>prefer <code>WhenHttpRequest(...)</code> and <code>WhenHttpRequestJson(...)</code> for newly written tests and while refactoring existing ones</li>
+</ul>
+<p>That means existing source often does not need a namespace rewrite for the older HTTP helpers. The moved compatibility methods intentionally remain in <code>FastMoq.Extensions</code>; they are simply provided by the Moq package now instead of core.</p>
+<h3 id="verifylogger-vs-verifylogged"><code>VerifyLogger(...)</code> vs <code>VerifyLogged(...)</code></h3>
+<p>Old Moq-oriented pattern:</p>
+<pre><code class="lang-csharp">Mocks.GetMock&lt;ILogger&lt;MyComponent&gt;&gt;()
+    .VerifyLogger(LogLevel.Information, &quot;Processing started&quot;);
+</code></pre>
+<p>Current guidance:</p>
+<pre><code class="lang-csharp">Mocks.VerifyLogged(LogLevel.Information, &quot;Processing started&quot;);
+</code></pre>
+<p>Why:</p>
+<ul>
+<li><code>VerifyLogged(...)</code> is the provider-safe logging assertion surface.</li>
+<li><code>VerifyLogger(...)</code> remains a Moq compatibility API.</li>
+<li>existing logger assertions carried forward from previous FastMoq versions can stay on <code>VerifyLogger(...)</code> if the assembly explicitly selects <code>moq</code>, but new or touched tests should prefer <code>VerifyLogged(...)</code>.</li>
+</ul>
+<h3 id="timesspec-shape-in-v4"><code>TimesSpec</code> shape in v4</h3>
+<p>Use <code>TimesSpec</code> with this mental model during migration:</p>
+<ul>
+<li>property-style aliases for the common cases: <code>TimesSpec.Once</code> and <code>TimesSpec.NeverCalled</code></li>
+<li>method calls when a count is required: <code>TimesSpec.Exactly(count)</code>, <code>TimesSpec.AtLeast(count)</code>, and <code>TimesSpec.AtMost(count)</code></li>
+<li><code>TimesSpec.Never()</code> still works as a compatibility form, but prefer <code>TimesSpec.NeverCalled</code> in new migration edits when you want the shape to read consistently with <code>TimesSpec.Once</code></li>
+</ul>
+<p>Examples:</p>
+<pre><code class="lang-csharp">Mocks.Verify&lt;IOrderRepository&gt;(x =&gt; x.Save(order), TimesSpec.Once);
+Mocks.Verify&lt;IEmailGateway&gt;(x =&gt; x.Send(&quot;finance@contoso.test&quot;), TimesSpec.NeverCalled);
+Mocks.VerifyLogged(LogLevel.Warning, &quot;retrying&quot;, TimesSpec.Exactly(2));
+</code></pre>
+<p>This is one of the easiest compile-fix churn points in migration work, so it is worth being explicit.</p>
+<h3 id="strict"><code>Strict</code></h3>
+<p>Old assumption:</p>
+<pre><code class="lang-csharp">Mocks.Strict = true;
+</code></pre>
+<p>often implied &quot;switch the whole runtime into a strict profile.&quot;</p>
+<p>Current guidance:</p>
+<pre><code class="lang-csharp">Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+</code></pre>
+<p>or, if you want the full preset:</p>
+<pre><code class="lang-csharp">Mocks.UseStrictPreset();
+</code></pre>
+<p>Why:</p>
+<ul>
+<li><code>Strict</code> is now treated as a compatibility alias for <code>MockFeatures.FailOnUnconfigured</code>.</li>
+<li>Full-profile behavior changes belong to <code>Behavior</code> or the preset helpers.</li>
+<li>If older tests meant &quot;use the full strict profile,&quot; they should move to <code>UseStrictPreset()</code> explicitly.</li>
+<li>New repo-era code should treat <code>FailOnUnconfigured</code> narrowly: it controls mock strictness, not every older strict-era fallback and built-in resolution rule.</li>
+</ul>
+<p>Breaking-change note:</p>
+<ul>
+<li><code>Strict</code> no longer implies the entire old strict profile by itself</li>
+<li><code>UseStrictPreset()</code> is now the clearer replacement when the broader strict behavior profile is intended</li>
+<li><code>Strict</code> still exists to stamp compatibility defaults onto the current policy surface, so this is a narrowing rather than a full removal of old semantics</li>
+<li>strict <code>IFileSystem</code> no longer guarantees a raw or empty mock in the current repo</li>
+<li>tracked <code>IFileSystem</code> mocks may still expose built-in members such as <code>File</code>, <code>Directory</code>, and <code>Path</code></li>
+<li>if a test carried forward from previous FastMoq versions relied on null members, configure them explicitly on <code>GetMock&lt;IFileSystem&gt;()</code></li>
+<li>this compatibility note is specific to <code>IFileSystem</code>; it is not a blanket statement that all built-in types ignore strict-mode behavior</li>
+</ul>
+<p>Example:</p>
+<pre><code class="lang-csharp">Mocks.UseStrictPreset();
+</code></pre>
+<pre><code class="lang-csharp">Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+Mocks.GetMock&lt;IFileSystem&gt;()
+    .Setup(x =&gt; x.Directory)
+    .Returns((IDirectory)null!);
+</code></pre>
+<p>For the dedicated compatibility summary, see <a href="../breaking-changes/README.html">Breaking Changes</a>.</p>
+<p>For the fuller current-model explanation of <code>Strict</code>, <code>FailOnUnconfigured</code>, and the preset helpers, see <a href="../getting-started/testing-guide.html#strict-vs-presets">Testing Guide: Strict vs Presets</a>.</p>
+<h3 id="legacy-getmockt-vs-addtype">Legacy <code>GetMock&lt;T&gt;()</code> vs <code>AddType(...)</code></h3>
+<p>Old usage sometimes blurred these together.</p>
+<p>Current guidance:</p>
+<ul>
+<li>prefer <code>GetOrCreateMock&lt;T&gt;()</code> when the dependency is still conceptually a tracked mock</li>
+<li>use <code>AddType(...)</code> when you are overriding resolution with a concrete type, custom factory, or fixed instance</li>
+<li>keep <code>GetMock&lt;T&gt;()</code> only when you are deliberately staying on the obsolete Moq compatibility path during v4 migration</li>
+</ul>
+<p>Good <code>AddType(...)</code> use:</p>
+<pre><code class="lang-csharp">Mocks.AddType&lt;IClock&gt;(_ =&gt; new FakeClock(DateTimeOffset.Parse(&quot;2026-04-01T12:00:00Z&quot;)));
+</code></pre>
+<p>Good provider-first mock use:</p>
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IEmailGateway&gt;()
+    .Setup(x =&gt; x.SendAsync(It.IsAny&lt;string&gt;()))
+    .Returns(Task.CompletedTask);
+</code></pre>
+<h3 id="getrequiredmockt"><code>GetRequiredMock&lt;T&gt;()</code></h3>
+<p><code>GetRequiredMock&lt;T&gt;()</code> is the next legacy retrieval surface after <code>GetMock&lt;T&gt;()</code>, but it does not have a single safe one-line replacement.</p>
+<p>Use this decision table instead of a blind search-and-replace:</p>
+<table>
+<thead>
+<tr>
+<th>If the old intent was</th>
+<th>Prefer this</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>create-or-reuse a tracked mock handle</td>
+<td><code>GetOrCreateMock&lt;T&gt;()</code></td>
+<td>the test did not really need the &quot;must already exist&quot; contract</td>
+</tr>
+<tr>
+<td>require that the dependency was already tracked before this line</td>
+<td><code>GetRequiredTrackedMock&lt;T&gt;()</code> or <code>TryGetTrackedMock&lt;T&gt;(...)</code></td>
+<td>this keeps the old precondition without falling back to raw <code>Mock&lt;T&gt;</code></td>
+</tr>
+<tr>
+<td>only get the dependency instance, not the raw <code>Mock&lt;T&gt;</code></td>
+<td><code>GetObject&lt;T&gt;()</code> or <code>GetRequiredObject&lt;T&gt;()</code></td>
+<td>the test is consuming the resolved instance, not the mocking-library wrapper</td>
+</tr>
+<tr>
+<td>keep using raw Moq for a local compatibility pocket</td>
+<td><code>GetRequiredTrackedMock&lt;T&gt;().AsMoq()</code> or <code>GetOrCreateMock&lt;T&gt;().AsMoq()</code> depending on whether existence is required</td>
+<td>the test still depends on raw <code>Mock&lt;T&gt;</code> APIs</td>
+</tr>
+</tbody>
+</table>
+<p>Before:</p>
+<pre><code class="lang-csharp">var logger = Mocks.GetRequiredMock&lt;ILogger&lt;OrderService&gt;&gt;();
+logger.VerifyLogger(LogLevel.Information, &quot;Processing started&quot;);
+</code></pre>
+<p>After, when creation is acceptable and the test only needs the tracked handle:</p>
+<pre><code class="lang-csharp">var logger = Mocks.GetOrCreateMock&lt;ILogger&lt;OrderService&gt;&gt;();
+logger.VerifyLogger(LogLevel.Information, &quot;Processing started&quot;);
+</code></pre>
+<p>After, when the old call really meant &quot;this mock must already be tracked&quot;:</p>
+<pre><code class="lang-csharp">var logger = Mocks.GetRequiredTrackedMock&lt;ILogger&lt;OrderService&gt;&gt;();
+</code></pre>
+<p>After, when the test wants to branch instead of throwing:</p>
+<pre><code class="lang-csharp">if (!Mocks.TryGetTrackedMock&lt;ILogger&lt;OrderService&gt;&gt;(out var logger))
+{
+    return;
+}
+</code></pre>
+<p>After, when the old code only needed the resolved dependency instance:</p>
+<pre><code class="lang-csharp">var logger = Mocks.GetRequiredObject&lt;ILogger&lt;OrderService&gt;&gt;();
+</code></pre>
+<p>Why <code>FMOQ0017</code> is warning-only:</p>
+<ul>
+<li><code>GetRequiredMock&lt;T&gt;()</code> mixes two concerns: legacy raw-Moq access and an existence precondition</li>
+<li>different call sites want different replacements</li>
+<li>an automatic <code>GetOrCreateMock&lt;T&gt;()</code> rewrite could silently weaken the test by creating something that used to be required to exist already</li>
+</ul>
+<h3 id="legacy-mock-creation-and-lifecycle-helpers">Legacy mock creation and lifecycle helpers</h3>
+<p>These APIs are still supported in v4 as compatibility surfaces, but they are no longer the preferred direction for touched tests.</p>
+<table>
+<thead>
+<tr>
+<th>Legacy API</th>
+<th>Preferred move</th>
+<th>Typical manual rewrite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CreateMock&lt;T&gt;(...)</code></td>
+<td>tracked provider-first mock</td>
+<td><code>GetOrCreateMock&lt;T&gt;(...)</code></td>
+</tr>
+<tr>
+<td><code>CreateMockInstance&lt;T&gt;(...)</code></td>
+<td>dedicated <code>Mocker</code> plus tracked provider-first mock</td>
+<td>a fresh <code>Mocker</code> and <code>GetOrCreateMock&lt;T&gt;()</code>, then <code>Instance</code> or <code>AsMoq()</code></td>
+</tr>
+<tr>
+<td><code>CreateDetachedMock&lt;T&gt;(...)</code></td>
+<td>dedicated <code>Mocker</code> plus tracked provider-first mock</td>
+<td>a fresh <code>Mocker</code> per extra double instead of detached legacy <code>Mock&lt;T&gt;</code> creation</td>
+</tr>
+<tr>
+<td><code>AddMock&lt;T&gt;(...)</code></td>
+<td>tracked provider-first mock or explicit concrete override</td>
+<td><code>GetOrCreateMock&lt;T&gt;()</code> or <code>AddType&lt;T&gt;(...)</code></td>
+</tr>
+<tr>
+<td><code>RemoveMock(...)</code></td>
+<td>new scope instead of mutating tracked legacy mocks</td>
+<td>create a fresh <code>Mocker</code> for the branch that needs a different setup</td>
+</tr>
+</tbody>
+</table>
+<p>Before, detached legacy mock creation:</p>
+<pre><code class="lang-csharp">var emailGateway = Mocks.CreateDetachedMock&lt;IEmailGateway&gt;();
+emailGateway.Setup(x =&gt; x.SendAsync(&quot;finance@contoso.test&quot;)).Returns(Task.CompletedTask);
+
+var service = new CheckoutService(emailGateway.Object);
+</code></pre>
+<p>After, provider-first isolated scope:</p>
+<pre><code class="lang-csharp">var isolatedMocks = new Mocker();
+var emailGateway = isolatedMocks.GetOrCreateMock&lt;IEmailGateway&gt;();
+emailGateway.Setup(x =&gt; x.SendAsync(&quot;finance@contoso.test&quot;)).Returns(Task.CompletedTask);
+
+var service = new CheckoutService(emailGateway.Instance);
+</code></pre>
+<p>Before, adding a legacy Moq mock into the tracked collection:</p>
+<pre><code class="lang-csharp">var clock = new Mock&lt;IClock&gt;();
+Mocks.AddMock(clock);
+</code></pre>
+<p>After, when the dependency should stay a tracked mock:</p>
+<pre><code class="lang-csharp">var clock = Mocks.GetOrCreateMock&lt;IClock&gt;();
+</code></pre>
+<p>After, when the dependency is really a fixed fake or stub:</p>
+<pre><code class="lang-csharp">Mocks.AddType&lt;IClock&gt;(_ =&gt; new FakeClock(DateTimeOffset.Parse(&quot;2026-04-01T12:00:00Z&quot;)));
+</code></pre>
+<p>Before, removing and swapping a legacy mock:</p>
+<pre><code class="lang-csharp">Mocks.RemoveMock(existingCacheMock);
+Mocks.AddMock(new Mock&lt;ICache&gt;());
+</code></pre>
+<p>After, prefer a fresh scope for the alternate setup:</p>
+<pre><code class="lang-csharp">var isolatedMocks = new Mocker();
+var cache = isolatedMocks.GetOrCreateMock&lt;ICache&gt;();
+</code></pre>
+<p>Why <code>FMOQ0018</code> is warning-only:</p>
+<ul>
+<li>these helpers do not all collapse to the same target API</li>
+<li>some old call sites want tracked mocks, some want resolved instances, and some really want separate test scopes</li>
+<li>an auto-fix here would be more likely to hide a semantic change than to save useful migration work</li>
+</ul>
+<h3 id="dbcontext-package-boundary"><code>DbContext</code> package boundary</h3>
+<p>In <code>3.0.0</code>, core directly carried the EF packages and the Moq-based <code>DbContextMock&lt;TContext&gt;</code> implementation.</p>
+<p>Current repository direction:</p>
+<ul>
+<li><code>GetMockDbContext&lt;TContext&gt;()</code> still lives in the <code>FastMoq</code> namespace for the main call site.</li>
+<li><code>FastMoq.Core</code> is being kept lighter and no longer owns the EF package references.</li>
+<li><code>FastMoq.Database</code> now owns the EF-specific helper implementation.</li>
+</ul>
+<p>Practical guidance:</p>
+<ul>
+<li>if you install <code>FastMoq</code>, keep using <code>GetMockDbContext&lt;TContext&gt;()</code> as before</li>
+<li>if you install <code>FastMoq.Core</code> directly, also install <code>FastMoq.Database</code></li>
+<li>use <code>GetDbContextHandle&lt;TContext&gt;(...)</code> when you need to choose explicitly between mocked sets and a real in-memory EF context</li>
+<li>do not assume the mocked-sets helper is provider-neutral yet; today that path still uses the moved Moq-based implementation</li>
+</ul>
+<p>Current repo behavior now makes the mode split explicit:</p>
+<pre><code class="lang-csharp">var handle = mocker.GetDbContextHandle&lt;ApplicationDbContext&gt;(new DbContextHandleOptions&lt;ApplicationDbContext&gt;
+{
+    Mode = DbContextTestMode.RealInMemory,
+});
+
+var dbContext = handle.Context;
+</code></pre>
+<h3 id="addknowntype-vs-addtype"><code>AddKnownType(...)</code> vs <code>AddType(...)</code></h3>
+<p>This distinction matters more in the current v4 release line than it did in previous FastMoq versions.</p>
+<p>Use <code>AddType(...)</code> when you are overriding normal resolution for a dependency:</p>
+<pre><code class="lang-csharp">Mocks.AddType&lt;IClock&gt;(_ =&gt; new FakeClock(DateTimeOffset.Parse(&quot;2026-04-01T12:00:00Z&quot;)));
+</code></pre>
+<p>Use <code>AddKnownType(...)</code> when you are extending FastMoq's built-in handling for a framework-style type:</p>
+<pre><code class="lang-csharp">Mocks.AddKnownType&lt;IFileSystem&gt;(
+    directInstanceFactory: (_, _) =&gt; new MockFileSystem().FileSystem,
+    includeDerivedTypes: true);
+</code></pre>
+<p>The generic public API is now more strongly typed for value callbacks, so object-default hooks can work directly with <code>TKnown</code>:</p>
+<pre><code class="lang-csharp">Mocks.AddKnownType&lt;IHttpContextAccessor&gt;(
+    applyObjectDefaults: (_, accessor) =&gt;
+    {
+        accessor.HttpContext!.TraceIdentifier = &quot;integration-test&quot;;
+    },
+    includeDerivedTypes: true);
+</code></pre>
+<p>Practical rule:</p>
+<ul>
+<li><code>AddType(...)</code> answers &quot;resolve this abstraction differently&quot;</li>
+<li><code>AddKnownType(...)</code> answers &quot;handle this kind of framework-heavy type differently inside FastMoq's known-type pipeline&quot;</li>
+</ul>
+<p>For most ordinary application dependencies, prefer <code>AddType(...)</code>.
+For framework helpers like <code>IFileSystem</code>, <code>HttpClient</code>, <code>DbContext</code>, and <code>HttpContext</code>, prefer <code>AddKnownType(...)</code>.</p>
+<h3 id="construction-apis">Construction APIs</h3>
+<p>The older entry points still exist:</p>
+<ul>
+<li><code>CreateInstance&lt;T&gt;(...)</code></li>
+<li><code>CreateInstanceByType&lt;T&gt;(...)</code></li>
+</ul>
+<p>Current guidance for new code:</p>
+<pre><code class="lang-csharp">var component = Mocks.CreateInstanceByType&lt;MyComponent&gt;(
+    InstanceCreationFlags.AllowNonPublicConstructorFallback,
+    typeof(int),
+    typeof(string));
+</code></pre>
+<p>Why:</p>
+<ul>
+<li>the implementation now uses a single flags-based override model</li>
+<li>the call site communicates whether constructor fallback is using policy, public-only, or explicitly allowed</li>
+</ul>
+<p>If you want to decouple constructor fallback from global policy, use an explicit flag:</p>
+<pre><code class="lang-csharp">var component = Mocks.CreateInstance&lt;MyComponent&gt;(InstanceCreationFlags.AllowNonPublicConstructorFallback);
+</code></pre>
+<p>The default constructor-fallback policy is now also explicit at the <code>Mocker</code> level:</p>
+<pre><code class="lang-csharp">Mocks.Policy.DefaultFallbackToNonPublicConstructors = false;
+</code></pre>
+<h3 id="obsolete-mockoptional">Obsolete <code>MockOptional</code></h3>
+<p>Old pattern:</p>
+<pre><code class="lang-csharp">Mocks.MockOptional = true;
+</code></pre>
+<p>Current guidance for constructor creation:</p>
+<pre><code class="lang-csharp">Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+var component = Mocks.CreateInstance&lt;MyComponent&gt;();
+</code></pre>
+<p>Current guidance for method or delegate invocation:</p>
+<pre><code class="lang-csharp">var result = Mocks.CallMethod&lt;MyResult&gt;(new InvocationOptions
+{
+    OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker,
+}, (Func&lt;IMyDependency?, MyResult&gt;)CreateResult);
+</code></pre>
+<p>If reflected method fallback should be controlled independently of <code>Strict</code>, set it explicitly:</p>
+<pre><code class="lang-csharp">var result = Mocks.InvokeMethod(new InvocationOptions
+{
+    FallbackToNonPublicMethods = false,
+}, target, &quot;Run&quot;);
+</code></pre>
+<p>The default reflected-method fallback policy is also configurable on the <code>Mocker</code> instance:</p>
+<pre><code class="lang-csharp">Mocks.Policy.DefaultFallbackToNonPublicMethods = false;
+</code></pre>
+<p>Built-in framework helpers are now separately controllable through flags:</p>
+<pre><code class="lang-csharp">Mocks.Policy.EnabledBuiltInTypeResolutions =
+    BuiltInTypeResolutionFlags.FileSystem |
+    BuiltInTypeResolutionFlags.DbContext;
+</code></pre>
+<p>That policy controls whether built-in direct or managed resolution is available for:</p>
+<ul>
+<li><code>IFileSystem</code></li>
+<li><code>HttpClient</code></li>
+<li><code>Uri</code></li>
+<li><code>DbContext</code></li>
+</ul>
+<p>This keeps known-type behavior separate from <code>FailOnUnconfigured</code> so the option means what it says.</p>
+<p>Provider-backed mock creation also has a <code>Mocker</code>-level default policy:</p>
+<pre><code class="lang-csharp">Mocks.Policy.DefaultStrictMockCreation = true;
+</code></pre>
+<p>Use that when you want new provider-backed mocks to be created as strict without relying on the broader compatibility bundle.</p>
+<p><code>GetMockDbContext&lt;TContext&gt;()</code> remains a deliberate exception and stays on the supported DbContext helper behavior rather than adopting strict creation by default.</p>
+<p>For <code>MockerTestBase&lt;TComponent&gt;</code>, the same defaults can be applied before component creation through the policy hook:</p>
+<pre><code class="lang-csharp">protected override Action&lt;MockerPolicyOptions&gt;? ConfigureMockerPolicy =&gt; policy =&gt;
+{
+    policy.DefaultStrictMockCreation = true;
+};
+</code></pre>
+<p>Current guidance for <code>MockerTestBase&lt;TComponent&gt;</code>:</p>
+<pre><code class="lang-csharp">protected override InstanceCreationFlags ComponentCreationFlags
+    =&gt; InstanceCreationFlags.ResolveOptionalParametersViaMocker;
+</code></pre>
+<p>Why:</p>
+<ul>
+<li>focused component-construction overrides are clearer than an ambient toggle</li>
+<li>constructor creation and invocation now share the same policy model</li>
+<li><code>MockOptional</code> is obsolete and remains available only as a compatibility alias</li>
+</ul>
+<h3 id="provider-first-access">Provider-first access</h3>
+<p>Tests carried forward from previous FastMoq versions often assumed <code>Moq.Mock</code> was the only meaningful tracked artifact.</p>
+<p>Current guidance:</p>
+<pre><code class="lang-csharp">var fastMock = Mocks.GetOrCreateMock&lt;IOrderRepository&gt;();
+var moqMock = fastMock.AsMoq();
+</code></pre>
+<p>If you want the shortest Moq-specific form in v4, use the provider-package shortcut methods directly on <code>IFastMock&lt;T&gt;</code>:</p>
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IOrderRepository&gt;()
+    .Setup(x =&gt; x.Load(123))
+    .Returns(order);
+</code></pre>
+<p>You can still inspect tracked models through <code>MockModel.NativeMock</code> or <code>GetNativeMock(...)</code> when you truly need the raw provider object.</p>
+<p>Why:</p>
+<ul>
+<li>FastMoq is moving toward a provider-neutral core</li>
+<li>provider-specific convenience now belongs in provider packages instead of core</li>
+<li>raw <code>NativeMock</code> access is still available, but it is no longer the best primary guidance when a typed provider extension exists</li>
+</ul>
+<h2 id="expected-migration-exceptions">Expected migration exceptions</h2>
+<p>Some migrated tests should intentionally stay on raw Moq. That is normal in v4.</p>
+<p>For practical fallback patterns when you do not want to stay on Moq, see <a href="../getting-started/provider-capabilities.html#alternatives-when-a-moq-feature-is-unavailable">Provider Capabilities: Alternatives when a Moq feature is unavailable</a>.</p>
+<h3 id="imemorycache-and-icacheentry"><code>IMemoryCache</code> and <code>ICacheEntry</code></h3>
+<p>Property-setter and cache-entry tests are still a common Moq-only pocket because they often rely on <code>SetupSet(...)</code> or <code>SetupAllProperties()</code>.</p>
+<pre><code class="lang-csharp">var cacheEntry = Mocks.GetMock&lt;ICacheEntry&gt;();
+cacheEntry.SetupAllProperties();
+cacheEntry.SetupSet(x =&gt; x.Value = It.IsAny&lt;object&gt;());
+
+Mocks.GetMock&lt;IMemoryCache&gt;()
+    .Setup(x =&gt; x.CreateEntry(&quot;orders&quot;))
+    .Returns(cacheEntry.Object);
+</code></pre>
+<h3 id="out--ref-verification"><code>out</code> / <code>ref</code> verification</h3>
+<p>If the test already depends on <code>It.Ref&lt;T&gt;.IsAny</code> or other Moq-specific <code>out</code> / <code>ref</code> verification forms, keeping raw Moq is usually the clearest move. Prefer <code>GetOrCreateMock&lt;T&gt;().AsMoq()</code> when that still reads cleanly, and leave <code>GetMock&lt;T&gt;()</code> in place only when preserving the legacy Moq shape avoids churn.</p>
+<pre><code class="lang-csharp">Mocks.GetMock&lt;IParser&gt;()
+    .Verify(x =&gt; x.TryResolve(&quot;tenant-a&quot;, out It.Ref&lt;object&gt;.IsAny), Times.Once);
+</code></pre>
+<h3 id="practical-rule">Practical rule</h3>
+<ul>
+<li>prefer provider-first APIs when they simplify the test</li>
+<li>keep raw Moq when setter-heavy, property-heavy, or <code>out</code> / <code>ref</code> heavy behavior would otherwise turn the migration into a rewrite</li>
+<li>do not treat these cases as migration failures</li>
+</ul>
+<h2 id="real-migration-examples">Real migration examples</h2>
+<h3 id="constructor-and-default-setup-migration">Constructor and default setup migration</h3>
+<p>Before:</p>
+<pre><code class="lang-csharp">Mocks.Initialize&lt;IOrderRepository&gt;(mock =&gt;
+    mock.Setup(x =&gt; x.Load(123)).Returns(order));
+</code></pre>
+<p>After:</p>
+<pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IOrderRepository&gt;()
+    .Setup(x =&gt; x.Load(123))
+    .Returns(order);
+</code></pre>
+<h3 id="logger-verification-migration">Logger verification migration</h3>
+<p>Before:</p>
+<pre><code class="lang-csharp">Mocks.GetMock&lt;ILogger&lt;OrderService&gt;&gt;()
+    .VerifyLogger(LogLevel.Information, &quot;Processing started&quot;);
+</code></pre>
+<p>After:</p>
+<pre><code class="lang-csharp">Mocks.VerifyLogged(LogLevel.Information, &quot;Processing started&quot;);
+</code></pre>
+<h3 id="selective-verify-migration">Selective verify migration</h3>
+<p>Before:</p>
+<pre><code class="lang-csharp">Mocks.GetMock&lt;IOrderRepository&gt;()
+    .Verify(x =&gt; x.Save(It.IsAny&lt;Order&gt;()), Times.Once);
+</code></pre>
+<p>After:</p>
+<pre><code class="lang-csharp">Mocks.Verify&lt;IOrderRepository&gt;(x =&gt; x.Save(It.IsAny&lt;Order&gt;()), TimesSpec.Once);
+</code></pre>
+<h3 id="cache-and-property-setter-edge-case">Cache and property-setter edge case</h3>
+<p>Intentional Moq retention:</p>
+<pre><code class="lang-csharp">var cacheEntry = Mocks.GetMock&lt;ICacheEntry&gt;();
+cacheEntry.SetupAllProperties();
+cacheEntry.SetupSet(x =&gt; x.Value = It.IsAny&lt;object&gt;());
+</code></pre>
+<p>That is still a valid v4 migration outcome because the test depends on Moq-only setter behavior.</p>
+<h3 id="known-type-extensibility">Known-type extensibility</h3>
+<p>Current guidance for framework-heavy types:</p>
+<pre><code class="lang-csharp">Mocks.AddKnownType&lt;IFileSystem&gt;(
+    directInstanceFactory: (_, _) =&gt; new MockFileSystem().FileSystem);
+</code></pre>
+<p>Why:</p>
+<ul>
+<li>known-type overrides are now scoped per <code>Mocker</code></li>
+<li>extensions no longer need to rely on process-wide static mutation</li>
+</ul>
+<h3 id="fluent-scenario-style">Fluent scenario style</h3>
+<p>This is new repo-era surface rather than a <code>3.0.0</code> migration requirement, but it is now worth adopting for readable workflow-style tests:</p>
+<pre><code class="lang-csharp">Scenario
+    .With(() =&gt; { /* arrange */ })
+    .When(() =&gt; Component.Process())
+    .Then(() =&gt; { /* assert */ })
+    .Execute();
+</code></pre>
+<p>Use it when the test reads better as arrange or act or assert phases rather than as one large method body.
+Inside <code>MockerTestBase&lt;TComponent&gt;</code>, prefer <code>Scenario</code> plus the parameterless <code>With</code> or <code>When</code> or <code>Then</code> overloads when <code>Component</code> is already available.
+Use <code>WhenThrows&lt;TException&gt;(...)</code> when the act step is expected to fail but you still want trailing <code>Then(...)</code> assertions to run.
+Use <code>ExecuteThrows&lt;TException&gt;()</code> or <code>ExecuteThrowsAsync&lt;TException&gt;()</code> when you want the thrown exception object back for direct inspection.</p>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

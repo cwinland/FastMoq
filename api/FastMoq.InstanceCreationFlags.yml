@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceCreationFlags
     path: FastMoq.Core/InstanceCreationFlags.cs
@@ -72,7 +72,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: None
     path: FastMoq.Core/InstanceCreationFlags.cs
@@ -100,7 +100,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: PublicConstructorsOnly
     path: FastMoq.Core/InstanceCreationFlags.cs
@@ -128,7 +128,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AllowNonPublicConstructorFallback
     path: FastMoq.Core/InstanceCreationFlags.cs
@@ -156,7 +156,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ResolveOptionalParametersViaMocker
     path: FastMoq.Core/InstanceCreationFlags.cs
@@ -184,7 +184,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: UseDefaultOrNullOptionalParameters
     path: FastMoq.Core/InstanceCreationFlags.cs

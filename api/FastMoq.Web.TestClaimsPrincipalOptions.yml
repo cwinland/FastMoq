@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TestClaimsPrincipalOptions
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
@@ -80,7 +80,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AuthenticationType
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
@@ -111,7 +111,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Name
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
@@ -142,7 +142,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: DisplayName
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
@@ -173,7 +173,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: Email
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
@@ -204,7 +204,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: PreferredUserName
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
@@ -235,7 +235,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: ObjectId
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
@@ -266,7 +266,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: TenantId
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
@@ -297,7 +297,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: IncludeDefaultIdentityClaims
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
@@ -328,7 +328,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: AdditionalClaims
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs

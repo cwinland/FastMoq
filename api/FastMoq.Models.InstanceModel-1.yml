@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceModel
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -126,7 +126,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceType
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -161,7 +161,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateFunc
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -195,7 +195,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -225,19 +225,22 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
-    startLine: 34
+    startLine: 38
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
+  summary: Initializes a new instance model that creates <code class="typeparamref">TClass</code> values by using a factory delegate that can inspect the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> and an optional context value.
+  example: []
   syntax:
     content: public InstanceModel(Func<Mocker, object?, TClass>? createFunc)
     parameters:
     - id: createFunc
       type: System.Func{FastMoq.Mocker,System.Object,{TClass}}
+      description: The factory delegate used to create instances, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to rely on constructor-based resolution.
     content.vb: Public Sub New(createFunc As Func(Of Mocker, Object, TClass))
   overload: FastMoq.Models.InstanceModel`1.#ctor*
   nameWithType.vb: InstanceModel(Of TClass).New(Func(Of Mocker, Object, TClass))
@@ -257,11 +260,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
-    startLine: 37
+    startLine: 41
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -292,11 +295,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
-    startLine: 41
+    startLine: 45
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -325,11 +328,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
-    startLine: 44
+    startLine: 48
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -360,11 +363,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: IProvider
+      branch: AnalyzersAndHelpers
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
-    startLine: 48
+    startLine: 52
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Models
@@ -3743,6 +3746,13 @@ references:
   nameWithType.vb: InstanceModel(Of TClass).New
   fullName.vb: FastMoq.Models.InstanceModel(Of TClass).New
   name.vb: New
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
 - uid: System.Func{FastMoq.Mocker,System.Object,{TClass}}
   commentId: T:System.Func{FastMoq.Mocker,System.Object,`0}
   parent: System
@@ -3794,6 +3804,12 @@ references:
   - name: " "
   - name: TClass
   - name: )
+- uid: FastMoq
+  commentId: N:FastMoq
+  href: FastMoq.html
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq
 - uid: System.Func`3
   commentId: T:System.Func`3
   isExternal: true
