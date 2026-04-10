@@ -79,8 +79,9 @@ Use this table when you are deciding which package line your test project should
 
 | If you want... | Install... | Why |
 | --- | --- | --- |
-| simplest all-in-one experience | `FastMoq` | Aggregate package that includes the primary runtime, database helpers, web support, and the FastMoq analyzer pack by default |
+| simplest all-in-one experience | `FastMoq` | Aggregate package that includes the primary runtime, shared Azure SDK helpers, database helpers, web support, Azure Functions helpers, and the FastMoq analyzer pack by default |
 | lighter core-only usage | `FastMoq.Core` | Provider-first runtime without the extra EF, web-specific, or analyzer package payloads |
+| Azure SDK credentials, pageable builders, or Azure-oriented DI/config helpers while using `FastMoq.Core` | `FastMoq.Azure` | Adds `PageableBuilder`, token/default-credential helpers, Azure-oriented configuration/service-provider helpers, and common Azure client registration helpers |
 | Azure Functions worker helpers while using `FastMoq.Core` | `FastMoq.AzureFunctions` | Adds `CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` in `FastMoq.AzureFunctions.Extensions` while keeping the typed `IServiceProvider` helpers in core |
 | DbContext and EF-specific helpers while using `FastMoq.Core` | `FastMoq.Database` | Adds `GetMockDbContext<TContext>()` and the explicit DbContext handle modes |
 | controller, `HttpContext`, `IHttpContextAccessor`, or claims-principal helpers while using `FastMoq.Core` | `FastMoq.Web` | Adds `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, and `AddHttpContextAccessor(...)` |
@@ -90,12 +91,13 @@ Use this table when you are deciding which package line your test project should
 
 Important package boundaries in the current v4 line:
 
-- `FastMoq` already includes the common end-user surface, including web, database, and Azure Functions helpers
+`FastMoq` already includes the common end-user surface, including shared Azure SDK helpers, web, database, and Azure Functions helpers
 - `FastMoq` also includes the FastMoq analyzer assets by default so most test projects get migration guidance without extra setup
-- `FastMoq.Core` stays lighter on purpose, so EF helpers, Azure Functions helpers, and web helpers are separate package decisions when you consume core directly
+- `FastMoq.Core` stays lighter on purpose, so shared Azure SDK helpers, EF helpers, Azure Functions helpers, and web helpers are separate package decisions when you consume core directly
 - `FastMoq.Core` does not include analyzer assets; add `FastMoq.Analyzers` explicitly if you want analyzer guidance in a core-only package graph
 - `FastMoq.Core` includes the built-in `reflection` provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as `Setup(...)` and `Protected()` still belong to the `FastMoq.Provider.Moq` package
 - provider-package extension methods still follow the provider-package docs and selection rules described in [Provider Selection and Setup](./provider-selection.md)
+- if you are wiring Azure SDK clients, pageable sequences, or token credentials through tests while consuming `FastMoq.Core` directly, add `FastMoq.Azure`
 - if you are wiring Azure Functions worker tests through `FunctionContext.InstanceServices`, add `FastMoq.AzureFunctions` when you consume `FastMoq.Core` directly
 - if you are unsure whether your web tests need another package, see the web-helper notes in [Testing Guide](./testing-guide.md#controller-testing) and the migration-specific notes in [Framework and web helper migration](../migration/framework-and-web-helpers.md#web-test-helpers)
 
@@ -115,6 +117,7 @@ If you prefer the split packages instead of the aggregate package:
 
 ```bash
 dotnet add package FastMoq.Core
+dotnet add package FastMoq.Azure
 dotnet add package FastMoq.AzureFunctions
 dotnet add package FastMoq.Database
 dotnet add package FastMoq.Web
@@ -137,6 +140,7 @@ Split-package example:
 
 ```xml
 <PackageReference Include="FastMoq.Core" Version="4.*" />
+<PackageReference Include="FastMoq.Azure" Version="4.*" />
 <PackageReference Include="FastMoq.AzureFunctions" Version="4.*" />
 <PackageReference Include="FastMoq.Database" Version="4.*" />
 <PackageReference Include="FastMoq.Web" Version="4.*" />
@@ -144,7 +148,7 @@ Split-package example:
 ```
 
 > Note: this guide targets the current v4 release line. For the release delta relative to the last public `3.0.0` package, see [What's New Since 3.0.0](../whats-new/README.md).
-> Note: in the current repository, `GetMockDbContext<TContext>()` keeps the same `FastMoq` namespace call shape, but direct `FastMoq.Core` consumers should add `FastMoq.Database` for EF-specific helpers. Direct Azure Functions helper consumers should add `FastMoq.AzureFunctions`. Direct web-helper consumers should add `FastMoq.Web`.
+> Note: in the current repository, `GetMockDbContext<TContext>()` keeps the same `FastMoq` namespace call shape, but direct `FastMoq.Core` consumers should add `FastMoq.Database` for EF-specific helpers. Direct shared Azure SDK helper consumers should add `FastMoq.Azure`. Direct Azure Functions helper consumers should add `FastMoq.AzureFunctions`. Direct web-helper consumers should add `FastMoq.Web`.
 
 In the current v4 transition layout, `FastMoq.Core` bundles the built-in `moq` provider and the internal `reflection` fallback. The default provider is `reflection`. Optional providers such as `nsubstitute` can be added explicitly and then selected by their canonical name once the package is present, or registered manually under a custom alias. You can also register your own provider by implementing `IMockingProvider`; the bundled providers are examples, not the only supported choices.
 

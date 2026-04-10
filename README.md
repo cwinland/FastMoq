@@ -152,9 +152,10 @@ The FastMoq version removes explicit mock declarations, subject construction, an
 
 ## Packages
 
-- FastMoq - Aggregate package that combines the primary FastMoq runtime, database helpers, Azure Functions helpers, and web support.
+- FastMoq - Aggregate package that combines the primary FastMoq runtime, shared Azure SDK helpers, database helpers, Azure Functions helpers, and web support.
 - FastMoq.Abstractions - Shared provider contracts used by core and provider packages.
 - FastMoq.Core - Core testing Mocker and provider-first resolution pipeline.
+- FastMoq.Azure - Shared Azure SDK testing helpers for credentials, pageable builders, Azure-oriented configuration, and common client registration.
 - FastMoq.AzureFunctions - Azure Functions worker helpers for typed FunctionContext.InstanceServices setup.
 - FastMoq.Database - Entity Framework and DbContext-focused helpers.
 - FastMoq.Provider.Moq - Moq compatibility provider and Moq-specific convenience extensions for v4 migration.
@@ -176,16 +177,25 @@ Azure Functions helper note:
 - if you install `FastMoq.Core` directly, add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
 - the typed `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` helpers remain in `FastMoq.Core`
 
+Azure SDK helper note:
+
+- if you install the aggregate `FastMoq` package, the shared Azure SDK helpers are included
+- if you install `FastMoq.Core` directly, add `FastMoq.Azure` before using `PageableBuilder`, `AddTokenCredential(...)`, `CreateAzureServiceProvider(...)`, or the Azure client registration helpers
+- the Azure helper namespaces are split by concern under `FastMoq.Azure.Pageable`, `FastMoq.Azure.Credentials`, `FastMoq.Azure.DependencyInjection`, `FastMoq.Azure.Storage`, and `FastMoq.Azure.KeyVault`
+
 Typical split-package install:
 
 ```bash
 dotnet add package FastMoq.Core
+dotnet add package FastMoq.Azure
 dotnet add package FastMoq.AzureFunctions
 dotnet add package FastMoq.Database
 dotnet add package FastMoq.Web
 ```
 
 `GetMockDbContext<TContext>()` keeps the same main call shape in the `FastMoq` namespace. If you install `FastMoq`, the EF helpers are included. If you install `FastMoq.Core` directly, add `FastMoq.Database` for DbContext support.
+
+`PageableBuilder`, `AddTokenCredential(...)`, `AddDefaultAzureCredential(...)`, `CreateAzureConfiguration(...)`, `CreateAzureServiceProvider(...)`, and the Azure client registration helpers live in the `FastMoq.Azure.*` namespaces.
 
 `CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` live in `FastMoq.AzureFunctions.Extensions`, while the generic `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` helpers stay in `FastMoq.Extensions`.
 

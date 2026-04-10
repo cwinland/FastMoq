@@ -52,6 +52,10 @@ When generating code:
     - Progress updates must stay grounded in the current task, files, and findings. Do not insert speculative filler, unrelated examples, or generic brainstorming text.
     - When a patch is too broad, split it into smaller targeted edits and complete local formatting cleanup before stopping.
     - If you touch a large partial class, preserve the surrounding style and fix any indentation or malformed XML introduced in the edited region before considering the work done.
+9. **Keep package and solution topology aligned**
+    - `FastMoq\FastMoq.csproj` must directly include every public release package project.
+    - When a non-test public release project is added, removed, or renamed, update both `FastMoq.sln` and `FastMoq-Release.sln` in the same change.
+    - Test-only or example-only project changes belong in `FastMoq.sln`, but do not require changes to `FastMoq-Release.sln`.
 
 ## 🔐 Static Analysis Rules (Sonar)
 Apply these consistently in generated code (and prefer refactoring existing code toward them when touched):

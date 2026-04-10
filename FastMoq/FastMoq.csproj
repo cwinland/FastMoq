@@ -39,6 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FastMoq.Analyzers\FastMoq.Analyzers.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
+    <ProjectReference Include="..\FastMoq.Abstractions\FastMoq.Abstractions.csproj" />
+    <ProjectReference Include="..\FastMoq.Azure\FastMoq.Azure.csproj" />
     <ProjectReference Include="..\FastMoq.AzureFunctions\FastMoq.AzureFunctions.csproj" />
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
     <ProjectReference Include="..\FastMoq.Database\FastMoq.Database.csproj" />
