@@ -49,7 +49,7 @@ jobs:
 
       - run: dotnet --info
 
-      - name: Restore (TFM-scoped, no lock mode)
+      - name: Restore (project-scoped, no lock mode)
         env:
           FW: ${{ matrix.framework }}
         run: |
@@ -66,8 +66,10 @@ jobs:
               echo "[RESTORE] $proj ($tfm)" >> skipped.txt
               continue
             fi
-            # dotnet restore does not support --framework; use MSBuild property instead
-            dotnet restore "$proj" -p:TargetFramework="$tfm"
+            # Restore the full project graph so referenced projects with different TFMs
+            # (for example netstandard analyzer projects referenced by a netX test project)
+            # still get the assets required by the later TFM-scoped build/test steps.
+            dotnet restore "$proj"
           done
 
       - name: Build (TFM-scoped)

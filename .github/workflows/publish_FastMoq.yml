@@ -47,7 +47,7 @@ jobs:
           echo "Validated tag $TAG_NAME (version $VERSION) is based on master."
 
   tests:
-    name: Reusable test matrix (net8/net9)
+    name: Reusable test matrix (net8/net9/net10)
     needs: verify
     permissions:
       actions: read

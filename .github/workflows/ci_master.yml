@@ -13,5 +13,5 @@ jobs:
   call-template:
     uses: ./.github/workflows/template_ci.yml
     with:
-      projects: "FastMoq.Tests/FastMoq.Tests.csproj FastMoq.Tests.Web/FastMoq.Tests.Web.csproj"
+      projects: "FastMoq.Tests/FastMoq.Tests.csproj FastMoq.Tests.Web/FastMoq.Tests.Web.csproj FastMoq.Analyzers.Tests/FastMoq.Analyzers.Tests.csproj"
       frameworks: '["8.0.x","9.0.x","10.0.x"]'
