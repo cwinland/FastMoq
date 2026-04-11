@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq", "FastMoq\FastMoq.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Abstractions", "FastMoq.Abstractions\FastMoq.Abstractions.csproj", "{970828D1-0EF2-4D0D-BF1B-BB85DEB38514}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Azure", "FastMoq.Azure\FastMoq.Azure.csproj", "{CADD0874-D3E6-40B3-A8D5-EB04047597EC}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Core", "FastMoq.Core\FastMoq.Core.csproj", "{2E2FC5C0-5B64-48BA-92F6-DF0DD46298E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Database", "FastMoq.Database\FastMoq.Database.csproj", "{D58D5C37-1488-43F7-B9A3-FCB22D836181}"
@@ -35,6 +37,10 @@ Global
 		{970828D1-0EF2-4D0D-BF1B-BB85DEB38514}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{970828D1-0EF2-4D0D-BF1B-BB85DEB38514}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{970828D1-0EF2-4D0D-BF1B-BB85DEB38514}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CADD0874-D3E6-40B3-A8D5-EB04047597EC}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{CADD0874-D3E6-40B3-A8D5-EB04047597EC}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{CADD0874-D3E6-40B3-A8D5-EB04047597EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CADD0874-D3E6-40B3-A8D5-EB04047597EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E2FC5C0-5B64-48BA-92F6-DF0DD46298E0}.Debug|Any CPU.ActiveCfg = Release|Any CPU
 		{2E2FC5C0-5B64-48BA-92F6-DF0DD46298E0}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{2E2FC5C0-5B64-48BA-92F6-DF0DD46298E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
