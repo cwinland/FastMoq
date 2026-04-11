@@ -97,10 +97,30 @@ var context = Mocks.GetObject<FunctionContext>();
 var clock = context.InstanceServices.GetRequiredService<WidgetClock>();
 ```
 
+For HTTP-trigger tests, use `CreateHttpRequestData(...)` and `CreateHttpResponseData(...)` to build concrete worker request or response objects instead of hand-rolling `HttpRequestData` and `HttpResponseData` doubles:
+
+```csharp
+using FastMoq.AzureFunctions.Extensions;
+
+var request = Mocks.CreateHttpRequestData(builder => builder
+    .WithMethod("POST")
+    .WithUrl("https://localhost/api/widgets?mode=test")
+    .WithHeader("x-correlation-id", "123")
+    .WithJsonBody(new CreateWidgetRequest
+    {
+        Name = "demo",
+    }));
+
+var payload = await request.ReadFromJsonAsync<CreateWidgetRequest>();
+var response = request.CreateResponse();
+```
+
+Use `ReadBodyAsStringAsync(...)` and `ReadBodyAsJsonAsync<T>(...)` when you want to assert request or response bodies without manually rewinding the underlying stream.
+
 Package note:
 
 - `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` remain part of `FastMoq.Core`
-- direct `FastMoq.Core` consumers should add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
+- direct `FastMoq.Core` consumers should add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)`, `CreateHttpRequestData(...)`, or `CreateHttpResponseData(...)`
 - the aggregate `FastMoq` package includes the Azure Functions helper package already
 
 Analyzer note:

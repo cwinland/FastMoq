@@ -36,6 +36,7 @@ At a high level, the current line adds:
 
 - a provider-first architecture with explicit provider registration and selection
 - a new package split for abstractions, database helpers, and provider-specific adapters
+- first-party Azure testing helpers for storage-client registration and Azure Functions worker or HTTP-trigger setup
 - provider-neutral verification and scenario-building APIs for newer tests
 - explicit policy surfaces for constructor fallback, method fallback, built-in known types, and optional-parameter resolution
 - expanded repo-native documentation, migration guidance, and executable examples
@@ -66,7 +67,7 @@ Notable additions and changes:
 - `FastMoq.Abstractions` now carries the provider contracts shared by core and provider packages.
 - `FastMoq.Provider.Moq` now owns the Moq compatibility provider and Moq-specific convenience extensions.
 - `FastMoq.Provider.NSubstitute` adds an optional NSubstitute provider package.
-- `FastMoq.AzureFunctions` now owns the Azure Functions worker helpers for `FunctionContext.InstanceServices`.
+- `FastMoq.AzureFunctions` now owns the Azure Functions worker helpers for `FunctionContext.InstanceServices` plus concrete `HttpRequestData` and `HttpResponseData` builders and body helpers for HTTP-trigger tests.
 - `FastMoq.Database` now owns the EF- and DbContext-specific helpers that previously lived in core.
 - `FastMoq.Core` stays lighter and focuses on provider-neutral construction, tracking, verification, and built-in known-type handling.
 

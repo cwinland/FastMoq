@@ -10,11 +10,11 @@
     <Company>$(Authors)</Company>
     <Copyright>Copyright(c) 2026 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
-    <Description>Azure Functions worker helpers for FastMoq, including typed FunctionContext.InstanceServices setup.</Description>
+    <Description>Azure Functions worker and HTTP-trigger test helpers for FastMoq, including typed FunctionContext.InstanceServices setup, HttpRequestData/HttpResponseData builders, and body readers.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>FastMoq;AzureFunctions;FunctionContext;testing;mocking</PackageTags>
+    <PackageTags>FastMoq;AzureFunctions;FunctionContext;HttpRequestData;HttpResponseData;testing;mocking</PackageTags>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IsPackable>true</IsPackable>

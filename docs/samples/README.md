@@ -67,29 +67,37 @@ Even when not running in Azure, the samples demonstrate how you would substitute
 
 ## Azure Function style testing guidance
 
-If you adapt these samples for Azure Functions HTTP triggers, use patterns similar to (conceptually) `MockedHttpRequestData` and `MockedHttpResponseData` helpers (as seen in other internal solution test utilities):
+If you adapt these samples for Azure Functions HTTP triggers, prefer the first-party helpers in `FastMoq.AzureFunctions.Extensions` instead of hand-rolled `MockedHttpRequestData` or `MockedHttpResponseData` utilities when possible:
 
-1. Build the request: supply method, route values, headers, and JSON body.
-2. Provide dependency injection values using `AddType` (e.g., configuration, services).
+1. Build the request with `CreateHttpRequestData(...)`: supply method, route values, headers, claims, query-string values, and JSON body.
+2. Provide dependency injection values using `AddType(...)`, `AddServiceProvider(...)`, or `AddFunctionContextInstanceServices(...)` when the function resolves framework services.
 3. Use `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` for outbound `HttpClient` calls triggered inside the function.
 4. Assert:
    - Outbound calls (verify `SendAsync`)
-   - Response status & body (deserialize or use content helpers)
-   - Logs via `VerifyLogged`
+   - Response status and body (`ReadBodyAsStringAsync(...)` or `ReadBodyAsJsonAsync<T>(...)`)
+   - Logs via `VerifyLogged(...)`
 
 Recommended layering:
 
 ```csharp
-var request = TestUtils.CreateHttpRequest(jsonBody, queryParams);
+using FastMoq.AzureFunctions.Extensions;
+
+var request = Mocks.CreateHttpRequestData(builder => builder
+    .WithMethod("POST")
+    .WithUrl("http://test.com/api/Run?mode=sample")
+    .WithJsonBody(payload));
+
 var result = await Component.RunAsync(request, CancellationToken.None);
+var body = await result.ReadBodyAsStringAsync();
 Mocks.VerifyLogged(LogLevel.Information, "Processed event");
 ```
 
-While FastMoq does not ship Azure Functions request/response shims directly, it complements such utilities by supplying:
+The Azure Functions helper package now supplies:
 
-- Automatic logger mocks with capture/verification.
-- Consistent `HttpClient` mocking for downstream REST calls.
-- Simplified DI graph creation so only function inputs need explicit arrangement.
+- Concrete `HttpRequestData` and `HttpResponseData` builders for HTTP-trigger tests.
+- Automatic `FunctionContext.InstanceServices` setup with worker defaults.
+- Body readers that rewind request and response streams after assertions.
+- The same provider-neutral logger and `HttpClient` helpers used elsewhere in FastMoq.
 
 ## Notes about repository scope
 

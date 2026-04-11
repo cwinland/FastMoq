@@ -31,8 +31,8 @@ v4 also includes helper and migration work where common testing scenarios still 
 
 Planned work includes:
 
-- A typed `IServiceProvider` helper for framework-heavy suites that need type-aware service resolution during tests.
-- An Azure Functions worker helper for `FunctionContext.InstanceServices` built around typed service resolution.
+- Additional provider-neutral guidance for framework-heavy suites that combine typed `IServiceProvider` helpers with keyed services, scoped resolution, or framework-owned service graphs.
+- Azure Functions follow-up helpers beyond the shipped `FunctionContext.InstanceServices`, `CreateHttpRequestData(...)`, and `CreateHttpResponseData(...)` support.
 - A clearer first-party path for common `SetupSet(...)`-heavy tests where the real need is setter observation or value capture.
 - Focused migration guidance and examples for compatibility-only APIs that remain temporary rather than long-term patterns.
 
@@ -45,7 +45,7 @@ Planned documentation updates include:
 - More provider-native examples beyond the current capability matrix.
 - Focused migration notes for older Moq-heavy suites.
 - Keyed-service guidance tied to new diagnostics and helper APIs.
-- Examples for new typed service-provider and Azure testing helpers.
+- Examples for typed service-provider flows and broader Azure testing helpers, including HTTP-trigger request or response setup.
 - Additional DbContext examples as those surfaces continue to harden.
 
 ## Later or decision pending
