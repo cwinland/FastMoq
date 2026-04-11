@@ -6,10 +6,14 @@ using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
 using FastMoq.Providers.NSubstituteProvider;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
+using System.Net;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace FastMoq.Tests
 {
@@ -114,6 +118,103 @@ namespace FastMoq.Tests
             existing.Instance.InstanceServices.Should().BeSameAs(provider);
         }
 
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        public async Task CreateHttpRequestData_ShouldCreateConfiguredRequestAndDefaultResponse(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+            var principal = new ClaimsPrincipal(new ClaimsIdentity([new Claim(ClaimTypes.Name, "chris")], "TestAuth"));
+
+            var request = mocker.CreateHttpRequestData(builder => builder
+                .WithMethod("PUT")
+                .WithUrl("https://fastmoq.dev/widgets?existing=1")
+                .WithHeader("x-fastmoq", "true")
+                .WithQueryParameter("mode", "test")
+                .WithClaimsPrincipal(principal)
+                .WithJsonBody(new TriggerPayload
+                {
+                    Name = "alpha",
+                    Count = 2,
+                }));
+
+            request.Method.Should().Be("PUT");
+            request.Url.Query.Should().Contain("existing=1");
+            request.Url.Query.Should().Contain("mode=test");
+            request.Query["existing"].Should().Be("1");
+            request.Query["mode"].Should().Be("test");
+            request.Headers.TryGetValues("Host", out var hostValues).Should().BeTrue();
+            hostValues.Should().ContainSingle().Which.Should().Be("fastmoq.dev");
+            request.Headers.TryGetValues("Content-Type", out var contentTypes).Should().BeTrue();
+            contentTypes.Should().ContainSingle().Which.Should().StartWith("application/json");
+            request.Identities.Should().ContainSingle().Which.Name.Should().Be("chris");
+
+            var payload = await request.ReadFromJsonAsync<TriggerPayload>();
+            payload.Should().BeEquivalentTo(new TriggerPayload
+            {
+                Name = "alpha",
+                Count = 2,
+            });
+
+            var response = request.CreateResponse();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.FunctionContext.Should().BeSameAs(request.FunctionContext);
+            response.Headers.Should().NotBeNull();
+            response.Body.Should().NotBeNull();
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        public async Task CreateHttpResponseData_ShouldSerializeJsonHeadersAndReadableBody(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            var response = mocker.CreateHttpResponseData(builder => builder
+                .WithStatusCode(HttpStatusCode.Accepted)
+                .WithHeader("x-correlation-id", "123")
+                .WithCookie("session", "abc")
+                .WithJsonBody(new TriggerPayload
+                {
+                    Name = "beta",
+                    Count = 7,
+                }));
+
+            response.StatusCode.Should().Be(HttpStatusCode.Accepted);
+            response.Headers.TryGetValues("x-correlation-id", out var correlationIds).Should().BeTrue();
+            correlationIds.Should().ContainSingle().Which.Should().Be("123");
+            response.FunctionContext.InstanceServices.Should().NotBeNull();
+
+            var payload = await response.ReadBodyAsJsonAsync<TriggerPayload>();
+            payload.Should().BeEquivalentTo(new TriggerPayload
+            {
+                Name = "beta",
+                Count = 7,
+            });
+
+            var bodyText = await response.ReadBodyAsStringAsync();
+            bodyText.Should().Contain("beta");
+
+            response.Cookies.Should().NotBeNull();
+            response.Cookies.Append("later", "cookie");
+        }
+
+        [Fact]
+        public void CreateHttpRequestData_ShouldReuseExistingFunctionContextInstanceServices()
+        {
+            using var providerScope = PushProviderScope("moq");
+            var mocker = new Mocker();
+            var expectedUri = new Uri("https://functions.fastmoq/");
+
+            mocker.AddFunctionContextInstanceServices(services => services.AddSingleton(expectedUri), replace: true);
+
+            var request = mocker.CreateHttpRequestData();
+
+            request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
+        }
+
         private static IDisposable PushProviderScope(string providerName)
         {
             EnsureProviderRegistered(providerName);
@@ -140,6 +241,13 @@ namespace FastMoq.Tests
             }
 
             throw new InvalidOperationException($"Unknown provider '{providerName}'.");
+        }
+
+        private sealed class TriggerPayload
+        {
+            public int Count { get; set; }
+
+            public string? Name { get; set; }
         }
     }
 }
