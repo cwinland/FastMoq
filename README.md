@@ -156,7 +156,7 @@ The FastMoq version removes explicit mock declarations, subject construction, an
 - FastMoq.Abstractions - Shared provider contracts used by core and provider packages.
 - FastMoq.Core - Core testing Mocker and provider-first resolution pipeline.
 - FastMoq.Azure - Shared Azure SDK testing helpers for credentials, pageable builders, Azure-oriented configuration, and common client registration.
-- FastMoq.AzureFunctions - Azure Functions worker helpers for typed FunctionContext.InstanceServices setup.
+- FastMoq.AzureFunctions - Azure Functions worker and HTTP-trigger helpers for typed FunctionContext.InstanceServices setup, concrete HttpRequestData and HttpResponseData builders, and body readers.
 - FastMoq.Database - Entity Framework and DbContext-focused helpers.
 - FastMoq.Provider.Moq - Moq compatibility provider and Moq-specific convenience extensions for v4 migration.
 - FastMoq.Provider.NSubstitute - Optional NSubstitute provider package.
@@ -174,8 +174,8 @@ Web-helper note:
 Azure Functions helper note:
 
 - if you install the aggregate `FastMoq` package, the Azure Functions helpers are included
-- if you install `FastMoq.Core` directly, add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)`
-- the typed `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` helpers remain in `FastMoq.Core`
+- if you install `FastMoq.Core` directly, add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)`, `CreateHttpRequestData(...)`, or `CreateHttpResponseData(...)`
+- the typed `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` helpers remain in `FastMoq.Core`, while the request and response body readers stay in `FastMoq.AzureFunctions.Extensions`
 
 Azure SDK helper note:
 
@@ -197,7 +197,7 @@ dotnet add package FastMoq.Web
 
 `PageableBuilder`, `AddTokenCredential(...)`, `AddDefaultAzureCredential(...)`, `CreateAzureConfiguration(...)`, `CreateAzureServiceProvider(...)`, and the Azure client registration helpers live in the `FastMoq.Azure.*` namespaces.
 
-`CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` live in `FastMoq.AzureFunctions.Extensions`, while the generic `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` helpers stay in `FastMoq.Extensions`.
+`CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)`, `CreateHttpRequestData(...)`, `CreateHttpResponseData(...)`, `ReadBodyAsStringAsync(...)`, and `ReadBodyAsJsonAsync<T>(...)` live in `FastMoq.AzureFunctions.Extensions`, while the generic `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` helpers stay in `FastMoq.Extensions`.
 
 `GetMockDbContext<TContext>()` remains the default mocked-sets entry point. For explicit mode selection between mocked DbSets and a real EF in-memory context, use `GetDbContextHandle<TContext>(new DbContextHandleOptions<TContext> { ... })`.
 

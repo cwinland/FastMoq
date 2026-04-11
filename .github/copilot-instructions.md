@@ -9,7 +9,7 @@ It wraps and extends mocking providers (currently Moq, with planned provider‑a
 - Offer verification helpers and structured logging.
 
 ## 🛠 Tech Stack
-- **Language**: C# (.NET 6, 8, 9 targets)
+- **Language**: C# (.NET 8, 9, and 10 targets)
 - **Test frameworks**: xUnit (primary), with Moq as current default provider.
 - **Key namespaces**: `FastMoq.Core`, `FastMoq.Web`, `FastMoq.Web.Blazor`
 - **Patterns**: Constructor injection, provider abstraction, extension methods.

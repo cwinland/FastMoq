@@ -82,7 +82,7 @@ Use this table when you are deciding which package line your test project should
 | simplest all-in-one experience | `FastMoq` | Aggregate package that includes the primary runtime, shared Azure SDK helpers, database helpers, web support, Azure Functions helpers, and the FastMoq analyzer pack by default |
 | lighter core-only usage | `FastMoq.Core` | Provider-first runtime without the extra EF, web-specific, or analyzer package payloads |
 | Azure SDK credentials, pageable builders, or Azure-oriented DI/config helpers while using `FastMoq.Core` | `FastMoq.Azure` | Adds `PageableBuilder`, token/default-credential helpers, Azure-oriented configuration/service-provider helpers, and common Azure client registration helpers |
-| Azure Functions worker helpers while using `FastMoq.Core` | `FastMoq.AzureFunctions` | Adds `CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` in `FastMoq.AzureFunctions.Extensions` while keeping the typed `IServiceProvider` helpers in core |
+| Azure Functions worker helpers while using `FastMoq.Core` | `FastMoq.AzureFunctions` | Adds `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)`, `CreateHttpRequestData(...)`, `CreateHttpResponseData(...)`, and body readers in `FastMoq.AzureFunctions.Extensions` while keeping the typed `IServiceProvider` helpers in core |
 | DbContext and EF-specific helpers while using `FastMoq.Core` | `FastMoq.Database` | Adds `GetMockDbContext<TContext>()` and the explicit DbContext handle modes |
 | controller, `HttpContext`, `IHttpContextAccessor`, or claims-principal helpers while using `FastMoq.Core` | `FastMoq.Web` | Adds `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, and `AddHttpContextAccessor(...)` |
 | Moq-specific tracked-mock extension methods during migration | `FastMoq.Provider.Moq` | Adds provider-package extension methods such as `AsMoq()`, `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, and `Protected()` on `IFastMock<T>` |
@@ -98,7 +98,7 @@ Important package boundaries in the current v4 line:
 - `FastMoq.Core` includes the built-in `reflection` provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as `Setup(...)` and `Protected()` still belong to the `FastMoq.Provider.Moq` package
 - provider-package extension methods still follow the provider-package docs and selection rules described in [Provider Selection and Setup](./provider-selection.md)
 - if you are wiring Azure SDK clients, pageable sequences, or token credentials through tests while consuming `FastMoq.Core` directly, add `FastMoq.Azure`
-- if you are wiring Azure Functions worker tests through `FunctionContext.InstanceServices`, add `FastMoq.AzureFunctions` when you consume `FastMoq.Core` directly
+- if you are wiring Azure Functions worker tests through `FunctionContext.InstanceServices` or concrete HTTP-trigger request and response objects, add `FastMoq.AzureFunctions` when you consume `FastMoq.Core` directly
 - if you are unsure whether your web tests need another package, see the web-helper notes in [Testing Guide](./testing-guide.md#controller-testing) and the migration-specific notes in [Framework and web helper migration](../migration/framework-and-web-helpers.md#web-test-helpers)
 
 If your team wants the aggregate runtime package without analyzer diagnostics in a specific test project, you can opt out with:
