@@ -1,6 +1,6 @@
 # FastMoq Documentation
 
-This site combines generated API reference with real-world example documentation for the current FastMoq v4 codebase.
+This site combines generated API reference with real-world example documentation for the published FastMoq `4.1.0` line and the current v4 codebase.
 
 ## New to FastMoq
 
@@ -12,7 +12,7 @@ This site combines generated API reference with real-world example documentation
 
 ## Upgrading to v4
 
-- The release delta from `3.0.0` is centered on provider-first architecture, the new package split, explicit policy surfaces, provider-neutral verification, and the scenario builder.
+- The release delta from `3.0.0` is centered on provider-first architecture, the expanded package split, first-party Azure SDK and Azure Functions helpers, analyzer-by-default aggregate installs, explicit policy surfaces, provider-neutral verification, and the scenario builder.
 - Start with the release summary, then use the breaking-change and migration pages to decide how much compatibility behavior your test suites still need.
 
 - [Migration guide](docs/migration/README.md)
@@ -62,12 +62,28 @@ Use the example pages first when you want to understand how FastMoq is applied i
 
 ### FastMoq
 
-The aggregate package that pulls together the core runtime, database helpers, and web support.
+The aggregate package that pulls together the core runtime, shared Azure SDK helpers, Azure Functions helpers, database helpers, web support, provider integrations, and analyzer assets.
 
 - [FastMoq namespace](api/FastMoq.yml)
 - [Extension methods](api/FastMoq.Extensions.yml)
 - [Provider APIs](api/FastMoq.Providers.yml)
 - [Web and Blazor APIs](api/FastMoq.Web.Blazor.yml)
+
+### FastMoq.Azure
+
+Shared Azure SDK helpers for pageable builders, credential setup, Azure-oriented configuration or service-provider flows, and common client registration.
+
+- [Getting started package choices](docs/getting-started/README.md#package-choices)
+- [Sample applications overview](docs/samples/README.md)
+- [What's new since 3.0.0](docs/whats-new/README.md)
+
+### FastMoq.AzureFunctions
+
+Azure Functions worker and HTTP-trigger helpers, including `FunctionContext.InstanceServices`, concrete `HttpRequestData` and `HttpResponseData` builders, and body readers.
+
+- [Azure Functions extensions namespace](api/FastMoq.AzureFunctions.Extensions.yml)
+- [FunctionContextTestExtensions](api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.yml)
+- [Testing guide](docs/getting-started/testing-guide.md)
 
 ### FastMoq.Abstractions
 
@@ -119,6 +135,13 @@ Optional NSubstitute provider package for teams standardizing on NSubstitute ins
 - [NSubstitute provider types](api/FastMoq.Providers.NSubstituteProvider.yml)
 - [IMockingProvider](api/FastMoq.Providers.IMockingProvider.yml)
 - [MockingProviderRegistry](api/FastMoq.Providers.MockingProviderRegistry.yml)
+
+### FastMoq.Analyzers
+
+Roslyn analyzers and code fixes for provider-first guidance and migration cleanup. These analyzer assets are included by default in the aggregate `FastMoq` package.
+
+- [Getting started package choices](docs/getting-started/README.md#package-choices)
+- [Migration guide](docs/migration/README.md)
 
 ## Provider-first APIs
 

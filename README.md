@@ -10,12 +10,13 @@ FastMoq is a .NET testing framework for auto-mocking, dependency injection, and 
 
 ## Release Highlights Since 3.0.0
 
-- provider-first architecture built around `IMockingProvider`, `IFastMock<T>`, and `MockingProviderRegistry`
-- new package split with `FastMoq.Abstractions`, `FastMoq.Database`, `FastMoq.Provider.Moq`, and `FastMoq.Provider.NSubstitute`
-- provider-neutral verification with `Verify(...)`, `VerifyLogged(...)`, and `TimesSpec`
-- fluent scenario building through `Scenario.With(...).When(...).Then(...).Verify(...)`
-- explicit construction, invocation, and known-type policies instead of older coupled option bags
-- expanded migration docs, executable examples, and generated API coverage
+- provider-first architecture built around `IMockingProvider`, `IFastMock<T>`, and `MockingProviderRegistry`, with the bundled `reflection` default and optional provider-specific integrations
+- current package split across `FastMoq`, `FastMoq.Abstractions`, `FastMoq.Azure`, `FastMoq.AzureFunctions`, `FastMoq.Database`, `FastMoq.Web`, `FastMoq.Provider.Moq`, and `FastMoq.Provider.NSubstitute`
+- first-party Azure SDK helpers for pageable builders, credential setup, Azure-oriented configuration and service-provider flows, and common client registration
+- first-party Azure Functions helpers for typed `FunctionContext.InstanceServices`, concrete `HttpRequestData` and `HttpResponseData` builders, and request or response body readers
+- aggregate `FastMoq` package now includes the FastMoq analyzer pack by default, while `FastMoq.Analyzers` remains available for core-only package graphs
+- provider-neutral verification with `Verify(...)`, `VerifyLogged(...)`, and `TimesSpec`, plus fluent `Scenario.With(...).When(...).Then(...).Verify(...)` flows
+- explicit construction, invocation, and known-type policies instead of older coupled option bags, with expanded migration docs, executable examples, and generated API coverage
 
 ## Why FastMoq
 
@@ -152,7 +153,8 @@ The FastMoq version removes explicit mock declarations, subject construction, an
 
 ## Packages
 
-- FastMoq - Aggregate package that combines the primary FastMoq runtime, shared Azure SDK helpers, database helpers, Azure Functions helpers, and web support.
+- FastMoq - Aggregate package that combines the primary FastMoq runtime, shared Azure SDK helpers, Azure Functions helpers, database helpers, web support, provider integrations, and the FastMoq analyzer pack.
+- FastMoq.Analyzers - Standalone Roslyn analyzers and code fixes for provider-first guidance and migration cleanup.
 - FastMoq.Abstractions - Shared provider contracts used by core and provider packages.
 - FastMoq.Core - Core testing Mocker and provider-first resolution pipeline.
 - FastMoq.Azure - Shared Azure SDK testing helpers for credentials, pageable builders, Azure-oriented configuration, and common client registration.
@@ -218,8 +220,8 @@ For a temporary override in a specific async scope, use `MockingProviderRegistry
 
 ## Targets
 
-- .NET 9
 - .NET 8
+- .NET 9
 - .NET 10
 
 ## Quick Example

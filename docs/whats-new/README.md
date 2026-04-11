@@ -1,6 +1,17 @@
 # What's New Since 3.0.0
 
-This page summarizes the release delta between the last public `3.0.0` package and the current v4 code line in this repository.
+This page summarizes the release delta between the last public `3.0.0` package and the current published `4.1.0` v4 line in this repository.
+
+## 4.1.0
+
+FastMoq `4.1.0` updates the published v4 line to match the broader package split and helper surface that had been taking shape in the repository.
+
+Consumer impact:
+
+- the aggregate `FastMoq` package now pulls together the core runtime, shared Azure SDK helpers, Azure Functions HTTP-trigger helpers, database helpers, web support, provider integrations, and analyzer assets by default
+- `FastMoq.Azure` is the first-party package for `PageableBuilder`, token and default credential helpers, Azure-oriented configuration or service-provider helpers, and common Azure client registration
+- `FastMoq.AzureFunctions` is the first-party package for typed `FunctionContext.InstanceServices` setup, concrete `HttpRequestData` and `HttpResponseData` builders, and body readers for request or response assertions
+- the docs now steer consumers more directly between the aggregate package path and split-package installs based on which helpers a test project actually needs
 
 ## 4.0.3
 
@@ -35,8 +46,9 @@ The work after `3.0.0` is not a small compatibility patch. It is a broader v4 re
 At a high level, the current line adds:
 
 - a provider-first architecture with explicit provider registration and selection
-- a new package split for abstractions, database helpers, and provider-specific adapters
+- a new package split for abstractions, Azure SDK helpers, Azure Functions helpers, database helpers, web helpers, and provider-specific adapters
 - first-party Azure testing helpers for storage-client registration and Azure Functions worker or HTTP-trigger setup
+- analyzer guidance that can be consumed as a standalone package or through the aggregate `FastMoq` package by default
 - provider-neutral verification and scenario-building APIs for newer tests
 - explicit policy surfaces for constructor fallback, method fallback, built-in known types, and optional-parameter resolution
 - expanded repo-native documentation, migration guidance, and executable examples
@@ -64,10 +76,12 @@ The package boundary is much clearer than it was in `3.0.0`.
 
 Notable additions and changes:
 
+- `FastMoq.Azure` now carries the shared Azure SDK helpers for pageable builders, credentials, Azure-oriented DI/configuration, and common client registration flows.
 - `FastMoq.Abstractions` now carries the provider contracts shared by core and provider packages.
 - `FastMoq.Provider.Moq` now owns the Moq compatibility provider and Moq-specific convenience extensions.
 - `FastMoq.Provider.NSubstitute` adds an optional NSubstitute provider package.
 - `FastMoq.AzureFunctions` now owns the Azure Functions worker helpers for `FunctionContext.InstanceServices` plus concrete `HttpRequestData` and `HttpResponseData` builders and body helpers for HTTP-trigger tests.
+- `FastMoq.Analyzers` remains available as a standalone package, and the aggregate `FastMoq` package now includes those analyzer assets by default.
 - `FastMoq.Database` now owns the EF- and DbContext-specific helpers that previously lived in core.
 - `FastMoq.Core` stays lighter and focuses on provider-neutral construction, tracking, verification, and built-in known-type handling.
 
@@ -187,6 +201,7 @@ Compared to `3.0.0`, the current line also updates the supported target framewor
 
 - libraries now target `net8.0`, `net9.0`, and `net10.0`
 - older packaging based on per-project `.nuspec` files was removed in favor of SDK-style package metadata in the project files
+- the aggregate `FastMoq` package now ships analyzer assets by default while the split-package path keeps analyzers opt-in
 - solution and test coverage expanded to include provider-specific packages and verification matrices
 
 ## Recommended reading order

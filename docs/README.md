@@ -7,9 +7,10 @@ Welcome to the comprehensive FastMoq documentation! This documentation is design
 If you are coming from the last public `3.0.0` package, the biggest changes in the current line are:
 
 - provider-first architecture with explicit provider registration and selection
-- new package split across abstractions, database helpers, and provider-specific adapters
+- new package split across the aggregate runtime, Azure SDK helpers, Azure Functions helpers, database helpers, web helpers, and provider-specific adapters
+- first-party Azure SDK and Azure Functions HTTP-trigger helpers, with analyzer assets included by default in the aggregate `FastMoq` package
 - provider-neutral verification with `TimesSpec`, `Verify(...)`, and `VerifyLogged(...)`
-- fluent `Scenario.With(...).When(...).Then(...).Verify(...)` support
+- fluent `Scenario.With(...).When(...).Then(...).Verify(...)` support for workflow-style tests
 - explicit policy surfaces for constructor fallback, method fallback, known-type resolution, and optional-parameter behavior
 - expanded migration guidance, executable examples, and generated API coverage
 
@@ -106,7 +107,7 @@ Practical guidance for moving from the `3.0.0` public release toward the current
 | **Background Jobs** | [Background Services](./cookbook/README.md#background-services-testing) | [Executable Testing Examples](./samples/testing-examples.md) |
 | **Blazor Apps** | [bUnit and Blazor test migration](./migration/bunit-and-blazor-testing.md) | [Executable Testing Examples](./samples/testing-examples.md) |
 
-Package note: `FastMoq` is the aggregate package. Provider contracts live in `FastMoq.Abstractions`, `FastMoq.Core` stays lighter, shared Azure SDK helpers live in the `FastMoq.Azure.*` namespaces, EF-specific helpers live in `FastMoq.Database`, Azure Functions worker and HTTP-trigger helpers live in `FastMoq.AzureFunctions.Extensions`, provider-specific adapters live in `FastMoq.Provider.*`, and web helpers live in `FastMoq.Web.Extensions` while the primary runtime calls stay in the `FastMoq` or `FastMoq.Extensions` namespaces.
+Package note: `FastMoq` is the aggregate package. Provider contracts live in `FastMoq.Abstractions`, `FastMoq.Core` stays lighter, shared Azure SDK helpers live in the `FastMoq.Azure.*` namespaces, EF-specific helpers live in `FastMoq.Database`, Azure Functions worker and HTTP-trigger helpers live in `FastMoq.AzureFunctions.Extensions`, provider-specific adapters live in `FastMoq.Provider.*`, web helpers live in `FastMoq.Web.Extensions`, and analyzer assets ship with the aggregate package by default while the primary runtime calls stay in the `FastMoq` or `FastMoq.Extensions` namespaces.
 
 Web helper note: if your test project references the aggregate `FastMoq` package, the web helpers are already included. If your test project references `FastMoq.Core` directly, add `FastMoq.Web` before using helpers such as `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, or `AddHttpContextAccessor(...)`.
 
@@ -204,7 +205,7 @@ We welcome contributions! See our:
 
 ## 🏷️ Version Information
 
-This documentation tracks the current post-`3.0.0` FastMoq v4 release line.
+This documentation tracks the published FastMoq `4.1.0` line and the current v4 package layout.
 
 ---
 
