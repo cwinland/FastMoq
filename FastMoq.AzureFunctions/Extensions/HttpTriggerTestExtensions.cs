@@ -2,8 +2,6 @@ using FastMoq.Extensions;
 using FastMoq.AzureFunctions.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using System.Collections;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
@@ -14,9 +12,6 @@ namespace FastMoq.AzureFunctions.Extensions
     /// </summary>
     public static class HttpTriggerTestExtensions
     {
-        private static readonly FieldInfo TypeMapField = typeof(Mocker).GetField("typeMap", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new InvalidOperationException("Unable to access FastMoq type registrations.");
-
         /// <summary>
         /// Creates a concrete <see cref="HttpRequestData" /> for the current <see cref="Mocker" /> instance.
         /// </summary>
@@ -94,11 +89,11 @@ namespace FastMoq.AzureFunctions.Extensions
         /// <param name="jsonSerializerOptions">Optional serializer options.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The deserialized body value.</returns>
-        public static async Task<TValue?> ReadBodyAsJsonAsync<TValue>(this HttpRequestData request, JsonSerializerOptions? jsonSerializerOptions = null, CancellationToken cancellationToken = default)
+        public static Task<TValue?> ReadBodyAsJsonAsync<TValue>(this HttpRequestData request, JsonSerializerOptions? jsonSerializerOptions = null, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(request);
 
-            return await ReadStreamAsJsonAsync<TValue>(request.Body, jsonSerializerOptions, cancellationToken);
+            return ReadStreamAsJsonAsync<TValue>(request.Body, jsonSerializerOptions, cancellationToken);
         }
 
         /// <summary>
@@ -122,11 +117,11 @@ namespace FastMoq.AzureFunctions.Extensions
         /// <param name="jsonSerializerOptions">Optional serializer options.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The deserialized body value.</returns>
-        public static async Task<TValue?> ReadBodyAsJsonAsync<TValue>(this HttpResponseData response, JsonSerializerOptions? jsonSerializerOptions = null, CancellationToken cancellationToken = default)
+        public static Task<TValue?> ReadBodyAsJsonAsync<TValue>(this HttpResponseData response, JsonSerializerOptions? jsonSerializerOptions = null, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(response);
 
-            return await ReadStreamAsJsonAsync<TValue>(response.Body, jsonSerializerOptions, cancellationToken);
+            return ReadStreamAsJsonAsync<TValue>(response.Body, jsonSerializerOptions, cancellationToken);
         }
 
         private static FunctionContext GetOrCreateConfiguredFunctionContext(Mocker mocker)
@@ -141,7 +136,7 @@ namespace FastMoq.AzureFunctions.Extensions
                 }
             }
 
-            if (HasTypeRegistration(mocker, typeof(IServiceProvider)))
+            if (mocker.HasTypeRegistration(typeof(IServiceProvider)))
             {
                 mocker.AddFunctionContextInstanceServices(mocker.GetRequiredObject<IServiceProvider>(), replace: true);
                 return mocker.GetRequiredObject<FunctionContext>();
@@ -151,15 +146,10 @@ namespace FastMoq.AzureFunctions.Extensions
             return mocker.GetRequiredObject<FunctionContext>();
         }
 
-        private static bool HasTypeRegistration(Mocker mocker, Type type)
-        {
-            return TypeMapField.GetValue(mocker) is IDictionary typeMap && typeMap.Contains(type);
-        }
-
         private static async Task<TValue?> ReadStreamAsJsonAsync<TValue>(Stream stream, JsonSerializerOptions? jsonSerializerOptions, CancellationToken cancellationToken)
         {
             ResetStreamPosition(stream);
-            var value = await JsonSerializer.DeserializeAsync<TValue>(stream, jsonSerializerOptions, cancellationToken);
+            var value = await JsonSerializer.DeserializeAsync<TValue>(stream, jsonSerializerOptions, cancellationToken).ConfigureAwait(false);
             ResetStreamPosition(stream);
             return value;
         }
@@ -169,7 +159,7 @@ namespace FastMoq.AzureFunctions.Extensions
             ResetStreamPosition(stream);
 
             using var reader = new StreamReader(stream, encoding ?? Encoding.UTF8, detectEncodingFromByteOrderMarks: true, leaveOpen: true);
-            var value = await reader.ReadToEndAsync();
+            var value = await reader.ReadToEndAsync().ConfigureAwait(false);
 
             ResetStreamPosition(stream);
             return value;

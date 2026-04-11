@@ -68,6 +68,11 @@ namespace FastMoq.AzureFunctions.Http
         {
             ArgumentNullException.ThrowIfNull(url);
 
+            if (!url.IsAbsoluteUri)
+            {
+                throw new ArgumentException("The request URL must be absolute.", nameof(url));
+            }
+
             _url = url;
             return this;
         }
@@ -171,7 +176,7 @@ namespace FastMoq.AzureFunctions.Http
             ArgumentException.ThrowIfNullOrWhiteSpace(name);
             ArgumentNullException.ThrowIfNull(value);
 
-            _cookies.Add(new HttpResponseDataBuilder.TestHttpCookie(name, value, domain: domain, path: path));
+            _cookies.Add(new TestHttpCookie(name, value, domain: domain, path: path));
             return this;
         }
 

@@ -131,6 +131,7 @@ namespace FastMoq.Tests
                 .WithMethod("PUT")
                 .WithUrl("https://fastmoq.dev/widgets?existing=1")
                 .WithHeader("x-fastmoq", "true")
+                .WithCookie("session", "abc")
                 .WithQueryParameter("mode", "test")
                 .WithClaimsPrincipal(principal)
                 .WithJsonBody(new TriggerPayload
@@ -149,19 +150,38 @@ namespace FastMoq.Tests
             request.Headers.TryGetValues("Content-Type", out var contentTypes).Should().BeTrue();
             contentTypes.Should().ContainSingle().Which.Should().StartWith("application/json");
             request.Identities.Should().ContainSingle().Which.Name.Should().Be("chris");
+            request.Cookies.Should().ContainSingle(cookie => cookie.Name == "session" && cookie.Value == "abc");
 
-            var payload = await request.ReadFromJsonAsync<TriggerPayload>();
+            var payload = await request.ReadBodyAsJsonAsync<TriggerPayload>();
             payload.Should().BeEquivalentTo(new TriggerPayload
             {
                 Name = "alpha",
                 Count = 2,
             });
 
+            var bodyText = await request.ReadBodyAsStringAsync();
+            bodyText.Should().Contain("alpha");
+
             var response = request.CreateResponse();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             response.FunctionContext.Should().BeSameAs(request.FunctionContext);
             response.Headers.Should().NotBeNull();
             response.Body.Should().NotBeNull();
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        public void CreateHttpRequestData_ShouldRejectRelativeUriInstances(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            Action action = () => mocker.CreateHttpRequestData(builder => builder.WithUrl(new Uri("widgets", UriKind.Relative)));
+
+            action.Should().Throw<ArgumentException>()
+                .WithParameterName("url")
+                .WithMessage("*absolute*");
         }
 
         [Theory]
@@ -212,6 +232,28 @@ namespace FastMoq.Tests
 
             var request = mocker.CreateHttpRequestData();
 
+            request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        public void CreateHttpRequestData_ShouldReuseExistingServiceProviderRegistration(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+            var expectedUri = new Uri("https://services.fastmoq/");
+            var provider = mocker.CreateTypedServiceProvider(services =>
+            {
+                services.AddSingleton(expectedUri);
+                services.AddOptions();
+            });
+
+            mocker.AddServiceProvider(provider, replace: true);
+
+            var request = mocker.CreateHttpRequestData();
+
+            request.FunctionContext.InstanceServices.Should().BeSameAs(provider);
             request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
         }
 
