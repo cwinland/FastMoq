@@ -1,4 +1,5 @@
 ﻿using FastMoq.Extensions;
+using FastMoq.Providers.MoqProvider;
 using FastMoq.Tests.TestClasses;
 using Moq.Protected;
 using System;
@@ -58,12 +59,12 @@ namespace FastMoq.Tests
         [Fact]
         public void GetObject_HttpClient_ShouldPreferTrackedMock_OverBuiltIn()
         {
-            var trackedMock = Mocks.GetMock<HttpClient>();
-            trackedMock.Object.BaseAddress = new Uri("http://tracked.fastmoq/");
+            var trackedMock = Mocks.GetOrCreateMock<HttpClient>();
+            trackedMock.Instance.BaseAddress = new Uri("http://tracked.fastmoq/");
 
             var httpClient = Mocks.GetObject<HttpClient>();
 
-            httpClient.Should().BeSameAs(trackedMock.Object);
+            httpClient.Should().BeSameAs(trackedMock.Instance);
         }
 
         [Fact]
@@ -211,7 +212,7 @@ namespace FastMoq.Tests
         public async Task TrackedHttpMessageHandlerMock_ShouldDriveHttpClientRequests()
         {
             // Add mocks / setup
-            Mock<HttpMessageHandler> handler = Mocks.GetMock<HttpMessageHandler>();
+            var handler = Mocks.GetOrCreateMock<HttpMessageHandler>();
 
             handler.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(() =>

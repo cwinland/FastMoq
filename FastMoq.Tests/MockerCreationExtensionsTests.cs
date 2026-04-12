@@ -1,4 +1,5 @@
 ﻿using FastMoq.Extensions;
+using FastMoq.Providers.MoqProvider;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
@@ -47,21 +48,21 @@ namespace FastMoq.Tests
         [Fact]
         public void SetupMockProperty_ShouldAssignValue_WhenUsingPropertyInfo()
         {
-            var mock = Mocks.GetMock<IFormFile>();
+            var mock = Mocks.GetOrCreateMock<IFormFile>().AsMoq();
             mock.SetupMockProperty(typeof(IFormFile).GetProperty("Headers"), new HeaderDictionary());
         }
 
         [Fact]
         public void SetupMockProperty_ShouldAssignValue_WhenUsingPropertyName()
         {
-            var mock = Mocks.GetMock<IFormFile>();
+            var mock = Mocks.GetOrCreateMock<IFormFile>().AsMoq();
             mock.SetupMockProperty("Headers", new HeaderDictionary());
         }
 
         [Fact]
         public void SetupMockProperty_ShouldAssignValue_WhenUsingPropertyExpression()
         {
-            var mock = Mocks.GetMock<IFormFile>();
+            var mock = Mocks.GetOrCreateMock<IFormFile>().AsMoq();
             mock.SetupMockProperty(x => x.Headers, new HeaderDictionary());
         }
     }

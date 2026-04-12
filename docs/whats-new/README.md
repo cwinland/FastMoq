@@ -153,7 +153,9 @@ The new database surface includes:
 
 `GetMockDbContext<TContext>()` remains available through the `FastMoq` namespace for low-churn usage, but the implementation and EF-specific dependencies now live in `FastMoq.Database`.
 
-The mocked-sets path still uses the existing Moq-based `DbContextMock<TContext>` internals, while real EF-backed in-memory behavior is now exposed explicitly through `DbContextTestMode.RealInMemory`.
+The mocked-sets helper continues to create and configure the tracked DbContext, while real EF-backed in-memory behavior is now exposed explicitly through `DbContextTestMode.RealInMemory`. That same tracked context is also available through provider-first retrieval such as `GetOrCreateMock<TContext>()`.
+
+Constructor-selection updates in this PR also add an explicit `MockerTestBase<TComponent>.ComponentConstructorParameterTypes` hook, a `[PreferredConstructor]` attribute for production types that advertise a default constructor choice, and `ConstructorAmbiguityBehavior` policy support for opt-in fallback behavior.
 
 ### Compatibility and behavior cleanup
 

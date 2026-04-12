@@ -409,15 +409,15 @@ When you need to choose between pure mock behavior and a real EF in-memory conte
 protected override Action<Mocker> SetupMocksAction => mocker =>
 {
     var dbContextMock = mocker.GetMockDbContext<ApplicationDbContext>();
-    mocker.AddType(_ => dbContextMock.Object);
+    dbContextMock.Object.Database.EnsureCreated();
 };
 ```
 
 Recommended pattern:
 
 1. Create the context mock with [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)).
-2. Add the context object into the type map when the component under test expects the context itself.
-3. Seed test data through the resolved context object before calling the system under test.
+2. Seed test data through the resolved context object or `dbContextMock.Object` before calling the system under test.
+3. If you need the tracked provider-first handle for the same context, call `GetOrCreateMock<TContext>()` after the helper has tracked it; the returned mock exposes that same tracked context.
 
 This is the supported path for EF Core tests in this repo. It keeps DbSet setup and context creation aligned with the framework's existing helper behavior.
 

@@ -381,7 +381,7 @@ Practical guidance:
 - if you install `FastMoq`, keep using `GetMockDbContext<TContext>()` as before
 - if you install `FastMoq.Core` directly, also install `FastMoq.Database`
 - use `GetDbContextHandle<TContext>(...)` when you need to choose explicitly between mocked sets and a real in-memory EF context
-- do not assume the mocked-sets helper is provider-neutral yet; today that path still uses the moved Moq-based implementation
+- once `GetMockDbContext<TContext>()` or `GetDbContextHandle<TContext>(...)` has tracked the DbContext in mocked-sets mode, `GetOrCreateMock<TContext>()` and `GetMockModel<TContext>()` return that same tracked context through the provider-first APIs
 
 Current repo behavior now makes the mode split explicit:
 

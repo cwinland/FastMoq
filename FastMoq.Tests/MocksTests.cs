@@ -121,10 +121,11 @@ namespace FastMoq.Tests
         [Fact]
         public void GetNativeMock_ShouldReturnProviderNativeObject()
         {
+            var fastMock = Mocks.GetOrCreateMock<IFileSystemInfo>();
             var nativeMock = Mocks.GetNativeMock<IFileSystemInfo>();
 
             nativeMock.Should().BeOfType<Mock<IFileSystemInfo>>();
-            nativeMock.Should().BeSameAs(Mocks.GetMock<IFileSystemInfo>());
+            nativeMock.Should().BeSameAs(fastMock.NativeMock);
         }
 
         [Fact]
@@ -154,11 +155,11 @@ namespace FastMoq.Tests
         [Fact]
         public void GetMockModel_NativeMock_ShouldMatchCurrentProviderObject()
         {
-            Mocks.GetMock<IFileSystem>();
+            var fastMock = Mocks.GetOrCreateMock<IFileSystem>();
             var mockModel = Mocks.GetMockModel<IFileSystem>();
 
             mockModel.NativeMock.Should().BeOfType<Mock<IFileSystem>>();
-            mockModel.NativeMock.Should().BeSameAs(Mocks.GetNativeMock<IFileSystem>());
+            mockModel.NativeMock.Should().BeSameAs(fastMock.NativeMock);
         }
 
         [Fact]
@@ -407,13 +408,13 @@ namespace FastMoq.Tests
         public void GetObject_IFileSystem_ShouldReturnTrackedMockWhenExists()
         {
             // Arrange
-            var trackedMock = Mocks.GetMock<IFileSystem>();
+            var trackedMock = Mocks.GetOrCreateMock<IFileSystem>();
 
             // Act
             var result = Mocks.GetObject<IFileSystem>();
 
             // Assert - should return the tracked mock, not the built-in
-            result.Should().BeSameAs(trackedMock.Object);
+            result.Should().BeSameAs(trackedMock.Instance);
             Mocks.Contains<IFileSystem>().Should().BeTrue();
         }
 
@@ -806,8 +807,8 @@ namespace FastMoq.Tests
         public void CreateMockWithInjectParameters()
         {
             Mocks.AddType<ITestClassOne, TestClassOne>();
-            Mocks.GetMock<ITestClassOne>().Object.FileSystem.Should().NotBeNull();
-            Mocks.GetMock<TestClassOne>().Object.FileSystem.Should().NotBeNull();
+            Mocks.GetOrCreateMock<ITestClassOne>().Instance.FileSystem.Should().NotBeNull();
+            Mocks.GetOrCreateMock<TestClassOne>().Instance.FileSystem.Should().NotBeNull();
         }
 
         [Fact]
@@ -1460,7 +1461,7 @@ namespace FastMoq.Tests
             Mocks.GetObject<TestClassDouble1>().Value.Should().Be(33);
             Mocks.GetObject<TestClassDouble1>().Value = 44;
             Mocks.GetObject<TestClassDouble1>().Value.Should().Be(44);
-            Mocks.GetMock<TestClassDouble1>().Object.Value.Should().Be(44);
+            Mocks.GetOrCreateMock<TestClassDouble1>().Instance.Value.Should().Be(44);
         }
 
         [Fact]
@@ -1865,8 +1866,7 @@ namespace FastMoq.Tests
         [Fact]
         public void AddProperties_WritableProperty_ShouldHaveValue2()
         {
-            var mock = Mocks.GetMock<SubscriptionData>();
-            var obj = mock.Object;
+            var obj = Mocks.GetObject<SubscriptionData>();
             Component.AddProperties(obj, new KeyValuePair<string, object>("DisplayName", "TestDisplay"), new KeyValuePair<string, object>("SubscriptionId", "testSub"), new KeyValuePair<string, object>("tenantId", Guid.NewGuid()));
             obj.DisplayName.Should().NotBeNullOrEmpty();
             obj.SubscriptionId.Should().NotBeNullOrEmpty();
@@ -1879,8 +1879,7 @@ namespace FastMoq.Tests
         public void AddProperties_WritableProperty_WithAddType_ShouldHaveValues2()
         {
             Mocks.AddType("Display Name Test");
-            var mock = Mocks.GetMock<SubscriptionData>();
-            var obj = mock.Object;
+            var obj = Mocks.GetObject<SubscriptionData>();
             Component.AddProperties(obj, new KeyValuePair<string, object>("DisplayName", "TestDisplay"));
             obj.DisplayName.Should().Be("TestDisplay");
             obj.SubscriptionId.Should().Be("Display Name Test");
@@ -1891,8 +1890,7 @@ namespace FastMoq.Tests
         [Fact]
         public void AddProperties_Test()
         {
-            var mock = Mocks.GetMock<SubscriptionData>();
-            var obj = mock.Object;
+            var obj = Mocks.GetObject<SubscriptionData>();
             Component.AddProperties(obj,
                 new KeyValuePair<string, object>("DisplayName", "TestDisplay"),
                 new KeyValuePair<string, object>("TenantId", Guid.NewGuid()),
@@ -1926,8 +1924,7 @@ namespace FastMoq.Tests
             Mocks.AddType(Guid.NewGuid() as Guid?);
             Mocks.AddType(Guid.NewGuid());
             Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
-            var mock = Mocks.GetMock<SubscriptionData>();
-            var obj = mock.Object;
+            var obj = Mocks.GetObject<SubscriptionData>();
             obj.DisplayName.Should().Be("Test1");
             obj.SubscriptionId.Should().Be("Test2");
             obj.TenantId.Should().NotBeNull();
@@ -1956,8 +1953,7 @@ namespace FastMoq.Tests
             });
             Mocks.AddType(Guid.NewGuid() as Guid?);
             Mocks.AddType(Guid.NewGuid());
-            var mock = Mocks.GetMock<SubscriptionData>();
-            var obj = mock.Object;
+            var obj = Mocks.GetObject<SubscriptionData>();
             obj.DisplayName.Should().Be("Test1");
             obj.SubscriptionId.Should().Be("Test2");
             obj.TenantId.Should().NotBeNull();
@@ -2008,8 +2004,8 @@ namespace FastMoq.Tests
 
         private static void SetupAction(Mocker mocks)
         {
-            mocks.GetMock<IDirectory>().SetupAllProperties();
-            mocks.GetMock<IFileInfo>().SetupAllProperties();
+            ((Mock<IDirectory>)mocks.GetOrCreateMock<IDirectory>().NativeMock).SetupAllProperties();
+            ((Mock<IFileInfo>)mocks.GetOrCreateMock<IFileInfo>().NativeMock).SetupAllProperties();
         }
 
         private static OptionalParameterProbe CreateOptionalParameterProbe(ILogger? logger = null, IFileSystem? fileSystem = null)
