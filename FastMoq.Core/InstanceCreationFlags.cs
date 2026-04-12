@@ -1,7 +1,7 @@
 namespace FastMoq
 {
     /// <summary>
-    /// Per-call overrides for constructor selection and optional-parameter resolution during instance creation.
+    /// Per-call overrides for constructor selection, ambiguity handling, and optional-parameter resolution during instance creation.
     /// <see cref="None"/> preserves the current <see cref="Mocker"/> defaults.
     /// </summary>
     [Flags]
@@ -31,5 +31,10 @@ namespace FastMoq
         /// Use declared default values for optional parameters, or <see langword="null"/> when no default value is available.
         /// </summary>
         UseDefaultOrNullOptionalParameters = 1 << 3,
+
+        /// <summary>
+        /// Prefer the parameterless constructor when constructor selection remains ambiguous within the current visibility scope.
+        /// </summary>
+        PreferParameterlessConstructorOnAmbiguity = 1 << 4,
     }
 }

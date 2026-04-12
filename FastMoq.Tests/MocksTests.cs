@@ -285,6 +285,52 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateBest_ShouldPreserveThrowBehaviorByDefault_WhenParameterlessFallbackIsAvailable()
+        {
+            new Action(() => Mocks.CreateInstance<SameArityPublicConstructorsWithParameterless>())
+                .Should().Throw<AmbiguousImplementationException>();
+        }
+
+        [Fact]
+        public void CreateBest_ShouldPreferParameterlessConstructor_WhenPolicyRequestsAmbiguityFallback()
+        {
+            Mocks.Policy.DefaultConstructorAmbiguityBehavior = ConstructorAmbiguityBehavior.PreferParameterlessConstructor;
+
+            var instance = Mocks.CreateInstance<SameArityPublicConstructorsWithParameterless>();
+
+            instance.Should().NotBeNull();
+            instance!.SelectedConstructor.Should().Be("parameterless");
+            Mocks.LogEntries.Should().Contain(entry => entry.Message.Contains("fell back to parameterless constructor", StringComparison.Ordinal));
+        }
+
+        [Fact]
+        public void CreateBest_ShouldPreferParameterlessConstructor_WhenFlagRequestsAmbiguityFallback()
+        {
+            var instance = Mocks.CreateInstance<SameArityPublicConstructorsWithParameterless>(InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity);
+
+            instance.Should().NotBeNull();
+            instance!.SelectedConstructor.Should().Be("parameterless");
+        }
+
+        [Fact]
+        public void CreateBest_ShouldUsePreferredConstructorAttribute_WhenPresent()
+        {
+            var instance = Mocks.CreateInstance<PreferredConstructorTarget>();
+
+            instance.Should().NotBeNull();
+            instance!.SelectedConstructor.Should().Be("preferred");
+            Mocks.LogEntries.Should().Contain(entry => entry.Message.Contains("[PreferredConstructor]", StringComparison.Ordinal));
+        }
+
+        [Fact]
+        public void CreateBest_ShouldThrow_WhenMultiplePreferredConstructorsExist()
+        {
+            new Action(() => Mocks.CreateInstance<MultiplePreferredConstructorsTarget>())
+                .Should().Throw<InvalidOperationException>()
+                .WithMessage("*multiple constructors marked with [PreferredConstructor]*");
+        }
+
+        [Fact]
         public void GetOrCreateMock_ShouldAllowNonPublicConstructorsByDefault_WhenLenient()
         {
             var fastMock = Mocks.GetOrCreateMock<NonPublicOnlyMockTarget>();
@@ -2090,6 +2136,59 @@ namespace FastMoq.Tests
         public SameArityPublicConstructors(IFile file)
         {
             ArgumentNullException.ThrowIfNull(file);
+        }
+    }
+
+    internal sealed class SameArityPublicConstructorsWithParameterless
+    {
+        public SameArityPublicConstructorsWithParameterless()
+        {
+            SelectedConstructor = "parameterless";
+        }
+
+        public SameArityPublicConstructorsWithParameterless(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            SelectedConstructor = nameof(IFileSystem);
+        }
+
+        public SameArityPublicConstructorsWithParameterless(IFile file)
+        {
+            ArgumentNullException.ThrowIfNull(file);
+            SelectedConstructor = nameof(IFile);
+        }
+
+        public string SelectedConstructor { get; }
+    }
+
+    internal sealed class PreferredConstructorTarget
+    {
+        public PreferredConstructorTarget(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            SelectedConstructor = nameof(IFileSystem);
+        }
+
+        [PreferredConstructor]
+        public PreferredConstructorTarget()
+        {
+            SelectedConstructor = "preferred";
+        }
+
+        public string SelectedConstructor { get; }
+    }
+
+    internal sealed class MultiplePreferredConstructorsTarget
+    {
+        [PreferredConstructor]
+        public MultiplePreferredConstructorsTarget()
+        {
+        }
+
+        [PreferredConstructor]
+        public MultiplePreferredConstructorsTarget(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
         }
     }
 

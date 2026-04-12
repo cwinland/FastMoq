@@ -464,6 +464,74 @@ The default constructor-fallback policy is now also explicit at the `Mocker` lev
 Mocks.Policy.DefaultFallbackToNonPublicConstructors = false;
 ```
 
+### Public Test Classes And Internal Components
+
+FastMoq now supports non-public component construction through the same flags-based model, but it does not change C# accessibility rules.
+
+If a public test class needs to validate an internal or protected component, keep the public test as a wrapper and move the `MockerTestBase<TComponent>` inheritance into an internal helper:
+
+```csharp
+public class InternalOrderRulesTests
+{
+    [Fact]
+    public void PublicTestClass_CanExercise_InternalService()
+    {
+        using var harness = new InternalOrderRulesHarness();
+
+        harness.Sut.IsPriority("P1").Should().BeTrue();
+    }
+}
+
+internal sealed class InternalOrderRulesHarness : MockerTestBase<InternalOrderRules>
+{
+    protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy =>
+    {
+        policy.DefaultFallbackToNonPublicConstructors = false;
+    };
+
+    protected override InstanceCreationFlags ComponentCreationFlags
+        => InstanceCreationFlags.AllowNonPublicConstructorFallback;
+
+    internal InternalOrderRules Sut => Component;
+}
+```
+
+Use `InternalsVisibleTo` when the SUT lives in another assembly.
+The supported runtime behavior is: FastMoq can create the non-public component once the test can legally reference it.
+The unsupported assumption is: FastMoq can make `public class MyTests : MockerTestBase<InternalType>` compile. That remains a compiler restriction, not a FastMoq runtime limitation.
+
+### Constructor Ambiguity Overrides
+
+FastMoq keeps the existing ambiguity-throw behavior by default.
+That means a suite that already expected an `AmbiguousImplementationException` continues to behave the same way until you opt into a different fallback rule.
+
+Current additive options are:
+
+```csharp
+Mocks.Policy.DefaultConstructorAmbiguityBehavior = ConstructorAmbiguityBehavior.PreferParameterlessConstructor;
+
+var component = Mocks.CreateInstance<MyComponent>(
+    InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity);
+```
+
+If one constructor should win regardless of arity, mark it explicitly:
+
+```csharp
+internal sealed class OrderRules
+{
+    [PreferredConstructor]
+    public OrderRules()
+    {
+    }
+
+    public OrderRules(IFileSystem fileSystem)
+    {
+    }
+}
+```
+
+Constructor-selection diagnostics for these paths are captured in `Mocks.LogEntries`.
+
 ### Obsolete `MockOptional`
 
 Old pattern:

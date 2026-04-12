@@ -76,11 +76,14 @@ namespace FastMoq
         public const string SETUP = "Setup";
 
         private static readonly NullabilityInfoContext NullabilityContext = new();
+        private static readonly EventId ConstructorSelectionEventId = new(21021, nameof(ConstructorSelectionEventId));
+        private static readonly EventId ConstructorAmbiguityEventId = new(21071, nameof(ConstructorAmbiguityEventId));
 
         private readonly record struct InstanceConstructionRequest(
             bool? PublicOnly,
             Type?[]? ConstructorParameterTypes,
-            OptionalParameterResolutionMode OptionalParameterResolution);
+            OptionalParameterResolutionMode OptionalParameterResolution,
+            ConstructorAmbiguityBehavior ConstructorAmbiguityBehavior);
 
         /// <summary>
         /// The shared in-memory file system used by built-in file-system resolution helpers.
@@ -1096,12 +1099,12 @@ namespace FastMoq
         {
             ArgumentNullException.ThrowIfNull(type);
 
-            var constructor = GetConstructorByArgs(args, type, true, fallbackToNonPublicConstructors: true, OptionalParameterResolution);
+            var constructor = GetConstructorByArgs(args, type, true, fallbackToNonPublicConstructors: true, OptionalParameterResolution, Policy.DefaultConstructorAmbiguityBehavior);
             return CreateInstanceInternal(type, constructor.ConstructorInfo, OptionalParameterResolution, constructor.ParameterList);
         }
 
         internal T? CreateInstance<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution, params object?[] args) where T : class =>
-            CreateInstanceCore<T>(CreateInstanceConstructionRequest(publicOnly, null, optionalParameterResolution), args);
+            CreateInstanceCore<T>(CreateInstanceConstructionRequest(publicOnly, null, optionalParameterResolution, Policy.DefaultConstructorAmbiguityBehavior), args);
 
         /// <summary>
         /// Creates an instance of <typeparamref name="T"/> by selecting a constructor that matches the supplied parameter types.
@@ -1118,17 +1121,18 @@ namespace FastMoq
             CreateInstanceCore<T>(CreateInstanceConstructionRequest(flags, parameterTypes), Array.Empty<object?>());
 
         internal T? CreateInstanceByType<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution, params Type?[] parameterTypes) where T : class =>
-            CreateInstanceCore<T>(CreateInstanceConstructionRequest(publicOnly, parameterTypes, optionalParameterResolution), Array.Empty<object?>());
+            CreateInstanceCore<T>(CreateInstanceConstructionRequest(publicOnly, parameterTypes, optionalParameterResolution, Policy.DefaultConstructorAmbiguityBehavior), Array.Empty<object?>());
 
         private InstanceConstructionRequest CreateInstanceConstructionRequest(InstanceCreationFlags flags, Type?[]? constructorParameterTypes)
         {
             var publicOnly = ResolvePublicOnlyOverride(flags);
             var optionalParameterResolution = ResolveOptionalParameterResolution(flags);
-            return CreateInstanceConstructionRequest(publicOnly, constructorParameterTypes, optionalParameterResolution);
+            var constructorAmbiguityBehavior = ResolveConstructorAmbiguityBehavior(flags);
+            return CreateInstanceConstructionRequest(publicOnly, constructorParameterTypes, optionalParameterResolution, constructorAmbiguityBehavior);
         }
 
-        private InstanceConstructionRequest CreateInstanceConstructionRequest(bool? publicOnly, Type?[]? constructorParameterTypes, OptionalParameterResolutionMode optionalParameterResolution) =>
-            new(publicOnly, constructorParameterTypes, optionalParameterResolution);
+        private InstanceConstructionRequest CreateInstanceConstructionRequest(bool? publicOnly, Type?[]? constructorParameterTypes, OptionalParameterResolutionMode optionalParameterResolution, ConstructorAmbiguityBehavior constructorAmbiguityBehavior) =>
+            new(publicOnly, constructorParameterTypes, optionalParameterResolution, constructorAmbiguityBehavior);
 
         private static bool? ResolvePublicOnlyOverride(InstanceCreationFlags flags)
         {
@@ -1176,6 +1180,16 @@ namespace FastMoq
             return OptionalParameterResolution;
         }
 
+        private ConstructorAmbiguityBehavior ResolveConstructorAmbiguityBehavior(InstanceCreationFlags flags)
+        {
+            if (flags.HasFlag(InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity))
+            {
+                return ConstructorAmbiguityBehavior.PreferParameterlessConstructor;
+            }
+
+            return Policy.DefaultConstructorAmbiguityBehavior;
+        }
+
         /// <summary>
         /// Centralized creation logic used by all public CreateInstance* methods.
         /// </summary>
@@ -1212,7 +1226,7 @@ namespace FastMoq
                 return CreateInstanceInternal(targetType, constructor, request.OptionalParameterResolution, args) as T;
             }
 
-            var ctorModel = GetConstructorByArgs(args, targetType, false, ShouldFallbackToNonPublicConstructors(request.PublicOnly), request.OptionalParameterResolution);
+            var ctorModel = GetConstructorByArgs(args, targetType, false, ShouldFallbackToNonPublicConstructors(request.PublicOnly), request.OptionalParameterResolution, request.ConstructorAmbiguityBehavior);
             var created = CreateInstanceInternal(targetType, ctorModel.ConstructorInfo, request.OptionalParameterResolution, ctorModel.ParameterList);
             return created as T;
         }
@@ -1232,11 +1246,11 @@ namespace FastMoq
             return allowNonPublicConstructors ?? !ShouldCreateStrictMocks();
         }
 
-        private ConstructorModel GetConstructorByArgs(object?[] args, Type instanceType, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution)
+        private ConstructorModel GetConstructorByArgs(object?[] args, Type instanceType, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution, ConstructorAmbiguityBehavior constructorAmbiguityBehavior)
         {
             return args.Length > 0
                 ? FindConstructor(instanceType, nonPublic, fallbackToNonPublicConstructors, optionalParameterResolution, args)
-                : FindPreferredConstructor(instanceType, nonPublic, fallbackToNonPublicConstructors, optionalParameterResolution);
+                : FindPreferredConstructor(instanceType, nonPublic, fallbackToNonPublicConstructors, constructorAmbiguityBehavior, optionalParameterResolution);
         }
 
         private bool TryGetExistingObject<T>(Type requestedType, IInstanceModel typeInstanceModel, out T? instance) where T : class
@@ -1397,10 +1411,15 @@ namespace FastMoq
         internal ConstructorModel FindPreferredConstructor(Type type, bool nonPublic, OptionalParameterResolutionMode optionalParameterResolution, List<ConstructorInfo>? excludeList = null)
         {
             var strict = Behavior.Has(MockFeatures.FailOnUnconfigured);
-            return FindPreferredConstructor(type, nonPublic, !strict, optionalParameterResolution, excludeList);
+            return FindPreferredConstructor(type, nonPublic, !strict, Policy.DefaultConstructorAmbiguityBehavior, optionalParameterResolution, excludeList);
         }
 
         private ConstructorModel FindPreferredConstructor(Type type, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution, List<ConstructorInfo>? excludeList = null)
+        {
+            return FindPreferredConstructor(type, nonPublic, fallbackToNonPublicConstructors, Policy.DefaultConstructorAmbiguityBehavior, optionalParameterResolution, excludeList);
+        }
+
+        private ConstructorModel FindPreferredConstructor(Type type, bool nonPublic, bool fallbackToNonPublicConstructors, ConstructorAmbiguityBehavior constructorAmbiguityBehavior, OptionalParameterResolutionMode optionalParameterResolution, List<ConstructorInfo>? excludeList = null)
         {
             excludeList ??= new();
 
@@ -1408,7 +1427,13 @@ namespace FastMoq
                 .Where(c => excludeList.TrueForAll(e => e != c.ConstructorInfo))
                 .ToList();
 
-            var preferredPublicConstructor = SelectPreferredConstructor(type, this.GetTestedConstructors(type, publicConstructors));
+            var preferredMarkedPublicConstructor = SelectMarkedPreferredConstructor(type, publicConstructors);
+            if (preferredMarkedPublicConstructor != null)
+            {
+                return preferredMarkedPublicConstructor;
+            }
+
+            var preferredPublicConstructor = SelectPreferredConstructor(type, this.GetTestedConstructors(type, publicConstructors), constructorAmbiguityBehavior);
             if (preferredPublicConstructor != null)
             {
                 return preferredPublicConstructor;
@@ -1424,11 +1449,22 @@ namespace FastMoq
                 .Where(c => c.ConstructorInfo?.IsPublic == false)
                 .ToList();
 
-            return SelectPreferredConstructor(type, this.GetTestedConstructors(type, nonPublicConstructors))
+            var preferredMarkedNonPublicConstructor = SelectMarkedPreferredConstructor(type, nonPublicConstructors);
+            if (preferredMarkedNonPublicConstructor != null)
+            {
+                return preferredMarkedNonPublicConstructor;
+            }
+
+            return SelectPreferredConstructor(type, this.GetTestedConstructors(type, nonPublicConstructors), constructorAmbiguityBehavior)
                 ?? throw new NotImplementedException("Unable to find the constructor.");
         }
 
         private ConstructorModel? SelectPreferredConstructor(Type type, List<ConstructorModel>? constructors)
+        {
+            return SelectPreferredConstructor(type, constructors, Policy.DefaultConstructorAmbiguityBehavior);
+        }
+
+        private ConstructorModel? SelectPreferredConstructor(Type type, List<ConstructorModel>? constructors, ConstructorAmbiguityBehavior constructorAmbiguityBehavior)
         {
             constructors ??= [];
             if (constructors.Count == 0)
@@ -1440,11 +1476,76 @@ namespace FastMoq
             var bestMatches = constructors.Where(c => c.ParameterList.Length == largestArity).ToList();
             if (bestMatches.Count > 1)
             {
+                if (constructorAmbiguityBehavior == ConstructorAmbiguityBehavior.PreferParameterlessConstructor)
+                {
+                    var parameterlessConstructor = constructors.SingleOrDefault(c => c.ParameterList.Length == 0);
+                    if (parameterlessConstructor != null)
+                    {
+                        LogConstructorSelection(
+                            LogLevel.Warning,
+                            ConstructorSelectionEventId,
+                            $"Type '{type.Name}' encountered ambiguous constructors {FormatConstructorList(bestMatches)} and fell back to parameterless constructor {FormatConstructorSignature(parameterlessConstructor.ConstructorInfo)}.");
+                        return parameterlessConstructor;
+                    }
+                }
+
+                LogConstructorSelection(
+                    LogLevel.Warning,
+                    ConstructorAmbiguityEventId,
+                    $"Type '{type.Name}' encountered ambiguous constructors {FormatConstructorList(bestMatches)}.");
                 throw this.GetAmbiguousConstructorImplementationException(type);
             }
 
             return bestMatches[0];
         }
+
+        private ConstructorModel? SelectMarkedPreferredConstructor(Type type, List<ConstructorModel> constructors)
+        {
+            var preferredConstructors = constructors
+                .Where(c => c.ConstructorInfo?.IsDefined(typeof(PreferredConstructorAttribute), false) == true)
+                .ToList();
+
+            if (preferredConstructors.Count == 0)
+            {
+                return null;
+            }
+
+            if (preferredConstructors.Count > 1)
+            {
+                var message = $"Type '{type.Name}' has multiple constructors marked with [PreferredConstructor]: {FormatConstructorList(preferredConstructors)}.";
+                LogConstructorSelection(LogLevel.Warning, ConstructorAmbiguityEventId, message);
+                throw new InvalidOperationException(message);
+            }
+
+            var preferredConstructor = preferredConstructors[0];
+            LogConstructorSelection(
+                LogLevel.Information,
+                ConstructorSelectionEventId,
+                $"Type '{type.Name}' selected constructor {FormatConstructorSignature(preferredConstructor.ConstructorInfo)} via [PreferredConstructor].");
+            return preferredConstructor;
+        }
+
+        private void LogConstructorSelection(LogLevel logLevel, EventId eventId, string message)
+        {
+            LoggingCallback(logLevel, eventId, message, null);
+        }
+
+        private static string FormatConstructorList(IEnumerable<ConstructorModel> constructors)
+        {
+            return string.Join("; ", constructors.Select(c => FormatConstructorSignature(c.ConstructorInfo)));
+        }
+
+        private static string FormatConstructorSignature(ConstructorInfo? constructorInfo)
+        {
+            if (constructorInfo == null)
+            {
+                return "<unknown>";
+            }
+
+            var parameters = string.Join(", ", constructorInfo.GetParameters().Select(p => p.ParameterType.Name));
+            return $"{constructorInfo.DeclaringType?.Name}({parameters})";
+        }
+
         /// <summary>
         /// Determines whether the supplied type exposes a parameterless constructor.
         /// </summary>
