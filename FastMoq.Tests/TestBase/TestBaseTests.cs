@@ -246,6 +246,45 @@ namespace FastMoq.Tests.TestBase
             }
         }
 
+        public class TestBaseComponentConstructorParameterTypesHook : MockerTestBase<ConstructorTestClass>
+        {
+            protected override Type?[]? ComponentConstructorParameterTypes => new Type?[] { typeof(IFileSystem), typeof(string) };
+
+            [Fact]
+            public void ComponentNotNull()
+            {
+                Component.Should().NotBeNull();
+            }
+
+            [Fact]
+            public void ConstructorCreatedUsingCorrectTypes()
+            {
+                Mocks.ConstructorHistory.AsEnumerable().Should().NotBeEmpty();
+                var parameters = GetConstructor().GetParameters().Select(x => x.ParameterType).ToList();
+                parameters[0].Should().Be(typeof(IFileSystem));
+                parameters[1].Should().Be(typeof(string));
+            }
+        }
+
+        public class TestBaseComponentConstructorParameterTypesHookEmpty : MockerTestBase<ConstructorTestClass>
+        {
+            protected override Type?[]? ComponentConstructorParameterTypes => Array.Empty<Type>();
+
+            [Fact]
+            public void ComponentNotNull()
+            {
+                Component.Should().NotBeNull();
+            }
+
+            [Fact]
+            public void ConstructorCreatedUsingParameterlessConstructor()
+            {
+                Mocks.ConstructorHistory.AsEnumerable().Should().NotBeEmpty();
+                var parameters = GetConstructor().GetParameters().Select(x => x.ParameterType).ToList();
+                parameters.Count().Should().Be(0);
+            }
+        }
+
         public class TestClassParametersTests : MockerTestBase<TestClassMany>
         {
             protected override Func<Mocker, TestClassMany> CreateComponentAction => m => m.CreateInstance<TestClassMany>(55, "test");

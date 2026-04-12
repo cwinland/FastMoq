@@ -500,6 +500,35 @@ Use `InternalsVisibleTo` when the SUT lives in another assembly.
 The supported runtime behavior is: FastMoq can create the non-public component once the test can legally reference it.
 The unsupported assumption is: FastMoq can make `public class MyTests : MockerTestBase<InternalType>` compile. That remains a compiler restriction, not a FastMoq runtime limitation.
 
+### Explicit Constructor Selection In Tests
+
+When tests need a specific constructor, prefer selecting it from the test base instead of annotating production code for test-only reasons.
+
+For `MockerTestBase<TComponent>`, the primary hook is `ComponentConstructorParameterTypes`:
+
+```csharp
+internal sealed class OrderRulesTestBase : MockerTestBase<OrderRules>
+{
+    protected override Type?[]? ComponentConstructorParameterTypes
+        => new Type?[] { typeof(IFileSystem), typeof(string) };
+}
+```
+
+If constructor selection also needs custom creation logic, use `CreateComponentAction`:
+
+```csharp
+internal sealed class OrderRulesTestBase : MockerTestBase<OrderRules>
+{
+    protected override Func<Mocker, OrderRules> CreateComponentAction => mocker =>
+        mocker.CreateInstanceByType<OrderRules>(
+            InstanceCreationFlags.AllowNonPublicConstructorFallback,
+            typeof(IFileSystem),
+            typeof(string))!;
+}
+```
+
+The older `MockerTestBase(params Type[] createArgumentTypes)` constructor remains available for compatibility, but the property-based hook is the recommended path for new test bases.
+
 ### Constructor Ambiguity Overrides
 
 FastMoq keeps the existing ambiguity-throw behavior by default.
@@ -514,7 +543,7 @@ var component = Mocks.CreateInstance<MyComponent>(
     InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity);
 ```
 
-If one constructor should win regardless of arity, mark it explicitly:
+If production code itself should advertise a preferred default constructor for all callers, mark it explicitly:
 
 ```csharp
 internal sealed class OrderRules

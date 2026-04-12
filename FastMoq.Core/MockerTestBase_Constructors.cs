@@ -15,8 +15,16 @@ namespace FastMoq
         /// </summary>
         protected virtual InstanceCreationFlags ComponentCreationFlags => InstanceCreationFlags.None;
 
+        /// <summary>
+        /// Selects the constructor signature used by the default component-creation path.
+        /// Override this in a derived test base when the test should force a specific constructor without replacing <see cref="CreateComponentAction"/>.
+        /// Return <see langword="null"/> to keep FastMoq's normal constructor-selection rules.
+        /// Return an empty array to select the parameterless constructor explicitly.
+        /// </summary>
+        protected virtual Type?[]? ComponentConstructorParameterTypes => null;
+
         private Func<Mocker, TComponent> DefaultCreateAction =>
-            _ => Component = Mocks.CreateInstance<TComponent>(ComponentCreationFlags) ?? throw CannotCreateComponentException;
+            mocker => Component = CreateDefaultComponent(mocker) ?? throw CannotCreateComponentException;
 
         #endregion
 
@@ -189,6 +197,14 @@ namespace FastMoq
             Action<TComponent> createdComponentAction,
             params Type[] createArgumentTypes)
             : this(setupMocksAction, CreateActionWithTypes(createArgumentTypes), createdComponentAction) { }
+
+        private TComponent? CreateDefaultComponent(Mocker mocker)
+        {
+            var constructorParameterTypes = ComponentConstructorParameterTypes;
+            return constructorParameterTypes == null
+                ? mocker.CreateInstance<TComponent>(ComponentCreationFlags)
+                : mocker.CreateInstanceByType<TComponent>(ComponentCreationFlags, constructorParameterTypes);
+        }
 
         private static Func<Mocker, TComponent> CreateActionWithTypes(params Type[] args) =>
             m => m.CreateInstanceByType<TComponent>(args) ?? throw CannotCreateComponentException;

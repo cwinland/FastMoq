@@ -202,11 +202,42 @@ internal sealed class InternalOrderRules
 If the component under test lives in another assembly, expose it to the test assembly with `InternalsVisibleTo` or an equivalent visibility rule first.
 FastMoq handles constructor resolution and injection at runtime; it does not bypass the compiler rule that prevents `public class MyTests : MockerTestBase<InternalType>` when `InternalType` is less accessible than the public test type.
 
+### Explicit Constructor Selection In Tests
+
+When a test needs a specific constructor, prefer a test-side override first.
+That keeps constructor choice inside the test harness and avoids changing production code only to satisfy test setup.
+
+For `MockerTestBase<TComponent>`, override `ComponentConstructorParameterTypes` when you want a specific signature but still want the default FastMoq creation path:
+
+```csharp
+internal sealed class OrderRulesTestBase : MockerTestBase<OrderRules>
+{
+    protected override Type?[]? ComponentConstructorParameterTypes
+        => new Type?[] { typeof(IFileSystem), typeof(string) };
+}
+```
+
+Use `CreateComponentAction` when the test needs full control over creation, custom argument values, or logic that cannot be expressed as a parameter-type signature:
+
+```csharp
+internal sealed class OrderRulesTestBase : MockerTestBase<OrderRules>
+{
+    protected override Func<Mocker, OrderRules> CreateComponentAction => mocker =>
+        mocker.CreateInstanceByType<OrderRules>(
+            InstanceCreationFlags.AllowNonPublicConstructorFallback,
+            typeof(IFileSystem),
+            typeof(string))!;
+}
+```
+
+The older `MockerTestBase(params Type[] createArgumentTypes)` constructor still works, but the override-based hook is the better default for new test bases because it keeps constructor intent local to the derived type.
+
 ### Constructor Ambiguity And Preferred Constructors
 
 FastMoq still throws by default when multiple same-rank constructors remain viable after candidate filtering. That preserves the current behavior for existing suites.
 
-If you want an explicit constructor override without switching to `CreateInstanceByType(...)`, mark the intended constructor:
+If you control the production type and want it to advertise a preferred default constructor for all callers, you can mark it explicitly with `[PreferredConstructor]`.
+That is secondary to the test-side hooks above and is most useful when constructor preference is part of the component's intended public shape, not just a test need:
 
 ```csharp
 internal sealed class OrderRules
@@ -232,8 +263,6 @@ var component = Mocks.CreateInstance<MyComponent>(
 ```
 
 FastMoq writes constructor-selection diagnostics into `Mocks.LogEntries` when `[PreferredConstructor]` is used or when ambiguity fallback is applied.
-
-Use the older methods when preserving existing tests or public API compatibility matters. Internally, FastMoq now routes constructor creation through the same shared resolution rules.
 
 ## Optional Constructor And Method Parameters
 
