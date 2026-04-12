@@ -1,4 +1,5 @@
 using FastMoq.Web.Extensions;
+using FastMoq.Providers.MoqProvider;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -53,7 +54,7 @@ namespace FastMoq.Tests.Web
         [Fact]
         public async Task Get_ShouldUseConfiguredHttpContext_AcrossControllerAndAccessor()
         {
-            Mocks.GetMock<IOrderReader>()
+            Mocks.GetOrCreateMock<IOrderReader>()
                 .Setup(x => x.GetOrdersAsync(true, "corr-123", "Test User", It.IsAny<CancellationToken>()))
                 .ReturnsAsync([new OrderDto(42, "open")]);
 

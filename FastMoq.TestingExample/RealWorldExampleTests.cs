@@ -1,5 +1,6 @@
 using FastMoq.Extensions;
 using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -26,10 +27,14 @@ namespace FastMoq.TestingExample
                 TotalAmount = 149.90m,
             };
 
-            Mocks.GetMock<IInventoryGateway>()
+            var inventoryGateway = Mocks.GetOrCreateMock<IInventoryGateway>();
+            var paymentGateway = Mocks.GetOrCreateMock<IPaymentGateway>();
+            var orderRepository = Mocks.GetOrCreateMock<IOrderRepository>();
+
+            inventoryGateway
                 .Setup(x => x.ReserveAsync(request.Sku, request.Quantity, CancellationToken.None))
                 .ReturnsAsync(true);
-            Mocks.GetMock<IPaymentGateway>()
+            paymentGateway
                 .Setup(x => x.ChargeAsync(request.CustomerId, request.TotalAmount, CancellationToken.None))
                 .ReturnsAsync("pay_12345");
 
@@ -37,7 +42,7 @@ namespace FastMoq.TestingExample
 
             result.Success.Should().BeTrue();
             result.OrderId.Should().NotBeNull();
-            Mocks.GetMock<IOrderRepository>()
+            orderRepository.AsMoq()
                 .Verify(x => x.SaveAsync(
                     It.Is<OrderRecord>(order =>
                         order.CustomerId == request.CustomerId &&
@@ -61,7 +66,11 @@ namespace FastMoq.TestingExample
                 TotalAmount = 24.99m,
             };
 
-            Mocks.GetMock<IInventoryGateway>()
+            var inventoryGateway = Mocks.GetOrCreateMock<IInventoryGateway>();
+            var paymentGateway = Mocks.GetOrCreateMock<IPaymentGateway>();
+            var orderRepository = Mocks.GetOrCreateMock<IOrderRepository>();
+
+            inventoryGateway
                 .Setup(x => x.ReserveAsync(request.Sku, request.Quantity, CancellationToken.None))
                 .ReturnsAsync(false);
 
@@ -69,9 +78,9 @@ namespace FastMoq.TestingExample
 
             result.Success.Should().BeFalse();
             result.FailureReason.Should().Be("InventoryUnavailable");
-            Mocks.GetMock<IPaymentGateway>()
+            paymentGateway.AsMoq()
                 .Verify(x => x.ChargeAsync(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<CancellationToken>()), Times.Never);
-            Mocks.GetMock<IOrderRepository>()
+            orderRepository.AsMoq()
                 .Verify(x => x.SaveAsync(It.IsAny<OrderRecord>(), It.IsAny<CancellationToken>()), Times.Never);
             Mocks.VerifyLogged(LogLevel.Warning, "Inventory reservation failed", 1);
         }
@@ -90,15 +99,18 @@ namespace FastMoq.TestingExample
                 new() { CustomerId = "C-200", EmailAddress = "grace@example.test", Segment = "Standard" },
             };
 
+            var customerCsvParser = Mocks.GetOrCreateMock<ICustomerCsvParser>();
+            var customerRepository = Mocks.GetOrCreateMock<ICustomerRepository>();
+
             Mocks.fileSystem.AddFile(FILE_PATH, new MockFileData(CSV));
-            Mocks.GetMock<ICustomerCsvParser>()
+            customerCsvParser
                 .Setup(x => x.Parse(CSV))
                 .Returns(parsedRows);
 
             var importedCount = await Component.ImportAsync(FILE_PATH, CancellationToken.None);
 
             importedCount.Should().Be(2);
-            Mocks.GetMock<ICustomerRepository>()
+            customerRepository.AsMoq()
                 .Verify(x => x.UpsertAsync(parsedRows, CancellationToken.None), Times.Once);
             Mocks.VerifyLogged(LogLevel.Information, "Imported 2 customers", 1);
         }
@@ -107,13 +119,15 @@ namespace FastMoq.TestingExample
         public async Task ImportAsync_ShouldReturnZeroAndLogWarning_WhenFileDoesNotExist()
         {
             const string FILE_PATH = @"c:\imports\missing.csv";
+            var customerCsvParser = Mocks.GetOrCreateMock<ICustomerCsvParser>();
+            var customerRepository = Mocks.GetOrCreateMock<ICustomerRepository>();
 
             var importedCount = await Component.ImportAsync(FILE_PATH, CancellationToken.None);
 
             importedCount.Should().Be(0);
-            Mocks.GetMock<ICustomerCsvParser>()
+            customerCsvParser.AsMoq()
                 .Verify(x => x.Parse(It.IsAny<string>()), Times.Never);
-            Mocks.GetMock<ICustomerRepository>()
+            customerRepository.AsMoq()
                 .Verify(x => x.UpsertAsync(It.IsAny<IReadOnlyList<CustomerImportRow>>(), It.IsAny<CancellationToken>()), Times.Never);
             Mocks.VerifyLogged(LogLevel.Warning, "Import file was not found", 1);
         }
@@ -135,7 +149,7 @@ namespace FastMoq.TestingExample
             Scenario
                 .With(() =>
                 {
-                    Mocks.GetMock<IInvoiceRepository>()
+                    Mocks.GetOrCreateMock<IInvoiceRepository>()
                         .Setup(x => x.GetPastDueAsync(now, CancellationToken.None))
                         .ReturnsAsync(invoices);
                 })
@@ -162,10 +176,10 @@ namespace FastMoq.TestingExample
             Scenario
                 .With(() =>
                 {
-                    Mocks.GetMock<IInvoiceRepository>()
+                    Mocks.GetOrCreateMock<IInvoiceRepository>()
                         .Setup(x => x.GetPastDueAsync(now, CancellationToken.None))
                         .ReturnsAsync(invoices);
-                    Mocks.GetMock<IEmailGateway>()
+                    Mocks.GetOrCreateMock<IEmailGateway>()
                         .Setup(x => x.SendReminderAsync("ap@contoso.test", 125m, CancellationToken.None))
                         .ThrowsAsync(new InvalidOperationException("SMTP unavailable"));
                 })
@@ -175,9 +189,9 @@ namespace FastMoq.TestingExample
 
             afterFailureAssertionRan.Should().BeTrue();
 
-            Mocks.GetMock<IInvoiceRepository>()
+            Mocks.GetOrCreateMock<IInvoiceRepository>().AsMoq()
                 .Verify(x => x.GetPastDueAsync(now, CancellationToken.None), Times.Once);
-            Mocks.GetMock<IEmailGateway>()
+            Mocks.GetOrCreateMock<IEmailGateway>().AsMoq()
                 .Verify(x => x.SendReminderAsync("ap@contoso.test", 125m, CancellationToken.None), Times.Once);
             Mocks.VerifyLogged(LogLevel.Information, "Sent 1 invoice reminders", 0);
         }

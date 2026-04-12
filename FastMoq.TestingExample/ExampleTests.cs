@@ -1,4 +1,5 @@
 using FluentAssertions;
+using FastMoq.Providers.MoqProvider;
 using Moq;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
@@ -60,8 +61,9 @@ namespace FastMoq.TestingExample
         {
             var iFile = new FileSystem().File;
             mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
-            mocks.GetMock<IFileSystem>().Setup(x => x.File).Returns(iFile);
-            mocks.GetMock<IFileSystem>().Setup(x => x.Directory).Returns((IDirectory) null!);
+            var fileSystemMock = mocks.GetOrCreateMock<IFileSystem>();
+            fileSystemMock.Setup(x => x.File).Returns(iFile);
+            fileSystemMock.Setup(x => x.Directory).Returns((IDirectory) null!);
         }
     }
 
@@ -70,6 +72,7 @@ namespace FastMoq.TestingExample
         #region Fields
 
         private static bool testEventCalled;
+        private static Mock<IFileSystem> fileSystemMock = default!;
 
         #endregion
 
@@ -79,7 +82,7 @@ namespace FastMoq.TestingExample
         [Fact]
         public void Test1()
         {
-            Component.FileSystem.Should().Be(Mocks.GetMock<IFileSystem>().Object);
+            Component.FileSystem.Should().Be(fileSystemMock.Object);
             Component.FileSystem.Should().NotBeNull();
             Component.FileSystem.File.Should().NotBeNull();
             Component.FileSystem.Directory.Should().BeNull();
@@ -87,7 +90,7 @@ namespace FastMoq.TestingExample
             Component.CallTestEvent();
             testEventCalled.Should().BeTrue();
 
-            Mocks.GetMock<IFileSystem>().Setup(x => x.Directory).Returns(new FileSystem().Directory);
+            fileSystemMock.Setup(x => x.Directory).Returns(new FileSystem().Directory);
             Component.FileSystem.Directory.Should().NotBeNull();
         }
 
@@ -96,11 +99,11 @@ namespace FastMoq.TestingExample
 
         private static void SetupMocks(Mocker mocks)
         {
-            var mock = new Mock<IFileSystem>();
+            fileSystemMock = new Mock<IFileSystem>();
             var iFile = new FileSystem().File;
             mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
-            mocks.AddMock(mock, true);
-            mocks.GetMock<IFileSystem>().Setup(x => x.File).Returns(iFile);
+            fileSystemMock.Setup(x => x.File).Returns(iFile);
+            mocks.AddType<IFileSystem>(fileSystemMock.Object, replace: true);
         }
     }
 }

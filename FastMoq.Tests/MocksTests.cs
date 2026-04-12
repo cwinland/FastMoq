@@ -1,6 +1,7 @@
 using FastMoq.Extensions;
 using FastMoq.Models;
 using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
 using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
 using Microsoft.EntityFrameworkCore;
@@ -434,11 +435,11 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetMock_IFileSystem_ShouldCreatePreconfiguredMock()
+        public void GetOrCreateMock_IFileSystem_ShouldCreatePreconfiguredMock()
         {
             // Arrange & Act
-            var fileSystemMock = Mocks.GetMock<IFileSystem>();
-            var fileSystemObject = fileSystemMock.Object;
+            var fileSystemMock = Mocks.GetOrCreateMock<IFileSystem>();
+            var fileSystemObject = fileSystemMock.Instance;
 
             // Assert - mock should be set up with delegated properties
             fileSystemObject.File.Should().NotBeNull();
@@ -451,12 +452,12 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetMock_IFileSystem_ShouldRemainPreconfigured_WhenFailOnUnconfiguredIsEnabled()
+        public void GetOrCreateMock_IFileSystem_ShouldRemainPreconfigured_WhenFailOnUnconfiguredIsEnabled()
         {
             Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
 
-            var fileSystemMock = Mocks.GetMock<IFileSystem>();
-            var fileSystemObject = fileSystemMock.Object;
+            var fileSystemMock = Mocks.GetOrCreateMock<IFileSystem>();
+            var fileSystemObject = fileSystemMock.Instance;
 
             fileSystemObject.File.Should().NotBeNull();
             fileSystemObject.Directory.Should().NotBeNull();
@@ -1129,7 +1130,7 @@ namespace FastMoq.Tests
                 return index;
             }
 
-            _ = Component.GetMock<IFile>();
+            _ = Component.GetOrCreateMock<IFile>();
             var mockCount = Component.mockCollection.Count;
 
             // Should not find it, because it doesn't exist.
@@ -1146,15 +1147,15 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetMockValueTest()
+        public void GetOrCreateMockValueTest()
         {
-            Mock<ITestClassMany> mock = Component.GetMock<ITestClassMany>();
+            var mock = Component.GetOrCreateMock<ITestClassMany>();
             mock.Setup(x => x.Value).Returns(1);
-            var mock1Object = mock.Object;
+            var mock1Object = mock.Instance;
 
-            Mock<ITestClassMany> mock2 = Component.GetMock<ITestClassMany>();
+            var mock2 = Component.GetOrCreateMock<ITestClassMany>();
             mock2.Setup(x => x.Value).Returns(2);
-            var mock2Object = mock2.Object;
+            var mock2Object = mock2.Instance;
 
             mock1Object.Value.Should().Be(mock2Object.Value);
         }
@@ -1162,29 +1163,35 @@ namespace FastMoq.Tests
         [Fact]
         public void GetObject()
         {
-            var a = Mocks.GetMock<IFileInfo>().Object;
+            var aMock = Mocks.GetOrCreateMock<IFileInfo>();
+            var a = aMock.Instance;
             a.Should().Be(Mocks.GetObject<IFileInfo>());
-            Mocks.GetMock<IFileInfo>().CallBase.Should().BeFalse();
+            ((Mock<IFileInfo>) aMock.NativeMock).CallBase.Should().BeFalse();
 
+            var bMock = Mocks.GetOrCreateMock<IDirectoryInfo>();
             var b = Mocks.GetObject<IDirectoryInfo>();
-            b.Should().Be(Mocks.GetMock<IDirectoryInfo>().Object);
-            Mocks.GetMock<IDirectoryInfo>().CallBase.Should().BeFalse();
+            b.Should().Be(bMock.Instance);
+            ((Mock<IDirectoryInfo>) bMock.NativeMock).CallBase.Should().BeFalse();
 
+            var cMock = Mocks.GetOrCreateMock<ITestClassNormal>();
             var c = Mocks.GetObject<ITestClassNormal>();
-            c.Should().Be(Mocks.GetMock<ITestClassNormal>().Object);
-            Mocks.GetMock<ITestClassNormal>().CallBase.Should().BeFalse();
+            c.Should().Be(cMock.Instance);
+            ((Mock<ITestClassNormal>) cMock.NativeMock).CallBase.Should().BeFalse();
 
+            var dMock = Mocks.GetOrCreateMock<TestClassNormal>();
             var d = Mocks.GetObject<TestClassNormal>();
-            d.Should().Be(Mocks.GetMock<TestClassNormal>().Object);
-            Mocks.GetMock<TestClassNormal>().CallBase.Should().BeTrue();
+            d.Should().Be(dMock.Instance);
+            ((Mock<TestClassNormal>) dMock.NativeMock).CallBase.Should().BeTrue();
 
+            var eMock = Mocks.GetOrCreateMock<ITestClassMany>();
             var e = Mocks.GetObject<ITestClassMany>();
-            e.Should().Be(Mocks.GetMock<ITestClassMany>().Object);
-            Mocks.GetMock<ITestClassMany>().CallBase.Should().BeFalse();
+            e.Should().Be(eMock.Instance);
+            ((Mock<ITestClassMany>) eMock.NativeMock).CallBase.Should().BeFalse();
 
+            var fMock = Mocks.GetOrCreateMock<TestClassMany>();
             var f = Mocks.GetObject<TestClassMany>();
-            f.Should().Be(Mocks.GetMock<TestClassMany>().Object);
-            Mocks.GetMock<TestClassMany>().CallBase.Should().BeTrue();
+            f.Should().Be(fMock.Instance);
+            ((Mock<TestClassMany>) fMock.NativeMock).CallBase.Should().BeTrue();
         }
 
         [Fact]
@@ -1309,7 +1316,7 @@ namespace FastMoq.Tests
             var expectedProvider = new Mock<IServiceProvider>().Object;
 
             _ = Component.GetObject<AbstractServiceProviderHolder>();
-            Component.GetMock<AbstractServiceProviderHolder>()
+            Component.GetOrCreateMock<AbstractServiceProviderHolder>()
                 .Setup(x => x.InstanceServices)
                 .Returns(expectedProvider);
 
