@@ -18,7 +18,9 @@ It wraps and extends mocking providers (currently Moq, with planned provider‑a
 - `Mocker.cs` – Core mock registry and creation logic.
 - `MockerTestBase<T>` – Generic base for public types.
 - `MockerTestBase` – Non‑generic base for internal/protected types.
+- `MockerTestBase_Constructors.cs` – Default component creation flow, `ComponentCreationFlags`, and `ComponentConstructorParameterTypes`.
 - `MockerConstructionHelper` – Shared constructor resolution logic.
+- `ServiceProviderTestExtensions.cs` – Typed `IServiceProvider` helpers such as `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)`.
 - `TestClassExtensions.cs` – Current verification helpers (e.g., `VerifyLogger`).
 - `ScenarioBuilder<T>` – Fluent scenario API (Milestone 2).
 - `IMockingProvider` – Provider abstraction (Milestone 1).
@@ -30,6 +32,8 @@ When generating code:
    - Only use Moq APIs inside `MoqProvider` or Moq‑specific test code.
 2. **Reuse shared helpers**  
    - For component creation, always call `MockerConstructionHelper.CreateInstance`.
+    - When a test must choose a constructor, prefer `MockerTestBase<TComponent>.ComponentConstructorParameterTypes` first. For direct `Mocker` usage, prefer `CreateInstanceByType(...)`. Use `CreateComponentAction` only when constructor selection cannot be expressed as a signature.
+    - When framework code needs a real `IServiceProvider` or `IServiceScopeFactory`, prefer `CreateTypedServiceProvider(...)` or `AddServiceProvider(...)` over mocked `IServiceProvider` shims or registering only `IServiceScopeFactory` from a manually built provider.
    - For verification, follow the `VerifyLogger` pattern.
 3. **Follow naming conventions**  
    - Public API methods: PascalCase.

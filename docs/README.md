@@ -25,6 +25,8 @@ Perfect for developers new to FastMoq. Learn the basics and write your first tes
 - [Provider selection and setup](./getting-started/provider-selection.md)
 - [Provider capabilities matrix](./getting-started/provider-capabilities.md)
 - [Repo-native testing guide](./getting-started/testing-guide.md)
+- [Typed `IServiceProvider` helpers](./getting-started/testing-guide.md#typed-iserviceprovider-helpers)
+- [Explicit constructor selection in tests](./getting-started/testing-guide.md#explicit-constructor-selection-in-tests)
 - [Web helper guidance for controller and request tests](./getting-started/testing-guide.md#controller-testing)
 - [Executable testing examples](./samples/testing-examples.md)
 - Understanding the architecture

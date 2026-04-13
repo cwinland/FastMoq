@@ -92,6 +92,7 @@ Use this table when you are deciding which package line your test project should
 Important package boundaries in the current v4 line:
 
 `FastMoq` already includes the common end-user surface, including shared Azure SDK helpers, web, database, and Azure Functions helpers
+
 - `FastMoq` also includes the FastMoq analyzer assets by default so most test projects get migration guidance without extra setup
 - `FastMoq.Core` stays lighter on purpose, so shared Azure SDK helpers, EF helpers, Azure Functions helpers, and web helpers are separate package decisions when you consume core directly
 - `FastMoq.Core` does not include analyzer assets; add `FastMoq.Analyzers` explicitly if you want analyzer guidance in a core-only package graph
@@ -378,6 +379,36 @@ public class OrderServiceTests : MockerTestBase<OrderService>
     }
 }
 ```
+
+When a test needs a specific constructor, prefer the explicit constructor-selection hooks instead of relying on `GetObject<T>()` to land on the right overload.
+
+- For `MockerTestBase<TComponent>`, override `ComponentConstructorParameterTypes`.
+- For direct `Mocker` usage, call `CreateInstanceByType<T>(...)`.
+- If the chosen constructor depends on `IServiceProvider` or `IServiceScopeFactory`, build and register a typed provider with `AddServiceProvider(...)` instead of extracting only `IServiceScopeFactory` from a manual `BuildServiceProvider()` call.
+
+```csharp
+internal sealed class ArchiveInvokerTests : MockerTestBase<ArchiveInvoker>
+{
+    private readonly MockFileSystem fileSystem = new();
+
+    protected override Action<Mocker>? SetupMocksAction => mocker =>
+    {
+        mocker.AddType<IFileSystem>(fileSystem, replace: true);
+        mocker.AddServiceProvider(services =>
+        {
+            services.AddLogging();
+            services.AddOptions();
+            services.AddSingleton<IFileSystem>(fileSystem);
+            services.AddSingleton<ArchiveService>();
+        }, replace: true);
+    };
+
+    protected override Type?[]? ComponentConstructorParameterTypes =>
+        new Type?[] { typeof(IFileSystem), typeof(IServiceScopeFactory) };
+}
+```
+
+See the [Testing Guide](./testing-guide.md#explicit-constructor-selection-in-tests) for the full constructor-selection rules and the [typed `IServiceProvider` helper guidance](./testing-guide.md#typed-iserviceprovider-helpers) for framework-heavy ServiceCollection patterns.
 
 ## Common Patterns
 

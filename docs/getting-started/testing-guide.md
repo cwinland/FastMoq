@@ -7,12 +7,14 @@ This guide documents the testing patterns that match FastMoq's current behavior 
 Use these rules first:
 
 1. Use [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1) when you want FastMoq to create the component under test and manage its dependencies.
-2. Use [Mocks.GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) when you want the normal FastMoq tracked mock path for a dependency.
-3. Use [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.
-4. Use `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` when framework code expects a typed `IServiceProvider` rather than a one-object-for-all-types shim.
-5. If the constructor uses the same abstraction more than once under different DI service keys, use keyed mocks, keyed registrations, or explicit constructor injection for tests where dependency selection matters.
-6. Use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) when a framework-style type needs special resolution or post-processing behavior.
-7. Use [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.
+2. If a `MockerTestBase<TComponent>` test must force a specific constructor, override `ComponentConstructorParameterTypes` first. Use `CreateComponentAction` only when the test needs custom creation logic beyond selecting a signature.
+3. Use [Mocks.GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) when you want the normal FastMoq tracked mock path for a dependency.
+4. Use [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.
+5. Use `CreateInstanceByType(...)` when direct `Mocker` usage must pick an exact constructor signature. Do not treat `GetObject<T>()` as the explicit constructor-selection API.
+6. Use `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` when framework code expects a typed `IServiceProvider` rather than a one-object-for-all-types shim.
+7. If the constructor uses the same abstraction more than once under different DI service keys, use keyed mocks, keyed registrations, or explicit constructor injection for tests where dependency selection matters.
+8. Use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) when a framework-style type needs special resolution or post-processing behavior.
+9. Use [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.
 
 ## Core Mental Model
 
@@ -82,6 +84,29 @@ Mocks.AddServiceProvider(services =>
     services.AddSingleton(new WidgetClock());
 });
 ```
+
+`AddServiceProvider(...)` registers the typed provider itself and, when the built container exposes them, also registers `IServiceScopeFactory` and `IServiceProviderIsService` for the current `Mocker`.
+
+If a constructor takes `IServiceScopeFactory`, prefer this shape:
+
+```csharp
+var fileSystem = new MockFileSystem();
+
+Mocks.AddType<IFileSystem>(fileSystem, replace: true);
+Mocks.AddServiceProvider(services =>
+{
+    services.AddLogging();
+    services.AddOptions();
+    services.AddSingleton<IFileSystem>(fileSystem);
+    services.AddSingleton<ArchiveService>();
+}, replace: true);
+
+var scopeFactory = Mocks.GetRequiredObject<IServiceScopeFactory>();
+```
+
+instead of building a provider manually and registering only `provider.GetRequiredService<IServiceScopeFactory>()`. Keeping the full typed provider registered makes constructor injection, nested framework resolution, and service-scope behavior stay aligned.
+
+For Azure-oriented tests that also need configuration defaults, prefer `CreateAzureServiceProvider(...)` or `AddAzureServiceProvider(...)` from `FastMoq.Azure.DependencyInjection` instead of repeating `AddLogging()`, `AddOptions()`, and `IConfiguration` setup in every test.
 
 Use `CreateFunctionContextInstanceServices(...)` and `AddFunctionContextInstanceServices(...)` for Azure Functions worker tests instead of hand-writing `FunctionContext.InstanceServices` plumbing:
 
@@ -206,6 +231,7 @@ FastMoq handles constructor resolution and injection at runtime; it does not byp
 
 When a test needs a specific constructor, prefer a test-side override first.
 That keeps constructor choice inside the test harness and avoids changing production code only to satisfy test setup.
+If the selected constructor depends on `IServiceProvider` or `IServiceScopeFactory`, pair the constructor-selection hook with `AddServiceProvider(...)` from the earlier typed-provider section instead of registering only a manually extracted scope factory.
 
 For `MockerTestBase<TComponent>`, override `ComponentConstructorParameterTypes` when you want a specific signature but still want the default FastMoq creation path:
 
