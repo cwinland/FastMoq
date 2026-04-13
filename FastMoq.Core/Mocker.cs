@@ -1441,7 +1441,7 @@ namespace FastMoq
 
             if (!nonPublic && fallbackToNonPublicConstructors)
             {
-                return FindPreferredConstructor(type, true, false, optionalParameterResolution, excludeList);
+                return FindPreferredConstructor(type, true, false, constructorAmbiguityBehavior, optionalParameterResolution, excludeList);
             }
 
             var nonPublicConstructors = GetConstructors(type, true, optionalParameterResolution)
@@ -2243,7 +2243,7 @@ namespace FastMoq
         /// Builds constructor argument data for <typeparamref name="T"/> using the supplied optional-parameter policy.
         /// </summary>
         public object?[] GetArgData<T>(OptionalParameterResolutionMode optionalParameterResolution) where T : class =>
-            GetArgData<T>(publicOnly: null, optionalParameterResolution);
+            GetArgData<T>(publicOnly: null, optionalParameterResolution, Policy.DefaultConstructorAmbiguityBehavior);
 
         /// <summary>
         /// Builds constructor argument data for <typeparamref name="T"/> using the supplied creation flags.
@@ -2252,10 +2252,16 @@ namespace FastMoq
         {
             var publicOnly = ResolvePublicOnlyOverride(flags);
             var optionalParameterResolution = ResolveOptionalParameterResolution(flags);
-            return GetArgData<T>(publicOnly, optionalParameterResolution);
+            var constructorAmbiguityBehavior = ResolveConstructorAmbiguityBehavior(flags);
+            return GetArgData<T>(publicOnly, optionalParameterResolution, constructorAmbiguityBehavior);
         }
 
         internal object?[] GetArgData<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution) where T : class
+        {
+            return GetArgData<T>(publicOnly, optionalParameterResolution, Policy.DefaultConstructorAmbiguityBehavior);
+        }
+
+        internal object?[] GetArgData<T>(bool? publicOnly, OptionalParameterResolutionMode optionalParameterResolution, ConstructorAmbiguityBehavior constructorAmbiguityBehavior) where T : class
         {
             var type = typeof(T).IsInterface ? GetTypeFromInterface<T>() : new InstanceModel<T>();
             var flags = publicOnly == true
@@ -2265,7 +2271,7 @@ namespace FastMoq
                 .Where(c => c.GetParameters().All(p => p.ParameterType != type.InstanceType))
                 .Select(ci => new ConstructorModel(ci, new object?[ci.GetParameters().Length]))
                 .ToList();
-            var constructor = SelectPreferredConstructor(type.InstanceType, constructors)
+            var constructor = SelectPreferredConstructor(type.InstanceType, constructors, constructorAmbiguityBehavior)
                 ?? throw new NotImplementedException("Unable to find the constructor.");
 
             return constructor.ConstructorInfo == null

@@ -315,6 +315,16 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateBest_ShouldPreferParameterlessConstructor_ForNonPublicFallback_WhenFlagRequestsAmbiguityFallback()
+        {
+            var instance = Mocks.CreateInstance<NonPublicAmbiguousConstructorsWithParameterless>(
+                InstanceCreationFlags.AllowNonPublicConstructorFallback | InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity);
+
+            instance.Should().NotBeNull();
+            instance!.SelectedConstructor.Should().Be("parameterless");
+        }
+
+        [Fact]
         public void CreateBest_ShouldUsePreferredConstructorAttribute_WhenPresent()
         {
             var instance = Mocks.CreateInstance<PreferredConstructorTarget>();
@@ -1311,6 +1321,22 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetArgData_ShouldHonorAmbiguityFallbackFlag()
+        {
+            var args = Component.GetArgData<SameArityPublicConstructorsWithParameterless>(
+                InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity);
+
+            args.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void CreateInstanceByType_ShouldRequireExactParameterlessSignature_WhenEmptyTypeArrayIsProvided()
+        {
+            new Action(() => Mocks.CreateInstanceByType<NoParameterlessConstructorSelectionTarget>(Array.Empty<Type>()))
+                .Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
         public void GetObject_ShouldPreserveConfiguredMockPropertiesAcrossRepeatedResolutions()
         {
             var expectedProvider = new Mock<IServiceProvider>().Object;
@@ -2162,6 +2188,36 @@ namespace FastMoq.Tests
         }
 
         public string SelectedConstructor { get; }
+    }
+
+    internal sealed class NonPublicAmbiguousConstructorsWithParameterless
+    {
+        protected NonPublicAmbiguousConstructorsWithParameterless()
+        {
+            SelectedConstructor = "parameterless";
+        }
+
+        protected NonPublicAmbiguousConstructorsWithParameterless(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            SelectedConstructor = nameof(IFileSystem);
+        }
+
+        protected NonPublicAmbiguousConstructorsWithParameterless(IFile file)
+        {
+            ArgumentNullException.ThrowIfNull(file);
+            SelectedConstructor = nameof(IFile);
+        }
+
+        public string SelectedConstructor { get; }
+    }
+
+    internal sealed class NoParameterlessConstructorSelectionTarget
+    {
+        public NoParameterlessConstructorSelectionTarget(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+        }
     }
 
     internal sealed class PreferredConstructorTarget
