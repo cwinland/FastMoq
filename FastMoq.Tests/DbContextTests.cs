@@ -105,10 +105,12 @@ namespace FastMoq.Tests
             Mocks.Policy.EnabledBuiltInTypeResolutions &= ~BuiltInTypeResolutionFlags.DbContext;
 
             var dbContext = Mocks.GetObject<MyDbContext>();
+            var trackedMock = Mocks.GetOrCreateMock<MyDbContext>();
 
             dbContext.Should().NotBeNull();
             Mocks.Contains<MyDbContext>().Should().BeTrue();
-            Mocks.GetMock<MyDbContext>().Object.Should().BeSameAs(dbContext);
+            trackedMock.Instance.Should().BeSameAs(dbContext);
+            trackedMock.NativeMock.Should().BeSameAs(Mocks.GetMockDbContext<MyDbContext>());
         }
 
         [Fact]
@@ -147,11 +149,33 @@ namespace FastMoq.Tests
         public void GetMockDbContext_ShouldReturnSameInstanceAsComponent()
         {
             var mockDbContext = Mocks.GetMockDbContext(typeof(MyDbContext));
+            var trackedMock = Mocks.GetOrCreateMock<MyDbContext>();
+
             mockDbContext.Object.Should().BeSameAs(Component);
+            trackedMock.Instance.Should().BeSameAs(Component);
+            trackedMock.NativeMock.Should().BeSameAs(mockDbContext);
+        }
 
-            Mocks.GetMock<MyDbContext>().Object.Should().BeSameAs(Component);
+        [Fact]
+        public void GetOrCreateMock_DbContext_ShouldReturnTypedTrackedMock_WhenDbContextHelperTracksContextFirst()
+        {
+            var dbContextMock = Mocks.GetMockDbContext<MyDbContext>();
 
-            mockDbContext.Should().BeSameAs(Mocks.GetMock<MyDbContext>());
+            var trackedMock = Mocks.GetOrCreateMock<MyDbContext>();
+
+            trackedMock.Instance.Should().BeSameAs(dbContextMock.Object);
+            trackedMock.NativeMock.Should().BeSameAs(dbContextMock);
+        }
+
+        [Fact]
+        public void GetOrCreateMock_DbContext_ShouldReturnTypedTrackedMock_WhenBuiltInManagedResolutionTracksContextFirst()
+        {
+            var dbContext = Mocks.GetObject<MyDbContext>();
+
+            var trackedMock = Mocks.GetOrCreateMock<MyDbContext>();
+
+            trackedMock.Instance.Should().BeSameAs(dbContext);
+            trackedMock.NativeMock.Should().BeSameAs(Mocks.GetMockDbContext<MyDbContext>());
         }
 
         [Fact]

@@ -101,8 +101,7 @@ public class BlogServiceTests : MockerTestBase<BlogService>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        var dbContextMock = mocker.GetMockDbContext<BlogContext>();
-        mocker.AddType(_ => dbContextMock.Object);
+        _ = mocker.GetMockDbContext<BlogContext>();
     };
 
     [Fact]

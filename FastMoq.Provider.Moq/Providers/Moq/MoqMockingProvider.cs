@@ -257,18 +257,27 @@ namespace FastMoq.Providers.MoqProvider
                 return null;
             }
 
-            var legacyType = legacyMock.GetType();
-            if (legacyType.IsGenericType && legacyType.GetGenericTypeDefinition() == typeof(Mock<>))
+            var legacyGenericMockedType = TryGetLegacyGenericMockedType(legacyMock.GetType());
+            if (legacyGenericMockedType == mockedType)
             {
-                var genericArgument = legacyType.GetGenericArguments()[0];
-                if (genericArgument == mockedType)
-                {
-                    var wrapperType = typeof(MoqFastMockGeneric<>).MakeGenericType(mockedType);
-                    return (IFastMock) Activator.CreateInstance(wrapperType, legacyMock)!;
-                }
+                var wrapperType = typeof(MoqFastMockGeneric<>).MakeGenericType(mockedType);
+                return (IFastMock) Activator.CreateInstance(wrapperType, legacyMock)!;
             }
 
             return new MoqFastMock(mock);
+        }
+
+        private static Type? TryGetLegacyGenericMockedType(Type legacyType)
+        {
+            for (var current = legacyType; current != null; current = current.BaseType)
+            {
+                if (current.IsGenericType && current.GetGenericTypeDefinition() == typeof(Mock<>))
+                {
+                    return current.GetGenericArguments()[0];
+                }
+            }
+
+            return null;
         }
 
         private static void SetupLoggerCallback(Mock logger, Type mockedType, Action<LogLevel, EventId, string, Exception?> callback)

@@ -498,8 +498,7 @@ public class BlogServiceTests : MockerTestBase<BlogService>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        var dbContextMock = mocker.GetMockDbContext<BlogContext>();
-        mocker.AddType(_ => dbContextMock.Object);
+        _ = mocker.GetMockDbContext<BlogContext>();
     };
 
     [Fact]
@@ -579,8 +578,6 @@ public class BlogServiceAdvancedTests : MockerTestBase<BlogService>
         // Setup specific DbSet behavior if needed
         var blogSet = dbContextMock.Object.Set<Blog>();
         // Additional setup...
-        
-        mocker.AddType(_ => dbContextMock.Object);
     };
 
     [Fact]

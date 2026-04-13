@@ -17,6 +17,12 @@ namespace FastMoq
         public bool DefaultFallbackToNonPublicConstructors { get; set; } = true;
 
         /// <summary>
+        /// Controls how FastMoq resolves constructor ambiguity when multiple equally viable constructors remain after candidate filtering.
+        /// The default preserves the existing throw behavior for backward compatibility.
+        /// </summary>
+        public ConstructorAmbiguityBehavior DefaultConstructorAmbiguityBehavior { get; set; } = ConstructorAmbiguityBehavior.Throw;
+
+        /// <summary>
         /// Indicates whether method invocation helpers should consider non-public methods by default when matching a target member.
         /// </summary>
         public bool DefaultFallbackToNonPublicMethods { get; set; } = true;

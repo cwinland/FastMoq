@@ -290,8 +290,7 @@ public class OrderRepositoryTests : MockerTestBase<OrderRepository>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        var dbContextMock = mocker.GetMockDbContext<ECommerceDbContext>();
-        mocker.AddType(_ => dbContextMock.Object);
+        _ = mocker.GetMockDbContext<ECommerceDbContext>();
     };
 
     [Fact]

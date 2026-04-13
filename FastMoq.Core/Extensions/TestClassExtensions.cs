@@ -987,7 +987,7 @@ namespace FastMoq.Extensions
         {
             if (instanceParameterValues.Length == 0)
             {
-                return true;
+                return info.GetParameters().Length == 0;
             }
 
             var paramList = info.GetParameters().ToList();

@@ -186,7 +186,7 @@ namespace FastMoq.Tests.Web
             var obj = Mocks.GetObject<IHttpContextAccessor>();
             obj.HttpContext.Should().NotBeNull();
 
-            var obj2 = Mocks.GetMock<IHttpContextAccessor>().Object;
+            var obj2 = Mocks.GetOrCreateMock<IHttpContextAccessor>().Instance;
             obj2.HttpContext.Should().NotBeNull();
         }
 
@@ -205,7 +205,7 @@ namespace FastMoq.Tests.Web
             var obj3 = Mocks.GetObject<HttpContextAccessor>();
             obj3.HttpContext.Should().NotBeNull();
 
-            var obj4 = Mocks.GetMock<HttpContextAccessor>().Object;
+            var obj4 = Mocks.GetOrCreateMock<HttpContextAccessor>().Instance;
             obj4.HttpContext.Should().NotBeNull();
         }
 
@@ -216,7 +216,7 @@ namespace FastMoq.Tests.Web
         public void ClassProperties_NoResolution()
         {
             Mocks.InnerMockResolution = false;
-            var obj4 = Mocks.GetMock<HttpContextAccessor>().Object;
+            var obj4 = Mocks.GetOrCreateMock<HttpContextAccessor>().Instance;
             obj4.HttpContext.Should().BeNull();
         }
     }

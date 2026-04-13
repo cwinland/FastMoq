@@ -155,7 +155,114 @@ If you want to change the default constructor-fallback policy for the whole [Moc
 Mocks.Policy.DefaultFallbackToNonPublicConstructors = false;
 ```
 
-Use the older methods when preserving existing tests or public API compatibility matters. Internally, FastMoq now routes constructor creation through the same shared resolution rules.
+### Internal And Protected Components
+
+FastMoq can create components that use internal or protected constructors, but C# still enforces compile-time accessibility on the test type itself.
+
+If a test framework requires the outward test class to remain public, use a public test class plus an internal FastMoq harness:
+
+```csharp
+public class InternalOrderRulesTests
+{
+    [Fact]
+    public void PublicTestClass_CanExercise_InternalService()
+    {
+        using var harness = new InternalOrderRulesHarness();
+
+        harness.Sut.IsPriority("P1").Should().BeTrue();
+    }
+}
+
+internal sealed class InternalOrderRulesHarness : MockerTestBase<InternalOrderRules>
+{
+    protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy =>
+    {
+        policy.DefaultFallbackToNonPublicConstructors = false;
+    };
+
+    protected override InstanceCreationFlags ComponentCreationFlags
+        => InstanceCreationFlags.AllowNonPublicConstructorFallback;
+
+    internal InternalOrderRules Sut => Component;
+}
+
+internal sealed class InternalOrderRules
+{
+    internal InternalOrderRules()
+    {
+    }
+
+    public bool IsPriority(string code)
+    {
+        return code == "P1";
+    }
+}
+```
+
+If the component under test lives in another assembly, expose it to the test assembly with `InternalsVisibleTo` or an equivalent visibility rule first.
+FastMoq handles constructor resolution and injection at runtime; it does not bypass the compiler rule that prevents `public class MyTests : MockerTestBase<InternalType>` when `InternalType` is less accessible than the public test type.
+
+### Explicit Constructor Selection In Tests
+
+When a test needs a specific constructor, prefer a test-side override first.
+That keeps constructor choice inside the test harness and avoids changing production code only to satisfy test setup.
+
+For `MockerTestBase<TComponent>`, override `ComponentConstructorParameterTypes` when you want a specific signature but still want the default FastMoq creation path:
+
+```csharp
+internal sealed class OrderRulesTestBase : MockerTestBase<OrderRules>
+{
+    protected override Type?[]? ComponentConstructorParameterTypes
+        => new Type?[] { typeof(IFileSystem), typeof(string) };
+}
+```
+
+Use `CreateComponentAction` when the test needs full control over creation, custom argument values, or logic that cannot be expressed as a parameter-type signature:
+
+```csharp
+internal sealed class OrderRulesTestBase : MockerTestBase<OrderRules>
+{
+    protected override Func<Mocker, OrderRules> CreateComponentAction => mocker =>
+        mocker.CreateInstanceByType<OrderRules>(
+            InstanceCreationFlags.AllowNonPublicConstructorFallback,
+            typeof(IFileSystem),
+            typeof(string))!;
+}
+```
+
+The older `MockerTestBase(params Type[] createArgumentTypes)` constructor still works, but the override-based hook is the better default for new test bases because it keeps constructor intent local to the derived type.
+
+### Constructor Ambiguity And Preferred Constructors
+
+FastMoq still throws by default when multiple same-rank constructors remain viable after candidate filtering. That preserves the current behavior for existing suites.
+
+If you control the production type and want it to advertise a preferred default constructor for all callers, you can mark it explicitly with `[PreferredConstructor]`.
+That is secondary to the test-side hooks above and is most useful when constructor preference is part of the component's intended public shape, not just a test need:
+
+```csharp
+internal sealed class OrderRules
+{
+    [PreferredConstructor]
+    public OrderRules()
+    {
+    }
+
+    public OrderRules(IFileSystem fileSystem)
+    {
+    }
+}
+```
+
+If you want FastMoq to fall back to a parameterless constructor when ambiguity remains, opt in explicitly through policy or a per-call flag:
+
+```csharp
+Mocks.Policy.DefaultConstructorAmbiguityBehavior = ConstructorAmbiguityBehavior.PreferParameterlessConstructor;
+
+var component = Mocks.CreateInstance<MyComponent>(
+    InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity);
+```
+
+FastMoq writes constructor-selection diagnostics into `Mocks.LogEntries` when `[PreferredConstructor]` is used or when ambiguity fallback is applied.
 
 ## Optional Constructor And Method Parameters
 
@@ -302,15 +409,15 @@ When you need to choose between pure mock behavior and a real EF in-memory conte
 protected override Action<Mocker> SetupMocksAction => mocker =>
 {
     var dbContextMock = mocker.GetMockDbContext<ApplicationDbContext>();
-    mocker.AddType(_ => dbContextMock.Object);
+    dbContextMock.Object.Database.EnsureCreated();
 };
 ```
 
 Recommended pattern:
 
 1. Create the context mock with [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)).
-2. Add the context object into the type map when the component under test expects the context itself.
-3. Seed test data through the resolved context object before calling the system under test.
+2. Seed test data through the resolved context object or `dbContextMock.Object` before calling the system under test.
+3. If you need the tracked provider-first handle for the same context, call `GetOrCreateMock<TContext>()` after the helper has tracked it; the returned mock exposes that same tracked context.
 
 This is the supported path for EF Core tests in this repo. It keeps DbSet setup and context creation aligned with the framework's existing helper behavior.
 

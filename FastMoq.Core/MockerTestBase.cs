@@ -25,6 +25,7 @@ namespace FastMoq
     /// }
     /// ]]></code>
     /// <para>The base class creates <c>OrderSubmitter</c> before the test body runs, so the test can assert directly against <see cref="Component"/>.</para>
+    /// <para>When a component exposes multiple constructors and the test should target one specific signature, prefer overriding <see cref="MockerTestBase{TComponent}.ComponentConstructorParameterTypes"/> or <see cref="CreateComponentAction"/> in the test base instead of modifying production constructors just for testing.</para>
     /// <code language="csharp"><![CDATA[
     /// public interface IOrderGateway
     /// {

@@ -1,6 +1,7 @@
 using FastMoq.Extensions;
 using FastMoq.Models;
 using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
 using FastMoq.Tests.TestBase;
 using FastMoq.Tests.TestClasses;
 using Microsoft.EntityFrameworkCore;
@@ -121,10 +122,11 @@ namespace FastMoq.Tests
         [Fact]
         public void GetNativeMock_ShouldReturnProviderNativeObject()
         {
+            var fastMock = Mocks.GetOrCreateMock<IFileSystemInfo>();
             var nativeMock = Mocks.GetNativeMock<IFileSystemInfo>();
 
             nativeMock.Should().BeOfType<Mock<IFileSystemInfo>>();
-            nativeMock.Should().BeSameAs(Mocks.GetMock<IFileSystemInfo>());
+            nativeMock.Should().BeSameAs(fastMock.NativeMock);
         }
 
         [Fact]
@@ -154,11 +156,11 @@ namespace FastMoq.Tests
         [Fact]
         public void GetMockModel_NativeMock_ShouldMatchCurrentProviderObject()
         {
-            Mocks.GetMock<IFileSystem>();
+            var fastMock = Mocks.GetOrCreateMock<IFileSystem>();
             var mockModel = Mocks.GetMockModel<IFileSystem>();
 
             mockModel.NativeMock.Should().BeOfType<Mock<IFileSystem>>();
-            mockModel.NativeMock.Should().BeSameAs(Mocks.GetNativeMock<IFileSystem>());
+            mockModel.NativeMock.Should().BeSameAs(fastMock.NativeMock);
         }
 
         [Fact]
@@ -285,6 +287,62 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateBest_ShouldPreserveThrowBehaviorByDefault_WhenParameterlessFallbackIsAvailable()
+        {
+            new Action(() => Mocks.CreateInstance<SameArityPublicConstructorsWithParameterless>())
+                .Should().Throw<AmbiguousImplementationException>();
+        }
+
+        [Fact]
+        public void CreateBest_ShouldPreferParameterlessConstructor_WhenPolicyRequestsAmbiguityFallback()
+        {
+            Mocks.Policy.DefaultConstructorAmbiguityBehavior = ConstructorAmbiguityBehavior.PreferParameterlessConstructor;
+
+            var instance = Mocks.CreateInstance<SameArityPublicConstructorsWithParameterless>();
+
+            instance.Should().NotBeNull();
+            instance!.SelectedConstructor.Should().Be("parameterless");
+            Mocks.LogEntries.Should().Contain(entry => entry.Message.Contains("fell back to parameterless constructor", StringComparison.Ordinal));
+        }
+
+        [Fact]
+        public void CreateBest_ShouldPreferParameterlessConstructor_WhenFlagRequestsAmbiguityFallback()
+        {
+            var instance = Mocks.CreateInstance<SameArityPublicConstructorsWithParameterless>(InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity);
+
+            instance.Should().NotBeNull();
+            instance!.SelectedConstructor.Should().Be("parameterless");
+        }
+
+        [Fact]
+        public void CreateBest_ShouldPreferParameterlessConstructor_ForNonPublicFallback_WhenFlagRequestsAmbiguityFallback()
+        {
+            var instance = Mocks.CreateInstance<NonPublicAmbiguousConstructorsWithParameterless>(
+                InstanceCreationFlags.AllowNonPublicConstructorFallback | InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity);
+
+            instance.Should().NotBeNull();
+            instance!.SelectedConstructor.Should().Be("parameterless");
+        }
+
+        [Fact]
+        public void CreateBest_ShouldUsePreferredConstructorAttribute_WhenPresent()
+        {
+            var instance = Mocks.CreateInstance<PreferredConstructorTarget>();
+
+            instance.Should().NotBeNull();
+            instance!.SelectedConstructor.Should().Be("preferred");
+            Mocks.LogEntries.Should().Contain(entry => entry.Message.Contains("[PreferredConstructor]", StringComparison.Ordinal));
+        }
+
+        [Fact]
+        public void CreateBest_ShouldThrow_WhenMultiplePreferredConstructorsExist()
+        {
+            new Action(() => Mocks.CreateInstance<MultiplePreferredConstructorsTarget>())
+                .Should().Throw<InvalidOperationException>()
+                .WithMessage("*multiple constructors marked with [PreferredConstructor]*");
+        }
+
+        [Fact]
         public void GetOrCreateMock_ShouldAllowNonPublicConstructorsByDefault_WhenLenient()
         {
             var fastMock = Mocks.GetOrCreateMock<NonPublicOnlyMockTarget>();
@@ -361,13 +419,13 @@ namespace FastMoq.Tests
         public void GetObject_IFileSystem_ShouldReturnTrackedMockWhenExists()
         {
             // Arrange
-            var trackedMock = Mocks.GetMock<IFileSystem>();
+            var trackedMock = Mocks.GetOrCreateMock<IFileSystem>();
 
             // Act
             var result = Mocks.GetObject<IFileSystem>();
 
             // Assert - should return the tracked mock, not the built-in
-            result.Should().BeSameAs(trackedMock.Object);
+            result.Should().BeSameAs(trackedMock.Instance);
             Mocks.Contains<IFileSystem>().Should().BeTrue();
         }
 
@@ -387,11 +445,11 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetMock_IFileSystem_ShouldCreatePreconfiguredMock()
+        public void GetOrCreateMock_IFileSystem_ShouldCreatePreconfiguredMock()
         {
             // Arrange & Act
-            var fileSystemMock = Mocks.GetMock<IFileSystem>();
-            var fileSystemObject = fileSystemMock.Object;
+            var fileSystemMock = Mocks.GetOrCreateMock<IFileSystem>();
+            var fileSystemObject = fileSystemMock.Instance;
 
             // Assert - mock should be set up with delegated properties
             fileSystemObject.File.Should().NotBeNull();
@@ -404,12 +462,12 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetMock_IFileSystem_ShouldRemainPreconfigured_WhenFailOnUnconfiguredIsEnabled()
+        public void GetOrCreateMock_IFileSystem_ShouldRemainPreconfigured_WhenFailOnUnconfiguredIsEnabled()
         {
             Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
 
-            var fileSystemMock = Mocks.GetMock<IFileSystem>();
-            var fileSystemObject = fileSystemMock.Object;
+            var fileSystemMock = Mocks.GetOrCreateMock<IFileSystem>();
+            var fileSystemObject = fileSystemMock.Instance;
 
             fileSystemObject.File.Should().NotBeNull();
             fileSystemObject.Directory.Should().NotBeNull();
@@ -760,8 +818,8 @@ namespace FastMoq.Tests
         public void CreateMockWithInjectParameters()
         {
             Mocks.AddType<ITestClassOne, TestClassOne>();
-            Mocks.GetMock<ITestClassOne>().Object.FileSystem.Should().NotBeNull();
-            Mocks.GetMock<TestClassOne>().Object.FileSystem.Should().NotBeNull();
+            Mocks.GetOrCreateMock<ITestClassOne>().Instance.FileSystem.Should().NotBeNull();
+            Mocks.GetOrCreateMock<TestClassOne>().Instance.FileSystem.Should().NotBeNull();
         }
 
         [Fact]
@@ -1082,7 +1140,7 @@ namespace FastMoq.Tests
                 return index;
             }
 
-            _ = Component.GetMock<IFile>();
+            _ = Component.GetOrCreateMock<IFile>();
             var mockCount = Component.mockCollection.Count;
 
             // Should not find it, because it doesn't exist.
@@ -1099,15 +1157,15 @@ namespace FastMoq.Tests
         }
 
         [Fact]
-        public void GetMockValueTest()
+        public void GetOrCreateMockValueTest()
         {
-            Mock<ITestClassMany> mock = Component.GetMock<ITestClassMany>();
+            var mock = Component.GetOrCreateMock<ITestClassMany>();
             mock.Setup(x => x.Value).Returns(1);
-            var mock1Object = mock.Object;
+            var mock1Object = mock.Instance;
 
-            Mock<ITestClassMany> mock2 = Component.GetMock<ITestClassMany>();
+            var mock2 = Component.GetOrCreateMock<ITestClassMany>();
             mock2.Setup(x => x.Value).Returns(2);
-            var mock2Object = mock2.Object;
+            var mock2Object = mock2.Instance;
 
             mock1Object.Value.Should().Be(mock2Object.Value);
         }
@@ -1115,29 +1173,35 @@ namespace FastMoq.Tests
         [Fact]
         public void GetObject()
         {
-            var a = Mocks.GetMock<IFileInfo>().Object;
+            var aMock = Mocks.GetOrCreateMock<IFileInfo>();
+            var a = aMock.Instance;
             a.Should().Be(Mocks.GetObject<IFileInfo>());
-            Mocks.GetMock<IFileInfo>().CallBase.Should().BeFalse();
+            ((Mock<IFileInfo>) aMock.NativeMock).CallBase.Should().BeFalse();
 
+            var bMock = Mocks.GetOrCreateMock<IDirectoryInfo>();
             var b = Mocks.GetObject<IDirectoryInfo>();
-            b.Should().Be(Mocks.GetMock<IDirectoryInfo>().Object);
-            Mocks.GetMock<IDirectoryInfo>().CallBase.Should().BeFalse();
+            b.Should().Be(bMock.Instance);
+            ((Mock<IDirectoryInfo>) bMock.NativeMock).CallBase.Should().BeFalse();
 
+            var cMock = Mocks.GetOrCreateMock<ITestClassNormal>();
             var c = Mocks.GetObject<ITestClassNormal>();
-            c.Should().Be(Mocks.GetMock<ITestClassNormal>().Object);
-            Mocks.GetMock<ITestClassNormal>().CallBase.Should().BeFalse();
+            c.Should().Be(cMock.Instance);
+            ((Mock<ITestClassNormal>) cMock.NativeMock).CallBase.Should().BeFalse();
 
+            var dMock = Mocks.GetOrCreateMock<TestClassNormal>();
             var d = Mocks.GetObject<TestClassNormal>();
-            d.Should().Be(Mocks.GetMock<TestClassNormal>().Object);
-            Mocks.GetMock<TestClassNormal>().CallBase.Should().BeTrue();
+            d.Should().Be(dMock.Instance);
+            ((Mock<TestClassNormal>) dMock.NativeMock).CallBase.Should().BeTrue();
 
+            var eMock = Mocks.GetOrCreateMock<ITestClassMany>();
             var e = Mocks.GetObject<ITestClassMany>();
-            e.Should().Be(Mocks.GetMock<ITestClassMany>().Object);
-            Mocks.GetMock<ITestClassMany>().CallBase.Should().BeFalse();
+            e.Should().Be(eMock.Instance);
+            ((Mock<ITestClassMany>) eMock.NativeMock).CallBase.Should().BeFalse();
 
+            var fMock = Mocks.GetOrCreateMock<TestClassMany>();
             var f = Mocks.GetObject<TestClassMany>();
-            f.Should().Be(Mocks.GetMock<TestClassMany>().Object);
-            Mocks.GetMock<TestClassMany>().CallBase.Should().BeTrue();
+            f.Should().Be(fMock.Instance);
+            ((Mock<TestClassMany>) fMock.NativeMock).CallBase.Should().BeTrue();
         }
 
         [Fact]
@@ -1257,12 +1321,28 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void GetArgData_ShouldHonorAmbiguityFallbackFlag()
+        {
+            var args = Component.GetArgData<SameArityPublicConstructorsWithParameterless>(
+                InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity);
+
+            args.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void CreateInstanceByType_ShouldRequireExactParameterlessSignature_WhenEmptyTypeArrayIsProvided()
+        {
+            new Action(() => Mocks.CreateInstanceByType<NoParameterlessConstructorSelectionTarget>(Array.Empty<Type>()))
+                .Should().Throw<NotImplementedException>();
+        }
+
+        [Fact]
         public void GetObject_ShouldPreserveConfiguredMockPropertiesAcrossRepeatedResolutions()
         {
             var expectedProvider = new Mock<IServiceProvider>().Object;
 
             _ = Component.GetObject<AbstractServiceProviderHolder>();
-            Component.GetMock<AbstractServiceProviderHolder>()
+            Component.GetOrCreateMock<AbstractServiceProviderHolder>()
                 .Setup(x => x.InstanceServices)
                 .Returns(expectedProvider);
 
@@ -1414,7 +1494,7 @@ namespace FastMoq.Tests
             Mocks.GetObject<TestClassDouble1>().Value.Should().Be(33);
             Mocks.GetObject<TestClassDouble1>().Value = 44;
             Mocks.GetObject<TestClassDouble1>().Value.Should().Be(44);
-            Mocks.GetMock<TestClassDouble1>().Object.Value.Should().Be(44);
+            Mocks.GetOrCreateMock<TestClassDouble1>().Instance.Value.Should().Be(44);
         }
 
         [Fact]
@@ -1819,8 +1899,7 @@ namespace FastMoq.Tests
         [Fact]
         public void AddProperties_WritableProperty_ShouldHaveValue2()
         {
-            var mock = Mocks.GetMock<SubscriptionData>();
-            var obj = mock.Object;
+            var obj = Mocks.GetObject<SubscriptionData>();
             Component.AddProperties(obj, new KeyValuePair<string, object>("DisplayName", "TestDisplay"), new KeyValuePair<string, object>("SubscriptionId", "testSub"), new KeyValuePair<string, object>("tenantId", Guid.NewGuid()));
             obj.DisplayName.Should().NotBeNullOrEmpty();
             obj.SubscriptionId.Should().NotBeNullOrEmpty();
@@ -1833,8 +1912,7 @@ namespace FastMoq.Tests
         public void AddProperties_WritableProperty_WithAddType_ShouldHaveValues2()
         {
             Mocks.AddType("Display Name Test");
-            var mock = Mocks.GetMock<SubscriptionData>();
-            var obj = mock.Object;
+            var obj = Mocks.GetObject<SubscriptionData>();
             Component.AddProperties(obj, new KeyValuePair<string, object>("DisplayName", "TestDisplay"));
             obj.DisplayName.Should().Be("TestDisplay");
             obj.SubscriptionId.Should().Be("Display Name Test");
@@ -1845,8 +1923,7 @@ namespace FastMoq.Tests
         [Fact]
         public void AddProperties_Test()
         {
-            var mock = Mocks.GetMock<SubscriptionData>();
-            var obj = mock.Object;
+            var obj = Mocks.GetObject<SubscriptionData>();
             Component.AddProperties(obj,
                 new KeyValuePair<string, object>("DisplayName", "TestDisplay"),
                 new KeyValuePair<string, object>("TenantId", Guid.NewGuid()),
@@ -1880,8 +1957,7 @@ namespace FastMoq.Tests
             Mocks.AddType(Guid.NewGuid() as Guid?);
             Mocks.AddType(Guid.NewGuid());
             Mocks.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
-            var mock = Mocks.GetMock<SubscriptionData>();
-            var obj = mock.Object;
+            var obj = Mocks.GetObject<SubscriptionData>();
             obj.DisplayName.Should().Be("Test1");
             obj.SubscriptionId.Should().Be("Test2");
             obj.TenantId.Should().NotBeNull();
@@ -1910,8 +1986,7 @@ namespace FastMoq.Tests
             });
             Mocks.AddType(Guid.NewGuid() as Guid?);
             Mocks.AddType(Guid.NewGuid());
-            var mock = Mocks.GetMock<SubscriptionData>();
-            var obj = mock.Object;
+            var obj = Mocks.GetObject<SubscriptionData>();
             obj.DisplayName.Should().Be("Test1");
             obj.SubscriptionId.Should().Be("Test2");
             obj.TenantId.Should().NotBeNull();
@@ -1962,8 +2037,8 @@ namespace FastMoq.Tests
 
         private static void SetupAction(Mocker mocks)
         {
-            mocks.GetMock<IDirectory>().SetupAllProperties();
-            mocks.GetMock<IFileInfo>().SetupAllProperties();
+            ((Mock<IDirectory>)mocks.GetOrCreateMock<IDirectory>().NativeMock).SetupAllProperties();
+            ((Mock<IFileInfo>)mocks.GetOrCreateMock<IFileInfo>().NativeMock).SetupAllProperties();
         }
 
         private static OptionalParameterProbe CreateOptionalParameterProbe(ILogger? logger = null, IFileSystem? fileSystem = null)
@@ -2090,6 +2165,89 @@ namespace FastMoq.Tests
         public SameArityPublicConstructors(IFile file)
         {
             ArgumentNullException.ThrowIfNull(file);
+        }
+    }
+
+    internal sealed class SameArityPublicConstructorsWithParameterless
+    {
+        public SameArityPublicConstructorsWithParameterless()
+        {
+            SelectedConstructor = "parameterless";
+        }
+
+        public SameArityPublicConstructorsWithParameterless(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            SelectedConstructor = nameof(IFileSystem);
+        }
+
+        public SameArityPublicConstructorsWithParameterless(IFile file)
+        {
+            ArgumentNullException.ThrowIfNull(file);
+            SelectedConstructor = nameof(IFile);
+        }
+
+        public string SelectedConstructor { get; }
+    }
+
+    internal sealed class NonPublicAmbiguousConstructorsWithParameterless
+    {
+        protected NonPublicAmbiguousConstructorsWithParameterless()
+        {
+            SelectedConstructor = "parameterless";
+        }
+
+        protected NonPublicAmbiguousConstructorsWithParameterless(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            SelectedConstructor = nameof(IFileSystem);
+        }
+
+        protected NonPublicAmbiguousConstructorsWithParameterless(IFile file)
+        {
+            ArgumentNullException.ThrowIfNull(file);
+            SelectedConstructor = nameof(IFile);
+        }
+
+        public string SelectedConstructor { get; }
+    }
+
+    internal sealed class NoParameterlessConstructorSelectionTarget
+    {
+        public NoParameterlessConstructorSelectionTarget(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+        }
+    }
+
+    internal sealed class PreferredConstructorTarget
+    {
+        public PreferredConstructorTarget(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
+            SelectedConstructor = nameof(IFileSystem);
+        }
+
+        [PreferredConstructor]
+        public PreferredConstructorTarget()
+        {
+            SelectedConstructor = "preferred";
+        }
+
+        public string SelectedConstructor { get; }
+    }
+
+    internal sealed class MultiplePreferredConstructorsTarget
+    {
+        [PreferredConstructor]
+        public MultiplePreferredConstructorsTarget()
+        {
+        }
+
+        [PreferredConstructor]
+        public MultiplePreferredConstructorsTarget(IFileSystem fileSystem)
+        {
+            ArgumentNullException.ThrowIfNull(fileSystem);
         }
     }
 

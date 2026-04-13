@@ -567,13 +567,13 @@ namespace FastMoq.Tests
         {
             using var providerScope = PushProvider("moq");
             var mocker = new Mocker();
-            var dependency = mocker.GetMock<IExpressionConsumer>();
+            var dependency = mocker.GetOrCreateMock<IExpressionConsumer>();
 
             dependency
                 .Setup(x => x.Match(Mocker.BuildExpression<string>()))
                 .Returns(true);
 
-            var matched = dependency.Object.Match(value => value == "alpha");
+            var matched = dependency.Instance.Match(value => value == "alpha");
 
             matched.Should().BeTrue();
         }
