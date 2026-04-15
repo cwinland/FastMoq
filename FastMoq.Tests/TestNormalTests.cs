@@ -18,10 +18,10 @@ namespace FastMoq.Tests
         // Check values for null
         [Fact]
         public void Service_NullArgChecks_AllConstructorsShouldPass() =>
-            TestAllConstructorParameters((action, constructor, parameter) => action.EnsureNullCheckThrown(parameter, constructor, outputWriter));
+            TestAllConstructorParameters((action, constructor, parameter) => action.EnsureNullCheckThrown(parameter, constructor, outputWriter.WriteLine));
 
         [Fact]
         public void Service_NullArgChecks_CurrentConstructorShouldPass() =>
-            TestConstructorParameters((action, constructor, parameter) => action.EnsureNullCheckThrown(parameter, constructor, outputWriter));
+            TestConstructorParameters((action, constructor, parameter) => action.EnsureNullCheckThrown(parameter, constructor, outputWriter.WriteLine));
     }
 }

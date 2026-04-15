@@ -8,6 +8,30 @@ This page tracks intentional v4 breaking changes relative to the last public `3.
 
 ## Current breaking changes
 
+### Constructor-check output helpers in `FastMoq.Core` are now framework-neutral
+
+The framework-specific output-helper overload for constructor-check diagnostics is no longer part of the `FastMoq.Core` production surface.
+
+What changed:
+
+- `FastMoq.Core` no longer exposes the `EnsureNullCheckThrown(...)` overload that directly depended on a test-framework output abstraction.
+- the supported path is the existing framework-neutral `Action<string>` callback overload.
+- test-framework-specific output adapters now belong in the test project or local helper layer, not in `FastMoq.Core`.
+
+Migration guidance:
+
+```csharp
+// Old framework-coupled path
+action.EnsureNullCheckThrown(parameterName, constructorName, output);
+
+// Current framework-neutral path
+action.EnsureNullCheckThrown(parameterName, constructorName, output.WriteLine);
+```
+
+If the test does not need diagnostic output, omit the callback completely.
+
+For the detailed replacement guidance, see [API Replacements And Migration Exceptions](../migration/api-replacements-and-exceptions.md).
+
 ### `FastMoq.Web` Blazor helpers now align with bUnit 2
 
 The current branch upgrades `FastMoq.Web` from bUnit `1.38.5` to `2.7.2`.

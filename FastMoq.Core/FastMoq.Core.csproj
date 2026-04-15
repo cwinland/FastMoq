@@ -47,7 +47,6 @@
     <PackageReference Include="TestableIO.System.IO.Abstractions.TestingHelpers">
       <ExcludeAssets>analyzers</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="xunit.abstractions" />
   </ItemGroup>
 
   <ItemGroup>

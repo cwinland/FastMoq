@@ -27,6 +27,7 @@ Quick routing:
 - If the migration fails because provider-specific APIs do not behave as expected, go to [Provider Selection and Setup](../getting-started/provider-selection.md) and [Provider, package, and compatibility guidance](./provider-and-compatibility.md).
 - If the migration churn is in `MockerBlazorTestBase<T>`, nested component targeting, render parameters, authorization helpers, or navigation assertions after the bUnit upgrade, go to [bUnit and Blazor test migration](./bunit-and-blazor-testing.md).
 - If the churn is in controller helpers, principals, `HttpContext`, `IHttpContextAccessor`, keyed DI, or framework service-provider shims, go to [Framework and web helper migration](./framework-and-web-helpers.md).
+- If the churn is in constructor-check output plumbing or other test-framework-specific helper output paths, go to [API replacements and migration exceptions](./api-replacements-and-exceptions.md) and [Framework and web helper migration](./framework-and-web-helpers.md).
 - If you are replacing a specific API such as `Initialize<T>(...)`, `VerifyLogger(...)`, `Strict`, `MockOptional`, `GetMock<T>()`, `GetRequiredMock<T>()`, or `CreateDetachedMock<T>()`, go to [API replacements and migration exceptions](./api-replacements-and-exceptions.md).
 - If you want a reusable AI workflow instead of writing prompts from scratch, go to [Copilot migration prompts](./copilot-prompts.md).
 
