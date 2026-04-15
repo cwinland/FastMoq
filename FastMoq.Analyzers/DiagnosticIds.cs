@@ -20,5 +20,6 @@ namespace FastMoq.Analyzers
         public const string UseProviderFirstMockRetrieval = "FMOQ0016";
         public const string AvoidLegacyRequiredMockRetrieval = "FMOQ0017";
         public const string AvoidLegacyMockCreationAndLifecycleApis = "FMOQ0018";
+        public const string PreferSetupOptionsHelper = "FMOQ0019";
     }
 }

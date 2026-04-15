@@ -105,6 +105,15 @@ namespace FastMoq.Analyzers
             isEnabledByDefault: true,
             description: "Shared test helpers should prefer provider-neutral TimesSpec over Moq Times or Func<Times> parameters.");
 
+        public static readonly DiagnosticDescriptor PreferSetupOptionsHelper = new(
+            DiagnosticIds.PreferSetupOptionsHelper,
+            "Prefer SetupOptions for IOptions test setup",
+            "Use '{0}' instead of manual IOptions<T> setup",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "Prefer SetupOptions<T>(...) over repeated IOptions<T> AddType(...)/Options.Create(...) and Setup(x => x.Value).Returns(...) patterns when registering test options values.");
+
         public static readonly DiagnosticDescriptor SelectProviderBeforeProviderSpecificApi = new(
             DiagnosticIds.SelectProviderBeforeProviderSpecificApi,
             "Select a provider before using provider-specific FastMoq APIs",

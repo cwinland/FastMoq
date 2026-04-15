@@ -436,6 +436,12 @@ namespace FastMoq.Analyzers
             return true;
         }
 
+        public static bool TryBuildSetupOptionsReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            return TryBuildSetupOptionsReturnsReplacement(invocationExpression, semanticModel, cancellationToken, out replacement) ||
+                TryBuildSetupOptionsAddTypeReplacement(invocationExpression, semanticModel, cancellationToken, out replacement);
+        }
+
         public static Location GetTargetNameLocation(ExpressionSyntax expression)
         {
             if (expression is MemberAccessExpressionSyntax memberAccess)
@@ -776,6 +782,238 @@ namespace FastMoq.Analyzers
             }
 
             return false;
+        }
+
+        private static bool TryBuildSetupOptionsReturnsReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "Returns" ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax returnsAccess ||
+                invocationExpression.ArgumentList.Arguments.Count != 1 ||
+                returnsAccess.Expression is not InvocationExpressionSyntax setupInvocation ||
+                !TryGetMethodSymbol(setupInvocation, semanticModel, cancellationToken, out var setupMethod) ||
+                setupMethod is null)
+            {
+                return false;
+            }
+
+            setupMethod = setupMethod.ReducedFrom ?? setupMethod;
+            if (setupMethod.Name is not "Setup" and not "SetupGet" ||
+                setupInvocation.Expression is not MemberAccessExpressionSyntax setupAccess ||
+                !TryResolveTrackedMockOrigin(setupAccess.Expression, semanticModel, cancellationToken, out var origin) ||
+                !TryGetIOptionsValueType(origin.ServiceType, out var optionsType) ||
+                !IsOptionsValueAccessorSetup(setupInvocation) ||
+                !TryGetSetupOptionsArgumentText(invocationExpression.ArgumentList.Arguments[0].Expression, out var setupArgument))
+            {
+                return false;
+            }
+
+            replacement = BuildSetupOptionsReplacement(origin.MockerExpression, optionsType, setupArgument, null, semanticModel, invocationExpression.SpanStart);
+            return true;
+        }
+
+        private static bool TryBuildSetupOptionsAddTypeReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (!IsFastMoqMockerMethod(method, "AddType") ||
+                method.TypeArguments.Length != 1 ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
+                !TryGetIOptionsValueType(method.TypeArguments[0], out var optionsType) ||
+                invocationExpression.ArgumentList.Arguments.Count is 0 or > 2 ||
+                !TryGetSetupOptionsArgumentFromAddType(invocationExpression.ArgumentList.Arguments[0].Expression, semanticModel, cancellationToken, out var setupArgument))
+            {
+                return false;
+            }
+
+            string? replaceArgument = null;
+            if (invocationExpression.ArgumentList.Arguments.Count == 2)
+            {
+                var replaceExpression = invocationExpression.ArgumentList.Arguments[1].Expression;
+                if (!TryGetBooleanConstant(replaceExpression, semanticModel, cancellationToken, out var replaceConstant) || replaceConstant)
+                {
+                    replaceArgument = replaceExpression.WithoutTrivia().ToString();
+                }
+            }
+
+            replacement = BuildSetupOptionsReplacement(memberAccess.Expression, optionsType, setupArgument, replaceArgument, semanticModel, invocationExpression.SpanStart);
+            return true;
+        }
+
+        private static bool TryGetIOptionsValueType(ITypeSymbol type, out ITypeSymbol optionsType)
+        {
+            if (type is INamedTypeSymbol namedType &&
+                namedType.IsGenericType &&
+                namedType.Name == "IOptions" &&
+                namedType.ContainingNamespace.ToDisplayString() == "Microsoft.Extensions.Options" &&
+                namedType.TypeArguments.Length == 1)
+            {
+                optionsType = namedType.TypeArguments[0];
+                return true;
+            }
+
+            optionsType = default!;
+            return false;
+        }
+
+        private static bool IsOptionsValueAccessorSetup(InvocationExpressionSyntax setupInvocation)
+        {
+            if (setupInvocation.ArgumentList.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            var candidateExpression = Unwrap(setupInvocation.ArgumentList.Arguments[0].Expression);
+            if (candidateExpression is not LambdaExpressionSyntax lambdaExpression ||
+                lambdaExpression.Body is not ExpressionSyntax bodyExpression)
+            {
+                return false;
+            }
+
+            return Unwrap(bodyExpression) is MemberAccessExpressionSyntax memberAccessExpression &&
+                memberAccessExpression.Name.Identifier.ValueText == "Value";
+        }
+
+        private static bool TryGetSetupOptionsArgumentText(ExpressionSyntax expression, out string setupArgument)
+        {
+            expression = Unwrap(expression);
+
+            if (IsNullLikeExpression(expression))
+            {
+                setupArgument = string.Empty;
+                return false;
+            }
+
+            if (expression is ParenthesizedLambdaExpressionSyntax parenthesizedLambda)
+            {
+                if (parenthesizedLambda.ParameterList.Parameters.Count != 0 || parenthesizedLambda.Body is not ExpressionSyntax)
+                {
+                    setupArgument = string.Empty;
+                    return false;
+                }
+
+                setupArgument = parenthesizedLambda.WithoutTrivia().ToString();
+                return true;
+            }
+
+            setupArgument = expression.WithoutTrivia().ToString();
+            return true;
+        }
+
+        private static bool TryGetSetupOptionsArgumentFromAddType(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out string setupArgument)
+        {
+            expression = Unwrap(expression);
+
+            if (TryUnwrapOptionsCreateValueExpression(expression, semanticModel, cancellationToken, out var valueExpression))
+            {
+                if (IsNullLikeExpression(valueExpression))
+                {
+                    setupArgument = string.Empty;
+                    return false;
+                }
+
+                setupArgument = valueExpression.WithoutTrivia().ToString();
+                return true;
+            }
+
+            if (expression is LambdaExpressionSyntax lambdaExpression &&
+                TryBuildSetupOptionsFactoryArgument(lambdaExpression, semanticModel, cancellationToken, out setupArgument))
+            {
+                return true;
+            }
+
+            setupArgument = string.Empty;
+            return false;
+        }
+
+        private static bool TryBuildSetupOptionsFactoryArgument(LambdaExpressionSyntax lambdaExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string setupArgument)
+        {
+            setupArgument = string.Empty;
+            if (lambdaExpression.Body is not ExpressionSyntax bodyExpression ||
+                !TryUnwrapOptionsCreateValueExpression(bodyExpression, semanticModel, cancellationToken, out var valueExpression) ||
+                IsNullLikeExpression(valueExpression))
+            {
+                return false;
+            }
+
+            if (LambdaReferencesParameters(lambdaExpression, valueExpression))
+            {
+                return false;
+            }
+
+            setupArgument = $"() => {valueExpression.WithoutTrivia()}";
+            return true;
+        }
+
+        private static bool TryUnwrapOptionsCreateValueExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out ExpressionSyntax valueExpression)
+        {
+            expression = Unwrap(expression);
+            if (expression is InvocationExpressionSyntax invocationExpression &&
+                TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) &&
+                method is not null)
+            {
+                method = method.ReducedFrom ?? method;
+                if (method.Name == "Create" &&
+                    method.ContainingType.ToDisplayString() == "Microsoft.Extensions.Options.Options" &&
+                    invocationExpression.ArgumentList.Arguments.Count == 1)
+                {
+                    valueExpression = invocationExpression.ArgumentList.Arguments[0].Expression;
+                    return true;
+                }
+            }
+
+            valueExpression = default!;
+            return false;
+        }
+
+        private static bool LambdaReferencesParameters(LambdaExpressionSyntax lambdaExpression, ExpressionSyntax bodyExpression)
+        {
+            IEnumerable<string> parameterNames = lambdaExpression switch
+            {
+                SimpleLambdaExpressionSyntax simpleLambda => [simpleLambda.Parameter.Identifier.ValueText],
+                ParenthesizedLambdaExpressionSyntax parenthesizedLambda => parenthesizedLambda.ParameterList.Parameters.Select(parameter => parameter.Identifier.ValueText),
+                _ => []
+            };
+
+            var parameterNameSet = new HashSet<string>(parameterNames, StringComparer.Ordinal);
+            if (parameterNameSet.Count == 0)
+            {
+                return false;
+            }
+
+            return bodyExpression.DescendantNodesAndSelf()
+                .OfType<IdentifierNameSyntax>()
+                .Any(identifier => parameterNameSet.Contains(identifier.Identifier.ValueText));
+        }
+
+        private static bool IsNullLikeExpression(ExpressionSyntax expression)
+        {
+            expression = Unwrap(expression);
+            return expression is LiteralExpressionSyntax literalExpression && literalExpression.Token.Value is null ||
+                expression is DefaultExpressionSyntax ||
+                expression.IsKind(Microsoft.CodeAnalysis.CSharp.SyntaxKind.DefaultLiteralExpression);
+        }
+
+        private static string BuildSetupOptionsReplacement(ExpressionSyntax mockerExpressionSyntax, ITypeSymbol optionsType, string setupArgument, string? replaceArgument, SemanticModel semanticModel, int position)
+        {
+            var mockerExpression = mockerExpressionSyntax.WithoutTrivia().ToString();
+            var optionsTypeName = GetMinimalTypeName(optionsType, semanticModel, position);
+            return string.IsNullOrWhiteSpace(replaceArgument)
+                ? $"{mockerExpression}.SetupOptions<{optionsTypeName}>({setupArgument})"
+                : $"{mockerExpression}.SetupOptions<{optionsTypeName}>({setupArgument}, replace: {replaceArgument})";
         }
 
         private static IEnumerable<INamedTypeSymbol> GetCandidateTestTargetTypes(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)

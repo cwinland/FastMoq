@@ -97,6 +97,18 @@ Analyzer note:
 
 - `FMOQ0013` warns on direct FastMoq `IServiceProvider` mock setup so those helpers move toward `CreateTypedServiceProvider(...)` or `AddServiceProvider(...)`.
 
+If the same helper layer also hand-rolls `IOptions<T>` setup, move that boilerplate at the same time:
+
+```csharp
+Mocks.SetupOptions(new WorkerClientOptions
+{
+    RetryCount = 3,
+    Endpoint = "https://fastmoq.dev"
+});
+```
+
+Keep `AddType(instance)` for non-options real instances such as `MemoryCache`, clocks, or fixed framework objects. Use `SetupOptions(...)` only for the repeated `IOptions<T>` wrapper shape.
+
 ### Temporary compatibility cleanup in shared helpers
 
 When you are already touching shared framework helpers, treat these as high-priority cleanup targets:

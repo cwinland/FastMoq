@@ -48,6 +48,63 @@ namespace FastMoq.Tests
             mocker.GetObject<IServiceProviderIsService>().Should().NotBeNull();
         }
 
+        [Fact]
+        public void SetupOptions_ShouldRegisterConcreteOptionsValue()
+        {
+            var mocker = new Mocker();
+            var expected = new SampleOptions
+            {
+                Name = "alpha",
+                RetryCount = 2,
+            };
+
+            mocker.SetupOptions(expected);
+
+            var options = mocker.GetObject<IOptions<SampleOptions>>();
+
+            options.Should().NotBeNull();
+            options!.Value.Should().BeSameAs(expected);
+        }
+
+        [Fact]
+        public void SetupOptions_ShouldCreateAndReplaceOptionsValueFromFactory()
+        {
+            var mocker = new Mocker();
+
+            mocker.SetupOptions(new SampleOptions
+            {
+                Name = "before",
+                RetryCount = 1,
+            });
+
+            mocker.SetupOptions(() => new SampleOptions
+            {
+                Name = "after",
+                RetryCount = 5,
+            }, replace: true);
+
+            var options = mocker.GetObject<IOptions<SampleOptions>>();
+
+            options.Should().NotBeNull();
+            options!.Value.Name.Should().Be("after");
+            options.Value.RetryCount.Should().Be(5);
+        }
+
+        [Fact]
+        public void SetupOptions_ShouldCreateDefaultOptionsValue()
+        {
+            var mocker = new Mocker();
+
+            mocker.SetupOptions<SampleOptions>();
+
+            var options = mocker.GetObject<IOptions<SampleOptions>>();
+
+            options.Should().NotBeNull();
+            options!.Value.Should().NotBeNull();
+            options.Value.Name.Should().BeNull();
+            options.Value.RetryCount.Should().Be(0);
+        }
+
         [Theory]
         [InlineData("moq")]
         [InlineData("nsubstitute")]
@@ -350,6 +407,13 @@ namespace FastMoq.Tests
             public int Count { get; set; }
 
             public string? Name { get; set; }
+        }
+
+        private sealed class SampleOptions
+        {
+            public string? Name { get; set; }
+
+            public int RetryCount { get; set; }
         }
     }
 }
