@@ -1,5 +1,8 @@
 using FluentAssertions;
+using FastMoq.Extensions;
 using FastMoq.Providers.MoqProvider;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
@@ -105,5 +108,51 @@ namespace FastMoq.TestingExample
             fileSystemMock.Setup(x => x.File).Returns(iFile);
             mocks.AddType<IFileSystem>(fileSystemMock.Object, replace: true);
         }
+    }
+
+    public class WorkerProcessorMigrationExampleTests : MockerTestBase<WorkerProcessorMigrationExample>
+    {
+        public WorkerProcessorMigrationExampleTests() : base(static mocks =>
+        {
+            mocks.AddLoggerFactory();
+            mocks.SetupOptions(new WorkerProcessorOptions
+            {
+                RetryCount = 3,
+            });
+        })
+        {
+        }
+
+        [Fact]
+        public void Execute_ShouldUseHelperRegisteredLoggerAndOptions()
+        {
+            Component.Execute().Should().Be(3);
+
+            Mocks.VerifyLogged(LogLevel.Information, "Running with retry count 3");
+        }
+    }
+
+    public sealed class WorkerProcessorMigrationExample
+    {
+        private readonly ILogger<WorkerProcessorMigrationExample> _logger;
+        private readonly IOptions<WorkerProcessorOptions> _options;
+
+        public WorkerProcessorMigrationExample(ILogger<WorkerProcessorMigrationExample> logger, IOptions<WorkerProcessorOptions> options)
+        {
+            _logger = logger;
+            _options = options;
+        }
+
+        public int Execute()
+        {
+            var retryCount = _options.Value.RetryCount;
+            _logger.LogInformation("Running with retry count {RetryCount}", retryCount);
+            return retryCount;
+        }
+    }
+
+    public sealed class WorkerProcessorOptions
+    {
+        public int RetryCount { get; set; }
     }
 }

@@ -147,6 +147,40 @@ Recommended helper shape:
 - adapt it to `Action<string>` at the helper boundary before calling FastMoq
 - if the helper only used output for occasional diagnostics, prefer dropping the callback entirely instead of preserving framework-specific plumbing forever
 
+### Shared logger helper wrappers: use first-party registrations
+
+If a shared helper only exists to register `ILoggerFactory`, `ILogger`, or `ILogger<T>`, replace that wrapper with the first-party logging helpers instead of preserving a private adapter layer.
+
+Direct `Mocker` registration:
+
+```csharp
+Mocks.AddLoggerFactory();
+
+var logger = Mocks.GetObject<ILogger<WidgetProcessor>>();
+logger.LogInformation("processing complete");
+
+Mocks.VerifyLogged(LogLevel.Information, "processing complete");
+```
+
+Typed provider composition:
+
+```csharp
+var loggerFactory = Mocks.CreateLoggerFactory();
+
+Mocks.AddServiceProvider(services =>
+{
+    services.AddSingleton(loggerFactory);
+    services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+});
+```
+
+Keep any test-framework-specific output adapter local to the test project. If the suite wants logger output mirrored somewhere special, plug that provider into `CreateLoggerFactory(...)` through the logging-builder callback rather than adding a framework dependency back into `FastMoq.Core`.
+
+Analyzer note:
+
+- `FMOQ0003` prefers `VerifyLogged(...)` over legacy `VerifyLogger(...)` when the assertion can stay provider-safe.
+- `FMOQ0019` prefers `SetupOptions(...)` over repeated manual `IOptions<T>` setup.
+
 ## Web test helpers
 
 For controller tests, request-driven tests, and `IHttpContextAccessor`-driven tests, prefer the `FastMoq.Web` helpers instead of continuing to hand-roll local request and principal setup.
