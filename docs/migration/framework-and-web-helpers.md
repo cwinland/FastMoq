@@ -17,6 +17,7 @@ Start with helpers that still centralize any of these patterns:
 - `.Object` access on raw `Mock<T>` values
 - `.Reset()` calls on provider-specific mocks
 - `Func<Times>` or raw `Times` helper signatures
+- test-framework output helpers passed through shared constructor-check or diagnostic helper wrappers
 - local wrappers around principals, controller contexts, or request setup
 - framework service-provider shims such as `InstanceServices`, `IServiceProvider`, or similar test bootstrap plumbing
 
@@ -105,6 +106,34 @@ When you are already touching shared framework helpers, treat these as high-prio
 - local `FunctionContext.InstanceServices` wrappers that do not build a real provider
 
 Those patterns are still supported to keep v4 migrations moving, but they are the exact spots where a small helper rewrite gives the biggest long-term payback.
+
+### Test-framework output helpers: keep the adapter local
+
+If a shared helper still forwards a test-framework output object directly into FastMoq constructor-check helpers, keep the framework adapter local and pass a neutral line-writer callback into FastMoq instead.
+
+Before:
+
+```csharp
+action.EnsureNullCheckThrown(parameterName, constructorName, output);
+```
+
+After:
+
+```csharp
+action.EnsureNullCheckThrown(parameterName, constructorName, output.WriteLine);
+```
+
+Why this matters:
+
+- the `FastMoq.Core` surface for this path is now framework-neutral
+- the helper migration is usually one local signature fix rather than a rewrite of every leaf test
+- the same shape works with xUnit, NUnit, MSTest, or an in-memory list collector because FastMoq only needs `Action<string>`
+
+Recommended helper shape:
+
+- keep the test-framework output type in the test project if that project wants it
+- adapt it to `Action<string>` at the helper boundary before calling FastMoq
+- if the helper only used output for occasional diagnostics, prefer dropping the callback entirely instead of preserving framework-specific plumbing forever
 
 ## Web test helpers
 

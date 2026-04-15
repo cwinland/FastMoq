@@ -12,7 +12,6 @@ using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Xunit.Abstractions;
 
 namespace FastMoq.Extensions
 {
@@ -116,17 +115,6 @@ namespace FastMoq.Extensions
                 throw;
             }
         }
-
-        /// <summary>
-        ///     Ensures the null check thrown.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="constructorName">Name of the constructor.</param>
-        /// <param name="output">The output.</param>
-        public static void EnsureNullCheckThrown(this Action action, string parameterName,
-            string? constructorName, ITestOutputHelper? output) =>
-            action.EnsureNullCheckThrown(parameterName, constructorName, s => output?.WriteLine(s));
 
         /// <summary>
         ///     Gets the default value.

@@ -429,6 +429,15 @@ public void Constructor_ShouldThrow_WhenFileSystemIsNull()
 }
 ```
 
+If you want diagnostic output while the helper runs, pass a framework-neutral line writer:
+
+```csharp
+TestConstructorParameters((action, constructorName, parameterName) =>
+    action.EnsureNullCheckThrown(parameterName, constructorName, message => output.WriteLine(message)));
+```
+
+That keeps the FastMoq helper surface framework-neutral while still letting the test project adapt its local runner output.
+
 ### Async Method Testing
 
 FastMoq works seamlessly with async methods:

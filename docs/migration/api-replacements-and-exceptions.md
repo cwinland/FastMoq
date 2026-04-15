@@ -162,6 +162,38 @@ Mocks.VerifyLogged(LogLevel.Warning, "retrying", TimesSpec.Exactly(2));
 
 This is one of the easiest compile-fix churn points in migration work, so it is worth being explicit.
 
+### `EnsureNullCheckThrown(...)` output callbacks
+
+Old framework-coupled pattern:
+
+```csharp
+action.EnsureNullCheckThrown(parameterName, constructorName, output);
+```
+
+Current guidance:
+
+```csharp
+action.EnsureNullCheckThrown(parameterName, constructorName, output.WriteLine);
+```
+
+Or, when the test does not need diagnostic output at all:
+
+```csharp
+action.EnsureNullCheckThrown(parameterName, constructorName);
+```
+
+Why:
+
+- `FastMoq.Core` no longer carries a test-framework-specific output-helper overload for this path.
+- The supported replacement is the framework-neutral `Action<string>` callback overload that already exists in core.
+- Test-framework adapters should stay in the test project or local helper layer rather than in the production `FastMoq.Core` surface.
+
+Practical migration rule:
+
+- if the test already has an xUnit `ITestOutputHelper`, pass `output.WriteLine`
+- if the test uses another framework, pass that framework's equivalent line-writer delegate
+- if the output was only diagnostic noise, drop the callback entirely and keep the constructor assertion helper
+
 ### `Strict`
 
 Old assumption:
