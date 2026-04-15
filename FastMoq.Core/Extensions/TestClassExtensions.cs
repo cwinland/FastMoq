@@ -564,9 +564,9 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
 
             var provider = MockingProviderRegistry.Default;
-            if (!provider.Capabilities.SupportsLoggerCapture)
+            if (!provider.Capabilities.SupportsLoggerCapture && !mocker.HasExplicitLoggerCapture)
             {
-                throw new NotSupportedException($"Active provider '{provider.GetType().Name}' does not support ILogger capture required for Mocks.VerifyLogged(...). Use a provider that supports logger capture or verify through provider-specific APIs.");
+                throw new NotSupportedException($"Active provider '{provider.GetType().Name}' does not support ILogger capture required for Mocks.VerifyLogged(...). Use Mocks.AddLoggerFactory(...), Mocks.CreateLoggerFactory(...), a provider that supports logger capture, or verify through provider-specific APIs.");
             }
 
             var matches = mocker.LogEntries.Count(entry =>

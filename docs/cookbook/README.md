@@ -1357,6 +1357,34 @@ Mocks.GetMock<ILogger<MyService>>()
 
 `VerifyLogged(...)` is provider-safe because the active provider is responsible for wiring `ILogger` capture through `IMockingProvider.ConfigureLogger(...)`, while FastMoq core owns the assertion semantics. Providers that cannot capture logger callbacks advertise that through capabilities and FastMoq fails fast instead of silently giving a false negative.
 
+### Logger Registration Without A Private Helper Layer
+
+If the suite needs a reusable registration path for `ILoggerFactory`, `ILogger`, or `ILogger<T>`, use the first-party logging helpers instead of maintaining a framework-specific adapter layer:
+
+```csharp
+var mocker = new Mocker()
+    .AddLoggerFactory();
+
+var logger = mocker.GetObject<ILogger<OrderProcessingService>>();
+
+logger.LogInformation("Processing complete");
+
+mocker.VerifyLogged(LogLevel.Information, "Processing complete");
+```
+
+When the test already builds a typed service provider, create the same callback-backed factory explicitly and register it into the service collection:
+
+```csharp
+var loggerFactory = Mocks.CreateLoggerFactory();
+var provider = Mocks.CreateTypedServiceProvider(services =>
+{
+    services.AddSingleton(loggerFactory);
+    services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+});
+```
+
+That keeps the logger-registration story framework-neutral while still letting `Mocks.VerifyLogged(...)` assert on the captured entries.
+
 ### Service with Logging
 
 ```csharp
