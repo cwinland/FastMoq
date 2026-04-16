@@ -5,6 +5,7 @@ This project is the smallest repo-local place to see FastMoq patterns in executa
 ## Real-world examples
 
 - `OrderProcessingServiceExamples` shows a business workflow with repository, inventory, payment, and logger dependencies.
+- `OrderSubmissionServiceExamples` shows provider-neutral property setter capture with `AddPropertySetterCapture<TService, TValue>(...)`.
 - `CustomerImportServiceExamples` shows the built-in `IFileSystem` support with `MockFileSystem` plus parser and repository collaborators.
 - `InvoiceReminderServiceScenarioExamples` shows the fluent `Scenario.With(...).When(...).Then(...).Verify(...)` style.
 - `OptionalParameterResolutionExamples` shows the explicit optional-parameter model through `ComponentCreationFlags` and `InvocationOptions`.

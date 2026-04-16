@@ -457,6 +457,31 @@ namespace FastMoq.Analyzers
                 TryBuildSetupOptionsAddTypeReplacement(invocationExpression, semanticModel, cancellationToken, out replacement);
         }
 
+        public static bool TryBuildSetupSetGuidance(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string guidance)
+        {
+            guidance = string.Empty;
+
+            if (!TryGetSetupSetProperty(invocationExpression, semanticModel, cancellationToken, out var origin, out var property, out var lambdaExpression))
+            {
+                return false;
+            }
+
+            var propertyTypeName = GetMinimalTypeName(property.Type, semanticModel, invocationExpression.SpanStart);
+            if (origin.ServiceType.TypeKind == TypeKind.Interface &&
+                invocationExpression.Parent is not MemberAccessExpressionSyntax &&
+                property.SetMethod is not null &&
+                TryBuildSetupSetPropertySelector(lambdaExpression, out var propertySelector))
+            {
+                var mockerExpression = origin.MockerExpression.WithoutTrivia().ToString();
+                var serviceTypeName = GetMinimalTypeName(origin.ServiceType, semanticModel, invocationExpression.SpanStart);
+                guidance = $"{mockerExpression}.AddPropertySetterCapture<{serviceTypeName}, {propertyTypeName}>({propertySelector})";
+                return true;
+            }
+
+            guidance = $"a fake or stub plus PropertyValueCapture<{propertyTypeName}>";
+            return true;
+        }
+
         public static bool TryBuildFunctionContextInstanceServicesReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)
         {
             if (!HasFunctionContextInstanceServicesMockHelper(semanticModel))
@@ -662,6 +687,67 @@ namespace FastMoq.Analyzers
                     method.Parameters.Length == 2 &&
                     method.Parameters[0].Type.ToDisplayString() == "FastMoq.Providers.IFastMock" &&
                     method.Parameters[1].Type.ToDisplayString() == SERVICE_PROVIDER_TYPE);
+        }
+
+        private static bool TryGetSetupSetProperty(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out TrackedMockOrigin origin, out IPropertySymbol property, out LambdaExpressionSyntax lambdaExpression)
+        {
+            origin = default;
+            property = null!;
+            lambdaExpression = null!;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "SetupSet" ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
+                !TryResolveTrackedMockOrigin(memberAccess.Expression, semanticModel, cancellationToken, out origin) ||
+                invocationExpression.ArgumentList.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            var candidateExpression = Unwrap(invocationExpression.ArgumentList.Arguments[0].Expression);
+            if (candidateExpression is not LambdaExpressionSyntax candidateLambda ||
+                candidateLambda.Body is not AssignmentExpressionSyntax assignmentExpression ||
+                assignmentExpression.Left is not MemberAccessExpressionSyntax propertyAccess ||
+                !TryGetPropertySymbol(propertyAccess, semanticModel, cancellationToken, out var candidateProperty) ||
+                candidateProperty is null)
+            {
+                return false;
+            }
+
+            property = candidateProperty;
+            lambdaExpression = candidateLambda;
+            return true;
+        }
+
+        private static bool TryBuildSetupSetPropertySelector(LambdaExpressionSyntax lambdaExpression, out string selector)
+        {
+            selector = string.Empty;
+            if (lambdaExpression.Body is not AssignmentExpressionSyntax assignmentExpression ||
+                assignmentExpression.Left is not MemberAccessExpressionSyntax propertyAccess)
+            {
+                return false;
+            }
+
+            var parameterName = lambdaExpression switch
+            {
+                SimpleLambdaExpressionSyntax simpleLambda => simpleLambda.Parameter.Identifier.ValueText,
+                ParenthesizedLambdaExpressionSyntax parenthesizedLambda when parenthesizedLambda.ParameterList.Parameters.Count == 1 => parenthesizedLambda.ParameterList.Parameters[0].Identifier.ValueText,
+                _ => string.Empty,
+            };
+
+            if (string.IsNullOrWhiteSpace(parameterName))
+            {
+                return false;
+            }
+
+            selector = $"{parameterName} => {propertyAccess.WithoutTrivia()}";
+            return true;
         }
 
         private static bool TryBuildFunctionContextInstanceServicesReturnsReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)

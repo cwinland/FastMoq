@@ -27,6 +27,7 @@ namespace FastMoq.Analyzers.Tests
             { new StrictCompatibilityAnalyzer(), DiagnosticDescriptors.AvoidStrictCompatibilityProperty },
             { new TimesSpecHelperBoundaryAnalyzer(), DiagnosticDescriptors.UseTimesSpecAtHelperBoundary },
             { new OptionsSetupAnalyzer(), DiagnosticDescriptors.PreferSetupOptionsHelper },
+            { new SetupSetAnalyzer(), DiagnosticDescriptors.PreferPropertySetterCaptureHelper },
             { new ProviderBootstrapAnalyzer(), DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi },
             { new NativeMockAuthoringAnalyzer(), DiagnosticDescriptors.PreferTypedProviderExtensions },
             { new WebHelperAuthoringAnalyzer(), DiagnosticDescriptors.PreferWebTestHelpers },
@@ -50,6 +51,7 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.AvoidStrictCompatibilityProperty, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.UseTimesSpecAtHelperBoundary, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferSetupOptionsHelper, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.PreferPropertySetterCaptureHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.PreferTypedProviderExtensions, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferWebTestHelpers, DiagnosticSeverity.Info },
@@ -649,6 +651,64 @@ class Sample
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ServiceProviderShimAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task SetupSetAnalyzer_ShouldReportHelperSuggestion_ForSimpleInterfacePropertyCapture()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+public interface IOrderGateway
+{
+    string? Mode { get; set; }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var gateway = Mocks.GetOrCreateMock<IOrderGateway>();
+        gateway.AsMoq().SetupSet(x => x.Mode = It.IsAny<string?>());
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new SetupSetAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferPropertySetterCaptureHelper));
+
+            Assert.Equal(DiagnosticIds.PreferPropertySetterCaptureHelper, diagnostic.Id);
+            Assert.Contains("Mocks.AddPropertySetterCapture<IOrderGateway, string?>(x => x.Mode)", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task SetupSetAnalyzer_ShouldReportFakePatternSuggestion_ForChainedSetupSetUsage()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+public interface IOrderGateway
+{
+    string? Mode { get; set; }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var gateway = Mocks.GetOrCreateMock<IOrderGateway>();
+        gateway.AsMoq().SetupSet(x => x.Mode = It.IsAny<string?>()).Verifiable();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new SetupSetAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferPropertySetterCaptureHelper));
+
+            Assert.Equal(DiagnosticIds.PreferPropertySetterCaptureHelper, diagnostic.Id);
+            Assert.Contains("PropertyValueCapture<string?>", diagnostic.GetMessage());
         }
 
         [Fact]

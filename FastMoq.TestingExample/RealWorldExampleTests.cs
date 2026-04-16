@@ -86,6 +86,26 @@ namespace FastMoq.TestingExample
         }
     }
 
+    public class OrderSubmissionServiceExamples : MockerTestBase<OrderSubmissionService>
+    {
+        [Fact]
+        public async Task SubmitAsync_ShouldCaptureAssignedMode_WithAddPropertySetterCapture()
+        {
+            var submissionChannel = Mocks.GetOrCreateMock<IOrderSubmissionChannel>();
+            submissionChannel
+                .Setup(x => x.SubmitAsync("order-42", CancellationToken.None))
+                .Returns(Task.CompletedTask);
+
+            var modeCapture = Mocks.AddPropertySetterCapture<IOrderSubmissionChannel, string?>(x => x.Mode);
+            CreateComponent();
+
+            await Component.SubmitAsync("order-42", expedited: true, CancellationToken.None);
+
+            modeCapture.Value.Should().Be("fast");
+            Mocks.Verify<IOrderSubmissionChannel>(x => x.SubmitAsync("order-42", CancellationToken.None), TimesSpec.Once);
+        }
+    }
+
     public class CustomerImportServiceExamples : MockerTestBase<CustomerImportService>
     {
         [Fact]

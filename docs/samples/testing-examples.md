@@ -94,7 +94,7 @@ That is the main migration pattern: replace `Setup(...)` with direct substitute 
 
 ### Side-by-side: `SetupSet(...)` migration versus provider-neutral capture
 
-When a test only needs to observe which value was assigned to a property, prefer a fake plus `PropertyValueCapture<TValue>` over keeping the test tied to Moq setter interception.
+When a test only needs to observe which value was assigned to a property, prefer `AddPropertySetterCapture<TService, TValue>(...)` for simple interface-property cases, or a fake plus `PropertyValueCapture<TValue>` when the collaborator needs broader behavior.
 
 Moq-specific shape:
 
@@ -108,13 +108,17 @@ gateway.AsMoq().SetupSet(x => x.Mode = It.IsAny<string>());
 Provider-neutral shape:
 
 ```csharp
-var modeCapture = new PropertyValueCapture<string?>();
-Mocks.AddType<IOrderGateway>(_ => new OrderGatewayStub(modeCapture));
+var modeCapture = Mocks.AddPropertySetterCapture<IOrderGateway, string?>(x => x.Mode);
+CreateComponent();
 
 await Component.RunAsync();
 
 modeCapture.Value.Should().Be("fast");
 ```
+
+When the component already exists because the test derives from `MockerTestBase<TComponent>`, that `CreateComponent()` call is what rebinds the constructor dependency to the proxy-backed registration.
+
+If the collaborator needs more than one captured property or is not an interface, keep using the fake-plus-`PropertyValueCapture<TValue>` pattern instead.
 
 That migration keeps the test portable across providers and usually makes the asserted behavior clearer.
 
