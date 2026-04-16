@@ -10,6 +10,24 @@ namespace FastMoq.Tests
         [Theory]
         [InlineData("moq")]
         [InlineData("nsubstitute")]
+        public void AddPropertyState_ShouldPreserveAssignments_AndForwardOtherMembers(string providerName)
+        {
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+            var mocker = new Mocker();
+
+            _ = mocker.GetOrCreateMock<IPropertySetterCaptureGateway>();
+            var gateway = mocker.AddPropertyState<IPropertySetterCaptureGateway>();
+
+            gateway.Mode = "fast";
+            gateway.Publish("alpha");
+
+            gateway.Mode.Should().Be("fast");
+            mocker.Verify<IPropertySetterCaptureGateway>(x => x.Publish("alpha"), TimesSpec.Once);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
         public void AddPropertySetterCapture_ShouldCaptureAssignments_AndForwardOtherMembers(string providerName)
         {
             using var providerScope = MockingProviderRegistry.Push(providerName);
@@ -70,6 +88,30 @@ namespace FastMoq.Tests
             testBase.VerifyPublished("alpha");
         }
 
+        [Fact]
+        public void AddPropertyState_ShouldRejectNonInterfaceTypes()
+        {
+            var mocker = new Mocker();
+
+            Action action = () => mocker.AddPropertyState<PropertySetterCaptureConcreteTarget>();
+
+            action.Should().Throw<NotSupportedException>()
+                .WithMessage("*interface types only*");
+        }
+
+        [Fact]
+        public void AddPropertyState_ShouldSupportMockerTestBase_WhenComponentIsRecreated()
+        {
+            using var testBase = new PropertySetterCaptureComponentTestBase();
+
+            var gateway = testBase.AddModeState();
+
+            testBase.Submit("alpha", expedited: true);
+
+            gateway.Mode.Should().Be("fast");
+            testBase.VerifyPublished("alpha");
+        }
+
         public interface IPropertySetterCaptureGateway
         {
             string? Mode { get; set; }
@@ -116,6 +158,13 @@ namespace FastMoq.Tests
 
         private sealed class PropertySetterCaptureComponentTestBase : MockerTestBase<PropertySetterCaptureComponent>
         {
+            public IPropertySetterCaptureGateway AddModeState()
+            {
+                var gateway = Mocks.AddPropertyState<IPropertySetterCaptureGateway>();
+                CreateComponent();
+                return gateway;
+            }
+
             public PropertyValueCapture<string?> AddModeCapture()
             {
                 var capture = Mocks.AddPropertySetterCapture<IPropertySetterCaptureGateway, string?>(x => x.Mode);

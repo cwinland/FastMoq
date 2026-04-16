@@ -31,18 +31,22 @@ v4 also includes helper and migration work where common testing scenarios still 
 
 Planned work includes:
 
-- Additional provider-neutral guidance for framework-heavy suites that combine typed `IServiceProvider` helpers with keyed services, scoped resolution, or framework-owned service graphs.
+- Additional provider-neutral guidance for framework-heavy suites that combine typed `IServiceProvider` helpers with keyed services or framework-owned service graphs beyond the current scope-aware helper path.
 - Azure Functions follow-up helpers beyond the shipped `FunctionContext.InstanceServices`, `CreateHttpRequestData(...)`, and `CreateHttpResponseData(...)` support.
-- A clearer first-party path for common `SetupAllProperties()`-heavy tests where the real need is lightweight stateful property backing rather than mocking-library-managed auto-properties.
 - Focused migration guidance and examples for compatibility-only APIs that remain temporary rather than long-term patterns.
+
+Recently added in the current v4 line:
+
+- `AddPropertyState<TService>(...)` for common interface-based `SetupAllProperties()` migration cases where the real need is lightweight stateful property backing.
+- `CreateTypedServiceScope(...)` and `AddServiceScope(...)` for typed scope setup, plus optional `includeMockerFallback: true` bridging when framework-owned resolution should fall back to normal `Mocker` behavior.
+- `FMOQ0013` coverage for manual `IServiceScopeFactory` and `IServiceScope` shims, alongside the existing typed `IServiceProvider` guidance.
+- `FMOQ0021` guidance for Moq `SetupAllProperties()` cases that should move toward `AddPropertyState<TService>(...)` or a concrete fake.
 
 Other gaps worth adding next, in priority order:
 
-1. A clearer first-party `SetupAllProperties()` replacement.
-2. Better typed `IServiceProvider` helper support for scoped and framework-owned graphs.
-3. Analyzer guidance for manual scope and `IServiceScopeFactory` shims.
-4. Azure Functions follow-up helpers beyond `InstanceServices`, request, and response.
-5. More examples and sample-backed docs for property-capture migration.
+1. Azure Functions follow-up helpers beyond `InstanceServices`, request, and response.
+2. More examples and sample-backed docs for property-capture and property-state migration.
+3. Additional keyed-service guidance for framework-owned DI graphs.
 
 ### Documentation and examples
 

@@ -6,9 +6,9 @@ using System.Collections.Immutable;
 namespace FastMoq.Analyzers.Analyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ServiceProviderShimAnalyzer : DiagnosticAnalyzer
+    public sealed class SetupAllPropertiesAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DiagnosticDescriptors.PreferTypedServiceProviderHelpers);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DiagnosticDescriptors.PreferPropertyStateHelper);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -20,22 +20,15 @@ namespace FastMoq.Analyzers.Analyzers
         private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
-            if (!FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) ||
-                method is null)
-            {
-                return;
-            }
-
-            if (!FastMoqAnalysisHelpers.TryGetTypedServiceProviderHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out var currentApi) &&
-                !FastMoqAnalysisHelpers.TryGetFunctionContextInstanceServicesHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out currentApi))
+            if (!FastMoqAnalysisHelpers.TryBuildSetupAllPropertiesGuidance(invocationExpression, context.SemanticModel, context.CancellationToken, out var guidance))
             {
                 return;
             }
 
             context.ReportDiagnostic(Diagnostic.Create(
-                DiagnosticDescriptors.PreferTypedServiceProviderHelpers,
+                DiagnosticDescriptors.PreferPropertyStateHelper,
                 FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
-                currentApi));
+                guidance));
         }
     }
 }

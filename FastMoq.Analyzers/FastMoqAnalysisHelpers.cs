@@ -48,6 +48,8 @@ namespace FastMoq.Analyzers
         private const string FUNCTION_CONTEXT_TYPE = "Microsoft.Azure.Functions.Worker.FunctionContext";
         private const string FUNCTION_CONTEXT_INSTANCE_SERVICES_PROPERTY = "InstanceServices";
         private const string SERVICE_PROVIDER_TYPE = "System.IServiceProvider";
+        private const string SERVICE_SCOPE_FACTORY_TYPE = "Microsoft.Extensions.DependencyInjection.IServiceScopeFactory";
+        private const string SERVICE_SCOPE_TYPE = "Microsoft.Extensions.DependencyInjection.IServiceScope";
 
         private static readonly HashSet<string> DisallowedMixedRetrievalMembers = new(StringComparer.Ordinal)
         {
@@ -482,6 +484,44 @@ namespace FastMoq.Analyzers
             return true;
         }
 
+        public static bool TryBuildSetupAllPropertiesGuidance(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string guidance)
+        {
+            guidance = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "SetupAllProperties" ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression)
+            {
+                return false;
+            }
+
+            var receiverType = semanticModel.GetTypeInfo(memberAccessExpression.Expression, cancellationToken).Type as INamedTypeSymbol;
+            if (receiverType is null ||
+                receiverType.Name != "Mock" ||
+                receiverType.ContainingNamespace.ToDisplayString() != "Moq" ||
+                receiverType.TypeArguments.Length != 1)
+            {
+                return false;
+            }
+
+            var serviceType = receiverType.TypeArguments[0];
+            var serviceTypeName = GetMinimalTypeName(serviceType, semanticModel, invocationExpression.SpanStart);
+            if (serviceType.TypeKind == TypeKind.Interface && invocationExpression.Parent is not MemberAccessExpressionSyntax)
+            {
+                guidance = $"AddPropertyState<{serviceTypeName}>()";
+                return true;
+            }
+
+            guidance = "a concrete fake or stub registered with AddType(...)";
+            return true;
+        }
+
         public static bool TryBuildFunctionContextInstanceServicesReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)
         {
             if (!HasFunctionContextInstanceServicesMockHelper(semanticModel))
@@ -615,25 +655,27 @@ namespace FastMoq.Analyzers
             return false;
         }
 
-        public static bool TryGetTypedServiceProviderHelperSuggestion(IMethodSymbol method, out string currentApi)
+        public static bool TryGetTypedServiceProviderHelperSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string currentApi)
         {
-            method = method.ReducedFrom ?? method;
             currentApi = string.Empty;
 
-            if (!IsFastMoqMockerMethod(method, "GetOrCreateMock") &&
-                !IsFastMoqMockerMethod(method, "GetMock") &&
-                !IsFastMoqMockerMethod(method, "GetRequiredMock"))
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
             {
                 return false;
             }
 
-            if (method.TypeArguments.Length != 1 || method.TypeArguments[0].ToDisplayString() != SERVICE_PROVIDER_TYPE)
+            if (TryGetTrackedServiceGraphShimSuggestion(method, out currentApi))
             {
-                return false;
+                return true;
             }
 
-            currentApi = $"{method.Name}<IServiceProvider>()";
-            return true;
+            if (TryGetScopeExtractionLookupSuggestion(invocationExpression, semanticModel, cancellationToken, out currentApi))
+            {
+                return true;
+            }
+
+            return TryGetScopeShimSetupSuggestion(invocationExpression, semanticModel, cancellationToken, method, out currentApi);
         }
 
         public static bool TryGetFunctionContextInstanceServicesHelperSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string currentApi)
@@ -687,6 +729,165 @@ namespace FastMoq.Analyzers
                     method.Parameters.Length == 2 &&
                     method.Parameters[0].Type.ToDisplayString() == "FastMoq.Providers.IFastMock" &&
                     method.Parameters[1].Type.ToDisplayString() == SERVICE_PROVIDER_TYPE);
+        }
+
+        private static bool TryGetTrackedServiceGraphShimSuggestion(IMethodSymbol method, out string currentApi)
+        {
+            method = method.ReducedFrom ?? method;
+            currentApi = string.Empty;
+
+            if (!IsFastMoqMockerMethod(method, "GetOrCreateMock") &&
+                !IsFastMoqMockerMethod(method, "GetMock") &&
+                !IsFastMoqMockerMethod(method, "GetRequiredMock"))
+            {
+                return false;
+            }
+
+            if (method.TypeArguments.Length != 1 || !TryGetTypedServiceGraphShimTypeDisplay(method.TypeArguments[0], out var serviceTypeName))
+            {
+                return false;
+            }
+
+            currentApi = $"{method.Name}<{serviceTypeName}>()";
+            return true;
+        }
+
+        private static bool TryGetScopeExtractionAddTypeSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, IMethodSymbol method, out string currentApi)
+        {
+            currentApi = string.Empty;
+            method = method.ReducedFrom ?? method;
+            if (!IsFastMoqMockerAddTypeMethod(method) || invocationExpression.ArgumentList.Arguments.Count == 0)
+            {
+                return false;
+            }
+
+            if (method.TypeArguments.Length == 0 || !TryGetTypedServiceGraphShimTypeDisplay(method.TypeArguments[0], out var addedTypeName))
+            {
+                return false;
+            }
+
+            var firstArgument = Unwrap(invocationExpression.ArgumentList.Arguments[0].Expression);
+            if (firstArgument is not InvocationExpressionSyntax lookupInvocation ||
+                !TryGetServiceProviderLookupTarget(lookupInvocation, semanticModel, cancellationToken, out var lookupTypeName, out var lookupApi) ||
+                lookupTypeName != addedTypeName)
+            {
+                return false;
+            }
+
+            currentApi = $"AddType<{addedTypeName}>({lookupApi})";
+            return true;
+        }
+
+        private static bool TryGetScopeExtractionLookupSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string currentApi)
+        {
+            currentApi = string.Empty;
+            if (!TryGetServiceProviderLookupTarget(invocationExpression, semanticModel, cancellationToken, out var serviceTypeName, out var lookupApi) ||
+                invocationExpression.Parent is not ArgumentSyntax argumentSyntax ||
+                argumentSyntax.Parent is not ArgumentListSyntax argumentListSyntax ||
+                argumentListSyntax.Parent is not InvocationExpressionSyntax outerInvocation ||
+                !TryGetMethodSymbol(outerInvocation, semanticModel, cancellationToken, out var outerMethod) ||
+                outerMethod is null)
+            {
+                return false;
+            }
+
+            outerMethod = outerMethod.ReducedFrom ?? outerMethod;
+            if (!IsFastMoqMockerAddTypeMethod(outerMethod))
+            {
+                return false;
+            }
+
+            currentApi = $"AddType<{serviceTypeName}>({lookupApi})";
+            return true;
+        }
+
+        private static bool TryGetScopeShimSetupSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, IMethodSymbol method, out string currentApi)
+        {
+            currentApi = string.Empty;
+            method = method.ReducedFrom ?? method;
+            if (method.Name is not "Setup" and not "SetupGet" and not "SetupProperty")
+            {
+                return false;
+            }
+
+            if (invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression ||
+                !TryResolveTrackedMockOrigin(memberAccessExpression.Expression, semanticModel, cancellationToken, out var origin) ||
+                invocationExpression.ArgumentList.Arguments.Count == 0)
+            {
+                return false;
+            }
+
+            var candidateExpression = Unwrap(invocationExpression.ArgumentList.Arguments[0].Expression);
+            if (origin.ServiceType.ToDisplayString() == SERVICE_SCOPE_FACTORY_TYPE &&
+                candidateExpression is LambdaExpressionSyntax scopeFactoryLambda &&
+                scopeFactoryLambda.Body is InvocationExpressionSyntax createScopeInvocation &&
+                createScopeInvocation.Expression is MemberAccessExpressionSyntax createScopeAccess &&
+                createScopeAccess.Name.Identifier.ValueText == "CreateScope")
+            {
+                currentApi = "Setup(x => x.CreateScope())";
+                return true;
+            }
+
+            if (origin.ServiceType.ToDisplayString() == SERVICE_SCOPE_TYPE &&
+                candidateExpression is LambdaExpressionSyntax scopeLambda &&
+                scopeLambda.Body is MemberAccessExpressionSyntax propertyAccess &&
+                propertyAccess.Name.Identifier.ValueText == "ServiceProvider")
+            {
+                currentApi = $"{method.Name}(x => x.ServiceProvider)";
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool TryGetServiceProviderLookupTarget(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string serviceTypeName, out string lookupApi)
+        {
+            serviceTypeName = string.Empty;
+            lookupApi = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
+            {
+                return false;
+            }
+
+            var comparisonMethod = method.ReducedFrom ?? method;
+            if (comparisonMethod.Name is not "GetRequiredService" and not "GetService")
+            {
+                return false;
+            }
+
+            if (method.TypeArguments.Length != 1 || !TryGetTypedServiceGraphShimTypeDisplay(method.TypeArguments[0], out serviceTypeName))
+            {
+                return false;
+            }
+
+            lookupApi = $"{method.Name}<{serviceTypeName}>()";
+            return true;
+        }
+
+        private static bool TryGetTypedServiceGraphShimTypeDisplay(ITypeSymbol typeSymbol, out string serviceTypeName)
+        {
+            var metadataName = typeSymbol.ToDisplayString();
+            if (metadataName == SERVICE_PROVIDER_TYPE)
+            {
+                serviceTypeName = "IServiceProvider";
+                return true;
+            }
+
+            if (metadataName == SERVICE_SCOPE_FACTORY_TYPE)
+            {
+                serviceTypeName = "IServiceScopeFactory";
+                return true;
+            }
+
+            if (metadataName == SERVICE_SCOPE_TYPE)
+            {
+                serviceTypeName = "IServiceScope";
+                return true;
+            }
+
+            serviceTypeName = string.Empty;
+            return false;
         }
 
         private static bool TryGetSetupSetProperty(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out TrackedMockOrigin origin, out IPropertySymbol property, out LambdaExpressionSyntax lambdaExpression)

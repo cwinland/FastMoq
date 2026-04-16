@@ -766,7 +766,7 @@ For practical fallback patterns when you do not want to stay on Moq, see [Provid
 
 ### `IMemoryCache` and `ICacheEntry`
 
-Property-setter and cache-entry tests are still a common Moq-only pocket because they often rely on `SetupSet(...)` or `SetupAllProperties()`.
+Property-setter and cache-entry tests are still a common Moq-only pocket because they often rely on `SetupSet(...)` or `SetupAllProperties()`. For ordinary interface collaborators, FastMoq now has first-party answers in `AddPropertySetterCapture<TService, TValue>(...)` and `AddPropertyState<TService>(...)`, but `ICacheEntry` tests often still need the broader Moq shape.
 
 ```csharp
 var cacheEntry = Mocks.GetMock<ICacheEntry>();
@@ -852,7 +852,18 @@ cacheEntry.SetupAllProperties();
 cacheEntry.SetupSet(x => x.Value = It.IsAny<object>());
 ```
 
-That is still a valid v4 migration outcome because the test depends on Moq-only setter behavior.
+That is still a valid v4 migration outcome because the test depends on broader Moq-only cache-entry behavior.
+
+For simpler interface collaborators where the real need is property state rather than cache-entry semantics, prefer the first-party helper instead:
+
+```csharp
+var channel = Mocks.AddPropertyState<IOrderSubmissionChannel>();
+CreateComponent();
+
+await Component.SubmitAsync("order-42", expedited: true, CancellationToken.None);
+
+channel.Mode.Should().Be("fast");
+```
 
 ### Known-type extensibility
 

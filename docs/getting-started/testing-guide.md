@@ -11,7 +11,7 @@ Use these rules first:
 3. Use [Mocks.GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) when you want the normal FastMoq tracked mock path for a dependency.
 4. Use [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when you need to replace FastMoq's default resolution with a specific concrete type, factory, or fixed instance.
 5. Use `CreateInstanceByType(...)` when direct `Mocker` usage must pick an exact constructor signature. Do not treat `GetObject<T>()` as the explicit constructor-selection API.
-6. Use `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` when framework code expects a typed `IServiceProvider` rather than a one-object-for-all-types shim.
+6. Use `CreateTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, `AddServiceProvider(...)`, and `AddServiceScope(...)` when framework code expects typed service-provider or service-scope behavior rather than a one-object-for-all-types shim.
 7. If the constructor uses the same abstraction more than once under different DI service keys, use keyed mocks, keyed registrations, or explicit constructor injection for tests where dependency selection matters.
 8. Use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) when a framework-style type needs special resolution or post-processing behavior.
 9. Use [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.
@@ -75,6 +75,14 @@ var instanceServices = Mocks.CreateTypedServiceProvider(services =>
 });
 ```
 
+If framework-owned resolution should fall back to the current `Mocker` for unregistered collaborators, opt in explicitly:
+
+```csharp
+var instanceServices = Mocks.CreateTypedServiceProvider(
+    services => services.AddLogging(),
+    includeMockerFallback: true);
+```
+
 Use `AddServiceProvider(...)` when the system under test resolves `IServiceProvider` or `IServiceScopeFactory` from the current [Mocker](xref:FastMoq.Mocker):
 
 ```csharp
@@ -86,6 +94,28 @@ Mocks.AddServiceProvider(services =>
 ```
 
 `AddServiceProvider(...)` registers the typed provider itself and, when the built container exposes them, also registers `IServiceScopeFactory` and `IServiceProviderIsService` for the current `Mocker`.
+
+Use `CreateTypedServiceScope(...)` when the test needs an actual scope instance or wants to verify scoped lifetimes directly:
+
+```csharp
+using var scope = Mocks.CreateTypedServiceScope(services =>
+{
+    services.AddScoped<ScopedWidgetContext>();
+});
+
+var scopedService = scope.ServiceProvider.GetRequiredService<ScopedWidgetContext>();
+```
+
+Use `AddServiceScope(...)` when the current `Mocker` should expose a scope and its scope-owned provider:
+
+```csharp
+using var scope = Mocks.CreateTypedServiceScope(services =>
+{
+    services.AddScoped<ScopedWidgetContext>();
+});
+
+Mocks.AddServiceScope(scope, replace: true);
+```
 
 If a constructor takes `IServiceScopeFactory`, prefer this shape:
 
@@ -105,6 +135,8 @@ var scopeFactory = Mocks.GetRequiredObject<IServiceScopeFactory>();
 ```
 
 instead of building a provider manually and registering only `provider.GetRequiredService<IServiceScopeFactory>()`. Keeping the full typed provider registered makes constructor injection, nested framework resolution, and service-scope behavior stay aligned.
+
+When framework code should resolve a mix of real DI registrations and normal FastMoq collaborators, use `includeMockerFallback: true` on `CreateTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, `AddServiceProvider(...)`, or `AddServiceScope(...)`.
 
 For Azure-oriented tests that also need configuration defaults, prefer `CreateAzureServiceProvider(...)` or `AddAzureServiceProvider(...)` from `FastMoq.Azure.DependencyInjection` instead of repeating `AddLogging()`, `AddOptions()`, and `IConfiguration` setup in every test.
 
@@ -145,12 +177,13 @@ Use `ReadBodyAsStringAsync(...)` and `ReadBodyAsJsonAsync<T>(...)` when you want
 Package note:
 
 - `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` remain part of `FastMoq.Core`
+- `CreateTypedServiceScope(...)` and `AddServiceScope(...)` remain part of `FastMoq.Core`
 - direct `FastMoq.Core` consumers should add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)`, `CreateHttpRequestData(...)`, or `CreateHttpResponseData(...)`
 - the aggregate `FastMoq` package includes the Azure Functions helper package already
 
 Analyzer note:
 
-- `FMOQ0013` warns on direct `GetOrCreateMock<IServiceProvider>()`, `GetMock<IServiceProvider>()`, and `GetRequiredMock<IServiceProvider>()` setup so those shims migrate toward the typed helper path.
+- `FMOQ0013` warns on direct `GetOrCreateMock<IServiceProvider>()`, `GetMock<IServiceProvider>()`, `GetRequiredMock<IServiceProvider>()`, `IServiceScopeFactory` or `IServiceScope` shims, and manual scope-factory extraction so those patterns migrate toward the typed helper path.
 
 ## Construction APIs
 

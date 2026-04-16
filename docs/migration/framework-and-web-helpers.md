@@ -102,7 +102,7 @@ That migration is usually the highest-leverage cleanup in suites that centralize
 
 Analyzer note:
 
-- `FMOQ0013` warns on direct FastMoq `IServiceProvider` mock setup so those helpers move toward `CreateTypedServiceProvider(...)` or `AddServiceProvider(...)`.
+- `FMOQ0013` warns on direct FastMoq `IServiceProvider`, `IServiceScopeFactory`, and `IServiceScope` shim setup, plus manual scope-factory extraction, so those helpers move toward `CreateTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, `AddServiceProvider(...)`, or `AddServiceScope(...)`.
 
 If the same helper layer also hand-rolls `IOptions<T>` setup, move that boilerplate at the same time:
 

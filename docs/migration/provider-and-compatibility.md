@@ -163,7 +163,7 @@ Treat these APIs as temporary migration tools, not as the target style for new h
 | `MockOptional` | `OptionalParameterResolutionMode.ResolveViaMocker` or explicit `InvocationOptions` / `InstanceCreationFlags` |
 | `Strict` bundle toggles | `Mocker.Policy.DefaultStrictMockCreation` and explicit built-in resolution flags |
 | context-aware `AddType(...)` overloads | `AddKnownType(...)` |
-| mocked `IServiceProvider` shims | `CreateTypedServiceProvider(...)`, `AddServiceProvider(...)`, and `AddFunctionContextInstanceServices(...)` with `FastMoq.AzureFunctions` installed for the `FunctionContext` helper path |
+| mocked `IServiceProvider` / `IServiceScopeFactory` / `IServiceScope` shims | `CreateTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, `AddServiceProvider(...)`, `AddServiceScope(...)`, and `AddFunctionContextInstanceServices(...)` with `FastMoq.AzureFunctions` installed for the `FunctionContext` helper path |
 
 Two practical rules help here:
 
@@ -172,7 +172,7 @@ Two practical rules help here:
 
 Analyzer notes:
 
-- `FMOQ0013` warns on raw `IServiceProvider` mock setup and pushes it toward the typed helper path
+- `FMOQ0013` warns on raw `IServiceProvider`, `IServiceScopeFactory`, and `IServiceScope` shims, plus manual scope-factory extraction, and pushes them toward the typed helper path
 - for Azure Functions worker tests, `FMOQ0013` also warns on direct `FunctionContext.InstanceServices` `Setup(...)`, `SetupGet(...)`, and `SetupProperty(...)` usage, but the auto-fix is intentionally narrower and only appears when `FastMoq.AzureFunctions` is already referenced for the safe provider-assignment shapes that can become `context.AddFunctionContextInstanceServices(provider)`
 - `FMOQ0014` warns on context-aware compatibility `AddType(...)` usage and pushes it toward `AddKnownType(...)`
 - `FMOQ0015` warns when same-type keyed constructor dependencies are accidentally collapsed into one unkeyed double
@@ -230,4 +230,4 @@ Cases that do not translate cleanly:
 
 When a test depends on those features, either keep it on the Moq provider or replace the collaborator with a fake or stub through `AddType(...)`.
 
-For simple interface-property `SetupSet(...)` cases, the preferred non-Moq migration target is `AddPropertySetterCapture<TService, TValue>(...)`. When the component under test is already created through `MockerTestBase<TComponent>`, add the capture before construction or call `CreateComponent()` after the registration change. When the collaborator needs broader behavior, or the target is not an interface, fall back to a fake that records assignments through `PropertyValueCapture<TValue>`.
+For simple interface-property `SetupSet(...)` cases, the preferred non-Moq migration target is `AddPropertySetterCapture<TService, TValue>(...)`. For simple interface-property `SetupAllProperties()` cases, prefer `AddPropertyState<TService>(...)`. When the component under test is already created through `MockerTestBase<TComponent>`, add the helper before construction or call `CreateComponent()` after the registration change. When the collaborator needs broader behavior, or the target is not an interface, fall back to a fake that records assignments through `PropertyValueCapture<TValue>` or exposes real property state directly.

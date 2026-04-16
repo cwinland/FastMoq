@@ -72,94 +72,19 @@ namespace FastMoq.Extensions
             }
 
             var currentInstance = mocker.GetObject<TService>() ?? throw new InvalidOperationException($"Unable to resolve an instance for {serviceType.Name} before adding a setter capture.");
-            if (currentInstance is PropertySetterCaptureProxy<TService> existingProxy)
+            if (currentInstance is PropertyStateProxy<TService> existingProxy)
             {
                 existingProxy.AddCapture(propertyInfo, capture);
                 return capture;
             }
 
-            var proxy = DispatchProxy.Create<TService, PropertySetterCaptureProxy<TService>>();
-            var proxyController = (PropertySetterCaptureProxy<TService>) (object) proxy;
+            var proxy = DispatchProxy.Create<TService, PropertyStateProxy<TService>>();
+            var proxyController = (PropertyStateProxy<TService>) (object) proxy;
             proxyController.Initialize(currentInstance);
             proxyController.AddCapture(propertyInfo, capture);
 
             mocker.AddType<TService>(proxy, replace);
             return capture;
-        }
-    }
-
-    internal class PropertySetterCaptureProxy<TService> : DispatchProxy where TService : class
-    {
-        private readonly Dictionary<MethodInfo, Func<object?[]?, object?>> _handlers = [];
-
-        private TService? _inner;
-
-        public void Initialize(TService inner)
-        {
-            ArgumentNullException.ThrowIfNull(inner);
-            _inner = inner;
-        }
-
-        public void AddCapture<TValue>(PropertyInfo propertyInfo, PropertyValueCapture<TValue> capture)
-        {
-            ArgumentNullException.ThrowIfNull(propertyInfo);
-            ArgumentNullException.ThrowIfNull(capture);
-
-            if (propertyInfo.GetMethod is MethodInfo getter)
-            {
-                _handlers[getter] = _ =>
-                {
-                    if (capture.HasValue)
-                    {
-                        return capture.Value;
-                    }
-
-                    return _inner is null ? default(TValue) : propertyInfo.GetValue(_inner);
-                };
-            }
-
-            if (propertyInfo.SetMethod is MethodInfo setter)
-            {
-                _handlers[setter] = arguments =>
-                {
-                    var assignedValue = arguments is not null && arguments.Length > 0
-                        ? (TValue) arguments[0]!
-                        : default!;
-
-                    capture.Record(assignedValue);
-
-                    if (_inner is not null)
-                    {
-                        propertyInfo.SetValue(_inner, assignedValue);
-                    }
-
-                    return null;
-                };
-            }
-        }
-
-        protected override object? Invoke(MethodInfo? targetMethod, object?[]? args)
-        {
-            ArgumentNullException.ThrowIfNull(targetMethod);
-
-            if (_handlers.TryGetValue(targetMethod, out var handler))
-            {
-                return handler(args);
-            }
-
-            if (_inner is null)
-            {
-                throw new InvalidOperationException($"{nameof(PropertySetterCaptureProxy<TService>)} has not been initialized.");
-            }
-
-            try
-            {
-                return targetMethod.Invoke(_inner, args);
-            }
-            catch (TargetInvocationException ex) when (ex.InnerException is not null)
-            {
-                throw ex.InnerException;
-            }
         }
     }
 }
