@@ -152,7 +152,7 @@ namespace FastMoq.Analyzers.CodeFixes
                         context.RegisterCodeFix(
                             CodeAction.Create(
                                 "Use SetupOptions(...)",
-                                cancellationToken => ReplaceInvocationAsync(document, invocationExpression, BuildSetupOptionsReplacementAsync, cancellationToken),
+                                cancellationToken => ReplaceSetupOptionsInvocationAsync(document, invocationExpression, cancellationToken),
                                 nameof(DiagnosticIds.PreferSetupOptionsHelper)),
                             diagnostic);
                         break;
@@ -282,6 +282,32 @@ namespace FastMoq.Analyzers.CodeFixes
                 FastMoqAnalysisHelpers.TryBuildSetupOptionsReplacement(invocationExpression, semanticModel, cancellationToken, out var replacement)
                 ? replacement
                 : null;
+        }
+
+        private static async Task<Document> ReplaceSetupOptionsInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            if (!FastMoqAnalysisHelpers.TryBuildSetupOptionsReplacement(invocationExpression, semanticModel, cancellationToken, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+
+            if (updatedRoot is CompilationUnitSyntax compilationUnit && !compilationUnit.Usings.Any(@using => @using.Name?.ToString() == "FastMoq.Extensions"))
+            {
+                updatedRoot = compilationUnit.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("FastMoq.Extensions")));
+            }
+
+            return document.WithSyntaxRoot(updatedRoot);
         }
 
         private static async Task<Document> ReplaceGetMockAsync(Document document, MemberAccessExpressionSyntax memberAccess, CancellationToken cancellationToken)

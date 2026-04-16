@@ -91,6 +91,26 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void SetupOptions_ShouldEvaluateFactoryPerResolution()
+        {
+            var mocker = new Mocker();
+            var nextRetryCount = 1;
+
+            mocker.SetupOptions(() => new SampleOptions
+            {
+                RetryCount = nextRetryCount++,
+            });
+
+            var first = mocker.GetObject<IOptions<SampleOptions>>();
+            var second = mocker.GetObject<IOptions<SampleOptions>>();
+
+            first.Should().NotBeNull();
+            second.Should().NotBeNull();
+            first!.Value.RetryCount.Should().Be(1);
+            second!.Value.RetryCount.Should().Be(2);
+        }
+
+        [Fact]
         public void SetupOptions_ShouldCreateDefaultOptionsValue()
         {
             var mocker = new Mocker();

@@ -56,7 +56,7 @@ namespace FastMoq.Extensions
         /// </summary>
         /// <typeparam name="T">The options type to register.</typeparam>
         /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
-        /// <param name="create">The factory used to create the options value.</param>
+        /// <param name="create">The factory used to create the options value each time <see cref="IOptions{TOptions}" /> is resolved.</param>
         /// <param name="replace">True to replace an existing options registration.</param>
         /// <returns>The current <see cref="Mocker" /> instance.</returns>
         public static Mocker SetupOptions<T>(this Mocker mocker, Func<T> create, bool replace = false)
@@ -65,7 +65,7 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentNullException.ThrowIfNull(create);
 
-            return mocker.SetupOptions(create(), replace);
+            return mocker.AddType(typeof(IOptions<T>), typeof(OptionsWrapper<T>), _ => Options.Create(create()), replace);
         }
     }
 }
