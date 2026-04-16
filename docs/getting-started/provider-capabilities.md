@@ -132,11 +132,14 @@ For simple `SetupSet(...)` cases on interface properties, the preferred first-pa
 
 ```csharp
 var modeCapture = Mocks.AddPropertySetterCapture<IOrderGateway, string?>(x => x.Mode);
+CreateComponent();
 
 Component.Run();
 
 modeCapture.Value.Should().Be("fast");
 ```
+
+When the component under test comes from `MockerTestBase<TComponent>`, call `CreateComponent()` after adding the capture unless you registered it in the test base setup path before component creation.
 
 If the collaborator needs more behavior than one captured property, or the target is not an interface, fall back to a fake plus [PropertyValueCapture&lt;TValue&gt;](xref:FastMoq.PropertyValueCapture`1):
 

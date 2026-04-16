@@ -109,11 +109,14 @@ Provider-neutral shape:
 
 ```csharp
 var modeCapture = Mocks.AddPropertySetterCapture<IOrderGateway, string?>(x => x.Mode);
+CreateComponent();
 
 await Component.RunAsync();
 
 modeCapture.Value.Should().Be("fast");
 ```
+
+When the component already exists because the test derives from `MockerTestBase<TComponent>`, that `CreateComponent()` call is what rebinds the constructor dependency to the proxy-backed registration.
 
 If the collaborator needs more than one captured property or is not an interface, keep using the fake-plus-`PropertyValueCapture<TValue>` pattern instead.
 

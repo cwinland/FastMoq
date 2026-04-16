@@ -20,12 +20,16 @@ namespace FastMoq.Extensions
         /// <example>
         /// <code language="csharp"><![CDATA[
         /// var modeCapture = Mocks.AddPropertySetterCapture<IOrderGateway, string?>(x => x.Mode);
+        /// CreateComponent();
         ///
         /// await Component.RunAsync();
         ///
         /// modeCapture.Value.Should().Be("fast");
         /// ]]></code>
         /// </example>
+        /// <remarks>
+        /// When you use this helper from a <c>MockerTestBase&lt;TComponent&gt;</c>-based test, add the capture during the setup phase or call <c>CreateComponent()</c> after the registration change so the component is rebuilt against the proxy-wrapped dependency.
+        /// </remarks>
         public static PropertyValueCapture<TValue> AddPropertySetterCapture<TService, TValue>(this Mocker mocker, Expression<Func<TService, TValue>> propertyExpression, bool replace = true)
             where TService : class
         {
@@ -45,6 +49,9 @@ namespace FastMoq.Extensions
         /// <param name="capture">The capture that should record assigned values.</param>
         /// <param name="replace">True to replace an existing registration for <typeparamref name="TService" />. Defaults to <see langword="true" /> because the helper intentionally swaps in a capture proxy.</param>
         /// <returns>The supplied <paramref name="capture" />.</returns>
+        /// <remarks>
+        /// When you use this helper from a <c>MockerTestBase&lt;TComponent&gt;</c>-based test, add the capture during the setup phase or call <c>CreateComponent()</c> after the registration change so the component is rebuilt against the proxy-wrapped dependency.
+        /// </remarks>
         public static PropertyValueCapture<TValue> AddPropertySetterCapture<TService, TValue>(this Mocker mocker, Expression<Func<TService, TValue>> propertyExpression, PropertyValueCapture<TValue> capture, bool replace = true)
             where TService : class
         {

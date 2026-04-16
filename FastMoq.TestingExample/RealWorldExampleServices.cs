@@ -59,6 +59,13 @@ namespace FastMoq.TestingExample
         Task SaveAsync(OrderRecord order, CancellationToken cancellationToken = default);
     }
 
+    public interface IOrderSubmissionChannel
+    {
+        string? Mode { get; set; }
+
+        Task SubmitAsync(string orderId, CancellationToken cancellationToken = default);
+    }
+
     public sealed class OrderProcessingService
     {
         private readonly IInventoryGateway _inventoryGateway;
@@ -103,6 +110,24 @@ namespace FastMoq.TestingExample
             await _orderRepository.SaveAsync(order, cancellationToken).ConfigureAwait(false);
             _logger.LogInformation("Placed order {OrderId} for {CustomerId}", order.OrderId, order.CustomerId);
             return OrderPlacementResult.Placed(order.OrderId);
+        }
+    }
+
+    public sealed class OrderSubmissionService
+    {
+        private readonly IOrderSubmissionChannel _submissionChannel;
+
+        public OrderSubmissionService(IOrderSubmissionChannel submissionChannel)
+        {
+            _submissionChannel = submissionChannel;
+        }
+
+        public async Task SubmitAsync(string orderId, bool expedited, CancellationToken cancellationToken = default)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(orderId);
+
+            _submissionChannel.Mode = expedited ? "fast" : "standard";
+            await _submissionChannel.SubmitAsync(orderId, cancellationToken).ConfigureAwait(false);
         }
     }
 

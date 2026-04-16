@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using FastMoq.Extensions;
 using FastMoq.Providers;
 
@@ -56,6 +57,19 @@ namespace FastMoq.Tests
                 .WithMessage("*interface types only*");
         }
 
+        [Fact]
+        public void AddPropertySetterCapture_ShouldSupportMockerTestBase_WhenComponentIsRecreated()
+        {
+            using var testBase = new PropertySetterCaptureComponentTestBase();
+
+            var modeCapture = testBase.AddModeCapture();
+
+            testBase.Submit("alpha", expedited: true);
+
+            modeCapture.Value.Should().Be("fast");
+            testBase.VerifyPublished("alpha");
+        }
+
         public interface IPropertySetterCaptureGateway
         {
             string? Mode { get; set; }
@@ -82,6 +96,42 @@ namespace FastMoq.Tests
         private sealed class PropertySetterCaptureConcreteTarget
         {
             public string? Mode { get; set; }
+        }
+
+        private sealed class PropertySetterCaptureComponent
+        {
+            private readonly IPropertySetterCaptureGateway _gateway;
+
+            public PropertySetterCaptureComponent(IPropertySetterCaptureGateway gateway)
+            {
+                _gateway = gateway;
+            }
+
+            public void Submit(string value, bool expedited)
+            {
+                _gateway.Mode = expedited ? "fast" : "standard";
+                _gateway.Publish(value);
+            }
+        }
+
+        private sealed class PropertySetterCaptureComponentTestBase : MockerTestBase<PropertySetterCaptureComponent>
+        {
+            public PropertyValueCapture<string?> AddModeCapture()
+            {
+                var capture = Mocks.AddPropertySetterCapture<IPropertySetterCaptureGateway, string?>(x => x.Mode);
+                CreateComponent();
+                return capture;
+            }
+
+            public void Submit(string value, bool expedited)
+            {
+                Component.Submit(value, expedited);
+            }
+
+            public void VerifyPublished(string value)
+            {
+                Mocks.Verify<IPropertySetterCaptureGateway>(x => x.Publish(value), TimesSpec.Once);
+            }
         }
     }
 }
