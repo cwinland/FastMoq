@@ -1005,6 +1005,41 @@ class Sample
         }
 
         [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldNotOfferCreateScopeFix_WhenOnlyNestedLocalFunctionHasMatchingProviderSetup()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Microsoft.Extensions.DependencyInjection;
+
+class Sample
+{
+    void Execute(Mocker Mocks, IServiceProvider provider)
+    {
+        var scopeFactory = Mocks.GetOrCreateMock<IServiceScopeFactory>();
+        var scope = Mocks.GetOrCreateMock<IServiceScope>();
+        scopeFactory.Setup(x => x.CreateScope()).Returns(scope.Instance);
+
+        void Configure(Mocker Mocks, IServiceProvider provider)
+        {
+            var scope = Mocks.GetOrCreateMock<IServiceScope>();
+            scope.SetupGet(x => x.ServiceProvider).Returns(provider);
+        }
+    }
+}";
+
+            var titles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(
+                SOURCE,
+                new ServiceProviderShimAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.PreferTypedServiceProviderHelpers,
+                diagnosticMessageContains: "Setup(x => x.CreateScope())");
+
+            Assert.Empty(titles);
+        }
+
+        [Fact]
         public async Task ServiceProviderShimAnalyzer_ShouldReportAndFix_WhenServiceScopeIsMockedDirectly()
         {
             const string SOURCE = @"

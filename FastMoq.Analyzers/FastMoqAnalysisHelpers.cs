@@ -1143,8 +1143,7 @@ namespace FastMoq.Analyzers
             matchingInvocation = null!;
             providerExpression = null!;
 
-            var searchRoot = referenceNode.FirstAncestorOrSelf<BlockSyntax>() ?? referenceNode.SyntaxTree.GetRoot(cancellationToken);
-            foreach (var candidateInvocation in searchRoot.DescendantNodes().OfType<InvocationExpressionSyntax>())
+            foreach (var candidateInvocation in EnumerateCurrentBlockInvocations(referenceNode))
             {
                 if (candidateInvocation.Span == referenceNode.Span)
                 {
@@ -1167,8 +1166,7 @@ namespace FastMoq.Analyzers
         {
             matchingInvocation = null!;
 
-            var searchRoot = referenceNode.FirstAncestorOrSelf<BlockSyntax>() ?? referenceNode.SyntaxTree.GetRoot(cancellationToken);
-            foreach (var candidateInvocation in searchRoot.DescendantNodes().OfType<InvocationExpressionSyntax>())
+            foreach (var candidateInvocation in EnumerateCurrentBlockInvocations(referenceNode))
             {
                 if (candidateInvocation.Span == referenceNode.Span)
                 {
@@ -1191,6 +1189,29 @@ namespace FastMoq.Analyzers
             return SymbolEqualityComparer.Default.Equals(left.ServiceType, right.ServiceType) &&
                    SyntaxFactory.AreEquivalent(Unwrap(left.TrackedMockExpression), Unwrap(right.TrackedMockExpression)) &&
                    SyntaxFactory.AreEquivalent(Unwrap(left.MockerExpression), Unwrap(right.MockerExpression));
+        }
+
+        private static IEnumerable<InvocationExpressionSyntax> EnumerateCurrentBlockInvocations(SyntaxNode referenceNode)
+        {
+            if (referenceNode.FirstAncestorOrSelf<BlockSyntax>() is not BlockSyntax block)
+            {
+                yield break;
+            }
+
+            foreach (var statement in block.Statements)
+            {
+                if (statement is LocalFunctionStatementSyntax)
+                {
+                    continue;
+                }
+
+                foreach (var invocation in statement
+                    .DescendantNodesAndSelf(static node => node is not BlockSyntax and not AnonymousFunctionExpressionSyntax and not LocalFunctionStatementSyntax)
+                    .OfType<InvocationExpressionSyntax>())
+                {
+                    yield return invocation;
+                }
+            }
         }
 
         private static bool TryGetServiceProviderLookupTarget(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string serviceTypeName, out string lookupApi)
