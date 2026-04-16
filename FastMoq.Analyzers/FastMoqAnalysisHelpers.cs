@@ -15,18 +15,26 @@ namespace FastMoq.Analyzers
 
     internal readonly struct TrackedMockOrigin
     {
-        public TrackedMockOrigin(ExpressionSyntax mockerExpression, ITypeSymbol serviceType, TrackedMockOriginKind kind)
+        public TrackedMockOrigin(ExpressionSyntax mockerExpression, ExpressionSyntax trackedMockExpression, ITypeSymbol serviceType, TrackedMockOriginKind kind)
         {
             MockerExpression = mockerExpression;
+            TrackedMockExpression = trackedMockExpression;
             ServiceType = serviceType;
             Kind = kind;
         }
 
         public ExpressionSyntax MockerExpression { get; }
 
+        public ExpressionSyntax TrackedMockExpression { get; }
+
         public ITypeSymbol ServiceType { get; }
 
         public TrackedMockOriginKind Kind { get; }
+
+        public TrackedMockOrigin WithTrackedMockExpression(ExpressionSyntax trackedMockExpression)
+        {
+            return new TrackedMockOrigin(MockerExpression, trackedMockExpression, ServiceType, Kind);
+        }
     }
 
     internal static class FastMoqAnalysisHelpers
@@ -227,9 +235,11 @@ namespace FastMoq.Analyzers
             if (expression is IdentifierNameSyntax identifierName && semanticModel.GetSymbolInfo(identifierName, cancellationToken).Symbol is ILocalSymbol localSymbol)
             {
                 var declaration = localSymbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax(cancellationToken) as VariableDeclaratorSyntax;
-                if (declaration?.Initializer?.Value is ExpressionSyntax initializer)
+                if (declaration?.Initializer?.Value is ExpressionSyntax initializer &&
+                    TryResolveTrackedMockOrigin(initializer, semanticModel, cancellationToken, out origin))
                 {
-                    return TryResolveTrackedMockOrigin(initializer, semanticModel, cancellationToken, out origin);
+                    origin = origin.WithTrackedMockExpression(identifierName);
+                    return true;
                 }
             }
 
@@ -255,6 +265,7 @@ namespace FastMoq.Analyzers
 
                 origin = new TrackedMockOrigin(
                     memberAccess.Expression,
+                    invocationExpression,
                     method.TypeArguments[0],
                     IsFastMoqMockerMethod(method, "GetMock") ? TrackedMockOriginKind.GetMock : TrackedMockOriginKind.GetOrCreateMock);
                 return true;
@@ -262,7 +273,11 @@ namespace FastMoq.Analyzers
 
             if ((method.Name == "AsMoq" || method.Name == "AsNSubstitute") && invocationExpression.Expression is MemberAccessExpressionSyntax adapterAccess)
             {
-                return TryResolveTrackedMockOrigin(adapterAccess.Expression, semanticModel, cancellationToken, out origin);
+                if (TryResolveTrackedMockOrigin(adapterAccess.Expression, semanticModel, cancellationToken, out origin))
+                {
+                    origin = origin.WithTrackedMockExpression(adapterAccess.Expression);
+                    return true;
+                }
             }
 
             origin = default;
@@ -444,6 +459,13 @@ namespace FastMoq.Analyzers
 
         public static bool TryBuildFunctionContextInstanceServicesReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)
         {
+            if (!HasFunctionContextInstanceServicesMockHelper(semanticModel))
+            {
+                targetInvocation = null!;
+                replacement = string.Empty;
+                return false;
+            }
+
             return TryBuildFunctionContextInstanceServicesReturnsReplacement(invocationExpression, semanticModel, cancellationToken, out targetInvocation, out replacement) ||
                 TryBuildFunctionContextInstanceServicesSetupPropertyReplacement(invocationExpression, semanticModel, cancellationToken, out targetInvocation, out replacement);
         }
@@ -624,6 +646,24 @@ namespace FastMoq.Analyzers
             return true;
         }
 
+        public static bool HasFunctionContextInstanceServicesMockHelper(SemanticModel semanticModel)
+        {
+            var helperType = semanticModel.Compilation.GetTypeByMetadataName("FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions");
+            if (helperType is null)
+            {
+                return false;
+            }
+
+            return helperType
+                .GetMembers("AddFunctionContextInstanceServices")
+                .OfType<IMethodSymbol>()
+                .Any(method =>
+                    method.IsExtensionMethod &&
+                    method.Parameters.Length == 2 &&
+                    method.Parameters[0].Type.ToDisplayString() == "FastMoq.Providers.IFastMock" &&
+                    method.Parameters[1].Type.ToDisplayString() == SERVICE_PROVIDER_TYPE);
+        }
+
         private static bool TryBuildFunctionContextInstanceServicesReturnsReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)
         {
             targetInvocation = null!;
@@ -667,7 +707,7 @@ namespace FastMoq.Analyzers
             }
 
             targetInvocation = returnsInvocation;
-            replacement = BuildFunctionContextInstanceServicesReplacement(origin.MockerExpression, providerExpression, semanticModel, returnsInvocation.SpanStart);
+            replacement = BuildFunctionContextInstanceServicesReplacement(origin.TrackedMockExpression, providerExpression);
             return true;
         }
 
@@ -704,7 +744,7 @@ namespace FastMoq.Analyzers
             }
 
             targetInvocation = invocationExpression;
-            replacement = BuildFunctionContextInstanceServicesReplacement(origin.MockerExpression, providerExpression, semanticModel, invocationExpression.SpanStart);
+            replacement = BuildFunctionContextInstanceServicesReplacement(origin.TrackedMockExpression, providerExpression);
             return true;
         }
 
@@ -1130,11 +1170,11 @@ namespace FastMoq.Analyzers
                 : $"{mockerExpression}.SetupOptions<{optionsTypeName}>({setupArgument}, replace: {replaceArgument})";
         }
 
-        private static string BuildFunctionContextInstanceServicesReplacement(ExpressionSyntax mockerExpressionSyntax, ExpressionSyntax providerExpressionSyntax, SemanticModel semanticModel, int position)
+        private static string BuildFunctionContextInstanceServicesReplacement(ExpressionSyntax trackedMockExpressionSyntax, ExpressionSyntax providerExpressionSyntax)
         {
-            var mockerExpression = mockerExpressionSyntax.WithoutTrivia().ToString();
+            var trackedMockExpression = trackedMockExpressionSyntax.WithoutTrivia().ToString();
             var providerExpression = providerExpressionSyntax.WithoutTrivia().ToString();
-            return $"{mockerExpression}.AddFunctionContextInstanceServices({providerExpression}, replace: true)";
+            return $"{trackedMockExpression}.AddFunctionContextInstanceServices({providerExpression})";
         }
 
         private static IEnumerable<INamedTypeSymbol> GetCandidateTestTargetTypes(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)

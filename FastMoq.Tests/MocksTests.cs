@@ -2192,18 +2192,18 @@ namespace FastMoq.Tests
 
     internal sealed class NonPublicAmbiguousConstructorsWithParameterless
     {
-        protected NonPublicAmbiguousConstructorsWithParameterless()
+        private NonPublicAmbiguousConstructorsWithParameterless()
         {
             SelectedConstructor = "parameterless";
         }
 
-        protected NonPublicAmbiguousConstructorsWithParameterless(IFileSystem fileSystem)
+        private NonPublicAmbiguousConstructorsWithParameterless(IFileSystem fileSystem)
         {
             ArgumentNullException.ThrowIfNull(fileSystem);
             SelectedConstructor = nameof(IFileSystem);
         }
 
-        protected NonPublicAmbiguousConstructorsWithParameterless(IFile file)
+        private NonPublicAmbiguousConstructorsWithParameterless(IFile file)
         {
             ArgumentNullException.ThrowIfNull(file);
             SelectedConstructor = nameof(IFile);

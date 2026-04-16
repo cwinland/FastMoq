@@ -672,7 +672,7 @@ class Sample
     void Execute(Mocker Mocks, IServiceProvider provider)
     {
         var context = Mocks.GetOrCreateMock<Microsoft.Azure.Functions.Worker.FunctionContext>();
-        context.SetupGet(x => x.InstanceServices).Returns(provider);
+        context.Setup(x => x.InstanceServices).Returns(provider);
     }
 }";
 
@@ -680,7 +680,12 @@ class Sample
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
 
-            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new ServiceProviderShimAnalyzer(), codeFixProvider, DiagnosticIds.PreferTypedServiceProviderHelpers);
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new ServiceProviderShimAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.PreferTypedServiceProviderHelpers,
+                includeAzureFunctionsHelpers: true);
             var expected = AnalyzerTestHelpers.NormalizeCode(@"
 using System;
 using FastMoq;
@@ -700,11 +705,49 @@ class Sample
     void Execute(Mocker Mocks, IServiceProvider provider)
     {
         var context = Mocks.GetOrCreateMock<Microsoft.Azure.Functions.Worker.FunctionContext>();
-        Mocks.AddFunctionContextInstanceServices(provider, replace: true);
+        context.AddFunctionContextInstanceServices(provider);
     }
 }");
 
             Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldReportButNotOfferFix_WhenFunctionContextHelperPackageIsUnavailable()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+namespace Microsoft.Azure.Functions.Worker
+{
+    abstract class FunctionContext
+    {
+        public virtual IServiceProvider InstanceServices { get; set; }
+    }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks, IServiceProvider provider)
+    {
+        var context = Mocks.GetOrCreateMock<Microsoft.Azure.Functions.Worker.FunctionContext>();
+        context.SetupGet(x => x.InstanceServices).Returns(provider);
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ServiceProviderShimAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
+            Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(
+                SOURCE,
+                new ServiceProviderShimAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.PreferTypedServiceProviderHelpers);
+
+            Assert.Empty(codeFixTitles);
         }
 
         [Fact]
@@ -736,7 +779,12 @@ class Sample
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
 
-            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new ServiceProviderShimAnalyzer(), codeFixProvider, DiagnosticIds.PreferTypedServiceProviderHelpers);
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new ServiceProviderShimAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.PreferTypedServiceProviderHelpers,
+                includeAzureFunctionsHelpers: true);
             var expected = AnalyzerTestHelpers.NormalizeCode(@"
 using System;
 using FastMoq;
@@ -756,7 +804,7 @@ class Sample
     void Execute(Mocker Mocks, IServiceProvider provider)
     {
         var context = Mocks.GetOrCreateMock<Microsoft.Azure.Functions.Worker.FunctionContext>();
-        Mocks.AddFunctionContextInstanceServices(provider, replace: true);
+        context.AddFunctionContextInstanceServices(provider);
     }
 }");
 

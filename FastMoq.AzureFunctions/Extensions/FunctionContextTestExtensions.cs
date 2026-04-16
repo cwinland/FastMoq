@@ -54,6 +54,27 @@ namespace FastMoq.AzureFunctions.Extensions
         }
 
         /// <summary>
+        /// Configures typed <see cref="FunctionContext.InstanceServices" /> behavior on a tracked <see cref="FunctionContext" /> mock without replacing the enclosing <see cref="Mocker" /> service registrations.
+        /// </summary>
+        /// <param name="fastMock">The tracked mock whose <see cref="FunctionContext.InstanceServices" /> getter should return <paramref name="instanceServices" />.</param>
+        /// <param name="instanceServices">The provider to expose through <see cref="FunctionContext.InstanceServices" />.</param>
+        /// <returns>The current tracked mock.</returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="fastMock" /> does not represent a <see cref="FunctionContext" />.</exception>
+        public static IFastMock AddFunctionContextInstanceServices(this IFastMock fastMock, IServiceProvider instanceServices)
+        {
+            ArgumentNullException.ThrowIfNull(fastMock);
+            ArgumentNullException.ThrowIfNull(instanceServices);
+
+            if (!typeof(FunctionContext).IsAssignableFrom(fastMock.MockedType))
+            {
+                throw new ArgumentException($"The supplied mock must represent {typeof(FunctionContext).FullName}.", nameof(fastMock));
+            }
+
+            ConfigureFunctionContextInstanceServices(fastMock, instanceServices);
+            return fastMock;
+        }
+
+        /// <summary>
         /// Registers typed <see cref="FunctionContext.InstanceServices" /> behavior for the current <see cref="Mocker" /> instance.
         /// </summary>
         /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>

@@ -118,6 +118,7 @@ namespace FastMoq.Analyzers.CodeFixes
 
                         var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
                         if (semanticModel is null ||
+                            !FastMoqAnalysisHelpers.HasFunctionContextInstanceServicesMockHelper(semanticModel) ||
                             !FastMoqAnalysisHelpers.TryBuildFunctionContextInstanceServicesReplacement(invocationExpression, semanticModel, context.CancellationToken, out _, out _))
                         {
                             return;
