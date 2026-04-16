@@ -26,6 +26,7 @@ namespace FastMoq.Analyzers.Tests
             { new InitializeCompatibilityAnalyzer(), DiagnosticDescriptors.ReplaceInitializeCompatibilityWrapper },
             { new StrictCompatibilityAnalyzer(), DiagnosticDescriptors.AvoidStrictCompatibilityProperty },
             { new TimesSpecHelperBoundaryAnalyzer(), DiagnosticDescriptors.UseTimesSpecAtHelperBoundary },
+            { new OptionsSetupAnalyzer(), DiagnosticDescriptors.PreferSetupOptionsHelper },
             { new ProviderBootstrapAnalyzer(), DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi },
             { new NativeMockAuthoringAnalyzer(), DiagnosticDescriptors.PreferTypedProviderExtensions },
             { new WebHelperAuthoringAnalyzer(), DiagnosticDescriptors.PreferWebTestHelpers },
@@ -48,6 +49,7 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.ReplaceInitializeCompatibilityWrapper, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.AvoidStrictCompatibilityProperty, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.UseTimesSpecAtHelperBoundary, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.PreferSetupOptionsHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.PreferTypedProviderExtensions, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferWebTestHelpers, DiagnosticSeverity.Info },
@@ -184,6 +186,205 @@ class Sample
         var logger = Mocks.GetMock<ILogger<Sample>>();
         Mocks.VerifyLogged(LogLevel.Information, ""processed order"", 1);
     }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task OptionsSetupAnalyzer_ShouldReportAndFix_AddTypeOptionsCreateUsage()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Options;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.AddType<IOptions<SampleOptions>>(Options.Create(new SampleOptions { RetryCount = 3 }), true);
+    }
+}
+
+class SampleOptions
+{
+    public int RetryCount { get; set; }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new OptionsSetupAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferSetupOptionsHelper));
+            Assert.Equal(DiagnosticIds.PreferSetupOptionsHelper, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new OptionsSetupAnalyzer(), codeFixProvider, DiagnosticIds.PreferSetupOptionsHelper);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Microsoft.Extensions.Options;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.SetupOptions<SampleOptions>(new SampleOptions { RetryCount = 3 }, replace: true);
+    }
+}
+
+class SampleOptions
+{
+    public int RetryCount { get; set; }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task OptionsSetupAnalyzer_ShouldReportAndFix_IOptionsValueSetupUsageWithoutExistingExtensionsUsing()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Options;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.GetMock<IOptions<SampleOptions>>()
+            .Setup(x => x.Value)
+            .Returns(new SampleOptions { RetryCount = 5 });
+    }
+}
+
+class SampleOptions
+{
+    public int RetryCount { get; set; }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new OptionsSetupAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferSetupOptionsHelper));
+            Assert.Equal(DiagnosticIds.PreferSetupOptionsHelper, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new OptionsSetupAnalyzer(), codeFixProvider, DiagnosticIds.PreferSetupOptionsHelper);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Microsoft.Extensions.Options;
+using Moq;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.SetupOptions<SampleOptions>(new SampleOptions { RetryCount = 5 });
+    }
+}
+
+class SampleOptions
+{
+    public int RetryCount { get; set; }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task OptionsSetupAnalyzer_ShouldReportAndFix_IOptionsValueSetupUsage()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Extensions;
+using Microsoft.Extensions.Options;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.GetMock<IOptions<SampleOptions>>()
+            .Setup(x => x.Value)
+            .Returns(new SampleOptions { RetryCount = 5 });
+    }
+}
+
+class SampleOptions
+{
+    public int RetryCount { get; set; }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new OptionsSetupAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferSetupOptionsHelper));
+            Assert.Equal(DiagnosticIds.PreferSetupOptionsHelper, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new OptionsSetupAnalyzer(), codeFixProvider, DiagnosticIds.PreferSetupOptionsHelper);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Extensions;
+using Microsoft.Extensions.Options;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.SetupOptions<SampleOptions>(new SampleOptions { RetryCount = 5 });
+    }
+}
+
+class SampleOptions
+{
+    public int RetryCount { get; set; }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task OptionsSetupAnalyzer_ShouldReportAndFix_DeferredIOptionsValueSetupUsage()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Moq;
+using Microsoft.Extensions.Options;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var nextRetryCount = 1;
+        Mocks.GetMock<IOptions<SampleOptions>>()
+            .Setup(x => x.Value)
+            .Returns(() => new SampleOptions { RetryCount = nextRetryCount++ });
+    }
+}
+
+class SampleOptions
+{
+    public int RetryCount { get; set; }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new OptionsSetupAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferSetupOptionsHelper));
+            Assert.Equal(DiagnosticIds.PreferSetupOptionsHelper, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new OptionsSetupAnalyzer(), codeFixProvider, DiagnosticIds.PreferSetupOptionsHelper);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Moq;
+using Microsoft.Extensions.Options;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var nextRetryCount = 1;
+        Mocks.SetupOptions<SampleOptions>(() => new SampleOptions { RetryCount = nextRetryCount++ });
+    }
+}
+
+class SampleOptions
+{
+    public int RetryCount { get; set; }
 }");
 
             Assert.Equal(expected, fixedSource);

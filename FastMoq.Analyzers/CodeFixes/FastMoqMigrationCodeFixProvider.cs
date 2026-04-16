@@ -21,7 +21,8 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.UseConsistentMockRetrieval,
             DiagnosticIds.UseProviderFirstMockRetrieval,
             DiagnosticIds.UseExplicitOptionalParameterResolution,
-            DiagnosticIds.ReplaceInitializeCompatibilityWrapper);
+            DiagnosticIds.ReplaceInitializeCompatibilityWrapper,
+            DiagnosticIds.PreferSetupOptionsHelper);
 
         public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -136,6 +137,23 @@ namespace FastMoq.Analyzers.CodeFixes
                                 "Use GetMock<T>(...)",
                                 cancellationToken => ReplaceInvocationAsync(document, invocationExpression, BuildInitializeReplacementAsync, cancellationToken),
                                 nameof(DiagnosticIds.ReplaceInitializeCompatibilityWrapper)),
+                            diagnostic);
+                        break;
+                    }
+
+                case DiagnosticIds.PreferSetupOptionsHelper:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                "Use SetupOptions(...)",
+                                cancellationToken => ReplaceSetupOptionsInvocationAsync(document, invocationExpression, cancellationToken),
+                                nameof(DiagnosticIds.PreferSetupOptionsHelper)),
                             diagnostic);
                         break;
                     }
@@ -256,6 +274,40 @@ namespace FastMoq.Analyzers.CodeFixes
                 FastMoqAnalysisHelpers.TryBuildInitializeReplacement(invocationExpression, out var replacement)
                 ? replacement
                 : null;
+        }
+
+        private static string? BuildSetupOptionsReplacementAsync(Document document, SemanticModel semanticModel, SyntaxNode syntaxNode, CancellationToken cancellationToken)
+        {
+            return syntaxNode is InvocationExpressionSyntax invocationExpression &&
+                FastMoqAnalysisHelpers.TryBuildSetupOptionsReplacement(invocationExpression, semanticModel, cancellationToken, out var replacement)
+                ? replacement
+                : null;
+        }
+
+        private static async Task<Document> ReplaceSetupOptionsInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            if (!FastMoqAnalysisHelpers.TryBuildSetupOptionsReplacement(invocationExpression, semanticModel, cancellationToken, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+
+            if (updatedRoot is CompilationUnitSyntax compilationUnit && !compilationUnit.Usings.Any(@using => @using.Name?.ToString() == "FastMoq.Extensions"))
+            {
+                updatedRoot = compilationUnit.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("FastMoq.Extensions")));
+            }
+
+            return document.WithSyntaxRoot(updatedRoot);
         }
 
         private static async Task<Document> ReplaceGetMockAsync(Document document, MemberAccessExpressionSyntax memberAccess, CancellationToken cancellationToken)

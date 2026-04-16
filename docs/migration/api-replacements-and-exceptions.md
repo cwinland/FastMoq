@@ -144,6 +144,55 @@ Why:
 - `VerifyLogger(...)` remains a Moq compatibility API.
 - existing logger assertions carried forward from previous FastMoq versions can stay on `VerifyLogger(...)` if the assembly explicitly selects `moq`, but new or touched tests should prefer `VerifyLogged(...)`.
 
+Analyzer note:
+
+- `FMOQ0003` points shared helper cleanup and leaf test rewrites toward `VerifyLogged(...)`.
+- if the same helper also registered loggers manually, prefer `AddLoggerFactory()` or `CreateLoggerFactory()` from the finalized helper surface instead of preserving a private logger wrapper.
+
+### `IOptions<T>` setup and real instances
+
+Old patterns often looked like this:
+
+```csharp
+Mocks.GetMock<IOptions<MyOptions>>()
+    .Setup(x => x.Value)
+    .Returns(new MyOptions { RetryCount = 3 });
+```
+
+or:
+
+```csharp
+Mocks.AddType<IOptions<MyOptions>>(Options.Create(new MyOptions { RetryCount = 3 }), true);
+```
+
+Current guidance:
+
+```csharp
+Mocks.SetupOptions(new MyOptions { RetryCount = 3 }, replace: true);
+```
+
+Or, when the test only needs a default instance:
+
+```csharp
+Mocks.SetupOptions<MyOptions>();
+```
+
+Why:
+
+- `SetupOptions(...)` keeps the common `IOptions<T>` registration shape explicit without preserving Moq-only property setup boilerplate.
+- It is provider-neutral and matches the migration intent directly: register a concrete options value for `IOptions<T>`.
+- It keeps `AddType(...)` focused on non-options real instances such as `MemoryCache`, file systems, clocks, or fixed collaborators.
+
+Practical rule:
+
+- use `SetupOptions(...)` when the dependency under test is `IOptions<T>`
+- use `AddType(instance)` when the dependency itself is a concrete runtime object or interface implementation rather than an options wrapper
+- keep `GetMock<IOptions<T>>()` only when the test genuinely depends on mocking-library-specific behavior beyond returning a concrete `Value`
+
+Analyzer note:
+
+- `FMOQ0019` points the common `GetMock<IOptions<T>>().Setup(x => x.Value)...` and `AddType<IOptions<T>>(Options.Create(...))` shapes toward `SetupOptions(...)`.
+
 ### `TimesSpec` shape in v4
 
 Use `TimesSpec` with this mental model during migration:

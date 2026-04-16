@@ -117,6 +117,8 @@ namespace FastMoq
         /// </summary>
         public Action<LogLevel, EventId, string, Exception?> LoggingCallback { get; }
 
+        internal bool HasExplicitLoggerCapture { get; private set; }
+
         /// <summary>
         /// Controls how optional constructor and invocation parameters are resolved when values are not supplied explicitly.
         /// </summary>
@@ -328,6 +330,11 @@ namespace FastMoq
         {
             logEntries.Add(new LogEntry(logLevel, eventId, message, exception));
             externalLoggingCallback(logLevel, eventId, message, exception);
+        }
+
+        internal void EnableExplicitLoggerCapture()
+        {
+            HasExplicitLoggerCapture = true;
         }
 
         #region Type Mapping

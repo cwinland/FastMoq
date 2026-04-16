@@ -5,6 +5,7 @@ using FastMoq.Extensions;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
 using FastMoq.Providers.NSubstituteProvider;
+using FastMoq.Providers.ReflectionProvider;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,6 +46,136 @@ namespace FastMoq.Tests
             mocker.GetObject<IServiceProvider>().Should().BeSameAs(provider);
             mocker.GetObject<IServiceScopeFactory>().Should().NotBeNull();
             mocker.GetObject<IServiceProviderIsService>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void SetupOptions_ShouldRegisterConcreteOptionsValue()
+        {
+            var mocker = new Mocker();
+            var expected = new SampleOptions
+            {
+                Name = "alpha",
+                RetryCount = 2,
+            };
+
+            mocker.SetupOptions(expected);
+
+            var options = mocker.GetObject<IOptions<SampleOptions>>();
+
+            options.Should().NotBeNull();
+            options!.Value.Should().BeSameAs(expected);
+        }
+
+        [Fact]
+        public void SetupOptions_ShouldCreateAndReplaceOptionsValueFromFactory()
+        {
+            var mocker = new Mocker();
+
+            mocker.SetupOptions(new SampleOptions
+            {
+                Name = "before",
+                RetryCount = 1,
+            });
+
+            mocker.SetupOptions(() => new SampleOptions
+            {
+                Name = "after",
+                RetryCount = 5,
+            }, replace: true);
+
+            var options = mocker.GetObject<IOptions<SampleOptions>>();
+
+            options.Should().NotBeNull();
+            options!.Value.Name.Should().Be("after");
+            options.Value.RetryCount.Should().Be(5);
+        }
+
+        [Fact]
+        public void SetupOptions_ShouldEvaluateFactoryPerResolution()
+        {
+            var mocker = new Mocker();
+            var nextRetryCount = 1;
+
+            mocker.SetupOptions(() => new SampleOptions
+            {
+                RetryCount = nextRetryCount++,
+            });
+
+            var first = mocker.GetObject<IOptions<SampleOptions>>();
+            var second = mocker.GetObject<IOptions<SampleOptions>>();
+
+            first.Should().NotBeNull();
+            second.Should().NotBeNull();
+            first!.Value.RetryCount.Should().Be(1);
+            second!.Value.RetryCount.Should().Be(2);
+        }
+
+        [Fact]
+        public void SetupOptions_ShouldCreateDefaultOptionsValue()
+        {
+            var mocker = new Mocker();
+
+            mocker.SetupOptions<SampleOptions>();
+
+            var options = mocker.GetObject<IOptions<SampleOptions>>();
+
+            options.Should().NotBeNull();
+            options!.Value.Should().NotBeNull();
+            options.Value.Name.Should().BeNull();
+            options.Value.RetryCount.Should().Be(0);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void AddLoggerFactory_ShouldRegisterLoggerFactoryAndTypedLoggers(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            mocker.AddLoggerFactory(replace: true);
+
+            var loggerFactory = mocker.GetObject<ILoggerFactory>();
+            var logger = mocker.GetObject<ILogger<ServiceProviderHelperTests>>();
+
+            loggerFactory.Should().NotBeNull();
+            logger.Should().NotBeNull();
+
+            loggerFactory!.CreateLogger("fastmoq.tests").LogInformation("factory logger");
+            logger!.LogWarning("typed logger");
+
+            mocker.VerifyLogged(LogLevel.Information, "factory logger");
+            mocker.VerifyLogged(LogLevel.Warning, "typed logger");
+        }
+
+        [Fact]
+        public void CreateLoggerFactory_ShouldSupportTypedServiceProviderComposition()
+        {
+            using var providerScope = PushProviderScope("reflection");
+            var mocker = new Mocker();
+            var loggerFactory = mocker.CreateLoggerFactory();
+            var provider = mocker.CreateTypedServiceProvider(services =>
+            {
+                services.AddSingleton(loggerFactory);
+                services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            });
+
+            mocker.AddServiceProvider(provider, replace: true);
+
+            var resolvedProvider = mocker.GetObject<IServiceProvider>();
+            resolvedProvider.Should().NotBeNull();
+
+            var serviceProvider = resolvedProvider!;
+            var resolvedFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+            var typedLogger = serviceProvider.GetRequiredService<ILogger<ServiceProviderHelperTests>>();
+            var factoryLogger = resolvedFactory.CreateLogger("service-provider");
+
+            factoryLogger.LogInformation("service provider factory");
+            typedLogger.LogError("service provider typed logger");
+
+            mocker.VerifyLogged(LogLevel.Information, "service provider factory");
+            mocker.VerifyLogged(LogLevel.Error, "service provider typed logger");
         }
 
         [Fact]
@@ -282,6 +413,12 @@ namespace FastMoq.Tests
                 return;
             }
 
+            if (string.Equals(providerName, "reflection", StringComparison.OrdinalIgnoreCase))
+            {
+                MockingProviderRegistry.Register("reflection", ReflectionMockingProvider.Instance, setAsDefault: false);
+                return;
+            }
+
             throw new InvalidOperationException($"Unknown provider '{providerName}'.");
         }
 
@@ -290,6 +427,13 @@ namespace FastMoq.Tests
             public int Count { get; set; }
 
             public string? Name { get; set; }
+        }
+
+        private sealed class SampleOptions
+        {
+            public string? Name { get; set; }
+
+            public int RetryCount { get; set; }
         }
     }
 }

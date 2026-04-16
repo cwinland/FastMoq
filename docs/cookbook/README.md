@@ -822,8 +822,7 @@ public class WeatherServiceQuickTests : MockerTestBase<WeatherService>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        mocker.AddType<IOptions<WeatherApiOptions>>(() =>
-            Options.Create(new WeatherApiOptions { ApiKey = "test-api-key" }));
+        mocker.SetupOptions(new WeatherApiOptions { ApiKey = "test-api-key" });
         
         // ✅ EASIEST - CreateHttpClient with defaults (auto-registers HttpClient)
         mocker.CreateHttpClient(
@@ -877,8 +876,7 @@ public class WeatherServiceAdvancedTests : MockerTestBase<WeatherService>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        mocker.AddType<IOptions<WeatherApiOptions>>(() =>
-            Options.Create(new WeatherApiOptions { ApiKey = "test-api-key" }));
+        mocker.SetupOptions(new WeatherApiOptions { ApiKey = "test-api-key" });
     };
 
     [Fact]
@@ -961,8 +959,7 @@ public class WeatherServiceMoqCompatibilityTests : MockerTestBase<WeatherService
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        mocker.AddType<IOptions<WeatherApiOptions>>(() =>
-            Options.Create(new WeatherApiOptions { ApiKey = "test-api-key" }));
+        mocker.SetupOptions(new WeatherApiOptions { ApiKey = "test-api-key" });
     };
 
     [Fact]
@@ -996,8 +993,7 @@ public class WeatherServiceFactoryTests : MockerTestBase<WeatherService>
 {
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
-        mocker.AddType<IOptions<WeatherApiOptions>>(() =>
-            Options.Create(new WeatherApiOptions { ApiKey = "test-api-key" }));
+        mocker.SetupOptions(new WeatherApiOptions { ApiKey = "test-api-key" });
         
         // ✅ CreateHttpClient automatically sets up IHttpClientFactory
         mocker.CreateHttpClient(
@@ -1217,9 +1213,7 @@ public class EmailServiceTests : MockerTestBase<EmailService>
             EnableSsl = true
         };
 
-        mocker.GetMock<IOptions<EmailOptions>>()
-            .Setup(x => x.Value)
-            .Returns(emailOptions);
+        mocker.SetupOptions(emailOptions);
 
         // Setup configuration
         var configurationData = new Dictionary<string, string>
@@ -1260,9 +1254,7 @@ public class EmailServiceTests : MockerTestBase<EmailService>
     {
         // Arrange - Override options with empty SMTP host
         var emailOptions = new EmailOptions { SmtpHost = "" };
-        Mocks.GetMock<IOptions<EmailOptions>>()
-            .Setup(x => x.Value)
-            .Returns(emailOptions);
+        Mocks.SetupOptions(emailOptions, replace: true);
 
         // Act
         var result = await Component.SendEmailAsync("test@example.com", "Subject", "Body");
@@ -1298,6 +1290,24 @@ public class EmailServiceTests : MockerTestBase<EmailService>
     }
 }
 ```
+
+### Options Setup Without Repeated IOptions Boilerplate
+
+When a test only needs to provide a concrete options value, prefer `SetupOptions(...)` over repeated `GetMock<IOptions<T>>().Setup(x => x.Value)...` or `AddType<IOptions<T>>(Options.Create(...))` patterns:
+
+```csharp
+var mocker = new Mocker()
+    .SetupOptions(new EmailOptions
+    {
+        SmtpHost = "smtp.example.com",
+        SmtpPort = 587,
+    });
+
+var options = mocker.GetObject<IOptions<EmailOptions>>();
+options.Value.SmtpHost.Should().Be("smtp.example.com");
+```
+
+Use `AddType(instance, replace: true)` for non-options real dependencies such as `MemoryCache`, file systems, or fixed runtime objects. `SetupOptions(...)` is intentionally the narrow convenience helper for `IOptions<T>` registration only.
 
 ### Testing with IOptionsMonitor
 
@@ -1356,6 +1366,34 @@ Mocks.GetMock<ILogger<MyService>>()
 ```
 
 `VerifyLogged(...)` is provider-safe because the active provider is responsible for wiring `ILogger` capture through `IMockingProvider.ConfigureLogger(...)`, while FastMoq core owns the assertion semantics. Providers that cannot capture logger callbacks advertise that through capabilities and FastMoq fails fast instead of silently giving a false negative.
+
+### Logger Registration Without A Private Helper Layer
+
+If the suite needs a reusable registration path for `ILoggerFactory`, `ILogger`, or `ILogger<T>`, use the first-party logging helpers instead of maintaining a framework-specific adapter layer:
+
+```csharp
+var mocker = new Mocker()
+    .AddLoggerFactory();
+
+var logger = mocker.GetObject<ILogger<OrderProcessingService>>();
+
+logger.LogInformation("Processing complete");
+
+mocker.VerifyLogged(LogLevel.Information, "Processing complete");
+```
+
+When the test already builds a typed service provider, create the same callback-backed factory explicitly and register it into the service collection:
+
+```csharp
+var loggerFactory = Mocks.CreateLoggerFactory();
+var provider = Mocks.CreateTypedServiceProvider(services =>
+{
+    services.AddSingleton(loggerFactory);
+    services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+});
+```
+
+That keeps the logger-registration story framework-neutral while still letting `Mocks.VerifyLogged(...)` assert on the captured entries.
 
 ### Service with Logging
 
