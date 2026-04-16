@@ -20,6 +20,7 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.UseVerifyLogged,
             DiagnosticIds.UseConsistentMockRetrieval,
             DiagnosticIds.UseProviderFirstMockRetrieval,
+            DiagnosticIds.PreferTypedServiceProviderHelpers,
             DiagnosticIds.UseExplicitOptionalParameterResolution,
             DiagnosticIds.ReplaceInitializeCompatibilityWrapper,
             DiagnosticIds.PreferSetupOptionsHelper);
@@ -103,6 +104,30 @@ namespace FastMoq.Analyzers.CodeFixes
                                 "Use GetOrCreateMock<T>()",
                                 cancellationToken => ReplaceGetMockAsync(document, memberAccess, cancellationToken),
                                 diagnostic.Id),
+                            diagnostic);
+                        break;
+                    }
+
+                case DiagnosticIds.PreferTypedServiceProviderHelpers:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (semanticModel is null ||
+                            !FastMoqAnalysisHelpers.TryBuildFunctionContextInstanceServicesReplacement(invocationExpression, semanticModel, context.CancellationToken, out _, out _))
+                        {
+                            return;
+                        }
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                "Use AddFunctionContextInstanceServices(...)",
+                                cancellationToken => ReplaceFunctionContextInstanceServicesInvocationAsync(document, invocationExpression, cancellationToken),
+                                nameof(DiagnosticIds.PreferTypedServiceProviderHelpers)),
                             diagnostic);
                         break;
                     }
@@ -302,11 +327,27 @@ namespace FastMoq.Analyzers.CodeFixes
                 .WithTriviaFrom(invocationExpression);
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
 
-            if (updatedRoot is CompilationUnitSyntax compilationUnit && !compilationUnit.Usings.Any(@using => @using.Name?.ToString() == "FastMoq.Extensions"))
+            return document.WithSyntaxRoot(AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions"));
+        }
+
+        private static async Task<Document> ReplaceFunctionContextInstanceServicesInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
             {
-                updatedRoot = compilationUnit.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("FastMoq.Extensions")));
+                return document;
             }
 
+            if (!FastMoqAnalysisHelpers.TryBuildFunctionContextInstanceServicesReplacement(invocationExpression, semanticModel, cancellationToken, out var targetInvocation, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(targetInvocation);
+            var updatedRoot = root.ReplaceNode(targetInvocation, replacementExpression);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.AzureFunctions.Extensions");
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -324,6 +365,16 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementMemberAccess = memberAccess.WithName(replacementName);
             var updatedRoot = root.ReplaceNode(memberAccess, replacementMemberAccess);
             return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static SyntaxNode AddUsingDirectiveIfMissing(SyntaxNode root, string namespaceName)
+        {
+            if (root is CompilationUnitSyntax compilationUnit && !compilationUnit.Usings.Any(@using => @using.Name?.ToString() == namespaceName))
+            {
+                return compilationUnit.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(namespaceName)));
+            }
+
+            return root;
         }
 
         private delegate string? ReplacementBuilder(Document document, SemanticModel semanticModel, SyntaxNode syntaxNode, CancellationToken cancellationToken);

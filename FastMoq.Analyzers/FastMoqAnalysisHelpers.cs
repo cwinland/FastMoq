@@ -442,6 +442,12 @@ namespace FastMoq.Analyzers
                 TryBuildSetupOptionsAddTypeReplacement(invocationExpression, semanticModel, cancellationToken, out replacement);
         }
 
+        public static bool TryBuildFunctionContextInstanceServicesReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)
+        {
+            return TryBuildFunctionContextInstanceServicesReturnsReplacement(invocationExpression, semanticModel, cancellationToken, out targetInvocation, out replacement) ||
+                TryBuildFunctionContextInstanceServicesSetupPropertyReplacement(invocationExpression, semanticModel, cancellationToken, out targetInvocation, out replacement);
+        }
+
         public static Location GetTargetNameLocation(ExpressionSyntax expression)
         {
             if (expression is MemberAccessExpressionSyntax memberAccess)
@@ -615,6 +621,114 @@ namespace FastMoq.Analyzers
             }
 
             currentApi = $"{method.Name}(x => x.InstanceServices)";
+            return true;
+        }
+
+        private static bool TryBuildFunctionContextInstanceServicesReturnsReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)
+        {
+            targetInvocation = null!;
+            replacement = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name is not "Setup" and not "SetupGet" ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax setupAccess ||
+                !TryResolveTrackedMockOrigin(setupAccess.Expression, semanticModel, cancellationToken, out var origin) ||
+                origin.ServiceType.ToDisplayString() != FUNCTION_CONTEXT_TYPE ||
+                invocationExpression.Parent is not MemberAccessExpressionSyntax returnsAccess ||
+                returnsAccess.Parent is not InvocationExpressionSyntax returnsInvocation ||
+                !TryGetMethodSymbol(returnsInvocation, semanticModel, cancellationToken, out var returnsMethod) ||
+                returnsMethod is null)
+            {
+                return false;
+            }
+
+            returnsMethod = returnsMethod.ReducedFrom ?? returnsMethod;
+            if (returnsMethod.Name != "Returns" ||
+                returnsInvocation.ArgumentList.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            var providerExpression = Unwrap(returnsInvocation.ArgumentList.Arguments[0].Expression);
+            if (providerExpression is LambdaExpressionSyntax or AnonymousMethodExpressionSyntax)
+            {
+                return false;
+            }
+
+            if (!TryGetFunctionContextInstanceServicesMemberAccess(invocationExpression, semanticModel, cancellationToken, out _))
+            {
+                return false;
+            }
+
+            targetInvocation = returnsInvocation;
+            replacement = BuildFunctionContextInstanceServicesReplacement(origin.MockerExpression, providerExpression, semanticModel, returnsInvocation.SpanStart);
+            return true;
+        }
+
+        private static bool TryBuildFunctionContextInstanceServicesSetupPropertyReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)
+        {
+            targetInvocation = null!;
+            replacement = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "SetupProperty" ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
+                !TryResolveTrackedMockOrigin(memberAccess.Expression, semanticModel, cancellationToken, out var origin) ||
+                origin.ServiceType.ToDisplayString() != FUNCTION_CONTEXT_TYPE ||
+                invocationExpression.ArgumentList.Arguments.Count < 2)
+            {
+                return false;
+            }
+
+            if (!TryGetFunctionContextInstanceServicesMemberAccess(invocationExpression, semanticModel, cancellationToken, out _))
+            {
+                return false;
+            }
+
+            var providerExpression = Unwrap(invocationExpression.ArgumentList.Arguments[1].Expression);
+            if (providerExpression is LambdaExpressionSyntax or AnonymousMethodExpressionSyntax)
+            {
+                return false;
+            }
+
+            targetInvocation = invocationExpression;
+            replacement = BuildFunctionContextInstanceServicesReplacement(origin.MockerExpression, providerExpression, semanticModel, invocationExpression.SpanStart);
+            return true;
+        }
+
+        private static bool TryGetFunctionContextInstanceServicesMemberAccess(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out MemberAccessExpressionSyntax memberAccessExpression)
+        {
+            memberAccessExpression = null!;
+
+            if (invocationExpression.ArgumentList.Arguments.Count == 0)
+            {
+                return false;
+            }
+
+            var candidateExpression = Unwrap(invocationExpression.ArgumentList.Arguments[0].Expression);
+            if (candidateExpression is not LambdaExpressionSyntax lambdaExpression ||
+                lambdaExpression.Body is not MemberAccessExpressionSyntax memberAccess ||
+                !TryGetPropertySymbol(memberAccess, semanticModel, cancellationToken, out var property) ||
+                property is null ||
+                property.Name != FUNCTION_CONTEXT_INSTANCE_SERVICES_PROPERTY ||
+                property.ContainingType.ToDisplayString() != FUNCTION_CONTEXT_TYPE)
+            {
+                return false;
+            }
+
+            memberAccessExpression = memberAccess;
             return true;
         }
 
@@ -1014,6 +1128,13 @@ namespace FastMoq.Analyzers
             return string.IsNullOrWhiteSpace(replaceArgument)
                 ? $"{mockerExpression}.SetupOptions<{optionsTypeName}>({setupArgument})"
                 : $"{mockerExpression}.SetupOptions<{optionsTypeName}>({setupArgument}, replace: {replaceArgument})";
+        }
+
+        private static string BuildFunctionContextInstanceServicesReplacement(ExpressionSyntax mockerExpressionSyntax, ExpressionSyntax providerExpressionSyntax, SemanticModel semanticModel, int position)
+        {
+            var mockerExpression = mockerExpressionSyntax.WithoutTrivia().ToString();
+            var providerExpression = providerExpressionSyntax.WithoutTrivia().ToString();
+            return $"{mockerExpression}.AddFunctionContextInstanceServices({providerExpression}, replace: true)";
         }
 
         private static IEnumerable<INamedTypeSymbol> GetCandidateTestTargetTypes(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
