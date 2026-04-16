@@ -41,11 +41,15 @@ namespace FastMoq.Analyzers.Tests
                 .ConfigureAwait(false);
         }
 
-        public static async Task<string> ApplyCodeFixAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers = false)
+        public static async Task<string> ApplyCodeFixAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers = false, int diagnosticOccurrence = 0, string? diagnosticMessageContains = null)
         {
             var document = CreateDocument(source, includeAzureFunctionsHelpers);
             var diagnostics = await GetDiagnosticsAsync(document, analyzer).ConfigureAwait(false);
-            var diagnostic = diagnostics.Single(item => item.Id == diagnosticId);
+            var diagnostic = diagnostics
+                .Where(item => item.Id == diagnosticId)
+                .Where(item => diagnosticMessageContains is null || item.GetMessage().Contains(diagnosticMessageContains, StringComparison.Ordinal))
+                .OrderBy(item => item.Location.SourceSpan.Start)
+                .ElementAt(diagnosticOccurrence);
 
             var actions = new List<CodeAction>();
             var context = new CodeFixContext(document, diagnostic, (action, _) => actions.Add(action), CancellationToken.None);
@@ -59,11 +63,15 @@ namespace FastMoq.Analyzers.Tests
             return changedRoot!.NormalizeWhitespace().ToFullString();
         }
 
-        public static async Task<ImmutableArray<string>> GetCodeFixTitlesAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers = false)
+        public static async Task<ImmutableArray<string>> GetCodeFixTitlesAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers = false, int diagnosticOccurrence = 0, string? diagnosticMessageContains = null)
         {
             var document = CreateDocument(source, includeAzureFunctionsHelpers);
             var diagnostics = await GetDiagnosticsAsync(document, analyzer).ConfigureAwait(false);
-            var diagnostic = diagnostics.Single(item => item.Id == diagnosticId);
+            var diagnostic = diagnostics
+                .Where(item => item.Id == diagnosticId)
+                .Where(item => diagnosticMessageContains is null || item.GetMessage().Contains(diagnosticMessageContains, StringComparison.Ordinal))
+                .OrderBy(item => item.Location.SourceSpan.Start)
+                .ElementAt(diagnosticOccurrence);
 
             var actions = new List<CodeAction>();
             var context = new CodeFixContext(document, diagnostic, (action, _) => actions.Add(action), CancellationToken.None);

@@ -117,6 +117,19 @@ using var scope = Mocks.CreateTypedServiceScope(services =>
 Mocks.AddServiceScope(scope, replace: true);
 ```
 
+If a helper already has a real provider and only needs a fixed scope plus a matching scope factory, use the provider-backed overload:
+
+```csharp
+var provider = Mocks.CreateTypedServiceProvider(services =>
+{
+    services.AddScoped<ScopedWidgetContext>();
+});
+
+Mocks.AddServiceScope(provider, replace: true);
+```
+
+That overload exposes the supplied `IServiceProvider`, a fixed `IServiceScope`, and an `IServiceScopeFactory` that returns that registered scope, which maps well to older `scope.SetupGet(x => x.ServiceProvider)` and `scopeFactory.Setup(x => x.CreateScope())` shim patterns.
+
 If a constructor takes `IServiceScopeFactory`, prefer this shape:
 
 ```csharp

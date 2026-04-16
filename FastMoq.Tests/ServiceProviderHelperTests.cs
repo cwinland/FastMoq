@@ -146,6 +146,24 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void AddServiceScope_ShouldRegisterProviderBackedScopeAndFixedScopeFactory()
+        {
+            var mocker = new Mocker();
+            var provider = mocker.CreateTypedServiceProvider(services => services.AddScoped<ScopedProbe>());
+
+            mocker.AddServiceScope(provider, replace: true);
+
+            var scope = mocker.GetObject<IServiceScope>();
+            var scopeFactory = mocker.GetObject<IServiceScopeFactory>();
+
+            scope.Should().NotBeNull();
+            scope!.ServiceProvider.Should().BeSameAs(provider);
+            scopeFactory.Should().NotBeNull();
+            scopeFactory!.CreateScope().Should().BeSameAs(scope);
+            mocker.GetObject<IServiceProvider>().Should().BeSameAs(provider);
+        }
+
+        [Fact]
         public void AddServiceProvider_ShouldDisposeOwnedProvider_WhenMockerIsDisposed()
         {
             DisposableProbe? probe;

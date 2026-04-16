@@ -70,7 +70,7 @@ Analyzer note:
 - `FMOQ0013` warns on direct `FunctionContext.InstanceServices` mocking more broadly across `Setup(...)`, `SetupGet(...)`, and `SetupProperty(...)` so those shims move toward the typed helper path
 - the built-in code fix is narrower: it only appears when `FastMoq.AzureFunctions` is already referenced, and it rewrites the safe tracked-provider cases `Setup(x => x.InstanceServices).Returns(provider)`, `SetupGet(x => x.InstanceServices).Returns(provider)`, and `SetupProperty(x => x.InstanceServices, provider)` to `context.AddFunctionContextInstanceServices(provider)` and adds `using FastMoq.AzureFunctions.Extensions;` when needed
 - `SetupSet(...)` is not part of this analyzer. When the real need is provider-neutral setter observation rather than Moq setter interception, prefer a fake or stub with [PropertyValueCapture&lt;TValue&gt;](xref:FastMoq.PropertyValueCapture`1)
-- broader `IServiceProvider` shim warnings still stay warning-only when the right replacement depends on the suite's real service graph, but the built-in `FMOQ0013` fix now also handles the direct tracked-shim cases `GetOrCreateMock<IServiceProvider>()`, `GetOrCreateMock<IServiceScopeFactory>()`, `GetOrCreateMock<IServiceScope>()`, and manual scope-factory extraction such as `AddType<IServiceScopeFactory>(provider.GetRequiredService<IServiceScopeFactory>())`
+- broader `IServiceProvider` shim warnings still stay warning-only when the right replacement depends on the suite's real service graph, but the built-in `FMOQ0013` fix now also handles the direct tracked-shim cases `GetOrCreateMock<IServiceProvider>()`, `GetOrCreateMock<IServiceScopeFactory>()`, `GetOrCreateMock<IServiceScope>()`, manual scope-factory extraction such as `AddType<IServiceScopeFactory>(provider.GetRequiredService<IServiceScopeFactory>())`, direct `IServiceScope.ServiceProvider` setup, and the paired `CreateScope()` pattern when the returned tracked scope also exposes a concrete provider in the same helper block
 
 If a suite already has a local Azure helper wrapper, re-point that wrapper to `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)` first and keep the existing call sites stable until the suite is green.
 
@@ -103,7 +103,7 @@ That migration is usually the highest-leverage cleanup in suites that centralize
 Analyzer note:
 
 - `FMOQ0013` warns on direct FastMoq `IServiceProvider`, `IServiceScopeFactory`, and `IServiceScope` shim setup, plus manual scope-factory extraction, so those helpers move toward `CreateTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, `AddServiceProvider(...)`, or `AddServiceScope(...)`.
-- the built-in fix covers the direct tracked-provider and tracked-scope cases plus manual scope-factory extraction, and adds `using FastMoq.Extensions;` when needed. More entangled shim setups such as custom `CreateScope()` plumbing or partially mocked scopes still need manual migration.
+- the built-in fix covers the direct tracked-provider and tracked-scope cases, manual scope-factory extraction, direct `IServiceScope.ServiceProvider` setup, and the paired `CreateScope()` case when `FMOQ0013` can recover the provider expression from the same helper block. It adds `using FastMoq.Extensions;` when needed. More entangled shim setups still need manual migration.
 
 If the same helper layer also hand-rolls `IOptions<T>` setup, move that boilerplate at the same time:
 

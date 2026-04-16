@@ -123,7 +123,7 @@ namespace FastMoq.Analyzers.CodeFixes
                             return;
                         }
 
-                        if (FastMoqAnalysisHelpers.TryBuildTypedServiceProviderHelperReplacement(invocationExpression, semanticModel, context.CancellationToken, out _, out _, out _))
+                        if (FastMoqAnalysisHelpers.TryBuildTypedServiceProviderHelperEdit(invocationExpression, semanticModel, context.CancellationToken, out _, out _, out _, out _))
                         {
                             context.RegisterCodeFix(
                                 CodeAction.Create(
@@ -375,14 +375,44 @@ namespace FastMoq.Analyzers.CodeFixes
                 return document;
             }
 
-            if (!FastMoqAnalysisHelpers.TryBuildTypedServiceProviderHelperReplacement(invocationExpression, semanticModel, cancellationToken, out var targetInvocation, out var replacementText, out var requiredNamespaces))
+            if (!FastMoqAnalysisHelpers.TryBuildTypedServiceProviderHelperEdit(invocationExpression, semanticModel, cancellationToken, out var targetInvocation, out var replacementText, out var requiredNamespaces, out var linkedInvocationToRemove))
             {
                 return document;
             }
 
+            var targetAnnotation = new SyntaxAnnotation();
+            var removalNode = linkedInvocationToRemove?.FirstAncestorOrSelf<ExpressionStatementSyntax>() as SyntaxNode ?? linkedInvocationToRemove;
+            var removalAnnotation = removalNode is null ? null : new SyntaxAnnotation();
+            var nodesToAnnotate = new List<SyntaxNode>
+            {
+                targetInvocation,
+            };
+            if (removalNode is not null)
+            {
+                nodesToAnnotate.Add(removalNode);
+            }
+
+            var updatedRoot = root.ReplaceNodes(
+                nodesToAnnotate,
+                (originalNode, rewrittenNode) =>
+                {
+                    if (originalNode == targetInvocation)
+                    {
+                        return rewrittenNode.WithAdditionalAnnotations(targetAnnotation);
+                    }
+
+                    return rewrittenNode.WithAdditionalAnnotations(removalAnnotation!);
+                });
+            if (removalAnnotation is not null)
+            {
+                var annotatedRemovalNode = updatedRoot.GetAnnotatedNodes(removalAnnotation).Single();
+                updatedRoot = updatedRoot.RemoveNode(annotatedRemovalNode, SyntaxRemoveOptions.KeepExteriorTrivia) ?? updatedRoot;
+            }
+
+            var annotatedTargetInvocation = updatedRoot.GetAnnotatedNodes(targetAnnotation).Single();
             var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
-                .WithTriviaFrom(targetInvocation);
-            var updatedRoot = root.ReplaceNode(targetInvocation, replacementExpression);
+                .WithTriviaFrom(annotatedTargetInvocation);
+            updatedRoot = updatedRoot.ReplaceNode(annotatedTargetInvocation, replacementExpression);
             updatedRoot = AddUsingDirectivesIfMissing(updatedRoot, requiredNamespaces);
             return document.WithSyntaxRoot(updatedRoot);
         }

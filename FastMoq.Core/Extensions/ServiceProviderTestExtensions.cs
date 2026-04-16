@@ -111,6 +111,31 @@ namespace FastMoq.Extensions
         }
 
         /// <summary>
+        /// Registers a fixed <see cref="IServiceScope" /> backed by the supplied <see cref="IServiceProvider" /> for the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="serviceProvider">The provider to expose through the registered scope.</param>
+        /// <param name="replace">True to replace an existing registration.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddServiceScope(this Mocker mocker, IServiceProvider serviceProvider, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(serviceProvider);
+
+            var serviceScope = new FixedServiceScope(serviceProvider);
+            mocker.AddType<IServiceProvider>(serviceProvider, replace);
+            mocker.AddType<IServiceScope>(serviceScope, replace);
+            mocker.AddType<IServiceScopeFactory>(new FixedServiceScopeFactory(serviceScope), replace);
+
+            if (serviceProvider.GetService(typeof(IServiceProviderIsService)) is IServiceProviderIsService serviceProviderIsService)
+            {
+                mocker.AddType<IServiceProviderIsService>(serviceProviderIsService, replace);
+            }
+
+            return mocker;
+        }
+
+        /// <summary>
         /// Builds and registers a typed <see cref="IServiceProvider" /> for the current <see cref="Mocker" /> instance.
         /// </summary>
         /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
@@ -238,6 +263,44 @@ namespace FastMoq.Extensions
                     ownedDisposable.Dispose();
                 }
             }
+        }
+    }
+
+    internal sealed class FixedServiceScope : IServiceScope, IAsyncDisposable
+    {
+        public FixedServiceScope(IServiceProvider serviceProvider)
+        {
+            ArgumentNullException.ThrowIfNull(serviceProvider);
+
+            ServiceProvider = serviceProvider;
+        }
+
+        public IServiceProvider ServiceProvider { get; }
+
+        public void Dispose()
+        {
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            return ValueTask.CompletedTask;
+        }
+    }
+
+    internal sealed class FixedServiceScopeFactory : IServiceScopeFactory
+    {
+        private readonly IServiceScope _scope;
+
+        public FixedServiceScopeFactory(IServiceScope scope)
+        {
+            ArgumentNullException.ThrowIfNull(scope);
+
+            _scope = scope;
+        }
+
+        public IServiceScope CreateScope()
+        {
+            return _scope;
         }
     }
 
