@@ -52,10 +52,19 @@ namespace FastMoq.Extensions
             var serviceProvider = mocker.CreateTypedServiceProvider(configureServices, includeMockerFallback);
             if (serviceProvider.GetService(typeof(IServiceScopeFactory)) is not IServiceScopeFactory scopeFactory)
             {
+                DisposeCreatedRegistration(serviceProvider);
                 throw new InvalidOperationException("The typed service provider did not expose an IServiceScopeFactory.");
             }
 
-            return scopeFactory.CreateScope();
+            try
+            {
+                return new OwnedServiceScope(scopeFactory.CreateScope(), serviceProvider);
+            }
+            catch
+            {
+                DisposeCreatedRegistration(serviceProvider);
+                throw;
+            }
         }
 
         /// <summary>
@@ -113,7 +122,18 @@ namespace FastMoq.Extensions
         {
             ArgumentNullException.ThrowIfNull(mocker);
 
-            return mocker.AddServiceProvider(mocker.CreateTypedServiceProvider(configureServices, includeMockerFallback), replace);
+            var serviceProvider = mocker.CreateTypedServiceProvider(configureServices, includeMockerFallback);
+            try
+            {
+                mocker.AddServiceProvider(serviceProvider, replace);
+                mocker.TrackOwnedRegistration(serviceProvider);
+                return mocker;
+            }
+            catch
+            {
+                DisposeCreatedRegistration(serviceProvider);
+                throw;
+            }
         }
 
         /// <summary>
@@ -128,7 +148,96 @@ namespace FastMoq.Extensions
         {
             ArgumentNullException.ThrowIfNull(mocker);
 
-            return mocker.AddServiceScope(mocker.CreateTypedServiceScope(configureServices, includeMockerFallback), replace);
+            var serviceScope = mocker.CreateTypedServiceScope(configureServices, includeMockerFallback);
+            try
+            {
+                mocker.AddServiceScope(serviceScope, replace);
+                mocker.TrackOwnedRegistration(serviceScope);
+                return mocker;
+            }
+            catch
+            {
+                DisposeCreatedRegistration(serviceScope);
+                throw;
+            }
+        }
+
+        private static void DisposeCreatedRegistration(object createdRegistration)
+        {
+            ArgumentNullException.ThrowIfNull(createdRegistration);
+
+            if (createdRegistration is IDisposable disposable)
+            {
+                disposable.Dispose();
+                return;
+            }
+
+            if (createdRegistration is IAsyncDisposable asyncDisposable)
+            {
+                asyncDisposable.DisposeAsync().AsTask().GetAwaiter().GetResult();
+            }
+        }
+    }
+
+    internal sealed class OwnedServiceScope : IServiceScope, IAsyncDisposable
+    {
+        private readonly object _owner;
+        private readonly IServiceScope _scope;
+
+        public OwnedServiceScope(IServiceScope scope, object owner)
+        {
+            ArgumentNullException.ThrowIfNull(scope);
+            ArgumentNullException.ThrowIfNull(owner);
+
+            _scope = scope;
+            _owner = owner;
+        }
+
+        public IServiceProvider ServiceProvider => _scope.ServiceProvider;
+
+        public void Dispose()
+        {
+            try
+            {
+                _scope.Dispose();
+            }
+            finally
+            {
+                if (_owner is IDisposable ownedDisposable)
+                {
+                    ownedDisposable.Dispose();
+                }
+                else if (_owner is IAsyncDisposable ownedAsyncDisposable)
+                {
+                    ownedAsyncDisposable.DisposeAsync().AsTask().GetAwaiter().GetResult();
+                }
+            }
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            try
+            {
+                if (_scope is IAsyncDisposable asyncDisposable)
+                {
+                    await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+                }
+                else
+                {
+                    _scope.Dispose();
+                }
+            }
+            finally
+            {
+                if (_owner is IAsyncDisposable ownedAsyncDisposable)
+                {
+                    await ownedAsyncDisposable.DisposeAsync().ConfigureAwait(false);
+                }
+                else if (_owner is IDisposable ownedDisposable)
+                {
+                    ownedDisposable.Dispose();
+                }
+            }
         }
     }
 

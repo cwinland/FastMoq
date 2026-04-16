@@ -59,7 +59,7 @@ namespace FastMoq
     /// resolvedFileSystem.Should().BeSameAs(fileSystem);
     /// ]]></code>
     /// </example>
-    public partial class Mocker
+    public partial class Mocker : IDisposable, IAsyncDisposable
     {
         /// <summary>
         /// Name of the legacy Moq setup-all-properties method used by compatibility helpers.

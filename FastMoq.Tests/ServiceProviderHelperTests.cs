@@ -106,6 +106,20 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateTypedServiceScope_ShouldDisposeOwnedRootProvider_WhenScopeIsDisposed()
+        {
+            var mocker = new Mocker();
+            DisposableProbe? probe;
+
+            var scope = mocker.CreateTypedServiceScope(services => services.AddSingleton<DisposableProbe>());
+            probe = scope.ServiceProvider.GetRequiredService<DisposableProbe>();
+
+            scope.Dispose();
+
+            probe.IsDisposed.Should().BeTrue();
+        }
+
+        [Fact]
         public void AddServiceProvider_ShouldRegisterTypedProviderAndScopeFactory()
         {
             var mocker = new Mocker();
@@ -129,6 +143,48 @@ namespace FastMoq.Tests
             mocker.GetObject<IServiceScope>().Should().BeSameAs(scope);
             mocker.GetObject<IServiceProvider>().Should().BeSameAs(scope.ServiceProvider);
             mocker.GetObject<IServiceProvider>()!.GetRequiredService<ScopedProbe>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void AddServiceProvider_ShouldDisposeOwnedProvider_WhenMockerIsDisposed()
+        {
+            DisposableProbe? probe;
+
+            using (var mocker = new Mocker())
+            {
+                mocker.AddServiceProvider(services => services.AddSingleton<DisposableProbe>(), replace: true);
+                probe = mocker.GetObject<IServiceProvider>()!.GetRequiredService<DisposableProbe>();
+            }
+
+            probe!.IsDisposed.Should().BeTrue();
+        }
+
+        [Fact]
+        public void AddServiceScope_ShouldDisposeOwnedScope_WhenMockerIsDisposed()
+        {
+            DisposableProbe? probe;
+
+            using (var mocker = new Mocker())
+            {
+                mocker.AddServiceScope(services => services.AddSingleton<DisposableProbe>(), replace: true);
+                probe = mocker.GetObject<IServiceProvider>()!.GetRequiredService<DisposableProbe>();
+            }
+
+            probe!.IsDisposed.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task AddServiceProvider_ShouldDisposeOwnedProvider_WhenMockerIsDisposedAsync()
+        {
+            DisposableProbe? probe;
+
+            var mocker = new Mocker();
+            mocker.AddServiceProvider(services => services.AddSingleton<DisposableProbe>(), replace: true);
+            probe = mocker.GetObject<IServiceProvider>()!.GetRequiredService<DisposableProbe>();
+
+            await mocker.DisposeAsync();
+
+            probe!.IsDisposed.Should().BeTrue();
         }
 
         [Fact]
@@ -534,6 +590,16 @@ namespace FastMoq.Tests
         private sealed class ScopedProbe
         {
             public Guid Id { get; } = Guid.NewGuid();
+        }
+
+        private sealed class DisposableProbe : IDisposable
+        {
+            public bool IsDisposed { get; private set; }
+
+            public void Dispose()
+            {
+                IsDisposed = true;
+            }
         }
 
         private sealed class SampleOptions

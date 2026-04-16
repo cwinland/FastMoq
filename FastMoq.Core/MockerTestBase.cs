@@ -225,7 +225,7 @@ namespace FastMoq
             {
                 if (disposing)
                 {
-                    // Dispose managed state (managed objects)
+                    Mocks.Dispose();
                 }
 
                 // Free unmanaged resources (unmanaged objects) and override finalizer
