@@ -114,6 +114,15 @@ namespace FastMoq.Analyzers
             isEnabledByDefault: true,
             description: "Prefer SetupOptions<T>(...) over repeated IOptions<T> AddType(...)/Options.Create(...) and Setup(x => x.Value).Returns(...) patterns when registering test options values.");
 
+        public static readonly DiagnosticDescriptor PreferPropertySetterCaptureHelper = new(
+            DiagnosticIds.PreferPropertySetterCaptureHelper,
+            "Prefer provider-neutral property setter capture",
+            "Prefer '{0}' instead of 'SetupSet(...)' when the test only needs setter observation or value capture",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "Prefer AddPropertySetterCapture<TService, TValue>(...) for simple interface-property setter capture flows, or a fake plus PropertyValueCapture<TValue> when the test needs a broader replacement than Moq-specific SetupSet(...).");
+
         public static readonly DiagnosticDescriptor SelectProviderBeforeProviderSpecificApi = new(
             DiagnosticIds.SelectProviderBeforeProviderSpecificApi,
             "Select a provider before using provider-specific FastMoq APIs",

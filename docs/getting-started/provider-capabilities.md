@@ -58,7 +58,7 @@ When that happens, use this rule:
 | `VerifyLogger(...)` | Prefer `VerifyLogged(...)`. For a first-party registration story, use `AddLoggerFactory()` to register callback-backed `ILoggerFactory`, `ILogger`, and `ILogger<T>` services directly on `Mocker`, or use `CreateLoggerFactory()` when you want to plug the same capture-backed factory into a typed `IServiceProvider` recipe. | When you are intentionally preserving older Moq-shaped logger assertions with minimal churn. |
 | `Protected()` for `HttpMessageHandler` | Prefer `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` for HTTP behavior. | When the test really depends on direct protected-member interception rather than request/response behavior. |
 | `Protected()` for arbitrary protected members | Prefer testing through a public seam, extracted collaborator, or concrete fake. | When the implementation cannot reasonably be reshaped and protected-member interception is the behavior under test. |
-| `SetupSet(...)` | Prefer a fake or stub registered with `AddType(...)` that captures assigned values, usually with `PropertyValueCapture<TValue>`, or verify the observable downstream behavior instead of the setter interception itself. | When the setter interception is the important behavior and introducing a fake would create more churn than value. |
+| `SetupSet(...)` | For simple interface-property cases, prefer `AddPropertySetterCapture<TService, TValue>(...)`. For broader collaborator behavior, prefer a fake or stub registered with `AddType(...)` that captures assigned values, usually with `PropertyValueCapture<TValue>`, or verify the observable downstream behavior instead of the setter interception itself. | When the setter interception is the important behavior and introducing a helper-backed replacement or fake would create more churn than value. |
 | `SetupAllProperties()` | Prefer a concrete fake or lightweight test double with real property state. For ordinary collaborator behavior, use `AddType(...)` or a purpose-built fake instead of expecting provider-managed property backing. | When you specifically want mocking-library-managed property backing without creating a custom fake. |
 | `CallBase` / partial mock behavior | Prefer a real instance or `AddType(...)` factory for the concrete collaborator. | When the test intentionally relies on partial mocking rather than a real implementation or fake. |
 | `out` / `ref` verification with `It.Ref<T>.IsAny` | Prefer wrapping the dependency behind a simpler interface, or assert on the public result / side effect instead of the raw `out` / `ref` interaction. | When the API shape is fixed and the `out` / `ref` interaction itself is important to the test. |
@@ -128,7 +128,17 @@ Mocks.GetOrCreateMock<IOrderGateway>()
     .SetupSet(x => x.Mode = It.IsAny<string>());
 ```
 
-For `SetupSet(...)`-heavy tests, the preferred first-party answer is usually a small fake plus [PropertyValueCapture&lt;TValue&gt;](xref:FastMoq.PropertyValueCapture`1):
+For simple `SetupSet(...)` cases on interface properties, the preferred first-party answer is `AddPropertySetterCapture<TService, TValue>(...)`:
+
+```csharp
+var modeCapture = Mocks.AddPropertySetterCapture<IOrderGateway, string?>(x => x.Mode);
+
+Component.Run();
+
+modeCapture.Value.Should().Be("fast");
+```
+
+If the collaborator needs more behavior than one captured property, or the target is not an interface, fall back to a fake plus [PropertyValueCapture&lt;TValue&gt;](xref:FastMoq.PropertyValueCapture`1):
 
 ```csharp
 var modeCapture = new PropertyValueCapture<string?>();
@@ -148,7 +158,7 @@ sealed class OrderGatewayStub(PropertyValueCapture<string?> capture) : IOrderGat
 }
 ```
 
-That pattern stays portable across providers, makes the arranged state explicit, and avoids tying the test to Moq-only setter interception when the important behavior is the assigned value.
+That combination keeps the test portable across providers, makes the arranged state explicit, and avoids tying the test to Moq-only setter interception when the important behavior is the assigned value.
 
 Repo-backed references:
 

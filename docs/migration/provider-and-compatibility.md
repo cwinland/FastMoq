@@ -230,4 +230,4 @@ Cases that do not translate cleanly:
 
 When a test depends on those features, either keep it on the Moq provider or replace the collaborator with a fake or stub through `AddType(...)`.
 
-For `SetupSet(...)`-heavy tests, the preferred non-Moq migration target is usually a fake that records assignments through `PropertyValueCapture<TValue>`.
+For simple interface-property `SetupSet(...)` cases, the preferred non-Moq migration target is `AddPropertySetterCapture<TService, TValue>(...)`. When the collaborator needs broader behavior, or the target is not an interface, fall back to a fake that records assignments through `PropertyValueCapture<TValue>`.
