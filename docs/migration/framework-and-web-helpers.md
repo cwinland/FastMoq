@@ -67,8 +67,9 @@ Package note:
 
 Analyzer note:
 
-- `FMOQ0013` warns when a test mocks `FunctionContext.InstanceServices` directly instead of using the typed helper path
-- the built-in code fix can rewrite the common `SetupGet(x => x.InstanceServices).Returns(provider)` and `SetupProperty(x => x.InstanceServices, provider)` patterns to `AddFunctionContextInstanceServices(provider, replace: true)` and add `using FastMoq.AzureFunctions.Extensions;` when needed
+- `FMOQ0013` warns on direct `FunctionContext.InstanceServices` mocking more broadly across `Setup(...)`, `SetupGet(...)`, and `SetupProperty(...)` so those shims move toward the typed helper path
+- the built-in code fix is narrower: it rewrites the safe tracked-provider cases `Setup(x => x.InstanceServices).Returns(provider)`, `SetupGet(x => x.InstanceServices).Returns(provider)`, and `SetupProperty(x => x.InstanceServices, provider)` to `AddFunctionContextInstanceServices(provider, replace: true)` and adds `using FastMoq.AzureFunctions.Extensions;` when needed
+- `SetupSet(...)` is not part of this analyzer. When the real need is provider-neutral setter observation rather than Moq setter interception, prefer a fake or stub with [PropertyValueCapture&lt;TValue&gt;](xref:FastMoq.PropertyValueCapture`1)
 - broader `IServiceProvider` shim warnings still stay warning-only when the right replacement depends on the suite's real service graph
 
 If a suite already has a local Azure helper wrapper, re-point that wrapper to `CreateFunctionContextInstanceServices(...)` or `AddFunctionContextInstanceServices(...)` first and keep the existing call sites stable until the suite is green.
