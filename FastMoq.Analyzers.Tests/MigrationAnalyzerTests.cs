@@ -626,6 +626,42 @@ class Sample
         }
 
         [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldReportAndFix_WhenServiceProviderIsMockedDirectly()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var serviceProvider = Mocks.GetOrCreateMock<IServiceProvider>();
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new ServiceProviderShimAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.PreferTypedServiceProviderHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using FastMoq;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var serviceProvider = Mocks.CreateTypedServiceProvider();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
         public async Task ServiceProviderShimAnalyzer_ShouldReport_WhenServiceScopeFactoryIsMockedDirectly()
         {
             const string SOURCE = @"
@@ -644,6 +680,42 @@ class Sample
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
             Assert.Contains("GetOrCreateMock<IServiceScopeFactory>()", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldReportAndFix_WhenServiceScopeFactoryIsMockedDirectly()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.DependencyInjection;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var scopeFactory = Mocks.GetOrCreateMock<IServiceScopeFactory>();
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new ServiceProviderShimAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.PreferTypedServiceProviderHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Microsoft.Extensions.DependencyInjection;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var scopeFactory = Mocks.CreateTypedServiceProvider().GetRequiredService<IServiceScopeFactory>();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
         }
 
         [Fact]
@@ -666,6 +738,44 @@ class Sample
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers && item.GetMessage().Contains("AddType<IServiceScopeFactory>(GetRequiredService<IServiceScopeFactory>())")));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
             Assert.Contains("AddType<IServiceScopeFactory>(GetRequiredService<IServiceScopeFactory>())", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldReportAndFix_WhenScopeFactoryIsExtractedFromProvider()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using Microsoft.Extensions.DependencyInjection;
+
+class Sample
+{
+    void Execute(Mocker Mocks, IServiceProvider provider)
+    {
+        Mocks.AddType<IServiceScopeFactory>(provider.GetRequiredService<IServiceScopeFactory>());
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new ServiceProviderShimAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.PreferTypedServiceProviderHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using FastMoq;
+using Microsoft.Extensions.DependencyInjection;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks, IServiceProvider provider)
+    {
+        Mocks.AddServiceProvider(provider);
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
         }
 
         [Fact]
@@ -714,6 +824,42 @@ class Sample
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers && item.GetMessage().Contains("SetupGet(x => x.ServiceProvider)")));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
             Assert.Contains("SetupGet(x => x.ServiceProvider)", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldReportAndFix_WhenServiceScopeIsMockedDirectly()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.DependencyInjection;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var scope = Mocks.GetOrCreateMock<IServiceScope>();
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new ServiceProviderShimAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.PreferTypedServiceProviderHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Microsoft.Extensions.DependencyInjection;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var scope = Mocks.CreateTypedServiceScope();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
         }
 
         [Fact]

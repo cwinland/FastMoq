@@ -678,6 +678,16 @@ namespace FastMoq.Analyzers
             return TryGetScopeShimSetupSuggestion(invocationExpression, semanticModel, cancellationToken, method, out currentApi);
         }
 
+        public static bool TryBuildTypedServiceProviderHelperReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement, out IReadOnlyList<string> requiredNamespaces)
+        {
+            if (TryBuildTrackedServiceGraphShimReplacement(invocationExpression, semanticModel, cancellationToken, out targetInvocation, out replacement, out requiredNamespaces))
+            {
+                return true;
+            }
+
+            return TryBuildScopeExtractionReplacement(invocationExpression, semanticModel, cancellationToken, out targetInvocation, out replacement, out requiredNamespaces);
+        }
+
         public static bool TryGetFunctionContextInstanceServicesHelperSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string currentApi)
         {
             currentApi = string.Empty;
@@ -838,6 +848,116 @@ namespace FastMoq.Analyzers
             }
 
             return false;
+        }
+
+        private static bool TryBuildTrackedServiceGraphShimReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement, out IReadOnlyList<string> requiredNamespaces)
+        {
+            targetInvocation = null!;
+            replacement = string.Empty;
+            requiredNamespaces = Array.Empty<string>();
+
+            if (invocationExpression.Parent is MemberAccessExpressionSyntax ||
+                !TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (!IsFastMoqMockerMethod(method, "GetOrCreateMock") &&
+                !IsFastMoqMockerMethod(method, "GetMock") &&
+                !IsFastMoqMockerMethod(method, "GetRequiredMock"))
+            {
+                return false;
+            }
+
+            if (method.TypeArguments.Length != 1 || invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression)
+            {
+                return false;
+            }
+
+            var mockerExpression = memberAccessExpression.Expression.WithoutTrivia().ToString();
+            switch (method.TypeArguments[0].ToDisplayString())
+            {
+                case SERVICE_PROVIDER_TYPE:
+                    targetInvocation = invocationExpression;
+                    replacement = $"{mockerExpression}.CreateTypedServiceProvider()";
+                    requiredNamespaces = ["FastMoq.Extensions"];
+                    return true;
+
+                case SERVICE_SCOPE_FACTORY_TYPE:
+                    targetInvocation = invocationExpression;
+                    replacement = $"{mockerExpression}.CreateTypedServiceProvider().GetRequiredService<IServiceScopeFactory>()";
+                    requiredNamespaces = ["FastMoq.Extensions", "Microsoft.Extensions.DependencyInjection"];
+                    return true;
+
+                case SERVICE_SCOPE_TYPE:
+                    targetInvocation = invocationExpression;
+                    replacement = $"{mockerExpression}.CreateTypedServiceScope()";
+                    requiredNamespaces = ["FastMoq.Extensions"];
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        private static bool TryBuildScopeExtractionReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement, out IReadOnlyList<string> requiredNamespaces)
+        {
+            targetInvocation = null!;
+            replacement = string.Empty;
+            requiredNamespaces = Array.Empty<string>();
+
+            if (!TryGetServiceProviderLookupTarget(invocationExpression, semanticModel, cancellationToken, out var serviceTypeName, out _) ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax lookupAccess ||
+                invocationExpression.Parent is not ArgumentSyntax argumentSyntax ||
+                argumentSyntax.Parent is not ArgumentListSyntax argumentListSyntax ||
+                argumentListSyntax.Parent is not InvocationExpressionSyntax outerInvocation ||
+                !TryGetMethodSymbol(outerInvocation, semanticModel, cancellationToken, out var outerMethod) ||
+                outerMethod is null)
+            {
+                return false;
+            }
+
+            outerMethod = outerMethod.ReducedFrom ?? outerMethod;
+            if (!IsFastMoqMockerAddTypeMethod(outerMethod) ||
+                outerInvocation.Expression is not MemberAccessExpressionSyntax outerAccess ||
+                outerInvocation.ArgumentList.Arguments.Count == 0 ||
+                outerInvocation.ArgumentList.Arguments.Count > 2)
+            {
+                return false;
+            }
+
+            if (outerInvocation.ArgumentList.Arguments.Count == 2 &&
+                (outerMethod.Parameters.Length < 2 || outerMethod.Parameters[1].Type.SpecialType != SpecialType.System_Boolean))
+            {
+                return false;
+            }
+
+            var mockerExpression = outerAccess.Expression.WithoutTrivia().ToString();
+            var receiverExpression = lookupAccess.Expression.WithoutTrivia().ToString();
+            var trailingArguments = outerInvocation.ArgumentList.Arguments.Count == 2
+                ? $", {outerInvocation.ArgumentList.Arguments[1].WithoutTrivia()}"
+                : string.Empty;
+
+            switch (serviceTypeName)
+            {
+                case "IServiceProvider":
+                case "IServiceScopeFactory":
+                    targetInvocation = outerInvocation;
+                    replacement = $"{mockerExpression}.AddServiceProvider({receiverExpression}{trailingArguments})";
+                    requiredNamespaces = ["FastMoq.Extensions"];
+                    return true;
+
+                case "IServiceScope":
+                    targetInvocation = outerInvocation;
+                    replacement = $"{mockerExpression}.AddServiceScope({invocationExpression.WithoutTrivia()}{trailingArguments})";
+                    requiredNamespaces = ["FastMoq.Extensions"];
+                    return true;
+
+                default:
+                    return false;
+            }
         }
 
         private static bool TryGetServiceProviderLookupTarget(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string serviceTypeName, out string lookupApi)

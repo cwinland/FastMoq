@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
@@ -117,19 +118,32 @@ namespace FastMoq.Analyzers.CodeFixes
                         }
 
                         var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
-                        if (semanticModel is null ||
-                            !FastMoqAnalysisHelpers.HasFunctionContextInstanceServicesMockHelper(semanticModel) ||
-                            !FastMoqAnalysisHelpers.TryBuildFunctionContextInstanceServicesReplacement(invocationExpression, semanticModel, context.CancellationToken, out _, out _))
+                        if (semanticModel is null)
                         {
                             return;
                         }
 
-                        context.RegisterCodeFix(
-                            CodeAction.Create(
-                                "Use AddFunctionContextInstanceServices(...)",
-                                cancellationToken => ReplaceFunctionContextInstanceServicesInvocationAsync(document, invocationExpression, cancellationToken),
-                                nameof(DiagnosticIds.PreferTypedServiceProviderHelpers)),
-                            diagnostic);
+                        if (FastMoqAnalysisHelpers.TryBuildTypedServiceProviderHelperReplacement(invocationExpression, semanticModel, context.CancellationToken, out _, out _, out _))
+                        {
+                            context.RegisterCodeFix(
+                                CodeAction.Create(
+                                    "Use typed service-provider helper",
+                                    cancellationToken => ReplaceTypedServiceProviderHelperInvocationAsync(document, invocationExpression, cancellationToken),
+                                    nameof(DiagnosticIds.PreferTypedServiceProviderHelpers) + ".typed"),
+                                diagnostic);
+                        }
+
+                        if (FastMoqAnalysisHelpers.HasFunctionContextInstanceServicesMockHelper(semanticModel) &&
+                            FastMoqAnalysisHelpers.TryBuildFunctionContextInstanceServicesReplacement(invocationExpression, semanticModel, context.CancellationToken, out _, out _))
+                        {
+                            context.RegisterCodeFix(
+                                CodeAction.Create(
+                                    "Use AddFunctionContextInstanceServices(...)",
+                                    cancellationToken => ReplaceFunctionContextInstanceServicesInvocationAsync(document, invocationExpression, cancellationToken),
+                                    nameof(DiagnosticIds.PreferTypedServiceProviderHelpers) + ".functions"),
+                                diagnostic);
+                        }
+
                         break;
                     }
 
@@ -352,6 +366,27 @@ namespace FastMoq.Analyzers.CodeFixes
             return document.WithSyntaxRoot(updatedRoot);
         }
 
+        private static async Task<Document> ReplaceTypedServiceProviderHelperInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            if (!FastMoqAnalysisHelpers.TryBuildTypedServiceProviderHelperReplacement(invocationExpression, semanticModel, cancellationToken, out var targetInvocation, out var replacementText, out var requiredNamespaces))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(targetInvocation);
+            var updatedRoot = root.ReplaceNode(targetInvocation, replacementExpression);
+            updatedRoot = AddUsingDirectivesIfMissing(updatedRoot, requiredNamespaces);
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
         private static async Task<Document> ReplaceGetMockAsync(Document document, MemberAccessExpressionSyntax memberAccess, CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -373,6 +408,16 @@ namespace FastMoq.Analyzers.CodeFixes
             if (root is CompilationUnitSyntax compilationUnit && !compilationUnit.Usings.Any(@using => @using.Name?.ToString() == namespaceName))
             {
                 return compilationUnit.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(namespaceName)));
+            }
+
+            return root;
+        }
+
+        private static SyntaxNode AddUsingDirectivesIfMissing(SyntaxNode root, IReadOnlyList<string> namespaceNames)
+        {
+            foreach (var namespaceName in namespaceNames)
+            {
+                root = AddUsingDirectiveIfMissing(root, namespaceName);
             }
 
             return root;
