@@ -18,7 +18,12 @@ namespace FastMoq.Analyzers.Tests
     {
         public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(string source, params DiagnosticAnalyzer[] analyzers)
         {
-            var document = CreateDocument(source);
+            return await GetDiagnosticsAsync(source, includeAzureFunctionsHelpers: false, analyzers).ConfigureAwait(false);
+        }
+
+        public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(string source, bool includeAzureFunctionsHelpers, params DiagnosticAnalyzer[] analyzers)
+        {
+            var document = CreateDocument(source, includeAzureFunctionsHelpers);
             return await GetDiagnosticsAsync(document, analyzers).ConfigureAwait(false);
         }
 
@@ -36,9 +41,9 @@ namespace FastMoq.Analyzers.Tests
                 .ConfigureAwait(false);
         }
 
-        public static async Task<string> ApplyCodeFixAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId)
+        public static async Task<string> ApplyCodeFixAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers = false)
         {
-            var document = CreateDocument(source);
+            var document = CreateDocument(source, includeAzureFunctionsHelpers);
             var diagnostics = await GetDiagnosticsAsync(document, analyzer).ConfigureAwait(false);
             var diagnostic = diagnostics.Single(item => item.Id == diagnosticId);
 
@@ -54,6 +59,19 @@ namespace FastMoq.Analyzers.Tests
             return changedRoot!.NormalizeWhitespace().ToFullString();
         }
 
+        public static async Task<ImmutableArray<string>> GetCodeFixTitlesAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers = false)
+        {
+            var document = CreateDocument(source, includeAzureFunctionsHelpers);
+            var diagnostics = await GetDiagnosticsAsync(document, analyzer).ConfigureAwait(false);
+            var diagnostic = diagnostics.Single(item => item.Id == diagnosticId);
+
+            var actions = new List<CodeAction>();
+            var context = new CodeFixContext(document, diagnostic, (action, _) => actions.Add(action), CancellationToken.None);
+            await codeFixProvider.RegisterCodeFixesAsync(context).ConfigureAwait(false);
+
+            return actions.Select(action => action.Title).ToImmutableArray();
+        }
+
         public static string NormalizeCode(string source)
         {
             return CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.Preview))
@@ -62,7 +80,7 @@ namespace FastMoq.Analyzers.Tests
                 .ToFullString();
         }
 
-        private static Document CreateDocument(string source)
+        private static Document CreateDocument(string source, bool includeAzureFunctionsHelpers = false)
         {
             var workspace = new AdhocWorkspace();
             var projectId = ProjectId.CreateNewId();
@@ -73,7 +91,7 @@ namespace FastMoq.Analyzers.Tests
                 .WithProjectParseOptions(projectId, new CSharpParseOptions(LanguageVersion.Preview))
                 .WithProjectCompilationOptions(projectId, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-            foreach (var metadataReference in GetMetadataReferences())
+            foreach (var metadataReference in GetMetadataReferences(includeAzureFunctionsHelpers))
             {
                 solution = solution.AddMetadataReference(projectId, metadataReference);
             }
@@ -82,13 +100,19 @@ namespace FastMoq.Analyzers.Tests
             return solution.GetDocument(documentId)!;
         }
 
-        private static IEnumerable<MetadataReference> GetMetadataReferences()
+        private static IEnumerable<MetadataReference> GetMetadataReferences(bool includeAzureFunctionsHelpers)
         {
             var references = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") is string trustedPlatformAssemblies)
             {
                 foreach (var assemblyPath in trustedPlatformAssemblies.Split(Path.PathSeparator))
                 {
+                    if (!includeAzureFunctionsHelpers &&
+                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.AzureFunctions", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
                     references.Add(assemblyPath);
                 }
             }
@@ -101,6 +125,13 @@ namespace FastMoq.Analyzers.Tests
             references.Add(typeof(Microsoft.Extensions.Logging.ILogger).Assembly.Location);
             references.Add(typeof(Microsoft.AspNetCore.Http.DefaultHttpContext).Assembly.Location);
             references.Add(typeof(Microsoft.AspNetCore.Mvc.ControllerContext).Assembly.Location);
+
+            if (includeAzureFunctionsHelpers)
+            {
+                references.Add(typeof(FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions).Assembly.Location);
+                references.Add(typeof(Microsoft.Azure.Functions.Worker.FunctionContext).Assembly.Location);
+                references.Add(typeof(Azure.Core.Serialization.ObjectSerializer).Assembly.Location);
+            }
 
             return references.Select(path => MetadataReference.CreateFromFile(path));
         }

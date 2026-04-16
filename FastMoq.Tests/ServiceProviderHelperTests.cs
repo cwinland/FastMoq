@@ -252,6 +252,25 @@ namespace FastMoq.Tests
         [Theory]
         [InlineData("moq")]
         [InlineData("nsubstitute")]
+        public void AddFunctionContextInstanceServices_OnTrackedMock_ShouldNotReplaceGlobalServiceProvider(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+            var globalProvider = mocker.CreateTypedServiceProvider(services => services.AddLogging());
+            var functionProvider = mocker.CreateFunctionContextInstanceServices(services => services.AddOptions());
+            var context = mocker.GetOrCreateMock<FunctionContext>();
+
+            mocker.AddServiceProvider(globalProvider, replace: true);
+
+            context.AddFunctionContextInstanceServices(functionProvider);
+
+            context.Instance.InstanceServices.Should().BeSameAs(functionProvider);
+            mocker.GetObject<IServiceProvider>().Should().BeSameAs(globalProvider);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
         public async Task CreateHttpRequestData_ShouldCreateConfiguredRequestAndDefaultResponse(string providerName)
         {
             using var providerScope = PushProviderScope(providerName);

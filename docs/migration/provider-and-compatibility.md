@@ -173,6 +173,7 @@ Two practical rules help here:
 Analyzer notes:
 
 - `FMOQ0013` warns on raw `IServiceProvider` mock setup and pushes it toward the typed helper path
+- for Azure Functions worker tests, `FMOQ0013` also warns on direct `FunctionContext.InstanceServices` `Setup(...)`, `SetupGet(...)`, and `SetupProperty(...)` usage, but the auto-fix is intentionally narrower and only appears when `FastMoq.AzureFunctions` is already referenced for the safe provider-assignment shapes that can become `context.AddFunctionContextInstanceServices(provider)`
 - `FMOQ0014` warns on context-aware compatibility `AddType(...)` usage and pushes it toward `AddKnownType(...)`
 - `FMOQ0015` warns when same-type keyed constructor dependencies are accidentally collapsed into one unkeyed double
 
