@@ -36,6 +36,90 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void CreateTypedServiceProvider_ShouldFallbackToMockerResolution_WhenEnabled()
+        {
+            var mocker = new Mocker();
+            mocker.SetupOptions(new SampleOptions
+            {
+                Name = "fallback",
+                RetryCount = 7,
+            });
+
+            var provider = mocker.CreateTypedServiceProvider(includeMockerFallback: true);
+            var options = provider.GetService(typeof(IOptions<SampleOptions>)) as IOptions<SampleOptions>;
+
+            options.Should().NotBeNull();
+            options!.Value.Name.Should().Be("fallback");
+            options.Value.RetryCount.Should().Be(7);
+        }
+
+        [Fact]
+        public void CreateTypedServiceProvider_ShouldResolveExplicitSealedRegistrations_WhenFallbackIsEnabled()
+        {
+            var mocker = new Mocker();
+            var expectedUri = new Uri("https://fallback.fastmoq/");
+            mocker.AddType(expectedUri, replace: true);
+
+            var provider = mocker.CreateTypedServiceProvider(includeMockerFallback: true);
+
+            provider.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
+        }
+
+        [Fact]
+        public void CreateTypedServiceProvider_ShouldReturnNull_ForUnknownValueTypeServices_WhenFallbackIsEnabled()
+        {
+            var mocker = new Mocker();
+            var provider = mocker.CreateTypedServiceProvider(includeMockerFallback: true);
+
+            provider.GetService(typeof(int)).Should().BeNull();
+        }
+
+        [Fact]
+        public void CreateTypedServiceScope_ShouldResolveScopedServicesByType()
+        {
+            var mocker = new Mocker();
+
+            using var scope = mocker.CreateTypedServiceScope(services => services.AddScoped<ScopedProbe>());
+
+            var first = scope.ServiceProvider.GetRequiredService<ScopedProbe>();
+            var second = scope.ServiceProvider.GetRequiredService<ScopedProbe>();
+
+            first.Should().BeSameAs(second);
+        }
+
+        [Fact]
+        public void CreateTypedServiceScope_ShouldFallbackToMockerResolution_WhenEnabled()
+        {
+            var mocker = new Mocker();
+            mocker.SetupOptions(new SampleOptions
+            {
+                Name = "scoped-fallback",
+                RetryCount = 3,
+            });
+
+            using var scope = mocker.CreateTypedServiceScope(includeMockerFallback: true);
+
+            var options = scope.ServiceProvider.GetRequiredService<IOptions<SampleOptions>>();
+
+            options.Value.Name.Should().Be("scoped-fallback");
+            options.Value.RetryCount.Should().Be(3);
+        }
+
+        [Fact]
+        public void CreateTypedServiceScope_ShouldDisposeOwnedRootProvider_WhenScopeIsDisposed()
+        {
+            var mocker = new Mocker();
+            DisposableProbe? probe;
+
+            var scope = mocker.CreateTypedServiceScope(services => services.AddSingleton<DisposableProbe>());
+            probe = scope.ServiceProvider.GetRequiredService<DisposableProbe>();
+
+            scope.Dispose();
+
+            probe.IsDisposed.Should().BeTrue();
+        }
+
+        [Fact]
         public void AddServiceProvider_ShouldRegisterTypedProviderAndScopeFactory()
         {
             var mocker = new Mocker();
@@ -46,6 +130,79 @@ namespace FastMoq.Tests
             mocker.GetObject<IServiceProvider>().Should().BeSameAs(provider);
             mocker.GetObject<IServiceScopeFactory>().Should().NotBeNull();
             mocker.GetObject<IServiceProviderIsService>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void AddServiceScope_ShouldRegisterTypedScopeAndScopeOwnedProvider()
+        {
+            var mocker = new Mocker();
+            using var scope = mocker.CreateTypedServiceScope(services => services.AddScoped<ScopedProbe>());
+
+            mocker.AddServiceScope(scope);
+
+            mocker.GetObject<IServiceScope>().Should().BeSameAs(scope);
+            mocker.GetObject<IServiceProvider>().Should().BeSameAs(scope.ServiceProvider);
+            mocker.GetObject<IServiceProvider>()!.GetRequiredService<ScopedProbe>().Should().NotBeNull();
+        }
+
+        [Fact]
+        public void AddServiceScope_ShouldRegisterProviderBackedScopeAndFixedScopeFactory()
+        {
+            var mocker = new Mocker();
+            var provider = mocker.CreateTypedServiceProvider(services => services.AddScoped<ScopedProbe>());
+
+            mocker.AddServiceScope(provider, replace: true);
+
+            var scope = mocker.GetObject<IServiceScope>();
+            var scopeFactory = mocker.GetObject<IServiceScopeFactory>();
+
+            scope.Should().NotBeNull();
+            scope!.ServiceProvider.Should().BeSameAs(provider);
+            scopeFactory.Should().NotBeNull();
+            scopeFactory!.CreateScope().Should().BeSameAs(scope);
+            mocker.GetObject<IServiceProvider>().Should().BeSameAs(provider);
+        }
+
+        [Fact]
+        public void AddServiceProvider_ShouldDisposeOwnedProvider_WhenMockerIsDisposed()
+        {
+            DisposableProbe? probe;
+
+            using (var mocker = new Mocker())
+            {
+                mocker.AddServiceProvider(services => services.AddSingleton<DisposableProbe>(), replace: true);
+                probe = mocker.GetObject<IServiceProvider>()!.GetRequiredService<DisposableProbe>();
+            }
+
+            probe!.IsDisposed.Should().BeTrue();
+        }
+
+        [Fact]
+        public void AddServiceScope_ShouldDisposeOwnedScope_WhenMockerIsDisposed()
+        {
+            DisposableProbe? probe;
+
+            using (var mocker = new Mocker())
+            {
+                mocker.AddServiceScope(services => services.AddSingleton<DisposableProbe>(), replace: true);
+                probe = mocker.GetObject<IServiceProvider>()!.GetRequiredService<DisposableProbe>();
+            }
+
+            probe!.IsDisposed.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task AddServiceProvider_ShouldDisposeOwnedProvider_WhenMockerIsDisposedAsync()
+        {
+            DisposableProbe? probe;
+
+            var mocker = new Mocker();
+            mocker.AddServiceProvider(services => services.AddSingleton<DisposableProbe>(), replace: true);
+            probe = mocker.GetObject<IServiceProvider>()!.GetRequiredService<DisposableProbe>();
+
+            await mocker.DisposeAsync();
+
+            probe!.IsDisposed.Should().BeTrue();
         }
 
         [Fact]
@@ -446,6 +603,21 @@ namespace FastMoq.Tests
             public int Count { get; set; }
 
             public string? Name { get; set; }
+        }
+
+        private sealed class ScopedProbe
+        {
+            public Guid Id { get; } = Guid.NewGuid();
+        }
+
+        private sealed class DisposableProbe : IDisposable
+        {
+            public bool IsDisposed { get; private set; }
+
+            public void Dispose()
+            {
+                IsDisposed = true;
+            }
         }
 
         private sealed class SampleOptions

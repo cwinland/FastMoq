@@ -59,7 +59,7 @@ When that happens, use this rule:
 | `Protected()` for `HttpMessageHandler` | Prefer `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` for HTTP behavior. | When the test really depends on direct protected-member interception rather than request/response behavior. |
 | `Protected()` for arbitrary protected members | Prefer testing through a public seam, extracted collaborator, or concrete fake. | When the implementation cannot reasonably be reshaped and protected-member interception is the behavior under test. |
 | `SetupSet(...)` | For simple interface-property cases, prefer `AddPropertySetterCapture<TService, TValue>(...)`. For broader collaborator behavior, prefer a fake or stub registered with `AddType(...)` that captures assigned values, usually with `PropertyValueCapture<TValue>`, or verify the observable downstream behavior instead of the setter interception itself. | When the setter interception is the important behavior and introducing a helper-backed replacement or fake would create more churn than value. |
-| `SetupAllProperties()` | Prefer a concrete fake or lightweight test double with real property state. For ordinary collaborator behavior, use `AddType(...)` or a purpose-built fake instead of expecting provider-managed property backing. | When you specifically want mocking-library-managed property backing without creating a custom fake. |
+| `SetupAllProperties()` | For simple interface-property state, prefer `AddPropertyState<TService>(...)`. For broader collaborator behavior or class targets, prefer a concrete fake or lightweight test double with real property state via `AddType(...)`. | When you specifically want mocking-library-managed property backing without creating a custom fake. |
 | `CallBase` / partial mock behavior | Prefer a real instance or `AddType(...)` factory for the concrete collaborator. | When the test intentionally relies on partial mocking rather than a real implementation or fake. |
 | `out` / `ref` verification with `It.Ref<T>.IsAny` | Prefer wrapping the dependency behind a simpler interface, or assert on the public result / side effect instead of the raw `out` / `ref` interaction. | When the API shape is fixed and the `out` / `ref` interaction itself is important to the test. |
 
@@ -141,6 +141,19 @@ modeCapture.Value.Should().Be("fast");
 
 When the component under test comes from `MockerTestBase<TComponent>`, call `CreateComponent()` after adding the capture unless you registered it in the test base setup path before component creation.
 
+For simple `SetupAllProperties()` cases on interface collaborators, the preferred first-party answer is `AddPropertyState<TService>(...)`:
+
+```csharp
+var channel = Mocks.AddPropertyState<IOrderSubmissionChannel>();
+CreateComponent();
+
+await Component.SubmitAsync("order-42", expedited: true, CancellationToken.None);
+
+channel.Mode.Should().Be("fast");
+```
+
+That keeps the important part of the test explicit: the collaborator needs real property state, not Moq-specific property plumbing.
+
 If the collaborator needs more behavior than one captured property, or the target is not an interface, fall back to a fake plus [PropertyValueCapture&lt;TValue&gt;](xref:FastMoq.PropertyValueCapture`1):
 
 ```csharp
@@ -218,7 +231,7 @@ Quick Moq-to-NSubstitute translation rules:
 - `SetupSequence(...)` becomes `Returns(value1, value2, ...)`
 - `SetupGet(...)` becomes a direct property `Returns(...)`
 
-If a migrated test still needs `SetupSet(...)`, `Protected()`, `SetupAllProperties()`, or `CallBase`, that test should usually stay on Moq or move to a fake rather than trying to force an NSubstitute equivalent. `PropertyValueCapture<TValue>` is the default FastMoq answer when the test only needs to observe property assignments rather than exercise Moq itself.
+If a migrated test still needs `Protected()` or `CallBase`, that test should usually stay on Moq or move to a fake rather than trying to force an NSubstitute equivalent. For simple interface-property cases, prefer `AddPropertySetterCapture<TService, TValue>(...)` or `AddPropertyState<TService>(...)` before keeping `SetupSet(...)` or `SetupAllProperties()` purely for habit. `PropertyValueCapture<TValue>` remains the default FastMoq answer when the test only needs to observe property assignments rather than exercise Moq itself.
 
 Repo-backed references:
 

@@ -22,5 +22,6 @@ namespace FastMoq.Analyzers
         public const string AvoidLegacyMockCreationAndLifecycleApis = "FMOQ0018";
         public const string PreferSetupOptionsHelper = "FMOQ0019";
         public const string PreferPropertySetterCaptureHelper = "FMOQ0020";
+        public const string PreferPropertyStateHelper = "FMOQ0021";
     }
 }

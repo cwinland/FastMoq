@@ -123,6 +123,15 @@ namespace FastMoq.Analyzers
             isEnabledByDefault: true,
             description: "Prefer AddPropertySetterCapture<TService, TValue>(...) for simple interface-property setter capture flows, or a fake plus PropertyValueCapture<TValue> when the test needs a broader replacement than Moq-specific SetupSet(...).");
 
+        public static readonly DiagnosticDescriptor PreferPropertyStateHelper = new(
+            DiagnosticIds.PreferPropertyStateHelper,
+            "Prefer provider-neutral property state",
+            "Prefer '{0}' instead of 'SetupAllProperties()' when the test only needs lightweight property state",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "Prefer AddPropertyState<TService>(...) for simple interface-property state flows, or a concrete fake registered with AddType(...) when the old Moq setup relied on broader class or provider-specific property behavior.");
+
         public static readonly DiagnosticDescriptor SelectProviderBeforeProviderSpecificApi = new(
             DiagnosticIds.SelectProviderBeforeProviderSpecificApi,
             "Select a provider before using provider-specific FastMoq APIs",
@@ -166,7 +175,7 @@ namespace FastMoq.Analyzers
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "Mocking IServiceProvider directly or manually wiring FunctionContext.InstanceServices often creates one-object-for-all-types shims. Prefer CreateTypedServiceProvider(...), AddServiceProvider(...), CreateFunctionContextInstanceServices(...), or AddFunctionContextInstanceServices(...) so framework code resolves services by requested type.");
+            description: "Mocking IServiceProvider, IServiceScopeFactory, or IServiceScope directly often creates one-object-for-all-types shims. Prefer CreateTypedServiceProvider(...), CreateTypedServiceScope(...), AddServiceProvider(...), AddServiceScope(...), CreateFunctionContextInstanceServices(...), or AddFunctionContextInstanceServices(...) so framework code resolves services by requested type.");
 
         public static readonly DiagnosticDescriptor PreferKnownTypeRegistrations = new(
             DiagnosticIds.PreferKnownTypeRegistrations,

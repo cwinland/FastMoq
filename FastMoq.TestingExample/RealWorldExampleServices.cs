@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
@@ -128,6 +129,27 @@ namespace FastMoq.TestingExample
 
             _submissionChannel.Mode = expedited ? "fast" : "standard";
             await _submissionChannel.SubmitAsync(orderId, cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    public sealed class ScopedWidgetContext
+    {
+        public Guid ScopeId { get; } = Guid.NewGuid();
+    }
+
+    public sealed class WidgetScopeRunner
+    {
+        private readonly IServiceProvider _serviceProvider;
+
+        public WidgetScopeRunner(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
+        public Guid RunScope()
+        {
+            using var scope = _serviceProvider.CreateScope();
+            return scope.ServiceProvider.GetRequiredService<ScopedWidgetContext>().ScopeId;
         }
     }
 

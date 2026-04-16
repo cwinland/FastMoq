@@ -2,6 +2,7 @@ using FastMoq.Extensions;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
@@ -89,6 +90,23 @@ namespace FastMoq.TestingExample
     public class OrderSubmissionServiceExamples : MockerTestBase<OrderSubmissionService>
     {
         [Fact]
+        public async Task SubmitAsync_ShouldPreserveAssignedMode_WithAddPropertyState()
+        {
+            var submissionChannel = Mocks.GetOrCreateMock<IOrderSubmissionChannel>();
+            submissionChannel
+                .Setup(x => x.SubmitAsync("order-42", CancellationToken.None))
+                .Returns(Task.CompletedTask);
+
+            var channel = Mocks.AddPropertyState<IOrderSubmissionChannel>();
+            CreateComponent();
+
+            await Component.SubmitAsync("order-42", expedited: true, CancellationToken.None);
+
+            channel.Mode.Should().Be("fast");
+            Mocks.Verify<IOrderSubmissionChannel>(x => x.SubmitAsync("order-42", CancellationToken.None), TimesSpec.Once);
+        }
+
+        [Fact]
         public async Task SubmitAsync_ShouldCaptureAssignedMode_WithAddPropertySetterCapture()
         {
             var submissionChannel = Mocks.GetOrCreateMock<IOrderSubmissionChannel>();
@@ -103,6 +121,23 @@ namespace FastMoq.TestingExample
 
             modeCapture.Value.Should().Be("fast");
             Mocks.Verify<IOrderSubmissionChannel>(x => x.SubmitAsync("order-42", CancellationToken.None), TimesSpec.Once);
+        }
+    }
+
+    public class WidgetScopeRunnerExamples : MockerTestBase<WidgetScopeRunner>
+    {
+        [Fact]
+        public void RunScope_ShouldResolveScopedGraph_WithTypedServiceProviderHelper()
+        {
+            Mocks.AddServiceProvider(services => services.AddScoped<ScopedWidgetContext>(), replace: true, includeMockerFallback: true);
+            CreateComponent();
+
+            var first = Component.RunScope();
+            var second = Component.RunScope();
+
+            first.Should().NotBe(Guid.Empty);
+            second.Should().NotBe(Guid.Empty);
+            first.Should().NotBe(second);
         }
     }
 
