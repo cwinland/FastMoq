@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
+using System.IO;
 using System.IO.Abstractions;
 using System.Linq.Expressions;
 using System.Net.Http;
@@ -64,6 +65,28 @@ namespace FastMoq.Tests
             untyped.Should().BeSameAs(typed);
             typed.Instance.Endpoint.Should().Be(endpoint);
             typed.Instance.QueueName.Should().Be(queueName);
+        }
+
+        [Fact]
+        public void ExplicitMoqProviderReference_ShouldNotEmitTransitionWarningToStandardError()
+        {
+            using var providerScope = PushProvider("moq");
+            var mocker = new Mocker();
+            var originalError = Console.Error;
+            using var errorWriter = new StringWriter();
+
+            try
+            {
+                Console.SetError(errorWriter);
+
+                _ = mocker.GetOrCreateMock<IProviderDependency>();
+            }
+            finally
+            {
+                Console.SetError(originalError);
+            }
+
+            errorWriter.ToString().Should().BeEmpty();
         }
 
         [Theory]

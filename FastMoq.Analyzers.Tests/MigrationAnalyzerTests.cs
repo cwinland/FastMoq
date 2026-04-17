@@ -1834,6 +1834,69 @@ class Sample
         }
 
         [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenProviderIsSelectedInOuterScopeAndApiIsInsideLambda()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        using var providerScope = MockingProviderRegistry.Push(""nsubstitute"");
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        Action assertion = () => dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldReport_WhenProviderIsSelectedOnlyInsideNestedLambda()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.NSubstituteProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        Action configure = () =>
+        {
+            using var providerScope = MockingProviderRegistry.Push(""nsubstitute"");
+        };
+
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderBootstrapAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi));
+            Assert.Equal(DiagnosticIds.SelectProviderBeforeProviderSpecificApi, diagnostic.Id);
+        }
+
+        [Fact]
         public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenProviderIsSelectedByDefault()
         {
             const string SOURCE = @"

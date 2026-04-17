@@ -341,15 +341,73 @@ namespace FastMoq.Providers.MoqProvider
         private static class MoqProviderTransitionWarning
         {
             private static int _emitted;
+            private static readonly HashSet<string> FastMoqProductAssemblyNames = new(StringComparer.OrdinalIgnoreCase)
+            {
+                "FastMoq",
+                "FastMoq.Abstractions",
+                "FastMoq.Core",
+                "FastMoq.Azure",
+                "FastMoq.AzureFunctions",
+                "FastMoq.Database",
+                "FastMoq.Provider.Moq",
+                "FastMoq.Provider.NSubstitute",
+                "FastMoq.Web",
+            };
 
             internal static void EmitOnce()
             {
+                if (!ShouldEmit())
+                {
+                    return;
+                }
+
                 if (System.Threading.Interlocked.Exchange(ref _emitted, 1) == 1)
                 {
                     return;
                 }
 
                 Console.Error.WriteLine("[FastMoq] Warning: FastMoq.Provider.Moq is a v4 transition dependency and will no longer be bundled by FastMoq.Core in v5. Install and select your mocking provider explicitly before upgrading.");
+            }
+
+            private static bool ShouldEmit()
+            {
+                return !IsReferencedByConsumerAssembly();
+            }
+
+            private static bool IsReferencedByConsumerAssembly()
+            {
+                var providerAssemblyName = typeof(MoqMockingProvider).Assembly.GetName().Name;
+                if (string.IsNullOrWhiteSpace(providerAssemblyName))
+                {
+                    return false;
+                }
+
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    if (assembly.IsDynamic)
+                    {
+                        continue;
+                    }
+
+                    var assemblyName = assembly.GetName().Name;
+                    if (string.IsNullOrWhiteSpace(assemblyName) || FastMoqProductAssemblyNames.Contains(assemblyName))
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        if (assembly.GetReferencedAssemblies().Any(reference => string.Equals(reference.Name, providerAssemblyName, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            return true;
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+
+                return false;
             }
         }
     }
