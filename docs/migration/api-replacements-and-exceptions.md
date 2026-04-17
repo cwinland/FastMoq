@@ -365,7 +365,7 @@ if (!Mocks.TryGetTrackedMock<ILogger<OrderService>>(out var logger))
 }
 ```
 
-### Known-type extensibility
+### Required object retrieval
 
 After, when the old code only needed the resolved dependency instance:
 
