@@ -25,6 +25,8 @@ namespace FastMoq.Tests
             trackedMock.Instance.Should().BeSameAs(trackedInstance);
             trackedMock.Instance.Should().NotBeSameAs(resolved);
 
+            // The proxy replaces the resolved registration, but it still forwards
+            // property assignments to the previously tracked instance underneath.
             proxy.Mode = "fast";
             proxy.Mode.Should().Be("fast");
             trackedMock.Instance.Mode.Should().Be("fast");

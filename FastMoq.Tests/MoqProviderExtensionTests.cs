@@ -134,6 +134,26 @@ namespace FastMoq.Tests
             dependency.Instance.GetValue().Should().Be("second");
         }
 
+        [Theory]
+        [InlineData("reflection")]
+        [InlineData("nsubstitute")]
+        public void MoqAuthoringShortcuts_ShouldThrowClearProviderMismatch_WhenProviderIsNotMoq(string providerName)
+        {
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+            var mocker = new Mocker();
+
+            var dependency = mocker.GetOrCreateMock<ProviderTests.IProviderDependency>();
+            var valueDependency = mocker.GetOrCreateMock<IProviderValueDependency>();
+            var propertyDependency = mocker.GetOrCreateMock<IProviderPropertyDependency>();
+            var handler = mocker.GetOrCreateMock<ProtectedShortcutDependency>();
+
+            AssertRequiresMoqProvider(() => dependency.Setup(x => x.Run("alpha")), providerName);
+            AssertRequiresMoqProvider(() => valueDependency.Setup(x => x.GetValue()), providerName);
+            AssertRequiresMoqProvider(() => propertyDependency.SetupGet(x => x.Value), providerName);
+            AssertRequiresMoqProvider(() => valueDependency.SetupSequence(x => x.GetValue()), providerName);
+            AssertRequiresMoqProvider(() => handler.Protected(), providerName);
+        }
+
         [Fact]
         public async Task ProtectedShortcut_ShouldExposeMoqProtectedApi_ForTrackedMock()
         {
@@ -210,6 +230,26 @@ namespace FastMoq.Tests
             logger.VerifyLogger(LogLevel.Error, "processing failed", exception, eventId: 9, times: 1);
         }
 
+        [Theory]
+        [InlineData("reflection")]
+        [InlineData("nsubstitute")]
+        public void MoqLoggerCompatibilityShortcuts_ShouldThrowClearProviderMismatch_WhenProviderIsNotMoq(string providerName)
+        {
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+            var mocker = new Mocker();
+
+            var logger = mocker.GetOrCreateMock<ILogger>();
+            var genericLogger = mocker.GetOrCreateMock<ILogger<NullLogger>>();
+            var exception = new InvalidOperationException("boom");
+
+            AssertRequiresMoqProvider(() => logger.VerifyLogger(LogLevel.Information, "processed order", times: 1), providerName);
+            AssertRequiresMoqProvider(() => genericLogger.VerifyLogger(LogLevel.Information, "processed order", times: 1), providerName);
+            AssertRequiresMoqProvider(() => logger.VerifyLogger(LogLevel.Error, "processed order", exception, eventId: 7, times: 1), providerName);
+            AssertRequiresMoqProvider(() => genericLogger.VerifyLogger(LogLevel.Error, "processed order", exception, eventId: 9, times: 1), providerName);
+            AssertRequiresMoqProvider(() => logger.SetupLoggerCallback((_, _, _, _) => { }), providerName);
+            AssertRequiresMoqProvider(() => genericLogger.SetupLoggerCallback((_, _, _, _) => { }), providerName);
+        }
+
         [Fact]
         public void SetupLoggerCallbackShortcut_ShouldCaptureEntries_WithoutCallingAsMoq()
         {
@@ -262,6 +302,19 @@ namespace FastMoq.Tests
         public interface IProviderPropertyDependency
         {
             string Value { get; }
+        }
+
+        public class ProtectedShortcutDependency
+        {
+            public virtual string Run() => "ok";
+        }
+
+        private static void AssertRequiresMoqProvider(Action action, string providerName)
+        {
+            var exception = action.Should().Throw<NotSupportedException>().Which;
+            exception.Message.Should().Contain("requires the 'moq' provider");
+            exception.Message.Should().Contain($"active provider is '{providerName}'");
+            exception.Message.Should().Contain("MockingProviderRegistry.Push(\"moq\")");
         }
     }
 }
