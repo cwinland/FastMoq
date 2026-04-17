@@ -15,14 +15,16 @@ namespace FastMoq.TestingExample
         }
 
         [Fact]
-        public void AppWideDefaultProvider_ShouldEnableMoqCompatibilitySurface()
+        public void AppWideDefaultProvider_ShouldEnableTrackedMoqAuthoringSurface()
         {
-            Mocks.GetMock<IProviderSelectionDependency>()
+            var dependency = Mocks.GetOrCreateMock<IProviderSelectionDependency>();
+
+            dependency
                 .Setup(x => x.GetValue())
                 .Returns("configured via moq");
 
             Component.GetValue().Should().Be("configured via moq");
-            Mocks.GetMock<IProviderSelectionDependency>()
+            dependency.AsMoq()
                 .Verify(x => x.GetValue(), Times.Once);
         }
     }
