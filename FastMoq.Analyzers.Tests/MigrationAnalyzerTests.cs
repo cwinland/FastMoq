@@ -2623,6 +2623,411 @@ class Sample
         }
 
         [Fact]
+        public async Task HttpRequestHelperAuthoringAnalyzer_ShouldReport_WhenTrackedHttpMessageHandlerUsesProtectedSendAsyncSetup()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var handler = mocks.GetOrCreateMock<HttpMessageHandler>();
+        handler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                ""SendAsync"",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>());
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferProviderNeutralHttpHelpers));
+            Assert.Equal(DiagnosticIds.PreferProviderNeutralHttpHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task HttpRequestHelperAuthoringAnalyzer_ShouldFix_TrackedHttpMessageHandlerProtectedSendAsyncSetupToWhenHttpRequestJson()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Sample
+{
+    async Task Execute(Mocker mocks, string requestUri)
+    {
+        var handler = mocks.GetOrCreateMock<HttpMessageHandler>();
+        handler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                ""SendAsync"",
+                ItExpr.Is<HttpRequestMessage>(request => request.Method == HttpMethod.Get && request.RequestUri == new Uri(requestUri)),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(() => new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.Accepted,
+                Content = new StringContent(""{}"", Encoding.UTF8, ""application/json""),
+            });
+        using var client = new HttpClient(handler.Object);
+        client.BaseAddress = new Uri(""https://example.test/"");
+        await client.GetAsync(""/api/test"");
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferProviderNeutralHttpHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using FastMoq.Extensions;
+
+class Sample
+{
+    async Task Execute(Mocker mocks, string requestUri)
+    {
+        mocks.WhenHttpRequestJson(HttpMethod.Get, requestUri, ""{}"", HttpStatusCode.Accepted);
+        using var client = mocks.CreateHttpClient();
+        client.BaseAddress = new Uri(""https://example.test/"");
+        await client.GetAsync(""/api/test"");
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task HttpRequestHelperAuthoringAnalyzer_ShouldFix_TrackedHttpMessageHandlerProtectedSendAsyncSetupToPredicateBasedWhenHttpRequest()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var handler = mocks.GetOrCreateMock<HttpMessageHandler>();
+        handler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                ""SendAsync"",
+                ItExpr.Is<HttpRequestMessage>(request => request.Headers.Contains(""X-Test"")),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
+        var client = new HttpClient(handler.Object);
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferProviderNeutralHttpHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.WhenHttpRequest(request => request.Headers.Contains(""X-Test""), () => new HttpResponseMessage(HttpStatusCode.OK));
+        var client = mocks.CreateHttpClient();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task HttpRequestHelperAuthoringAnalyzer_ShouldFix_TrackedHttpMessageHandlerProtectedSendAsyncSetupSequenceToQueuedWhenHttpRequest()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var handler = mocks.GetOrCreateMock<HttpMessageHandler>();
+        handler.Protected()
+            .SetupSequence<Task<HttpResponseMessage>>(
+                ""SendAsync"",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK))
+            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.Accepted));
+        var client = new HttpClient(handler.Object);
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferProviderNeutralHttpHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using FastMoq.Extensions;
+using System;
+using System.Collections.Generic;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var fastMoqHttpResponseFactories = new Queue<Func<HttpResponseMessage>>(new Func<HttpResponseMessage>[]
+        {
+            () => new HttpResponseMessage(HttpStatusCode.OK),
+            () => new HttpResponseMessage(HttpStatusCode.Accepted)
+        });
+        mocks.WhenHttpRequest(_ => true, () => fastMoqHttpResponseFactories.Count > 0 ? fastMoqHttpResponseFactories.Dequeue().Invoke() : throw new InvalidOperationException(""No queued HTTP response remains.""));
+        var client = mocks.CreateHttpClient();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task HttpRequestHelperAuthoringAnalyzer_ShouldNotOfferCodeFix_WhenProtectedSendAsyncUsesSpecificCancellationTokenMatcher()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var handler = mocks.GetOrCreateMock<HttpMessageHandler>();
+        handler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                ""SendAsync"",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.Is<CancellationToken>(token => token.CanBeCanceled))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer());
+            Assert.Contains(diagnostics, item => item.Id == DiagnosticIds.PreferProviderNeutralHttpHelpers);
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferProviderNeutralHttpHelpers);
+            Assert.Empty(codeFixTitles);
+        }
+
+        [Fact]
+        public async Task HttpRequestHelperAuthoringAnalyzer_ShouldNotOfferCodeFix_WhenProtectedSendAsyncReturnsAsyncUsesParameterizedLambda()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var handler = mocks.GetOrCreateMock<HttpMessageHandler>();
+        handler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                ""SendAsync"",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync((HttpRequestMessage request, CancellationToken cancellationToken) => new HttpResponseMessage(HttpStatusCode.OK));
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer());
+            Assert.Contains(diagnostics, item => item.Id == DiagnosticIds.PreferProviderNeutralHttpHelpers);
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferProviderNeutralHttpHelpers);
+            Assert.Empty(codeFixTitles);
+        }
+
+        [Fact]
+        public async Task HttpRequestHelperAuthoringAnalyzer_ShouldNotOfferCodeFix_WhenTrackedHandlerStillHasUnsupportedUsage()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var handler = mocks.GetOrCreateMock<HttpMessageHandler>();
+        handler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                ""SendAsync"",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
+        var client = new HttpClient(handler.Object, true);
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer());
+            Assert.Contains(diagnostics, item => item.Id == DiagnosticIds.PreferProviderNeutralHttpHelpers);
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferProviderNeutralHttpHelpers);
+            Assert.Empty(codeFixTitles);
+        }
+
+        [Fact]
+        public async Task HttpRequestHelperAuthoringAnalyzer_ShouldNotOfferCodeFix_WhenProtectedSendAsyncIncludesCallback()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var handler = mocks.GetOrCreateMock<HttpMessageHandler>();
+        handler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                ""SendAsync"",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .Callback(() => { })
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer());
+            Assert.Contains(diagnostics, item => item.Id == DiagnosticIds.PreferProviderNeutralHttpHelpers);
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferProviderNeutralHttpHelpers);
+            Assert.Empty(codeFixTitles);
+        }
+
+        [Fact]
+        public async Task HttpRequestHelperAuthoringAnalyzer_ShouldNotOfferCodeFix_WhenProtectedSendAsyncIsMarkedVerifiable()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using Moq.Protected;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var handler = mocks.GetOrCreateMock<HttpMessageHandler>();
+        handler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                ""SendAsync"",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK))
+            .Verifiable();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer());
+            Assert.Contains(diagnostics, item => item.Id == DiagnosticIds.PreferProviderNeutralHttpHelpers);
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferProviderNeutralHttpHelpers);
+            Assert.Empty(codeFixTitles);
+        }
+
+        [Fact]
+        public async Task HttpRequestHelperAuthoringAnalyzer_ShouldNotReport_WhenProtectedSetupTargetsNonHttpMember()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq.Protected;
+
+class SampleGateway
+{
+    protected virtual int Compute() => 0;
+}
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        var gateway = mocks.GetOrCreateMock<SampleGateway>();
+        gateway.Protected().Setup<int>(""Compute"");
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new HttpRequestHelperAuthoringAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferProviderNeutralHttpHelpers);
+        }
+
+        [Fact]
         public async Task HttpRequestHelperAuthoringAnalyzer_ShouldNotReport_WhenProviderNeutralHttpHelperIsUsed()
         {
             const string SOURCE = @"

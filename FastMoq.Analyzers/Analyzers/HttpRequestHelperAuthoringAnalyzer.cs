@@ -20,9 +20,11 @@ namespace FastMoq.Analyzers.Analyzers
         private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
-            if (!FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) ||
-                method is null ||
-                !FastMoqAnalysisHelpers.TryGetProviderNeutralHttpHelperSuggestion(method, out var apiName))
+            if (!FastMoqAnalysisHelpers.TryGetProviderNeutralHttpHelperSuggestion(
+                    invocationExpression,
+                    context.SemanticModel,
+                    context.CancellationToken,
+                    out var apiName))
             {
                 return;
             }

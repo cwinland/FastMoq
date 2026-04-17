@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
@@ -25,7 +26,8 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.UseExplicitOptionalParameterResolution,
             DiagnosticIds.ReplaceInitializeCompatibilityWrapper,
             DiagnosticIds.PreferSetupOptionsHelper,
-            DiagnosticIds.RequireExplicitMoqOnboarding);
+            DiagnosticIds.RequireExplicitMoqOnboarding,
+            DiagnosticIds.PreferProviderNeutralHttpHelpers);
 
         public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -199,6 +201,30 @@ namespace FastMoq.Analyzers.CodeFixes
                         break;
                     }
 
+                case DiagnosticIds.PreferProviderNeutralHttpHelpers:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (semanticModel is null ||
+                            !TryBuildProviderNeutralHttpHelperEdit(invocationExpression, semanticModel, context.CancellationToken, out var edit))
+                        {
+                            return;
+                        }
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                edit.CodeActionTitle,
+                                cancellationToken => ReplaceProviderNeutralHttpHelperInvocationAsync(document, invocationExpression, cancellationToken),
+                                nameof(DiagnosticIds.PreferProviderNeutralHttpHelpers)),
+                            diagnostic);
+                        break;
+                    }
+
                 case DiagnosticIds.RequireExplicitMoqOnboarding:
                     {
                         var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
@@ -368,6 +394,85 @@ namespace FastMoq.Analyzers.CodeFixes
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
 
             return document.WithSyntaxRoot(AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions"));
+        }
+
+        private static async Task<Document> ReplaceProviderNeutralHttpHelperInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null ||
+                !TryBuildProviderNeutralHttpHelperEdit(invocationExpression, semanticModel, cancellationToken, out var edit))
+            {
+                return document;
+            }
+
+            var setupAnnotation = new SyntaxAnnotation();
+            var removalAnnotation = edit.TrackedMockDeclarationToRemove is null ? null : new SyntaxAnnotation();
+            var clientAnnotations = edit.HttpClientCreations.Select(_ => new SyntaxAnnotation()).ToArray();
+
+            var nodesToAnnotate = new List<SyntaxNode>
+            {
+                edit.SetupStatement,
+            };
+            if (edit.TrackedMockDeclarationToRemove is not null)
+            {
+                nodesToAnnotate.Add(edit.TrackedMockDeclarationToRemove);
+            }
+
+            nodesToAnnotate.AddRange(edit.HttpClientCreations.Select(item => item.TargetExpression));
+
+            var clientIndex = 0;
+            var updatedRoot = root.ReplaceNodes(
+                nodesToAnnotate,
+                (originalNode, rewrittenNode) =>
+                {
+                    if (originalNode == edit.SetupStatement)
+                    {
+                        return rewrittenNode.WithAdditionalAnnotations(setupAnnotation);
+                    }
+
+                    if (edit.TrackedMockDeclarationToRemove is not null && originalNode == edit.TrackedMockDeclarationToRemove)
+                    {
+                        return rewrittenNode.WithAdditionalAnnotations(removalAnnotation!);
+                    }
+
+                    return rewrittenNode.WithAdditionalAnnotations(clientAnnotations[clientIndex++]);
+                });
+
+            if (removalAnnotation is not null)
+            {
+                var annotatedRemovalNode = updatedRoot.GetAnnotatedNodes(removalAnnotation).Single();
+                updatedRoot = updatedRoot.RemoveNode(annotatedRemovalNode, SyntaxRemoveOptions.KeepExteriorTrivia) ?? updatedRoot;
+            }
+
+            var annotatedSetupStatement = updatedRoot.GetAnnotatedNodes(setupAnnotation).Single();
+            var replacementStatements = ParseReplacementStatements(edit.SetupReplacementStatements, (StatementSyntax) annotatedSetupStatement);
+            if (replacementStatements.Count == 1)
+            {
+                updatedRoot = updatedRoot.ReplaceNode(annotatedSetupStatement, replacementStatements[0]);
+            }
+            else if (annotatedSetupStatement.Parent is BlockSyntax setupBlock)
+            {
+                var statementIndex = setupBlock.Statements.IndexOf((StatementSyntax) annotatedSetupStatement);
+                var rewrittenStatements = setupBlock.Statements.RemoveAt(statementIndex).InsertRange(statementIndex, replacementStatements);
+                updatedRoot = updatedRoot.ReplaceNode(setupBlock, setupBlock.WithStatements(rewrittenStatements));
+            }
+            else
+            {
+                return document;
+            }
+
+            for (var index = 0; index < clientAnnotations.Length; index++)
+            {
+                var annotatedClientExpression = updatedRoot.GetAnnotatedNodes(clientAnnotations[index]).Single();
+                var replacementExpression = SyntaxFactory.ParseExpression(edit.HttpClientCreations[index].ReplacementText)
+                    .WithTriviaFrom(annotatedClientExpression);
+                updatedRoot = updatedRoot.ReplaceNode(annotatedClientExpression, replacementExpression);
+            }
+
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions");
+            updatedRoot = AddUsingDirectivesIfMissing(updatedRoot, edit.RequiredNamespaces);
+            return document.WithSyntaxRoot(updatedRoot);
         }
 
         private static async Task<Document> ReplaceFunctionContextInstanceServicesInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
@@ -611,6 +716,729 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             return root;
+        }
+
+        private static IReadOnlyList<StatementSyntax> ParseReplacementStatements(IReadOnlyList<string> replacementStatements, StatementSyntax originalStatement)
+        {
+            var parsedStatements = replacementStatements
+                .Select(statementText => SyntaxFactory.ParseStatement(statementText))
+                .ToArray();
+
+            if (parsedStatements.Length == 0)
+            {
+                return [];
+            }
+
+            parsedStatements[0] = parsedStatements[0].WithLeadingTrivia(originalStatement.GetLeadingTrivia());
+            parsedStatements[parsedStatements.Length - 1] = parsedStatements[parsedStatements.Length - 1].WithTrailingTrivia(originalStatement.GetTrailingTrivia());
+            return parsedStatements;
+        }
+
+        private static bool TryBuildProviderNeutralHttpHelperEdit(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out ProviderNeutralHttpHelperEdit edit)
+        {
+            edit = default;
+
+            if (!FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            var supportsSequence = method.Name == "SetupSequence";
+            if (method.Name is not "Setup" and not "SetupSequence" ||
+                method.ContainingNamespace.ToDisplayString() != "Moq.Protected" ||
+                method.ContainingType.Name != "IProtectedMock" ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
+                !FastMoqAnalysisHelpers.TryResolveProtectedTrackedMockOrigin(memberAccess.Expression, semanticModel, cancellationToken, out var origin) ||
+                origin.ServiceType.ToDisplayString() != "System.Net.Http.HttpMessageHandler" ||
+                invocationExpression.ArgumentList.Arguments.Count != 3 ||
+                semanticModel.GetConstantValue(invocationExpression.ArgumentList.Arguments[0].Expression, cancellationToken) is not { HasValue: true, Value: string protectedMemberName } ||
+                protectedMemberName != "SendAsync" ||
+                !IsAnyCancellationTokenMatcher(invocationExpression.ArgumentList.Arguments[2].Expression, semanticModel, cancellationToken))
+            {
+                return false;
+            }
+
+            if (!TryGetSupportedProviderNeutralHttpReturnsInvocations(invocationExpression, supportsSequence, out var returnsInvocations))
+            {
+                return false;
+            }
+
+            var setupStatement = returnsInvocations[returnsInvocations.Count - 1].FirstAncestorOrSelf<ExpressionStatementSyntax>();
+            if (setupStatement is null)
+            {
+                return false;
+            }
+
+            IReadOnlyList<string> setupReplacementStatements;
+            IReadOnlyList<string> requiredNamespaces;
+            string codeActionTitle;
+            if (supportsSequence)
+            {
+                if (!TryBuildProviderNeutralHttpSequenceReplacement(origin, invocationExpression.ArgumentList.Arguments[1].Expression, returnsInvocations, semanticModel, cancellationToken, setupStatement, out setupReplacementStatements, out codeActionTitle, out requiredNamespaces))
+                {
+                    return false;
+                }
+            }
+            else if (!TryBuildProviderNeutralHttpSetupReplacement(origin, invocationExpression.ArgumentList.Arguments[1].Expression, returnsInvocations[0], semanticModel, cancellationToken, out var setupReplacementText, out codeActionTitle))
+            {
+                return false;
+            }
+            else
+            {
+                setupReplacementStatements = [setupReplacementText];
+                requiredNamespaces = Array.Empty<string>();
+            }
+
+            var httpClientCreations = FindHttpClientCreationEdits(origin, setupStatement, semanticModel, cancellationToken);
+            if (!TryGetTrackedMockDeclarationToRemove(origin, setupStatement, httpClientCreations, semanticModel, cancellationToken, out var declarationToRemove))
+            {
+                return false;
+            }
+
+            edit = new ProviderNeutralHttpHelperEdit(setupStatement, setupReplacementStatements, codeActionTitle, httpClientCreations, declarationToRemove, requiredNamespaces);
+            return true;
+        }
+
+        private static bool TryGetSupportedProviderNeutralHttpReturnsInvocations(InvocationExpressionSyntax invocationExpression, bool supportsSequence, out IReadOnlyList<InvocationExpressionSyntax> returnsInvocations)
+        {
+            var collectedReturnsInvocations = new List<InvocationExpressionSyntax>();
+            while (invocationExpression.Parent is MemberAccessExpressionSyntax memberAccess &&
+                memberAccess.Parent is InvocationExpressionSyntax parentInvocation)
+            {
+                if (memberAccess.Name.Identifier.ValueText is not "Returns" and not "ReturnsAsync")
+                {
+                    returnsInvocations = Array.Empty<InvocationExpressionSyntax>();
+                    return false;
+                }
+
+                collectedReturnsInvocations.Add(parentInvocation);
+                invocationExpression = parentInvocation;
+            }
+
+            returnsInvocations = collectedReturnsInvocations;
+            return collectedReturnsInvocations.Count > 0 && (supportsSequence || collectedReturnsInvocations.Count == 1);
+        }
+
+        private static bool IsAnyCancellationTokenMatcher(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = UnwrapForPatternMatching(expression);
+            if (expression is not InvocationExpressionSyntax invocationExpression ||
+                !FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            return method.Name == "IsAny" &&
+                method.ContainingType.Name == "ItExpr" &&
+                method.TypeArguments.Length == 1 &&
+                method.TypeArguments[0].ToDisplayString() == "System.Threading.CancellationToken" &&
+                invocationExpression.ArgumentList.Arguments.Count == 0;
+        }
+
+        private static bool TryBuildProviderNeutralHttpSetupReplacement(TrackedMockOrigin origin, ExpressionSyntax requestMatcherExpression, InvocationExpressionSyntax returnsInvocation, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacementText, out string codeActionTitle)
+        {
+            replacementText = string.Empty;
+            codeActionTitle = "Use WhenHttpRequest(...)";
+
+            if (!TryBuildRequestMatcher(requestMatcherExpression, semanticModel, cancellationToken, out var predicateText, out var methodText, out var requestUriText) ||
+                !TryBuildResponseFactory(returnsInvocation, semanticModel, cancellationToken, out var responseFactoryText, out var jsonPayloadText, out var statusCodeText))
+            {
+                return false;
+            }
+
+            var mockerText = origin.MockerExpression.ToString();
+            if (methodText is not null && requestUriText is not null && jsonPayloadText is not null)
+            {
+                codeActionTitle = "Use WhenHttpRequestJson(...)";
+                replacementText = statusCodeText == "HttpStatusCode.OK" || statusCodeText == "System.Net.HttpStatusCode.OK"
+                    ? $"{mockerText}.WhenHttpRequestJson({methodText}, {requestUriText}, {jsonPayloadText});"
+                    : $"{mockerText}.WhenHttpRequestJson({methodText}, {requestUriText}, {jsonPayloadText}, {statusCodeText});";
+                return true;
+            }
+
+            if (methodText is not null && requestUriText is not null)
+            {
+                replacementText = $"{mockerText}.WhenHttpRequest({methodText}, {requestUriText}, {responseFactoryText});";
+                return true;
+            }
+
+            replacementText = $"{mockerText}.WhenHttpRequest({predicateText}, {responseFactoryText});";
+            return true;
+        }
+
+        private static bool TryBuildProviderNeutralHttpSequenceReplacement(TrackedMockOrigin origin, ExpressionSyntax requestMatcherExpression, IReadOnlyList<InvocationExpressionSyntax> returnsInvocations, SemanticModel semanticModel, CancellationToken cancellationToken, StatementSyntax setupStatement, out IReadOnlyList<string> replacementStatements, out string codeActionTitle, out IReadOnlyList<string> requiredNamespaces)
+        {
+            replacementStatements = Array.Empty<string>();
+            codeActionTitle = "Use WhenHttpRequest(...)";
+            requiredNamespaces = ["System", "System.Collections.Generic"];
+
+            if (setupStatement.Parent is not BlockSyntax ||
+                !TryBuildRequestMatcher(requestMatcherExpression, semanticModel, cancellationToken, out var predicateText, out var methodText, out var requestUriText))
+            {
+                return false;
+            }
+
+            var responseFactories = new List<string>(returnsInvocations.Count);
+            foreach (var returnsInvocation in returnsInvocations)
+            {
+                if (!TryBuildResponseFactory(returnsInvocation, semanticModel, cancellationToken, out var responseFactoryText, out _, out _))
+                {
+                    return false;
+                }
+
+                responseFactories.Add(responseFactoryText);
+            }
+
+            var queueVariableName = "fastMoqHttpResponseFactories";
+            var queueDeclaration = $"var {queueVariableName} = new Queue<Func<HttpResponseMessage>>(new Func<HttpResponseMessage>[] {{ {string.Join(", ", responseFactories)} }});";
+            var dequeueFactory = $"() => {queueVariableName}.Count > 0 ? {queueVariableName}.Dequeue().Invoke() : throw new InvalidOperationException(\"No queued HTTP response remains.\")";
+            var mockerText = origin.MockerExpression.ToString();
+            var whenHttpRequestCall = methodText is not null && requestUriText is not null
+                ? $"{mockerText}.WhenHttpRequest({methodText}, {requestUriText}, {dequeueFactory});"
+                : $"{mockerText}.WhenHttpRequest({predicateText}, {dequeueFactory});";
+
+            replacementStatements = [queueDeclaration, whenHttpRequestCall];
+            return true;
+        }
+
+        private static bool TryBuildRequestMatcher(ExpressionSyntax requestMatcherExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string predicateText, out string? methodText, out string? requestUriText)
+        {
+            predicateText = string.Empty;
+            methodText = null;
+            requestUriText = null;
+
+            requestMatcherExpression = UnwrapForPatternMatching(requestMatcherExpression);
+            if (requestMatcherExpression is not InvocationExpressionSyntax matcherInvocation ||
+                !FastMoqAnalysisHelpers.TryGetMethodSymbol(matcherInvocation, semanticModel, cancellationToken, out var matcherMethod) ||
+                matcherMethod is null)
+            {
+                return false;
+            }
+
+            matcherMethod = matcherMethod.ReducedFrom ?? matcherMethod;
+            if (matcherMethod.Name == "IsAny" && matcherMethod.ContainingType.Name == "ItExpr")
+            {
+                predicateText = "_ => true";
+                return true;
+            }
+
+            if (matcherMethod.Name != "Is" || matcherMethod.ContainingType.Name != "ItExpr" || matcherInvocation.ArgumentList.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            var predicateExpression = matcherInvocation.ArgumentList.Arguments[0].Expression;
+            if (predicateExpression is not AnonymousFunctionExpressionSyntax anonymousFunction)
+            {
+                return false;
+            }
+
+            predicateText = anonymousFunction.ToString();
+            _ = TryExtractRequestMethodAndUri(anonymousFunction, semanticModel, cancellationToken, out methodText, out requestUriText);
+            return true;
+        }
+
+        private static bool TryBuildResponseFactory(InvocationExpressionSyntax returnsInvocation, SemanticModel semanticModel, CancellationToken cancellationToken, out string responseFactoryText, out string? jsonPayloadText, out string statusCodeText)
+        {
+            responseFactoryText = string.Empty;
+            jsonPayloadText = null;
+            statusCodeText = "HttpStatusCode.OK";
+
+            if (returnsInvocation.ArgumentList.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            var responseExpression = returnsInvocation.ArgumentList.Arguments[0].Expression;
+            if (responseExpression is AnonymousFunctionExpressionSyntax anonymousFunction)
+            {
+                if (HasAnonymousFunctionParameters(anonymousFunction))
+                {
+                    return false;
+                }
+
+                responseFactoryText = anonymousFunction.ToString();
+                if (!TryGetAnonymousFunctionReturnExpression(anonymousFunction, out var returnedExpression))
+                {
+                    return true;
+                }
+
+                _ = TryExtractJsonResponse(returnedExpression, semanticModel, cancellationToken, out jsonPayloadText, out statusCodeText);
+                return true;
+            }
+
+            var convertedType = semanticModel.GetTypeInfo(responseExpression, cancellationToken).ConvertedType as INamedTypeSymbol;
+            if (convertedType?.DelegateInvokeMethod?.ReturnType.ToDisplayString() == "System.Net.Http.HttpResponseMessage")
+            {
+                responseFactoryText = responseExpression.ToString();
+                return true;
+            }
+
+            responseFactoryText = $"() => {responseExpression}";
+            _ = TryExtractJsonResponse(responseExpression, semanticModel, cancellationToken, out jsonPayloadText, out statusCodeText);
+            return true;
+        }
+
+        private static bool HasAnonymousFunctionParameters(AnonymousFunctionExpressionSyntax anonymousFunction)
+        {
+            return anonymousFunction switch
+            {
+                SimpleLambdaExpressionSyntax => true,
+                ParenthesizedLambdaExpressionSyntax parenthesizedLambdaExpression => parenthesizedLambdaExpression.ParameterList.Parameters.Count != 0,
+                AnonymousMethodExpressionSyntax anonymousMethodExpression => anonymousMethodExpression.ParameterList?.Parameters.Count > 0,
+                _ => false,
+            };
+        }
+
+        private static bool TryExtractJsonResponse(ExpressionSyntax responseExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string? jsonPayloadText, out string statusCodeText)
+        {
+            jsonPayloadText = null;
+            statusCodeText = "HttpStatusCode.OK";
+            responseExpression = UnwrapForPatternMatching(responseExpression);
+            if (responseExpression is not ObjectCreationExpressionSyntax responseCreation ||
+                semanticModel.GetTypeInfo(responseCreation, cancellationToken).Type?.ToDisplayString() != "System.Net.Http.HttpResponseMessage")
+            {
+                return false;
+            }
+
+            if (responseCreation.ArgumentList?.Arguments.Count > 1)
+            {
+                return false;
+            }
+
+            if (responseCreation.ArgumentList?.Arguments.Count == 1)
+            {
+                statusCodeText = responseCreation.ArgumentList.Arguments[0].Expression.ToString();
+            }
+
+            ObjectCreationExpressionSyntax? stringContentCreation = null;
+            if (responseCreation.Initializer is null)
+            {
+                return false;
+            }
+
+            foreach (var initializerExpression in responseCreation.Initializer.Expressions)
+            {
+                if (initializerExpression is not AssignmentExpressionSyntax assignmentExpression)
+                {
+                    return false;
+                }
+
+                var propertyName = assignmentExpression.Left switch
+                {
+                    IdentifierNameSyntax identifierName => identifierName.Identifier.ValueText,
+                    MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.ValueText,
+                    _ => string.Empty,
+                };
+
+                if (propertyName == "StatusCode")
+                {
+                    statusCodeText = assignmentExpression.Right.ToString();
+                    continue;
+                }
+
+                if (propertyName == "Content")
+                {
+                    stringContentCreation = UnwrapForPatternMatching(assignmentExpression.Right) as ObjectCreationExpressionSyntax;
+                    continue;
+                }
+
+                return false;
+            }
+
+            if (stringContentCreation is null ||
+                semanticModel.GetTypeInfo(stringContentCreation, cancellationToken).Type?.ToDisplayString() != "System.Net.Http.StringContent" ||
+                stringContentCreation.ArgumentList?.Arguments.Count != 3)
+            {
+                return false;
+            }
+
+            var mediaTypeExpression = stringContentCreation.ArgumentList.Arguments[2].Expression;
+            var mediaTypeConstant = semanticModel.GetConstantValue(mediaTypeExpression, cancellationToken);
+            if (!mediaTypeConstant.HasValue || !string.Equals(mediaTypeConstant.Value as string, "application/json", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            jsonPayloadText = stringContentCreation.ArgumentList.Arguments[0].Expression.ToString();
+            return true;
+        }
+
+        private static bool TryExtractRequestMethodAndUri(AnonymousFunctionExpressionSyntax anonymousFunction, SemanticModel semanticModel, CancellationToken cancellationToken, out string? methodText, out string? requestUriText)
+        {
+            methodText = null;
+            requestUriText = null;
+
+            if (!TryGetAnonymousFunctionReturnExpression(anonymousFunction, out var predicateBodyExpression))
+            {
+                return false;
+            }
+
+            foreach (var condition in GetLogicalAndConditions(predicateBodyExpression))
+            {
+                if (methodText is null && TryExtractMethodCondition(condition, semanticModel, cancellationToken, out var methodExpressionText))
+                {
+                    methodText = methodExpressionText;
+                }
+
+                if (requestUriText is null && TryExtractRequestUriCondition(condition, semanticModel, cancellationToken, out var requestUriExpressionText))
+                {
+                    requestUriText = requestUriExpressionText;
+                }
+            }
+
+            return methodText is not null && requestUriText is not null;
+        }
+
+        private static bool TryExtractMethodCondition(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out string methodExpressionText)
+        {
+            methodExpressionText = string.Empty;
+            expression = UnwrapForPatternMatching(expression);
+            if (expression is not BinaryExpressionSyntax binaryExpression || !binaryExpression.IsKind(SyntaxKind.EqualsExpression))
+            {
+                return false;
+            }
+
+            if (IsHttpRequestMethodAccess(binaryExpression.Left, semanticModel, cancellationToken))
+            {
+                methodExpressionText = binaryExpression.Right.ToString();
+                return true;
+            }
+
+            if (IsHttpRequestMethodAccess(binaryExpression.Right, semanticModel, cancellationToken))
+            {
+                methodExpressionText = binaryExpression.Left.ToString();
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool TryExtractRequestUriCondition(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out string requestUriExpressionText)
+        {
+            requestUriExpressionText = string.Empty;
+            expression = UnwrapForPatternMatching(expression);
+            if (expression is not BinaryExpressionSyntax binaryExpression || !binaryExpression.IsKind(SyntaxKind.EqualsExpression))
+            {
+                return false;
+            }
+
+            if (IsHttpRequestUriAccess(binaryExpression.Left, semanticModel, cancellationToken) &&
+                TryExtractUriStringExpression(binaryExpression.Right, semanticModel, cancellationToken, out requestUriExpressionText))
+            {
+                return true;
+            }
+
+            if (IsHttpRequestUriAccess(binaryExpression.Right, semanticModel, cancellationToken) &&
+                TryExtractUriStringExpression(binaryExpression.Left, semanticModel, cancellationToken, out requestUriExpressionText))
+            {
+                return true;
+            }
+
+            if (IsHttpRequestAbsoluteUriAccess(binaryExpression.Left, semanticModel, cancellationToken) &&
+                semanticModel.GetTypeInfo(binaryExpression.Right, cancellationToken).Type?.SpecialType == SpecialType.System_String)
+            {
+                requestUriExpressionText = binaryExpression.Right.ToString();
+                return true;
+            }
+
+            if (IsHttpRequestAbsoluteUriAccess(binaryExpression.Right, semanticModel, cancellationToken) &&
+                semanticModel.GetTypeInfo(binaryExpression.Left, cancellationToken).Type?.SpecialType == SpecialType.System_String)
+            {
+                requestUriExpressionText = binaryExpression.Left.ToString();
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool TryExtractUriStringExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out string requestUriExpressionText)
+        {
+            requestUriExpressionText = string.Empty;
+            expression = UnwrapForPatternMatching(expression);
+            if (expression is ObjectCreationExpressionSyntax uriCreation &&
+                semanticModel.GetTypeInfo(uriCreation, cancellationToken).Type?.ToDisplayString() == "System.Uri" &&
+                uriCreation.ArgumentList?.Arguments.Count == 1)
+            {
+                requestUriExpressionText = uriCreation.ArgumentList.Arguments[0].Expression.ToString();
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool IsHttpRequestMethodAccess(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = UnwrapForPatternMatching(expression);
+            return expression is MemberAccessExpressionSyntax memberAccess &&
+                memberAccess.Name.Identifier.ValueText == "Method" &&
+                semanticModel.GetTypeInfo(memberAccess.Expression, cancellationToken).Type?.ToDisplayString() == "System.Net.Http.HttpRequestMessage";
+        }
+
+        private static bool IsHttpRequestUriAccess(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = UnwrapForPatternMatching(expression);
+            return expression is MemberAccessExpressionSyntax memberAccess &&
+                memberAccess.Name.Identifier.ValueText == "RequestUri" &&
+                semanticModel.GetTypeInfo(memberAccess.Expression, cancellationToken).Type?.ToDisplayString() == "System.Net.Http.HttpRequestMessage";
+        }
+
+        private static bool IsHttpRequestAbsoluteUriAccess(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = UnwrapForPatternMatching(expression);
+            if (expression is MemberAccessExpressionSyntax memberAccess && memberAccess.Name.Identifier.ValueText == "AbsoluteUri")
+            {
+                return IsHttpRequestUriAccess(memberAccess.Expression, semanticModel, cancellationToken);
+            }
+
+            if (expression is InvocationExpressionSyntax invocationExpression &&
+                invocationExpression.Expression is MemberAccessExpressionSyntax toStringAccess &&
+                toStringAccess.Name.Identifier.ValueText == "ToString")
+            {
+                return IsHttpRequestUriAccess(toStringAccess.Expression, semanticModel, cancellationToken);
+            }
+
+            return false;
+        }
+
+        private static bool TryGetAnonymousFunctionReturnExpression(AnonymousFunctionExpressionSyntax anonymousFunction, out ExpressionSyntax expression)
+        {
+            if (anonymousFunction.Body is ExpressionSyntax expressionBody)
+            {
+                expression = expressionBody;
+                return true;
+            }
+
+            if (anonymousFunction.Body is BlockSyntax block &&
+                block.Statements.Count == 1 &&
+                block.Statements[0] is ReturnStatementSyntax returnStatement &&
+                returnStatement.Expression is not null)
+            {
+                expression = returnStatement.Expression;
+                return true;
+            }
+
+            expression = null!;
+            return false;
+        }
+
+        private static IEnumerable<ExpressionSyntax> GetLogicalAndConditions(ExpressionSyntax expression)
+        {
+            expression = UnwrapForPatternMatching(expression);
+            if (expression is BinaryExpressionSyntax binaryExpression && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression))
+            {
+                foreach (var leftCondition in GetLogicalAndConditions(binaryExpression.Left))
+                {
+                    yield return leftCondition;
+                }
+
+                foreach (var rightCondition in GetLogicalAndConditions(binaryExpression.Right))
+                {
+                    yield return rightCondition;
+                }
+
+                yield break;
+            }
+
+            yield return expression;
+        }
+
+        private static ExpressionSyntax UnwrapForPatternMatching(ExpressionSyntax expression)
+        {
+            expression = FastMoqAnalysisHelpers.Unwrap(expression);
+            while (expression is PostfixUnaryExpressionSyntax postfixUnaryExpression &&
+                postfixUnaryExpression.IsKind(SyntaxKind.SuppressNullableWarningExpression))
+            {
+                expression = FastMoqAnalysisHelpers.Unwrap(postfixUnaryExpression.Operand);
+            }
+
+            return expression;
+        }
+
+        private static List<HttpClientCreationEdit> FindHttpClientCreationEdits(TrackedMockOrigin origin, StatementSyntax setupStatement, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            var edits = new List<HttpClientCreationEdit>();
+            var block = setupStatement.FirstAncestorOrSelf<BlockSyntax>();
+            if (block is null)
+            {
+                return edits;
+            }
+
+            foreach (var objectCreation in block.DescendantNodes().OfType<ObjectCreationExpressionSyntax>())
+            {
+                if (TryBuildCreateHttpClientReplacement(origin, objectCreation, semanticModel, cancellationToken, out var replacementText))
+                {
+                    edits.Add(new HttpClientCreationEdit(objectCreation, replacementText));
+                }
+            }
+
+            return edits;
+        }
+
+        private static bool TryBuildCreateHttpClientReplacement(TrackedMockOrigin origin, ObjectCreationExpressionSyntax objectCreation, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacementText)
+        {
+            replacementText = string.Empty;
+            if (semanticModel.GetTypeInfo(objectCreation, cancellationToken).Type?.ToDisplayString() != "System.Net.Http.HttpClient" ||
+                objectCreation.ArgumentList?.Arguments.Count != 1 ||
+                !IsTrackedHttpHandlerObjectReference(objectCreation.ArgumentList.Arguments[0].Expression, origin, semanticModel, cancellationToken))
+            {
+                return false;
+            }
+
+            if (objectCreation.Initializer is null || objectCreation.Initializer.Expressions.Count == 0)
+            {
+                replacementText = $"{origin.MockerExpression}.CreateHttpClient()";
+                return true;
+            }
+
+            if (TryExtractBaseAddressInitializer(objectCreation.Initializer, semanticModel, cancellationToken, out var baseAddressText))
+            {
+                replacementText = $"{origin.MockerExpression}.CreateHttpClient(baseAddress: {baseAddressText})";
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool IsTrackedHttpHandlerObjectReference(ExpressionSyntax expression, TrackedMockOrigin expectedOrigin, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = UnwrapForPatternMatching(expression);
+            if (expression is not MemberAccessExpressionSyntax memberAccess || memberAccess.Name.Identifier.ValueText != "Object" ||
+                !FastMoqAnalysisHelpers.TryResolveTrackedMockOrigin(memberAccess.Expression, semanticModel, cancellationToken, out var actualOrigin))
+            {
+                return false;
+            }
+
+            return actualOrigin.Kind == expectedOrigin.Kind &&
+                SymbolEqualityComparer.Default.Equals(actualOrigin.ServiceType, expectedOrigin.ServiceType) &&
+                actualOrigin.MockerExpression.ToString() == expectedOrigin.MockerExpression.ToString() &&
+                actualOrigin.TrackedMockExpression.ToString() == expectedOrigin.TrackedMockExpression.ToString();
+        }
+
+        private static bool TryExtractBaseAddressInitializer(InitializerExpressionSyntax initializerExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string baseAddressText)
+        {
+            baseAddressText = string.Empty;
+            if (initializerExpression.Expressions.Count != 1 || initializerExpression.Expressions[0] is not AssignmentExpressionSyntax assignmentExpression)
+            {
+                return false;
+            }
+
+            var propertyName = assignmentExpression.Left switch
+            {
+                IdentifierNameSyntax identifierName => identifierName.Identifier.ValueText,
+                MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.ValueText,
+                _ => string.Empty,
+            };
+
+            if (propertyName != "BaseAddress")
+            {
+                return false;
+            }
+
+            var rightExpression = UnwrapForPatternMatching(assignmentExpression.Right);
+            if (rightExpression is not ObjectCreationExpressionSyntax uriCreation ||
+                semanticModel.GetTypeInfo(uriCreation, cancellationToken).Type?.ToDisplayString() != "System.Uri" ||
+                uriCreation.ArgumentList?.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            baseAddressText = uriCreation.ArgumentList.Arguments[0].Expression.ToString();
+            return true;
+        }
+
+        private static bool TryGetTrackedMockDeclarationToRemove(TrackedMockOrigin origin, StatementSyntax setupStatement, IReadOnlyList<HttpClientCreationEdit> httpClientCreations, SemanticModel semanticModel, CancellationToken cancellationToken, out LocalDeclarationStatementSyntax? declarationToRemove)
+        {
+            declarationToRemove = null;
+
+            if (origin.TrackedMockExpression is InvocationExpressionSyntax)
+            {
+                return true;
+            }
+
+            if (origin.TrackedMockExpression is not IdentifierNameSyntax identifierName ||
+                semanticModel.GetSymbolInfo(identifierName, cancellationToken).Symbol is not ILocalSymbol localSymbol ||
+                localSymbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax(cancellationToken) is not VariableDeclaratorSyntax variableDeclarator ||
+                variableDeclarator.Parent?.Parent is not LocalDeclarationStatementSyntax localDeclarationStatement)
+            {
+                return false;
+            }
+
+            var containingBlock = setupStatement.FirstAncestorOrSelf<BlockSyntax>();
+            if (containingBlock is null)
+            {
+                return false;
+            }
+
+            if (localDeclarationStatement.Parent != containingBlock)
+            {
+                return false;
+            }
+
+            foreach (var candidate in containingBlock.DescendantNodes().OfType<IdentifierNameSyntax>())
+            {
+                if (!SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(candidate, cancellationToken).Symbol, localSymbol))
+                {
+                    continue;
+                }
+
+                if (setupStatement.Span.Contains(candidate.Span))
+                {
+                    continue;
+                }
+
+                if (httpClientCreations.Any(edit => edit.TargetExpression.Span.Contains(candidate.Span)))
+                {
+                    continue;
+                }
+
+                return false;
+            }
+
+            declarationToRemove = localDeclarationStatement;
+            return true;
+        }
+
+        private readonly struct ProviderNeutralHttpHelperEdit
+        {
+            public ProviderNeutralHttpHelperEdit(StatementSyntax setupStatement, IReadOnlyList<string> setupReplacementStatements, string codeActionTitle, IReadOnlyList<HttpClientCreationEdit> httpClientCreations, LocalDeclarationStatementSyntax? trackedMockDeclarationToRemove, IReadOnlyList<string> requiredNamespaces)
+            {
+                SetupStatement = setupStatement;
+                SetupReplacementStatements = setupReplacementStatements;
+                CodeActionTitle = codeActionTitle;
+                HttpClientCreations = httpClientCreations;
+                TrackedMockDeclarationToRemove = trackedMockDeclarationToRemove;
+                RequiredNamespaces = requiredNamespaces;
+            }
+
+            public StatementSyntax SetupStatement { get; }
+
+            public IReadOnlyList<string> SetupReplacementStatements { get; }
+
+            public string CodeActionTitle { get; }
+
+            public IReadOnlyList<HttpClientCreationEdit> HttpClientCreations { get; }
+
+            public LocalDeclarationStatementSyntax? TrackedMockDeclarationToRemove { get; }
+
+            public IReadOnlyList<string> RequiredNamespaces { get; }
+        }
+
+        private readonly struct HttpClientCreationEdit
+        {
+            public HttpClientCreationEdit(ExpressionSyntax targetExpression, string replacementText)
+            {
+                TargetExpression = targetExpression;
+                ReplacementText = replacementText;
+            }
+
+            public ExpressionSyntax TargetExpression { get; }
+
+            public string ReplacementText { get; }
         }
 
         private delegate string? ReplacementBuilder(Document document, SemanticModel semanticModel, SyntaxNode syntaxNode, CancellationToken cancellationToken);

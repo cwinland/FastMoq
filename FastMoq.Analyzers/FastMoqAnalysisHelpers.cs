@@ -659,6 +659,23 @@ namespace FastMoq.Analyzers
             return true;
         }
 
+        public static bool TryGetProviderNeutralHttpHelperSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string apiName)
+        {
+            apiName = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
+            {
+                return false;
+            }
+
+            if (TryGetProviderNeutralHttpHelperSuggestion(method, out apiName))
+            {
+                return true;
+            }
+
+            return TryGetProtectedSendAsyncSuggestion(invocationExpression, semanticModel, cancellationToken, method, out apiName);
+        }
+
         public static bool TryGetProviderNeutralHttpHelperSuggestion(IMethodSymbol method, out string apiName)
         {
             apiName = string.Empty;
@@ -684,6 +701,50 @@ namespace FastMoq.Analyzers
             }
 
             return false;
+        }
+
+        private static bool TryGetProtectedSendAsyncSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, IMethodSymbol method, out string apiName)
+        {
+            apiName = string.Empty;
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name is not "Setup" and not "SetupSequence" ||
+                method.ContainingNamespace.ToDisplayString() != "Moq.Protected" ||
+                method.ContainingType.Name != "IProtectedMock" ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
+                !TryResolveProtectedTrackedMockOrigin(memberAccess.Expression, semanticModel, cancellationToken, out var origin) ||
+                origin.ServiceType.ToDisplayString() != "System.Net.Http.HttpMessageHandler" ||
+                invocationExpression.ArgumentList.Arguments.Count == 0 ||
+                semanticModel.GetConstantValue(invocationExpression.ArgumentList.Arguments[0].Expression, cancellationToken) is not { HasValue: true, Value: string protectedMemberName } ||
+                protectedMemberName != "SendAsync")
+            {
+                return false;
+            }
+
+            apiName = $"Protected().{method.Name}(\"SendAsync\", ...)";
+            return true;
+        }
+
+        public static bool TryResolveProtectedTrackedMockOrigin(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out TrackedMockOrigin origin)
+        {
+            expression = Unwrap(expression);
+            if (expression is not InvocationExpressionSyntax protectedInvocation ||
+                !TryGetMethodSymbol(protectedInvocation, semanticModel, cancellationToken, out var protectedMethod) ||
+                protectedMethod is null)
+            {
+                origin = default;
+                return false;
+            }
+
+            protectedMethod = protectedMethod.ReducedFrom ?? protectedMethod;
+            if (protectedMethod.Name != "Protected" ||
+                protectedInvocation.Expression is not MemberAccessExpressionSyntax protectedAccess)
+            {
+                origin = default;
+                return false;
+            }
+
+            return TryResolveTrackedMockOrigin(protectedAccess.Expression, semanticModel, cancellationToken, out origin);
         }
 
         public static bool TryGetTypedServiceProviderHelperSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string currentApi)
