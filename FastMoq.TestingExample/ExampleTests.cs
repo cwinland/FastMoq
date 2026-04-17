@@ -1,9 +1,9 @@
 using FluentAssertions;
 using FastMoq.Extensions;
+using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Moq;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using Xunit;
@@ -75,7 +75,7 @@ namespace FastMoq.TestingExample
         #region Fields
 
         private static bool testEventCalled;
-        private static Mock<IFileSystem> fileSystemMock = default!;
+        private static IFastMock<IFileSystem> fileSystemMock = default!;
 
         #endregion
 
@@ -85,7 +85,7 @@ namespace FastMoq.TestingExample
         [Fact]
         public void Test1()
         {
-            Component.FileSystem.Should().Be(fileSystemMock.Object);
+            Component.FileSystem.Should().Be(fileSystemMock.Instance);
             Component.FileSystem.Should().NotBeNull();
             Component.FileSystem.File.Should().NotBeNull();
             Component.FileSystem.Directory.Should().BeNull();
@@ -102,11 +102,11 @@ namespace FastMoq.TestingExample
 
         private static void SetupMocks(Mocker mocks)
         {
-            fileSystemMock = new Mock<IFileSystem>();
             var iFile = new FileSystem().File;
             mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
+            fileSystemMock = mocks.GetOrCreateMock<IFileSystem>();
             fileSystemMock.Setup(x => x.File).Returns(iFile);
-            mocks.AddType<IFileSystem>(fileSystemMock.Object, replace: true);
+            fileSystemMock.Setup(x => x.Directory).Returns((IDirectory)null!);
         }
     }
 

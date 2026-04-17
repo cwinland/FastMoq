@@ -365,6 +365,8 @@ if (!Mocks.TryGetTrackedMock<ILogger<OrderService>>(out var logger))
 }
 ```
 
+### Known-type extensibility
+
 After, when the old code only needed the resolved dependency instance:
 
 ```csharp
@@ -864,6 +866,8 @@ await Component.SubmitAsync("order-42", expedited: true, CancellationToken.None)
 
 channel.Mode.Should().Be("fast");
 ```
+
+That helper keeps its original write-through behavior by default. If the migrated test needs proxy-local property state without mutating the previously wrapped instance, use `AddPropertyState<IOrderSubmissionChannel>(PropertyStateMode.ProxyOnly)` instead.
 
 ### Known-type extensibility
 
