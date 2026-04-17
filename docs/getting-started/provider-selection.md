@@ -36,6 +36,16 @@ Why this matters:
 - Moq compatibility APIs such as `GetMock<T>()`, `VerifyLogger(...)`, `Protected()`, and direct `Mock<T>` setup require the Moq provider to be selected.
 - provider-package extensions such as `AsMoq()`, `Setup(...)` on `IFastMock<T>`, `AsNSubstitute()`, and `Received(...)` also require their corresponding provider package and selected provider.
 
+For concrete mocks that need constructor arguments, stay on the provider-first path instead of falling back to `GetMock<T>(...)`. When the request only needs constructor arguments, `GetOrCreateMock<T>(...)` can take them directly:
+
+```csharp
+var queueClient = mocker.GetOrCreateMock<QueueClient>(
+    new Uri("https://account.queue.core.windows.net/work-items"),
+    new QueueClientOptions());
+```
+
+Use `MockRequestOptions` when the request also needs a service key or non-public constructor selection. This still depends on the selected provider supporting concrete class mocking; the bundled `reflection` provider remains limited to interfaces and parameterless concrete types.
+
 ## First decision: do you need a non-default provider?
 
 Use this quick check before reading the rest of the page:
@@ -63,6 +73,20 @@ That keeps the test assembly explicit without requiring a startup hook. This wor
 
 The attribute selects the assembly-wide default provider by name. It does not create a new provider registration or alias.
 
+If an entire test subtree stays on one provider and your repository already uses `Directory.Build.props` or `Directory.Build.targets` to stamp assembly attributes, centralize the default there instead of repeating a bootstrap file in every test project:
+
+```xml
+<Project>
+    <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+        <AssemblyAttribute Include="FastMoq.Providers.FastMoqDefaultProviderAttribute">
+            <_Parameter1>moq</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+</Project>
+```
+
+That pattern fits repositories that already stamp `InternalsVisibleTo` or similar assembly metadata from MSBuild. Avoid a repo-wide default when some test projects intentionally stay on `reflection` or use a different provider.
+
 When registration and selection need to happen together at assembly scope, use [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml):
 
 ```csharp
@@ -79,6 +103,10 @@ Use startup code instead when you need more than declarative assembly metadata. 
 - choosing the provider dynamically at runtime from configuration, environment, or target-specific logic
 - combining provider selection with other one-time test bootstrap work in the same startup path
 - running custom registration logic that cannot be expressed as a provider type plus `SetAsDefault`
+
+Analyzer note:
+
+- `FMOQ0023` warns when legacy Moq-shaped FastMoq APIs remain in a project without explicit Moq onboarding. For core-only package graphs, that means adding `FastMoq.Provider.Moq` and selecting `moq` explicitly.
 
 ### Assembly startup alternatives
 

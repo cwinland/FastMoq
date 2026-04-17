@@ -770,6 +770,12 @@ For practical fallback patterns when you do not want to stay on Moq, see [Provid
 
 Property-setter and cache-entry tests are still a common Moq-only pocket because they often rely on `SetupSet(...)` or `SetupAllProperties()`. For ordinary interface collaborators, FastMoq now has first-party answers in `AddPropertySetterCapture<TService, TValue>(...)` and `AddPropertyState<TService>(...)`, but `ICacheEntry` tests often still need the broader Moq shape.
 
+Important migration rule:
+
+- do not replace a tracked cache-entry helper with `AddType<ICacheEntry>(...)` just because the immediate call site only needs an object
+- if the same helper later resolves `ICacheEntry` through `GetObject<T>()`, `GetRequiredTrackedMock<T>()`, `GetMockModel<T>()`, `AddPropertyState<TService>(...)`, or `AddPropertySetterCapture<TService, TValue>(...)`, keep the tracked mock/helper path
+- `FMOQ0022` exists specifically to catch this risky rewrite shape
+
 ```csharp
 var cacheEntry = Mocks.GetMock<ICacheEntry>();
 cacheEntry.SetupAllProperties();

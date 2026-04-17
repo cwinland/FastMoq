@@ -49,14 +49,14 @@ namespace FastMoq.Tests.TestBase
 
                 if (!autoCreate)
                 {
-                    throw new NotImplementedException("Unable to find the constructor.");
+                    throw new InvalidOperationException("Unable to find a tracked mock for the requested type.");
                 }
 
                 _ = mocker.GetOrCreateFastMock(type);
                 index = mocker.mockCollection.FindIndex(model => model.Type == type);
                 if (index < 0)
                 {
-                    throw new NotImplementedException("Unable to find the constructor.");
+                    throw new InvalidOperationException("Unable to find a tracked mock for the requested type.");
                 }
 
                 return index;

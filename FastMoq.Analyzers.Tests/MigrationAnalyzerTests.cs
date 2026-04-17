@@ -36,6 +36,8 @@ namespace FastMoq.Analyzers.Tests
             { new ServiceProviderShimAnalyzer(), DiagnosticDescriptors.PreferTypedServiceProviderHelpers },
             { new KnownTypeAuthoringAnalyzer(), DiagnosticDescriptors.PreferKnownTypeRegistrations },
             { new KeyedDependencyAnalyzer(), DiagnosticDescriptors.PreserveKeyedServiceDistinctness },
+            { new TrackedAddTypeMigrationAnalyzer(), DiagnosticDescriptors.PreserveTrackedResolutionDuringAddTypeMigration },
+            { new LegacyMoqOnboardingAnalyzer(), DiagnosticDescriptors.RequireExplicitMoqOnboarding },
         };
 
         public static TheoryData<DiagnosticDescriptor, DiagnosticSeverity> DescriptorSeverityPairs => new()
@@ -61,6 +63,8 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.PreferTypedServiceProviderHelpers, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.PreferKnownTypeRegistrations, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.PreserveKeyedServiceDistinctness, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.PreserveTrackedResolutionDuringAddTypeMigration, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.RequireExplicitMoqOnboarding, DiagnosticSeverity.Warning },
         };
 
         [Theory]
@@ -1972,6 +1976,281 @@ class Sample
 
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderBootstrapAnalyzer());
             Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task TrackedAddTypeMigrationAnalyzer_ShouldReport_WhenTrackedReplacementStillUsesGetObjectForSameService()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Moq;
+
+class Sample
+{
+    interface IService
+    {
+        string? Value { get; set; }
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var tracked = mocks.GetMock<IService>();
+        mocks.AddType<IService>(tracked.Object, replace: true);
+        var resolved = mocks.GetObject<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new TrackedAddTypeMigrationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreserveTrackedResolutionDuringAddTypeMigration));
+            Assert.Equal(DiagnosticIds.PreserveTrackedResolutionDuringAddTypeMigration, diagnostic.Id);
+            Assert.Contains("GetObject<T>()", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task TrackedAddTypeMigrationAnalyzer_ShouldNotReport_WhenConcreteFakeReplacementOwnsResolution()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class Sample
+{
+    interface IService
+    {
+        string? Value { get; set; }
+    }
+
+    sealed class FakeService : IService
+    {
+        public string? Value { get; set; }
+    }
+
+    void Execute(Mocker mocks)
+    {
+        mocks.AddType<IService>(_ => new FakeService(), replace: true);
+        var resolved = mocks.GetObject<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new TrackedAddTypeMigrationAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreserveTrackedResolutionDuringAddTypeMigration);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldReport_WhenLegacyGetMockIsUsedWithoutExplicitOnboarding()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LegacyMoqOnboardingAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding));
+            Assert.Equal(DiagnosticIds.RequireExplicitMoqOnboarding, diagnostic.Id);
+            Assert.Contains("GetMock<T>()", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldReport_WhenLegacyGetMockUsesAssemblyDefaultButMoqProviderPackageIsMissing()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider(""moq"")]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: false,
+                includeNSubstituteProviderPackage: true,
+                new LegacyMoqOnboardingAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding));
+            Assert.Equal(DiagnosticIds.RequireExplicitMoqOnboarding, diagnostic.Id);
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(
+                SOURCE,
+                new LegacyMoqOnboardingAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.RequireExplicitMoqOnboarding,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: false,
+                includeNSubstituteProviderPackage: true);
+            Assert.Empty(codeFixTitles);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldNotReport_WhenProviderPackageAndAssemblyDefaultArePresent()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider(""moq"")]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LegacyMoqOnboardingAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_CodeFix_ShouldAddAssemblyDefault_WhenProviderPackageIsPresent()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new LegacyMoqOnboardingAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.RequireExplicitMoqOnboarding,
+                codeFixTitle: "Add [assembly: FastMoqDefaultProvider(\"moq\")]");
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider(""moq"")]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_CodeFix_ShouldOfferBothMoqOnboardingChoices_WhenProviderPackageIsPresent()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(
+                SOURCE,
+                new LegacyMoqOnboardingAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.RequireExplicitMoqOnboarding);
+
+            Assert.Equal(2, codeFixTitles.Length);
+            Assert.Contains("Add [assembly: FastMoqDefaultProvider(\"moq\")]", codeFixTitles);
+            Assert.Contains("Add [assembly: FastMoqRegisterProvider(\"moq\", typeof(MoqMockingProvider), SetAsDefault = true)]", codeFixTitles);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_CodeFix_ShouldAddAssemblyRegistration_WhenExplicitRegisterAndSelectIsPreferred()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new LegacyMoqOnboardingAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.RequireExplicitMoqOnboarding,
+                codeFixTitle: "Add [assembly: FastMoqRegisterProvider(\"moq\", typeof(MoqMockingProvider), SetAsDefault = true)]");
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider(""moq"", typeof(MoqMockingProvider), SetAsDefault = true)]
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
         }
 
         [Fact]

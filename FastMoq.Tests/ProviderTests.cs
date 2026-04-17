@@ -50,6 +50,22 @@ namespace FastMoq.Tests
             }
         }
 
+        [Fact]
+        public void GetOrCreateMock_WithConstructorArgs_ShouldCreateConcreteMockThroughSupportedProviderFirstPath()
+        {
+            using var providerScope = PushProvider("moq");
+            var mocker = new Mocker();
+            var endpoint = new Uri("https://fastmoq.test/providers/orders");
+            const string queueName = "orders";
+
+            var typed = mocker.GetOrCreateMock<ProviderConstructedDependency>(endpoint, queueName);
+            var untyped = mocker.GetOrCreateMock(typeof(ProviderConstructedDependency), endpoint, queueName);
+
+            untyped.Should().BeSameAs(typed);
+            typed.Instance.Endpoint.Should().Be(endpoint);
+            typed.Instance.QueueName.Should().Be(queueName);
+        }
+
         [Theory]
         [MemberData(nameof(ProviderNames))]
         public void TryGetTrackedMock_ShouldReturnFalse_WhenTrackedMockDoesNotExist(string providerName)
@@ -817,6 +833,12 @@ namespace FastMoq.Tests
         public class KeyedProviderFallbackConsumer([FromKeyedServices("dep")] IProviderDependency dependency)
         {
             public IProviderDependency Dependency { get; } = dependency;
+        }
+
+        public class ProviderConstructedDependency(Uri endpoint, string queueName)
+        {
+            public Uri Endpoint { get; } = endpoint;
+            public string QueueName { get; } = queueName;
         }
 
         public interface IExpressionConsumer
