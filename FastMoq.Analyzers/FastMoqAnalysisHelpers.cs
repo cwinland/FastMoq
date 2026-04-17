@@ -2043,19 +2043,60 @@ namespace FastMoq.Analyzers
 
         public static bool HasProviderSelectionInScope(SyntaxNode node, SemanticModel semanticModel, string providerName, CancellationToken cancellationToken)
         {
-            var scope = node.AncestorsAndSelf().FirstOrDefault(ancestor =>
-                ancestor is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax)
-                ?? node.SyntaxTree.GetRoot(cancellationToken);
-
-            foreach (var invocationExpression in scope.DescendantNodes().OfType<InvocationExpressionSyntax>())
+            foreach (var scope in EnumerateProviderSelectionScopes(node, cancellationToken))
             {
-                if (IsProviderSelectionInvocation(invocationExpression, semanticModel, providerName, requireDefaultSelection: false, cancellationToken))
+                foreach (var invocationExpression in EnumerateScopeInvocations(scope))
                 {
-                    return true;
+                    if (IsProviderSelectionInvocation(invocationExpression, semanticModel, providerName, requireDefaultSelection: false, cancellationToken))
+                    {
+                        return true;
+                    }
                 }
             }
 
             return false;
+        }
+
+        private static IEnumerable<SyntaxNode> EnumerateProviderSelectionScopes(SyntaxNode node, CancellationToken cancellationToken)
+        {
+            var seenScopes = new HashSet<SyntaxNode>();
+            SyntaxNode? current = node;
+
+            while (current is not null)
+            {
+                var scope = current.AncestorsAndSelf().FirstOrDefault(ancestor =>
+                    ancestor is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax);
+
+                if (scope is null)
+                {
+                    var root = node.SyntaxTree.GetRoot(cancellationToken);
+                    if (seenScopes.Add(root))
+                    {
+                        yield return root;
+                    }
+
+                    yield break;
+                }
+
+                if (seenScopes.Add(scope))
+                {
+                    yield return scope;
+                }
+
+                current = scope.Parent;
+            }
+        }
+
+        private static IEnumerable<InvocationExpressionSyntax> EnumerateScopeInvocations(SyntaxNode scope)
+        {
+            return scope
+                .DescendantNodesAndSelf(child => child == scope || !IsNestedExecutableScope(child))
+                .OfType<InvocationExpressionSyntax>();
+        }
+
+        private static bool IsNestedExecutableScope(SyntaxNode node)
+        {
+            return node is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax;
         }
 
         private static bool HasUsingDirective(SyntaxNode node, string namespaceName)
