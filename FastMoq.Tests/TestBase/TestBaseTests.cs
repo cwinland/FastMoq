@@ -161,33 +161,40 @@ namespace FastMoq.Tests.TestBase
             }
         }
 
-        [Fact(Skip = "Revisit later")]
-        public void WaitForTest()
+        [Fact]
+        public void WaitFor_ShouldReturnOnceLogicProducesNonDefaultResult()
         {
-            var result1 = false;
-            var result2 = false;
+            var attempts = 0;
 
-            var task1 = new Task(() =>
+            var result = WaitFor(() =>
                 {
-                    Thread.Sleep(1000);
-                    result1 = true;
-                }
-            );
+                    attempts++;
+                    return attempts >= 3;
+                },
+                TimeSpan.FromMilliseconds(100),
+                TimeSpan.Zero);
 
-            var task2 = new Task(() =>
+            result.Should().BeTrue();
+            attempts.Should().Be(3);
+        }
+
+        [Fact]
+        public void WaitFor_ShouldThrowTimeout_WhenLogicRemainsDefault()
+        {
+            var attempts = 0;
+
+            var action = () => WaitFor(() =>
                 {
-                    Thread.Sleep(500);
-                    result2 = true;
-                }
-            );
+                    attempts++;
+                    return false;
+                },
+                TimeSpan.FromMilliseconds(20),
+                TimeSpan.FromMilliseconds(1));
 
-            task1.Start();
-            task2.Start();
-            WaitFor(() => result1 && result2, TimeSpan.FromSeconds(2));
-            result1.Should().BeTrue();
-            result2.Should().BeTrue();
-            task1.Dispose();
-            task2.Dispose();
+            action.Should()
+                .Throw<ApplicationException>()
+                .WithMessage("Timeout waiting for condition");
+            attempts.Should().BeGreaterThan(0);
         }
 
         public class ConstructorTestClass

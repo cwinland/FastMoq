@@ -121,13 +121,13 @@ namespace FastMoq
         #endregion
 
         /// <summary>
-        ///     Waits for an action.
+        /// Waits until <paramref name="logic" /> returns a value other than <c>default(T)</c>.
         /// </summary>
-        /// <typeparam name="T">Logic of T.</typeparam>
-        /// <param name="logic">The action.</param>
-        /// <param name="timespan">The maximum time to wait.</param>
-        /// <param name="waitBetweenChecks">Time between each check.</param>
-        /// <returns>T.</returns>
+        /// <typeparam name="T">The result type produced by the polling logic.</typeparam>
+        /// <param name="logic">The polling function to evaluate.</param>
+        /// <param name="timespan">The maximum time to wait for a non-default result.</param>
+        /// <param name="waitBetweenChecks">The delay between polling attempts while the result remains <c>default(T)</c>.</param>
+        /// <returns>The first non-default value returned by <paramref name="logic" />.</returns>
         /// <exception cref="System.ArgumentNullException">logic</exception>
         /// <exception cref="System.ApplicationException">Timeout waiting for condition</exception>
         public static T WaitFor<T>(Func<T> logic, TimeSpan timespan, TimeSpan waitBetweenChecks)
@@ -143,30 +143,38 @@ namespace FastMoq
             while (EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now <= timeout)
             {
                 result = logic();
+                if (!EqualityComparer<T>.Default.Equals(result, default))
+                {
+                    break;
+                }
+
                 Thread.Sleep(waitBetweenChecks);
             }
 
-            return !EqualityComparer<T>.Default.Equals(result, default) && DateTimeOffset.Now > timeout
-                ? throw new ApplicationException("Timeout waiting for condition")
-                : result;
+            if (EqualityComparer<T>.Default.Equals(result, default))
+            {
+                throw new ApplicationException("Timeout waiting for condition");
+            }
+
+            return result;
         }
 
         /// <summary>
-        ///     Waits for an action.
+        /// Waits until <paramref name="logic" /> returns a value other than <c>default(T)</c>.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="logic">The action.</param>
-        /// <returns>T.</returns>
+        /// <typeparam name="T">The result type produced by the polling logic.</typeparam>
+        /// <param name="logic">The polling function to evaluate.</param>
+        /// <returns>The first non-default value returned by <paramref name="logic" />.</returns>
         /// <exception cref="System.ArgumentNullException">logic</exception>
         public static T WaitFor<T>(Func<T> logic) => WaitFor(logic, TimeSpan.FromSeconds(4));
 
         /// <summary>
-        ///     Waits for an action.
+        /// Waits until <paramref name="logic" /> returns a value other than <c>default(T)</c>.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="logic">The action.</param>
-        /// <param name="timespan">The timespan, defaults to 4 seconds.</param>
-        /// <returns>T.</returns>
+        /// <typeparam name="T">The result type produced by the polling logic.</typeparam>
+        /// <param name="logic">The polling function to evaluate.</param>
+        /// <param name="timespan">The maximum time to wait for a non-default result.</param>
+        /// <returns>The first non-default value returned by <paramref name="logic" />.</returns>
         /// <exception cref="System.ArgumentNullException">logic</exception>
         public static T WaitFor<T>(Func<T> logic, TimeSpan timespan) => WaitFor(logic, timespan, TimeSpan.FromMilliseconds(100));
 
