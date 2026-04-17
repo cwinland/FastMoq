@@ -40,6 +40,20 @@ namespace FastMoq.Analyzers
 
     internal static class FastMoqAnalysisHelpers
     {
+        internal const string FastMoqMockerTypeName = "FastMoq.Mocker";
+        internal const string FastMoqMockModelTypeName = "FastMoq.Models.MockModel";
+        internal const string FastMoqMockModelGenericTypeName = "FastMoq.Models.MockModel<T>";
+        internal const string FastMoqProvidersNamespace = "FastMoq.Providers";
+        internal const string FastMoqMoqProviderAssemblyName = "FastMoq.Provider.Moq";
+        internal const string FastMoqNSubstituteProviderAssemblyName = "FastMoq.Provider.NSubstitute";
+        internal const string MoqProviderNamespace = "FastMoq.Providers.MoqProvider";
+        internal const string NSubstituteProviderNamespace = "FastMoq.Providers.NSubstituteProvider";
+        internal const string MockingProviderRegistryTypeName = "FastMoq.Providers.MockingProviderRegistry";
+        internal const string MoqProviderMetadataName = "FastMoq.Providers.MoqProvider.MoqMockingProvider";
+        internal const string MoqProviderTypeName = "MoqMockingProvider";
+        internal const string MoqProviderName = "moq";
+        internal const string NSubstituteProviderName = "nsubstitute";
+        internal const string RegisterProviderSetAsDefaultPropertyName = "SetAsDefault";
         private const string FASTMOQ_DEFAULT_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqDefaultProviderAttribute";
         private const string FASTMOQ_REGISTER_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqRegisterProviderAttribute";
         private const string FASTMOQ_MOCKER_TEST_BASE_METADATA_NAME = "MockerTestBase`1";
@@ -80,10 +94,26 @@ namespace FastMoq.Analyzers
             return method is not null;
         }
 
+        public static bool HasMoqProviderPackage(Compilation compilation)
+        {
+            return compilation.GetTypeByMetadataName(MoqProviderMetadataName) is not null;
+        }
+
+        public static bool IsFastMoqMockModelType(ITypeSymbol type)
+        {
+            if (type is not INamedTypeSymbol namedType)
+            {
+                return false;
+            }
+
+            var originalDefinitionName = namedType.OriginalDefinition.ToDisplayString();
+            return originalDefinitionName is FastMoqMockModelTypeName or FastMoqMockModelGenericTypeName;
+        }
+
         public static bool IsFastMoqMockerMethod(IMethodSymbol method, string methodName)
         {
             method = method.ReducedFrom ?? method;
-            return method.Name == methodName && method.ContainingType.ToDisplayString() == "FastMoq.Mocker";
+            return method.Name == methodName && method.ContainingType.ToDisplayString() == FastMoqMockerTypeName;
         }
 
         public static bool IsFastMoqVerifyLogger(IMethodSymbol method)
@@ -100,13 +130,13 @@ namespace FastMoq.Analyzers
         public static bool IsFastMoqInitializeMethod(IMethodSymbol method)
         {
             method = method.ReducedFrom ?? method;
-            return method.Name == "Initialize" && method.ContainingType.ToDisplayString() == "FastMoq.Mocker";
+            return method.Name == "Initialize" && method.ContainingType.ToDisplayString() == FastMoqMockerTypeName;
         }
 
         public static bool IsFastMoqMockerAddTypeMethod(IMethodSymbol method)
         {
             method = method.ReducedFrom ?? method;
-            return method.Name == "AddType" && method.ContainingType.ToDisplayString() == "FastMoq.Mocker";
+            return method.Name == "AddType" && method.ContainingType.ToDisplayString() == FastMoqMockerTypeName;
         }
 
         public static bool TryGetRequiredProvider(IMethodSymbol method, out string providerName, out string apiName)
@@ -115,24 +145,24 @@ namespace FastMoq.Analyzers
             providerName = string.Empty;
             apiName = method.Name;
 
-            if (method.ContainingType.ToDisplayString() == "FastMoq.Mocker" &&
+            if (method.ContainingType.ToDisplayString() == FastMoqMockerTypeName &&
                 method.Name is "GetMock" or "GetRequiredMock" or "CreateMockInstance" or "CreateDetachedMock")
             {
-                providerName = "moq";
+                providerName = MoqProviderName;
                 return true;
             }
 
-            if (method.ContainingAssembly.Name == "FastMoq.Provider.Moq" &&
+            if (method.ContainingAssembly.Name == FastMoqMoqProviderAssemblyName &&
                 (method.ContainingType.Name == "IFastMockMoqExtensions" || method.ContainingType.Name == "MockerHttpMoqExtensions"))
             {
-                providerName = "moq";
+                providerName = MoqProviderName;
                 return true;
             }
 
-            if (method.ContainingAssembly.Name == "FastMoq.Provider.NSubstitute" &&
+            if (method.ContainingAssembly.Name == FastMoqNSubstituteProviderAssemblyName &&
                 method.ContainingType.Name == "IFastMockNSubstituteExtensions")
             {
-                providerName = "nsubstitute";
+                providerName = NSubstituteProviderName;
                 return true;
             }
 
@@ -148,9 +178,9 @@ namespace FastMoq.Analyzers
             {
                 for (var containingType = property.ContainingType; containingType is not null; containingType = containingType.BaseType)
                 {
-                    if (containingType.ToDisplayString() == "FastMoq.Models.MockModel")
+                    if (IsFastMoqMockModelType(containingType))
                     {
-                        providerName = "moq";
+                        providerName = MoqProviderName;
                         return true;
                     }
                 }
@@ -168,7 +198,7 @@ namespace FastMoq.Analyzers
 
         public static bool IsFastMoqMockerProperty(IPropertySymbol property, string propertyName)
         {
-            return property.Name == propertyName && property.ContainingType.ToDisplayString() == "FastMoq.Mocker";
+            return property.Name == propertyName && property.ContainingType.ToDisplayString() == FastMoqMockerTypeName;
         }
 
         public static bool IsFastMoqNativeMockProperty(IPropertySymbol property)
@@ -190,7 +220,7 @@ namespace FastMoq.Analyzers
 
             for (var containingType = property.ContainingType; containingType is not null; containingType = containingType.BaseType)
             {
-                if (containingType.ToDisplayString() == "FastMoq.Models.MockModel")
+                if (IsFastMoqMockModelType(containingType))
                 {
                     return true;
                 }
@@ -551,15 +581,15 @@ namespace FastMoq.Analyzers
             providerName = string.Empty;
             providerExtensionName = string.Empty;
 
-            var usesMoqProvider = HasUsingDirective(node, "FastMoq.Providers.MoqProvider");
-            var usesNSubstituteProvider = HasUsingDirective(node, "FastMoq.Providers.NSubstituteProvider");
+            var usesMoqProvider = HasUsingDirective(node, MoqProviderNamespace);
+            var usesNSubstituteProvider = HasUsingDirective(node, NSubstituteProviderNamespace);
 
             if (usesMoqProvider == usesNSubstituteProvider)
             {
                 return false;
             }
 
-            providerName = usesMoqProvider ? "moq" : "nsubstitute";
+            providerName = usesMoqProvider ? MoqProviderName : NSubstituteProviderName;
             providerExtensionName = usesMoqProvider ? "AsMoq()" : "AsNSubstitute()";
             return true;
         }
@@ -634,7 +664,7 @@ namespace FastMoq.Analyzers
             apiName = string.Empty;
 
             method = method.ReducedFrom ?? method;
-            if (method.ContainingAssembly.Name != "FastMoq.Provider.Moq" || method.ContainingType.Name != "MockerHttpMoqExtensions")
+            if (method.ContainingAssembly.Name != FastMoqMoqProviderAssemblyName || method.ContainingType.Name != "MockerHttpMoqExtensions")
             {
                 return false;
             }
@@ -1930,7 +1960,7 @@ namespace FastMoq.Analyzers
             var invokeMethod = namedType.DelegateInvokeMethod;
             return namedType.Name == "Func" &&
                    invokeMethod.Parameters.Length == 2 &&
-                   invokeMethod.Parameters[0].Type.ToDisplayString() == "FastMoq.Mocker";
+                     invokeMethod.Parameters[0].Type.ToDisplayString() == FastMoqMockerTypeName;
         }
 
         public static bool IsProviderSelectedByDefault(Compilation compilation, string providerName, CancellationToken cancellationToken)
@@ -1998,7 +2028,7 @@ namespace FastMoq.Analyzers
                 }
 
                 var setAsDefault = attribute.NamedArguments.Any(argument =>
-                    argument.Key == "SetAsDefault" &&
+                    argument.Key == RegisterProviderSetAsDefaultPropertyName &&
                     argument.Value.Value is bool isDefault &&
                     isDefault);
 
@@ -2043,7 +2073,7 @@ namespace FastMoq.Analyzers
         {
             if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
                 method is null ||
-                method.ContainingType.ToDisplayString() != "FastMoq.Providers.MockingProviderRegistry" ||
+                method.ContainingType.ToDisplayString() != MockingProviderRegistryTypeName ||
                 invocationExpression.ArgumentList.Arguments.Count == 0)
             {
                 return false;

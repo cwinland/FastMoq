@@ -164,6 +164,32 @@ This breaking change is currently specific to strict `IFileSystem` mock enrichme
 
 In other words, the repo did not broadly change every built-in type to ignore strict-mode behavior. The compatibility break identified here is the tracked `IFileSystem` mock path.
 
+### `MockerTestBase<TComponent>.WaitFor<T>(...)` now throws on timeout
+
+`WaitFor<T>(...)` is documented as polling until the supplied logic returns a value other than `default(T)`, then throwing if that never happens before the timeout expires.
+
+What changed:
+
+- timeout now consistently throws `ApplicationException("Timeout waiting for condition")` when the result remains `default(T)` through the configured wait window
+- the XML docs on all overloads now make the non-`default(T)` success contract explicit
+- tests should now assert the timeout exception directly instead of treating `default(T)` as a timeout sentinel value
+
+Migration guidance:
+
+```csharp
+// Previous accidental timeout-sentinel pattern
+var result = WaitFor(() => false, TimeSpan.FromMilliseconds(20));
+result.Should().BeFalse();
+
+// Current behavior
+Action action = () => WaitFor(() => false, TimeSpan.FromMilliseconds(20));
+action.Should()
+    .Throw<ApplicationException>()
+    .WithMessage("Timeout waiting for condition");
+```
+
+If `default(T)` is a valid success result for the polling path, use a different readiness signal so the helper can distinguish "not ready yet" from "ready with the default value".
+
 ## Historical package-line change summary
 
 The root README previously carried this older package-line summary. It is kept here so compatibility notes live in one place.

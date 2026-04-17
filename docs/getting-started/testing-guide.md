@@ -58,6 +58,15 @@ Mocks.AddType<IClock>(_ => new FakeClock(DateTimeOffset.Parse("2026-04-01T12:00:
 
 If the dependency is still conceptually a mock, prefer [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)). If you are changing how the type is resolved, prefer [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])).
 
+Migration guardrail:
+
+- do not rewrite a tracked helper to [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when the same service still flows through `GetObject<T>()`, `GetRequiredTrackedMock<T>()`, `GetMockModel<T>()`, `AddPropertyState<TService>(...)`, or `AddPropertySetterCapture<TService, TValue>(...)`
+- that is still a tracked FastMoq dependency, not a concrete type-map override
+
+Analyzer note:
+
+- `FMOQ0022` warns when an `AddType(...)` rewrite comes from a tracked mock/object path and the same file still uses tracked-resolution APIs or property helpers for that service
+
 ## Typed IServiceProvider Helpers
 
 Framework-heavy tests should not fake `IServiceProvider` with a single mocked `GetService(Type)` callback that returns the same object for every request.

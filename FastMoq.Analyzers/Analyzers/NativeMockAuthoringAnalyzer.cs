@@ -30,7 +30,7 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
-            var preferredAccess = providerName == "moq"
+            var preferredAccess = providerName == FastMoqAnalysisHelpers.MoqProviderName
                 ? "GetOrCreateMock<T>().AsMoq()"
                 : "GetOrCreateMock<T>().AsNSubstitute()";
 

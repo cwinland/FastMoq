@@ -24,7 +24,8 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.PreferTypedServiceProviderHelpers,
             DiagnosticIds.UseExplicitOptionalParameterResolution,
             DiagnosticIds.ReplaceInitializeCompatibilityWrapper,
-            DiagnosticIds.PreferSetupOptionsHelper);
+            DiagnosticIds.PreferSetupOptionsHelper,
+            DiagnosticIds.RequireExplicitMoqOnboarding);
 
         public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -194,6 +195,30 @@ namespace FastMoq.Analyzers.CodeFixes
                                 "Use SetupOptions(...)",
                                 cancellationToken => ReplaceSetupOptionsInvocationAsync(document, invocationExpression, cancellationToken),
                                 nameof(DiagnosticIds.PreferSetupOptionsHelper)),
+                            diagnostic);
+                        break;
+                    }
+
+                case DiagnosticIds.RequireExplicitMoqOnboarding:
+                    {
+                        var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (semanticModel is null || !FastMoqAnalysisHelpers.HasMoqProviderPackage(semanticModel.Compilation))
+                        {
+                            return;
+                        }
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                "Add [assembly: FastMoqDefaultProvider(\"moq\")]",
+                                cancellationToken => AddAssemblyDefaultProviderAsync(document, FastMoqAnalysisHelpers.MoqProviderName, cancellationToken),
+                                nameof(DiagnosticIds.RequireExplicitMoqOnboarding) + ".default"),
+                            diagnostic);
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                "Add [assembly: FastMoqRegisterProvider(\"moq\", typeof(MoqMockingProvider), SetAsDefault = true)]",
+                                cancellationToken => AddAssemblyRegisteredDefaultProviderAsync(document, FastMoqAnalysisHelpers.MoqProviderName, cancellationToken),
+                                nameof(DiagnosticIds.RequireExplicitMoqOnboarding) + ".register"),
                             diagnostic);
                         break;
                     }
@@ -431,6 +456,141 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementMemberAccess = memberAccess.WithName(replacementName);
             var updatedRoot = root.ReplaceNode(memberAccess, replacementMemberAccess);
             return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> AddAssemblyDefaultProviderAsync(Document document, string providerName, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) as CompilationUnitSyntax;
+            if (root is null || HasAssemblyDefaultProviderAttribute(root, providerName))
+            {
+                return document;
+            }
+
+            var updatedRoot = (CompilationUnitSyntax) AddUsingDirectiveIfMissing(root, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
+            updatedRoot = updatedRoot.AddAttributeLists(CreateAssemblyDefaultProviderAttribute(providerName));
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> AddAssemblyRegisteredDefaultProviderAsync(Document document, string providerName, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) as CompilationUnitSyntax;
+            if (root is null || HasAssemblyRegisteredDefaultProviderAttribute(root, providerName))
+            {
+                return document;
+            }
+
+            var updatedRoot = (CompilationUnitSyntax) AddUsingDirectivesIfMissing(root, [FastMoqAnalysisHelpers.FastMoqProvidersNamespace, FastMoqAnalysisHelpers.MoqProviderNamespace]);
+            updatedRoot = updatedRoot.AddAttributeLists(CreateAssemblyRegisteredDefaultProviderAttribute(providerName));
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static bool HasAssemblyDefaultProviderAttribute(CompilationUnitSyntax compilationUnit, string providerName)
+        {
+            foreach (var attributeList in compilationUnit.AttributeLists)
+            {
+                if (attributeList.Target?.Identifier.IsKind(SyntaxKind.AssemblyKeyword) != true)
+                {
+                    continue;
+                }
+
+                foreach (var attribute in attributeList.Attributes)
+                {
+                    var attributeName = attribute.Name.ToString();
+                    if (attributeName is not "FastMoqDefaultProvider" and not "FastMoqDefaultProviderAttribute" and not "FastMoq.Providers.FastMoqDefaultProvider" and not "FastMoq.Providers.FastMoqDefaultProviderAttribute")
+                    {
+                        continue;
+                    }
+
+                    var firstArgument = attribute.ArgumentList?.Arguments.FirstOrDefault();
+                    if (firstArgument?.Expression is LiteralExpressionSyntax literalExpression &&
+                        literalExpression.IsKind(SyntaxKind.StringLiteralExpression) &&
+                        string.Equals(literalExpression.Token.ValueText, providerName, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static bool HasAssemblyRegisteredDefaultProviderAttribute(CompilationUnitSyntax compilationUnit, string providerName)
+        {
+            foreach (var attributeList in compilationUnit.AttributeLists)
+            {
+                if (attributeList.Target?.Identifier.IsKind(SyntaxKind.AssemblyKeyword) != true)
+                {
+                    continue;
+                }
+
+                foreach (var attribute in attributeList.Attributes)
+                {
+                    var attributeName = attribute.Name.ToString();
+                    if (attributeName is not "FastMoqRegisterProvider" and not "FastMoqRegisterProviderAttribute" and not "FastMoq.Providers.FastMoqRegisterProvider" and not "FastMoq.Providers.FastMoqRegisterProviderAttribute")
+                    {
+                        continue;
+                    }
+
+                    var argumentList = attribute.ArgumentList;
+                    var firstArgument = argumentList?.Arguments.FirstOrDefault();
+                    if (firstArgument?.Expression is not LiteralExpressionSyntax literalExpression ||
+                        !literalExpression.IsKind(SyntaxKind.StringLiteralExpression) ||
+                        !string.Equals(literalExpression.Token.ValueText, providerName, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    if (argumentList is not null && argumentList.Arguments.Any(argument =>
+                            argument.NameEquals?.Name.Identifier.ValueText == FastMoqAnalysisHelpers.RegisterProviderSetAsDefaultPropertyName &&
+                            argument.Expression is LiteralExpressionSyntax boolLiteral &&
+                            boolLiteral.IsKind(SyntaxKind.TrueLiteralExpression)))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static AttributeListSyntax CreateAssemblyDefaultProviderAttribute(string providerName)
+        {
+            return SyntaxFactory.AttributeList(
+                    SyntaxFactory.SingletonSeparatedList(
+                        SyntaxFactory.Attribute(
+                            SyntaxFactory.IdentifierName("FastMoqDefaultProvider"),
+                            SyntaxFactory.AttributeArgumentList(
+                                SyntaxFactory.SingletonSeparatedList(
+                                    SyntaxFactory.AttributeArgument(
+                                        SyntaxFactory.LiteralExpression(
+                                            SyntaxKind.StringLiteralExpression,
+                                            SyntaxFactory.Literal(providerName))))))))
+                .WithTarget(SyntaxFactory.AttributeTargetSpecifier(SyntaxFactory.Token(SyntaxKind.AssemblyKeyword)));
+        }
+
+        private static AttributeListSyntax CreateAssemblyRegisteredDefaultProviderAttribute(string providerName)
+        {
+            return SyntaxFactory.AttributeList(
+                    SyntaxFactory.SingletonSeparatedList(
+                        SyntaxFactory.Attribute(
+                            SyntaxFactory.IdentifierName("FastMoqRegisterProvider"),
+                            SyntaxFactory.AttributeArgumentList(
+                                SyntaxFactory.SeparatedList<AttributeArgumentSyntax>(
+                                [
+                                    SyntaxFactory.AttributeArgument(
+                                        SyntaxFactory.LiteralExpression(
+                                            SyntaxKind.StringLiteralExpression,
+                                            SyntaxFactory.Literal(providerName))),
+                                    SyntaxFactory.AttributeArgument(
+                                        SyntaxFactory.TypeOfExpression(
+                                            SyntaxFactory.IdentifierName(FastMoqAnalysisHelpers.MoqProviderTypeName))),
+                                    SyntaxFactory.AttributeArgument(
+                                        SyntaxFactory.NameEquals(
+                                            SyntaxFactory.IdentifierName(FastMoqAnalysisHelpers.RegisterProviderSetAsDefaultPropertyName)),
+                                        null,
+                                        SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression)),
+                                ])))))
+                .WithTarget(SyntaxFactory.AttributeTargetSpecifier(SyntaxFactory.Token(SyntaxKind.AssemblyKeyword)));
         }
 
         private static SyntaxNode AddUsingDirectiveIfMissing(SyntaxNode root, string namespaceName)

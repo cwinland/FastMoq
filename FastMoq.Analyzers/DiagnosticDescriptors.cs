@@ -194,5 +194,23 @@ namespace FastMoq.Analyzers
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: "When the system under test has multiple same-type keyed constructor dependencies, an unkeyed test double can collapse distinct roles into one object and hide routing bugs. Prefer keyed FastMoq setup or explicit separate doubles.");
+
+        public static readonly DiagnosticDescriptor PreserveTrackedResolutionDuringAddTypeMigration = new(
+            DiagnosticIds.PreserveTrackedResolutionDuringAddTypeMigration,
+            "Preserve tracked resolution when migrating to AddType",
+            "AddType<{0}>(...) replaces tracked resolution for '{0}', but this file still uses '{1}' for the same service. Keep a tracked mock/helper path instead of rewriting this dependency to AddType(...).",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "AddType(...) is for concrete replacement. When a migrated helper still relies on tracked resolution, property-state helpers, or setter-capture helpers for the same service, replacing the tracked path with AddType(...) can silently change behavior. Prefer GetOrCreateMock<T>(), GetRequiredTrackedMock<T>(), AddPropertyState<TService>(...), or AddPropertySetterCapture<TService, TValue>(...) in those flows.");
+
+        public static readonly DiagnosticDescriptor RequireExplicitMoqOnboarding = new(
+            DiagnosticIds.RequireExplicitMoqOnboarding,
+            "Add explicit Moq onboarding for legacy compatibility usage",
+            "Legacy Moq-shaped FastMoq API '{0}' is in use without explicit Moq onboarding. If this project stays on FastMoq.Core, add 'FastMoq.Provider.Moq' and select 'moq' with [assembly: FastMoqDefaultProvider(\"moq\")] or [assembly: FastMoqRegisterProvider(\"moq\", typeof(MoqMockingProvider), SetAsDefault = true)].",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "Core-only projects can keep legacy Moq-shaped FastMoq usage during migration, but that path should be explicit. Add the FastMoq.Provider.Moq package when staying on FastMoq.Core, and declare moq as the selected provider so future cleanup and analyzer guidance stay deterministic.");
     }
 }

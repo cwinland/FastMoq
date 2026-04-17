@@ -18,12 +18,17 @@ namespace FastMoq.Analyzers.Tests
     {
         public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(string source, params DiagnosticAnalyzer[] analyzers)
         {
-            return await GetDiagnosticsAsync(source, includeAzureFunctionsHelpers: false, analyzers).ConfigureAwait(false);
+            return await GetDiagnosticsAsync(source, includeAzureFunctionsHelpers: false, includeMoqProviderPackage: true, includeNSubstituteProviderPackage: true, analyzers).ConfigureAwait(false);
         }
 
         public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(string source, bool includeAzureFunctionsHelpers, params DiagnosticAnalyzer[] analyzers)
         {
-            var document = CreateDocument(source, includeAzureFunctionsHelpers);
+            return await GetDiagnosticsAsync(source, includeAzureFunctionsHelpers, includeMoqProviderPackage: true, includeNSubstituteProviderPackage: true, analyzers).ConfigureAwait(false);
+        }
+
+        public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(string source, bool includeAzureFunctionsHelpers, bool includeMoqProviderPackage, bool includeNSubstituteProviderPackage, params DiagnosticAnalyzer[] analyzers)
+        {
+            var document = CreateDocument(source, includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage);
             return await GetDiagnosticsAsync(document, analyzers).ConfigureAwait(false);
         }
 
@@ -41,9 +46,14 @@ namespace FastMoq.Analyzers.Tests
                 .ConfigureAwait(false);
         }
 
-        public static async Task<string> ApplyCodeFixAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers = false, int diagnosticOccurrence = 0, string? diagnosticMessageContains = null)
+        public static async Task<string> ApplyCodeFixAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers = false, int diagnosticOccurrence = 0, string? diagnosticMessageContains = null, string? codeFixTitle = null)
         {
-            var document = CreateDocument(source, includeAzureFunctionsHelpers);
+            return await ApplyCodeFixAsync(source, analyzer, codeFixProvider, diagnosticId, includeAzureFunctionsHelpers, includeMoqProviderPackage: true, includeNSubstituteProviderPackage: true, diagnosticOccurrence, diagnosticMessageContains, codeFixTitle).ConfigureAwait(false);
+        }
+
+        public static async Task<string> ApplyCodeFixAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers, bool includeMoqProviderPackage, bool includeNSubstituteProviderPackage, int diagnosticOccurrence = 0, string? diagnosticMessageContains = null, string? codeFixTitle = null)
+        {
+            var document = CreateDocument(source, includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage);
             var diagnostics = await GetDiagnosticsAsync(document, analyzer).ConfigureAwait(false);
             var diagnostic = diagnostics
                 .Where(item => item.Id == diagnosticId)
@@ -55,7 +65,9 @@ namespace FastMoq.Analyzers.Tests
             var context = new CodeFixContext(document, diagnostic, (action, _) => actions.Add(action), CancellationToken.None);
             await codeFixProvider.RegisterCodeFixesAsync(context).ConfigureAwait(false);
 
-            var action = actions.Single();
+            var action = codeFixTitle is null
+                ? actions.Single()
+                : actions.Single(item => string.Equals(item.Title, codeFixTitle, StringComparison.Ordinal));
             var operations = await action.GetOperationsAsync(CancellationToken.None).ConfigureAwait(false);
             var changedSolution = operations.OfType<ApplyChangesOperation>().Single().ChangedSolution;
             var changedDocument = changedSolution.GetDocument(document.Id)!;
@@ -65,7 +77,12 @@ namespace FastMoq.Analyzers.Tests
 
         public static async Task<ImmutableArray<string>> GetCodeFixTitlesAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers = false, int diagnosticOccurrence = 0, string? diagnosticMessageContains = null)
         {
-            var document = CreateDocument(source, includeAzureFunctionsHelpers);
+            return await GetCodeFixTitlesAsync(source, analyzer, codeFixProvider, diagnosticId, includeAzureFunctionsHelpers, includeMoqProviderPackage: true, includeNSubstituteProviderPackage: true, diagnosticOccurrence, diagnosticMessageContains).ConfigureAwait(false);
+        }
+
+        public static async Task<ImmutableArray<string>> GetCodeFixTitlesAsync(string source, DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string diagnosticId, bool includeAzureFunctionsHelpers, bool includeMoqProviderPackage, bool includeNSubstituteProviderPackage, int diagnosticOccurrence = 0, string? diagnosticMessageContains = null)
+        {
+            var document = CreateDocument(source, includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage);
             var diagnostics = await GetDiagnosticsAsync(document, analyzer).ConfigureAwait(false);
             var diagnostic = diagnostics
                 .Where(item => item.Id == diagnosticId)
@@ -88,7 +105,7 @@ namespace FastMoq.Analyzers.Tests
                 .ToFullString();
         }
 
-        private static Document CreateDocument(string source, bool includeAzureFunctionsHelpers = false)
+        private static Document CreateDocument(string source, bool includeAzureFunctionsHelpers = false, bool includeMoqProviderPackage = true, bool includeNSubstituteProviderPackage = true)
         {
             var workspace = new AdhocWorkspace();
             var projectId = ProjectId.CreateNewId();
@@ -99,7 +116,7 @@ namespace FastMoq.Analyzers.Tests
                 .WithProjectParseOptions(projectId, new CSharpParseOptions(LanguageVersion.Preview))
                 .WithProjectCompilationOptions(projectId, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-            foreach (var metadataReference in GetMetadataReferences(includeAzureFunctionsHelpers))
+            foreach (var metadataReference in GetMetadataReferences(includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage))
             {
                 solution = solution.AddMetadataReference(projectId, metadataReference);
             }
@@ -108,7 +125,7 @@ namespace FastMoq.Analyzers.Tests
             return solution.GetDocument(documentId)!;
         }
 
-        private static IEnumerable<MetadataReference> GetMetadataReferences(bool includeAzureFunctionsHelpers)
+        private static IEnumerable<MetadataReference> GetMetadataReferences(bool includeAzureFunctionsHelpers, bool includeMoqProviderPackage, bool includeNSubstituteProviderPackage)
         {
             var references = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") is string trustedPlatformAssemblies)
@@ -121,13 +138,34 @@ namespace FastMoq.Analyzers.Tests
                         continue;
                     }
 
+                    if (!includeMoqProviderPackage &&
+                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.Provider.Moq", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    if (!includeNSubstituteProviderPackage &&
+                        string.Equals(Path.GetFileNameWithoutExtension(assemblyPath), "FastMoq.Provider.NSubstitute", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
                     references.Add(assemblyPath);
                 }
             }
 
             references.Add(typeof(FastMoq.Mocker).Assembly.Location);
-            references.Add(typeof(FastMoq.Providers.MoqProvider.IFastMockMoqExtensions).Assembly.Location);
-            references.Add(typeof(FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions).Assembly.Location);
+
+            if (includeMoqProviderPackage)
+            {
+                references.Add(typeof(FastMoq.Providers.MoqProvider.IFastMockMoqExtensions).Assembly.Location);
+            }
+
+            if (includeNSubstituteProviderPackage)
+            {
+                references.Add(typeof(FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions).Assembly.Location);
+            }
+
             references.Add(typeof(Moq.Mock).Assembly.Location);
             references.Add(typeof(NSubstitute.Substitute).Assembly.Location);
             references.Add(typeof(Microsoft.Extensions.Logging.ILogger).Assembly.Location);

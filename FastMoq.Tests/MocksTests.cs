@@ -278,12 +278,25 @@ namespace FastMoq.Tests
             Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
             Mocks.Policy.EnabledBuiltInTypeResolutions &= ~BuiltInTypeResolutionFlags.FileSystem;
             // No Constructor.
-            new Action(() => Mocks.CreateInstance<IFileSystem>().Should().NotBeNull()).Should().Throw<NotImplementedException>();
+            new Action(() => Mocks.CreateInstance<IFileSystem>().Should().NotBeNull()).Should().Throw<InvalidOperationException>();
 
             // Built-in file-system resolution resumes on the normal lenient path.
             Mocks.Policy.EnabledBuiltInTypeResolutions |= BuiltInTypeResolutionFlags.FileSystem;
             Mocks.Behavior.Disable(MockFeatures.FailOnUnconfigured);
             new Action(() => Mocks.CreateInstance<IFileSystem>().Should().NotBeNull()).Should().NotThrow();
+        }
+
+        [Fact]
+        public void CreateBest_ShouldIncludeInterfaceResolutionGuidance_WhenStrictInterfaceCreationFails()
+        {
+            Mocks.Behavior.Enable(MockFeatures.FailOnUnconfigured);
+            Mocks.Policy.EnabledBuiltInTypeResolutions &= ~BuiltInTypeResolutionFlags.FileSystem;
+
+            var act = () => Mocks.CreateInstance<IFileSystem>();
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*GetObject<T>()*GetOrCreateMock<T>()*AddType(...)*");
         }
 
         [Fact]
@@ -651,12 +664,22 @@ namespace FastMoq.Tests
             Mocks.CreateInstance<TestClassMany>(4, "str").Should().NotBeNull();
 
             Action a = () => Mocks.CreateInstance<TestClassMany>("4", "str").Should().NotBeNull();
-            a.Should().Throw<NotImplementedException>();
+            a.Should().Throw<InvalidOperationException>();
             IFile file = new FileWrapper(new FileSystem());
             Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, file).Should().NotBeNull();
             Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, new FileSystem()).Should().NotBeNull();
             Action b = () => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.AllowNonPublicConstructorFallback, "4", "str").Should().NotBeNull();
-            b.Should().Throw<NotImplementedException>();
+            b.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void CreateExact_ShouldIncludeConstructorSelectionGuidance_WhenArgumentsDoNotMatch()
+        {
+            var act = () => Mocks.CreateInstance<TestClassMany>("4", "str");
+
+            act.Should()
+                .Throw<InvalidOperationException>()
+                .WithMessage("*CreateInstanceByType(...)*AddType(...)*GetOrCreateMock(...)*");
         }
 
         [Fact]
@@ -666,7 +689,7 @@ namespace FastMoq.Tests
             Mocks.CreateInstanceByType<TestClassMany>(new Type[] { typeof(string) }).Should().NotBeNull();
             Mocks.CreateInstanceByType<TestClassMany>(new Type[] { typeof(int), typeof(string) }).Should().NotBeNull();
             Action a = () => Mocks.CreateInstance<TestClassMany>(new Type[] { typeof(string), typeof(string) }).Should().NotBeNull();
-            a.Should().Throw<NotImplementedException>();
+            a.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -680,7 +703,7 @@ namespace FastMoq.Tests
             byNonPublic.Should().NotBeNull();
 
             var act = () => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.PublicConstructorsOnly, new FileSystem().File);
-            act.Should().Throw<NotImplementedException>();
+            act.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -706,7 +729,7 @@ namespace FastMoq.Tests
         {
             var act = () => Mocks.CreateInstance<TestClassOne>(InstanceCreationFlags.PublicConstructorsOnly, new FileSystem().File);
 
-            act.Should().Throw<NotImplementedException>();
+            act.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -947,7 +970,7 @@ namespace FastMoq.Tests
         public void FindConstructor_Missing_ShouldThrow()
         {
             Action a = () => Mocks.FindConstructor(typeof(TestClassMany), false, Mocks.GetObject<IFileSystem>());
-            a.Should().Throw<NotImplementedException>();
+            a.Should().Throw<InvalidOperationException>();
         }
 
         [Theory]
@@ -1127,14 +1150,14 @@ namespace FastMoq.Tests
 
                 if (!autoCreate)
                 {
-                    throw new NotImplementedException("Unable to find the constructor.");
+                    throw new InvalidOperationException("Unable to find a tracked mock for the requested type.");
                 }
 
                 _ = mocker.GetOrCreateFastMock(type);
                 index = mocker.mockCollection.FindIndex(model => model.Type == type);
                 if (index < 0)
                 {
-                    throw new NotImplementedException("Unable to find the constructor.");
+                    throw new InvalidOperationException("Unable to find a tracked mock for the requested type.");
                 }
 
                 return index;
@@ -1145,7 +1168,7 @@ namespace FastMoq.Tests
 
             // Should not find it, because it doesn't exist.
             Action a = () => GetTrackedMockIndex(Component, typeof(IFileSystem), false);
-            a.Should().Throw<NotImplementedException>();
+            a.Should().Throw<InvalidOperationException>();
 
             // Should find it because it is auto created.
             GetTrackedMockIndex(Component, typeof(IFileSystem)).Should().Be(mockCount);
@@ -1333,7 +1356,7 @@ namespace FastMoq.Tests
         public void CreateInstanceByType_ShouldRequireExactParameterlessSignature_WhenEmptyTypeArrayIsProvided()
         {
             new Action(() => Mocks.CreateInstanceByType<NoParameterlessConstructorSelectionTarget>(Array.Empty<Type>()))
-                .Should().Throw<NotImplementedException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Fact]
@@ -1536,7 +1559,7 @@ namespace FastMoq.Tests
 
             var act = () => testBase.TestMocks.CreateInstance<TestClassOne>(new FileSystem().File);
 
-            act.Should().Throw<NotImplementedException>();
+            act.Should().Throw<InvalidOperationException>();
         }
 
         [Fact]

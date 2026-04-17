@@ -20,8 +20,8 @@ namespace FastMoq.Analyzers.Analyzers
 
         private static void RegisterCompilationAnalysis(CompilationStartAnalysisContext context)
         {
-            var moqSelectedByDefault = FastMoqAnalysisHelpers.IsProviderSelectedByDefault(context.Compilation, "moq", CancellationToken.None);
-            var nsubstituteSelectedByDefault = FastMoqAnalysisHelpers.IsProviderSelectedByDefault(context.Compilation, "nsubstitute", CancellationToken.None);
+            var moqSelectedByDefault = FastMoqAnalysisHelpers.IsProviderSelectedByDefault(context.Compilation, FastMoqAnalysisHelpers.MoqProviderName, CancellationToken.None);
+            var nsubstituteSelectedByDefault = FastMoqAnalysisHelpers.IsProviderSelectedByDefault(context.Compilation, FastMoqAnalysisHelpers.NSubstituteProviderName, CancellationToken.None);
 
             context.RegisterSyntaxNodeAction(nodeContext => AnalyzeInvocation(nodeContext, moqSelectedByDefault, nsubstituteSelectedByDefault), Microsoft.CodeAnalysis.CSharp.SyntaxKind.InvocationExpression);
             context.RegisterSyntaxNodeAction(nodeContext => AnalyzeMemberAccess(nodeContext, moqSelectedByDefault, nsubstituteSelectedByDefault), Microsoft.CodeAnalysis.CSharp.SyntaxKind.SimpleMemberAccessExpression);
@@ -37,8 +37,8 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
-            if ((providerName == "moq" && moqSelectedByDefault) ||
-                (providerName == "nsubstitute" && nsubstituteSelectedByDefault) ||
+            if ((providerName == FastMoqAnalysisHelpers.MoqProviderName && moqSelectedByDefault) ||
+                (providerName == FastMoqAnalysisHelpers.NSubstituteProviderName && nsubstituteSelectedByDefault) ||
                 FastMoqAnalysisHelpers.HasProviderSelectionInScope(invocationExpression, context.SemanticModel, providerName, context.CancellationToken))
             {
                 return;
@@ -61,8 +61,8 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
-            if ((providerName == "moq" && moqSelectedByDefault) ||
-                (providerName == "nsubstitute" && nsubstituteSelectedByDefault) ||
+            if ((providerName == FastMoqAnalysisHelpers.MoqProviderName && moqSelectedByDefault) ||
+                (providerName == FastMoqAnalysisHelpers.NSubstituteProviderName && nsubstituteSelectedByDefault) ||
                 FastMoqAnalysisHelpers.HasProviderSelectionInScope(memberAccessExpression, context.SemanticModel, providerName, context.CancellationToken))
             {
                 return;

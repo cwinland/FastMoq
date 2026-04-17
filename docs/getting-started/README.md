@@ -96,6 +96,7 @@ Important package boundaries in the current v4 line:
 - `FastMoq` also includes the FastMoq analyzer assets by default so most test projects get migration guidance without extra setup
 - `FastMoq.Core` stays lighter on purpose, so shared Azure SDK helpers, EF helpers, Azure Functions helpers, and web helpers are separate package decisions when you consume core directly
 - `FastMoq.Core` does not include analyzer assets; add `FastMoq.Analyzers` explicitly if you want analyzer guidance in a core-only package graph
+- if a core-only test project stays on the legacy Moq-shaped path with `GetMock<T>()`, `VerifyLogger(...)`, `MockModel.Mock`, `SetupSet(...)`, `SetupAllProperties()`, or other Moq-specific compatibility flows, add `FastMoq.Analyzers` and `FastMoq.Provider.Moq` explicitly, then select `moq` at assembly scope instead of relying on the default `reflection` provider
 - `FastMoq.Core` includes the built-in `reflection` provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as `Setup(...)` and `Protected()` still belong to the `FastMoq.Provider.Moq` package
 - provider-package extension methods still follow the provider-package docs and selection rules described in [Provider Selection and Setup](./provider-selection.md)
 - if you are wiring Azure SDK clients, pageable sequences, or token credentials through tests while consuming `FastMoq.Core` directly, add `FastMoq.Azure`

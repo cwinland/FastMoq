@@ -45,6 +45,22 @@ namespace FastMoq
         }
 
         /// <summary>
+        /// Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist,
+        /// using the supplied constructor arguments for concrete mock creation.
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience wrapper for <see cref="GetOrCreateMock{T}(MockRequestOptions?)" /> when the request only needs constructor arguments.
+        /// Use <see cref="GetOrCreateMock{T}(MockRequestOptions?)" /> when also setting a service key or non-public constructor behavior.
+        /// </remarks>
+        public IFastMock<T> GetOrCreateMockWithConstructorArgs<T>(params object?[] constructorArgs) where T : class
+        {
+            return GetOrCreateTypedFastMock<T>(new MockRequestOptions
+            {
+                ConstructorArgs = constructorArgs ?? Array.Empty<object?>(),
+            });
+        }
+
+        /// <summary>
         /// Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.
         /// Use the returned <see cref="IFastMock" /> when the test needs the tracked handle itself, and prefer <see cref="Mocker.GetObject(Type, Action{object?}?)" /> when only the instance is needed.
         /// </summary>
@@ -52,6 +68,24 @@ namespace FastMoq
         {
             ArgumentNullException.ThrowIfNull(type);
             return GetOrCreateFastMock(type, options);
+        }
+
+        /// <summary>
+        /// Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist,
+        /// using the supplied constructor arguments for concrete mock creation.
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience wrapper for <see cref="GetOrCreateMock(Type, MockRequestOptions?)" /> when the request only needs constructor arguments.
+        /// Use <see cref="GetOrCreateMock(Type, MockRequestOptions?)" /> when also setting a service key or non-public constructor behavior.
+        /// </remarks>
+        public IFastMock GetOrCreateMockWithConstructorArgs(Type type, params object?[] constructorArgs)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+
+            return GetOrCreateFastMock(type, new MockRequestOptions
+            {
+                ConstructorArgs = constructorArgs ?? Array.Empty<object?>(),
+            });
         }
 
         /// <summary>

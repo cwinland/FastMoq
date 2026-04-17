@@ -1221,7 +1221,7 @@ namespace FastMoq
             {
                 if (Behavior.Has(MockFeatures.FailOnUnconfigured))
                 {
-                    throw new NotImplementedException("Unable to find the constructor.");
+                    throw GetConstructorResolutionException(targetType, "The requested type is an interface and strict construction does not allow fallback object resolution.");
                 }
 
                 return GetObject<T>();
@@ -1251,6 +1251,54 @@ namespace FastMoq
         internal bool ShouldAllowNonPublicConstructorsForMockRequest(bool? allowNonPublicConstructors)
         {
             return allowNonPublicConstructors ?? !ShouldCreateStrictMocks();
+        }
+
+        private static InvalidOperationException GetConstructorResolutionException(Type type, string? detail = null)
+        {
+            var message = $"Unable to find a usable constructor for type '{type}'.";
+            if (!string.IsNullOrWhiteSpace(detail))
+            {
+                message = $"{message} {detail}";
+            }
+
+            message = $"{message} {GetConstructorResolutionGuidance(type)}";
+
+            return new InvalidOperationException(message);
+        }
+
+        private static string GetConstructorResolutionGuidance(Type type)
+        {
+            if (type.IsInterface)
+            {
+                return "If the request should stay abstract, use GetObject<T>() or GetOrCreateMock<T>(), or register a concrete implementation with AddType(...).";
+            }
+
+            return "If the test must pick an exact signature, use CreateInstanceByType(...). If only non-public constructors are valid, enable InstanceCreationFlags.AllowNonPublicConstructorFallback or Policy.DefaultFallbackToNonPublicConstructors. Register required dependencies with AddType(...), AddKeyedType(...), or GetOrCreateMock(...) before creating the instance.";
+        }
+
+        private static string FormatRequestedParameterTypes(IEnumerable<Type?> parameterTypes)
+        {
+            return $"({string.Join(", ", parameterTypes.Select(parameterType => parameterType?.Name ?? "null"))})";
+        }
+
+        private static string FormatRequestedArguments(IEnumerable<object?> arguments)
+        {
+            return $"({string.Join(", ", arguments.Select(FormatRequestedArgument))})";
+        }
+
+        private static string FormatRequestedArgument(object? argument)
+        {
+            if (argument is null)
+            {
+                return "null";
+            }
+
+            if (argument is string text)
+            {
+                return $"\"{text}\"";
+            }
+
+            return $"{argument} [{argument.GetType().Name}]";
         }
 
         private ConstructorModel GetConstructorByArgs(object?[] args, Type instanceType, bool nonPublic, bool fallbackToNonPublicConstructors, OptionalParameterResolutionMode optionalParameterResolution, ConstructorAmbiguityBehavior constructorAmbiguityBehavior)
@@ -1342,7 +1390,7 @@ namespace FastMoq
 
             if (ctors.Count == 0)
             {
-                throw new NotImplementedException("Unable to find the constructor.");
+                throw GetConstructorResolutionException(type, $"Requested parameter types: {FormatRequestedParameterTypes(args)}.");
             }
 
             return ctors[0];
@@ -1361,7 +1409,7 @@ namespace FastMoq
 
             if (ctors.Count == 0)
             {
-                throw new NotImplementedException("Unable to find the constructor.");
+                throw GetConstructorResolutionException(type, $"Requested parameter types: {FormatRequestedParameterTypes(args)}.");
             }
 
             return ctors[0];
@@ -1386,7 +1434,7 @@ namespace FastMoq
                     return FindConstructor(type, true, optionalParameterResolution, args);
                 }
 
-                throw new NotImplementedException("Unable to find the constructor.");
+                throw GetConstructorResolutionException(type, $"Requested arguments: {FormatRequestedArguments(args)}.");
             }
             return filtered.FirstOrDefault(x => x.ParameterList.Length == args.Length) ?? filtered[0];
         }
@@ -1407,7 +1455,7 @@ namespace FastMoq
                     return FindConstructor(type, true, fallbackToNonPublicConstructors, optionalParameterResolution, args);
                 }
 
-                throw new NotImplementedException("Unable to find the constructor.");
+                throw GetConstructorResolutionException(type, $"Requested arguments: {FormatRequestedArguments(args)}.");
             }
 
             return filtered.FirstOrDefault(x => x.ParameterList.Length == args.Length) ?? filtered[0];
@@ -1463,7 +1511,7 @@ namespace FastMoq
             }
 
             return SelectPreferredConstructor(type, this.GetTestedConstructors(type, nonPublicConstructors), constructorAmbiguityBehavior)
-                ?? throw new NotImplementedException("Unable to find the constructor.");
+                ?? throw GetConstructorResolutionException(type, "No public or eligible non-public constructors were available after filtering.");
         }
 
         private ConstructorModel? SelectPreferredConstructor(Type type, List<ConstructorModel>? constructors)
@@ -2279,7 +2327,7 @@ namespace FastMoq
                 .Select(ci => new ConstructorModel(ci, new object?[ci.GetParameters().Length]))
                 .ToList();
             var constructor = SelectPreferredConstructor(type.InstanceType, constructors, constructorAmbiguityBehavior)
-                ?? throw new NotImplementedException("Unable to find the constructor.");
+                ?? throw GetConstructorResolutionException(type.InstanceType, "No usable constructor was available to infer argument data.");
 
             return constructor.ConstructorInfo == null
                 ? Array.Empty<object?>()

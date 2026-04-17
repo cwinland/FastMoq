@@ -167,13 +167,15 @@ Important points:
 - `UseStrictPreset()` and `UseLenientPreset()` now express the broader behavior profiles directly.
 - Moq-specific HTTP helpers such as `SetupHttpMessage(...)` moved out of `FastMoq.Core` and into `FastMoq.Provider.Moq`, while remaining in the `FastMoq.Extensions` namespace for lower source churn.
 - `MockerTestBase<TComponent>` gained clearer component-construction and policy hooks.
+- `MockerTestBase<TComponent>.WaitFor<T>(...)` now consistently treats timeout as a failure and throws `ApplicationException` when the polling logic never produces a non-`default(T)` result.
 
 ### Breaking behavior to account for
 
-Two release-facing behavior changes deserve special attention:
+Three release-facing behavior changes deserve special attention:
 
 - strict-mode semantics are now more explicit and less overloaded than they were in `3.0.0`
 - strict `IFileSystem` mocks now stay enriched by the built-in in-memory file system pipeline instead of behaving like a raw empty Moq mock
+- `WaitFor<T>(...)` no longer falls through and returns `default(T)` on timeout; timeout now surfaces as the documented exception path
 
 For detailed migration notes, see [Breaking Changes](../breaking-changes/README.md).
 
