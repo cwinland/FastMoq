@@ -446,9 +446,21 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             var annotatedSetupStatement = updatedRoot.GetAnnotatedNodes(setupAnnotation).Single();
-            var replacementStatement = SyntaxFactory.ParseStatement(edit.SetupReplacementText)
-                .WithTriviaFrom(annotatedSetupStatement);
-            updatedRoot = updatedRoot.ReplaceNode(annotatedSetupStatement, replacementStatement);
+            var replacementStatements = ParseReplacementStatements(edit.SetupReplacementStatements, (StatementSyntax) annotatedSetupStatement);
+            if (replacementStatements.Count == 1)
+            {
+                updatedRoot = updatedRoot.ReplaceNode(annotatedSetupStatement, replacementStatements[0]);
+            }
+            else if (annotatedSetupStatement.Parent is BlockSyntax setupBlock)
+            {
+                var statementIndex = setupBlock.Statements.IndexOf((StatementSyntax) annotatedSetupStatement);
+                var rewrittenStatements = setupBlock.Statements.RemoveAt(statementIndex).InsertRange(statementIndex, replacementStatements);
+                updatedRoot = updatedRoot.ReplaceNode(setupBlock, setupBlock.WithStatements(rewrittenStatements));
+            }
+            else
+            {
+                return document;
+            }
 
             for (var index = 0; index < clientAnnotations.Length; index++)
             {
@@ -459,6 +471,7 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions");
+            updatedRoot = AddUsingDirectivesIfMissing(updatedRoot, edit.RequiredNamespaces);
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -705,6 +718,22 @@ namespace FastMoq.Analyzers.CodeFixes
             return root;
         }
 
+        private static IReadOnlyList<StatementSyntax> ParseReplacementStatements(IReadOnlyList<string> replacementStatements, StatementSyntax originalStatement)
+        {
+            var parsedStatements = replacementStatements
+                .Select(statementText => SyntaxFactory.ParseStatement(statementText))
+                .ToArray();
+
+            if (parsedStatements.Length == 0)
+            {
+                return [];
+            }
+
+            parsedStatements[0] = parsedStatements[0].WithLeadingTrivia(originalStatement.GetLeadingTrivia());
+            parsedStatements[parsedStatements.Length - 1] = parsedStatements[parsedStatements.Length - 1].WithTrailingTrivia(originalStatement.GetTrailingTrivia());
+            return parsedStatements;
+        }
+
         private static bool TryBuildProviderNeutralHttpHelperEdit(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out ProviderNeutralHttpHelperEdit edit)
         {
             edit = default;
@@ -716,68 +745,98 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             method = method.ReducedFrom ?? method;
-            if (method.Name != "Setup" ||
+            var supportsSequence = method.Name == "SetupSequence";
+            if (method.Name is not "Setup" and not "SetupSequence" ||
                 method.ContainingNamespace.ToDisplayString() != "Moq.Protected" ||
                 method.ContainingType.Name != "IProtectedMock" ||
                 invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
                 !FastMoqAnalysisHelpers.TryResolveProtectedTrackedMockOrigin(memberAccess.Expression, semanticModel, cancellationToken, out var origin) ||
                 origin.ServiceType.ToDisplayString() != "System.Net.Http.HttpMessageHandler" ||
-                invocationExpression.ArgumentList.Arguments.Count < 2 ||
+                invocationExpression.ArgumentList.Arguments.Count != 3 ||
                 semanticModel.GetConstantValue(invocationExpression.ArgumentList.Arguments[0].Expression, cancellationToken) is not { HasValue: true, Value: string protectedMemberName } ||
-                protectedMemberName != "SendAsync")
+                protectedMemberName != "SendAsync" ||
+                !IsAnyCancellationTokenMatcher(invocationExpression.ArgumentList.Arguments[2].Expression, semanticModel, cancellationToken))
             {
                 return false;
             }
 
-            var topLevelInvocation = GetOutermostInvocation(invocationExpression);
-            var setupStatement = topLevelInvocation.FirstAncestorOrSelf<ExpressionStatementSyntax>();
-            if (setupStatement is null ||
-                !TryFindReturnsInvocation(topLevelInvocation, out var returnsInvocation) ||
-                !TryBuildProviderNeutralHttpSetupReplacement(origin, invocationExpression.ArgumentList.Arguments[1].Expression, returnsInvocation, semanticModel, cancellationToken, out var setupReplacementText, out var codeActionTitle))
+            if (!TryGetSupportedProviderNeutralHttpReturnsInvocations(invocationExpression, supportsSequence, out var returnsInvocations))
             {
                 return false;
+            }
+
+            var setupStatement = returnsInvocations[returnsInvocations.Count - 1].FirstAncestorOrSelf<ExpressionStatementSyntax>();
+            if (setupStatement is null)
+            {
+                return false;
+            }
+
+            IReadOnlyList<string> setupReplacementStatements;
+            IReadOnlyList<string> requiredNamespaces;
+            string codeActionTitle;
+            if (supportsSequence)
+            {
+                if (!TryBuildProviderNeutralHttpSequenceReplacement(origin, invocationExpression.ArgumentList.Arguments[1].Expression, returnsInvocations, semanticModel, cancellationToken, setupStatement, out setupReplacementStatements, out codeActionTitle, out requiredNamespaces))
+                {
+                    return false;
+                }
+            }
+            else if (!TryBuildProviderNeutralHttpSetupReplacement(origin, invocationExpression.ArgumentList.Arguments[1].Expression, returnsInvocations[0], semanticModel, cancellationToken, out var setupReplacementText, out codeActionTitle))
+            {
+                return false;
+            }
+            else
+            {
+                setupReplacementStatements = [setupReplacementText];
+                requiredNamespaces = Array.Empty<string>();
             }
 
             var httpClientCreations = FindHttpClientCreationEdits(origin, setupStatement, semanticModel, cancellationToken);
-            _ = TryGetTrackedMockDeclarationToRemove(origin, setupStatement, httpClientCreations.Count, semanticModel, cancellationToken, out var declarationToRemove);
+            if (!TryGetTrackedMockDeclarationToRemove(origin, setupStatement, httpClientCreations, semanticModel, cancellationToken, out var declarationToRemove))
+            {
+                return false;
+            }
 
-            edit = new ProviderNeutralHttpHelperEdit(setupStatement, setupReplacementText, codeActionTitle, httpClientCreations, declarationToRemove);
+            edit = new ProviderNeutralHttpHelperEdit(setupStatement, setupReplacementStatements, codeActionTitle, httpClientCreations, declarationToRemove, requiredNamespaces);
             return true;
         }
 
-        private static InvocationExpressionSyntax GetOutermostInvocation(InvocationExpressionSyntax invocationExpression)
+        private static bool TryGetSupportedProviderNeutralHttpReturnsInvocations(InvocationExpressionSyntax invocationExpression, bool supportsSequence, out IReadOnlyList<InvocationExpressionSyntax> returnsInvocations)
         {
+            var collectedReturnsInvocations = new List<InvocationExpressionSyntax>();
             while (invocationExpression.Parent is MemberAccessExpressionSyntax memberAccess &&
                 memberAccess.Parent is InvocationExpressionSyntax parentInvocation)
             {
+                if (memberAccess.Name.Identifier.ValueText is not "Returns" and not "ReturnsAsync")
+                {
+                    returnsInvocations = Array.Empty<InvocationExpressionSyntax>();
+                    return false;
+                }
+
+                collectedReturnsInvocations.Add(parentInvocation);
                 invocationExpression = parentInvocation;
             }
 
-            return invocationExpression;
+            returnsInvocations = collectedReturnsInvocations;
+            return collectedReturnsInvocations.Count > 0 && (supportsSequence || collectedReturnsInvocations.Count == 1);
         }
 
-        private static bool TryFindReturnsInvocation(InvocationExpressionSyntax invocationExpression, out InvocationExpressionSyntax returnsInvocation)
+        private static bool IsAnyCancellationTokenMatcher(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            returnsInvocation = invocationExpression;
-            while (true)
+            expression = UnwrapForPatternMatching(expression);
+            if (expression is not InvocationExpressionSyntax invocationExpression ||
+                !FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
             {
-                if (returnsInvocation.Expression is MemberAccessExpressionSyntax memberAccess)
-                {
-                    if (memberAccess.Name.Identifier.ValueText is "Returns" or "ReturnsAsync")
-                    {
-                        return true;
-                    }
-
-                    if (memberAccess.Expression is InvocationExpressionSyntax innerInvocation)
-                    {
-                        returnsInvocation = innerInvocation;
-                        continue;
-                    }
-                }
-
-                returnsInvocation = null!;
                 return false;
             }
+
+            method = method.ReducedFrom ?? method;
+            return method.Name == "IsAny" &&
+                method.ContainingType.Name == "ItExpr" &&
+                method.TypeArguments.Length == 1 &&
+                method.TypeArguments[0].ToDisplayString() == "System.Threading.CancellationToken" &&
+                invocationExpression.ArgumentList.Arguments.Count == 0;
         }
 
         private static bool TryBuildProviderNeutralHttpSetupReplacement(TrackedMockOrigin origin, ExpressionSyntax requestMatcherExpression, InvocationExpressionSyntax returnsInvocation, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacementText, out string codeActionTitle)
@@ -808,6 +867,41 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             replacementText = $"{mockerText}.WhenHttpRequest({predicateText}, {responseFactoryText});";
+            return true;
+        }
+
+        private static bool TryBuildProviderNeutralHttpSequenceReplacement(TrackedMockOrigin origin, ExpressionSyntax requestMatcherExpression, IReadOnlyList<InvocationExpressionSyntax> returnsInvocations, SemanticModel semanticModel, CancellationToken cancellationToken, StatementSyntax setupStatement, out IReadOnlyList<string> replacementStatements, out string codeActionTitle, out IReadOnlyList<string> requiredNamespaces)
+        {
+            replacementStatements = Array.Empty<string>();
+            codeActionTitle = "Use WhenHttpRequest(...)";
+            requiredNamespaces = ["System", "System.Collections.Generic"];
+
+            if (setupStatement.Parent is not BlockSyntax ||
+                !TryBuildRequestMatcher(requestMatcherExpression, semanticModel, cancellationToken, out var predicateText, out var methodText, out var requestUriText))
+            {
+                return false;
+            }
+
+            var responseFactories = new List<string>(returnsInvocations.Count);
+            foreach (var returnsInvocation in returnsInvocations)
+            {
+                if (!TryBuildResponseFactory(returnsInvocation, semanticModel, cancellationToken, out var responseFactoryText, out _, out _))
+                {
+                    return false;
+                }
+
+                responseFactories.Add(responseFactoryText);
+            }
+
+            var queueVariableName = "fastMoqHttpResponseFactories";
+            var queueDeclaration = $"var {queueVariableName} = new Queue<Func<HttpResponseMessage>>(new Func<HttpResponseMessage>[] {{ {string.Join(", ", responseFactories)} }});";
+            var dequeueFactory = $"() => {queueVariableName}.Count > 0 ? {queueVariableName}.Dequeue().Invoke() : throw new InvalidOperationException(\"No queued HTTP response remains.\")";
+            var mockerText = origin.MockerExpression.ToString();
+            var whenHttpRequestCall = methodText is not null && requestUriText is not null
+                ? $"{mockerText}.WhenHttpRequest({methodText}, {requestUriText}, {dequeueFactory});"
+                : $"{mockerText}.WhenHttpRequest({predicateText}, {dequeueFactory});";
+
+            replacementStatements = [queueDeclaration, whenHttpRequestCall];
             return true;
         }
 
@@ -862,13 +956,19 @@ namespace FastMoq.Analyzers.CodeFixes
             var responseExpression = returnsInvocation.ArgumentList.Arguments[0].Expression;
             if (responseExpression is AnonymousFunctionExpressionSyntax anonymousFunction)
             {
+                if (HasAnonymousFunctionParameters(anonymousFunction))
+                {
+                    return false;
+                }
+
                 responseFactoryText = anonymousFunction.ToString();
                 if (!TryGetAnonymousFunctionReturnExpression(anonymousFunction, out var returnedExpression))
                 {
                     return true;
                 }
 
-                return TryExtractJsonResponse(returnedExpression, semanticModel, cancellationToken, out jsonPayloadText, out statusCodeText) || true;
+                _ = TryExtractJsonResponse(returnedExpression, semanticModel, cancellationToken, out jsonPayloadText, out statusCodeText);
+                return true;
             }
 
             var convertedType = semanticModel.GetTypeInfo(responseExpression, cancellationToken).ConvertedType as INamedTypeSymbol;
@@ -881,6 +981,17 @@ namespace FastMoq.Analyzers.CodeFixes
             responseFactoryText = $"() => {responseExpression}";
             _ = TryExtractJsonResponse(responseExpression, semanticModel, cancellationToken, out jsonPayloadText, out statusCodeText);
             return true;
+        }
+
+        private static bool HasAnonymousFunctionParameters(AnonymousFunctionExpressionSyntax anonymousFunction)
+        {
+            return anonymousFunction switch
+            {
+                SimpleLambdaExpressionSyntax => true,
+                ParenthesizedLambdaExpressionSyntax parenthesizedLambdaExpression => parenthesizedLambdaExpression.ParameterList.Parameters.Count != 0,
+                AnonymousMethodExpressionSyntax anonymousMethodExpression => anonymousMethodExpression.ParameterList?.Parameters.Count > 0,
+                _ => false,
+            };
         }
 
         private static bool TryExtractJsonResponse(ExpressionSyntax responseExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string? jsonPayloadText, out string statusCodeText)
@@ -1240,9 +1351,15 @@ namespace FastMoq.Analyzers.CodeFixes
             return true;
         }
 
-        private static bool TryGetTrackedMockDeclarationToRemove(TrackedMockOrigin origin, StatementSyntax setupStatement, int httpClientReplacementCount, SemanticModel semanticModel, CancellationToken cancellationToken, out LocalDeclarationStatementSyntax? declarationToRemove)
+        private static bool TryGetTrackedMockDeclarationToRemove(TrackedMockOrigin origin, StatementSyntax setupStatement, IReadOnlyList<HttpClientCreationEdit> httpClientCreations, SemanticModel semanticModel, CancellationToken cancellationToken, out LocalDeclarationStatementSyntax? declarationToRemove)
         {
             declarationToRemove = null;
+
+            if (origin.TrackedMockExpression is InvocationExpressionSyntax)
+            {
+                return true;
+            }
+
             if (origin.TrackedMockExpression is not IdentifierNameSyntax identifierName ||
                 semanticModel.GetSymbolInfo(identifierName, cancellationToken).Symbol is not ILocalSymbol localSymbol ||
                 localSymbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax(cancellationToken) is not VariableDeclaratorSyntax variableDeclarator ||
@@ -1257,12 +1374,28 @@ namespace FastMoq.Analyzers.CodeFixes
                 return false;
             }
 
-            var referenceCount = containingBlock.DescendantNodes()
-                .OfType<IdentifierNameSyntax>()
-                .Count(candidate => SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(candidate, cancellationToken).Symbol, localSymbol));
-
-            if (referenceCount != 1 + httpClientReplacementCount)
+            if (localDeclarationStatement.Parent != containingBlock)
             {
+                return false;
+            }
+
+            foreach (var candidate in containingBlock.DescendantNodes().OfType<IdentifierNameSyntax>())
+            {
+                if (!SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbolInfo(candidate, cancellationToken).Symbol, localSymbol))
+                {
+                    continue;
+                }
+
+                if (setupStatement.Span.Contains(candidate.Span))
+                {
+                    continue;
+                }
+
+                if (httpClientCreations.Any(edit => edit.TargetExpression.Span.Contains(candidate.Span)))
+                {
+                    continue;
+                }
+
                 return false;
             }
 
@@ -1272,24 +1405,27 @@ namespace FastMoq.Analyzers.CodeFixes
 
         private readonly struct ProviderNeutralHttpHelperEdit
         {
-            public ProviderNeutralHttpHelperEdit(StatementSyntax setupStatement, string setupReplacementText, string codeActionTitle, IReadOnlyList<HttpClientCreationEdit> httpClientCreations, LocalDeclarationStatementSyntax? trackedMockDeclarationToRemove)
+            public ProviderNeutralHttpHelperEdit(StatementSyntax setupStatement, IReadOnlyList<string> setupReplacementStatements, string codeActionTitle, IReadOnlyList<HttpClientCreationEdit> httpClientCreations, LocalDeclarationStatementSyntax? trackedMockDeclarationToRemove, IReadOnlyList<string> requiredNamespaces)
             {
                 SetupStatement = setupStatement;
-                SetupReplacementText = setupReplacementText;
+                SetupReplacementStatements = setupReplacementStatements;
                 CodeActionTitle = codeActionTitle;
                 HttpClientCreations = httpClientCreations;
                 TrackedMockDeclarationToRemove = trackedMockDeclarationToRemove;
+                RequiredNamespaces = requiredNamespaces;
             }
 
             public StatementSyntax SetupStatement { get; }
 
-            public string SetupReplacementText { get; }
+            public IReadOnlyList<string> SetupReplacementStatements { get; }
 
             public string CodeActionTitle { get; }
 
             public IReadOnlyList<HttpClientCreationEdit> HttpClientCreations { get; }
 
             public LocalDeclarationStatementSyntax? TrackedMockDeclarationToRemove { get; }
+
+            public IReadOnlyList<string> RequiredNamespaces { get; }
         }
 
         private readonly struct HttpClientCreationEdit
