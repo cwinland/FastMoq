@@ -25,9 +25,40 @@ namespace FastMoq.Extensions
         /// ]]></code>
         /// </example>
         /// <remarks>
+        /// This overload preserves the original write-through behavior by using <see cref="PropertyStateMode.WriteThrough" />.
+        ///
         /// When you use this helper from a <c>MockerTestBase&lt;TComponent&gt;</c>-based test, add the helper during the setup phase or call <c>CreateComponent()</c> after the registration change so the component is rebuilt against the proxy-wrapped dependency.
         /// </remarks>
         public static TService AddPropertyState<TService>(this Mocker mocker, bool replace = true)
+            where TService : class
+        {
+            return mocker.AddPropertyState<TService>(PropertyStateMode.WriteThrough, replace);
+        }
+
+        /// <summary>
+        /// Replaces the current interface registration with a proxy that preserves assignments for all readable and writable non-indexer properties while forwarding unrelated members to the previously resolved instance.
+        /// </summary>
+        /// <typeparam name="TService">The interface type to wrap.</typeparam>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="mode">Controls whether property assignments also write through to the wrapped inner instance or stay on the proxy only.</param>
+        /// <param name="replace">True to replace an existing registration for <typeparamref name="TService" />. Defaults to <see langword="true" /> because the helper intentionally swaps in a property-state proxy.</param>
+        /// <returns>The proxy-backed instance now registered for <typeparamref name="TService" />.</returns>
+        /// <example>
+        /// <code language="csharp"><![CDATA[
+        /// var channel = Mocks.AddPropertyState<IOrderSubmissionChannel>(PropertyStateMode.ProxyOnly);
+        /// CreateComponent();
+        ///
+        /// await Component.SubmitAsync("order-42", expedited: true, CancellationToken.None);
+        ///
+        /// channel.Mode.Should().Be("fast");
+        /// ]]></code>
+        /// </example>
+        /// <remarks>
+        /// Use <see cref="PropertyStateMode.ProxyOnly" /> when the test needs detached property state on the proxy registration without mutating the previously wrapped instance.
+        ///
+        /// When you use this helper from a <c>MockerTestBase&lt;TComponent&gt;</c>-based test, add the helper during the setup phase or call <c>CreateComponent()</c> after the registration change so the component is rebuilt against the proxy-wrapped dependency.
+        /// </remarks>
+        public static TService AddPropertyState<TService>(this Mocker mocker, PropertyStateMode mode, bool replace = true)
             where TService : class
         {
             ArgumentNullException.ThrowIfNull(mocker);
@@ -41,6 +72,7 @@ namespace FastMoq.Extensions
             var currentInstance = mocker.GetObject<TService>() ?? throw new InvalidOperationException($"Unable to resolve an instance for {serviceType.Name} before adding property state.");
             if (currentInstance is PropertyStateProxy<TService> existingProxy)
             {
+                existingProxy.SetPropertyStateMode(mode);
                 existingProxy.EnableAutomaticPropertyState();
                 return currentInstance;
             }
@@ -48,6 +80,7 @@ namespace FastMoq.Extensions
             var proxy = DispatchProxy.Create<TService, PropertyStateProxy<TService>>();
             var proxyController = (PropertyStateProxy<TService>) (object) proxy;
             proxyController.Initialize(currentInstance);
+            proxyController.SetPropertyStateMode(mode);
             proxyController.EnableAutomaticPropertyState();
 
             mocker.AddType<TService>(proxy, replace);
@@ -60,6 +93,7 @@ namespace FastMoq.Extensions
         private readonly Dictionary<MethodInfo, PropertyStateRegistration> _propertyRegistrations = [];
 
         private TService? _inner;
+        private PropertyStateMode _propertyStateMode = PropertyStateMode.WriteThrough;
 
         public void Initialize(TService inner)
         {
@@ -85,6 +119,11 @@ namespace FastMoq.Extensions
             }
         }
 
+        public void SetPropertyStateMode(PropertyStateMode propertyStateMode)
+        {
+            _propertyStateMode = propertyStateMode;
+        }
+
         public void AddCapture<TValue>(PropertyInfo propertyInfo, PropertyValueCapture<TValue> capture)
         {
             ArgumentNullException.ThrowIfNull(propertyInfo);
@@ -100,7 +139,7 @@ namespace FastMoq.Extensions
 
             if (_propertyRegistrations.TryGetValue(targetMethod, out var registration))
             {
-                return registration.Invoke(_inner, targetMethod, args);
+                return registration.Invoke(_inner, targetMethod, args, _propertyStateMode == PropertyStateMode.WriteThrough);
             }
 
             if (_inner is null)
@@ -174,7 +213,7 @@ namespace FastMoq.Extensions
                 _observers.Add(observer);
             }
 
-            public object? Invoke(object? inner, MethodInfo targetMethod, object?[]? args)
+            public object? Invoke(object? inner, MethodInfo targetMethod, object?[]? args, bool writeThroughToInner)
             {
                 if (targetMethod == PropertyInfo.GetMethod)
                 {
@@ -205,7 +244,7 @@ namespace FastMoq.Extensions
                         observer(assignedValue);
                     }
 
-                    if (inner is not null)
+                    if (writeThroughToInner && inner is not null)
                     {
                         PropertyInfo.SetValue(inner, assignedValue);
                     }

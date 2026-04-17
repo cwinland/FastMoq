@@ -154,6 +154,17 @@ channel.Mode.Should().Be("fast");
 
 That keeps the important part of the test explicit: the collaborator needs real property state, not Moq-specific property plumbing.
 
+`AddPropertyState<TService>(...)` keeps its original write-through behavior by default. If the test needs detached property state on the proxy registration without mutating the previously wrapped instance, use `PropertyStateMode.ProxyOnly`:
+
+```csharp
+var channel = Mocks.AddPropertyState<IOrderSubmissionChannel>(PropertyStateMode.ProxyOnly);
+CreateComponent();
+
+await Component.SubmitAsync("order-42", expedited: true, CancellationToken.None);
+
+channel.Mode.Should().Be("fast");
+```
+
 If the collaborator needs more behavior than one captured property, or the target is not an interface, fall back to a fake plus [PropertyValueCapture&lt;TValue&gt;](xref:FastMoq.PropertyValueCapture`1):
 
 ```csharp

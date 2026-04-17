@@ -28,6 +28,26 @@ namespace FastMoq.Tests
         [Theory]
         [InlineData("moq")]
         [InlineData("nsubstitute")]
+        public void AddPropertyState_ProxyOnlyMode_ShouldKeepAssignmentsDetached_AndForwardOtherMembers(string providerName)
+        {
+            using var providerScope = MockingProviderRegistry.Push(providerName);
+            var mocker = new Mocker();
+
+            var trackedMock = mocker.GetOrCreateMock<IPropertySetterCaptureGateway>();
+            var originalMode = trackedMock.Instance.Mode;
+            var gateway = mocker.AddPropertyState<IPropertySetterCaptureGateway>(PropertyStateMode.ProxyOnly);
+
+            gateway.Mode = "fast";
+            gateway.Publish("alpha");
+
+            gateway.Mode.Should().Be("fast");
+            trackedMock.Instance.Mode.Should().Be(originalMode);
+            mocker.Verify<IPropertySetterCaptureGateway>(x => x.Publish("alpha"), TimesSpec.Once);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
         public void AddPropertySetterCapture_ShouldCaptureAssignments_AndForwardOtherMembers(string providerName)
         {
             using var providerScope = MockingProviderRegistry.Push(providerName);
