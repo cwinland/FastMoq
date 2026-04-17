@@ -36,10 +36,10 @@ Why this matters:
 - Moq compatibility APIs such as `GetMock<T>()`, `VerifyLogger(...)`, `Protected()`, and direct `Mock<T>` setup require the Moq provider to be selected.
 - provider-package extensions such as `AsMoq()`, `Setup(...)` on `IFastMock<T>`, `AsNSubstitute()`, and `Received(...)` also require their corresponding provider package and selected provider.
 
-For concrete mocks that need constructor arguments, stay on the provider-first path instead of falling back to `GetMock<T>(...)`. When the request only needs constructor arguments, `GetOrCreateMock<T>(...)` can take them directly:
+For concrete mocks that need constructor arguments, stay on the provider-first path instead of falling back to `GetMock<T>(...)`. When the request only needs constructor arguments, `GetOrCreateMockWithConstructorArgs<T>(...)` keeps that intent explicit without changing `GetOrCreateMock<T>(null)` binding:
 
 ```csharp
-var queueClient = mocker.GetOrCreateMock<QueueClient>(
+var queueClient = mocker.GetOrCreateMockWithConstructorArgs<QueueClient>(
     new Uri("https://account.queue.core.windows.net/work-items"),
     new QueueClientOptions());
 ```

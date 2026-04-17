@@ -504,7 +504,7 @@ namespace FastMoq.Analyzers.CodeFixes
                     var firstArgument = attribute.ArgumentList?.Arguments.FirstOrDefault();
                     if (firstArgument?.Expression is LiteralExpressionSyntax literalExpression &&
                         literalExpression.IsKind(SyntaxKind.StringLiteralExpression) &&
-                        literalExpression.Token.ValueText == providerName)
+                        string.Equals(literalExpression.Token.ValueText, providerName, System.StringComparison.OrdinalIgnoreCase))
                     {
                         return true;
                     }
@@ -535,7 +535,7 @@ namespace FastMoq.Analyzers.CodeFixes
                     var firstArgument = argumentList?.Arguments.FirstOrDefault();
                     if (firstArgument?.Expression is not LiteralExpressionSyntax literalExpression ||
                         !literalExpression.IsKind(SyntaxKind.StringLiteralExpression) ||
-                        literalExpression.Token.ValueText != providerName)
+                        !string.Equals(literalExpression.Token.ValueText, providerName, System.StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }

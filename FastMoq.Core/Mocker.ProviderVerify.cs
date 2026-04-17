@@ -49,10 +49,10 @@ namespace FastMoq
         /// using the supplied constructor arguments for concrete mock creation.
         /// </summary>
         /// <remarks>
-        /// This is a convenience overload for <see cref="GetOrCreateMock{T}(MockRequestOptions?)" /> when the request only needs constructor arguments.
+        /// This is a convenience wrapper for <see cref="GetOrCreateMock{T}(MockRequestOptions?)" /> when the request only needs constructor arguments.
         /// Use <see cref="GetOrCreateMock{T}(MockRequestOptions?)" /> when also setting a service key or non-public constructor behavior.
         /// </remarks>
-        public IFastMock<T> GetOrCreateMock<T>(params object?[] constructorArgs) where T : class
+        public IFastMock<T> GetOrCreateMockWithConstructorArgs<T>(params object?[] constructorArgs) where T : class
         {
             return GetOrCreateTypedFastMock<T>(new MockRequestOptions
             {
@@ -75,10 +75,10 @@ namespace FastMoq
         /// using the supplied constructor arguments for concrete mock creation.
         /// </summary>
         /// <remarks>
-        /// This is a convenience overload for <see cref="GetOrCreateMock(Type, MockRequestOptions?)" /> when the request only needs constructor arguments.
+        /// This is a convenience wrapper for <see cref="GetOrCreateMock(Type, MockRequestOptions?)" /> when the request only needs constructor arguments.
         /// Use <see cref="GetOrCreateMock(Type, MockRequestOptions?)" /> when also setting a service key or non-public constructor behavior.
         /// </remarks>
-        public IFastMock GetOrCreateMock(Type type, params object?[] constructorArgs)
+        public IFastMock GetOrCreateMockWithConstructorArgs(Type type, params object?[] constructorArgs)
         {
             ArgumentNullException.ThrowIfNull(type);
 

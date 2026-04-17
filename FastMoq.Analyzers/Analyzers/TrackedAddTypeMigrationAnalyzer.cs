@@ -49,8 +49,8 @@ namespace FastMoq.Analyzers.Analyzers
             method = method.ReducedFrom ?? method;
             if (!FastMoqAnalysisHelpers.IsFastMoqMockerAddTypeMethod(method) ||
                 !TryGetRegisteredServiceType(invocationExpression, method, semanticModel, cancellationToken, out var serviceType) ||
-                invocationExpression.ArgumentList.Arguments.Count == 0 ||
-                !IsTrackedReplacementOrigin(invocationExpression.ArgumentList.Arguments[0].Expression, semanticModel, cancellationToken, serviceType, new HashSet<ISymbol>(SymbolEqualityComparer.Default)) ||
+                !TryGetReplacementOriginExpression(invocationExpression, method, out var replacementOriginExpression) ||
+                !IsTrackedReplacementOrigin(replacementOriginExpression, semanticModel, cancellationToken, serviceType, new HashSet<ISymbol>(SymbolEqualityComparer.Default)) ||
                 !TryFindTrackedSensitiveUsage(invocationExpression, semanticModel, cancellationToken, serviceType, out conflictingApi))
             {
                 return false;
@@ -83,6 +83,31 @@ namespace FastMoq.Analyzers.Analyzers
 
             serviceType = semanticModel.GetTypeInfo(typeOfExpression.Type, cancellationToken).Type!;
             return serviceType is not null;
+        }
+
+        private static bool TryGetReplacementOriginExpression(InvocationExpressionSyntax invocationExpression, IMethodSymbol method, out ExpressionSyntax replacementOriginExpression)
+        {
+            replacementOriginExpression = null!;
+            var arguments = invocationExpression.ArgumentList.Arguments;
+
+            if (method.TypeArguments.Length > 0)
+            {
+                if (arguments.Count == 0)
+                {
+                    return false;
+                }
+
+                replacementOriginExpression = arguments[0].Expression;
+                return true;
+            }
+
+            if (arguments.Count < 3)
+            {
+                return false;
+            }
+
+            replacementOriginExpression = arguments[2].Expression;
+            return true;
         }
 
         private static bool IsTrackedReplacementOrigin(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ITypeSymbol serviceType, HashSet<ISymbol> visitedSymbols)
@@ -130,8 +155,8 @@ namespace FastMoq.Analyzers.Analyzers
             method = method.ReducedFrom ?? method;
             return method.TypeArguments.Length == 1 &&
                 SymbolEqualityComparer.Default.Equals(method.TypeArguments[0], serviceType) &&
-                method.ContainingType.ToDisplayString() == "FastMoq.Mocker" &&
-                method.Name is "GetMock" or "GetRequiredMock" or "GetOrCreateMock" or "GetObject" or "GetRequiredObject";
+                method.ContainingType.ToDisplayString() == FastMoqAnalysisHelpers.FastMoqMockerTypeName &&
+                method.Name is "GetMock" or "GetRequiredMock" or "GetOrCreateMock" or "GetObject" or "GetRequiredObject" or "TryGetTrackedMock" or "GetRequiredTrackedMock";
         }
 
         private static bool TryFollowLocalInitializer(IdentifierNameSyntax identifierName, SemanticModel semanticModel, CancellationToken cancellationToken, ITypeSymbol serviceType, HashSet<ISymbol> visitedSymbols)
@@ -187,7 +212,7 @@ namespace FastMoq.Analyzers.Analyzers
                 return false;
             }
 
-            if (method.ContainingType.ToDisplayString() == "FastMoq.Mocker")
+            if (method.ContainingType.ToDisplayString() == FastMoqAnalysisHelpers.FastMoqMockerTypeName)
             {
                 conflictingApi = method.Name switch
                 {

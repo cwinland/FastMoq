@@ -58,8 +58,8 @@ namespace FastMoq.Tests
             var endpoint = new Uri("https://fastmoq.test/providers/orders");
             const string queueName = "orders";
 
-            var typed = mocker.GetOrCreateMock<ProviderConstructedDependency>(endpoint, queueName);
-            var untyped = mocker.GetOrCreateMock(typeof(ProviderConstructedDependency), endpoint, queueName);
+            var typed = mocker.GetOrCreateMockWithConstructorArgs<ProviderConstructedDependency>(endpoint, queueName);
+            var untyped = mocker.GetOrCreateMockWithConstructorArgs(typeof(ProviderConstructedDependency), endpoint, queueName);
 
             untyped.Should().BeSameAs(typed);
             typed.Instance.Endpoint.Should().Be(endpoint);

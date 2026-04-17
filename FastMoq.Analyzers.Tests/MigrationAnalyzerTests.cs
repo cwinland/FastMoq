@@ -2,8 +2,10 @@ using FastMoq.Analyzers;
 using FastMoq.Analyzers.Analyzers;
 using FastMoq.Analyzers.CodeFixes;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -2007,6 +2009,64 @@ class Sample
         }
 
         [Fact]
+        public async Task TrackedAddTypeMigrationAnalyzer_ShouldReport_WhenTrackedReplacementUsesGetRequiredTrackedMockInstance()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class Sample
+{
+    interface IService
+    {
+        string? Value { get; set; }
+    }
+
+    void Execute(Mocker mocks)
+    {
+        mocks.GetOrCreateMock<IService>();
+        mocks.AddType<IService>(mocks.GetRequiredTrackedMock<IService>().Instance, replace: true);
+        var resolved = mocks.GetObject<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new TrackedAddTypeMigrationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreserveTrackedResolutionDuringAddTypeMigration));
+            Assert.Contains("GetObject<T>()", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task TrackedAddTypeMigrationAnalyzer_ShouldReport_WhenNonGenericAddTypeFactoryReturnsTrackedObject()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Moq;
+
+class Sample
+{
+    interface IService
+    {
+        string? Value { get; set; }
+    }
+
+    sealed class FakeService : IService
+    {
+        public string? Value { get; set; }
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var tracked = mocks.GetMock<IService>();
+        mocks.AddType(typeof(IService), typeof(FakeService), _ => tracked.Object, replace: true);
+        var resolved = mocks.GetObject<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new TrackedAddTypeMigrationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreserveTrackedResolutionDuringAddTypeMigration));
+            Assert.Contains("GetObject<T>()", diagnostic.GetMessage());
+        }
+
+        [Fact]
         public async Task TrackedAddTypeMigrationAnalyzer_ShouldNotReport_WhenConcreteFakeReplacementOwnsResolution()
         {
             const string SOURCE = @"
@@ -2176,6 +2236,27 @@ class Sample
         }
 
         [Fact]
+        public void FastMoqMigrationCodeFixProvider_ShouldTreatAssemblyDefaultProviderNamesCaseInsensitively()
+        {
+            const string SOURCE = @"
+using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider(""MOQ"")]
+";
+
+            var compilationUnit = CSharpSyntaxTree.ParseText(SOURCE).GetCompilationUnitRoot();
+            var hasDefaultProviderMethod = typeof(FastMoqMigrationCodeFixProvider).GetMethod(
+                "HasAssemblyDefaultProviderAttribute",
+                BindingFlags.NonPublic | BindingFlags.Static);
+
+            Assert.NotNull(hasDefaultProviderMethod);
+            var result = hasDefaultProviderMethod!.Invoke(null, [compilationUnit, "moq"]);
+
+            Assert.IsType<bool>(result);
+            Assert.True((bool) result!);
+        }
+
+        [Fact]
         public async Task LegacyMoqOnboardingAnalyzer_CodeFix_ShouldOfferBothMoqOnboardingChoices_WhenProviderPackageIsPresent()
         {
             const string SOURCE = @"
@@ -2251,6 +2332,28 @@ class Sample
 }");
 
             Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public void FastMoqMigrationCodeFixProvider_ShouldTreatAssemblyRegisteredDefaultProviderNamesCaseInsensitively()
+        {
+            const string SOURCE = @"
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider(""MOQ"", typeof(MoqMockingProvider), SetAsDefault = true)]
+";
+
+            var compilationUnit = CSharpSyntaxTree.ParseText(SOURCE).GetCompilationUnitRoot();
+            var hasRegisteredDefaultProviderMethod = typeof(FastMoqMigrationCodeFixProvider).GetMethod(
+                "HasAssemblyRegisteredDefaultProviderAttribute",
+                BindingFlags.NonPublic | BindingFlags.Static);
+
+            Assert.NotNull(hasRegisteredDefaultProviderMethod);
+            var result = hasRegisteredDefaultProviderMethod!.Invoke(null, [compilationUnit, "moq"]);
+
+            Assert.IsType<bool>(result);
+            Assert.True((bool) result!);
         }
 
         [Fact]
