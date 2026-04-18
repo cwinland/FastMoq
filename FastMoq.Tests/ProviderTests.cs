@@ -159,6 +159,62 @@ namespace FastMoq.Tests
             mocker.VerifyNoOtherCalls<IProviderDependency>();
         }
 
+        [Theory]
+        [MemberData(nameof(ProviderNames))]
+        public void CreateStandaloneFastMock_ShouldCreateIndependentUntrackedHandles(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+
+            var first = mocker.CreateStandaloneFastMock<IProviderDependency>();
+            var second = mocker.CreateStandaloneFastMock<IProviderDependency>();
+            var consumer = new DualDependencyConsumer(first.Instance, second.Instance);
+
+            consumer.Primary.Run("alpha");
+            consumer.Secondary.Run("beta");
+
+            first.Should().NotBeSameAs(second);
+            mocker.TryGetTrackedMock<IProviderDependency>(out var tracked).Should().BeFalse();
+            tracked.Should().BeNull();
+
+            if (providerName == "moq")
+            {
+                first.NativeMock.Should().BeOfType<Mock<IProviderDependency>>();
+                second.NativeMock.Should().BeOfType<Mock<IProviderDependency>>();
+            }
+            else
+            {
+                first.NativeMock.Should().BeSameAs(first.Instance);
+                second.NativeMock.Should().BeSameAs(second.Instance);
+            }
+
+            MockingProviderRegistry.Default.Verify(first, x => x.Run("alpha"), TimesSpec.Once);
+            MockingProviderRegistry.Default.Verify(second, x => x.Run("beta"), TimesSpec.Once);
+        }
+
+        [Fact]
+        public void CreateStandaloneFastMock_WithConstructorArgs_ShouldHonorSelectedProviderWithoutTracking()
+        {
+            using var providerScope = PushProvider("moq");
+            var mocker = new Mocker();
+            var endpoint = new Uri("https://fastmoq.test/providers/standalone");
+            const string queueName = "standalone";
+
+            var first = mocker.CreateStandaloneFastMock<ProviderConstructedDependency>(new MockCreationOptions(
+                ConstructorArgs: [endpoint, queueName]));
+            var second = mocker.CreateStandaloneFastMock(typeof(ProviderConstructedDependency), new MockCreationOptions(
+                ConstructorArgs: [endpoint, queueName]));
+
+            first.Instance.Endpoint.Should().Be(endpoint);
+            first.Instance.QueueName.Should().Be(queueName);
+            var secondInstance = second.Instance.Should().BeAssignableTo<ProviderConstructedDependency>().Which;
+            secondInstance.Endpoint.Should().Be(endpoint);
+            secondInstance.QueueName.Should().Be(queueName);
+            second.Instance.Should().NotBeSameAs(first.Instance);
+            mocker.TryGetTrackedMock(typeof(ProviderConstructedDependency), out var tracked).Should().BeFalse();
+            tracked.Should().BeNull();
+        }
+
         [Fact]
         public void GetOrCreateMock_Instance_ShouldBeUsable_WithReflectionProvider()
         {
@@ -841,6 +897,12 @@ namespace FastMoq.Tests
         public class ProviderConsumer(IProviderDependency dependency)
         {
             public IProviderDependency Dependency { get; } = dependency;
+        }
+
+        public class DualDependencyConsumer(IProviderDependency primary, IProviderDependency secondary)
+        {
+            public IProviderDependency Primary { get; } = primary;
+            public IProviderDependency Secondary { get; } = secondary;
         }
 
         public class KeyedProviderConsumer(

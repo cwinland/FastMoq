@@ -232,6 +232,30 @@ namespace FastMoq
         }
 
         /// <summary>
+        /// Creates a provider-first mock handle without registering it into this <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <remarks>
+        /// Use this when the test needs an additional independent mock of the same service type, or when the mock will be wired manually instead of tracked through <see cref="GetOrCreateMock{T}(MockRequestOptions?)" />.
+        /// Provider selection still flows through <see cref="MockingProviderRegistry.Default" />, but the returned handle is not added to the parent tracked mock collection.
+        /// </remarks>
+        public IFastMock<T> CreateStandaloneFastMock<T>(MockCreationOptions? options = null) where T : class
+        {
+            return MockingProviderRegistry.Default.CreateMock<T>(options);
+        }
+
+        /// <summary>
+        /// Creates a provider-first mock handle for the supplied runtime type without registering it into this <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <remarks>
+        /// Use this when the test needs a provider-selected standalone mock handle but does not want the mock tracked by the parent <see cref="Mocker" />.
+        /// </remarks>
+        public IFastMock CreateStandaloneFastMock(Type type, MockCreationOptions? options = null)
+        {
+            ArgumentNullException.ThrowIfNull(type);
+            return MockingProviderRegistry.Default.CreateMock(type, options);
+        }
+
+        /// <summary>
         /// Creates a provider-first mock and registers it.
         /// </summary>
         public IFastMock<T> CreateFastMock<T>(MockCreationOptions? options = null) where T : class

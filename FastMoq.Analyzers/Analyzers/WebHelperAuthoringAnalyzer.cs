@@ -34,6 +34,11 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
+            if (!FastMoqAnalysisHelpers.HasWebHelperPackage(context.SemanticModel))
+            {
+                return;
+            }
+
             context.ReportDiagnostic(Diagnostic.Create(
                 DiagnosticDescriptors.PreferWebTestHelpers,
                 FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
@@ -50,6 +55,11 @@ namespace FastMoq.Analyzers.Analyzers
             }
 
             if (context.ContainingSymbol?.ContainingAssembly?.Name == "FastMoq.Web")
+            {
+                return;
+            }
+
+            if (!FastMoqAnalysisHelpers.HasWebHelperPackage(context.SemanticModel))
             {
                 return;
             }

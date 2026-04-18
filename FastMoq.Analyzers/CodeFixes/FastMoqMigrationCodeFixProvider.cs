@@ -20,6 +20,7 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.UseProviderFirstObjectAccess,
             DiagnosticIds.UseProviderFirstReset,
             DiagnosticIds.UseVerifyLogged,
+            DiagnosticIds.UseProviderFirstVerify,
             DiagnosticIds.UseConsistentMockRetrieval,
             DiagnosticIds.UseProviderFirstMockRetrieval,
             DiagnosticIds.PreferTypedServiceProviderHelpers,
@@ -90,6 +91,23 @@ namespace FastMoq.Analyzers.CodeFixes
                                 "Use VerifyLogged(...)",
                                 cancellationToken => ReplaceInvocationAsync(document, invocationExpression, BuildVerifyLoggedReplacementAsync, cancellationToken),
                                 nameof(DiagnosticIds.UseVerifyLogged)),
+                            diagnostic);
+                        break;
+                    }
+
+                case DiagnosticIds.UseProviderFirstVerify:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                "Use Mocker.Verify<T>(...)",
+                                cancellationToken => ReplaceInvocationAsync(document, invocationExpression, BuildVerifyReplacementAsync, cancellationToken),
+                                nameof(DiagnosticIds.UseProviderFirstVerify)),
                             diagnostic);
                         break;
                     }
@@ -347,6 +365,20 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             return FastMoqAnalysisHelpers.TryBuildVerifyLoggedReplacement(origin, semanticModel, invocationExpression, cancellationToken, out var replacement)
+                ? replacement
+                : null;
+        }
+
+        private static string? BuildVerifyReplacementAsync(Document document, SemanticModel semanticModel, SyntaxNode syntaxNode, CancellationToken cancellationToken)
+        {
+            if (syntaxNode is not InvocationExpressionSyntax invocationExpression ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
+                !FastMoqAnalysisHelpers.TryResolveTrackedMockOrigin(memberAccess.Expression, semanticModel, cancellationToken, out var origin))
+            {
+                return null;
+            }
+
+            return FastMoqAnalysisHelpers.TryBuildVerifyReplacement(origin, semanticModel, invocationExpression, cancellationToken, out var replacement)
                 ? replacement
                 : null;
         }

@@ -31,9 +31,14 @@ namespace FastMoq.Analyzers.Tests
             { new OptionsSetupAnalyzer(), DiagnosticDescriptors.PreferSetupOptionsHelper },
             { new SetupSetAnalyzer(), DiagnosticDescriptors.PreferPropertySetterCaptureHelper },
             { new SetupAllPropertiesAnalyzer(), DiagnosticDescriptors.PreferPropertyStateHelper },
+            { new TrackedMockVerificationAnalyzer(), DiagnosticDescriptors.UseProviderFirstVerify },
+            { new BareTrackedVerifyAnalyzer(), DiagnosticDescriptors.AvoidBareTrackedVerify },
+            { new TrackedMockShimAnalyzer(), DiagnosticDescriptors.AvoidTrackedMockShimAlias },
+            { new RawMockCreationAnalyzer(), DiagnosticDescriptors.AvoidRawMockCreationInFastMoqSuites },
             { new ProviderBootstrapAnalyzer(), DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi },
             { new NativeMockAuthoringAnalyzer(), DiagnosticDescriptors.PreferTypedProviderExtensions },
             { new WebHelperAuthoringAnalyzer(), DiagnosticDescriptors.PreferWebTestHelpers },
+            { new MissingHelperPackageAnalyzer(), DiagnosticDescriptors.ReferenceFastMoqHelperPackage },
             { new HttpRequestHelperAuthoringAnalyzer(), DiagnosticDescriptors.PreferProviderNeutralHttpHelpers },
             { new ServiceProviderShimAnalyzer(), DiagnosticDescriptors.PreferTypedServiceProviderHelpers },
             { new KnownTypeAuthoringAnalyzer(), DiagnosticDescriptors.PreferKnownTypeRegistrations },
@@ -58,9 +63,14 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.PreferSetupOptionsHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferPropertySetterCaptureHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferPropertyStateHelper, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.UseProviderFirstVerify, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.AvoidBareTrackedVerify, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.AvoidTrackedMockShimAlias, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.AvoidRawMockCreationInFastMoqSuites, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.PreferTypedProviderExtensions, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferWebTestHelpers, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.ReferenceFastMoqHelperPackage, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferProviderNeutralHttpHelpers, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferTypedServiceProviderHelpers, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.PreferKnownTypeRegistrations, DiagnosticSeverity.Warning },
@@ -626,7 +636,7 @@ class Sample
     }
 }";
 
-            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ServiceProviderShimAnalyzer());
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, includeAzureFunctionsHelpers: true, new ServiceProviderShimAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
         }
@@ -682,7 +692,7 @@ class Sample
     }
 }";
 
-            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ServiceProviderShimAnalyzer());
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, includeAzureFunctionsHelpers: true, new ServiceProviderShimAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
             Assert.Contains("GetOrCreateMock<IServiceScopeFactory>()", diagnostic.GetMessage());
@@ -1106,7 +1116,7 @@ class Sample
     }
 }";
 
-            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ServiceProviderShimAnalyzer());
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, includeAzureFunctionsHelpers: true, new ServiceProviderShimAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
         }
@@ -1250,7 +1260,7 @@ class Sample
     }
 }";
 
-            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ServiceProviderShimAnalyzer());
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, includeAzureFunctionsHelpers: true, new ServiceProviderShimAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
 
@@ -1287,7 +1297,7 @@ class Sample
         }
 
         [Fact]
-        public async Task ServiceProviderShimAnalyzer_ShouldReportButNotOfferFix_WhenFunctionContextHelperPackageIsUnavailable()
+        public async Task ServiceProviderShimAnalyzer_ShouldNotReport_WhenFunctionContextHelperPackageIsUnavailable()
         {
             const string SOURCE = @"
 using System;
@@ -1312,16 +1322,8 @@ class Sample
 }";
 
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ServiceProviderShimAnalyzer());
-            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
-            Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
 
-            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(
-                SOURCE,
-                new ServiceProviderShimAnalyzer(),
-                codeFixProvider,
-                DiagnosticIds.PreferTypedServiceProviderHelpers);
-
-            Assert.Empty(codeFixTitles);
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers);
         }
 
         [Fact]
@@ -1349,7 +1351,7 @@ class Sample
     }
 }";
 
-            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ServiceProviderShimAnalyzer());
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, includeAzureFunctionsHelpers: true, new ServiceProviderShimAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers));
             Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
 
@@ -2221,7 +2223,8 @@ class Sample
                 DiagnosticIds.RequireExplicitMoqOnboarding,
                 includeAzureFunctionsHelpers: false,
                 includeMoqProviderPackage: false,
-                includeNSubstituteProviderPackage: true);
+                includeNSubstituteProviderPackage: true,
+                includeWebHelpers: true);
             Assert.Empty(codeFixTitles);
         }
 

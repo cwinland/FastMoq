@@ -26,8 +26,17 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
-            if (!FastMoqAnalysisHelpers.TryGetTypedServiceProviderHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out var currentApi) &&
-                !FastMoqAnalysisHelpers.TryGetFunctionContextInstanceServicesHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out currentApi))
+            if (FastMoqAnalysisHelpers.TryGetTypedServiceProviderHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out var typedHelperApi))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    DiagnosticDescriptors.PreferTypedServiceProviderHelpers,
+                    FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
+                    typedHelperApi));
+                return;
+            }
+
+            if (!FastMoqAnalysisHelpers.HasFunctionContextInstanceServicesMockHelper(context.SemanticModel) ||
+                !FastMoqAnalysisHelpers.TryGetFunctionContextInstanceServicesHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out var functionContextApi))
             {
                 return;
             }
@@ -35,7 +44,7 @@ namespace FastMoq.Analyzers.Analyzers
             context.ReportDiagnostic(Diagnostic.Create(
                 DiagnosticDescriptors.PreferTypedServiceProviderHelpers,
                 FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
-                currentApi));
+                functionContextApi));
         }
     }
 }

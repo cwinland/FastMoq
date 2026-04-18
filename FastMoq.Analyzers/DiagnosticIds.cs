@@ -25,5 +25,10 @@ namespace FastMoq.Analyzers
         public const string PreferPropertyStateHelper = "FMOQ0021";
         public const string PreserveTrackedResolutionDuringAddTypeMigration = "FMOQ0022";
         public const string RequireExplicitMoqOnboarding = "FMOQ0023";
+        public const string UseProviderFirstVerify = "FMOQ0024";
+        public const string AvoidBareTrackedVerify = "FMOQ0025";
+        public const string AvoidTrackedMockShimAlias = "FMOQ0026";
+        public const string AvoidRawMockCreationInFastMoqSuites = "FMOQ0027";
+        public const string ReferenceFastMoqHelperPackage = "FMOQ0028";
     }
 }
