@@ -20,8 +20,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: IdentityHelperExtensions
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
     startLine: 9
@@ -58,8 +58,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetUser
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
     startLine: 16
@@ -94,8 +94,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetUser
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
     startLine: 26
@@ -129,8 +129,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateClaim
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
     startLine: 38
@@ -175,8 +175,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreatePrincipal
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
     startLine: 61
@@ -216,8 +216,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: IsValidClaimType
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
     startLine: 69

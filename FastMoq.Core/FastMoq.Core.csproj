@@ -11,7 +11,7 @@
     <Company>$(Authors)</Company>
     <Copyright>Copyright(c) 2023 Christopher Winland</Copyright>
     <PackageId>$(AssemblyName)</PackageId>
-    <Description>Core FastMoq runtime for automatic test double creation, constructor injection, and provider-neutral testing helpers. Uses reflection by default in v4, includes Moq compatibility, and supports additional providers when added explicitly.</Description>
+    <Description>Core FastMoq runtime for automatic test double creation, constructor injection, provider-neutral testing helpers, and bundled migration analyzers. Uses reflection by default in v4, includes Moq compatibility, and supports additional providers when added explicitly.</Description>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -33,6 +33,8 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.pdb" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" Condition="Exists('..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.pdb')" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FastMoq.Analyzers\FastMoq.Analyzers.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
     <ProjectReference Include="..\FastMoq.Abstractions\FastMoq.Abstractions.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.Moq\FastMoq.Provider.Moq.csproj" />
   </ItemGroup>

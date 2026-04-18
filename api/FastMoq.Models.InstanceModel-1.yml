@@ -23,8 +23,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: InstanceModel
     path: FastMoq.Core/Models/InstanceModelT.cs
     startLine: 11
@@ -126,8 +126,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: InstanceType
     path: FastMoq.Core/Models/InstanceModelT.cs
     startLine: 17
@@ -161,8 +161,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateFunc
     path: FastMoq.Core/Models/InstanceModelT.cs
     startLine: 23
@@ -195,8 +195,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
     startLine: 32
@@ -225,8 +225,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
     startLine: 38
@@ -260,8 +260,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
     startLine: 41
@@ -295,8 +295,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
     startLine: 45
@@ -328,8 +328,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
     startLine: 48
@@ -363,8 +363,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
     startLine: 52

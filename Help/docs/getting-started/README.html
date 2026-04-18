@@ -113,7 +113,7 @@ Mocks.Verify&lt;ICustomerRepository&gt;(
 <p>This guide is intentionally the &quot;how to&quot; companion to the repo README. The README is the better first read when you are deciding whether FastMoq is the right fit. This guide is the better first read when you already want to write a test.</p>
 <p>For the repo-native testing conventions and framework-specific guidance used by this codebase, see the <a href="testing-guide.html">FastMoq Testing Guide</a>.</p>
 <p>If you want examples that run directly in this repository instead of static snippets only, see <a href="../samples/testing-examples.html">Executable Testing Examples</a>.</p>
-<p>If you are updating older FastMoq usage from the last public <code>3.0.0</code> release, see <a href="../migration/README.html">Migration Guide: 3.0.0 To Current Repo</a>.</p>
+<p>If you are updating older FastMoq usage from the last public <code>3.0.0</code> release, see <a href="../migration/README.html">Migration Guide: 3.0.0 To The Current v4 Line</a>.</p>
 <p>If you need to choose or bootstrap a provider explicitly, see the <a href="provider-selection.html">Provider Selection Guide</a>.</p>
 <h3 id="key-benefits">Key Benefits</h3>
 <ul>
@@ -140,17 +140,27 @@ Mocks.Verify&lt;ICustomerRepository&gt;(
 <tr>
 <td>simplest all-in-one experience</td>
 <td><code>FastMoq</code></td>
-<td>Aggregate package that includes the primary runtime, database helpers, web support, and the FastMoq analyzer pack by default</td>
+<td>Aggregate package that includes the primary runtime, shared Azure SDK helpers, database helpers, web support, Azure Functions helpers, and the FastMoq analyzer pack by default</td>
 </tr>
 <tr>
 <td>lighter core-only usage</td>
 <td><code>FastMoq.Core</code></td>
-<td>Provider-first runtime without the extra EF, web-specific, or analyzer package payloads</td>
+<td>Provider-first runtime without the extra EF or web-specific package payloads</td>
+</tr>
+<tr>
+<td>custom provider or advanced extension authoring</td>
+<td><code>FastMoq.Abstractions</code></td>
+<td>Shared provider contracts such as <code>IMockingProvider</code>, <code>IFastMock</code>, <code>TimesSpec</code>, and provider-registration attributes. Most test projects do not need to reference this package directly</td>
+</tr>
+<tr>
+<td>Azure SDK credentials, pageable builders, or Azure-oriented DI/config helpers while using <code>FastMoq.Core</code></td>
+<td><code>FastMoq.Azure</code></td>
+<td>Adds <code>PageableBuilder</code>, token/default-credential helpers, Azure-oriented configuration/service-provider helpers, and common Azure client registration helpers</td>
 </tr>
 <tr>
 <td>Azure Functions worker helpers while using <code>FastMoq.Core</code></td>
 <td><code>FastMoq.AzureFunctions</code></td>
-<td>Adds <code>CreateFunctionContextInstanceServices(...)</code> and <code>AddFunctionContextInstanceServices(...)</code> in <code>FastMoq.AzureFunctions.Extensions</code> while keeping the typed <code>IServiceProvider</code> helpers in core</td>
+<td>Adds <code>CreateFunctionContextInstanceServices(...)</code>, <code>AddFunctionContextInstanceServices(...)</code>, <code>CreateHttpRequestData(...)</code>, <code>CreateHttpResponseData(...)</code>, and body readers in <code>FastMoq.AzureFunctions.Extensions</code> while keeping the typed <code>IServiceProvider</code> helpers in core</td>
 </tr>
 <tr>
 <td>DbContext and EF-specific helpers while using <code>FastMoq.Core</code></td>
@@ -173,22 +183,25 @@ Mocks.Verify&lt;ICustomerRepository&gt;(
 <td>Adds the NSubstitute provider package and tracked-mock extensions such as <code>AsNSubstitute()</code></td>
 </tr>
 <tr>
-<td>analyzer guidance without the aggregate runtime package</td>
+<td>analyzer guidance without the core or aggregate runtime package</td>
 <td><code>FastMoq.Analyzers</code></td>
 <td>Standalone Roslyn analyzers and code fixes for migration cleanup and provider-first test-authoring guidance</td>
 </tr>
 </tbody>
 </table>
 <p>Important package boundaries in the current v4 line:</p>
+<p><code>FastMoq</code> already includes the common end-user surface, including shared Azure SDK helpers, web, database, and Azure Functions helpers</p>
 <ul>
-<li><code>FastMoq</code> already includes the common end-user surface, including web, database, and Azure Functions helpers</li>
-<li><code>FastMoq</code> also includes the FastMoq analyzer assets by default so most test projects get migration guidance without extra setup</li>
-<li><code>FastMoq.Core</code> stays lighter on purpose, so EF helpers, Azure Functions helpers, and web helpers are separate package decisions when you consume core directly</li>
-<li><code>FastMoq.Core</code> does not include analyzer assets; add <code>FastMoq.Analyzers</code> explicitly if you want analyzer guidance in a core-only package graph</li>
+<li><code>FastMoq</code> and <code>FastMoq.Core</code> both include the FastMoq analyzer assets by default so most test projects get migration guidance without extra setup</li>
+<li><code>FastMoq.Core</code> keeps the provider-neutral runtime separate from the shared Azure SDK, EF, Azure Functions, and web helper packages when you consume core directly</li>
+<li><code>FastMoq.Analyzers</code> remains useful when you want the diagnostics without taking either the aggregate or core runtime package</li>
+<li>if a core-only test project stays on the legacy Moq-shaped path with <code>GetMock&lt;T&gt;()</code>, <code>VerifyLogger(...)</code>, <code>MockModel.Mock</code>, <code>SetupSet(...)</code>, <code>SetupAllProperties()</code>, or other Moq-specific compatibility flows, add <code>FastMoq.Provider.Moq</code> explicitly, then select <code>moq</code> at assembly scope instead of relying on the default <code>reflection</code> provider</li>
 <li><code>FastMoq.Core</code> includes the built-in <code>reflection</code> provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as <code>Setup(...)</code> and <code>Protected()</code> still belong to the <code>FastMoq.Provider.Moq</code> package</li>
 <li>provider-package extension methods still follow the provider-package docs and selection rules described in <a href="provider-selection.html">Provider Selection and Setup</a></li>
-<li>if you are wiring Azure Functions worker tests through <code>FunctionContext.InstanceServices</code>, add <code>FastMoq.AzureFunctions</code> when you consume <code>FastMoq.Core</code> directly</li>
+<li>if you are wiring Azure SDK clients, pageable sequences, or token credentials through tests while consuming <code>FastMoq.Core</code> directly, add <code>FastMoq.Azure</code></li>
+<li>if you are wiring Azure Functions worker tests through <code>FunctionContext.InstanceServices</code> or concrete HTTP-trigger request and response objects, add <code>FastMoq.AzureFunctions</code> when you consume <code>FastMoq.Core</code> directly</li>
 <li>if you are unsure whether your web tests need another package, see the web-helper notes in <a href="testing-guide.html#controller-testing">Testing Guide</a> and the migration-specific notes in <a href="../migration/framework-and-web-helpers.html#web-test-helpers">Framework and web helper migration</a></li>
+<li>for the full analyzer catalog and package-aware migration guidance, see <a href="../migration/README.html#analyzer-catalog">Migration Guide</a></li>
 </ul>
 <p>If your team wants the aggregate runtime package without analyzer diagnostics in a specific test project, you can opt out with:</p>
 <pre><code class="lang-xml">&lt;PackageReference Include=&quot;FastMoq&quot; Version=&quot;4.*&quot; ExcludeAssets=&quot;analyzers&quot; /&gt;
@@ -198,6 +211,7 @@ Mocks.Verify&lt;ICustomerRepository&gt;(
 </code></pre>
 <p>If you prefer the split packages instead of the aggregate package:</p>
 <pre><code class="lang-bash">dotnet add package FastMoq.Core
+dotnet add package FastMoq.Azure
 dotnet add package FastMoq.AzureFunctions
 dotnet add package FastMoq.Database
 dotnet add package FastMoq.Web
@@ -211,6 +225,7 @@ dotnet add package FastMoq.Provider.Moq
 </code></pre>
 <p>Split-package example:</p>
 <pre><code class="lang-xml">&lt;PackageReference Include=&quot;FastMoq.Core&quot; Version=&quot;4.*&quot; /&gt;
+&lt;PackageReference Include=&quot;FastMoq.Azure&quot; Version=&quot;4.*&quot; /&gt;
 &lt;PackageReference Include=&quot;FastMoq.AzureFunctions&quot; Version=&quot;4.*&quot; /&gt;
 &lt;PackageReference Include=&quot;FastMoq.Database&quot; Version=&quot;4.*&quot; /&gt;
 &lt;PackageReference Include=&quot;FastMoq.Web&quot; Version=&quot;4.*&quot; /&gt;
@@ -218,10 +233,10 @@ dotnet add package FastMoq.Provider.Moq
 </code></pre>
 <blockquote>
 <p>Note: this guide targets the current v4 release line. For the release delta relative to the last public <code>3.0.0</code> package, see <a href="../whats-new/README.html">What's New Since 3.0.0</a>.
-Note: in the current repository, <code>GetMockDbContext&lt;TContext&gt;()</code> keeps the same <code>FastMoq</code> namespace call shape, but direct <code>FastMoq.Core</code> consumers should add <code>FastMoq.Database</code> for EF-specific helpers. Direct Azure Functions helper consumers should add <code>FastMoq.AzureFunctions</code>. Direct web-helper consumers should add <code>FastMoq.Web</code>.</p>
+Note: in the current v4 package line, <code>GetMockDbContext&lt;TContext&gt;()</code> keeps the same <code>FastMoq</code> namespace call shape, but direct <code>FastMoq.Core</code> consumers should add <code>FastMoq.Database</code> for EF-specific helpers. Direct shared Azure SDK helper consumers should add <code>FastMoq.Azure</code>. Direct Azure Functions helper consumers should add <code>FastMoq.AzureFunctions</code>. Direct web-helper consumers should add <code>FastMoq.Web</code>.</p>
 </blockquote>
-<p>In the current v4 transition layout, <code>FastMoq.Core</code> bundles the built-in <code>moq</code> provider and the internal <code>reflection</code> fallback. The default provider is <code>reflection</code>. Optional providers such as <code>nsubstitute</code> can be added explicitly and then selected by their canonical name once the package is present, or registered manually under a custom alias. You can also register your own provider by implementing <code>IMockingProvider</code>; the bundled providers are examples, not the only supported choices.</p>
-<p>The DbContext helper path now exposes explicit modes through <code>GetDbContextHandle&lt;TContext&gt;(...)</code>. <code>GetMockDbContext&lt;TContext&gt;()</code> remains the mocked-sets convenience entry point, and <code>DbContextTestMode.RealInMemory</code> is the real EF-backed option. The mocked-sets implementation still uses the existing moved Moq-based <code>DbContextMock&lt;TContext&gt;</code> path internally.</p>
+<p>In the current v4 release line, <code>FastMoq.Core</code> bundles the built-in <code>moq</code> provider and the internal <code>reflection</code> fallback. The default provider is <code>reflection</code>. Optional providers such as <code>nsubstitute</code> can be added explicitly and then selected by their canonical name once the package is present, or registered manually under a custom alias. You can also register your own provider by implementing <code>IMockingProvider</code>; the bundled providers are examples, not the only supported choices.</p>
+<p>The DbContext helper path now exposes explicit modes through <code>GetDbContextHandle&lt;TContext&gt;(...)</code>. <code>GetMockDbContext&lt;TContext&gt;()</code> remains the mocked-sets convenience entry point, <code>DbContextTestMode.RealInMemory</code> is the real EF-backed option, and provider-first APIs such as <code>GetOrCreateMock&lt;TContext&gt;()</code> and <code>GetMockModel&lt;TContext&gt;()</code> return the same tracked context after the helper creates it.</p>
 <h3 id="required-using-statements">Required Using Statements</h3>
 <p>For most FastMoq tests, these using statements are a good starting point:</p>
 <pre><code class="lang-csharp">using FastMoq;
@@ -438,6 +453,33 @@ public class FileProcessorServiceTests : MockerTestBase&lt;FileProcessorService&
     }
 }
 </code></pre>
+<p>When a test needs a specific constructor, prefer the explicit constructor-selection hooks instead of relying on <code>GetObject&lt;T&gt;()</code> to land on the right overload.</p>
+<ul>
+<li>For <code>MockerTestBase&lt;TComponent&gt;</code>, override <code>ComponentConstructorParameterTypes</code>.</li>
+<li>For direct <code>Mocker</code> usage, call <code>CreateInstanceByType&lt;T&gt;(...)</code>.</li>
+<li>If the chosen constructor depends on <code>IServiceProvider</code> or <code>IServiceScopeFactory</code>, build and register a typed provider with <code>AddServiceProvider(...)</code> instead of extracting only <code>IServiceScopeFactory</code> from a manual <code>BuildServiceProvider()</code> call.</li>
+</ul>
+<pre><code class="lang-csharp">internal sealed class ArchiveInvokerTests : MockerTestBase&lt;ArchiveInvoker&gt;
+{
+    private readonly MockFileSystem fileSystem = new();
+
+    protected override Action&lt;Mocker&gt;? SetupMocksAction =&gt; mocker =&gt;
+    {
+        mocker.AddType&lt;IFileSystem&gt;(fileSystem, replace: true);
+        mocker.AddServiceProvider(services =&gt;
+        {
+            services.AddLogging();
+            services.AddOptions();
+            services.AddSingleton&lt;IFileSystem&gt;(fileSystem);
+            services.AddSingleton&lt;ArchiveService&gt;();
+        }, replace: true);
+    };
+
+    protected override Type?[]? ComponentConstructorParameterTypes =&gt;
+        new Type?[] { typeof(IFileSystem), typeof(IServiceScopeFactory) };
+}
+</code></pre>
+<p>See the <a href="testing-guide.html#explicit-constructor-selection-in-tests">Testing Guide</a> for the full constructor-selection rules and the <a href="testing-guide.html#typed-iserviceprovider-helpers">typed <code>IServiceProvider</code> helper guidance</a> for framework-heavy ServiceCollection patterns.</p>
 <h2 id="common-patterns">Common Patterns</h2>
 <h3 id="testing-constructor-parameters">Testing Constructor Parameters</h3>
 <p>FastMoq provides helpers for testing constructor parameter validation:</p>
@@ -452,6 +494,11 @@ public void Constructor_ShouldThrow_WhenFileSystemIsNull()
     });
 }
 </code></pre>
+<p>If you want diagnostic output while the helper runs, pass a framework-neutral line writer:</p>
+<pre><code class="lang-csharp">TestConstructorParameters((action, constructorName, parameterName) =&gt;
+    action.EnsureNullCheckThrown(parameterName, constructorName, message =&gt; output.WriteLine(message)));
+</code></pre>
+<p>That keeps the FastMoq helper surface framework-neutral while still letting the test project adapt its local runner output.</p>
 <h3 id="async-method-testing">Async Method Testing</h3>
 <p>FastMoq works seamlessly with async methods:</p>
 <pre><code class="lang-csharp">[Fact]
@@ -496,6 +543,7 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
 </ol>
 <h3 id="logger-verification-guidance">Logger verification guidance</h3>
 <p>Prefer <code>Mocks.VerifyLogged(...)</code> for new code. It is provider-safe because FastMoq captures <code>ILogger</code> callbacks through the active <code>IMockingProvider</code> and verifies the captured entries in core.</p>
+<p>If the test suite needs a first-party registration story for <code>ILoggerFactory</code>, <code>ILogger</code>, or <code>ILogger&lt;T&gt;</code>, use <code>Mocks.AddLoggerFactory()</code> for direct FastMoq resolution, or <code>Mocks.CreateLoggerFactory()</code> when you want to plug the same callback-backed factory into a typed <code>IServiceProvider</code> recipe. When the test also needs to mirror log output to a local sink after <code>Mocker</code> already exists, use the sink-aware overloads such as <code>Mocks.AddLoggerFactory(output.WriteLine, replace: true)</code> or <code>Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) =&gt; ...)</code> instead of maintaining a private logger wrapper.</p>
 <p>Use <code>GetOrCreateMock&lt;ILogger&lt;T&gt;&gt;().AsMoq().VerifyLogger(...)</code> only when you intentionally want the legacy Moq-specific behavior. That API is a compatibility shim and is planned to leave core in v5.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="common-issues">Common Issues</h3>
@@ -528,7 +576,7 @@ public async Task ProcessFileAsync_ShouldReturnProcessedContent()
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:19 UTC</span></div>
       
           </div>
         </div>

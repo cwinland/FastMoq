@@ -24,8 +24,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ComponentState
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
     startLine: 50
@@ -89,8 +89,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Component
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
     startLine: 62
@@ -121,8 +121,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ComponentId
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
     startLine: 68
@@ -153,8 +153,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CurrentRenderTree
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
     startLine: 74
@@ -185,8 +185,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: IsComponentBase
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
     startLine: 80
@@ -217,8 +217,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ParentComponentState
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
     startLine: 86
@@ -249,8 +249,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ComponentType
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
     startLine: 92
@@ -281,8 +281,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
     startLine: 103
@@ -326,8 +326,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetOrCreateRenderedComponent
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
     startLine: 140
@@ -365,8 +365,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetOrCreateRenderedComponent
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
     startLine: 187

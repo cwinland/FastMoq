@@ -140,7 +140,7 @@ inventoryGateway
 </code></pre>
 <p>That is the main migration pattern: replace <code>Setup(...)</code> with direct substitute calls plus <code>Returns(...)</code> or <code>When(...).Do(...)</code>, then keep FastMoq verification where it still reads well.</p>
 <h3 id="side-by-side-setupset-migration-versus-provider-neutral-capture">Side-by-side: <code>SetupSet(...)</code> migration versus provider-neutral capture</h3>
-<p>When a test only needs to observe which value was assigned to a property, prefer a fake plus <code>PropertyValueCapture&lt;TValue&gt;</code> over keeping the test tied to Moq setter interception.</p>
+<p>When a test only needs to observe which value was assigned to a property, prefer <code>AddPropertySetterCapture&lt;TService, TValue&gt;(...)</code> for simple interface-property cases, or a fake plus <code>PropertyValueCapture&lt;TValue&gt;</code> when the collaborator needs broader behavior.</p>
 <p>Moq-specific shape:</p>
 <pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push(&quot;moq&quot;);
 var gateway = Mocks.GetOrCreateMock&lt;IOrderGateway&gt;();
@@ -148,13 +148,15 @@ var gateway = Mocks.GetOrCreateMock&lt;IOrderGateway&gt;();
 gateway.AsMoq().SetupSet(x =&gt; x.Mode = It.IsAny&lt;string&gt;());
 </code></pre>
 <p>Provider-neutral shape:</p>
-<pre><code class="lang-csharp">var modeCapture = new PropertyValueCapture&lt;string?&gt;();
-Mocks.AddType&lt;IOrderGateway&gt;(_ =&gt; new OrderGatewayStub(modeCapture));
+<pre><code class="lang-csharp">var modeCapture = Mocks.AddPropertySetterCapture&lt;IOrderGateway, string?&gt;(x =&gt; x.Mode);
+CreateComponent();
 
 await Component.RunAsync();
 
 modeCapture.Value.Should().Be(&quot;fast&quot;);
 </code></pre>
+<p>When the component already exists because the test derives from <code>MockerTestBase&lt;TComponent&gt;</code>, that <code>CreateComponent()</code> call is what rebinds the constructor dependency to the proxy-backed registration.</p>
+<p>If the collaborator needs more than one captured property or is not an interface, keep using the fake-plus-<code>PropertyValueCapture&lt;TValue&gt;</code> pattern instead.</p>
 <p>That migration keeps the test portable across providers and usually makes the asserted behavior clearer.</p>
 <p>The source of truth for these examples is the test project itself:</p>
 <ul>
@@ -297,7 +299,7 @@ modeCapture.Value.Should().Be(&quot;fast&quot;);
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:19 UTC</span></div>
       
           </div>
         </div>

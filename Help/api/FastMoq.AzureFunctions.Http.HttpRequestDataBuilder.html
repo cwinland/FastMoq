@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class HttpRequestDataBuilder | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class HttpRequestDataBuilder | FastMoq ">
+    
+    <meta name="description" content="Builds concrete  instances for Azure Functions HTTP-trigger tests.">
+      <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+      <link rel="shortcut icon" href="../favicon.svg">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <link rel="stylesheet" href="../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder">
+
+
+
+  <h1 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder" class="text-break">Class HttpRequestDataBuilder</h1>
+  <div class="markdown level0 summary"><p>Builds concrete <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a> instances for Azure Functions HTTP-trigger tests.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">HttpRequestDataBuilder</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a>.<a class="xref" href="FastMoq.AzureFunctions.html">AzureFunctions</a>.<a class="xref" href="FastMoq.AzureFunctions.Http.html">Http</a></h6>
+  <h6><strong>Assembly</strong>: FastMoq.AzureFunctions.dll</h6>
+  <h5 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class HttpRequestDataBuilder</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder__ctor_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.#ctor*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder__ctor_Microsoft_Azure_Functions_Worker_FunctionContext_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.#ctor(Microsoft.Azure.Functions.Worker.FunctionContext)">HttpRequestDataBuilder(FunctionContext)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder(FunctionContext functionContext)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a></td>
+        <td><span class="parametername">functionContext</span></td>
+        <td><p>The function context to associate with the request.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_Build_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.Build*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_Build" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.Build">Build()</h4>
+  <div class="markdown level1 summary"><p>Builds the configured <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestData Build()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a></td>
+        <td><p>A concrete <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a> suitable for tests.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithBody_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithBody_System_IO_Stream_System_String_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody(System.IO.Stream,System.String)">WithBody(Stream, string?)</h4>
+  <div class="markdown level1 summary"><p>Sets the request body from an existing stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithBody(Stream body, string? contentType = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><span class="parametername">body</span></td>
+        <td><p>The body stream.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">contentType</span></td>
+        <td><p>An optional content-type header value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithBody_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithBody_System_String_System_Text_Encoding_System_String_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody(System.String,System.Text.Encoding,System.String)">WithBody(string, Encoding?, string?)</h4>
+  <div class="markdown level1 summary"><p>Sets the request body from a string payload.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithBody(string body, Encoding? encoding = null, string? contentType = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">body</span></td>
+        <td><p>The body payload.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></td>
+        <td><span class="parametername">encoding</span></td>
+        <td><p>The text encoding. Defaults to UTF-8.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">contentType</span></td>
+        <td><p>An optional content-type header value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithClaimsPrincipal_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithClaimsPrincipal*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithClaimsPrincipal_System_Security_Claims_ClaimsPrincipal_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithClaimsPrincipal(System.Security.Claims.ClaimsPrincipal)">WithClaimsPrincipal(ClaimsPrincipal)</h4>
+  <div class="markdown level1 summary"><p>Adds all identities from the supplied principal to the request.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithClaimsPrincipal(ClaimsPrincipal principal)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a></td>
+        <td><span class="parametername">principal</span></td>
+        <td><p>The principal whose identities should be added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithCookie_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithCookie*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithCookie_System_String_System_String_System_String_System_String_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithCookie(System.String,System.String,System.String,System.String)">WithCookie(string, string, string?, string?)</h4>
+  <div class="markdown level1 summary"><p>Adds a request cookie.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithCookie(string name, string value, string? path = null, string? domain = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The cookie name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The cookie value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">path</span></td>
+        <td><p>An optional cookie path.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">domain</span></td>
+        <td><p>An optional cookie domain.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithHeader_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithHeader*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithHeader_System_String_System_String_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithHeader(System.String,System.String)">WithHeader(string, string)</h4>
+  <div class="markdown level1 summary"><p>Adds a request header.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithHeader(string name, string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The header name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The header value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithIdentity_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithIdentity*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithIdentity_System_Security_Claims_ClaimsIdentity_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithIdentity(System.Security.Claims.ClaimsIdentity)">WithIdentity(ClaimsIdentity)</h4>
+  <div class="markdown level1 summary"><p>Adds a claims identity to the request.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithIdentity(ClaimsIdentity identity)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsidentity">ClaimsIdentity</a></td>
+        <td><span class="parametername">identity</span></td>
+        <td><p>The identity to add.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithJsonBody_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithJsonBody*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithJsonBody__1___0_System_Text_Json_JsonSerializerOptions_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithJsonBody``1(``0,System.Text.Json.JsonSerializerOptions)">WithJsonBody&lt;TValue&gt;(TValue, JsonSerializerOptions?)</h4>
+  <div class="markdown level1 summary"><p>Sets the request body from a JSON payload.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithJsonBody&lt;TValue&gt;(TValue value, JsonSerializerOptions? jsonSerializerOptions = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The payload to serialize.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions">JsonSerializerOptions</a></td>
+        <td><span class="parametername">jsonSerializerOptions</span></td>
+        <td><p>Optional serializer options.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TValue</span></td>
+        <td><p>The payload type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithMethod_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithMethod*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithMethod_System_String_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithMethod(System.String)">WithMethod(string)</h4>
+  <div class="markdown level1 summary"><p>Sets the HTTP method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithMethod(string method)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>The HTTP method.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithQueryParameter_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithQueryParameter*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithQueryParameter_System_String_System_String_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithQueryParameter(System.String,System.String)">WithQueryParameter(string, string?)</h4>
+  <div class="markdown level1 summary"><p>Adds a query-string parameter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithQueryParameter(string name, string? value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The parameter name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The parameter value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithUrl_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithUrl_System_String_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl(System.String)">WithUrl(string)</h4>
+  <div class="markdown level1 summary"><p>Sets the request URL.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithUrl(string url)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">url</span></td>
+        <td><p>The absolute request URL.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithUrl_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl*"></a>
+  <h4 id="FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithUrl_System_Uri_" data-uid="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl(System.Uri)">WithUrl(Uri)</h4>
+  <div class="markdown level1 summary"><p>Sets the request URL.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HttpRequestDataBuilder WithUrl(Uri url)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uri">Uri</a></td>
+        <td><span class="parametername">url</span></td>
+        <td><p>The absolute request URL.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_">ObjectExtensions.RaiseIfNull&lt;T&gt;(T?, string?, string?, int?, string?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1___0_System_String___0_">TestClassExtensions.GetFieldValue&lt;TObject&gt;(TObject, string, TObject?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetField__1___0_System_String_">TestClassExtensions.GetField&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMemberName__2___0_System_Linq_Expressions_Expression_System_Func___0___1___">TestClassExtensions.GetMemberName&lt;T, TValue&gt;(T, Expression&lt;Func&lt;T, TValue&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMember__2___0_System_Linq_Expressions_Expression_System_Func___0___1___">TestClassExtensions.GetMember&lt;T, TValue&gt;(T, Expression&lt;Func&lt;T, TValue&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethodValue__1___0_System_String_System_Object_System_Object___">TestClassExtensions.GetMethodValue&lt;TObject&gt;(TObject, string, object?, params object[])</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetMethod__1___0_System_String_">TestClassExtensions.GetMethod&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.GetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetProperty__1___0_System_String_">TestClassExtensions.GetProperty&lt;TObject&gt;(TObject, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetFieldValue__1___0_System_String_System_Object_">TestClassExtensions.SetFieldValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_SetPropertyValue__1___0_System_String_System_Object_">TestClassExtensions.SetPropertyValue&lt;TObject&gt;(TObject, string, object?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupHttpMessage_System_Object_System_Func_System_Net_Http_HttpResponseMessage__System_Linq_Expressions_Expression_System_Linq_Expressions_Expression_">MockerHttpMoqExtensions.SetupHttpMessage(object, Func&lt;HttpResponseMessage&gt;, Expression?, Expression?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageAsync__2_System_Object_System_Linq_Expressions_Expression_System_Func___0_System_Threading_Tasks_Task___1____System_Func___1__">MockerHttpMoqExtensions.SetupMessageAsync&lt;TMock, TReturn&gt;(object, Expression&lt;Func&lt;TMock, Task&lt;TReturn&gt;&gt;&gt;, Func&lt;TReturn&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtectedAsync__2_System_Object_System_String_System_Func___1__System_Object___">MockerHttpMoqExtensions.SetupMessageProtectedAsync&lt;TMock, TReturn&gt;(object, string, Func&lt;TReturn&gt;, params object?[]?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessageProtected__2_System_Object_System_String_System_Func___1__System_Object___">MockerHttpMoqExtensions.SetupMessageProtected&lt;TMock, TReturn&gt;(object, string, Func&lt;TReturn&gt;, params object?[]?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.MockerHttpMoqExtensions.html#FastMoq_Extensions_MockerHttpMoqExtensions_SetupMessage__2_System_Object_System_Linq_Expressions_Expression_System_Func___0___1___System_Func___1__">MockerHttpMoqExtensions.SetupMessage&lt;TMock, TReturn&gt;(object, Expression&lt;Func&lt;TMock, TReturn&gt;&gt;, Func&lt;TReturn&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldInfo__1_System_Object_System_String_">TestClassExtensions.GetFieldInfo&lt;TType&gt;(object, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__1_System_Object_System_Reflection_FieldInfo_">TestClassExtensions.GetFieldValue&lt;T&gt;(object?, FieldInfo)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetFieldValue__2_System_Object_System_String_">TestClassExtensions.GetFieldValue&lt;T, TType&gt;(object, string)</a>
+  </div>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:19 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

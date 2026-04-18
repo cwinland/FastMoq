@@ -83,6 +83,7 @@
 <li><code>.Object</code> access on raw <code>Mock&lt;T&gt;</code> values</li>
 <li><code>.Reset()</code> calls on provider-specific mocks</li>
 <li><code>Func&lt;Times&gt;</code> or raw <code>Times</code> helper signatures</li>
+<li>test-framework output helpers passed through shared constructor-check or diagnostic helper wrappers</li>
 <li>local wrappers around principals, controller contexts, or request setup</li>
 <li>framework service-provider shims such as <code>InstanceServices</code>, <code>IServiceProvider</code>, or similar test bootstrap plumbing</li>
 </ul>
@@ -120,6 +121,13 @@ var clock = context.InstanceServices.GetRequiredService&lt;WidgetClock&gt;();
 <li>if the test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.AzureFunctions</code> and import <code>FastMoq.AzureFunctions.Extensions</code> before using <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code></li>
 <li>the generic typed <code>IServiceProvider</code> helpers stay in <code>FastMoq.Core</code></li>
 </ul>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0013</code> warns on direct <code>FunctionContext.InstanceServices</code> mocking more broadly across <code>Setup(...)</code>, <code>SetupGet(...)</code>, and <code>SetupProperty(...)</code> so those shims move toward the typed helper path</li>
+<li>the built-in code fix is narrower: it only appears when <code>FastMoq.AzureFunctions</code> is already referenced, and it rewrites the safe tracked-provider cases <code>Setup(x =&gt; x.InstanceServices).Returns(provider)</code>, <code>SetupGet(x =&gt; x.InstanceServices).Returns(provider)</code>, and <code>SetupProperty(x =&gt; x.InstanceServices, provider)</code> to <code>context.AddFunctionContextInstanceServices(provider)</code> and adds <code>using FastMoq.AzureFunctions.Extensions;</code> when needed</li>
+<li><code>SetupSet(...)</code> is not part of this analyzer. When the real need is provider-neutral setter observation rather than Moq setter interception, prefer a fake or stub with <a class="xref" href="../../api/FastMoq.PropertyValueCapture-1.html">PropertyValueCapture&lt;TValue&gt;</a></li>
+<li>broader <code>IServiceProvider</code> shim warnings still stay warning-only when the right replacement depends on the suite's real service graph, but the built-in <code>FMOQ0013</code> fix now also handles the direct tracked-shim cases <code>GetOrCreateMock&lt;IServiceProvider&gt;()</code>, <code>GetOrCreateMock&lt;IServiceScopeFactory&gt;()</code>, <code>GetOrCreateMock&lt;IServiceScope&gt;()</code>, manual scope-factory extraction such as <code>AddType&lt;IServiceScopeFactory&gt;(provider.GetRequiredService&lt;IServiceScopeFactory&gt;())</code>, direct <code>IServiceScope.ServiceProvider</code> setup, and the paired <code>CreateScope()</code> pattern when the returned tracked scope also exposes a concrete provider in the same helper block</li>
+</ul>
 <p>If a suite already has a local Azure helper wrapper, re-point that wrapper to <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code> first and keep the existing call sites stable until the suite is green.</p>
 <p>Avoid helpers that return one object such as <code>ILoggerFactory</code> for every <code>GetService(Type)</code> request. Those shims can let the suite keep running while hiding cast failures for typed services such as <code>IOptions&lt;WorkerOptions&gt;</code>.</p>
 <h3 id="typed-iserviceprovider-helpers">Typed <code>IServiceProvider</code> helpers</h3>
@@ -139,8 +147,17 @@ provider.Setup(x =&gt; x.GetService(It.IsAny&lt;Type&gt;())).Returns(someSharedO
 <p>That migration is usually the highest-leverage cleanup in suites that centralize framework bootstrap inside a shared helper. One helper rewrite removes a noisy anti-pattern from many tests at once.</p>
 <p>Analyzer note:</p>
 <ul>
-<li><code>FMOQ0013</code> warns on direct FastMoq <code>IServiceProvider</code> mock setup so those helpers move toward <code>CreateTypedServiceProvider(...)</code> or <code>AddServiceProvider(...)</code>.</li>
+<li><code>FMOQ0013</code> warns on direct FastMoq <code>IServiceProvider</code>, <code>IServiceScopeFactory</code>, and <code>IServiceScope</code> shim setup, plus manual scope-factory extraction, so those helpers move toward <code>CreateTypedServiceProvider(...)</code>, <code>CreateTypedServiceScope(...)</code>, <code>AddServiceProvider(...)</code>, or <code>AddServiceScope(...)</code>.</li>
+<li>the built-in fix covers the direct tracked-provider and tracked-scope cases, manual scope-factory extraction, direct <code>IServiceScope.ServiceProvider</code> setup, and the paired <code>CreateScope()</code> case when <code>FMOQ0013</code> can recover the provider expression from the same helper block. It adds <code>using FastMoq.Extensions;</code> when needed. More entangled shim setups still need manual migration.</li>
 </ul>
+<p>If the same helper layer also hand-rolls <code>IOptions&lt;T&gt;</code> setup, move that boilerplate at the same time:</p>
+<pre><code class="lang-csharp">Mocks.SetupOptions(new WorkerClientOptions
+{
+    RetryCount = 3,
+    Endpoint = &quot;https://fastmoq.dev&quot;
+});
+</code></pre>
+<p>Keep <code>AddType(instance)</code> for non-options real instances such as <code>MemoryCache</code>, clocks, or fixed framework objects. Use <code>SetupOptions(...)</code> only for the repeated <code>IOptions&lt;T&gt;</code> wrapper shape.</p>
 <h3 id="temporary-compatibility-cleanup-in-shared-helpers">Temporary compatibility cleanup in shared helpers</h3>
 <p>When you are already touching shared framework helpers, treat these as high-priority cleanup targets:</p>
 <ul>
@@ -149,6 +166,60 @@ provider.Setup(x =&gt; x.GetService(It.IsAny&lt;Type&gt;())).Returns(someSharedO
 <li>local <code>FunctionContext.InstanceServices</code> wrappers that do not build a real provider</li>
 </ul>
 <p>Those patterns are still supported to keep v4 migrations moving, but they are the exact spots where a small helper rewrite gives the biggest long-term payback.</p>
+<h3 id="test-framework-output-helpers-keep-the-adapter-local">Test-framework output helpers: keep the adapter local</h3>
+<p>If a shared helper still forwards a test-framework output object directly into FastMoq constructor-check helpers, keep the framework adapter local and pass a neutral line-writer callback into FastMoq instead.</p>
+<p>Before:</p>
+<pre><code class="lang-csharp">action.EnsureNullCheckThrown(parameterName, constructorName, output);
+</code></pre>
+<p>After:</p>
+<pre><code class="lang-csharp">action.EnsureNullCheckThrown(parameterName, constructorName, output.WriteLine);
+</code></pre>
+<p>Why this matters:</p>
+<ul>
+<li>this FastMoq path is now framework-neutral</li>
+<li>the helper migration is usually one local signature fix rather than a rewrite of every leaf test</li>
+<li>the same shape works with xUnit, NUnit, MSTest, or an in-memory list collector because FastMoq only needs <code>Action&lt;string&gt;</code></li>
+</ul>
+<p>Recommended helper shape:</p>
+<ul>
+<li>keep the test-framework output type in the test project if that project wants it</li>
+<li>adapt it to <code>Action&lt;string&gt;</code> at the helper boundary before calling FastMoq</li>
+<li>if the helper only used output for occasional diagnostics, prefer dropping the callback entirely instead of preserving framework-specific plumbing forever</li>
+</ul>
+<h3 id="shared-logger-helper-wrappers-use-first-party-registrations">Shared logger helper wrappers: use first-party registrations</h3>
+<p>If a shared helper only exists to register <code>ILoggerFactory</code>, <code>ILogger</code>, or <code>ILogger&lt;T&gt;</code>, replace that wrapper with the first-party logging helpers instead of preserving a private adapter layer.</p>
+<p>Direct <code>Mocker</code> registration:</p>
+<pre><code class="lang-csharp">Mocks.AddLoggerFactory();
+
+var logger = Mocks.GetObject&lt;ILogger&lt;WidgetProcessor&gt;&gt;();
+logger.LogInformation(&quot;processing complete&quot;);
+
+Mocks.VerifyLogged(LogLevel.Information, &quot;processing complete&quot;);
+</code></pre>
+<p>Typed provider composition:</p>
+<pre><code class="lang-csharp">var loggerFactory = Mocks.CreateLoggerFactory();
+
+Mocks.AddServiceProvider(services =&gt;
+{
+    services.AddSingleton(loggerFactory);
+    services.AddSingleton(typeof(ILogger&lt;&gt;), typeof(Logger&lt;&gt;));
+});
+</code></pre>
+<p>If the suite wants logger output mirrored to a line writer or other sink after <code>Mocker</code> already exists, use the sink-aware overloads instead of preserving a private logger wrapper:</p>
+<pre><code class="lang-csharp">Mocks.AddLoggerFactory(output.WriteLine, replace: true);
+
+var loggerFactory = Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) =&gt;
+{
+    output.WriteLine($&quot;[{logLevel}] {message}&quot;);
+});
+</code></pre>
+<p>Keep any test-framework-specific output adapter local to the test project. The adapter should stop at <code>Action&lt;string&gt;</code> or the raw logging callback overload rather than pushing a framework dependency through shared FastMoq helpers. If the suite truly needs extra providers, continue to plug them into <code>CreateLoggerFactory(...)</code> through the logging-builder callback.</p>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0003</code> prefers <code>VerifyLogged(...)</code> over legacy <code>VerifyLogger(...)</code> when the assertion can stay provider-safe.</li>
+<li><code>FMOQ0019</code> prefers <code>SetupOptions(...)</code> over repeated manual <code>IOptions&lt;T&gt;</code> setup.</li>
+<li><code>FMOQ0030</code> prefers <code>AddLoggerFactory(...)</code> over direct <code>AddType&lt;ILoggerFactory&gt;(new ...output-helper...)</code>, <code>AddType&lt;ILogger&gt;(new ...output-helper...)</code>, and <code>AddType&lt;ILogger&lt;T&gt;&gt;(new ...output-helper...)</code> registrations when the logger registration is just mirroring logs into an xUnit-style output helper. The built-in fix handles direct <code>Mocker</code> registrations whose logger constructor takes <code>ITestOutputHelper</code> or <code>Func&lt;ITestOutputHelper&gt;</code>; shared repo-local wrapper layers still need manual cleanup.</li>
+</ul>
 <h2 id="web-test-helpers">Web test helpers</h2>
 <p>For controller tests, request-driven tests, and <code>IHttpContextAccessor</code>-driven tests, prefer the <code>FastMoq.Web</code> helpers instead of continuing to hand-roll local request and principal setup.</p>
 <p>For Blazor component tests, prefer the dedicated <a href="bunit-and-blazor-testing.html">bUnit and Blazor test migration</a> guide. This page stays focused on HTTP, controller, principal, and general framework-helper migration rather than component-rendering API changes.</p>
@@ -288,7 +359,7 @@ public class OrdersControllerClaimTests : MockerTestBase&lt;OrdersController&gt;
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:19 UTC</span></div>
       
           </div>
         </div>

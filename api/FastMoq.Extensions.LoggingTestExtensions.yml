@@ -1,0 +1,1095 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.Extensions.LoggingTestExtensions
+  commentId: T:FastMoq.Extensions.LoggingTestExtensions
+  id: LoggingTestExtensions
+  parent: FastMoq.Extensions
+  children:
+  - FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,Microsoft.Extensions.Logging.ILoggerFactory,System.Boolean)
+  - FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  - FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  - FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  - FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  - FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  - FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  langs:
+  - csharp
+  - vb
+  name: LoggingTestExtensions
+  nameWithType: LoggingTestExtensions
+  fullName: FastMoq.Extensions.LoggingTestExtensions
+  type: Class
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: LoggingTestExtensions
+    path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+    startLine: 8
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Provides framework-neutral logger registration helpers for test composition.
+  example: []
+  syntax:
+    content: public static class LoggingTestExtensions
+    content.vb: Public Module LoggingTestExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  id: CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.LoggingTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateLoggerFactory(Mocker, Action<ILoggingBuilder>?)
+  nameWithType: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action<ILoggingBuilder>?)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: CreateLoggerFactory
+    path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+    startLine: 28
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Creates a logger factory that forwards captured log entries into the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example:
+  - >-
+    <pre><code class="lang-csharp">var loggerFactory = Mocks.CreateLoggerFactory();
+
+    var provider = Mocks.CreateTypedServiceProvider(services =&gt;
+
+    {
+        services.AddSingleton(loggerFactory);
+        services.AddSingleton(typeof(ILogger&lt;&gt;), typeof(Logger&lt;&gt;));
+    });</code></pre>
+  syntax:
+    content: public static ILoggerFactory CreateLoggerFactory(this Mocker mocker, Action<ILoggingBuilder>? configureLogging = null)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: configureLogging
+      type: System.Action{Microsoft.Extensions.Logging.ILoggingBuilder}
+      description: Optional logging builder customization applied before the FastMoq capture provider is added.
+    return:
+      type: Microsoft.Extensions.Logging.ILoggerFactory
+      description: A logger factory that writes into <xref href="FastMoq.Mocker.LogEntries" data-throw-if-not-resolved="false"></xref> through the current mocker callback.
+    content.vb: Public Shared Function CreateLoggerFactory(mocker As Mocker, configureLogging As Action(Of ILoggingBuilder) = Nothing) As ILoggerFactory
+  overload: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory*
+  nameWithType.vb: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action(Of ILoggingBuilder))
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder))
+  name.vb: CreateLoggerFactory(Mocker, Action(Of ILoggingBuilder))
+- uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  id: CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.LoggingTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateLoggerFactory(Mocker, Action<LogLevel, EventId, string, Exception?>, Action<ILoggingBuilder>?)
+  nameWithType: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action<LogLevel, EventId, string, Exception?>, Action<ILoggingBuilder>?)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception?>, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: CreateLoggerFactory
+    path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+    startLine: 50
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Creates a logger factory that mirrors captured log entries to the supplied sink while still forwarding them into the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example:
+  - >-
+    <pre><code class="lang-csharp">var loggerFactory = Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) =&gt;
+
+    {
+        output.WriteLine($"[{logLevel}] {message}");
+    });</code></pre>
+  syntax:
+    content: public static ILoggerFactory CreateLoggerFactory(this Mocker mocker, Action<LogLevel, EventId, string, Exception?> sink, Action<ILoggingBuilder>? configureLogging = null)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: sink
+      type: System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+      description: A sink that receives each captured log entry after FastMoq records it.
+    - id: configureLogging
+      type: System.Action{Microsoft.Extensions.Logging.ILoggingBuilder}
+      description: Optional logging builder customization applied before the FastMoq capture provider is added.
+    return:
+      type: Microsoft.Extensions.Logging.ILoggerFactory
+      description: A logger factory that mirrors captured entries to <code class="paramref">sink</code> and <xref href="FastMoq.Mocker.LogEntries" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Shared Function CreateLoggerFactory(mocker As Mocker, sink As Action(Of LogLevel, EventId, String, Exception), configureLogging As Action(Of ILoggingBuilder) = Nothing) As ILoggerFactory
+  overload: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory*
+  nameWithType.vb: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action(Of LogLevel, EventId, String, Exception), Action(Of ILoggingBuilder))
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception), System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder))
+  name.vb: CreateLoggerFactory(Mocker, Action(Of LogLevel, EventId, String, Exception), Action(Of ILoggingBuilder))
+- uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  id: CreateLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.LoggingTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateLoggerFactory(Mocker, Action<string>, Action<ILoggingBuilder>?)
+  nameWithType: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action<string>, Action<ILoggingBuilder>?)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action<string>, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: CreateLoggerFactory
+    path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+    startLine: 70
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Creates a logger factory that mirrors formatted log lines to the supplied writer while still forwarding captured entries into the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example:
+  - <pre><code class="lang-csharp">var loggerFactory = Mocks.CreateLoggerFactory(output.WriteLine);</code></pre>
+  syntax:
+    content: public static ILoggerFactory CreateLoggerFactory(this Mocker mocker, Action<string> lineWriter, Action<ILoggingBuilder>? configureLogging = null)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: lineWriter
+      type: System.Action{System.String}
+      description: A line writer that receives a formatted representation of each captured log entry.
+    - id: configureLogging
+      type: System.Action{Microsoft.Extensions.Logging.ILoggingBuilder}
+      description: Optional logging builder customization applied before the FastMoq capture provider is added.
+    return:
+      type: Microsoft.Extensions.Logging.ILoggerFactory
+      description: A logger factory that mirrors formatted log lines to <code class="paramref">lineWriter</code> and raw entries to <xref href="FastMoq.Mocker.LogEntries" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Shared Function CreateLoggerFactory(mocker As Mocker, lineWriter As Action(Of String), configureLogging As Action(Of ILoggingBuilder) = Nothing) As ILoggerFactory
+  overload: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory*
+  nameWithType.vb: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action(Of String), Action(Of ILoggingBuilder))
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action(Of String), System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder))
+  name.vb: CreateLoggerFactory(Mocker, Action(Of String), Action(Of ILoggingBuilder))
+- uid: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  id: AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.LoggingTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddLoggerFactory(Mocker, Action<ILoggingBuilder>?, bool)
+  nameWithType: LoggingTestExtensions.AddLoggerFactory(Mocker, Action<ILoggingBuilder>?, bool)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?, bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: AddLoggerFactory
+    path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+    startLine: 96
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Creates and registers a logger factory along with direct <xref href="Microsoft.Extensions.Logging.ILogger" data-throw-if-not-resolved="false"></xref> and <xref href="Microsoft.Extensions.Logging.ILogger%601" data-throw-if-not-resolved="false"></xref> resolution support.
+  example:
+  - >-
+    <pre><code class="lang-csharp">var mocker = new Mocker()
+        .AddLoggerFactory();
+
+    var logger = mocker.GetObject&lt;ILogger&lt;CheckoutService&gt;&gt;();
+
+    logger.LogInformation("submitted order");
+
+
+    mocker.VerifyLogged(LogLevel.Information, "submitted order");</code></pre>
+  syntax:
+    content: public static Mocker AddLoggerFactory(this Mocker mocker, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: configureLogging
+      type: System.Action{Microsoft.Extensions.Logging.ILoggingBuilder}
+      description: Optional logging builder customization applied before the FastMoq capture provider is added.
+    - id: replace
+      type: System.Boolean
+      description: True to replace existing logger registrations.
+    return:
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function AddLoggerFactory(mocker As Mocker, configureLogging As Action(Of ILoggingBuilder) = Nothing, replace As Boolean = False) As Mocker
+  overload: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory*
+  nameWithType.vb: LoggingTestExtensions.AddLoggerFactory(Mocker, Action(Of ILoggingBuilder), Boolean)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder), Boolean)
+  name.vb: AddLoggerFactory(Mocker, Action(Of ILoggingBuilder), Boolean)
+- uid: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  id: AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.LoggingTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddLoggerFactory(Mocker, Action<LogLevel, EventId, string, Exception?>, Action<ILoggingBuilder>?, bool)
+  nameWithType: LoggingTestExtensions.AddLoggerFactory(Mocker, Action<LogLevel, EventId, string, Exception?>, Action<ILoggingBuilder>?, bool)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception?>, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?, bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: AddLoggerFactory
+    path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+    startLine: 112
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Creates and registers a logger factory that mirrors captured log entries to the supplied sink while still forwarding them into the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example: []
+  syntax:
+    content: public static Mocker AddLoggerFactory(this Mocker mocker, Action<LogLevel, EventId, string, Exception?> sink, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: sink
+      type: System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+      description: A sink that receives each captured log entry after FastMoq records it.
+    - id: configureLogging
+      type: System.Action{Microsoft.Extensions.Logging.ILoggingBuilder}
+      description: Optional logging builder customization applied before the FastMoq capture provider is added.
+    - id: replace
+      type: System.Boolean
+      description: True to replace existing logger registrations.
+    return:
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function AddLoggerFactory(mocker As Mocker, sink As Action(Of LogLevel, EventId, String, Exception), configureLogging As Action(Of ILoggingBuilder) = Nothing, replace As Boolean = False) As Mocker
+  overload: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory*
+  nameWithType.vb: LoggingTestExtensions.AddLoggerFactory(Mocker, Action(Of LogLevel, EventId, String, Exception), Action(Of ILoggingBuilder), Boolean)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception), System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder), Boolean)
+  name.vb: AddLoggerFactory(Mocker, Action(Of LogLevel, EventId, String, Exception), Action(Of ILoggingBuilder), Boolean)
+- uid: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  id: AddLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.LoggingTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddLoggerFactory(Mocker, Action<string>, Action<ILoggingBuilder>?, bool)
+  nameWithType: LoggingTestExtensions.AddLoggerFactory(Mocker, Action<string>, Action<ILoggingBuilder>?, bool)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action<string>, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?, bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: AddLoggerFactory
+    path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+    startLine: 129
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Creates and registers a logger factory that mirrors formatted log lines to the supplied writer while still forwarding captured entries into the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example: []
+  syntax:
+    content: public static Mocker AddLoggerFactory(this Mocker mocker, Action<string> lineWriter, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: lineWriter
+      type: System.Action{System.String}
+      description: A line writer that receives a formatted representation of each captured log entry.
+    - id: configureLogging
+      type: System.Action{Microsoft.Extensions.Logging.ILoggingBuilder}
+      description: Optional logging builder customization applied before the FastMoq capture provider is added.
+    - id: replace
+      type: System.Boolean
+      description: True to replace existing logger registrations.
+    return:
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function AddLoggerFactory(mocker As Mocker, lineWriter As Action(Of String), configureLogging As Action(Of ILoggingBuilder) = Nothing, replace As Boolean = False) As Mocker
+  overload: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory*
+  nameWithType.vb: LoggingTestExtensions.AddLoggerFactory(Mocker, Action(Of String), Action(Of ILoggingBuilder), Boolean)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action(Of String), System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder), Boolean)
+  name.vb: AddLoggerFactory(Mocker, Action(Of String), Action(Of ILoggingBuilder), Boolean)
+- uid: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,Microsoft.Extensions.Logging.ILoggerFactory,System.Boolean)
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,Microsoft.Extensions.Logging.ILoggerFactory,System.Boolean)
+  id: AddLoggerFactory(FastMoq.Mocker,Microsoft.Extensions.Logging.ILoggerFactory,System.Boolean)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.LoggingTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddLoggerFactory(Mocker, ILoggerFactory, bool)
+  nameWithType: LoggingTestExtensions.AddLoggerFactory(Mocker, ILoggerFactory, bool)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, Microsoft.Extensions.Logging.ILoggerFactory, bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: AddLoggerFactory
+    path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
+    startLine: 148
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Registers an <xref href="Microsoft.Extensions.Logging.ILoggerFactory" data-throw-if-not-resolved="false"></xref> and resolves <xref href="Microsoft.Extensions.Logging.ILogger" data-throw-if-not-resolved="false"></xref> services from that factory.
+  remarks: Prefer <xref href="FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker%2cSystem.Action%7bMicrosoft.Extensions.Logging.ILoggingBuilder%7d)" data-throw-if-not-resolved="false"></xref> when you want log output to flow into <xref href="FastMoq.Mocker.LogEntries" data-throw-if-not-resolved="false"></xref> and <xref href="FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker%2cMicrosoft.Extensions.Logging.LogLevel%2cSystem.String)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static Mocker AddLoggerFactory(this Mocker mocker, ILoggerFactory loggerFactory, bool replace = false)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: loggerFactory
+      type: Microsoft.Extensions.Logging.ILoggerFactory
+      description: The logger factory to register.
+    - id: replace
+      type: System.Boolean
+      description: True to replace existing logger registrations.
+    return:
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function AddLoggerFactory(mocker As Mocker, loggerFactory As ILoggerFactory, replace As Boolean = False) As Mocker
+  overload: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory*
+  nameWithType.vb: LoggingTestExtensions.AddLoggerFactory(Mocker, ILoggerFactory, Boolean)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, Microsoft.Extensions.Logging.ILoggerFactory, Boolean)
+  name.vb: AddLoggerFactory(Mocker, ILoggerFactory, Boolean)
+references:
+- uid: FastMoq.Extensions
+  commentId: N:FastMoq.Extensions
+  href: FastMoq.html
+  name: FastMoq.Extensions
+  nameWithType: FastMoq.Extensions
+  fullName: FastMoq.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Extensions
+    name: Extensions
+    href: FastMoq.Extensions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
+- uid: FastMoq.Mocker.LogEntries
+  commentId: P:FastMoq.Mocker.LogEntries
+  href: FastMoq.Mocker.html#FastMoq_Mocker_LogEntries
+  name: LogEntries
+  nameWithType: Mocker.LogEntries
+  fullName: FastMoq.Mocker.LogEntries
+- uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory*
+  commentId: Overload:FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory
+  href: FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__
+  name: CreateLoggerFactory
+  nameWithType: LoggingTestExtensions.CreateLoggerFactory
+  fullName: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory
+- uid: System.Action{Microsoft.Extensions.Logging.ILoggingBuilder}
+  commentId: T:System.Action{Microsoft.Extensions.Logging.ILoggingBuilder}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<ILoggingBuilder>
+  nameWithType: Action<ILoggingBuilder>
+  fullName: System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>
+  nameWithType.vb: Action(Of ILoggingBuilder)
+  fullName.vb: System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder)
+  name.vb: Action(Of ILoggingBuilder)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILoggingBuilder
+    name: ILoggingBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggingbuilder
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILoggingBuilder
+    name: ILoggingBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggingbuilder
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILoggerFactory
+  commentId: T:Microsoft.Extensions.Logging.ILoggerFactory
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory
+  name: ILoggerFactory
+  nameWithType: ILoggerFactory
+  fullName: Microsoft.Extensions.Logging.ILoggerFactory
+- uid: FastMoq
+  commentId: N:FastMoq
+  href: FastMoq.html
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+  commentId: T:System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception}
+  parent: System
+  definition: System.Action`4
+  href: https://learn.microsoft.com/dotnet/api/system.action-4
+  name: Action<LogLevel, EventId, string, Exception>
+  nameWithType: Action<LogLevel, EventId, string, Exception>
+  fullName: System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception>
+  nameWithType.vb: Action(Of LogLevel, EventId, String, Exception)
+  fullName.vb: System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception)
+  name.vb: Action(Of LogLevel, EventId, String, Exception)
+  spec.csharp:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: <
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.EventId
+    name: EventId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.EventId
+    name: EventId
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+- uid: System.Action`4
+  commentId: T:System.Action`4
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-4
+  name: Action<T1, T2, T3, T4>
+  nameWithType: Action<T1, T2, T3, T4>
+  fullName: System.Action<T1, T2, T3, T4>
+  nameWithType.vb: Action(Of T1, T2, T3, T4)
+  fullName.vb: System.Action(Of T1, T2, T3, T4)
+  name.vb: Action(Of T1, T2, T3, T4)
+  spec.csharp:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`4
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-4
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: )
+- uid: System.Action{System.String}
+  commentId: T:System.Action{System.String}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<string>
+  nameWithType: Action<string>
+  fullName: System.Action<string>
+  nameWithType.vb: Action(Of String)
+  fullName.vb: System.Action(Of String)
+  name.vb: Action(Of String)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory*
+  commentId: Overload:FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory
+  href: FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean_
+  name: AddLoggerFactory
+  nameWithType: LoggingTestExtensions.AddLoggerFactory
+  fullName: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  isExternal: true
+  href: FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__
+  name: CreateLoggerFactory(Mocker, Action<ILoggingBuilder>)
+  nameWithType: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action<ILoggingBuilder>)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>)
+  nameWithType.vb: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action(Of ILoggingBuilder))
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder))
+  name.vb: CreateLoggerFactory(Mocker, Action(Of ILoggingBuilder))
+  spec.csharp:
+  - uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+    name: CreateLoggerFactory
+    href: FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: Microsoft.Extensions.Logging.ILoggingBuilder
+    name: ILoggingBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggingbuilder
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+    name: CreateLoggerFactory
+    href: FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.ILoggingBuilder
+    name: ILoggingBuilder
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggingbuilder
+  - name: )
+  - name: )
+- uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String)
+  commentId: M:FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String)
+  isExternal: true
+  href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_
+  name: VerifyLogged(Mocker, LogLevel, string)
+  nameWithType: TestClassExtensions.VerifyLogged(Mocker, LogLevel, string)
+  fullName: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, string)
+  nameWithType.vb: TestClassExtensions.VerifyLogged(Mocker, LogLevel, String)
+  fullName.vb: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker, Microsoft.Extensions.Logging.LogLevel, String)
+  name.vb: VerifyLogged(Mocker, LogLevel, String)
+  spec.csharp:
+  - uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String)
+    name: VerifyLogged
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.Extensions.TestClassExtensions.VerifyLogged(FastMoq.Mocker,Microsoft.Extensions.Logging.LogLevel,System.String)
+    name: VerifyLogged
+    href: FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_
+  - name: (
+  - uid: FastMoq.Mocker
+    name: Mocker
+    href: FastMoq.Mocker.html
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Extensions.Logging.LogLevel
+    name: LogLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )

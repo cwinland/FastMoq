@@ -126,7 +126,21 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions",
-      "Summary": "<p sourcefile=\"api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.yml\" sourcestartlinenumber=\"1\">Provides Azure Functions worker helpers for typed <xref href=\"Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices\" data-throw-if-not-resolved=\"false\"></xref> setup.</p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.yml\" sourcestartlinenumber=\"1\">Provides Azure Functions worker helpers for typed <xref href=\"Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices\" data-throw-if-not-resolved=\"false\"></xref> setup and execution-context shaping.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.yml\" sourcestartlinenumber=\"1\">Provides Azure Functions HTTP-trigger helpers for constructing request and response data in tests.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -144,6 +158,48 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.AzureFunctions.Http.HttpRequestDataBuilder",
+      "Summary": "<p sourcefile=\"api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.yml\" sourcestartlinenumber=\"1\">Builds concrete <xref href=\"Microsoft.Azure.Functions.Worker.Http.HttpRequestData\" data-throw-if-not-resolved=\"false\"></xref> instances for Azure Functions HTTP-trigger tests.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.AzureFunctions.Http.HttpResponseDataBuilder",
+      "Summary": "<p sourcefile=\"api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.yml\" sourcestartlinenumber=\"1\">Builds concrete <xref href=\"Microsoft.Azure.Functions.Worker.Http.HttpResponseData\" data-throw-if-not-resolved=\"false\"></xref> instances for Azure Functions HTTP-trigger tests.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.AzureFunctions.Http.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.AzureFunctions.Http.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.AzureFunctions.Http",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/FastMoq.BuiltInTypeResolutionFlags.yml",
       "output": {
         ".html": {
@@ -155,6 +211,20 @@
       "IsMRef": true,
       "Title": "FastMoq.BuiltInTypeResolutionFlags",
       "Summary": "<p sourcefile=\"api/FastMoq.BuiltInTypeResolutionFlags.yml\" sourcestartlinenumber=\"1\">Specifies which built-in framework and utility types <xref href=\"FastMoq.Mocker\" data-throw-if-not-resolved=\"false\"></xref> may resolve automatically.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.ConstructorAmbiguityBehavior.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.ConstructorAmbiguityBehavior.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.ConstructorAmbiguityBehavior",
+      "Summary": "<p sourcefile=\"api/FastMoq.ConstructorAmbiguityBehavior.yml\" sourcestartlinenumber=\"1\">Controls how FastMoq resolves constructor ambiguity when multiple equally viable constructors remain after candidate filtering.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -228,6 +298,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.LoggingTestExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.LoggingTestExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions.LoggingTestExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.LoggingTestExtensions.yml\" sourcestartlinenumber=\"1\">Provides framework-neutral logger registration helpers for test composition.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/FastMoq.Extensions.MockerBooleanExtensions.yml",
       "output": {
         ".html": {
@@ -298,6 +382,48 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.OptionsTestExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.OptionsTestExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions.OptionsTestExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.OptionsTestExtensions.yml\" sourcestartlinenumber=\"1\">Provides convenience helpers for registering <xref href=\"Microsoft.Extensions.Options.IOptions%601\" data-throw-if-not-resolved=\"false\"></xref> dependencies in tests.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.PropertySetterCaptureExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.PropertySetterCaptureExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions.PropertySetterCaptureExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.PropertySetterCaptureExtensions.yml\" sourcestartlinenumber=\"1\">Provides first-party helpers for capturing interface property assignments without relying on provider-specific <code>SetupSet(...)</code> behavior.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.Extensions.PropertyStateExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.Extensions.PropertyStateExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.Extensions.PropertyStateExtensions",
+      "Summary": "<p sourcefile=\"api/FastMoq.Extensions.PropertyStateExtensions.yml\" sourcestartlinenumber=\"1\">Provides first-party helpers for lightweight stateful interface properties without relying on provider-specific <code>SetupAllProperties()</code> behavior.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/FastMoq.Extensions.ServiceProviderTestExtensions.yml",
       "output": {
         ".html": {
@@ -350,7 +476,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "FastMoq.InstanceCreationFlags",
-      "Summary": "<p sourcefile=\"api/FastMoq.InstanceCreationFlags.yml\" sourcestartlinenumber=\"1\">Per-call overrides for constructor selection and optional-parameter resolution during instance creation.\n<xref href=\"FastMoq.InstanceCreationFlags.None\" data-throw-if-not-resolved=\"false\"></xref> preserves the current <xref href=\"FastMoq.Mocker\" data-throw-if-not-resolved=\"false\"></xref> defaults.</p>\n"
+      "Summary": "<p sourcefile=\"api/FastMoq.InstanceCreationFlags.yml\" sourcestartlinenumber=\"1\">Per-call overrides for constructor selection, ambiguity handling, and optional-parameter resolution during instance creation.\n<xref href=\"FastMoq.InstanceCreationFlags.None\" data-throw-if-not-resolved=\"false\"></xref> preserves the current <xref href=\"FastMoq.Mocker\" data-throw-if-not-resolved=\"false\"></xref> defaults.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -799,6 +925,34 @@
       "IsMRef": true,
       "Title": "FastMoq.OptionalParameterResolutionMode",
       "Summary": "<p sourcefile=\"api/FastMoq.OptionalParameterResolutionMode.yml\" sourcestartlinenumber=\"1\">Controls how FastMoq resolves optional parameters when it needs to supply values automatically.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.PreferredConstructorAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.PreferredConstructorAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.PreferredConstructorAttribute",
+      "Summary": "<p sourcefile=\"api/FastMoq.PreferredConstructorAttribute.yml\" sourcestartlinenumber=\"1\">Marks the constructor FastMoq should prefer during implicit constructor selection within the current visibility scope.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/FastMoq.PropertyStateMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/FastMoq.PropertyStateMode.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "FastMoq.PropertyStateMode",
+      "Summary": "<p sourcefile=\"api/FastMoq.PropertyStateMode.yml\" sourcestartlinenumber=\"1\">Controls whether <code>AddPropertyState&lt;TService&gt;(...)</code> keeps assigned values on the proxy only or also writes them through to the wrapped inner instance.</p>\n"
     },
     {
       "type": "ManagedReference",

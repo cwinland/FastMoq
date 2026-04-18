@@ -16,8 +16,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TestAuthorizationExtensions
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 220
@@ -54,8 +54,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddTestAuthorization
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 233

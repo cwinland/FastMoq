@@ -95,11 +95,23 @@
 <p>v4 also includes helper and migration work where common testing scenarios still need a first-party answer rather than documentation alone.</p>
 <p>Planned work includes:</p>
 <ul>
-<li>A typed <code>IServiceProvider</code> helper for framework-heavy suites that need type-aware service resolution during tests.</li>
-<li>An Azure Functions worker helper for <code>FunctionContext.InstanceServices</code> built around typed service resolution.</li>
-<li>A clearer first-party path for common <code>SetupSet(...)</code>-heavy tests where the real need is setter observation or value capture.</li>
+<li>Additional provider-neutral guidance for framework-heavy suites that combine typed <code>IServiceProvider</code> helpers with keyed services or framework-owned service graphs beyond the current scope-aware helper path.</li>
+<li>Azure Functions follow-up helpers beyond the shipped <code>FunctionContext.InstanceServices</code>, <code>CreateHttpRequestData(...)</code>, and <code>CreateHttpResponseData(...)</code> support.</li>
 <li>Focused migration guidance and examples for compatibility-only APIs that remain temporary rather than long-term patterns.</li>
 </ul>
+<p>Recently added in the current v4 line:</p>
+<ul>
+<li><code>AddPropertyState&lt;TService&gt;(...)</code> for common interface-based <code>SetupAllProperties()</code> migration cases where the real need is lightweight stateful property backing.</li>
+<li><code>CreateTypedServiceScope(...)</code> and <code>AddServiceScope(...)</code> for typed scope setup, plus optional <code>includeMockerFallback: true</code> bridging when framework-owned resolution should fall back to normal <code>Mocker</code> behavior.</li>
+<li><code>FMOQ0013</code> coverage for manual <code>IServiceScopeFactory</code> and <code>IServiceScope</code> shims, alongside the existing typed <code>IServiceProvider</code> guidance.</li>
+<li><code>FMOQ0021</code> guidance for Moq <code>SetupAllProperties()</code> cases that should move toward <code>AddPropertyState&lt;TService&gt;(...)</code> or a concrete fake.</li>
+</ul>
+<p>Other gaps worth adding next, in priority order:</p>
+<ol>
+<li>Azure Functions follow-up helpers beyond <code>InstanceServices</code>, request, and response.</li>
+<li>More examples and sample-backed docs for property-capture and property-state migration.</li>
+<li>Additional keyed-service guidance for framework-owned DI graphs.</li>
+</ol>
 <h3 id="documentation-and-examples">Documentation and examples</h3>
 <p>v4 documentation work will focus on the features and migration paths that still need stronger release-facing guidance.</p>
 <p>Planned documentation updates include:</p>
@@ -107,7 +119,7 @@
 <li>More provider-native examples beyond the current capability matrix.</li>
 <li>Focused migration notes for older Moq-heavy suites.</li>
 <li>Keyed-service guidance tied to new diagnostics and helper APIs.</li>
-<li>Examples for new typed service-provider and Azure testing helpers.</li>
+<li>Examples for typed service-provider flows and broader Azure testing helpers, including HTTP-trigger request or response setup.</li>
 <li>Additional DbContext examples as those surfaces continue to harden.</li>
 </ul>
 <h2 id="later-or-decision-pending">Later or decision pending</h2>
@@ -162,7 +174,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:19 UTC</span></div>
       
           </div>
         </div>

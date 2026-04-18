@@ -24,8 +24,8 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: MoqLoggerCompatibility
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
     startLine: 8
@@ -62,8 +62,8 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
     startLine: 13
@@ -103,8 +103,8 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
     startLine: 19
@@ -146,8 +146,8 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
     startLine: 26
@@ -191,8 +191,8 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
     startLine: 32
@@ -238,8 +238,8 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
     startLine: 39
@@ -285,8 +285,8 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
     startLine: 49
@@ -332,8 +332,8 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
     startLine: 59
@@ -379,8 +379,8 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
     startLine: 69
@@ -427,8 +427,8 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetupLoggerCallback
     path: FastMoq.Provider.Moq/Providers/Moq/MoqLoggerCompatibility.cs
     startLine: 80

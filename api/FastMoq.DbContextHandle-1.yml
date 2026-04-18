@@ -19,8 +19,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandle.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: DbContextHandle
     path: FastMoq.Database/DbContextHandle.cs
     startLine: 7
@@ -80,8 +80,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandle.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Mode
     path: FastMoq.Database/DbContextHandle.cs
     startLine: 19
@@ -113,8 +113,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandle.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Context
     path: FastMoq.Database/DbContextHandle.cs
     startLine: 24
@@ -146,8 +146,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandle.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Mock
     path: FastMoq.Database/DbContextHandle.cs
     startLine: 29
@@ -179,8 +179,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandle.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: IsMocked
     path: FastMoq.Database/DbContextHandle.cs
     startLine: 34

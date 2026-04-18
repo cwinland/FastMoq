@@ -23,8 +23,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: BuiltInTypeResolutionFlags
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
     startLine: 19
@@ -96,8 +96,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: None
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
     startLine: 29
@@ -128,8 +128,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: FileSystem
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
     startLine: 38
@@ -160,8 +160,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: HttpClient
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
     startLine: 47
@@ -192,8 +192,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
     startLine: 56
@@ -224,8 +224,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: DbContext
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
     startLine: 65
@@ -256,8 +256,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: All
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
     startLine: 74
@@ -289,8 +289,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: StrictCompatibilityDefaults
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
     startLine: 83
@@ -321,8 +321,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: LenientDefaults
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
     startLine: 92

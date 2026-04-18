@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Immutable;
 using System.Collections.Generic;
 using Azure.Core.Serialization;
 using FastMoq.AzureFunctions.Extensions;
@@ -15,6 +17,7 @@ using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Net;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FastMoq.Tests
@@ -691,6 +694,44 @@ namespace FastMoq.Tests
             request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
         }
 
+        [Fact]
+        public void CreateHttpRequestData_ShouldConfigureKnownTypeFunctionContextInstanceServices()
+        {
+            var mocker = new Mocker();
+            var expectedUri = new Uri("https://known-context.fastmoq/");
+            var provider = mocker.CreateTypedServiceProvider(services => services.AddSingleton(expectedUri));
+            var functionContext = new TestFunctionContext();
+
+            mocker.AddServiceProvider(provider, replace: true);
+            mocker.AddKnownType<FunctionContext>(
+                directInstanceFactory: (_, _) => functionContext,
+                replace: true);
+
+            var request = mocker.CreateHttpRequestData();
+
+            request.FunctionContext.Should().BeSameAs(functionContext);
+            request.FunctionContext.InstanceServices.Should().BeSameAs(provider);
+            request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
+        }
+
+        [Fact]
+        public void CreateHttpRequestData_ShouldConfigureTypeRegisteredFunctionContextInstanceServices()
+        {
+            var mocker = new Mocker();
+            var expectedUri = new Uri("https://type-context.fastmoq/");
+            var provider = mocker.CreateTypedServiceProvider(services => services.AddSingleton(expectedUri));
+            var functionContext = new TestFunctionContext();
+
+            mocker.AddServiceProvider(provider, replace: true);
+            mocker.AddType<FunctionContext>(functionContext, replace: true);
+
+            var request = mocker.CreateHttpRequestData();
+
+            request.FunctionContext.Should().BeSameAs(functionContext);
+            request.FunctionContext.InstanceServices.Should().BeSameAs(provider);
+            request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
+        }
+
         private static IDisposable PushProviderScope(string providerName)
         {
             EnsureProviderRegistered(providerName);
@@ -730,6 +771,98 @@ namespace FastMoq.Tests
             public int Count { get; set; }
 
             public string? Name { get; set; }
+        }
+
+        private sealed class TestFunctionContext : FunctionContext
+        {
+            private IServiceProvider? _instanceServices;
+
+            public override string InvocationId { get; } = Guid.NewGuid().ToString("N");
+
+            public override string FunctionId { get; } = "test-function";
+
+            public override TraceContext TraceContext { get; } = new TestTraceContext();
+
+            public override BindingContext BindingContext { get; } = new TestBindingContext();
+
+            public override RetryContext RetryContext { get; } = new TestRetryContext();
+
+            public override IServiceProvider InstanceServices
+            {
+                get => _instanceServices!;
+                set => _instanceServices = value;
+            }
+
+            public override FunctionDefinition FunctionDefinition { get; } = new TestFunctionDefinition();
+
+            public override IDictionary<object, object> Items { get; set; } = new Dictionary<object, object>();
+
+            public override IInvocationFeatures Features { get; } = new TestInvocationFeatures();
+
+            public override CancellationToken CancellationToken { get; } = CancellationToken.None;
+        }
+
+        private sealed class TestTraceContext : TraceContext
+        {
+            public override string TraceParent { get; } = string.Empty;
+
+            public override string TraceState { get; } = string.Empty;
+        }
+
+        private sealed class TestBindingContext : BindingContext
+        {
+            public override IReadOnlyDictionary<string, object?> BindingData { get; } = new Dictionary<string, object?>();
+        }
+
+        private sealed class TestRetryContext : RetryContext
+        {
+            public override int RetryCount { get; } = 0;
+
+            public override int MaxRetryCount { get; } = 0;
+        }
+
+        private sealed class TestFunctionDefinition : FunctionDefinition
+        {
+            public override ImmutableArray<FunctionParameter> Parameters { get; } = ImmutableArray<FunctionParameter>.Empty;
+
+            public override string PathToAssembly { get; } = string.Empty;
+
+            public override string EntryPoint { get; } = string.Empty;
+
+            public override string Id { get; } = "test-definition";
+
+            public override string Name { get; } = "TestFunction";
+
+            public override IImmutableDictionary<string, BindingMetadata> InputBindings { get; } = ImmutableDictionary<string, BindingMetadata>.Empty;
+
+            public override IImmutableDictionary<string, BindingMetadata> OutputBindings { get; } = ImmutableDictionary<string, BindingMetadata>.Empty;
+        }
+
+        private sealed class TestInvocationFeatures : IInvocationFeatures
+        {
+            private readonly Dictionary<Type, object> _features = new Dictionary<Type, object>();
+
+            public T Get<T>()
+            {
+                return _features.TryGetValue(typeof(T), out var feature)
+                    ? (T) feature!
+                    : default!;
+            }
+
+            public void Set<T>(T instance)
+            {
+                _features[typeof(T)] = instance!;
+            }
+
+            public IEnumerator<KeyValuePair<Type, object>> GetEnumerator()
+            {
+                return _features.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
 
         private sealed class ScopedProbe

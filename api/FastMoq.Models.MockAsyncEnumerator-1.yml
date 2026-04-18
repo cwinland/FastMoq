@@ -19,8 +19,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockAsyncEnumerator.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: MockAsyncEnumerator
     path: FastMoq.Database/Models/MockAsyncEnumerator.cs
     startLine: 6
@@ -85,8 +85,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockAsyncEnumerator.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/MockAsyncEnumerator.cs
     startLine: 14
@@ -120,8 +120,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockAsyncEnumerator.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: DisposeAsync
     path: FastMoq.Database/Models/MockAsyncEnumerator.cs
     startLine: 20
@@ -155,8 +155,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockAsyncEnumerator.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Current
     path: FastMoq.Database/Models/MockAsyncEnumerator.cs
     startLine: 29
@@ -190,8 +190,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockAsyncEnumerator.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: MoveNextAsync
     path: FastMoq.Database/Models/MockAsyncEnumerator.cs
     startLine: 35

@@ -118,6 +118,9 @@ Per-call options may still override the relevant creation or invocation behavior
       <section><p>Mock Test Base with Automatic Mocking using <a class="xref" href="FastMoq.Mocker.html">Mocker</a>.
 This class contains the <a class="xref" href="FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_Mocks">Mocks</a> property to create and track all Mocks from creation of the component.</p>
 </section>
+      <h4><a class="xref" href="FastMoq.PreferredConstructorAttribute.html">PreferredConstructorAttribute</a></h4>
+      <section><p>Marks the constructor FastMoq should prefer during implicit constructor selection within the current visibility scope.</p>
+</section>
       <h4><a class="xref" href="FastMoq.PropertyValueCapture-1.html">PropertyValueCapture&lt;TValue&gt;</a></h4>
       <section><p>Captures property values assigned by a fake or stub during a test.</p>
 </section>
@@ -130,11 +133,14 @@ Enums
       <h4><a class="xref" href="FastMoq.BuiltInTypeResolutionFlags.html">BuiltInTypeResolutionFlags</a></h4>
       <section><p>Specifies which built-in framework and utility types <a class="xref" href="FastMoq.Mocker.html">Mocker</a> may resolve automatically.</p>
 </section>
+      <h4><a class="xref" href="FastMoq.ConstructorAmbiguityBehavior.html">ConstructorAmbiguityBehavior</a></h4>
+      <section><p>Controls how FastMoq resolves constructor ambiguity when multiple equally viable constructors remain after candidate filtering.</p>
+</section>
       <h4><a class="xref" href="FastMoq.DbContextTestMode.html">DbContextTestMode</a></h4>
       <section><p>Selects how FastMoq should provision a DbContext test double.</p>
 </section>
       <h4><a class="xref" href="FastMoq.InstanceCreationFlags.html">InstanceCreationFlags</a></h4>
-      <section><p>Per-call overrides for constructor selection and optional-parameter resolution during instance creation.
+      <section><p>Per-call overrides for constructor selection, ambiguity handling, and optional-parameter resolution during instance creation.
 <a class="xref" href="FastMoq.InstanceCreationFlags.html#FastMoq_InstanceCreationFlags_None">None</a> preserves the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> defaults.</p>
 </section>
       <h4><a class="xref" href="FastMoq.MockFeatures.html">MockFeatures</a></h4>
@@ -142,6 +148,9 @@ Enums
 </section>
       <h4><a class="xref" href="FastMoq.OptionalParameterResolutionMode.html">OptionalParameterResolutionMode</a></h4>
       <section><p>Controls how FastMoq resolves optional parameters when it needs to supply values automatically.</p>
+</section>
+      <h4><a class="xref" href="FastMoq.PropertyStateMode.html">PropertyStateMode</a></h4>
+      <section><p>Controls whether <code>AddPropertyState&lt;TService&gt;(...)</code> keeps assigned values on the proxy only or also writes them through to the wrapped inner instance.</p>
 </section>
 
 
@@ -166,7 +175,7 @@ Enums
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:19 UTC</span></div>
       
           </div>
         </div>

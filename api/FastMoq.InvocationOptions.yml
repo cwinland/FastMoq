@@ -17,8 +17,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/InvocationOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: InvocationOptions
     path: FastMoq.Core/InvocationOptions.cs
     startLine: 5
@@ -73,8 +73,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/InvocationOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: OptionalParameterResolution
     path: FastMoq.Core/InvocationOptions.cs
     startLine: 10
@@ -104,8 +104,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/InvocationOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: FallbackToNonPublicMethods
     path: FastMoq.Core/InvocationOptions.cs
     startLine: 17

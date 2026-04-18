@@ -24,8 +24,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TestClaimsPrincipalOptions
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
     startLine: 7
@@ -80,8 +80,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AuthenticationType
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
     startLine: 12
@@ -111,8 +111,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Name
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
     startLine: 17
@@ -142,8 +142,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: DisplayName
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
     startLine: 22
@@ -173,8 +173,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Email
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
     startLine: 27
@@ -204,8 +204,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: PreferredUserName
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
     startLine: 32
@@ -235,8 +235,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ObjectId
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
     startLine: 37
@@ -266,8 +266,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TenantId
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
     startLine: 42
@@ -297,8 +297,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: IncludeDefaultIdentityClaims
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
     startLine: 47
@@ -328,8 +328,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/TestClaimsPrincipalOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AdditionalClaims
     path: FastMoq.Web/TestClaimsPrincipalOptions.cs
     startLine: 52

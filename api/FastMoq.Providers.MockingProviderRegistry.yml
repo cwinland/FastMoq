@@ -24,8 +24,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: MockingProviderRegistry
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 10
@@ -61,8 +61,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Register
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 33
@@ -102,8 +102,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TryGet
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 50
@@ -143,8 +143,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: RegisteredProviderNames
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 65
@@ -174,8 +174,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Default
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 71
@@ -208,8 +208,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: WrapLegacy
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 80
@@ -253,8 +253,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetDefault
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 116
@@ -288,8 +288,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 133
@@ -323,8 +323,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 145
@@ -361,8 +361,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Clear
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 160

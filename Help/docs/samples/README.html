@@ -132,29 +132,37 @@
 <li>Use consistent naming for senders/processors so verification (e.g., Service Bus send) is easy.</li>
 </ul>
 <h2 id="azure-function-style-testing-guidance">Azure Function style testing guidance</h2>
-<p>If you adapt these samples for Azure Functions HTTP triggers, use patterns similar to (conceptually) <code>MockedHttpRequestData</code> and <code>MockedHttpResponseData</code> helpers (as seen in other internal solution test utilities):</p>
+<p>If you adapt these samples for Azure Functions HTTP triggers, prefer the first-party helpers in <code>FastMoq.AzureFunctions.Extensions</code> instead of hand-rolled <code>MockedHttpRequestData</code> or <code>MockedHttpResponseData</code> utilities when possible:</p>
 <ol>
-<li>Build the request: supply method, route values, headers, and JSON body.</li>
-<li>Provide dependency injection values using <code>AddType</code> (e.g., configuration, services).</li>
+<li>Build the request with <code>CreateHttpRequestData(...)</code>: supply method, route values, headers, claims, query-string values, and JSON body.</li>
+<li>Provide dependency injection values using <code>AddType(...)</code>, <code>AddServiceProvider(...)</code>, or <code>AddFunctionContextInstanceServices(...)</code> when the function resolves framework services.</li>
 <li>Use <code>WhenHttpRequest(...)</code> or <code>WhenHttpRequestJson(...)</code> for outbound <code>HttpClient</code> calls triggered inside the function.</li>
 <li>Assert:
 <ul>
 <li>Outbound calls (verify <code>SendAsync</code>)</li>
-<li>Response status &amp; body (deserialize or use content helpers)</li>
-<li>Logs via <code>VerifyLogged</code></li>
+<li>Response status and body (<code>ReadBodyAsStringAsync(...)</code> or <code>ReadBodyAsJsonAsync&lt;T&gt;(...)</code>)</li>
+<li>Logs via <code>VerifyLogged(...)</code></li>
 </ul>
 </li>
 </ol>
 <p>Recommended layering:</p>
-<pre><code class="lang-csharp">var request = TestUtils.CreateHttpRequest(jsonBody, queryParams);
+<pre><code class="lang-csharp">using FastMoq.AzureFunctions.Extensions;
+
+var request = Mocks.CreateHttpRequestData(builder =&gt; builder
+    .WithMethod(&quot;POST&quot;)
+    .WithUrl(&quot;http://test.com/api/Run?mode=sample&quot;)
+    .WithJsonBody(payload));
+
 var result = await Component.RunAsync(request, CancellationToken.None);
+var body = await result.ReadBodyAsStringAsync();
 Mocks.VerifyLogged(LogLevel.Information, &quot;Processed event&quot;);
 </code></pre>
-<p>While FastMoq does not ship Azure Functions request/response shims directly, it complements such utilities by supplying:</p>
+<p>The Azure Functions helper package now supplies:</p>
 <ul>
-<li>Automatic logger mocks with capture/verification.</li>
-<li>Consistent <code>HttpClient</code> mocking for downstream REST calls.</li>
-<li>Simplified DI graph creation so only function inputs need explicit arrangement.</li>
+<li>Concrete <code>HttpRequestData</code> and <code>HttpResponseData</code> builders for HTTP-trigger tests.</li>
+<li>Automatic <code>FunctionContext.InstanceServices</code> setup with worker defaults.</li>
+<li>Body readers that rewind request and response streams after assertions.</li>
+<li>The same provider-neutral logger and <code>HttpClient</code> helpers used elsewhere in FastMoq.</li>
 </ul>
 <h2 id="notes-about-repository-scope">Notes about repository scope</h2>
 <p>Some sample categories mentioned elsewhere in the documentation are future sample directions rather than folders that currently exist in this repository. Use this page and the linked directories above as the source of truth for what is available today.</p>
@@ -273,7 +281,7 @@ dotnet test
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:19 UTC</span></div>
       
           </div>
         </div>

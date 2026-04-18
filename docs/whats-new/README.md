@@ -98,7 +98,7 @@ Notable additions and changes:
 - `FastMoq.Provider.Moq` now owns the Moq compatibility provider and Moq-specific convenience extensions.
 - `FastMoq.Provider.NSubstitute` adds an optional NSubstitute provider package.
 - `FastMoq.AzureFunctions` now owns the Azure Functions worker helpers for `FunctionContext.InstanceServices` plus concrete `HttpRequestData` and `HttpResponseData` builders and body helpers for HTTP-trigger tests.
-- `FastMoq.Analyzers` remains available as a standalone package, and the aggregate `FastMoq` package now includes those analyzer assets by default.
+- `FastMoq.Analyzers` remains available as a standalone package, and both `FastMoq` and `FastMoq.Core` now include those analyzer assets by default.
 - `FastMoq.Database` now owns the EF- and DbContext-specific helpers that previously lived in core.
 - `FastMoq.Core` stays lighter and focuses on provider-neutral construction, tracking, verification, and built-in known-type handling.
 

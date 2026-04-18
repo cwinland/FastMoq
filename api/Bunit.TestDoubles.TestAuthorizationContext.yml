@@ -32,8 +32,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TestAuthorizationContext
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 251
@@ -92,8 +92,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 259
@@ -127,8 +127,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: InnerContext
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 267
@@ -158,8 +158,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: IsAuthenticated
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 272
@@ -189,8 +189,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: UserName
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 277
@@ -220,8 +220,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: State
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 282
@@ -251,8 +251,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Roles
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 287
@@ -282,8 +282,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Policies
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 292
@@ -313,8 +313,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Claims
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 297
@@ -344,8 +344,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: PolicySchemeName
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 302
@@ -375,8 +375,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetAuthorized
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 313
@@ -411,8 +411,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetAuthorized
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 323
@@ -449,8 +449,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetAuthorizing
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 331
@@ -477,8 +477,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetNotAuthorized
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 339
@@ -505,8 +505,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetRoles
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 348
@@ -540,8 +540,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetPolicies
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 357
@@ -575,8 +575,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetClaims
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 366
@@ -610,8 +610,8 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetAuthenticationType
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 375

@@ -127,8 +127,9 @@ namespace FastMoq.AzureFunctions.Extensions
         private static FunctionContext GetOrCreateConfiguredFunctionContext(Mocker mocker)
         {
             var hasTrackedFunctionContext = mocker.Contains(typeof(FunctionContext));
+            var hasFunctionContextTypeRegistration = mocker.HasTypeRegistration(typeof(FunctionContext));
             var hasKnownFunctionContextRegistration = mocker.KnownTypeRegistrations.Any(registration => registration.ServiceType == typeof(FunctionContext));
-            if (hasTrackedFunctionContext || hasKnownFunctionContextRegistration)
+            if (hasTrackedFunctionContext || hasFunctionContextTypeRegistration || hasKnownFunctionContextRegistration)
             {
                 var existingFunctionContext = mocker.GetObject<FunctionContext>();
                 if (existingFunctionContext?.InstanceServices is not null)
@@ -139,7 +140,18 @@ namespace FastMoq.AzureFunctions.Extensions
                 var existingProvider = mocker.HasTypeRegistration(typeof(IServiceProvider))
                     ? mocker.GetRequiredObject<IServiceProvider>()
                     : mocker.CreateFunctionContextInstanceServices();
-                mocker.GetOrCreateMock<FunctionContext>().AddFunctionContextInstanceServices(existingProvider);
+
+                var configuredExistingFunctionContext = TryAssignFunctionContextInstanceServices(existingFunctionContext, existingProvider);
+                if (hasTrackedFunctionContext)
+                {
+                    mocker.GetOrCreateMock<FunctionContext>().AddFunctionContextInstanceServices(existingProvider);
+                }
+
+                if (configuredExistingFunctionContext && existingFunctionContext is not null)
+                {
+                    return existingFunctionContext;
+                }
+
                 return mocker.GetRequiredObject<FunctionContext>();
             }
 
@@ -177,6 +189,24 @@ namespace FastMoq.AzureFunctions.Extensions
             if (stream.CanSeek)
             {
                 stream.Position = 0;
+            }
+        }
+
+        private static bool TryAssignFunctionContextInstanceServices(FunctionContext? functionContext, IServiceProvider instanceServices)
+        {
+            if (functionContext is null)
+            {
+                return false;
+            }
+
+            try
+            {
+                functionContext.InstanceServices = instanceServices;
+                return functionContext.InstanceServices is not null;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

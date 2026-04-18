@@ -43,7 +43,7 @@ This is migration guidance for the current v4 release line. Some references poin
 
 The goal is provider-centric tests by default, not removal of all provider-specific APIs.
 
-If your test project references the aggregate `FastMoq` package, the FastMoq Roslyn analyzers ship with it by default. That means common migration leftovers such as `.Object`, provider-native `Reset()`, `VerifyLogger(...)`, safe standalone `GetMock<T>()` usage, legacy `GetRequiredMock<T>()` usage, legacy `CreateMock(...)` / `CreateDetachedMock(...)` / `AddMock(...)` usage, and obvious mixed `GetMock<T>()` / `GetOrCreateMock<T>()` usage can be surfaced while you modernize tests. Core-only consumers can opt in separately with `FastMoq.Analyzers`.
+If your test project references `FastMoq` or `FastMoq.Core`, the FastMoq Roslyn analyzers ship with it by default. That means common migration leftovers such as `.Object`, provider-native `Reset()`, `VerifyLogger(...)`, safe standalone `GetMock<T>()` usage, legacy `GetRequiredMock<T>()` usage, legacy `CreateMock(...)` / `CreateDetachedMock(...)` / `AddMock(...)` usage, and obvious mixed `GetMock<T>()` / `GetOrCreateMock<T>()` usage can be surfaced while you modernize tests. If you want those diagnostics without either runtime package, `FastMoq.Analyzers` remains available as a standalone package.
 
 The analyzer pack now has two roles:
 

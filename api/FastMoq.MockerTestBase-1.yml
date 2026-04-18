@@ -17,6 +17,7 @@ items:
   - FastMoq.MockerTestBase`1.#ctor(System.Func{FastMoq.Mocker,`0},System.Action{`0})
   - FastMoq.MockerTestBase`1.#ctor(System.Type[])
   - FastMoq.MockerTestBase`1.Component
+  - FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes
   - FastMoq.MockerTestBase`1.ComponentCreationFlags
   - FastMoq.MockerTestBase`1.ConfigureMockerPolicy
   - FastMoq.MockerTestBase`1.CreateComponent
@@ -47,8 +48,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: MockerTestBase
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
     startLine: 5
@@ -79,6 +80,8 @@ items:
     }</code></pre>
 
     <p>The base class creates <code>OrderSubmitter</code> before the test body runs, so the test can assert directly against <xref href="FastMoq.MockerTestBase%601.Component" data-throw-if-not-resolved="false"></xref>.</p>
+
+    <p>When a component exposes multiple constructors and the test should target one specific signature, prefer overriding <xref href="FastMoq.MockerTestBase%601.ComponentConstructorParameterTypes" data-throw-if-not-resolved="false"></xref> or <xref href="FastMoq.MockerTestBase%601.CreateComponentAction" data-throw-if-not-resolved="false"></xref> in the test base instead of modifying production constructors just for testing.</p>
 
     <pre><code class="lang-csharp">public interface IOrderGateway
 
@@ -163,11 +166,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Component
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 73
+    startLine: 74
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -197,11 +200,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CustomMocks
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 83
+    startLine: 84
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -231,11 +234,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateComponentAction
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 89
+    startLine: 90
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -265,11 +268,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetupMocksAction
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 95
+    startLine: 96
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -299,11 +302,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreatedComponentAction
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 101
+    startLine: 102
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -333,11 +336,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ConfigureMockerPolicy
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 106
+    startLine: 107
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -366,11 +369,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Mocks
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 112
+    startLine: 113
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -400,11 +403,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Scenario
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 117
+    startLine: 118
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -433,34 +436,34 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 131
+    startLine: 132
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Waits for an action.
+  summary: Waits until <code class="paramref">logic</code> returns a value other than <code>default(T)</code>.
   example: []
   syntax:
     content: public static T WaitFor<T>(Func<T> logic, TimeSpan timespan, TimeSpan waitBetweenChecks)
     parameters:
     - id: logic
       type: System.Func{{T}}
-      description: The action.
+      description: The polling function to evaluate.
     - id: timespan
       type: System.TimeSpan
-      description: The maximum time to wait.
+      description: The maximum time to wait for a non-default result.
     - id: waitBetweenChecks
       type: System.TimeSpan
-      description: Time between each check.
+      description: The delay between polling attempts while the result remains <code>default(T)</code>.
     typeParameters:
     - id: T
-      description: Logic of T.
+      description: The result type produced by the polling logic.
     return:
       type: '{T}'
-      description: T.
+      description: The first non-default value returned by <code class="paramref">logic</code>.
     content.vb: Public Shared Function WaitFor(Of T)(logic As Func(Of T), timespan As TimeSpan, waitBetweenChecks As TimeSpan) As T
   overload: FastMoq.MockerTestBase`1.WaitFor*
   exceptions:
@@ -487,28 +490,28 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 159
+    startLine: 168
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Waits for an action.
+  summary: Waits until <code class="paramref">logic</code> returns a value other than <code>default(T)</code>.
   example: []
   syntax:
     content: public static T WaitFor<T>(Func<T> logic)
     parameters:
     - id: logic
       type: System.Func{{T}}
-      description: The action.
+      description: The polling function to evaluate.
     typeParameters:
     - id: T
-      description: ''
+      description: The result type produced by the polling logic.
     return:
       type: '{T}'
-      description: T.
+      description: The first non-default value returned by <code class="paramref">logic</code>.
     content.vb: Public Shared Function WaitFor(Of T)(logic As Func(Of T)) As T
   overload: FastMoq.MockerTestBase`1.WaitFor*
   exceptions:
@@ -532,31 +535,31 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: WaitFor
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 169
+    startLine: 178
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
-  summary: Waits for an action.
+  summary: Waits until <code class="paramref">logic</code> returns a value other than <code>default(T)</code>.
   example: []
   syntax:
     content: public static T WaitFor<T>(Func<T> logic, TimeSpan timespan)
     parameters:
     - id: logic
       type: System.Func{{T}}
-      description: The action.
+      description: The polling function to evaluate.
     - id: timespan
       type: System.TimeSpan
-      description: The timespan, defaults to 4 seconds.
+      description: The maximum time to wait for a non-default result.
     typeParameters:
     - id: T
-      description: ''
+      description: The result type produced by the polling logic.
     return:
       type: '{T}'
-      description: T.
+      description: The first non-default value returned by <code class="paramref">logic</code>.
     content.vb: Public Shared Function WaitFor(Of T)(logic As Func(Of T), timespan As TimeSpan) As T
   overload: FastMoq.MockerTestBase`1.WaitFor*
   exceptions:
@@ -580,11 +583,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateComponent
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 193
+    startLine: 202
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -630,11 +633,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 220
+    startLine: 229
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -667,11 +670,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/MockerTestBase.cs
-    startLine: 238
+    startLine: 247
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -699,8 +702,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ComponentCreationFlags
     path: FastMoq.Core/MockerTestBase_Constructors.cs
     startLine: 15
@@ -721,6 +724,46 @@ items:
   overload: FastMoq.MockerTestBase`1.ComponentCreationFlags*
   nameWithType.vb: MockerTestBase(Of TComponent).ComponentCreationFlags
   fullName.vb: FastMoq.MockerTestBase(Of TComponent).ComponentCreationFlags
+- uid: FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes
+  commentId: P:FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes
+  id: ComponentConstructorParameterTypes
+  parent: FastMoq.MockerTestBase`1
+  langs:
+  - csharp
+  - vb
+  name: ComponentConstructorParameterTypes
+  nameWithType: MockerTestBase<TComponent>.ComponentConstructorParameterTypes
+  fullName: FastMoq.MockerTestBase<TComponent>.ComponentConstructorParameterTypes
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerTestBase_Constructors.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: ComponentConstructorParameterTypes
+    path: FastMoq.Core/MockerTestBase_Constructors.cs
+    startLine: 23
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: >-
+    Selects the constructor signature used by the default component-creation path.
+
+    Override this in a derived test base when the test should force a specific constructor without replacing <xref href="FastMoq.MockerTestBase%601.CreateComponentAction" data-throw-if-not-resolved="false"></xref>.
+
+    Return <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> to keep FastMoq's normal constructor-selection rules.
+
+    Return an empty array to select the parameterless constructor explicitly.
+  example: []
+  syntax:
+    content: protected virtual Type?[]? ComponentConstructorParameterTypes { get; }
+    parameters: []
+    return:
+      type: System.Type[]
+    content.vb: Protected Overridable ReadOnly Property ComponentConstructorParameterTypes As Type()
+  overload: FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes*
+  nameWithType.vb: MockerTestBase(Of TComponent).ComponentConstructorParameterTypes
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).ComponentConstructorParameterTypes
 - uid: FastMoq.MockerTestBase`1.#ctor
   commentId: M:FastMoq.MockerTestBase`1.#ctor
   id: '#ctor'
@@ -735,11 +778,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 26
+    startLine: 34
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -766,11 +809,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 29
+    startLine: 37
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -799,11 +842,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 32
+    startLine: 40
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -834,11 +877,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 36
+    startLine: 44
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -869,11 +912,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 40
+    startLine: 48
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -902,11 +945,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 44
+    startLine: 52
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -937,11 +980,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 49
+    startLine: 57
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -970,11 +1013,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 57
+    startLine: 65
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1007,11 +1050,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 99
+    startLine: 107
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1073,11 +1116,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 119
+    startLine: 127
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1117,11 +1160,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 132
+    startLine: 140
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1164,11 +1207,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 154
+    startLine: 162
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1214,11 +1257,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_Constructors.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/MockerTestBase_Constructors.cs
-    startLine: 187
+    startLine: 195
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -1279,8 +1322,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetConstructor
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
     startLine: 12
@@ -1316,8 +1359,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TestAllConstructorParameters
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
     startLine: 22
@@ -1360,8 +1403,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TestConstructorParameters
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
     startLine: 77
@@ -1438,8 +1481,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TestConstructorParameters
     path: FastMoq.Core/MockerTestBase_ConstructorTesting.cs
     startLine: 87
@@ -1552,6 +1595,22 @@ references:
   fullName: FastMoq.MockerTestBase<TComponent>.Component
   nameWithType.vb: MockerTestBase(Of TComponent).Component
   fullName.vb: FastMoq.MockerTestBase(Of TComponent).Component
+- uid: FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes
+  commentId: P:FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_ComponentConstructorParameterTypes
+  name: ComponentConstructorParameterTypes
+  nameWithType: MockerTestBase<TComponent>.ComponentConstructorParameterTypes
+  fullName: FastMoq.MockerTestBase<TComponent>.ComponentConstructorParameterTypes
+  nameWithType.vb: MockerTestBase(Of TComponent).ComponentConstructorParameterTypes
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).ComponentConstructorParameterTypes
+- uid: FastMoq.MockerTestBase`1.CreateComponentAction
+  commentId: P:FastMoq.MockerTestBase`1.CreateComponentAction
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreateComponentAction
+  name: CreateComponentAction
+  nameWithType: MockerTestBase<TComponent>.CreateComponentAction
+  fullName: FastMoq.MockerTestBase<TComponent>.CreateComponentAction
+  nameWithType.vb: MockerTestBase(Of TComponent).CreateComponentAction
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).CreateComponentAction
 - uid: FastMoq.MockerTestBase`1.CreatedComponentAction
   commentId: P:FastMoq.MockerTestBase`1.CreatedComponentAction
   href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_CreatedComponentAction
@@ -5404,6 +5463,37 @@ references:
   name: InstanceCreationFlags
   nameWithType: InstanceCreationFlags
   fullName: FastMoq.InstanceCreationFlags
+- uid: FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes*
+  commentId: Overload:FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes
+  href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_ComponentConstructorParameterTypes
+  name: ComponentConstructorParameterTypes
+  nameWithType: MockerTestBase<TComponent>.ComponentConstructorParameterTypes
+  fullName: FastMoq.MockerTestBase<TComponent>.ComponentConstructorParameterTypes
+  nameWithType.vb: MockerTestBase(Of TComponent).ComponentConstructorParameterTypes
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).ComponentConstructorParameterTypes
+- uid: System.Type[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type[]
+  nameWithType: Type[]
+  fullName: System.Type[]
+  nameWithType.vb: Type()
+  fullName.vb: System.Type()
+  name.vb: Type()
+  spec.csharp:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: (
+  - name: )
 - uid: FastMoq.MockerTestBase`1.#ctor*
   commentId: Overload:FastMoq.MockerTestBase`1.#ctor
   href: FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1__ctor
@@ -5500,29 +5590,6 @@ references:
   name: Exception
   nameWithType: Exception
   fullName: System.Exception
-- uid: System.Type[]
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.type
-  name: Type[]
-  nameWithType: Type[]
-  fullName: System.Type[]
-  nameWithType.vb: Type()
-  fullName.vb: System.Type()
-  name.vb: Type()
-  spec.csharp:
-  - uid: System.Type
-    name: Type
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.type
-  - name: '['
-  - name: ']'
-  spec.vb:
-  - uid: System.Type
-    name: Type
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.type
-  - name: (
-  - name: )
 - uid: System.TypeAccessException
   commentId: T:System.TypeAccessException
   isExternal: true

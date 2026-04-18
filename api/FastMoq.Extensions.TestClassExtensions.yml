@@ -8,7 +8,6 @@ items:
   - FastMoq.Extensions.TestClassExtensions.AddFiles(System.IO.Abstractions.TestingHelpers.MockFileSystem,System.Collections.Generic.IDictionary{System.String,System.IO.Abstractions.TestingHelpers.MockFileData})
   - FastMoq.Extensions.TestClassExtensions.CallGenericMethod(System.Type,System.Object,System.String,System.Type[],System.Object[])
   - FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action,System.String,System.String,System.Action{System.String})
-  - FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action,System.String,System.String,Xunit.Abstractions.ITestOutputHelper)
   - FastMoq.Extensions.TestClassExtensions.GetAmbiguousConstructorImplementationException(FastMoq.Mocker,System.Type)
   - FastMoq.Extensions.TestClassExtensions.GetAmbiguousImplementationException(FastMoq.Mocker,System.String)
   - FastMoq.Extensions.TestClassExtensions.GetAmbiguousImplementationException(FastMoq.Mocker,System.Type,System.Collections.Generic.ICollection{System.Type})
@@ -47,11 +46,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TestClassExtensions
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 31
+    startLine: 30
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -95,11 +94,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CallGenericMethod
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 62
+    startLine: 61
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -153,11 +152,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: EnsureNullCheckThrown
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 89
+    startLine: 88
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -187,51 +186,6 @@ items:
   nameWithType.vb: TestClassExtensions.EnsureNullCheckThrown(Action, String, String, Action(Of String))
   fullName.vb: FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action, String, String, System.Action(Of String))
   name.vb: EnsureNullCheckThrown(Action, String, String, Action(Of String))
-- uid: FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action,System.String,System.String,Xunit.Abstractions.ITestOutputHelper)
-  commentId: M:FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action,System.String,System.String,Xunit.Abstractions.ITestOutputHelper)
-  id: EnsureNullCheckThrown(System.Action,System.String,System.String,Xunit.Abstractions.ITestOutputHelper)
-  isExtensionMethod: true
-  parent: FastMoq.Extensions.TestClassExtensions
-  langs:
-  - csharp
-  - vb
-  name: EnsureNullCheckThrown(Action, string, string?, ITestOutputHelper?)
-  nameWithType: TestClassExtensions.EnsureNullCheckThrown(Action, string, string?, ITestOutputHelper?)
-  fullName: FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action, string, string?, Xunit.Abstractions.ITestOutputHelper?)
-  type: Method
-  source:
-    remote:
-      path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
-    id: EnsureNullCheckThrown
-    path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 126
-  assemblies:
-  - FastMoq.Core
-  namespace: FastMoq.Extensions
-  summary: Ensures the null check thrown.
-  example: []
-  syntax:
-    content: public static void EnsureNullCheckThrown(this Action action, string parameterName, string? constructorName, ITestOutputHelper? output)
-    parameters:
-    - id: action
-      type: System.Action
-      description: The action.
-    - id: parameterName
-      type: System.String
-      description: Name of the parameter.
-    - id: constructorName
-      type: System.String
-      description: Name of the constructor.
-    - id: output
-      type: Xunit.Abstractions.ITestOutputHelper
-      description: The output.
-    content.vb: Public Shared Sub EnsureNullCheckThrown(action As Action, parameterName As String, constructorName As String, output As ITestOutputHelper)
-  overload: FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown*
-  nameWithType.vb: TestClassExtensions.EnsureNullCheckThrown(Action, String, String, ITestOutputHelper)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action, String, String, Xunit.Abstractions.ITestOutputHelper)
-  name.vb: EnsureNullCheckThrown(Action, String, String, ITestOutputHelper)
 - uid: FastMoq.Extensions.TestClassExtensions.GetDefaultValue(System.Type)
   commentId: M:FastMoq.Extensions.TestClassExtensions.GetDefaultValue(System.Type)
   id: GetDefaultValue(System.Type)
@@ -247,11 +201,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetDefaultValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 135
+    startLine: 123
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -283,11 +237,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetField
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 152
+    startLine: 140
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -328,11 +282,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetFieldInfo
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 163
+    startLine: 151
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -373,11 +327,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 177
+    startLine: 165
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -420,11 +374,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 186
+    startLine: 174
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -465,11 +419,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 196
+    startLine: 184
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -513,11 +467,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetMember
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 207
+    startLine: 195
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -560,11 +514,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetMemberExpression
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 216
+    startLine: 204
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -602,11 +556,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetMemberExpression
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 223
+    startLine: 211
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -638,11 +592,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetMemberName
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 233
+    startLine: 221
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -685,11 +639,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetMemberName
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 241
+    startLine: 229
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -721,11 +675,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetMethod
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 250
+    startLine: 238
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -766,11 +720,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetMethodValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 263
+    startLine: 251
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -817,11 +771,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetProperty
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 274
+    startLine: 262
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -862,11 +816,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetPropertyValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 286
+    startLine: 274
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -910,11 +864,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetTestData
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 297
+    startLine: 285
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -955,11 +909,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetTypeFromInterface
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 308
+    startLine: 296
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1004,11 +958,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetAmbiguousImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 460
+    startLine: 448
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1046,11 +1000,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddFiles
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 474
+    startLine: 462
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1086,11 +1040,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetAmbiguousImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 489
+    startLine: 477
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1131,11 +1085,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetAmbiguousConstructorImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 508
+    startLine: 496
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1170,11 +1124,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 518
+    startLine: 506
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1215,11 +1169,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetPropertyValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 528
+    startLine: 516
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1260,11 +1214,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 542
+    startLine: 530
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1306,11 +1260,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 548
+    startLine: 536
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1347,11 +1301,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 554
+    startLine: 542
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1388,11 +1342,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 561
+    startLine: 549
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1434,11 +1388,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 567
+    startLine: 555
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1479,11 +1433,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
-    startLine: 573
+    startLine: 561
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -1931,35 +1885,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: Xunit.Abstractions.ITestOutputHelper
-  commentId: T:Xunit.Abstractions.ITestOutputHelper
-  parent: Xunit.Abstractions
-  isExternal: true
-  name: ITestOutputHelper
-  nameWithType: ITestOutputHelper
-  fullName: Xunit.Abstractions.ITestOutputHelper
-- uid: Xunit.Abstractions
-  commentId: N:Xunit.Abstractions
-  isExternal: true
-  name: Xunit.Abstractions
-  nameWithType: Xunit.Abstractions
-  fullName: Xunit.Abstractions
-  spec.csharp:
-  - uid: Xunit
-    name: Xunit
-    isExternal: true
-  - name: .
-  - uid: Xunit.Abstractions
-    name: Abstractions
-    isExternal: true
-  spec.vb:
-  - uid: Xunit
-    name: Xunit
-    isExternal: true
-  - name: .
-  - uid: Xunit.Abstractions
-    name: Abstractions
-    isExternal: true
 - uid: System.Nullable`1
   commentId: T:System.Nullable`1
   isExternal: true

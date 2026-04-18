@@ -14,7 +14,7 @@ FastMoq is a .NET testing framework for auto-mocking, dependency injection, and 
 - current package split across `FastMoq`, `FastMoq.Abstractions`, `FastMoq.Azure`, `FastMoq.AzureFunctions`, `FastMoq.Database`, `FastMoq.Web`, `FastMoq.Provider.Moq`, and `FastMoq.Provider.NSubstitute`
 - first-party Azure SDK helpers for pageable builders, credential setup, Azure-oriented configuration and service-provider flows, and common client registration
 - first-party Azure Functions helpers for typed `FunctionContext.InstanceServices`, concrete `HttpRequestData` and `HttpResponseData` builders, and request or response body readers
-- aggregate `FastMoq` package now includes the FastMoq analyzer pack by default, while `FastMoq.Analyzers` remains available for core-only package graphs
+- `FastMoq` and `FastMoq.Core` now include the FastMoq analyzer pack by default, while `FastMoq.Analyzers` remains available when you want diagnostics without either runtime package
 - provider-neutral verification with `Verify(...)`, `VerifyLogged(...)`, and `TimesSpec`, plus fluent `Scenario.With(...).When(...).Then(...).Verify(...)` flows
 - explicit construction, invocation, and known-type policies instead of older coupled option bags, with expanded migration docs, executable examples, and generated API coverage
 

@@ -18,8 +18,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandleOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: DbContextHandleOptions
     path: FastMoq.Database/DbContextHandleOptions.cs
     startLine: 5
@@ -79,8 +79,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandleOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Mode
     path: FastMoq.Database/DbContextHandleOptions.cs
     startLine: 10
@@ -112,8 +112,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandleOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: DatabaseName
     path: FastMoq.Database/DbContextHandleOptions.cs
     startLine: 15
@@ -145,8 +145,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextHandleOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: RealContextFactory
     path: FastMoq.Database/DbContextHandleOptions.cs
     startLine: 20

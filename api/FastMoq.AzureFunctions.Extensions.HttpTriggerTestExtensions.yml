@@ -1,0 +1,1167 @@
+### YamlMime:ManagedReference
+items:
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  commentId: T:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  id: HttpTriggerTestExtensions
+  parent: FastMoq.AzureFunctions.Extensions
+  children:
+  - FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  - FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  - FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  - FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  - FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  - FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  - FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Encoding)
+  - FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Encoding)
+  langs:
+  - csharp
+  - vb
+  name: HttpTriggerTestExtensions
+  nameWithType: HttpTriggerTestExtensions
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  type: Class
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: HttpTriggerTestExtensions
+    path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+    startLine: 12
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Provides Azure Functions HTTP-trigger helpers for constructing request and response data in tests.
+  example: []
+  syntax:
+    content: public static class HttpTriggerTestExtensions
+    content.vb: Public Module HttpTriggerTestExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  id: CreateHttpRequestData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateHttpRequestData(Mocker, Action<HttpRequestDataBuilder>?)
+  nameWithType: HttpTriggerTestExtensions.CreateHttpRequestData(Mocker, Action<HttpRequestDataBuilder>?)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(FastMoq.Mocker, System.Action<FastMoq.AzureFunctions.Http.HttpRequestDataBuilder>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: CreateHttpRequestData
+    path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+    startLine: 20
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Creates a concrete <xref href="Microsoft.Azure.Functions.Worker.Http.HttpRequestData" data-throw-if-not-resolved="false"></xref> for the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example: []
+  syntax:
+    content: public static HttpRequestData CreateHttpRequestData(this Mocker mocker, Action<HttpRequestDataBuilder>? configureRequest = null)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: configureRequest
+      type: System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder}
+      description: Optional request-builder configuration.
+    return:
+      type: Microsoft.Azure.Functions.Worker.Http.HttpRequestData
+      description: A concrete <xref href="Microsoft.Azure.Functions.Worker.Http.HttpRequestData" data-throw-if-not-resolved="false"></xref> suitable for Azure Functions trigger tests.
+    content.vb: Public Shared Function CreateHttpRequestData(mocker As Mocker, configureRequest As Action(Of HttpRequestDataBuilder) = Nothing) As HttpRequestData
+  overload: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData*
+  nameWithType.vb: HttpTriggerTestExtensions.CreateHttpRequestData(Mocker, Action(Of HttpRequestDataBuilder))
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(FastMoq.Mocker, System.Action(Of FastMoq.AzureFunctions.Http.HttpRequestDataBuilder))
+  name.vb: CreateHttpRequestData(Mocker, Action(Of HttpRequestDataBuilder))
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  id: CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateHttpRequestData(FunctionContext, Action<HttpRequestDataBuilder>?)
+  nameWithType: HttpTriggerTestExtensions.CreateHttpRequestData(FunctionContext, Action<HttpRequestDataBuilder>?)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext, System.Action<FastMoq.AzureFunctions.Http.HttpRequestDataBuilder>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: CreateHttpRequestData
+    path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+    startLine: 33
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Creates a concrete <xref href="Microsoft.Azure.Functions.Worker.Http.HttpRequestData" data-throw-if-not-resolved="false"></xref> for the supplied <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static HttpRequestData CreateHttpRequestData(this FunctionContext functionContext, Action<HttpRequestDataBuilder>? configureRequest = null)
+    parameters:
+    - id: functionContext
+      type: Microsoft.Azure.Functions.Worker.FunctionContext
+      description: The function context to associate with the request.
+    - id: configureRequest
+      type: System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder}
+      description: Optional request-builder configuration.
+    return:
+      type: Microsoft.Azure.Functions.Worker.Http.HttpRequestData
+      description: A concrete <xref href="Microsoft.Azure.Functions.Worker.Http.HttpRequestData" data-throw-if-not-resolved="false"></xref> suitable for Azure Functions trigger tests.
+    content.vb: Public Shared Function CreateHttpRequestData(functionContext As FunctionContext, configureRequest As Action(Of HttpRequestDataBuilder) = Nothing) As HttpRequestData
+  overload: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData*
+  nameWithType.vb: HttpTriggerTestExtensions.CreateHttpRequestData(FunctionContext, Action(Of HttpRequestDataBuilder))
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext, System.Action(Of FastMoq.AzureFunctions.Http.HttpRequestDataBuilder))
+  name.vb: CreateHttpRequestData(FunctionContext, Action(Of HttpRequestDataBuilder))
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  id: CreateHttpResponseData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateHttpResponseData(Mocker, Action<HttpResponseDataBuilder>?)
+  nameWithType: HttpTriggerTestExtensions.CreateHttpResponseData(Mocker, Action<HttpResponseDataBuilder>?)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(FastMoq.Mocker, System.Action<FastMoq.AzureFunctions.Http.HttpResponseDataBuilder>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: CreateHttpResponseData
+    path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+    startLine: 48
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Creates a concrete <xref href="Microsoft.Azure.Functions.Worker.Http.HttpResponseData" data-throw-if-not-resolved="false"></xref> for the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example: []
+  syntax:
+    content: public static HttpResponseData CreateHttpResponseData(this Mocker mocker, Action<HttpResponseDataBuilder>? configureResponse = null)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: configureResponse
+      type: System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder}
+      description: Optional response-builder configuration.
+    return:
+      type: Microsoft.Azure.Functions.Worker.Http.HttpResponseData
+      description: A concrete <xref href="Microsoft.Azure.Functions.Worker.Http.HttpResponseData" data-throw-if-not-resolved="false"></xref> suitable for Azure Functions trigger tests.
+    content.vb: Public Shared Function CreateHttpResponseData(mocker As Mocker, configureResponse As Action(Of HttpResponseDataBuilder) = Nothing) As HttpResponseData
+  overload: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData*
+  nameWithType.vb: HttpTriggerTestExtensions.CreateHttpResponseData(Mocker, Action(Of HttpResponseDataBuilder))
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(FastMoq.Mocker, System.Action(Of FastMoq.AzureFunctions.Http.HttpResponseDataBuilder))
+  name.vb: CreateHttpResponseData(Mocker, Action(Of HttpResponseDataBuilder))
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  id: CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateHttpResponseData(FunctionContext, Action<HttpResponseDataBuilder>?)
+  nameWithType: HttpTriggerTestExtensions.CreateHttpResponseData(FunctionContext, Action<HttpResponseDataBuilder>?)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext, System.Action<FastMoq.AzureFunctions.Http.HttpResponseDataBuilder>?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: CreateHttpResponseData
+    path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+    startLine: 61
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Creates a concrete <xref href="Microsoft.Azure.Functions.Worker.Http.HttpResponseData" data-throw-if-not-resolved="false"></xref> for the supplied <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static HttpResponseData CreateHttpResponseData(this FunctionContext functionContext, Action<HttpResponseDataBuilder>? configureResponse = null)
+    parameters:
+    - id: functionContext
+      type: Microsoft.Azure.Functions.Worker.FunctionContext
+      description: The function context to associate with the response.
+    - id: configureResponse
+      type: System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder}
+      description: Optional response-builder configuration.
+    return:
+      type: Microsoft.Azure.Functions.Worker.Http.HttpResponseData
+      description: A concrete <xref href="Microsoft.Azure.Functions.Worker.Http.HttpResponseData" data-throw-if-not-resolved="false"></xref> suitable for Azure Functions trigger tests.
+    content.vb: Public Shared Function CreateHttpResponseData(functionContext As FunctionContext, configureResponse As Action(Of HttpResponseDataBuilder) = Nothing) As HttpResponseData
+  overload: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData*
+  nameWithType.vb: HttpTriggerTestExtensions.CreateHttpResponseData(FunctionContext, Action(Of HttpResponseDataBuilder))
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext, System.Action(Of FastMoq.AzureFunctions.Http.HttpResponseDataBuilder))
+  name.vb: CreateHttpResponseData(FunctionContext, Action(Of HttpResponseDataBuilder))
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Encoding)
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Encoding)
+  id: ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Encoding)
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: ReadBodyAsStringAsync(HttpRequestData, Encoding?)
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsStringAsync(HttpRequestData, Encoding?)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData, System.Text.Encoding?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: ReadBodyAsStringAsync
+    path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+    startLine: 76
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Reads the current request body as a string and rewinds the stream when possible.
+  example: []
+  syntax:
+    content: public static Task<string> ReadBodyAsStringAsync(this HttpRequestData request, Encoding? encoding = null)
+    parameters:
+    - id: request
+      type: Microsoft.Azure.Functions.Worker.Http.HttpRequestData
+      description: The current request.
+    - id: encoding
+      type: System.Text.Encoding
+      description: The text encoding. Defaults to UTF-8.
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: The body text.
+    content.vb: Public Shared Function ReadBodyAsStringAsync(request As HttpRequestData, encoding As Encoding = Nothing) As Task(Of String)
+  overload: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync*
+  nameWithType.vb: HttpTriggerTestExtensions.ReadBodyAsStringAsync(HttpRequestData, Encoding)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData, System.Text.Encoding)
+  name.vb: ReadBodyAsStringAsync(HttpRequestData, Encoding)
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  id: ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: ReadBodyAsJsonAsync<TValue>(HttpRequestData, JsonSerializerOptions?, CancellationToken)
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsJsonAsync<TValue>(HttpRequestData, JsonSerializerOptions?, CancellationToken)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync<TValue>(Microsoft.Azure.Functions.Worker.Http.HttpRequestData, System.Text.Json.JsonSerializerOptions?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: ReadBodyAsJsonAsync
+    path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+    startLine: 91
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Reads the current request body as JSON and rewinds the stream when possible.
+  example: []
+  syntax:
+    content: public static Task<TValue?> ReadBodyAsJsonAsync<TValue>(this HttpRequestData request, JsonSerializerOptions? jsonSerializerOptions = null, CancellationToken cancellationToken = default)
+    parameters:
+    - id: request
+      type: Microsoft.Azure.Functions.Worker.Http.HttpRequestData
+      description: The current request.
+    - id: jsonSerializerOptions
+      type: System.Text.Json.JsonSerializerOptions
+      description: Optional serializer options.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    typeParameters:
+    - id: TValue
+      description: The expected JSON type.
+    return:
+      type: System.Threading.Tasks.Task{{TValue}}
+      description: The deserialized body value.
+    content.vb: Public Shared Function ReadBodyAsJsonAsync(Of TValue)(request As HttpRequestData, jsonSerializerOptions As JsonSerializerOptions = Nothing, cancellationToken As CancellationToken = Nothing) As Task(Of TValue)
+  overload: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync*
+  nameWithType.vb: HttpTriggerTestExtensions.ReadBodyAsJsonAsync(Of TValue)(HttpRequestData, JsonSerializerOptions, CancellationToken)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync(Of TValue)(Microsoft.Azure.Functions.Worker.Http.HttpRequestData, System.Text.Json.JsonSerializerOptions, System.Threading.CancellationToken)
+  name.vb: ReadBodyAsJsonAsync(Of TValue)(HttpRequestData, JsonSerializerOptions, CancellationToken)
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Encoding)
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Encoding)
+  id: ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Encoding)
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: ReadBodyAsStringAsync(HttpResponseData, Encoding?)
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsStringAsync(HttpResponseData, Encoding?)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData, System.Text.Encoding?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: ReadBodyAsStringAsync
+    path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+    startLine: 104
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Reads the current response body as a string and rewinds the stream when possible.
+  example: []
+  syntax:
+    content: public static Task<string> ReadBodyAsStringAsync(this HttpResponseData response, Encoding? encoding = null)
+    parameters:
+    - id: response
+      type: Microsoft.Azure.Functions.Worker.Http.HttpResponseData
+      description: The current response.
+    - id: encoding
+      type: System.Text.Encoding
+      description: The text encoding. Defaults to UTF-8.
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+      description: The body text.
+    content.vb: Public Shared Function ReadBodyAsStringAsync(response As HttpResponseData, encoding As Encoding = Nothing) As Task(Of String)
+  overload: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync*
+  nameWithType.vb: HttpTriggerTestExtensions.ReadBodyAsStringAsync(HttpResponseData, Encoding)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData, System.Text.Encoding)
+  name.vb: ReadBodyAsStringAsync(HttpResponseData, Encoding)
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  id: ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: ReadBodyAsJsonAsync<TValue>(HttpResponseData, JsonSerializerOptions?, CancellationToken)
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsJsonAsync<TValue>(HttpResponseData, JsonSerializerOptions?, CancellationToken)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync<TValue>(Microsoft.Azure.Functions.Worker.Http.HttpResponseData, System.Text.Json.JsonSerializerOptions?, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: ReadBodyAsJsonAsync
+    path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
+    startLine: 119
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Reads the current response body as JSON and rewinds the stream when possible.
+  example: []
+  syntax:
+    content: public static Task<TValue?> ReadBodyAsJsonAsync<TValue>(this HttpResponseData response, JsonSerializerOptions? jsonSerializerOptions = null, CancellationToken cancellationToken = default)
+    parameters:
+    - id: response
+      type: Microsoft.Azure.Functions.Worker.Http.HttpResponseData
+      description: The current response.
+    - id: jsonSerializerOptions
+      type: System.Text.Json.JsonSerializerOptions
+      description: Optional serializer options.
+    - id: cancellationToken
+      type: System.Threading.CancellationToken
+      description: The cancellation token.
+    typeParameters:
+    - id: TValue
+      description: The expected JSON type.
+    return:
+      type: System.Threading.Tasks.Task{{TValue}}
+      description: The deserialized body value.
+    content.vb: Public Shared Function ReadBodyAsJsonAsync(Of TValue)(response As HttpResponseData, jsonSerializerOptions As JsonSerializerOptions = Nothing, cancellationToken As CancellationToken = Nothing) As Task(Of TValue)
+  overload: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync*
+  nameWithType.vb: HttpTriggerTestExtensions.ReadBodyAsJsonAsync(Of TValue)(HttpResponseData, JsonSerializerOptions, CancellationToken)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync(Of TValue)(Microsoft.Azure.Functions.Worker.Http.HttpResponseData, System.Text.Json.JsonSerializerOptions, System.Threading.CancellationToken)
+  name.vb: ReadBodyAsJsonAsync(Of TValue)(HttpResponseData, JsonSerializerOptions, CancellationToken)
+references:
+- uid: FastMoq.AzureFunctions.Extensions
+  commentId: N:FastMoq.AzureFunctions.Extensions
+  href: FastMoq.html
+  name: FastMoq.AzureFunctions.Extensions
+  nameWithType: FastMoq.AzureFunctions.Extensions
+  fullName: FastMoq.AzureFunctions.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.AzureFunctions
+    name: AzureFunctions
+    href: FastMoq.AzureFunctions.html
+  - name: .
+  - uid: FastMoq.AzureFunctions.Extensions
+    name: Extensions
+    href: FastMoq.AzureFunctions.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.AzureFunctions
+    name: AzureFunctions
+    href: FastMoq.AzureFunctions.html
+  - name: .
+  - uid: FastMoq.AzureFunctions.Extensions
+    name: Extensions
+    href: FastMoq.AzureFunctions.Extensions.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Microsoft.Azure.Functions.Worker.Http.HttpRequestData
+  commentId: T:Microsoft.Azure.Functions.Worker.Http.HttpRequestData
+  parent: Microsoft.Azure.Functions.Worker.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata
+  name: HttpRequestData
+  nameWithType: HttpRequestData
+  fullName: Microsoft.Azure.Functions.Worker.Http.HttpRequestData
+- uid: FastMoq.Mocker
+  commentId: T:FastMoq.Mocker
+  parent: FastMoq
+  href: FastMoq.Mocker.html
+  name: Mocker
+  nameWithType: Mocker
+  fullName: FastMoq.Mocker
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData*
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData
+  href: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpRequestData_FastMoq_Mocker_System_Action_FastMoq_AzureFunctions_Http_HttpRequestDataBuilder__
+  name: CreateHttpRequestData
+  nameWithType: HttpTriggerTestExtensions.CreateHttpRequestData
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData
+- uid: System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder}
+  commentId: T:System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<HttpRequestDataBuilder>
+  nameWithType: Action<HttpRequestDataBuilder>
+  fullName: System.Action<FastMoq.AzureFunctions.Http.HttpRequestDataBuilder>
+  nameWithType.vb: Action(Of HttpRequestDataBuilder)
+  fullName.vb: System.Action(Of FastMoq.AzureFunctions.Http.HttpRequestDataBuilder)
+  name.vb: Action(Of HttpRequestDataBuilder)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder
+    name: HttpRequestDataBuilder
+    href: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder
+    name: HttpRequestDataBuilder
+    href: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html
+  - name: )
+- uid: Microsoft.Azure.Functions.Worker.Http
+  commentId: N:Microsoft.Azure.Functions.Worker.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Azure.Functions.Worker.Http
+  nameWithType: Microsoft.Azure.Functions.Worker.Http
+  fullName: Microsoft.Azure.Functions.Worker.Http
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure
+  - name: .
+  - uid: Microsoft.Azure.Functions
+    name: Functions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions
+  - name: .
+  - uid: Microsoft.Azure.Functions.Worker
+    name: Worker
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker
+  - name: .
+  - uid: Microsoft.Azure.Functions.Worker.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure
+  - name: .
+  - uid: Microsoft.Azure.Functions
+    name: Functions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions
+  - name: .
+  - uid: Microsoft.Azure.Functions.Worker
+    name: Worker
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker
+  - name: .
+  - uid: Microsoft.Azure.Functions.Worker.Http
+    name: Http
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http
+- uid: FastMoq
+  commentId: N:FastMoq
+  href: FastMoq.html
+  name: FastMoq
+  nameWithType: FastMoq
+  fullName: FastMoq
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Microsoft.Azure.Functions.Worker.FunctionContext
+  commentId: T:Microsoft.Azure.Functions.Worker.FunctionContext
+  parent: Microsoft.Azure.Functions.Worker
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext
+  name: FunctionContext
+  nameWithType: FunctionContext
+  fullName: Microsoft.Azure.Functions.Worker.FunctionContext
+- uid: Microsoft.Azure.Functions.Worker
+  commentId: N:Microsoft.Azure.Functions.Worker
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Azure.Functions.Worker
+  nameWithType: Microsoft.Azure.Functions.Worker
+  fullName: Microsoft.Azure.Functions.Worker
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure
+  - name: .
+  - uid: Microsoft.Azure.Functions
+    name: Functions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions
+  - name: .
+  - uid: Microsoft.Azure.Functions.Worker
+    name: Worker
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure
+  - name: .
+  - uid: Microsoft.Azure.Functions
+    name: Functions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions
+  - name: .
+  - uid: Microsoft.Azure.Functions.Worker
+    name: Worker
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker
+- uid: Microsoft.Azure.Functions.Worker.Http.HttpResponseData
+  commentId: T:Microsoft.Azure.Functions.Worker.Http.HttpResponseData
+  parent: Microsoft.Azure.Functions.Worker.Http
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httpresponsedata
+  name: HttpResponseData
+  nameWithType: HttpResponseData
+  fullName: Microsoft.Azure.Functions.Worker.Http.HttpResponseData
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData*
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData
+  href: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpResponseData_FastMoq_Mocker_System_Action_FastMoq_AzureFunctions_Http_HttpResponseDataBuilder__
+  name: CreateHttpResponseData
+  nameWithType: HttpTriggerTestExtensions.CreateHttpResponseData
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData
+- uid: System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder}
+  commentId: T:System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<HttpResponseDataBuilder>
+  nameWithType: Action<HttpResponseDataBuilder>
+  fullName: System.Action<FastMoq.AzureFunctions.Http.HttpResponseDataBuilder>
+  nameWithType.vb: Action(Of HttpResponseDataBuilder)
+  fullName.vb: System.Action(Of FastMoq.AzureFunctions.Http.HttpResponseDataBuilder)
+  name.vb: Action(Of HttpResponseDataBuilder)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder
+    name: HttpResponseDataBuilder
+    href: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder
+    name: HttpResponseDataBuilder
+    href: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html
+  - name: )
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync*
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync
+  href: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsStringAsync_Microsoft_Azure_Functions_Worker_Http_HttpRequestData_System_Text_Encoding_
+  name: ReadBodyAsStringAsync
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsStringAsync
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync
+- uid: System.Text.Encoding
+  commentId: T:System.Text.Encoding
+  parent: System.Text
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.encoding
+  name: Encoding
+  nameWithType: Encoding
+  fullName: System.Text.Encoding
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Text
+  commentId: N:System.Text
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text
+  nameWithType: System.Text
+  fullName: System.Text
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync*
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync
+  href: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsJsonAsync__1_Microsoft_Azure_Functions_Worker_Http_HttpRequestData_System_Text_Json_JsonSerializerOptions_System_Threading_CancellationToken_
+  name: ReadBodyAsJsonAsync
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsJsonAsync
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync
+- uid: System.Text.Json.JsonSerializerOptions
+  commentId: T:System.Text.Json.JsonSerializerOptions
+  parent: System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  name: JsonSerializerOptions
+  nameWithType: JsonSerializerOptions
+  fullName: System.Text.Json.JsonSerializerOptions
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{{TValue}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TValue>
+  nameWithType: Task<TValue>
+  fullName: System.Threading.Tasks.Task<TValue>
+  nameWithType.vb: Task(Of TValue)
+  fullName.vb: System.Threading.Tasks.Task(Of TValue)
+  name.vb: Task(Of TValue)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Text.Json
+  commentId: N:System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.Json
+  nameWithType: System.Text.Json
+  fullName: System.Text.Json
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading

@@ -17,8 +17,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextTestMode.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: DbContextTestMode
     path: FastMoq.Database/DbContextTestMode.cs
     startLine: 5
@@ -56,8 +56,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextTestMode.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: MockedSets
     path: FastMoq.Database/DbContextTestMode.cs
     startLine: 10
@@ -84,8 +84,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextTestMode.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: RealInMemory
     path: FastMoq.Database/DbContextTestMode.cs
     startLine: 15

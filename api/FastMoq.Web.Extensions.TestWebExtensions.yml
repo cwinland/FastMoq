@@ -39,8 +39,11 @@ items:
   - FastMoq.Web.Extensions.TestWebExtensions.SetQueryParameter(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String)
   - FastMoq.Web.Extensions.TestWebExtensions.SetQueryParameters(Microsoft.AspNetCore.Http.HttpContext,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}})
   - FastMoq.Web.Extensions.TestWebExtensions.SetQueryString(Microsoft.AspNetCore.Http.HttpContext,System.String)
+  - FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.IO.Stream,System.String)
+  - FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.String,System.Text.Encoding,System.String)
   - FastMoq.Web.Extensions.TestWebExtensions.SetRequestHeader(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String[])
   - FastMoq.Web.Extensions.TestWebExtensions.SetRequestHeaders(Microsoft.AspNetCore.Http.HttpContext,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String[]}})
+  - FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody``1(Microsoft.AspNetCore.Http.HttpContext,``0,System.Text.Json.JsonSerializerOptions)
   - FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
   - FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})
   - FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},FastMoq.Web.TestClaimsPrincipalOptions)
@@ -55,11 +58,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TestWebExtensions
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 10
+    startLine: 12
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -93,11 +96,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetupClaimsPrincipal
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 20
+    startLine: 22
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -132,11 +135,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetupClaimsPrincipal
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 29
+    startLine: 31
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -174,11 +177,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetupClaimsPrincipal
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 38
+    startLine: 40
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -218,11 +221,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetupClaimsPrincipal
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 69
+    startLine: 71
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -259,11 +262,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 83
+    startLine: 85
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -298,11 +301,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 91
+    startLine: 93
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -337,11 +340,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 99
+    startLine: 101
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -378,11 +381,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 107
+    startLine: 109
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -414,11 +417,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 118
+    startLine: 120
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -455,11 +458,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 130
+    startLine: 132
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -494,11 +497,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 141
+    startLine: 143
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -535,11 +538,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 151
+    startLine: 153
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -571,11 +574,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 165
+    startLine: 167
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -610,11 +613,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 173
+    startLine: 175
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -649,11 +652,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 181
+    startLine: 183
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -690,11 +693,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 189
+    startLine: 191
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -726,11 +729,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 200
+    startLine: 202
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -767,11 +770,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 218
+    startLine: 220
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -806,11 +809,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 231
+    startLine: 233
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -847,11 +850,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 241
+    startLine: 243
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -890,11 +893,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 251
+    startLine: 253
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -931,11 +934,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 262
+    startLine: 264
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -974,11 +977,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 274
+    startLine: 276
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1015,11 +1018,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddHttpContextAccessor
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 285
+    startLine: 287
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1058,11 +1061,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddHttpContextAccessor
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 303
+    startLine: 305
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1099,11 +1102,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddHttpContextAccessor
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 314
+    startLine: 316
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1142,11 +1145,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddHttpContextAccessor
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 326
+    startLine: 328
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1183,11 +1186,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AddRequestDelegate
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 337
+    startLine: 339
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1224,11 +1227,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetRequestHeader
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 347
+    startLine: 349
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1265,11 +1268,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetRequestHeaders
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 359
+    startLine: 361
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1289,6 +1292,133 @@ items:
   nameWithType.vb: TestWebExtensions.SetRequestHeaders(HttpContext, IEnumerable(Of KeyValuePair(Of String, String())))
   fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetRequestHeaders(Microsoft.AspNetCore.Http.HttpContext, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of String, String())))
   name.vb: SetRequestHeaders(HttpContext, IEnumerable(Of KeyValuePair(Of String, String())))
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.IO.Stream,System.String)
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.IO.Stream,System.String)
+  id: SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.IO.Stream,System.String)
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetRequestBody(HttpContext, Stream, string?)
+  nameWithType: TestWebExtensions.SetRequestBody(HttpContext, Stream, string?)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext, System.IO.Stream, string?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: SetRequestBody
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 377
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Sets the request body stream and optionally updates the content type.
+  example: []
+  syntax:
+    content: public static HttpContext SetRequestBody(this HttpContext httpContext, Stream body, string? contentType = null)
+    parameters:
+    - id: httpContext
+      type: Microsoft.AspNetCore.Http.HttpContext
+    - id: body
+      type: System.IO.Stream
+    - id: contentType
+      type: System.String
+    return:
+      type: Microsoft.AspNetCore.Http.HttpContext
+    content.vb: Public Shared Function SetRequestBody(httpContext As HttpContext, body As Stream, contentType As String = Nothing) As HttpContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody*
+  nameWithType.vb: TestWebExtensions.SetRequestBody(HttpContext, Stream, String)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext, System.IO.Stream, String)
+  name.vb: SetRequestBody(HttpContext, Stream, String)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.String,System.Text.Encoding,System.String)
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.String,System.Text.Encoding,System.String)
+  id: SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.String,System.Text.Encoding,System.String)
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetRequestBody(HttpContext, string, Encoding?, string?)
+  nameWithType: TestWebExtensions.SetRequestBody(HttpContext, string, Encoding?, string?)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext, string, System.Text.Encoding?, string?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: SetRequestBody
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 401
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Sets the request body from a string payload.
+  example: []
+  syntax:
+    content: public static HttpContext SetRequestBody(this HttpContext httpContext, string body, Encoding? encoding = null, string? contentType = null)
+    parameters:
+    - id: httpContext
+      type: Microsoft.AspNetCore.Http.HttpContext
+    - id: body
+      type: System.String
+    - id: encoding
+      type: System.Text.Encoding
+    - id: contentType
+      type: System.String
+    return:
+      type: Microsoft.AspNetCore.Http.HttpContext
+    content.vb: Public Shared Function SetRequestBody(httpContext As HttpContext, body As String, encoding As Encoding = Nothing, contentType As String = Nothing) As HttpContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody*
+  nameWithType.vb: TestWebExtensions.SetRequestBody(HttpContext, String, Encoding, String)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext, String, System.Text.Encoding, String)
+  name.vb: SetRequestBody(HttpContext, String, Encoding, String)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody``1(Microsoft.AspNetCore.Http.HttpContext,``0,System.Text.Json.JsonSerializerOptions)
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody``1(Microsoft.AspNetCore.Http.HttpContext,``0,System.Text.Json.JsonSerializerOptions)
+  id: SetRequestJsonBody``1(Microsoft.AspNetCore.Http.HttpContext,``0,System.Text.Json.JsonSerializerOptions)
+  isExtensionMethod: true
+  parent: FastMoq.Web.Extensions.TestWebExtensions
+  langs:
+  - csharp
+  - vb
+  name: SetRequestJsonBody<TValue>(HttpContext, TValue, JsonSerializerOptions?)
+  nameWithType: TestWebExtensions.SetRequestJsonBody<TValue>(HttpContext, TValue, JsonSerializerOptions?)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody<TValue>(Microsoft.AspNetCore.Http.HttpContext, TValue, System.Text.Json.JsonSerializerOptions?)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Web/Extensions/TestWebExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: SetRequestJsonBody
+    path: FastMoq.Web/Extensions/TestWebExtensions.cs
+    startLine: 414
+  assemblies:
+  - FastMoq.Web
+  namespace: FastMoq.Web.Extensions
+  summary: Sets the request body from a JSON payload and stamps the JSON content type.
+  example: []
+  syntax:
+    content: public static HttpContext SetRequestJsonBody<TValue>(this HttpContext httpContext, TValue value, JsonSerializerOptions? jsonSerializerOptions = null)
+    parameters:
+    - id: httpContext
+      type: Microsoft.AspNetCore.Http.HttpContext
+    - id: value
+      type: '{TValue}'
+    - id: jsonSerializerOptions
+      type: System.Text.Json.JsonSerializerOptions
+    typeParameters:
+    - id: TValue
+    return:
+      type: Microsoft.AspNetCore.Http.HttpContext
+    content.vb: Public Shared Function SetRequestJsonBody(Of TValue)(httpContext As HttpContext, value As TValue, jsonSerializerOptions As JsonSerializerOptions = Nothing) As HttpContext
+  overload: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody*
+  nameWithType.vb: TestWebExtensions.SetRequestJsonBody(Of TValue)(HttpContext, TValue, JsonSerializerOptions)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody(Of TValue)(Microsoft.AspNetCore.Http.HttpContext, TValue, System.Text.Json.JsonSerializerOptions)
+  name.vb: SetRequestJsonBody(Of TValue)(HttpContext, TValue, JsonSerializerOptions)
 - uid: FastMoq.Web.Extensions.TestWebExtensions.SetQueryString(Microsoft.AspNetCore.Http.HttpContext,System.String)
   commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetQueryString(Microsoft.AspNetCore.Http.HttpContext,System.String)
   id: SetQueryString(Microsoft.AspNetCore.Http.HttpContext,System.String)
@@ -1304,11 +1434,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetQueryString
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 375
+    startLine: 425
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1343,11 +1473,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetQueryParameters
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 395
+    startLine: 445
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1382,11 +1512,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: SetQueryParameter
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 414
+    startLine: 464
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1423,11 +1553,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetObjectResultContent
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 433
+    startLine: 483
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1465,11 +1595,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetObjectResultContent
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 446
+    startLine: 496
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1504,11 +1634,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 460
+    startLine: 510
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1538,11 +1668,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetOkObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 469
+    startLine: 519
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1572,11 +1702,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetBadRequestObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 478
+    startLine: 528
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1606,11 +1736,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetConflictObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 487
+    startLine: 537
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -1640,11 +1770,11 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetNoContentResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
-    startLine: 496
+    startLine: 546
   assemblies:
   - FastMoq.Web
   namespace: FastMoq.Web.Extensions
@@ -2440,6 +2570,143 @@ references:
   - name: )
   - name: )
   - name: )
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody*
+  commentId: Overload:FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody
+  href: FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetRequestBody_Microsoft_AspNetCore_Http_HttpContext_System_IO_Stream_System_String_
+  name: SetRequestBody
+  nameWithType: TestWebExtensions.SetRequestBody
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody
+- uid: System.IO.Stream
+  commentId: T:System.IO.Stream
+  parent: System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.io.stream
+  name: Stream
+  nameWithType: Stream
+  fullName: System.IO.Stream
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+- uid: System.Text.Encoding
+  commentId: T:System.Text.Encoding
+  parent: System.Text
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.encoding
+  name: Encoding
+  nameWithType: Encoding
+  fullName: System.Text.Encoding
+- uid: System.Text
+  commentId: N:System.Text
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text
+  nameWithType: System.Text
+  fullName: System.Text
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody*
+  commentId: Overload:FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody
+  href: FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetRequestJsonBody__1_Microsoft_AspNetCore_Http_HttpContext___0_System_Text_Json_JsonSerializerOptions_
+  name: SetRequestJsonBody
+  nameWithType: TestWebExtensions.SetRequestJsonBody
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody
+- uid: '{TValue}'
+  commentId: '!:TValue'
+  definition: TValue
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
+- uid: System.Text.Json.JsonSerializerOptions
+  commentId: T:System.Text.Json.JsonSerializerOptions
+  parent: System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions
+  name: JsonSerializerOptions
+  nameWithType: JsonSerializerOptions
+  fullName: System.Text.Json.JsonSerializerOptions
+- uid: TValue
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
+- uid: System.Text.Json
+  commentId: N:System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.Json
+  nameWithType: System.Text.Json
+  fullName: System.Text.Json
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
 - uid: FastMoq.Web.Extensions.TestWebExtensions.SetQueryString*
   commentId: Overload:FastMoq.Web.Extensions.TestWebExtensions.SetQueryString
   href: FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetQueryString_Microsoft_AspNetCore_Http_HttpContext_System_String_

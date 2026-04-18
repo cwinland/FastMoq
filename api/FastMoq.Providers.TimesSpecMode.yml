@@ -20,8 +20,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TimesSpecMode
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
     startLine: 5
@@ -59,8 +59,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AtLeastOnce
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
     startLine: 10
@@ -87,8 +87,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Exactly
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
     startLine: 15
@@ -115,8 +115,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AtLeast
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
     startLine: 20
@@ -143,8 +143,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AtMost
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
     startLine: 25
@@ -171,8 +171,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/TimesSpec.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Never
     path: FastMoq.Abstractions/Providers/TimesSpec.cs
     startLine: 30

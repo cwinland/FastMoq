@@ -20,8 +20,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: DbContextMockerExtensions
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 9
@@ -58,8 +58,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetDbContextHandle
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 14
@@ -99,8 +99,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetMockDbContext
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 44
@@ -138,8 +138,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetMockDbContext
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 53
@@ -173,8 +173,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TryCreateManagedDbContextInstance
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 76
@@ -217,8 +217,8 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateLegacyDbContextMock
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 157

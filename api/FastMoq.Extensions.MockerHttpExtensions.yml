@@ -21,8 +21,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: MockerHttpExtensions
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
     startLine: 8
@@ -59,8 +59,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CreateHttpClient
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
     startLine: 18
@@ -110,8 +110,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: WhenHttpRequest
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
     startLine: 30
@@ -152,8 +152,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: WhenHttpRequest
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
     startLine: 46
@@ -197,8 +197,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: WhenHttpRequestJson
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
     startLine: 64
@@ -245,8 +245,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetContentBytesAsync
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
     startLine: 102
@@ -281,8 +281,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetContentStreamAsync
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
     startLine: 110

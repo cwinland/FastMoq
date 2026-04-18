@@ -20,8 +20,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: MockCreationOptions
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 5
@@ -78,8 +78,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 14
@@ -122,8 +122,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Strict
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 29
@@ -153,8 +153,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: CallBase
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 34
@@ -184,8 +184,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ConstructorArgs
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 39
@@ -215,8 +215,8 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AllowNonPublic
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 44

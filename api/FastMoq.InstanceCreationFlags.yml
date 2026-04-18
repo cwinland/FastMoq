@@ -7,6 +7,7 @@ items:
   children:
   - FastMoq.InstanceCreationFlags.AllowNonPublicConstructorFallback
   - FastMoq.InstanceCreationFlags.None
+  - FastMoq.InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity
   - FastMoq.InstanceCreationFlags.PublicConstructorsOnly
   - FastMoq.InstanceCreationFlags.ResolveOptionalParametersViaMocker
   - FastMoq.InstanceCreationFlags.UseDefaultOrNullOptionalParameters
@@ -20,8 +21,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: InstanceCreationFlags
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 6
@@ -29,7 +30,7 @@ items:
   - FastMoq.Core
   namespace: FastMoq
   summary: >-
-    Per-call overrides for constructor selection and optional-parameter resolution during instance creation.
+    Per-call overrides for constructor selection, ambiguity handling, and optional-parameter resolution during instance creation.
 
     <xref href="FastMoq.InstanceCreationFlags.None" data-throw-if-not-resolved="false"></xref> preserves the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> defaults.
   example: []
@@ -72,8 +73,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: None
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 12
@@ -100,8 +101,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: PublicConstructorsOnly
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 17
@@ -128,8 +129,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AllowNonPublicConstructorFallback
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 22
@@ -156,8 +157,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ResolveOptionalParametersViaMocker
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 27
@@ -184,8 +185,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: UseDefaultOrNullOptionalParameters
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 32
@@ -196,6 +197,34 @@ items:
   example: []
   syntax:
     content: UseDefaultOrNullOptionalParameters = 8
+    return:
+      type: FastMoq.InstanceCreationFlags
+- uid: FastMoq.InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity
+  commentId: F:FastMoq.InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity
+  id: PreferParameterlessConstructorOnAmbiguity
+  parent: FastMoq.InstanceCreationFlags
+  langs:
+  - csharp
+  - vb
+  name: PreferParameterlessConstructorOnAmbiguity
+  nameWithType: InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity
+  fullName: FastMoq.InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity
+  type: Field
+  source:
+    remote:
+      path: FastMoq.Core/InstanceCreationFlags.cs
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
+    id: PreferParameterlessConstructorOnAmbiguity
+    path: FastMoq.Core/InstanceCreationFlags.cs
+    startLine: 37
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: Prefer the parameterless constructor when constructor selection remains ambiguous within the current visibility scope.
+  example: []
+  syntax:
+    content: PreferParameterlessConstructorOnAmbiguity = 16
     return:
       type: FastMoq.InstanceCreationFlags
 references:

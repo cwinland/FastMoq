@@ -20,8 +20,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: PropertyValueCapture
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 16
@@ -92,8 +92,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Value
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 23
@@ -125,8 +125,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: HasValue
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 28
@@ -158,8 +158,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: History
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 33
@@ -191,8 +191,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Record
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 39
@@ -225,8 +225,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Clear
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 49

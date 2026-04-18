@@ -30,8 +30,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ConstructorHistory
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 15
@@ -98,8 +98,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: this[]
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 38
@@ -138,8 +138,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Values
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 51
@@ -170,8 +170,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 67
@@ -201,8 +201,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 74
@@ -236,8 +236,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AsEnumerable
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 81
@@ -267,8 +267,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AsLookup
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 87
@@ -298,8 +298,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: AsReadOnlyDictionary
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 93
@@ -329,8 +329,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetConstructor
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 100
@@ -364,8 +364,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: GetEnumerator
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 149
@@ -397,8 +397,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Contains
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 189
@@ -434,8 +434,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Count
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 201
@@ -469,8 +469,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: this[]
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 204
@@ -509,8 +509,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: ContainsKey
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 211
@@ -550,8 +550,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: Keys
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 219
@@ -584,8 +584,8 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: AnalyzersAndHelpers
-      repo: https://github.com/cwinland/FastMoq.git
+      branch: feat/first-six-priority-issues
+      repo: https://cwinland@github.com/cwinland/FastMoq.git
     id: TryGetValue
     path: FastMoq.Core/Models/ConstructorHistory.cs
     startLine: 222

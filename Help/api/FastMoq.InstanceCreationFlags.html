@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Enum InstanceCreationFlags | FastMoq ">
     
-    <meta name="description" content="Per-call overrides for constructor selection and optional-parameter resolution during instance creation.  preserves the current  defaults.">
+    <meta name="description" content="Per-call overrides for constructor selection, ambiguity handling, and optional-parameter resolution during instance creation.  preserves the current  defaults.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -82,7 +82,7 @@
 
 
   <h1 id="FastMoq_InstanceCreationFlags" data-uid="FastMoq.InstanceCreationFlags" class="text-break">Enum InstanceCreationFlags</h1>
-  <div class="markdown level0 summary"><p>Per-call overrides for constructor selection and optional-parameter resolution during instance creation.
+  <div class="markdown level0 summary"><p>Per-call overrides for constructor selection, ambiguity handling, and optional-parameter resolution during instance creation.
 <a class="xref" href="FastMoq.InstanceCreationFlags.html#FastMoq_InstanceCreationFlags_None">None</a> preserves the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> defaults.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -111,6 +111,11 @@ public enum InstanceCreationFlags</code></pre>
       <tr>
         <td id="FastMoq_InstanceCreationFlags_None">None</td>
         <td><p>Use the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> defaults for constructor selection and optional-parameter resolution.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="FastMoq_InstanceCreationFlags_PreferParameterlessConstructorOnAmbiguity">PreferParameterlessConstructorOnAmbiguity</td>
+        <td><p>Prefer the parameterless constructor when constructor selection remains ambiguous within the current visibility scope.</p>
 </td>
       </tr>
       <tr>
@@ -185,7 +190,7 @@ public enum InstanceCreationFlags</code></pre>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:19 UTC</span></div>
       
           </div>
         </div>
