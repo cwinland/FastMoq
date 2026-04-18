@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Immutable;
+using System.Collections.Generic;
 using Azure.Core.Serialization;
 using FastMoq.AzureFunctions.Extensions;
 using FastMoq.Extensions;
@@ -14,6 +17,7 @@ using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Net;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FastMoq.Tests
@@ -306,6 +310,41 @@ namespace FastMoq.Tests
             mocker.VerifyLogged(LogLevel.Warning, "typed logger");
         }
 
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void AddLoggerFactory_WithSink_ShouldMirrorLogsAndPreserveVerification(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mirroredEntries = new List<string>();
+            var constructorEntries = new List<string>();
+            var mocker = new Mocker((_, _, message, _) => constructorEntries.Add(message));
+
+            mocker.AddLoggerFactory((logLevel, eventId, message, exception) =>
+            {
+                mirroredEntries.Add($"{logLevel}:{eventId.Id}:{message}:{exception?.Message}");
+            }, replace: true);
+
+            var loggerFactory = mocker.GetObject<ILoggerFactory>();
+            var logger = mocker.GetObject<ILogger<ServiceProviderHelperTests>>();
+
+            loggerFactory.Should().NotBeNull();
+            logger.Should().NotBeNull();
+
+            loggerFactory!.CreateLogger("fastmoq.sink").LogInformation("factory sink logger");
+            logger!.LogError(12, new InvalidOperationException("sink boom"), "typed sink logger");
+
+            mirroredEntries.Should().HaveCount(2);
+            mirroredEntries[0].Should().Contain("Information:0:factory sink logger");
+            mirroredEntries[1].Should().Contain("Error:12:typed sink logger:sink boom");
+            constructorEntries.Should().Contain("factory sink logger");
+            constructorEntries.Should().Contain("typed sink logger");
+
+            mocker.VerifyLogged(LogLevel.Information, "factory sink logger");
+            mocker.VerifyLogged(LogLevel.Error, "typed sink logger", new InvalidOperationException("sink boom"), 12, TimesSpec.Once);
+        }
+
         [Fact]
         public void CreateLoggerFactory_ShouldSupportTypedServiceProviderComposition()
         {
@@ -333,6 +372,42 @@ namespace FastMoq.Tests
 
             mocker.VerifyLogged(LogLevel.Information, "service provider factory");
             mocker.VerifyLogged(LogLevel.Error, "service provider typed logger");
+        }
+
+        [Fact]
+        public void CreateLoggerFactory_WithLineWriter_ShouldMirrorFormattedOutputForTypedServiceProvider()
+        {
+            using var providerScope = PushProviderScope("reflection");
+            var lines = new List<string>();
+            var mocker = new Mocker();
+            var loggerFactory = mocker.CreateLoggerFactory(lines.Add);
+            var provider = mocker.CreateTypedServiceProvider(services =>
+            {
+                services.AddSingleton(loggerFactory);
+                services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            });
+
+            mocker.AddServiceProvider(provider, replace: true);
+
+            var serviceProvider = mocker.GetObject<IServiceProvider>();
+            serviceProvider.Should().NotBeNull();
+
+            var resolvedFactory = serviceProvider!.GetRequiredService<ILoggerFactory>();
+            var typedLogger = serviceProvider.GetRequiredService<ILogger<ServiceProviderHelperTests>>();
+
+            resolvedFactory.CreateLogger("line-writer").LogInformation("line sink factory");
+            typedLogger.LogError(12, new InvalidOperationException("line sink boom"), "line sink typed");
+
+            lines.Should().HaveCount(2);
+            lines[0].Should().Contain("[I]");
+            lines[0].Should().Contain("line sink factory");
+            lines[1].Should().Contain("[E]");
+            lines[1].Should().Contain("12");
+            lines[1].Should().Contain("line sink typed");
+            lines[1].Should().Contain("line sink boom");
+
+            mocker.VerifyLogged(LogLevel.Information, "line sink factory");
+            mocker.VerifyLogged(LogLevel.Error, "line sink typed", new InvalidOperationException("line sink boom"), 12, TimesSpec.Once);
         }
 
         [Fact]
@@ -404,6 +479,91 @@ namespace FastMoq.Tests
             mocker.AddFunctionContextInstanceServices(provider, replace: true);
 
             existing.Instance.InstanceServices.Should().BeSameAs(provider);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        public void AddFunctionContextInvocationId_ShouldConfigureTrackedFunctionContext(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            mocker.AddFunctionContextInvocationId("inv-123", replace: true);
+
+            var functionContext = mocker.GetObject<FunctionContext>();
+
+            functionContext.Should().NotBeNull();
+            functionContext!.InvocationId.Should().Be("inv-123");
+        }
+
+        [Fact]
+        public void AddFunctionContextInvocationId_ShouldUpdateExistingTrackedFunctionContext()
+        {
+            using var providerScope = PushProviderScope("moq");
+            var mocker = new Mocker();
+            var existing = mocker.GetOrCreateMock<FunctionContext>();
+
+            mocker.AddFunctionContextInvocationId("inv-456", replace: true);
+
+            existing.Instance.InvocationId.Should().Be("inv-456");
+        }
+
+        [Theory]
+        [InlineData("moq", true)]
+        [InlineData("moq", false)]
+        [InlineData("nsubstitute", true)]
+        [InlineData("nsubstitute", false)]
+        public void CreateHttpRequestData_ShouldPreserveComposedFunctionContextHelpers(string providerName, bool registerInvocationIdFirst)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+            var expectedUri = new Uri("https://composed.fastmoq/");
+            var provider = mocker.CreateFunctionContextInstanceServices(services => services.AddSingleton(expectedUri));
+
+            if (registerInvocationIdFirst)
+            {
+                mocker.AddFunctionContextInvocationId("inv-composed", replace: true);
+                mocker.AddFunctionContextInstanceServices(provider, replace: true);
+            }
+            else
+            {
+                mocker.AddFunctionContextInstanceServices(provider, replace: true);
+                mocker.AddFunctionContextInvocationId("inv-composed", replace: true);
+            }
+
+            var request = mocker.CreateHttpRequestData();
+
+            request.FunctionContext.InvocationId.Should().Be("inv-composed");
+            request.FunctionContext.InstanceServices.Should().BeSameAs(provider);
+            request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        public void AddFunctionContextInvocationId_OnTrackedMock_ShouldConfigureOnlyTheFunctionContextMock(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+            var context = mocker.GetOrCreateMock<FunctionContext>();
+
+            context.AddFunctionContextInvocationId("inv-789");
+
+            context.Instance.InvocationId.Should().Be("inv-789");
+        }
+
+        [Fact]
+        public void CreateHttpRequestData_ShouldReuseConfiguredFunctionContextInvocationId()
+        {
+            using var providerScope = PushProviderScope("moq");
+            var mocker = new Mocker();
+
+            mocker.AddFunctionContextInvocationId("inv-request", replace: true);
+
+            var request = mocker.CreateHttpRequestData();
+
+            request.FunctionContext.InvocationId.Should().Be("inv-request");
         }
 
         [Theory]
@@ -564,6 +724,44 @@ namespace FastMoq.Tests
             request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
         }
 
+        [Fact]
+        public void CreateHttpRequestData_ShouldConfigureKnownTypeFunctionContextInstanceServices()
+        {
+            var mocker = new Mocker();
+            var expectedUri = new Uri("https://known-context.fastmoq/");
+            var provider = mocker.CreateTypedServiceProvider(services => services.AddSingleton(expectedUri));
+            var functionContext = new TestFunctionContext();
+
+            mocker.AddServiceProvider(provider, replace: true);
+            mocker.AddKnownType<FunctionContext>(
+                directInstanceFactory: (_, _) => functionContext,
+                replace: true);
+
+            var request = mocker.CreateHttpRequestData();
+
+            request.FunctionContext.Should().BeSameAs(functionContext);
+            request.FunctionContext.InstanceServices.Should().BeSameAs(provider);
+            request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
+        }
+
+        [Fact]
+        public void CreateHttpRequestData_ShouldConfigureTypeRegisteredFunctionContextInstanceServices()
+        {
+            var mocker = new Mocker();
+            var expectedUri = new Uri("https://type-context.fastmoq/");
+            var provider = mocker.CreateTypedServiceProvider(services => services.AddSingleton(expectedUri));
+            var functionContext = new TestFunctionContext();
+
+            mocker.AddServiceProvider(provider, replace: true);
+            mocker.AddType<FunctionContext>(functionContext, replace: true);
+
+            var request = mocker.CreateHttpRequestData();
+
+            request.FunctionContext.Should().BeSameAs(functionContext);
+            request.FunctionContext.InstanceServices.Should().BeSameAs(provider);
+            request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
+        }
+
         private static IDisposable PushProviderScope(string providerName)
         {
             EnsureProviderRegistered(providerName);
@@ -603,6 +801,98 @@ namespace FastMoq.Tests
             public int Count { get; set; }
 
             public string? Name { get; set; }
+        }
+
+        private sealed class TestFunctionContext : FunctionContext
+        {
+            private IServiceProvider? _instanceServices;
+
+            public override string InvocationId { get; } = Guid.NewGuid().ToString("N");
+
+            public override string FunctionId { get; } = "test-function";
+
+            public override TraceContext TraceContext { get; } = new TestTraceContext();
+
+            public override BindingContext BindingContext { get; } = new TestBindingContext();
+
+            public override RetryContext RetryContext { get; } = new TestRetryContext();
+
+            public override IServiceProvider InstanceServices
+            {
+                get => _instanceServices!;
+                set => _instanceServices = value;
+            }
+
+            public override FunctionDefinition FunctionDefinition { get; } = new TestFunctionDefinition();
+
+            public override IDictionary<object, object> Items { get; set; } = new Dictionary<object, object>();
+
+            public override IInvocationFeatures Features { get; } = new TestInvocationFeatures();
+
+            public override CancellationToken CancellationToken { get; } = CancellationToken.None;
+        }
+
+        private sealed class TestTraceContext : TraceContext
+        {
+            public override string TraceParent { get; } = string.Empty;
+
+            public override string TraceState { get; } = string.Empty;
+        }
+
+        private sealed class TestBindingContext : BindingContext
+        {
+            public override IReadOnlyDictionary<string, object?> BindingData { get; } = new Dictionary<string, object?>();
+        }
+
+        private sealed class TestRetryContext : RetryContext
+        {
+            public override int RetryCount { get; } = 0;
+
+            public override int MaxRetryCount { get; } = 0;
+        }
+
+        private sealed class TestFunctionDefinition : FunctionDefinition
+        {
+            public override ImmutableArray<FunctionParameter> Parameters { get; } = ImmutableArray<FunctionParameter>.Empty;
+
+            public override string PathToAssembly { get; } = string.Empty;
+
+            public override string EntryPoint { get; } = string.Empty;
+
+            public override string Id { get; } = "test-definition";
+
+            public override string Name { get; } = "TestFunction";
+
+            public override IImmutableDictionary<string, BindingMetadata> InputBindings { get; } = ImmutableDictionary<string, BindingMetadata>.Empty;
+
+            public override IImmutableDictionary<string, BindingMetadata> OutputBindings { get; } = ImmutableDictionary<string, BindingMetadata>.Empty;
+        }
+
+        private sealed class TestInvocationFeatures : IInvocationFeatures
+        {
+            private readonly Dictionary<Type, object> _features = new Dictionary<Type, object>();
+
+            public T Get<T>()
+            {
+                return _features.TryGetValue(typeof(T), out var feature)
+                    ? (T) feature!
+                    : default!;
+            }
+
+            public void Set<T>(T instance)
+            {
+                _features[typeof(T)] = instance!;
+            }
+
+            public IEnumerator<KeyValuePair<Type, object>> GetEnumerator()
+            {
+                return _features.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
 
         private sealed class ScopedProbe

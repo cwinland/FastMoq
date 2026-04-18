@@ -145,7 +145,7 @@ action.EnsureNullCheckThrown(parameterName, constructorName, output.WriteLine);
 
 Why this matters:
 
-- the `FastMoq.Core` surface for this path is now framework-neutral
+- this FastMoq path is now framework-neutral
 - the helper migration is usually one local signature fix rather than a rewrite of every leaf test
 - the same shape works with xUnit, NUnit, MSTest, or an in-memory list collector because FastMoq only needs `Action<string>`
 
@@ -182,12 +182,24 @@ Mocks.AddServiceProvider(services =>
 });
 ```
 
-Keep any test-framework-specific output adapter local to the test project. If the suite wants logger output mirrored somewhere special, plug that provider into `CreateLoggerFactory(...)` through the logging-builder callback rather than adding a framework dependency back into `FastMoq.Core`.
+If the suite wants logger output mirrored to a line writer or other sink after `Mocker` already exists, use the sink-aware overloads instead of preserving a private logger wrapper:
+
+```csharp
+Mocks.AddLoggerFactory(output.WriteLine, replace: true);
+
+var loggerFactory = Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) =>
+{
+    output.WriteLine($"[{logLevel}] {message}");
+});
+```
+
+Keep any test-framework-specific output adapter local to the test project. The adapter should stop at `Action<string>` or the raw logging callback overload rather than pushing a framework dependency through shared FastMoq helpers. If the suite truly needs extra providers, continue to plug them into `CreateLoggerFactory(...)` through the logging-builder callback.
 
 Analyzer note:
 
 - `FMOQ0003` prefers `VerifyLogged(...)` over legacy `VerifyLogger(...)` when the assertion can stay provider-safe.
 - `FMOQ0019` prefers `SetupOptions(...)` over repeated manual `IOptions<T>` setup.
+- `FMOQ0030` prefers `AddLoggerFactory(...)` over direct `AddType<ILoggerFactory>(new ...output-helper...)`, `AddType<ILogger>(new ...output-helper...)`, and `AddType<ILogger<T>>(new ...output-helper...)` registrations when the logger registration is just mirroring logs into an xUnit-style output helper. The diagnostic is advisory only because repo-local logger wrappers can carry extra formatting, filtering, or scope behavior that FastMoq cannot prove is safe to rewrite automatically.
 
 ## Web test helpers
 

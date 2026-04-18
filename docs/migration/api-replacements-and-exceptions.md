@@ -233,9 +233,9 @@ action.EnsureNullCheckThrown(parameterName, constructorName);
 
 Why:
 
-- `FastMoq.Core` no longer carries a test-framework-specific output-helper overload for this path.
-- The supported replacement is the framework-neutral `Action<string>` callback overload that already exists in core.
-- Test-framework adapters should stay in the test project or local helper layer rather than in the production `FastMoq.Core` surface.
+- FastMoq no longer carries a test-framework-specific output-helper overload for this path.
+- The supported replacement is the framework-neutral `Action<string>` callback overload.
+- Test-framework adapters should stay in the test project or local helper layer rather than in the shared FastMoq helper surface.
 
 Practical migration rule:
 
@@ -277,7 +277,7 @@ Breaking-change note:
 - `Strict` no longer implies the entire old strict profile by itself
 - `UseStrictPreset()` is now the clearer replacement when the broader strict behavior profile is intended
 - `Strict` still exists to stamp compatibility defaults onto the current policy surface, so this is a narrowing rather than a full removal of old semantics
-- strict `IFileSystem` no longer guarantees a raw or empty mock in the current repo
+- strict `IFileSystem` no longer guarantees a raw or empty mock in the current v4 release line
 - tracked `IFileSystem` mocks may still expose built-in members such as `File`, `Directory`, and `Path`
 - if a test carried forward from previous FastMoq versions relied on null members, configure them explicitly on `GetMock<IFileSystem>()`
 - this compatibility note is specific to `IFileSystem`; it is not a blanket statement that all built-in types ignore strict-mode behavior
@@ -453,7 +453,7 @@ Why `FMOQ0018` is warning-only:
 
 In `3.0.0`, core directly carried the EF packages and the Moq-based `DbContextMock<TContext>` implementation.
 
-Current repository direction:
+Current v4 package direction:
 
 - `GetMockDbContext<TContext>()` still lives in the `FastMoq` namespace for the main call site.
 - `FastMoq.Core` is being kept lighter and no longer owns the EF package references.
@@ -466,7 +466,7 @@ Practical guidance:
 - use `GetDbContextHandle<TContext>(...)` when you need to choose explicitly between mocked sets and a real in-memory EF context
 - once `GetMockDbContext<TContext>()` or `GetDbContextHandle<TContext>(...)` has tracked the DbContext in mocked-sets mode, `GetOrCreateMock<TContext>()` and `GetMockModel<TContext>()` return that same tracked context through the provider-first APIs
 
-Current repo behavior now makes the mode split explicit:
+The current v4 package line makes the mode split explicit:
 
 ```csharp
 var handle = mocker.GetDbContextHandle<ApplicationDbContext>(new DbContextHandleOptions<ApplicationDbContext>

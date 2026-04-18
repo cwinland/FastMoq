@@ -88,6 +88,8 @@ Intentional v4 breaking changes, with migration notes for changed behavior.
 
 Practical guidance for moving from the `3.0.0` public release toward the current v4 provider-first patterns.
 
+- Complete analyzer catalog and package-aware migration guidance
+
 ## 🎯 Quick Navigation
 
 ### By Experience Level
@@ -109,7 +111,7 @@ Practical guidance for moving from the `3.0.0` public release toward the current
 | **Background Jobs** | [Background Services](./cookbook/README.md#background-services-testing) | [Executable Testing Examples](./samples/testing-examples.md) |
 | **Blazor Apps** | [bUnit and Blazor test migration](./migration/bunit-and-blazor-testing.md) | [Executable Testing Examples](./samples/testing-examples.md) |
 
-Package note: `FastMoq` is the aggregate package. Provider contracts live in `FastMoq.Abstractions`, `FastMoq.Core` stays lighter, shared Azure SDK helpers live in the `FastMoq.Azure.*` namespaces, EF-specific helpers live in `FastMoq.Database`, Azure Functions worker and HTTP-trigger helpers live in `FastMoq.AzureFunctions.Extensions`, provider-specific adapters live in `FastMoq.Provider.*`, web helpers live in `FastMoq.Web.Extensions`, and analyzer assets ship with the aggregate package by default while the primary runtime calls stay in the `FastMoq` or `FastMoq.Extensions` namespaces.
+Package note: `FastMoq` is the aggregate package. Provider contracts for custom providers and advanced extensions live in `FastMoq.Abstractions`, `FastMoq.Core` keeps the provider-neutral runtime, shared Azure SDK helpers live in the `FastMoq.Azure.*` namespaces, EF-specific helpers live in `FastMoq.Database`, Azure Functions worker and HTTP-trigger helpers live in `FastMoq.AzureFunctions.Extensions`, provider-specific adapters live in `FastMoq.Provider.*`, web helpers live in `FastMoq.Web.Extensions`, and analyzer assets ship with both `FastMoq` and `FastMoq.Core` by default while the primary runtime calls stay in the `FastMoq` or `FastMoq.Extensions` namespaces.
 
 Web helper note: if your test project references the aggregate `FastMoq` package, the web helpers are already included. If your test project references `FastMoq.Core` directly, add `FastMoq.Web` before using helpers such as `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, or `AddHttpContextAccessor(...)`.
 

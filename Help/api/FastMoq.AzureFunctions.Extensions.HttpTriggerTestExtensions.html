@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class HttpTriggerTestExtensions | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class HttpTriggerTestExtensions | FastMoq ">
+    
+    <meta name="description" content="Provides Azure Functions HTTP-trigger helpers for constructing request and response data in tests.">
+      <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+      <link rel="shortcut icon" href="../favicon.svg">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <link rel="stylesheet" href="../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions">
+
+
+
+  <h1 id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions" class="text-break">Class HttpTriggerTestExtensions</h1>
+  <div class="markdown level0 summary"><p>Provides Azure Functions HTTP-trigger helpers for constructing request and response data in tests.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">HttpTriggerTestExtensions</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a>.<a class="xref" href="FastMoq.AzureFunctions.html">AzureFunctions</a>.<a class="xref" href="FastMoq.AzureFunctions.Extensions.html">Extensions</a></h6>
+  <h6><strong>Assembly</strong>: FastMoq.AzureFunctions.dll</h6>
+  <h5 id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class HttpTriggerTestExtensions</code></pre>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <a id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpRequestData_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpRequestData_FastMoq_Mocker_System_Action_FastMoq_AzureFunctions_Http_HttpRequestDataBuilder__" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})">CreateHttpRequestData(Mocker, Action&lt;HttpRequestDataBuilder&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Creates a concrete <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a> for the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpRequestData CreateHttpRequestData(this Mocker mocker, Action&lt;HttpRequestDataBuilder&gt;? configureRequest = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a>&gt;</td>
+        <td><span class="parametername">configureRequest</span></td>
+        <td><p>Optional request-builder configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a></td>
+        <td><p>A concrete <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a> suitable for Azure Functions trigger tests.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpRequestData_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpRequestData_Microsoft_Azure_Functions_Worker_FunctionContext_System_Action_FastMoq_AzureFunctions_Http_HttpRequestDataBuilder__" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})">CreateHttpRequestData(FunctionContext, Action&lt;HttpRequestDataBuilder&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Creates a concrete <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a> for the supplied <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpRequestData CreateHttpRequestData(this FunctionContext functionContext, Action&lt;HttpRequestDataBuilder&gt;? configureRequest = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a></td>
+        <td><span class="parametername">functionContext</span></td>
+        <td><p>The function context to associate with the request.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html">HttpRequestDataBuilder</a>&gt;</td>
+        <td><span class="parametername">configureRequest</span></td>
+        <td><p>Optional request-builder configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a></td>
+        <td><p>A concrete <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a> suitable for Azure Functions trigger tests.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpResponseData_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpResponseData_FastMoq_Mocker_System_Action_FastMoq_AzureFunctions_Http_HttpResponseDataBuilder__" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})">CreateHttpResponseData(Mocker, Action&lt;HttpResponseDataBuilder&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Creates a concrete <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httpresponsedata">HttpResponseData</a> for the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpResponseData CreateHttpResponseData(this Mocker mocker, Action&lt;HttpResponseDataBuilder&gt;? configureResponse = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html">HttpResponseDataBuilder</a>&gt;</td>
+        <td><span class="parametername">configureResponse</span></td>
+        <td><p>Optional response-builder configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httpresponsedata">HttpResponseData</a></td>
+        <td><p>A concrete <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httpresponsedata">HttpResponseData</a> suitable for Azure Functions trigger tests.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpResponseData_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpResponseData_Microsoft_Azure_Functions_Worker_FunctionContext_System_Action_FastMoq_AzureFunctions_Http_HttpResponseDataBuilder__" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})">CreateHttpResponseData(FunctionContext, Action&lt;HttpResponseDataBuilder&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Creates a concrete <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httpresponsedata">HttpResponseData</a> for the supplied <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static HttpResponseData CreateHttpResponseData(this FunctionContext functionContext, Action&lt;HttpResponseDataBuilder&gt;? configureResponse = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a></td>
+        <td><span class="parametername">functionContext</span></td>
+        <td><p>The function context to associate with the response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html">HttpResponseDataBuilder</a>&gt;</td>
+        <td><span class="parametername">configureResponse</span></td>
+        <td><p>Optional response-builder configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httpresponsedata">HttpResponseData</a></td>
+        <td><p>A concrete <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httpresponsedata">HttpResponseData</a> suitable for Azure Functions trigger tests.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsJsonAsync_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsJsonAsync__1_Microsoft_Azure_Functions_Worker_Http_HttpRequestData_System_Text_Json_JsonSerializerOptions_System_Threading_CancellationToken_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)">ReadBodyAsJsonAsync&lt;TValue&gt;(HttpRequestData, JsonSerializerOptions?, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Reads the current request body as JSON and rewinds the stream when possible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;TValue?&gt; ReadBodyAsJsonAsync&lt;TValue&gt;(this HttpRequestData request, JsonSerializerOptions? jsonSerializerOptions = null, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a></td>
+        <td><span class="parametername">request</span></td>
+        <td><p>The current request.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions">JsonSerializerOptions</a></td>
+        <td><span class="parametername">jsonSerializerOptions</span></td>
+        <td><p>Optional serializer options.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TValue&gt;</td>
+        <td><p>The deserialized body value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TValue</span></td>
+        <td><p>The expected JSON type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsJsonAsync_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsJsonAsync__1_Microsoft_Azure_Functions_Worker_Http_HttpResponseData_System_Text_Json_JsonSerializerOptions_System_Threading_CancellationToken_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)">ReadBodyAsJsonAsync&lt;TValue&gt;(HttpResponseData, JsonSerializerOptions?, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Reads the current response body as JSON and rewinds the stream when possible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;TValue?&gt; ReadBodyAsJsonAsync&lt;TValue&gt;(this HttpResponseData response, JsonSerializerOptions? jsonSerializerOptions = null, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httpresponsedata">HttpResponseData</a></td>
+        <td><span class="parametername">response</span></td>
+        <td><p>The current response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.json.jsonserializeroptions">JsonSerializerOptions</a></td>
+        <td><span class="parametername">jsonSerializerOptions</span></td>
+        <td><p>Optional serializer options.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TValue&gt;</td>
+        <td><p>The deserialized body value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TValue</span></td>
+        <td><p>The expected JSON type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsStringAsync_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsStringAsync_Microsoft_Azure_Functions_Worker_Http_HttpRequestData_System_Text_Encoding_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Encoding)">ReadBodyAsStringAsync(HttpRequestData, Encoding?)</h4>
+  <div class="markdown level1 summary"><p>Reads the current request body as a string and rewinds the stream when possible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;string&gt; ReadBodyAsStringAsync(this HttpRequestData request, Encoding? encoding = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httprequestdata">HttpRequestData</a></td>
+        <td><span class="parametername">request</span></td>
+        <td><p>The current request.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></td>
+        <td><span class="parametername">encoding</span></td>
+        <td><p>The text encoding. Defaults to UTF-8.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><p>The body text.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsStringAsync_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsStringAsync_Microsoft_Azure_Functions_Worker_Http_HttpResponseData_System_Text_Encoding_" data-uid="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Encoding)">ReadBodyAsStringAsync(HttpResponseData, Encoding?)</h4>
+  <div class="markdown level1 summary"><p>Reads the current response body as a string and rewinds the stream when possible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;string&gt; ReadBodyAsStringAsync(this HttpResponseData response, Encoding? encoding = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.http.httpresponsedata">HttpResponseData</a></td>
+        <td><span class="parametername">response</span></td>
+        <td><p>The current response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></td>
+        <td><span class="parametername">encoding</span></td>
+        <td><p>The text encoding. Defaults to UTF-8.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><p>The body text.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

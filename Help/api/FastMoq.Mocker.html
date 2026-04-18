@@ -89,6 +89,11 @@
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><span class="xref">Mocker</span></div>
   </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -117,7 +122,7 @@
   <h6><strong>Assembly</strong>: FastMoq.Core.dll</h6>
   <h5 id="FastMoq_Mocker_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Mocker</code></pre>
+    <pre><code class="lang-csharp hljs">public class Mocker : IDisposable, IAsyncDisposable</code></pre>
   </div>
   <h5 id="FastMoq_Mocker_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><h3>Resolution Hierarchy (v4)</h3>
@@ -2436,6 +2441,203 @@ resolvedFileSystem.Should().BeSameAs(fileSystem);</p></code></pre>
       </tr>
     </tbody>
   </table>
+  <a id="FastMoq_Mocker_CreateStandaloneFastMock_" data-uid="FastMoq.Mocker.CreateStandaloneFastMock*"></a>
+  <h4 id="FastMoq_Mocker_CreateStandaloneFastMock_System_Type_FastMoq_Providers_MockCreationOptions_" data-uid="FastMoq.Mocker.CreateStandaloneFastMock(System.Type,FastMoq.Providers.MockCreationOptions)">CreateStandaloneFastMock(Type, MockCreationOptions?)</h4>
+  <div class="markdown level1 summary"><p>Creates a provider-first mock handle for the supplied runtime type without registering it into this <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IFastMock CreateStandaloneFastMock(Type type, MockCreationOptions? options = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.MockCreationOptions.html">MockCreationOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Mocker_CreateStandaloneFastMock_System_Type_FastMoq_Providers_MockCreationOptions__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Use this when the test needs a provider-selected standalone mock handle but does not want the mock tracked by the parent <a class="xref" href="FastMoq.Mocker.html">Mocker</a>.</p>
+</div>
+  <a id="FastMoq_Mocker_CreateStandaloneFastMock_" data-uid="FastMoq.Mocker.CreateStandaloneFastMock*"></a>
+  <h4 id="FastMoq_Mocker_CreateStandaloneFastMock__1_FastMoq_Providers_MockCreationOptions_" data-uid="FastMoq.Mocker.CreateStandaloneFastMock``1(FastMoq.Providers.MockCreationOptions)">CreateStandaloneFastMock&lt;T&gt;(MockCreationOptions?)</h4>
+  <div class="markdown level1 summary"><p>Creates a provider-first mock handle without registering it into this <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IFastMock&lt;T&gt; CreateStandaloneFastMock&lt;T&gt;(MockCreationOptions? options = null) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.MockCreationOptions.html">MockCreationOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Mocker_CreateStandaloneFastMock__1_FastMoq_Providers_MockCreationOptions__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Use this when the test needs an additional independent mock of the same service type, or when the mock will be wired manually instead of tracked through <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;(MockRequestOptions?)</a>.
+Provider selection still flows through <a class="xref" href="FastMoq.Providers.MockingProviderRegistry.html#FastMoq_Providers_MockingProviderRegistry_Default">Default</a>, but the returned handle is not added to the parent tracked mock collection.</p>
+</div>
+  <a id="FastMoq_Mocker_Dispose_" data-uid="FastMoq.Mocker.Dispose*"></a>
+  <h4 id="FastMoq_Mocker_Dispose" data-uid="FastMoq.Mocker.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Releases helper-owned disposable registrations created by this <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <a id="FastMoq_Mocker_Dispose_" data-uid="FastMoq.Mocker.Dispose*"></a>
+  <h4 id="FastMoq_Mocker_Dispose_System_Boolean_" data-uid="FastMoq.Mocker.Dispose(System.Boolean)">Dispose(bool)</h4>
+  <div class="markdown level1 summary"><p>Releases managed resources owned by this <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.
+Derived types overriding this method should call the base implementation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">disposing</span></td>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> when called from <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_Dispose">Dispose()</a>; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker_DisposeAsync_" data-uid="FastMoq.Mocker.DisposeAsync*"></a>
+  <h4 id="FastMoq_Mocker_DisposeAsync" data-uid="FastMoq.Mocker.DisposeAsync">DisposeAsync()</h4>
+  <div class="markdown level1 summary"><p>Asynchronously releases helper-owned disposable registrations created by this <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask DisposeAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td><p>A task that completes when owned registrations are disposed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Mocker_DisposeAsyncCore_" data-uid="FastMoq.Mocker.DisposeAsyncCore*"></a>
+  <h4 id="FastMoq_Mocker_DisposeAsyncCore" data-uid="FastMoq.Mocker.DisposeAsyncCore">DisposeAsyncCore()</h4>
+  <div class="markdown level1 summary"><p>Asynchronously releases resources owned by this <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.
+Derived types overriding this method should call the base implementation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual ValueTask DisposeAsyncCore()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></td>
+        <td><p>A task that completes when asynchronous cleanup has finished.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <a id="FastMoq_Mocker_GetArgData_" data-uid="FastMoq.Mocker.GetArgData*"></a>
   <h4 id="FastMoq_Mocker_GetArgData__1" data-uid="FastMoq.Mocker.GetArgData``1">GetArgData&lt;T&gt;()</h4>
   <div class="markdown level1 summary"><p>Builds constructor argument data for <code class="typeparamref">T</code> using the mocker's current optional-parameter policy.</p>
@@ -3576,6 +3778,118 @@ Use the returned <a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMo
       </tr>
     </tbody>
   </table>
+  <a id="FastMoq_Mocker_GetOrCreateMockWithConstructorArgs_" data-uid="FastMoq.Mocker.GetOrCreateMockWithConstructorArgs*"></a>
+  <h4 id="FastMoq_Mocker_GetOrCreateMockWithConstructorArgs_System_Type_System_Object___" data-uid="FastMoq.Mocker.GetOrCreateMockWithConstructorArgs(System.Type,System.Object[])">GetOrCreateMockWithConstructorArgs(Type, params object?[])</h4>
+  <div class="markdown level1 summary"><p>Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist,
+using the supplied constructor arguments for concrete mock creation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IFastMock GetOrCreateMockWithConstructorArgs(Type type, params object?[] constructorArgs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
+        <td><span class="parametername">constructorArgs</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Mocker_GetOrCreateMockWithConstructorArgs_System_Type_System_Object____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is a convenience wrapper for <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock_System_Type_FastMoq_MockRequestOptions_">GetOrCreateMock(Type, MockRequestOptions?)</a> when the request only needs constructor arguments.
+Use <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock_System_Type_FastMoq_MockRequestOptions_">GetOrCreateMock(Type, MockRequestOptions?)</a> when also setting a service key or non-public constructor behavior.</p>
+</div>
+  <a id="FastMoq_Mocker_GetOrCreateMockWithConstructorArgs_" data-uid="FastMoq.Mocker.GetOrCreateMockWithConstructorArgs*"></a>
+  <h4 id="FastMoq_Mocker_GetOrCreateMockWithConstructorArgs__1_System_Object___" data-uid="FastMoq.Mocker.GetOrCreateMockWithConstructorArgs``1(System.Object[])">GetOrCreateMockWithConstructorArgs&lt;T&gt;(params object?[])</h4>
+  <div class="markdown level1 summary"><p>Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist,
+using the supplied constructor arguments for concrete mock creation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IFastMock&lt;T&gt; GetOrCreateMockWithConstructorArgs&lt;T&gt;(params object?[] constructorArgs) where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>[]</td>
+        <td><span class="parametername">constructorArgs</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock-1.html">IFastMock</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Mocker_GetOrCreateMockWithConstructorArgs__1_System_Object____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is a convenience wrapper for <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;(MockRequestOptions?)</a> when the request only needs constructor arguments.
+Use <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;(MockRequestOptions?)</a> when also setting a service key or non-public constructor behavior.</p>
+</div>
   <a id="FastMoq_Mocker_GetOrCreateMock_" data-uid="FastMoq.Mocker.GetOrCreateMock*"></a>
   <h4 id="FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_" data-uid="FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)">GetOrCreateMock&lt;T&gt;(MockRequestOptions?)</h4>
   <div class="markdown level1 summary"><p>Gets an existing tracked provider-backed mock or creates and tracks one when it does not yet exist.</p>
@@ -4720,7 +5034,32 @@ This is broader than <span class="xref">FastMoq.Mocker.Strict</span>, which is r
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_System_Boolean_">FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, Action&lt;IServiceCollection&gt;?, bool, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Mocker_System_IServiceProvider_System_Boolean_">FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, IServiceProvider, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Mocker_System_String_System_Boolean_">FunctionContextTestExtensions.AddFunctionContextInvocationId(Mocker, string, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_CreateFunctionContextInstanceServices_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_">FunctionContextTestExtensions.CreateFunctionContextInstanceServices(Mocker, Action&lt;IServiceCollection&gt;?, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpRequestData_FastMoq_Mocker_System_Action_FastMoq_AzureFunctions_Http_HttpRequestDataBuilder__">HttpTriggerTestExtensions.CreateHttpRequestData(Mocker, Action&lt;HttpRequestDataBuilder&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpResponseData_FastMoq_Mocker_System_Action_FastMoq_AzureFunctions_Http_HttpResponseDataBuilder__">HttpTriggerTestExtensions.CreateHttpResponseData(Mocker, Action&lt;HttpResponseDataBuilder&gt;?)</a>
+  </div>
   <div>
       <a class="xref" href="FastMoq.DbContextMockerExtensions.html#FastMoq_DbContextMockerExtensions_GetDbContextHandle__1_FastMoq_Mocker_FastMoq_DbContextHandleOptions___0__">DbContextMockerExtensions.GetDbContextHandle&lt;TContext&gt;(Mocker, DbContextHandleOptions&lt;TContext&gt;?)</a>
   </div>
@@ -4729,6 +5068,27 @@ This is broader than <span class="xref">FastMoq.Mocker.Strict</span>, which is r
   </div>
   <div>
       <a class="xref" href="FastMoq.DbContextMockerExtensions.html#FastMoq_DbContextMockerExtensions_GetMockDbContext__1_FastMoq_Mocker_">DbContextMockerExtensions.GetMockDbContext&lt;TContext&gt;(Mocker)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_Microsoft_Extensions_Logging_ILoggerFactory_System_Boolean_">LoggingTestExtensions.AddLoggerFactory(Mocker, ILoggerFactory, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean_">LoggingTestExtensions.AddLoggerFactory(Mocker, Action&lt;ILoggingBuilder&gt;?, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean_">LoggingTestExtensions.AddLoggerFactory(Mocker, Action&lt;LogLevel, EventId, string, Exception?&gt;, Action&lt;ILoggingBuilder&gt;?, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_System_String__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean_">LoggingTestExtensions.AddLoggerFactory(Mocker, Action&lt;string&gt;, Action&lt;ILoggingBuilder&gt;?, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__">LoggingTestExtensions.CreateLoggerFactory(Mocker, Action&lt;ILoggingBuilder&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__">LoggingTestExtensions.CreateLoggerFactory(Mocker, Action&lt;LogLevel, EventId, string, Exception?&gt;, Action&lt;ILoggingBuilder&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_System_String__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__">LoggingTestExtensions.CreateLoggerFactory(Mocker, Action&lt;string&gt;, Action&lt;ILoggingBuilder&gt;?)</a>
   </div>
   <div>
       <a class="xref" href="FastMoq.Extensions.MockerBooleanExtensions.html#FastMoq_Extensions_MockerBooleanExtensions_Contains_FastMoq_Mocker_System_Type_">MockerBooleanExtensions.Contains(Mocker, Type)</a>
@@ -4788,13 +5148,46 @@ This is broader than <span class="xref">FastMoq.Mocker.Strict</span>, which is r
       <a class="xref" href="FastMoq.Extensions.ObjectExtensions.html#FastMoq_Extensions_ObjectExtensions_RaiseIfNull__1___0_System_String_System_String_System_Nullable_System_Int32__System_String_">ObjectExtensions.RaiseIfNull&lt;T&gt;(T?, string?, string?, int?, string?)</a>
   </div>
   <div>
-      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_">ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action&lt;IServiceCollection&gt;?, bool)</a>
+      <a class="xref" href="FastMoq.Extensions.OptionsTestExtensions.html#FastMoq_Extensions_OptionsTestExtensions_SetupOptions__1_FastMoq_Mocker_System_Boolean_">OptionsTestExtensions.SetupOptions&lt;T&gt;(Mocker, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.OptionsTestExtensions.html#FastMoq_Extensions_OptionsTestExtensions_SetupOptions__1_FastMoq_Mocker_System_Func___0__System_Boolean_">OptionsTestExtensions.SetupOptions&lt;T&gt;(Mocker, Func&lt;T&gt;, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.OptionsTestExtensions.html#FastMoq_Extensions_OptionsTestExtensions_SetupOptions__1_FastMoq_Mocker___0_System_Boolean_">OptionsTestExtensions.SetupOptions&lt;T&gt;(Mocker, T, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.PropertySetterCaptureExtensions.html#FastMoq_Extensions_PropertySetterCaptureExtensions_AddPropertySetterCapture__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0___1___FastMoq_PropertyValueCapture___1__System_Boolean_">PropertySetterCaptureExtensions.AddPropertySetterCapture&lt;TService, TValue&gt;(Mocker, Expression&lt;Func&lt;TService, TValue&gt;&gt;, PropertyValueCapture&lt;TValue&gt;, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.PropertySetterCaptureExtensions.html#FastMoq_Extensions_PropertySetterCaptureExtensions_AddPropertySetterCapture__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0___1___System_Boolean_">PropertySetterCaptureExtensions.AddPropertySetterCapture&lt;TService, TValue&gt;(Mocker, Expression&lt;Func&lt;TService, TValue&gt;&gt;, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.PropertyStateExtensions.html#FastMoq_Extensions_PropertyStateExtensions_AddPropertyState__1_FastMoq_Mocker_FastMoq_PropertyStateMode_System_Boolean_">PropertyStateExtensions.AddPropertyState&lt;TService&gt;(Mocker, PropertyStateMode, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.PropertyStateExtensions.html#FastMoq_Extensions_PropertyStateExtensions_AddPropertyState__1_FastMoq_Mocker_System_Boolean_">PropertyStateExtensions.AddPropertyState&lt;TService&gt;(Mocker, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_System_Boolean_">ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action&lt;IServiceCollection&gt;?, bool, bool)</a>
   </div>
   <div>
       <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_">ServiceProviderTestExtensions.AddServiceProvider(Mocker, IServiceProvider, bool)</a>
   </div>
   <div>
-      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__">ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action&lt;IServiceCollection&gt;?)</a>
+      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_FastMoq_Mocker_Microsoft_Extensions_DependencyInjection_IServiceScope_System_Boolean_">ServiceProviderTestExtensions.AddServiceScope(Mocker, IServiceScope, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_System_Boolean_">ServiceProviderTestExtensions.AddServiceScope(Mocker, Action&lt;IServiceCollection&gt;?, bool, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_FastMoq_Mocker_System_IServiceProvider_System_Boolean_">ServiceProviderTestExtensions.AddServiceScope(Mocker, IServiceProvider, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_">ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action&lt;IServiceCollection&gt;?, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceScope_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_">ServiceProviderTestExtensions.CreateTypedServiceScope(Mocker, Action&lt;IServiceCollection&gt;?, bool)</a>
   </div>
   <div>
       <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_GetAmbiguousConstructorImplementationException_FastMoq_Mocker_System_Type_">TestClassExtensions.GetAmbiguousConstructorImplementationException(Mocker, Type)</a>
@@ -4902,7 +5295,7 @@ This is broader than <span class="xref">FastMoq.Mocker.Strict</span>, which is r
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

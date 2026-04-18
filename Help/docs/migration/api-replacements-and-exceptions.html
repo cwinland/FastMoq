@@ -200,6 +200,42 @@ void AssertLogged(Mocker mocker, TimesSpec times)
 <li><code>VerifyLogger(...)</code> remains a Moq compatibility API.</li>
 <li>existing logger assertions carried forward from previous FastMoq versions can stay on <code>VerifyLogger(...)</code> if the assembly explicitly selects <code>moq</code>, but new or touched tests should prefer <code>VerifyLogged(...)</code>.</li>
 </ul>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0003</code> points shared helper cleanup and leaf test rewrites toward <code>VerifyLogged(...)</code>.</li>
+<li>if the same helper also registered loggers manually, prefer <code>AddLoggerFactory()</code> or <code>CreateLoggerFactory()</code> from the finalized helper surface instead of preserving a private logger wrapper.</li>
+</ul>
+<h3 id="ioptionst-setup-and-real-instances"><code>IOptions&lt;T&gt;</code> setup and real instances</h3>
+<p>Old patterns often looked like this:</p>
+<pre><code class="lang-csharp">Mocks.GetMock&lt;IOptions&lt;MyOptions&gt;&gt;()
+    .Setup(x =&gt; x.Value)
+    .Returns(new MyOptions { RetryCount = 3 });
+</code></pre>
+<p>or:</p>
+<pre><code class="lang-csharp">Mocks.AddType&lt;IOptions&lt;MyOptions&gt;&gt;(Options.Create(new MyOptions { RetryCount = 3 }), true);
+</code></pre>
+<p>Current guidance:</p>
+<pre><code class="lang-csharp">Mocks.SetupOptions(new MyOptions { RetryCount = 3 }, replace: true);
+</code></pre>
+<p>Or, when the test only needs a default instance:</p>
+<pre><code class="lang-csharp">Mocks.SetupOptions&lt;MyOptions&gt;();
+</code></pre>
+<p>Why:</p>
+<ul>
+<li><code>SetupOptions(...)</code> keeps the common <code>IOptions&lt;T&gt;</code> registration shape explicit without preserving Moq-only property setup boilerplate.</li>
+<li>It is provider-neutral and matches the migration intent directly: register a concrete options value for <code>IOptions&lt;T&gt;</code>.</li>
+<li>It keeps <code>AddType(...)</code> focused on non-options real instances such as <code>MemoryCache</code>, file systems, clocks, or fixed collaborators.</li>
+</ul>
+<p>Practical rule:</p>
+<ul>
+<li>use <code>SetupOptions(...)</code> when the dependency under test is <code>IOptions&lt;T&gt;</code></li>
+<li>use <code>AddType(instance)</code> when the dependency itself is a concrete runtime object or interface implementation rather than an options wrapper</li>
+<li>keep <code>GetMock&lt;IOptions&lt;T&gt;&gt;()</code> only when the test genuinely depends on mocking-library-specific behavior beyond returning a concrete <code>Value</code></li>
+</ul>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0019</code> points the common <code>GetMock&lt;IOptions&lt;T&gt;&gt;().Setup(x =&gt; x.Value)...</code> and <code>AddType&lt;IOptions&lt;T&gt;&gt;(Options.Create(...))</code> shapes toward <code>SetupOptions(...)</code>.</li>
+</ul>
 <h3 id="timesspec-shape-in-v4"><code>TimesSpec</code> shape in v4</h3>
 <p>Use <code>TimesSpec</code> with this mental model during migration:</p>
 <ul>
@@ -213,6 +249,28 @@ Mocks.Verify&lt;IEmailGateway&gt;(x =&gt; x.Send(&quot;finance@contoso.test&quot
 Mocks.VerifyLogged(LogLevel.Warning, &quot;retrying&quot;, TimesSpec.Exactly(2));
 </code></pre>
 <p>This is one of the easiest compile-fix churn points in migration work, so it is worth being explicit.</p>
+<h3 id="ensurenullcheckthrown-output-callbacks"><code>EnsureNullCheckThrown(...)</code> output callbacks</h3>
+<p>Old framework-coupled pattern:</p>
+<pre><code class="lang-csharp">action.EnsureNullCheckThrown(parameterName, constructorName, output);
+</code></pre>
+<p>Current guidance:</p>
+<pre><code class="lang-csharp">action.EnsureNullCheckThrown(parameterName, constructorName, output.WriteLine);
+</code></pre>
+<p>Or, when the test does not need diagnostic output at all:</p>
+<pre><code class="lang-csharp">action.EnsureNullCheckThrown(parameterName, constructorName);
+</code></pre>
+<p>Why:</p>
+<ul>
+<li>FastMoq no longer carries a test-framework-specific output-helper overload for this path.</li>
+<li>The supported replacement is the framework-neutral <code>Action&lt;string&gt;</code> callback overload.</li>
+<li>Test-framework adapters should stay in the test project or local helper layer rather than in the shared FastMoq helper surface.</li>
+</ul>
+<p>Practical migration rule:</p>
+<ul>
+<li>if the test already has an xUnit <code>ITestOutputHelper</code>, pass <code>output.WriteLine</code></li>
+<li>if the test uses another framework, pass that framework's equivalent line-writer delegate</li>
+<li>if the output was only diagnostic noise, drop the callback entirely and keep the constructor assertion helper</li>
+</ul>
 <h3 id="strict"><code>Strict</code></h3>
 <p>Old assumption:</p>
 <pre><code class="lang-csharp">Mocks.Strict = true;
@@ -236,7 +294,7 @@ Mocks.VerifyLogged(LogLevel.Warning, &quot;retrying&quot;, TimesSpec.Exactly(2))
 <li><code>Strict</code> no longer implies the entire old strict profile by itself</li>
 <li><code>UseStrictPreset()</code> is now the clearer replacement when the broader strict behavior profile is intended</li>
 <li><code>Strict</code> still exists to stamp compatibility defaults onto the current policy surface, so this is a narrowing rather than a full removal of old semantics</li>
-<li>strict <code>IFileSystem</code> no longer guarantees a raw or empty mock in the current repo</li>
+<li>strict <code>IFileSystem</code> no longer guarantees a raw or empty mock in the current v4 release line</li>
 <li>tracked <code>IFileSystem</code> mocks may still expose built-in members such as <code>File</code>, <code>Directory</code>, and <code>Path</code></li>
 <li>if a test carried forward from previous FastMoq versions relied on null members, configure them explicitly on <code>GetMock&lt;IFileSystem&gt;()</code></li>
 <li>this compatibility note is specific to <code>IFileSystem</code>; it is not a blanket statement that all built-in types ignore strict-mode behavior</li>
@@ -318,6 +376,7 @@ logger.VerifyLogger(LogLevel.Information, &quot;Processing started&quot;);
     return;
 }
 </code></pre>
+<h3 id="required-object-retrieval">Required object retrieval</h3>
 <p>After, when the old code only needed the resolved dependency instance:</p>
 <pre><code class="lang-csharp">var logger = Mocks.GetRequiredObject&lt;ILogger&lt;OrderService&gt;&gt;();
 </code></pre>
@@ -404,7 +463,7 @@ var cache = isolatedMocks.GetOrCreateMock&lt;ICache&gt;();
 </ul>
 <h3 id="dbcontext-package-boundary"><code>DbContext</code> package boundary</h3>
 <p>In <code>3.0.0</code>, core directly carried the EF packages and the Moq-based <code>DbContextMock&lt;TContext&gt;</code> implementation.</p>
-<p>Current repository direction:</p>
+<p>Current v4 package direction:</p>
 <ul>
 <li><code>GetMockDbContext&lt;TContext&gt;()</code> still lives in the <code>FastMoq</code> namespace for the main call site.</li>
 <li><code>FastMoq.Core</code> is being kept lighter and no longer owns the EF package references.</li>
@@ -415,9 +474,9 @@ var cache = isolatedMocks.GetOrCreateMock&lt;ICache&gt;();
 <li>if you install <code>FastMoq</code>, keep using <code>GetMockDbContext&lt;TContext&gt;()</code> as before</li>
 <li>if you install <code>FastMoq.Core</code> directly, also install <code>FastMoq.Database</code></li>
 <li>use <code>GetDbContextHandle&lt;TContext&gt;(...)</code> when you need to choose explicitly between mocked sets and a real in-memory EF context</li>
-<li>do not assume the mocked-sets helper is provider-neutral yet; today that path still uses the moved Moq-based implementation</li>
+<li>once <code>GetMockDbContext&lt;TContext&gt;()</code> or <code>GetDbContextHandle&lt;TContext&gt;(...)</code> has tracked the DbContext in mocked-sets mode, <code>GetOrCreateMock&lt;TContext&gt;()</code> and <code>GetMockModel&lt;TContext&gt;()</code> return that same tracked context through the provider-first APIs</li>
 </ul>
-<p>Current repo behavior now makes the mode split explicit:</p>
+<p>The current v4 package line makes the mode split explicit:</p>
 <pre><code class="lang-csharp">var handle = mocker.GetDbContextHandle&lt;ApplicationDbContext&gt;(new DbContextHandleOptions&lt;ApplicationDbContext&gt;
 {
     Mode = DbContextTestMode.RealInMemory,
@@ -473,6 +532,79 @@ For framework helpers like <code>IFileSystem</code>, <code>HttpClient</code>, <c
 <p>The default constructor-fallback policy is now also explicit at the <code>Mocker</code> level:</p>
 <pre><code class="lang-csharp">Mocks.Policy.DefaultFallbackToNonPublicConstructors = false;
 </code></pre>
+<h3 id="public-test-classes-and-internal-components">Public Test Classes And Internal Components</h3>
+<p>FastMoq now supports non-public component construction through the same flags-based model, but it does not change C# accessibility rules.</p>
+<p>If a public test class needs to validate an internal or protected component, keep the public test as a wrapper and move the <code>MockerTestBase&lt;TComponent&gt;</code> inheritance into an internal helper:</p>
+<pre><code class="lang-csharp">public class InternalOrderRulesTests
+{
+    [Fact]
+    public void PublicTestClass_CanExercise_InternalService()
+    {
+        using var harness = new InternalOrderRulesHarness();
+
+        harness.Sut.IsPriority(&quot;P1&quot;).Should().BeTrue();
+    }
+}
+
+internal sealed class InternalOrderRulesHarness : MockerTestBase&lt;InternalOrderRules&gt;
+{
+    protected override Action&lt;MockerPolicyOptions&gt;? ConfigureMockerPolicy =&gt; policy =&gt;
+    {
+        policy.DefaultFallbackToNonPublicConstructors = false;
+    };
+
+    protected override InstanceCreationFlags ComponentCreationFlags
+        =&gt; InstanceCreationFlags.AllowNonPublicConstructorFallback;
+
+    internal InternalOrderRules Sut =&gt; Component;
+}
+</code></pre>
+<p>Use <code>InternalsVisibleTo</code> when the SUT lives in another assembly.
+The supported runtime behavior is: FastMoq can create the non-public component once the test can legally reference it.
+The unsupported assumption is: FastMoq can make <code>public class MyTests : MockerTestBase&lt;InternalType&gt;</code> compile. That remains a compiler restriction, not a FastMoq runtime limitation.</p>
+<h3 id="explicit-constructor-selection-in-tests">Explicit Constructor Selection In Tests</h3>
+<p>When tests need a specific constructor, prefer selecting it from the test base instead of annotating production code for test-only reasons.</p>
+<p>For <code>MockerTestBase&lt;TComponent&gt;</code>, the primary hook is <code>ComponentConstructorParameterTypes</code>:</p>
+<pre><code class="lang-csharp">internal sealed class OrderRulesTestBase : MockerTestBase&lt;OrderRules&gt;
+{
+    protected override Type?[]? ComponentConstructorParameterTypes
+        =&gt; new Type?[] { typeof(IFileSystem), typeof(string) };
+}
+</code></pre>
+<p>If constructor selection also needs custom creation logic, use <code>CreateComponentAction</code>:</p>
+<pre><code class="lang-csharp">internal sealed class OrderRulesTestBase : MockerTestBase&lt;OrderRules&gt;
+{
+    protected override Func&lt;Mocker, OrderRules&gt; CreateComponentAction =&gt; mocker =&gt;
+        mocker.CreateInstanceByType&lt;OrderRules&gt;(
+            InstanceCreationFlags.AllowNonPublicConstructorFallback,
+            typeof(IFileSystem),
+            typeof(string))!;
+}
+</code></pre>
+<p>The older <code>MockerTestBase(params Type[] createArgumentTypes)</code> constructor remains available for compatibility, but the property-based hook is the recommended path for new test bases.</p>
+<h3 id="constructor-ambiguity-overrides">Constructor Ambiguity Overrides</h3>
+<p>FastMoq keeps the existing ambiguity-throw behavior by default.
+That means a suite that already expected an <code>AmbiguousImplementationException</code> continues to behave the same way until you opt into a different fallback rule.</p>
+<p>Current additive options are:</p>
+<pre><code class="lang-csharp">Mocks.Policy.DefaultConstructorAmbiguityBehavior = ConstructorAmbiguityBehavior.PreferParameterlessConstructor;
+
+var component = Mocks.CreateInstance&lt;MyComponent&gt;(
+    InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity);
+</code></pre>
+<p>If production code itself should advertise a preferred default constructor for all callers, mark it explicitly:</p>
+<pre><code class="lang-csharp">internal sealed class OrderRules
+{
+    [PreferredConstructor]
+    public OrderRules()
+    {
+    }
+
+    public OrderRules(IFileSystem fileSystem)
+    {
+    }
+}
+</code></pre>
+<p>Constructor-selection diagnostics for these paths are captured in <code>Mocks.LogEntries</code>.</p>
 <h3 id="obsolete-mockoptional">Obsolete <code>MockOptional</code></h3>
 <p>Old pattern:</p>
 <pre><code class="lang-csharp">Mocks.MockOptional = true;
@@ -553,7 +685,13 @@ var moqMock = fastMock.AsMoq();
 <p>Some migrated tests should intentionally stay on raw Moq. That is normal in v4.</p>
 <p>For practical fallback patterns when you do not want to stay on Moq, see <a href="../getting-started/provider-capabilities.html#alternatives-when-a-moq-feature-is-unavailable">Provider Capabilities: Alternatives when a Moq feature is unavailable</a>.</p>
 <h3 id="imemorycache-and-icacheentry"><code>IMemoryCache</code> and <code>ICacheEntry</code></h3>
-<p>Property-setter and cache-entry tests are still a common Moq-only pocket because they often rely on <code>SetupSet(...)</code> or <code>SetupAllProperties()</code>.</p>
+<p>Property-setter and cache-entry tests are still a common Moq-only pocket because they often rely on <code>SetupSet(...)</code> or <code>SetupAllProperties()</code>. For ordinary interface collaborators, FastMoq now has first-party answers in <code>AddPropertySetterCapture&lt;TService, TValue&gt;(...)</code> and <code>AddPropertyState&lt;TService&gt;(...)</code>, but <code>ICacheEntry</code> tests often still need the broader Moq shape.</p>
+<p>Important migration rule:</p>
+<ul>
+<li>do not replace a tracked cache-entry helper with <code>AddType&lt;ICacheEntry&gt;(...)</code> just because the immediate call site only needs an object</li>
+<li>if the same helper later resolves <code>ICacheEntry</code> through <code>GetObject&lt;T&gt;()</code>, <code>GetRequiredTrackedMock&lt;T&gt;()</code>, <code>GetMockModel&lt;T&gt;()</code>, <code>AddPropertyState&lt;TService&gt;(...)</code>, or <code>AddPropertySetterCapture&lt;TService, TValue&gt;(...)</code>, keep the tracked mock/helper path</li>
+<li><code>FMOQ0022</code> exists specifically to catch this risky rewrite shape</li>
+</ul>
 <pre><code class="lang-csharp">var cacheEntry = Mocks.GetMock&lt;ICacheEntry&gt;();
 cacheEntry.SetupAllProperties();
 cacheEntry.SetupSet(x =&gt; x.Value = It.IsAny&lt;object&gt;());
@@ -606,7 +744,16 @@ Mocks.GetMock&lt;IMemoryCache&gt;()
 cacheEntry.SetupAllProperties();
 cacheEntry.SetupSet(x =&gt; x.Value = It.IsAny&lt;object&gt;());
 </code></pre>
-<p>That is still a valid v4 migration outcome because the test depends on Moq-only setter behavior.</p>
+<p>That is still a valid v4 migration outcome because the test depends on broader Moq-only cache-entry behavior.</p>
+<p>For simpler interface collaborators where the real need is property state rather than cache-entry semantics, prefer the first-party helper instead:</p>
+<pre><code class="lang-csharp">var channel = Mocks.AddPropertyState&lt;IOrderSubmissionChannel&gt;();
+CreateComponent();
+
+await Component.SubmitAsync(&quot;order-42&quot;, expedited: true, CancellationToken.None);
+
+channel.Mode.Should().Be(&quot;fast&quot;);
+</code></pre>
+<p>That helper keeps its original write-through behavior by default. If the migrated test needs proxy-local property state without mutating the previously wrapped instance, use <code>AddPropertyState&lt;IOrderSubmissionChannel&gt;(PropertyStateMode.ProxyOnly)</code> instead.</p>
 <h3 id="known-type-extensibility">Known-type extensibility</h3>
 <p>Current guidance for framework-heavy types:</p>
 <pre><code class="lang-csharp">Mocks.AddKnownType&lt;IFileSystem&gt;(
@@ -651,7 +798,7 @@ Use <code>ExecuteThrows&lt;TException&gt;()</code> or <code>ExecuteThrowsAsync&l
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

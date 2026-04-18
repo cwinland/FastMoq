@@ -72,7 +72,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="fastmoq-documentation">FastMoq Documentation</h1>
 
-<p>This site combines generated API reference with real-world example documentation for the current FastMoq v4 codebase.</p>
+<p>This site combines generated API reference with real-world example documentation for the published FastMoq <code>4.1.0</code> line and the current v4 codebase.</p>
 <h2 id="new-to-fastmoq">New to FastMoq</h2>
 <ul>
 <li><a href="docs/api/quick-reference.html">Quick reference for common types</a></li>
@@ -83,7 +83,7 @@
 </ul>
 <h2 id="upgrading-to-v4">Upgrading to v4</h2>
 <ul>
-<li><p>The release delta from <code>3.0.0</code> is centered on provider-first architecture, the new package split, explicit policy surfaces, provider-neutral verification, and the scenario builder.</p>
+<li><p>The release delta from <code>3.0.0</code> is centered on provider-first architecture, the expanded package split, first-party Azure SDK and Azure Functions helpers, analyzer-by-default aggregate installs, explicit policy surfaces, provider-neutral verification, and the scenario builder.</p>
 </li>
 <li><p>Start with the release summary, then use the breaking-change and migration pages to decide how much compatibility behavior your test suites still need.</p>
 </li>
@@ -135,12 +135,26 @@
 </ul>
 <h2 id="package-map">Package map</h2>
 <h3 id="fastmoq">FastMoq</h3>
-<p>The aggregate package that pulls together the core runtime, database helpers, and web support.</p>
+<p>The aggregate package that pulls together the core runtime, shared Azure SDK helpers, Azure Functions helpers, database helpers, web support, provider integrations, and analyzer assets.</p>
 <ul>
 <li><a href="api/FastMoq.html">FastMoq namespace</a></li>
 <li><a href="api/FastMoq.Extensions.html">Extension methods</a></li>
 <li><a href="api/FastMoq.Providers.html">Provider APIs</a></li>
 <li><a href="api/FastMoq.Web.Blazor.html">Web and Blazor APIs</a></li>
+</ul>
+<h3 id="fastmoqazure">FastMoq.Azure</h3>
+<p>Shared Azure SDK helpers for pageable builders, credential setup, Azure-oriented configuration or service-provider flows, and common client registration.</p>
+<ul>
+<li><a href="docs/getting-started/README.html#package-choices">Getting started package choices</a></li>
+<li><a href="docs/samples/README.html">Sample applications overview</a></li>
+<li><a href="docs/whats-new/README.html">What's new since 3.0.0</a></li>
+</ul>
+<h3 id="fastmoqazurefunctions">FastMoq.AzureFunctions</h3>
+<p>Azure Functions worker and HTTP-trigger helpers, including <code>FunctionContext.InstanceServices</code>, concrete <code>HttpRequestData</code> and <code>HttpResponseData</code> builders, and body readers.</p>
+<ul>
+<li><a href="api/FastMoq.AzureFunctions.Extensions.html">Azure Functions extensions namespace</a></li>
+<li><a href="api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html">FunctionContextTestExtensions</a></li>
+<li><a href="docs/getting-started/testing-guide.html">Testing guide</a></li>
 </ul>
 <h3 id="fastmoqabstractions">FastMoq.Abstractions</h3>
 <p>Provider contracts shared by the core runtime and provider-specific packages.</p>
@@ -187,6 +201,12 @@
 <li><a href="api/FastMoq.Providers.IMockingProvider.html">IMockingProvider</a></li>
 <li><a href="api/FastMoq.Providers.MockingProviderRegistry.html">MockingProviderRegistry</a></li>
 </ul>
+<h3 id="fastmoqanalyzers">FastMoq.Analyzers</h3>
+<p>Roslyn analyzers and code fixes for provider-first guidance and migration cleanup. These analyzer assets are included by default in the aggregate <code>FastMoq</code> package.</p>
+<ul>
+<li><a href="docs/getting-started/README.html#package-choices">Getting started package choices</a></li>
+<li><a href="docs/migration/README.html">Migration guide</a></li>
+</ul>
 <h2 id="provider-first-apis">Provider-first APIs</h2>
 <p>FastMoq v4 defaults to the built-in reflection provider. Moq remains available as a compatibility provider, and additional providers can be added explicitly.</p>
 <ul>
@@ -225,7 +245,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

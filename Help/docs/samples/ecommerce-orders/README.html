@@ -344,8 +344,7 @@
 {
     protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
     {
-        var dbContextMock = mocker.GetMockDbContext&lt;ECommerceDbContext&gt;();
-        mocker.AddType(_ =&gt; dbContextMock.Object);
+        _ = mocker.GetMockDbContext&lt;ECommerceDbContext&gt;();
     };
 
     [Fact]
@@ -640,7 +639,7 @@ dotnet ef database update --project src/ECommerce.Orders.Infrastructure
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

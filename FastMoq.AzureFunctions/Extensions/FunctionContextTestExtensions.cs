@@ -1,6 +1,7 @@
 using Azure.Core;
 using Azure.Core.Serialization;
 using System.Reflection;
+using System.Linq;
 using FastMoq.Extensions;
 using FastMoq.Providers;
 using Microsoft.Azure.Functions.Worker;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Options;
 namespace FastMoq.AzureFunctions.Extensions
 {
     /// <summary>
-    /// Provides Azure Functions worker helpers for typed <see cref="FunctionContext.InstanceServices" /> setup.
+    /// Provides Azure Functions worker helpers for typed <see cref="FunctionContext.InstanceServices" /> setup and execution-context shaping.
     /// </summary>
     public static class FunctionContextTestExtensions
     {
@@ -23,6 +24,38 @@ namespace FastMoq.AzureFunctions.Extensions
                 method.IsGenericMethodDefinition &&
                 method.GetParameters().Length == 3 &&
                 method.GetParameters()[1].ParameterType == typeof(string));
+
+        private static readonly MethodInfo? NSubstituteReturnsMethod = Type.GetType("NSubstitute.SubstituteExtensions, NSubstitute")
+            ?.GetMethods(BindingFlags.Public | BindingFlags.Static)
+            .SingleOrDefault(method =>
+                method.Name == "Returns" &&
+                method.IsGenericMethodDefinition &&
+                method.GetParameters().Length == 3 &&
+                method.GetParameters()[0].ParameterType.IsGenericParameter &&
+                method.GetParameters()[1].ParameterType.IsGenericParameter &&
+                method.GetParameters()[2].ParameterType.IsArray &&
+                method.GetParameters()[2].ParameterType.GetElementType()?.IsGenericParameter == true);
+
+        /// <summary>
+        /// Configures a tracked <see cref="FunctionContext" /> mock to return the supplied invocation identifier.
+        /// </summary>
+        /// <param name="fastMock">The tracked mock whose <see cref="FunctionContext.InvocationId" /> getter should return <paramref name="invocationId" />.</param>
+        /// <param name="invocationId">The invocation identifier to expose through <see cref="FunctionContext.InvocationId" />.</param>
+        /// <returns>The current tracked mock.</returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="fastMock" /> does not represent a <see cref="FunctionContext" />.</exception>
+        public static IFastMock AddFunctionContextInvocationId(this IFastMock fastMock, string invocationId)
+        {
+            ArgumentNullException.ThrowIfNull(fastMock);
+            ArgumentException.ThrowIfNullOrWhiteSpace(invocationId);
+
+            if (!typeof(FunctionContext).IsAssignableFrom(fastMock.MockedType))
+            {
+                throw new ArgumentException($"The supplied mock must represent {typeof(FunctionContext).FullName}.", nameof(fastMock));
+            }
+
+            ConfigureFunctionContextInvocationId(fastMock, invocationId);
+            return fastMock;
+        }
 
         /// <summary>
         /// Creates a typed <see cref="FunctionContext.InstanceServices" /> provider with the common Azure Functions worker defaults.
@@ -79,7 +112,7 @@ namespace FastMoq.AzureFunctions.Extensions
         /// </summary>
         /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
         /// <param name="instanceServices">The provider to expose through <see cref="FunctionContext.InstanceServices" />.</param>
-        /// <param name="replace">True to replace an existing known-type registration.</param>
+        /// <param name="replace">True to replace an existing <see cref="IServiceProvider" /> registration and overwrite previously configured instance-services helper values while preserving other <see cref="FunctionContext" /> behavior.</param>
         /// <returns>The current <see cref="Mocker" /> instance.</returns>
         public static Mocker AddFunctionContextInstanceServices(this Mocker mocker, IServiceProvider instanceServices, bool replace = false)
         {
@@ -87,11 +120,10 @@ namespace FastMoq.AzureFunctions.Extensions
             ArgumentNullException.ThrowIfNull(instanceServices);
 
             mocker.AddServiceProvider(instanceServices, replace);
-            mocker.AddKnownType<FunctionContext>(
-                configureMock: (_, _, fastMock) => ConfigureFunctionContextInstanceServices(fastMock, instanceServices),
-                applyObjectDefaults: (_, functionContext) => AssignFunctionContextInstanceServices(functionContext, instanceServices),
-                includeDerivedTypes: true,
-                replace: replace);
+            AddOrUpdateFunctionContextKnownTypeRegistration(
+                mocker,
+                configureMock: fastMock => ConfigureFunctionContextInstanceServices(fastMock, instanceServices),
+                applyObjectDefaults: functionContext => AssignFunctionContextInstanceServices(functionContext, instanceServices));
 
             if (mocker.Contains(typeof(FunctionContext)))
             {
@@ -118,6 +150,104 @@ namespace FastMoq.AzureFunctions.Extensions
                 replace);
         }
 
+        /// <summary>
+        /// Registers a <see cref="FunctionContext" /> invocation identifier for the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="invocationId">The invocation identifier to expose through <see cref="FunctionContext.InvocationId" />.</param>
+        /// <param name="replace">True to overwrite a previously configured invocation-identifier helper value while preserving other <see cref="FunctionContext" /> behavior.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        /// <remarks>
+        /// This helper configures mock-backed <see cref="FunctionContext" /> instances. Concrete contexts with their own immutable execution metadata may ignore this registration.
+        /// </remarks>
+        public static Mocker AddFunctionContextInvocationId(this Mocker mocker, string invocationId, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentException.ThrowIfNullOrWhiteSpace(invocationId);
+
+            AddOrUpdateFunctionContextKnownTypeRegistration(
+                mocker,
+                configureMock: fastMock => ConfigureFunctionContextInvocationId(fastMock, invocationId));
+
+            if (mocker.Contains(typeof(FunctionContext)))
+            {
+                ConfigureFunctionContextInvocationId(mocker.GetOrCreateMock<FunctionContext>(), invocationId);
+            }
+
+            return mocker;
+        }
+
+        private static void AddOrUpdateFunctionContextKnownTypeRegistration(
+            Mocker mocker,
+            Action<IFastMock>? configureMock = null,
+            Action<FunctionContext>? applyObjectDefaults = null)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+
+            var existingRegistration = mocker.KnownTypeRegistrations.LastOrDefault(registration => registration.ServiceType == typeof(FunctionContext));
+            var mergedRegistration = new KnownTypeRegistration(typeof(FunctionContext))
+            {
+                IncludeDerivedTypes = existingRegistration?.IncludeDerivedTypes ?? true,
+                DirectInstanceFactory = existingRegistration?.DirectInstanceFactory,
+                ManagedInstanceFactory = existingRegistration?.ManagedInstanceFactory,
+                ConfigureMock = ComposeFunctionContextConfigureMock(existingRegistration?.ConfigureMock, configureMock),
+                ApplyObjectDefaults = ComposeFunctionContextObjectDefaults(existingRegistration?.ApplyObjectDefaults, applyObjectDefaults),
+            };
+
+            mocker.AddKnownType(mergedRegistration, replace: existingRegistration is not null);
+        }
+
+        private static Action<Mocker, Type, IFastMock>? ComposeFunctionContextConfigureMock(
+            Action<Mocker, Type, IFastMock>? existing,
+            Action<IFastMock>? additional)
+        {
+            if (additional is null)
+            {
+                return existing;
+            }
+
+            if (existing is null)
+            {
+                return (_, _, fastMock) => additional(fastMock);
+            }
+
+            return (registeredMocker, requestedType, fastMock) =>
+            {
+                existing(registeredMocker, requestedType, fastMock);
+                additional(fastMock);
+            };
+        }
+
+        private static Action<Mocker, object>? ComposeFunctionContextObjectDefaults(
+            Action<Mocker, object>? existing,
+            Action<FunctionContext>? additional)
+        {
+            if (additional is null)
+            {
+                return existing;
+            }
+
+            if (existing is null)
+            {
+                return (_, value) =>
+                {
+                    if (value is FunctionContext functionContext)
+                    {
+                        additional(functionContext);
+                    }
+                };
+            }
+
+            return (registeredMocker, value) =>
+            {
+                existing(registeredMocker, value);
+                if (value is FunctionContext functionContext)
+                {
+                    additional(functionContext);
+                }
+            };
+        }
+
         private static void ConfigureFunctionContextInstanceServices(IFastMock fastMock, IServiceProvider instanceServices)
         {
             ArgumentNullException.ThrowIfNull(fastMock);
@@ -127,23 +257,80 @@ namespace FastMoq.AzureFunctions.Extensions
             AssignFunctionContextInstanceServices(fastMock.Instance as FunctionContext, instanceServices);
         }
 
+        private static void ConfigureFunctionContextInvocationId(IFastMock fastMock, string invocationId)
+        {
+            ArgumentNullException.ThrowIfNull(fastMock);
+            ArgumentException.ThrowIfNullOrWhiteSpace(invocationId);
+
+            TryConfigureNativeMockProperty(fastMock, nameof(FunctionContext.InvocationId), invocationId);
+        }
+
         private static void TryConfigureNativeMockProperty(IFastMock fastMock, string propertyName, object value)
         {
-            var nativeMock = fastMock.NativeMock;
-            if (nativeMock is null)
+            if (TryConfigureMoqNativeMockProperty(fastMock.NativeMock, propertyName, value))
             {
                 return;
+            }
+
+            _ = TryConfigureNSubstitutePropertyGetter(fastMock, propertyName, value);
+        }
+
+        private static bool TryConfigureMoqNativeMockProperty(object? nativeMock, string propertyName, object value)
+        {
+            if (nativeMock is null)
+            {
+                return false;
             }
 
             var nativeMockType = nativeMock.GetType();
             if (nativeMockType.Namespace != "Moq" || !nativeMockType.IsGenericType)
             {
-                return;
+                return false;
             }
 
             var mockedType = nativeMockType.GetGenericArguments()[0];
             var closedMethod = SetupMockPropertyByNameMethod.MakeGenericMethod(mockedType);
             closedMethod.Invoke(null, [nativeMock, propertyName, value]);
+            return true;
+        }
+
+        private static bool TryConfigureNSubstitutePropertyGetter(IFastMock fastMock, string propertyName, object value)
+        {
+            if (NSubstituteReturnsMethod is null)
+            {
+                return false;
+            }
+
+            var propertyInfo = fastMock.MockedType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+            if (propertyInfo?.GetMethod is null)
+            {
+                return false;
+            }
+
+            if (value is null)
+            {
+                if (propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType(propertyInfo.PropertyType) is null)
+                {
+                    return false;
+                }
+            }
+            else if (!propertyInfo.PropertyType.IsAssignableFrom(value.GetType()))
+            {
+                return false;
+            }
+
+            try
+            {
+                var getterResult = propertyInfo.GetMethod.Invoke(fastMock.Instance, Array.Empty<object?>());
+                var closedReturnsMethod = NSubstituteReturnsMethod.MakeGenericMethod(propertyInfo.PropertyType);
+                var emptyReturnSequence = Array.CreateInstance(propertyInfo.PropertyType, 0);
+                closedReturnsMethod.Invoke(null, [getterResult, value, emptyReturnSequence]);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private static void AssignFunctionContextInstanceServices(FunctionContext? functionContext, IServiceProvider instanceServices)

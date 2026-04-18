@@ -1,6 +1,6 @@
-# Migration Guide: 3.0.0 To Current Repo
+# Migration Guide: 3.0.0 To The Current v4 Line
 
-This page is the migration front door for maintainers and early adopters moving from the last public `3.0.0` release toward the current repository behavior.
+This page is the migration front door for maintainers and early adopters moving from the last public `3.0.0` release toward the current v4 release line.
 
 It stays focused on migration boundaries, reading order, package and provider decisions, and the practical sequence for getting a suite green. Open the linked detail pages only when you hit that specific question.
 
@@ -43,7 +43,7 @@ This is migration guidance for the current v4 release line. Some references poin
 
 The goal is provider-centric tests by default, not removal of all provider-specific APIs.
 
-If your test project references the aggregate `FastMoq` package, the FastMoq Roslyn analyzers ship with it by default. That means common migration leftovers such as `.Object`, provider-native `Reset()`, `VerifyLogger(...)`, safe standalone `GetMock<T>()` usage, legacy `GetRequiredMock<T>()` usage, legacy `CreateMock(...)` / `CreateDetachedMock(...)` / `AddMock(...)` usage, and obvious mixed `GetMock<T>()` / `GetOrCreateMock<T>()` usage can be surfaced while you modernize tests. Core-only consumers can opt in separately with `FastMoq.Analyzers`.
+If your test project references `FastMoq` or `FastMoq.Core`, the FastMoq Roslyn analyzers ship with it by default. That means common migration leftovers such as `.Object`, provider-native `Reset()`, `VerifyLogger(...)`, safe standalone `GetMock<T>()` usage, legacy `GetRequiredMock<T>()` usage, legacy `CreateMock(...)` / `CreateDetachedMock(...)` / `AddMock(...)` usage, and obvious mixed `GetMock<T>()` / `GetOrCreateMock<T>()` usage can be surfaced while you modernize tests. If you want those diagnostics without either runtime package, `FastMoq.Analyzers` remains available as a standalone package.
 
 The analyzer pack now has two roles:
 
@@ -57,6 +57,7 @@ Current examples include:
 - `FMOQ0010` for preferring typed provider escape hatches such as `AsMoq()` or `AsNSubstitute()` over raw `NativeMock` / `GetNativeMock(...)`
 - `FMOQ0011` for preferring `FastMoq.Web` helpers over hand-rolled `HttpContext`, `ControllerContext`, or `IHttpContextAccessor` registration via `AddType(...)`
 - `FMOQ0012` for preferring `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` over Moq-specific HTTP compatibility helpers when the test only needs request and response behavior, including a code fix for common tracked `HttpMessageHandler` `Protected().Setup("SendAsync", ...)` setups
+- `FMOQ0030` for preferring `AddLoggerFactory(...)` over direct output-helper-backed `AddType<ILoggerFactory>(...)`, `AddType<ILogger>(...)`, and `AddType<ILogger<T>>(...)` registrations when the existing logger wiring only exists to mirror logs into xUnit-style output
 
 Tune guidance severity in `.editorconfig` if a suite wants quieter or stricter defaults:
 
@@ -65,6 +66,43 @@ dotnet_diagnostic.FMOQ0010.severity = suggestion
 dotnet_diagnostic.FMOQ0011.severity = suggestion
 dotnet_diagnostic.FMOQ0012.severity = suggestion
 ```
+
+## Analyzer catalog
+
+This is the full public analyzer catalog for the current v4 line. Use it as the reference list when you want to understand what the FastMoq analyzer pack can flag in a migrated or newly authored test suite.
+
+| ID | Guidance |
+| --- | --- |
+| `FMOQ0001` | Use `GetObject<T>()` or `.Instance` instead of `.Object` on tracked FastMoq mocks |
+| `FMOQ0002` | Use provider-first `Reset()` instead of provider-native reset on tracked FastMoq mocks |
+| `FMOQ0003` | Prefer `VerifyLogged(...)` over `VerifyLogger(...)` when the assertion can stay provider safe |
+| `FMOQ0004` | Keep provider-first retrieval consistent by converting leftover `GetMock<T>()` calls in files that already use `GetOrCreateMock<T>()` |
+| `FMOQ0005` | Replace the `MockOptional` compatibility property with explicit optional-parameter resolution |
+| `FMOQ0006` | Replace `Initialize<T>(...)` compatibility wrappers with direct FastMoq APIs |
+| `FMOQ0007` | Replace the `Strict` compatibility alias with explicit `Behavior` settings or `UseStrictPreset()` |
+| `FMOQ0008` | Use `TimesSpec` in shared helper signatures instead of raw Moq `Times` |
+| `FMOQ0009` | Select a provider before using provider-specific FastMoq APIs |
+| `FMOQ0010` | Prefer typed provider escape hatches such as `AsMoq()` or `AsNSubstitute()` over raw native mock access |
+| `FMOQ0011` | Prefer `FastMoq.Web` helpers over hand-rolled `HttpContext`, `ControllerContext`, or `IHttpContextAccessor` setup |
+| `FMOQ0012` | Prefer `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` over Moq-specific HTTP compatibility helpers when the test only needs request and response behavior |
+| `FMOQ0013` | Prefer typed `IServiceProvider`, `IServiceScope`, and `FunctionContext.InstanceServices` helpers over raw service-provider shims |
+| `FMOQ0014` | Prefer `AddKnownType(...)` over context-aware compatibility `AddType(...)` overloads |
+| `FMOQ0015` | Preserve separate doubles for keyed same-type dependencies when the dependency selection matters |
+| `FMOQ0016` | Prefer `GetOrCreateMock<T>()` over obsolete `GetMock<T>()` when the call only needs a tracked FastMoq handle |
+| `FMOQ0017` | Replace `GetRequiredMock(...)` with provider-first retrieval based on intent |
+| `FMOQ0018` | Replace legacy mock creation and lifecycle APIs such as `CreateMock(...)`, `CreateDetachedMock(...)`, `AddMock(...)`, and `RemoveMock(...)` |
+| `FMOQ0019` | Prefer `SetupOptions(...)` over repeated manual `IOptions<T>` wiring |
+| `FMOQ0020` | Prefer `AddPropertySetterCapture(...)` over simple `SetupSet(...)` setter-observation flows |
+| `FMOQ0021` | Prefer `AddPropertyState(...)` over simple `SetupAllProperties()` property-state flows |
+| `FMOQ0022` | Avoid rewriting a tracked dependency to `AddType(...)` when the same file still depends on tracked resolution or property helpers for that service |
+| `FMOQ0023` | Add explicit Moq onboarding when legacy Moq-shaped FastMoq APIs remain in core-only projects |
+| `FMOQ0024` | Prefer `Mocker.Verify<T>(...)` over provider-native `Verify(...)` on tracked FastMoq mocks |
+| `FMOQ0025` | Remove or rewrite bare tracked `Verify()` calls so assertions stay explicit |
+| `FMOQ0026` | Avoid storing tracked mocks as `Mock<T>` aliases when they are only used for verification |
+| `FMOQ0027` | Avoid raw `new Mock<T>()` creation inside FastMoq test infrastructure; use tracked or standalone provider-first mocks instead |
+| `FMOQ0028` | Add missing helper packages such as `FastMoq.Web` or `FastMoq.AzureFunctions` before applying helper-based migration guidance |
+| `FMOQ0029` | Prefer `AddFunctionContextInvocationId(...)` over raw `FunctionContext.InvocationId` setup |
+| `FMOQ0030` | Prefer `AddLoggerFactory(...)` over direct output-helper-backed `ILoggerFactory`, `ILogger`, or `ILogger<T>` registration |
 
 For a successful v4 migration, use this boundary:
 
@@ -238,7 +276,7 @@ Open these only when you hit the relevant problem. That keeps this page short wi
 
 ## Best source of examples
 
-For current repo-backed examples, see:
+For current examples in this workspace, see:
 
 - [Executable Testing Examples](../samples/testing-examples.md)
 - `FastMoq.TestingExample/RealWorldExampleTests.cs`

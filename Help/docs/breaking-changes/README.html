@@ -79,8 +79,25 @@
 <li>This document describes the changed behavior in the current v4 release line.</li>
 </ul>
 <h2 id="current-breaking-changes">Current breaking changes</h2>
+<h3 id="constructor-check-output-helpers-are-now-framework-neutral">Constructor-check output helpers are now framework-neutral</h3>
+<p>The framework-specific output-helper overload for constructor-check diagnostics is no longer part of the public FastMoq helper surface.</p>
+<p>What changed:</p>
+<ul>
+<li>FastMoq no longer exposes the <code>EnsureNullCheckThrown(...)</code> overload that directly depended on a test-framework output abstraction.</li>
+<li>the supported path is the existing framework-neutral <code>Action&lt;string&gt;</code> callback overload.</li>
+<li>test-framework-specific output adapters now belong in the test project or local helper layer, not in shared FastMoq helpers.</li>
+</ul>
+<p>Migration guidance:</p>
+<pre><code class="lang-csharp">// Old framework-coupled path
+action.EnsureNullCheckThrown(parameterName, constructorName, output);
+
+// Current framework-neutral path
+action.EnsureNullCheckThrown(parameterName, constructorName, output.WriteLine);
+</code></pre>
+<p>If the test does not need diagnostic output, omit the callback completely.</p>
+<p>For the detailed replacement guidance, see <a href="../migration/api-replacements-and-exceptions.html">API Replacements And Migration Exceptions</a>.</p>
 <h3 id="fastmoqweb-blazor-helpers-now-align-with-bunit-2"><code>FastMoq.Web</code> Blazor helpers now align with bUnit 2</h3>
-<p>The current branch upgrades <code>FastMoq.Web</code> from bUnit <code>1.38.5</code> to <code>2.7.2</code>.</p>
+<p><code>FastMoq.Web</code> now uses bUnit <code>2.7.2</code> instead of the older <code>1.38.5</code> line.</p>
 <p>What changed:</p>
 <ul>
 <li><code>MockerBlazorTestBase&lt;T&gt;.RenderParameters</code> now uses <code>FastMoq.Web.Blazor.Models.RenderParameter</code></li>
@@ -120,7 +137,7 @@ Mocks.SetupHttpMessage(HttpStatusCode.OK, &quot;{\&quot;id\&quot;:42}&quot;);
 <p>Treat this as a package move with a preferred API change, not as a namespace-rename exercise.</p>
 <h3 id="strict-no-longer-implies-the-old-full-strict-profile"><code>Strict</code> no longer implies the old full strict profile</h3>
 <p>In <code>3.0.0</code>, <code>Strict</code> was documented as a broader switch that affected multiple behaviors at once, including preconfigured object substitution, non-public fallback behavior, and strict Moq behavior.</p>
-<p>In the current repo, <code>Strict</code> is primarily a compatibility property layered over <code>MockFeatures.FailOnUnconfigured</code> rather than the single entry point for the full strict profile.</p>
+<p>In the current v4 release line, <code>Strict</code> is primarily a compatibility property layered over <code>MockFeatures.FailOnUnconfigured</code> rather than the single entry point for the full strict profile.</p>
 <p>What changed:</p>
 <ul>
 <li><code>Strict = true</code> should no longer be treated as shorthand for the whole current strict behavior profile.</li>
@@ -142,7 +159,7 @@ Mocks.UseStrictPreset();
 <p>Use <code>UseStrictPreset()</code> when the test intends to opt into the full strict behavior profile. Use <code>Strict</code> only when the test intentionally depends on the narrower compatibility path.</p>
 <h3 id="strict-ifilesystem-no-longer-guarantees-a-raw-mock">Strict <code>IFileSystem</code> no longer guarantees a raw mock</h3>
 <p>In <code>3.0.0</code>, strict <code>IFileSystem</code> behavior was documented and demonstrated as using a raw Moq mock rather than the built-in <code>MockFileSystem</code> defaults.</p>
-<p>In the current repo, tracked <code>IFileSystem</code> mocks are still preconfigured against FastMoq's built-in in-memory file system even when <code>Strict</code> or <code>MockFeatures.FailOnUnconfigured</code> is enabled.</p>
+<p>In the current v4 release line, tracked <code>IFileSystem</code> mocks are still preconfigured against FastMoq's built-in in-memory file system even when <code>Strict</code> or <code>MockFeatures.FailOnUnconfigured</code> is enabled.</p>
 <p>What changed:</p>
 <ul>
 <li><code>GetMock&lt;IFileSystem&gt;()</code> no longer implies an &quot;empty&quot; <code>IFileSystem</code> mock under strict behavior.</li>
@@ -161,7 +178,7 @@ var fileSystem = Mocks.GetMock&lt;IFileSystem&gt;().Object;
 
 fileSystem.Directory.Should().BeNull();
 </code></pre>
-<p>Current repo behavior:</p>
+<p>Current v4 behavior:</p>
 <pre><code class="lang-csharp">Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
 var fileSystem = Mocks.GetMock&lt;IFileSystem&gt;().Object;
 
@@ -181,6 +198,26 @@ Mocks.GetMock&lt;IFileSystem&gt;()
 <li><code>Strict</code> still participates in non-public constructor and method fallback decisions; the break here is about <code>IFileSystem</code> mock enrichment, not removal of all strict semantics</li>
 </ul>
 <p>In other words, the repo did not broadly change every built-in type to ignore strict-mode behavior. The compatibility break identified here is the tracked <code>IFileSystem</code> mock path.</p>
+<h3 id="mockertestbasetcomponentwaitfort-now-throws-on-timeout"><code>MockerTestBase&lt;TComponent&gt;.WaitFor&lt;T&gt;(...)</code> now throws on timeout</h3>
+<p><code>WaitFor&lt;T&gt;(...)</code> is documented as polling until the supplied logic returns a value other than <code>default(T)</code>, then throwing if that never happens before the timeout expires.</p>
+<p>What changed:</p>
+<ul>
+<li>timeout now consistently throws <code>ApplicationException(&quot;Timeout waiting for condition&quot;)</code> when the result remains <code>default(T)</code> through the configured wait window</li>
+<li>the XML docs on all overloads now make the non-<code>default(T)</code> success contract explicit</li>
+<li>tests should now assert the timeout exception directly instead of treating <code>default(T)</code> as a timeout sentinel value</li>
+</ul>
+<p>Migration guidance:</p>
+<pre><code class="lang-csharp">// Previous accidental timeout-sentinel pattern
+var result = WaitFor(() =&gt; false, TimeSpan.FromMilliseconds(20));
+result.Should().BeFalse();
+
+// Current behavior
+Action action = () =&gt; WaitFor(() =&gt; false, TimeSpan.FromMilliseconds(20));
+action.Should()
+    .Throw&lt;ApplicationException&gt;()
+    .WithMessage(&quot;Timeout waiting for condition&quot;);
+</code></pre>
+<p>If <code>default(T)</code> is a valid success result for the polling path, use a different readiness signal so the helper can distinguish &quot;not ready yet&quot; from &quot;ready with the default value&quot;.</p>
 <h2 id="historical-package-line-change-summary">Historical package-line change summary</h2>
 <p>The root README previously carried this older package-line summary. It is kept here so compatibility notes live in one place.</p>
 <ul>
@@ -198,7 +235,7 @@ Mocks.GetMock&lt;IFileSystem&gt;()
 <h2 id="related-docs">Related docs</h2>
 <ul>
 <li><a href="../whats-new/README.html">What's New Since 3.0.0</a></li>
-<li><a href="../migration/README.html">Migration Guide: 3.0.0 To Current Repo</a></li>
+<li><a href="../migration/README.html">Migration Guide: 3.0.0 To The Current v4 Line</a></li>
 <li><a href="../samples/testing-examples.html">Executable Testing Examples</a></li>
 </ul>
 
@@ -223,7 +260,7 @@ Mocks.GetMock&lt;IFileSystem&gt;()
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

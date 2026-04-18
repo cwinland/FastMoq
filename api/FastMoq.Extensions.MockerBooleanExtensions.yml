@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerBooleanExtensions
     path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
@@ -55,7 +55,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: Contains
     path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
@@ -104,7 +104,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: Contains
     path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
@@ -450,3 +450,4 @@ references:
   name: Type
   nameWithType: Type
   fullName: System.Type
+

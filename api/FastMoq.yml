@@ -5,6 +5,7 @@ items:
   id: FastMoq
   children:
   - FastMoq.BuiltInTypeResolutionFlags
+  - FastMoq.ConstructorAmbiguityBehavior
   - FastMoq.DbContextHandleOptions`1
   - FastMoq.DbContextHandle`1
   - FastMoq.DbContextMockerExtensions
@@ -19,6 +20,8 @@ items:
   - FastMoq.MockerPolicyOptions
   - FastMoq.MockerTestBase`1
   - FastMoq.OptionalParameterResolutionMode
+  - FastMoq.PreferredConstructorAttribute
+  - FastMoq.PropertyStateMode
   - FastMoq.PropertyValueCapture`1
   - FastMoq.ScenarioBuilder`1
   langs:
@@ -38,6 +41,13 @@ references:
   name: BuiltInTypeResolutionFlags
   nameWithType: BuiltInTypeResolutionFlags
   fullName: FastMoq.BuiltInTypeResolutionFlags
+- uid: FastMoq.ConstructorAmbiguityBehavior
+  commentId: T:FastMoq.ConstructorAmbiguityBehavior
+  parent: FastMoq
+  href: FastMoq.ConstructorAmbiguityBehavior.html
+  name: ConstructorAmbiguityBehavior
+  nameWithType: ConstructorAmbiguityBehavior
+  fullName: FastMoq.ConstructorAmbiguityBehavior
 - uid: FastMoq.InstanceCreationFlags
   commentId: T:FastMoq.InstanceCreationFlags
   parent: FastMoq
@@ -126,6 +136,19 @@ references:
   name: OptionalParameterResolutionMode
   nameWithType: OptionalParameterResolutionMode
   fullName: FastMoq.OptionalParameterResolutionMode
+- uid: FastMoq.PreferredConstructorAttribute
+  commentId: T:FastMoq.PreferredConstructorAttribute
+  href: FastMoq.PreferredConstructorAttribute.html
+  name: PreferredConstructorAttribute
+  nameWithType: PreferredConstructorAttribute
+  fullName: FastMoq.PreferredConstructorAttribute
+- uid: FastMoq.PropertyStateMode
+  commentId: T:FastMoq.PropertyStateMode
+  parent: FastMoq
+  href: FastMoq.PropertyStateMode.html
+  name: PropertyStateMode
+  nameWithType: PropertyStateMode
+  fullName: FastMoq.PropertyStateMode
 - uid: FastMoq.PropertyValueCapture`1
   commentId: T:FastMoq.PropertyValueCapture`1
   href: FastMoq.PropertyValueCapture-1.html

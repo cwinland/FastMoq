@@ -5,6 +5,7 @@ items:
   id: MockerPolicyOptions
   parent: FastMoq
   children:
+  - FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
   - FastMoq.MockerPolicyOptions.DefaultFallbackToNonPublicConstructors
   - FastMoq.MockerPolicyOptions.DefaultFallbackToNonPublicMethods
   - FastMoq.MockerPolicyOptions.DefaultStrictMockCreation
@@ -19,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerPolicyOptions
     path: FastMoq.Core/MockerPolicyOptions.cs
@@ -78,7 +79,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: EnabledBuiltInTypeResolutions
     path: FastMoq.Core/MockerPolicyOptions.cs
@@ -109,7 +110,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: DefaultFallbackToNonPublicConstructors
     path: FastMoq.Core/MockerPolicyOptions.cs
@@ -126,6 +127,40 @@ items:
       type: System.Boolean
     content.vb: Public Property DefaultFallbackToNonPublicConstructors As Boolean
   overload: FastMoq.MockerPolicyOptions.DefaultFallbackToNonPublicConstructors*
+- uid: FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  commentId: P:FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  id: DefaultConstructorAmbiguityBehavior
+  parent: FastMoq.MockerPolicyOptions
+  langs:
+  - csharp
+  - vb
+  name: DefaultConstructorAmbiguityBehavior
+  nameWithType: MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  fullName: FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  type: Property
+  source:
+    remote:
+      path: FastMoq.Core/MockerPolicyOptions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://github.com/cwinland/FastMoq.git
+    id: DefaultConstructorAmbiguityBehavior
+    path: FastMoq.Core/MockerPolicyOptions.cs
+    startLine: 22
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq
+  summary: >-
+    Controls how FastMoq resolves constructor ambiguity when multiple equally viable constructors remain after candidate filtering.
+
+    The default preserves the existing throw behavior for backward compatibility.
+  example: []
+  syntax:
+    content: public ConstructorAmbiguityBehavior DefaultConstructorAmbiguityBehavior { get; set; }
+    parameters: []
+    return:
+      type: FastMoq.ConstructorAmbiguityBehavior
+    content.vb: Public Property DefaultConstructorAmbiguityBehavior As ConstructorAmbiguityBehavior
+  overload: FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior*
 - uid: FastMoq.MockerPolicyOptions.DefaultFallbackToNonPublicMethods
   commentId: P:FastMoq.MockerPolicyOptions.DefaultFallbackToNonPublicMethods
   id: DefaultFallbackToNonPublicMethods
@@ -140,11 +175,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: DefaultFallbackToNonPublicMethods
     path: FastMoq.Core/MockerPolicyOptions.cs
-    startLine: 21
+    startLine: 27
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -171,11 +206,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: DefaultStrictMockCreation
     path: FastMoq.Core/MockerPolicyOptions.cs
-    startLine: 29
+    startLine: 35
   assemblies:
   - FastMoq.Core
   namespace: FastMoq
@@ -3242,6 +3277,19 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior*
+  commentId: Overload:FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  href: FastMoq.MockerPolicyOptions.html#FastMoq_MockerPolicyOptions_DefaultConstructorAmbiguityBehavior
+  name: DefaultConstructorAmbiguityBehavior
+  nameWithType: MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  fullName: FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+- uid: FastMoq.ConstructorAmbiguityBehavior
+  commentId: T:FastMoq.ConstructorAmbiguityBehavior
+  parent: FastMoq
+  href: FastMoq.ConstructorAmbiguityBehavior.html
+  name: ConstructorAmbiguityBehavior
+  nameWithType: ConstructorAmbiguityBehavior
+  fullName: FastMoq.ConstructorAmbiguityBehavior
 - uid: FastMoq.MockerPolicyOptions.DefaultFallbackToNonPublicMethods*
   commentId: Overload:FastMoq.MockerPolicyOptions.DefaultFallbackToNonPublicMethods
   href: FastMoq.MockerPolicyOptions.html#FastMoq_MockerPolicyOptions_DefaultFallbackToNonPublicMethods
@@ -3311,3 +3359,4 @@ references:
   - name: " "
   - name: T
   - name: )
+

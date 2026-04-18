@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using System.Text;
 
 namespace FastMoq.Extensions
 {
@@ -29,8 +30,50 @@ namespace FastMoq.Extensions
         {
             ArgumentNullException.ThrowIfNull(mocker);
 
-            mocker.EnableExplicitLoggerCapture();
-            return new FastMoqLoggerFactory(mocker.LoggingCallback, configureLogging);
+            return CreateLoggerFactoryCore(mocker, mocker.LoggingCallback, configureLogging);
+        }
+
+        /// <summary>
+        /// Creates a logger factory that mirrors captured log entries to the supplied sink while still forwarding them into the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="sink">A sink that receives each captured log entry after FastMoq records it.</param>
+        /// <param name="configureLogging">Optional logging builder customization applied before the FastMoq capture provider is added.</param>
+        /// <returns>A logger factory that mirrors captured entries to <paramref name="sink" /> and <see cref="Mocker.LogEntries" />.</returns>
+        /// <example>
+        /// <code language="csharp"><![CDATA[
+        /// var loggerFactory = Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) =>
+        /// {
+        ///     output.WriteLine($"[{logLevel}] {message}");
+        /// });
+        /// ]]></code>
+        /// </example>
+        public static ILoggerFactory CreateLoggerFactory(this Mocker mocker, Action<LogLevel, EventId, string, Exception?> sink, Action<ILoggingBuilder>? configureLogging = null)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(sink);
+
+            return CreateLoggerFactoryCore(mocker, CreateMirroredCallback(mocker, sink), configureLogging);
+        }
+
+        /// <summary>
+        /// Creates a logger factory that mirrors formatted log lines to the supplied writer while still forwarding captured entries into the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="lineWriter">A line writer that receives a formatted representation of each captured log entry.</param>
+        /// <param name="configureLogging">Optional logging builder customization applied before the FastMoq capture provider is added.</param>
+        /// <returns>A logger factory that mirrors formatted log lines to <paramref name="lineWriter" /> and raw entries to <see cref="Mocker.LogEntries" />.</returns>
+        /// <example>
+        /// <code language="csharp"><![CDATA[
+        /// var loggerFactory = Mocks.CreateLoggerFactory(output.WriteLine);
+        /// ]]></code>
+        /// </example>
+        public static ILoggerFactory CreateLoggerFactory(this Mocker mocker, Action<string> lineWriter, Action<ILoggingBuilder>? configureLogging = null)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(lineWriter);
+
+            return mocker.CreateLoggerFactory(CreateLineWriterCallback(lineWriter), configureLogging);
         }
 
         /// <summary>
@@ -60,6 +103,40 @@ namespace FastMoq.Extensions
         }
 
         /// <summary>
+        /// Creates and registers a logger factory that mirrors captured log entries to the supplied sink while still forwarding them into the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="sink">A sink that receives each captured log entry after FastMoq records it.</param>
+        /// <param name="configureLogging">Optional logging builder customization applied before the FastMoq capture provider is added.</param>
+        /// <param name="replace">True to replace existing logger registrations.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddLoggerFactory(this Mocker mocker, Action<LogLevel, EventId, string, Exception?> sink, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(sink);
+
+            var loggerFactory = mocker.CreateLoggerFactory(sink, configureLogging);
+            return mocker.AddLoggerFactory(loggerFactory, replace);
+        }
+
+        /// <summary>
+        /// Creates and registers a logger factory that mirrors formatted log lines to the supplied writer while still forwarding captured entries into the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="lineWriter">A line writer that receives a formatted representation of each captured log entry.</param>
+        /// <param name="configureLogging">Optional logging builder customization applied before the FastMoq capture provider is added.</param>
+        /// <param name="replace">True to replace existing logger registrations.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker AddLoggerFactory(this Mocker mocker, Action<string> lineWriter, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(lineWriter);
+
+            var loggerFactory = mocker.CreateLoggerFactory(lineWriter, configureLogging);
+            return mocker.AddLoggerFactory(loggerFactory, replace);
+        }
+
+        /// <summary>
         /// Registers an <see cref="ILoggerFactory" /> and resolves <see cref="ILogger" /> services from that factory.
         /// </summary>
         /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
@@ -82,6 +159,85 @@ namespace FastMoq.Extensions
                 replace: replace);
 
             return mocker;
+        }
+
+        private static ILoggerFactory CreateLoggerFactoryCore(Mocker mocker, Action<LogLevel, EventId, string, Exception?> callback, Action<ILoggingBuilder>? configureLogging)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(callback);
+
+            mocker.EnableExplicitLoggerCapture();
+            return new FastMoqLoggerFactory(callback, configureLogging);
+        }
+
+        private static Action<LogLevel, EventId, string, Exception?> CreateMirroredCallback(Mocker mocker, Action<LogLevel, EventId, string, Exception?> sink)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(sink);
+
+            return (logLevel, eventId, message, exception) =>
+            {
+                mocker.LoggingCallback(logLevel, eventId, message, exception);
+                sink(logLevel, eventId, message, exception);
+            };
+        }
+
+        private static Action<LogLevel, EventId, string, Exception?> CreateLineWriterCallback(Action<string> lineWriter)
+        {
+            ArgumentNullException.ThrowIfNull(lineWriter);
+
+            return (logLevel, eventId, message, exception) => lineWriter(FormatLogEntry(logLevel, eventId, message, exception));
+        }
+
+        private static string FormatLogEntry(LogLevel logLevel, EventId eventId, string message, Exception? exception)
+        {
+            var builder = new StringBuilder();
+            builder.Append('[');
+            builder.Append(GetShortLogLevel(logLevel));
+            builder.Append(']');
+
+            if (eventId.Id != 0 || !string.IsNullOrWhiteSpace(eventId.Name))
+            {
+                builder.Append(" (");
+                builder.Append(eventId.Id);
+
+                if (!string.IsNullOrWhiteSpace(eventId.Name))
+                {
+                    builder.Append(": ");
+                    builder.Append(eventId.Name);
+                }
+
+                builder.Append(')');
+            }
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                builder.Append(' ');
+                builder.Append(message);
+            }
+
+            if (exception is not null)
+            {
+                builder.Append(Environment.NewLine);
+                builder.Append(exception);
+            }
+
+            return builder.ToString();
+        }
+
+        private static char GetShortLogLevel(LogLevel logLevel)
+        {
+            return logLevel switch
+            {
+                LogLevel.Trace => 'T',
+                LogLevel.Debug => 'D',
+                LogLevel.Information => 'I',
+                LogLevel.Warning => 'W',
+                LogLevel.Error => 'E',
+                LogLevel.Critical => 'C',
+                LogLevel.None => 'N',
+                _ => 'U',
+            };
         }
 
         private static ILogger? TryCreateLogger(ILoggerFactory loggerFactory, Type requestedType)

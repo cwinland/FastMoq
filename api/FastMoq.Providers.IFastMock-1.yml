@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMock
     path: FastMoq.Abstractions/Providers/IMock.cs
@@ -38,6 +38,8 @@ items:
   - FastMoq.Providers.IFastMock.NativeMock
   - FastMoq.Providers.IFastMock.Reset
   extensionMethods:
+  - FastMoq.Providers.IFastMock.FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(System.IServiceProvider)
+  - FastMoq.Providers.IFastMock.FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(System.String)
   - FastMoq.Providers.IFastMock.FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq
   - FastMoq.Providers.IFastMock`1.FastMoq.Extensions.ObjectExtensions.RaiseIfNull``1(System.String,System.String,System.Nullable{System.Int32},System.String)
   - FastMoq.Providers.IFastMock`1.FastMoq.Extensions.TestClassExtensions.GetFieldValue``1(System.String,FastMoq.Providers.IFastMock{{T}})
@@ -88,7 +90,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Abstractions/Providers/IMock.cs
@@ -172,6 +174,85 @@ references:
     name: Reset
     href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
   - name: (
+  - name: )
+- uid: FastMoq.Providers.IFastMock.FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(System.IServiceProvider)
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+  parent: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  definition: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+  href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Providers_IFastMock_System_IServiceProvider_
+  name: AddFunctionContextInstanceServices(IFastMock, IServiceProvider)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(IFastMock, IServiceProvider)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock, System.IServiceProvider)
+  spec.csharp:
+  - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+    name: AddFunctionContextInstanceServices
+    href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Providers_IFastMock_System_IServiceProvider_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: )
+  spec.vb:
+  - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+    name: AddFunctionContextInstanceServices
+    href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Providers_IFastMock_System_IServiceProvider_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: )
+- uid: FastMoq.Providers.IFastMock.FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(System.String)
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+  parent: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  definition: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+  href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Providers_IFastMock_System_String_
+  name: AddFunctionContextInvocationId(IFastMock, string)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInvocationId(IFastMock, string)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock, string)
+  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInvocationId(IFastMock, String)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock, String)
+  name.vb: AddFunctionContextInvocationId(IFastMock, String)
+  spec.csharp:
+  - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+    name: AddFunctionContextInvocationId
+    href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Providers_IFastMock_System_String_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+    name: AddFunctionContextInvocationId
+    href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Providers_IFastMock_System_String_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
 - uid: FastMoq.Providers.IFastMock.FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq
   commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq(FastMoq.Providers.IFastMock)
@@ -2608,6 +2689,90 @@ references:
   name: IFastMock
   nameWithType: IFastMock
   fullName: FastMoq.Providers.IFastMock
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+  isExternal: true
+  href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Providers_IFastMock_System_IServiceProvider_
+  name: AddFunctionContextInstanceServices(IFastMock, IServiceProvider)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(IFastMock, IServiceProvider)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock, System.IServiceProvider)
+  spec.csharp:
+  - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+    name: AddFunctionContextInstanceServices
+    href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Providers_IFastMock_System_IServiceProvider_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: )
+  spec.vb:
+  - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+    name: AddFunctionContextInstanceServices
+    href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Providers_IFastMock_System_IServiceProvider_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: )
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  commentId: T:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  parent: FastMoq.AzureFunctions.Extensions
+  href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html
+  name: FunctionContextTestExtensions
+  nameWithType: FunctionContextTestExtensions
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+  isExternal: true
+  href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Providers_IFastMock_System_String_
+  name: AddFunctionContextInvocationId(IFastMock, string)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInvocationId(IFastMock, string)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock, string)
+  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInvocationId(IFastMock, String)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock, String)
+  name.vb: AddFunctionContextInvocationId(IFastMock, String)
+  spec.csharp:
+  - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+    name: AddFunctionContextInvocationId
+    href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Providers_IFastMock_System_String_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+    name: AddFunctionContextInvocationId
+    href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Providers_IFastMock_System_String_
+  - name: (
+  - uid: FastMoq.Providers.IFastMock
+    name: IFastMock
+    href: FastMoq.Providers.IFastMock.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
 - uid: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq(FastMoq.Providers.IFastMock)
   commentId: M:FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.AsMoq(FastMoq.Providers.IFastMock)
   href: FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html#FastMoq_Providers_MoqProvider_IFastMockMoqExtensions_AsMoq_FastMoq_Providers_IFastMock_
@@ -4729,6 +4894,36 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: FastMoq.AzureFunctions.Extensions
+  commentId: N:FastMoq.AzureFunctions.Extensions
+  href: FastMoq.html
+  name: FastMoq.AzureFunctions.Extensions
+  nameWithType: FastMoq.AzureFunctions.Extensions
+  fullName: FastMoq.AzureFunctions.Extensions
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.AzureFunctions
+    name: AzureFunctions
+    href: FastMoq.AzureFunctions.html
+  - name: .
+  - uid: FastMoq.AzureFunctions.Extensions
+    name: Extensions
+    href: FastMoq.AzureFunctions.Extensions.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.AzureFunctions
+    name: AzureFunctions
+    href: FastMoq.AzureFunctions.html
+  - name: .
+  - uid: FastMoq.AzureFunctions.Extensions
+    name: Extensions
+    href: FastMoq.AzureFunctions.Extensions.html
 - uid: FastMoq.Providers.MoqProvider
   commentId: N:FastMoq.Providers.MoqProvider
   href: FastMoq.html
@@ -4829,3 +5024,4 @@ references:
   name: T
   nameWithType: T
   fullName: T
+

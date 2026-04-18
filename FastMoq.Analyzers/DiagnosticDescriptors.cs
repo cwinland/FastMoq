@@ -114,6 +114,15 @@ namespace FastMoq.Analyzers
             isEnabledByDefault: true,
             description: "Prefer SetupOptions<T>(...) over repeated IOptions<T> AddType(...)/Options.Create(...) and Setup(x => x.Value).Returns(...) patterns when registering test options values.");
 
+        public static readonly DiagnosticDescriptor PreferLoggerFactoryHelpers = new(
+            DiagnosticIds.PreferLoggerFactoryHelpers,
+            "Prefer AddLoggerFactory for output-helper logger registration",
+            "Use '{0}' instead of direct output-helper logger registration",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "Prefer AddLoggerFactory(...) over direct AddType<ILoggerFactory>(new ...output-helper...), AddType<ILogger>(new ...output-helper...), or AddType<ILogger<T>>(new ...output-helper...) registrations when the logger registration only mirrors logs into xUnit-style output helpers.");
+
         public static readonly DiagnosticDescriptor PreferPropertySetterCaptureHelper = new(
             DiagnosticIds.PreferPropertySetterCaptureHelper,
             "Prefer provider-neutral property setter capture",
@@ -157,7 +166,7 @@ namespace FastMoq.Analyzers
             Category,
             DiagnosticSeverity.Info,
             isEnabledByDefault: true,
-            description: "Prefer CreateHttpContext(...), CreateControllerContext(...), AddHttpContext(...), and AddHttpContextAccessor(...) over hand-rolled AddType(...), DefaultHttpContext, or ControllerContext setup for common web test primitives.");
+            description: "Prefer CreateHttpContext(...), CreateControllerContext(...), AddHttpContext(...), AddHttpContextAccessor(...), SetRequestBody(...), and SetRequestJsonBody(...) over hand-rolled AddType(...), DefaultHttpContext, or direct HttpRequest body wiring for common web test primitives.");
 
         public static readonly DiagnosticDescriptor PreferProviderNeutralHttpHelpers = new(
             DiagnosticIds.PreferProviderNeutralHttpHelpers,
@@ -176,6 +185,15 @@ namespace FastMoq.Analyzers
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: "Mocking IServiceProvider, IServiceScopeFactory, or IServiceScope directly often creates one-object-for-all-types shims. Prefer CreateTypedServiceProvider(...), CreateTypedServiceScope(...), AddServiceProvider(...), AddServiceScope(...), CreateFunctionContextInstanceServices(...), or AddFunctionContextInstanceServices(...) so framework code resolves services by requested type.");
+
+        public static readonly DiagnosticDescriptor PreferFunctionContextExecutionHelpers = new(
+            DiagnosticIds.PreferFunctionContextExecutionHelpers,
+            "Prefer FunctionContext execution helpers",
+            "Prefer FastMoq's FunctionContext execution helpers instead of '{0}' for Azure Functions execution metadata setup",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "Prefer AddFunctionContextInvocationId(...) over raw provider-native InvocationId setup so Azure Functions tests stay on FastMoq's helper surface and package-aware guidance remains consistent.");
 
         public static readonly DiagnosticDescriptor PreferKnownTypeRegistrations = new(
             DiagnosticIds.PreferKnownTypeRegistrations,
@@ -212,5 +230,50 @@ namespace FastMoq.Analyzers
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: "Core-only projects can keep legacy Moq-shaped FastMoq usage during migration, but that path should be explicit. Add the FastMoq.Provider.Moq package when staying on FastMoq.Core, and declare moq as the selected provider so future cleanup and analyzer guidance stay deterministic.");
+
+        public static readonly DiagnosticDescriptor UseProviderFirstVerify = new(
+            DiagnosticIds.UseProviderFirstVerify,
+            "Use provider-first verification",
+            "Use '{0}' instead of provider-native Verify(...) on tracked FastMoq mocks",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "Tracked FastMoq mocks should use Mocker.Verify<T>(...) and TimesSpec instead of Moq Verify(...) when the translation is mechanical and provider-neutral." );
+
+        public static readonly DiagnosticDescriptor AvoidBareTrackedVerify = new(
+            DiagnosticIds.AvoidBareTrackedVerify,
+            "Avoid bare tracked Verify()",
+            "Tracked provider-native Verify() keeps this test on the Moq surface. Replace it with explicit Mocker.Verify<T>(...) assertions or remove the redundant Verify().",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "Bare Verify() on tracked FastMoq mocks usually reflects Verifiable()-style migration leftovers and should be made explicit or removed instead of staying on the provider-native surface.");
+
+        public static readonly DiagnosticDescriptor AvoidTrackedMockShimAlias = new(
+            DiagnosticIds.AvoidTrackedMockShimAlias,
+            "Avoid tracked Mock<T> shim aliases",
+            "Tracked alias '{0}' is typed as 'Mock<T>' and keeps later work on the Moq surface. Prefer an IFastMock<T> handle plus Mocker.Verify<T>(...).",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "Properties, fields, and locals typed as Mock<T> but sourced from tracked FastMoq mocks unnecessarily keep verification and helper usage provider-specific.");
+
+        public static readonly DiagnosticDescriptor AvoidRawMockCreationInFastMoqSuites = new(
+            DiagnosticIds.AvoidRawMockCreationInFastMoqSuites,
+            "Avoid raw Mock<T> creation in FastMoq suites",
+            "Raw '{0}' inside FastMoq test infrastructure is usually a migration leftover. Prefer {1}.",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "When a test already uses Mocker or MockerTestBase infrastructure, raw new Mock<T>() creation is usually a leftover from older Moq-first patterns. Prefer tracked GetOrCreateMock<T>() for the single-instance path, or a standalone provider-first handle when the test truly needs another independent mock of the same type.");
+
+        public static readonly DiagnosticDescriptor ReferenceFastMoqHelperPackage = new(
+            DiagnosticIds.ReferenceFastMoqHelperPackage,
+            "Add required FastMoq helper package",
+            "'{0}' lives in '{1}'. Add package '{1}' and import '{2}'.",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "Some provider-first helper replacements live in split FastMoq packages such as FastMoq.Web or FastMoq.AzureFunctions. When the helper package is missing, guide the user to the package and namespace instead of surfacing a non-actionable rewrite diagnostic.");
     }
 }

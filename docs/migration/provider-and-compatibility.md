@@ -26,14 +26,20 @@ Use this table when package names and in-editor namespace discovery drift apart 
 
 | Package | Common namespace imports | Typical surfaces you expect to appear |
 | --- | --- | --- |
+| `FastMoq` | `FastMoq`, `FastMoq.Extensions`, `FastMoq.Providers`, plus any helper namespaces you choose to use | Aggregate package that brings the primary runtime, shared helper packages, and analyzer assets into one install |
 | `FastMoq.Core` | `FastMoq`, `FastMoq.Extensions`, `FastMoq.Providers` | `Mocker`, `MockerTestBase<T>`, `GetOrCreateMock<T>()`, `GetObject<T>()`, `Verify(...)`, `VerifyLogged(...)`, `MockingProviderRegistry` |
+| `FastMoq.Abstractions` | `FastMoq.Providers` | `IMockingProvider`, `IMockingProviderCapabilities`, `IFastMock`, `TimesSpec`, `MockCreationOptions`, `FastMoqDefaultProviderAttribute`, `FastMoqRegisterProviderAttribute` |
+| `FastMoq.Azure` | `FastMoq.Azure.Pageable`, `FastMoq.Azure.Credentials`, `FastMoq.Azure.DependencyInjection`, `FastMoq.Azure.KeyVault`, `FastMoq.Azure.Storage` | `PageableBuilder`, credential helpers, Azure DI/config helpers, and common Azure client registration helpers |
 | `FastMoq.AzureFunctions` | `FastMoq.AzureFunctions.Extensions` | `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)` |
+| `FastMoq.Analyzers` | n/a at runtime | Roslyn diagnostics and targeted code fixes such as `FMOQ0003` and `FMOQ0013`, plus advisory migration diagnostics such as `FMOQ0030`, for provider-first authoring guidance |
 | `FastMoq.Provider.Moq` | `FastMoq.Providers.MoqProvider` | `MoqMockingProvider`, `AsMoq()`, `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, `Protected()` |
 | `FastMoq.Provider.NSubstitute` | `FastMoq.Providers.NSubstituteProvider` | `NSubstituteMockingProvider`, `AsNSubstitute()`, `Received(...)`, `DidNotReceive()` |
 | `FastMoq.Web` | `FastMoq.Web`, `FastMoq.Web.Extensions` | `TestClaimsPrincipalOptions`, `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, `AddHttpContextAccessor(...)` |
 | `FastMoq.Database` | `FastMoq` | `GetMockDbContext<TContext>()`, `GetDbContextHandle<TContext>()`, `DbContextHandleOptions<TContext>`, `DbContextTestMode` |
 
 Packages control availability. Namespaces control extension discovery and which APIs light up in the editor.
+
+Most test projects should start with `FastMoq` or `FastMoq.Core`. `FastMoq.Abstractions` is mainly for custom-provider or advanced extension work, while `FastMoq.Analyzers` only contributes diagnostics and code fixes at build time.
 
 Installing `FastMoq.Core` plus `FastMoq.Provider.Moq` is not enough by itself. The Moq provider still needs to be selected as the default for that test assembly.
 
@@ -173,7 +179,7 @@ Two practical rules help here:
 Analyzer notes:
 
 - `FMOQ0013` warns on raw `IServiceProvider`, `IServiceScopeFactory`, and `IServiceScope` shims, plus manual scope-factory extraction, and pushes them toward the typed helper path
-- for Azure Functions worker tests, `FMOQ0013` also warns on direct `FunctionContext.InstanceServices` `Setup(...)`, `SetupGet(...)`, and `SetupProperty(...)` usage, but the auto-fix is intentionally narrower and only appears when `FastMoq.AzureFunctions` is already referenced for the safe provider-assignment shapes that can become `context.AddFunctionContextInstanceServices(provider)`
+- for Azure Functions worker tests, `FMOQ0013` also warns on direct `FunctionContext.InstanceServices` `Setup(...)`, `SetupGet(...)`, and `SetupProperty(...)` usage, and the auto-fix appears when `FastMoq.AzureFunctions` is already referenced for the direct provider-assignment shapes that can become `context.AddFunctionContextInstanceServices(provider)`
 - `FMOQ0014` warns on context-aware compatibility `AddType(...)` usage and pushes it toward `AddKnownType(...)`
 - `FMOQ0015` warns when same-type keyed constructor dependencies are accidentally collapsed into one unkeyed double
 

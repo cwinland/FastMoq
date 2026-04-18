@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/IInstanceModel.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: IInstanceModel
     path: FastMoq.Core/Models/IInstanceModel.cs
@@ -78,7 +78,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/IInstanceModel.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: Type
     path: FastMoq.Core/Models/IInstanceModel.cs
@@ -110,7 +110,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/IInstanceModel.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateFunc
     path: FastMoq.Core/Models/IInstanceModel.cs
@@ -142,7 +142,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/IInstanceModel.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceType
     path: FastMoq.Core/Models/IInstanceModel.cs
@@ -174,7 +174,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/IInstanceModel.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: Arguments
     path: FastMoq.Core/Models/IInstanceModel.cs
@@ -3197,3 +3197,4 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+

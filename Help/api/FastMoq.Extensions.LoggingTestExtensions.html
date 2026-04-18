@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class LoggingTestExtensions | FastMoq </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class LoggingTestExtensions | FastMoq ">
+    
+    <meta name="description" content="Provides framework-neutral logger registration helpers for test composition.">
+      <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+      <link rel="shortcut icon" href="../favicon.svg">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <link rel="stylesheet" href="../styles/fastmoq-docs.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand fastmoq-brand" href="../index.html">
+                <span class="fastmoq-brand-text">FastMoq</span>
+              </a>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="FastMoq.Extensions.LoggingTestExtensions">
+
+
+
+  <h1 id="FastMoq_Extensions_LoggingTestExtensions" data-uid="FastMoq.Extensions.LoggingTestExtensions" class="text-break">Class LoggingTestExtensions</h1>
+  <div class="markdown level0 summary"><p>Provides framework-neutral logger registration helpers for test composition.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">LoggingTestExtensions</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="FastMoq.html">FastMoq</a>.<a class="xref" href="FastMoq.Extensions.html">Extensions</a></h6>
+  <h6><strong>Assembly</strong>: FastMoq.Core.dll</h6>
+  <h5 id="FastMoq_Extensions_LoggingTestExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class LoggingTestExtensions</code></pre>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <a id="FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_" data-uid="FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory*"></a>
+  <h4 id="FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_Microsoft_Extensions_Logging_ILoggerFactory_System_Boolean_" data-uid="FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,Microsoft.Extensions.Logging.ILoggerFactory,System.Boolean)">AddLoggerFactory(Mocker, ILoggerFactory, bool)</h4>
+  <div class="markdown level1 summary"><p>Registers an <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a> and resolves <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a> services from that factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Mocker AddLoggerFactory(this Mocker mocker, ILoggerFactory loggerFactory, bool replace = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a></td>
+        <td><span class="parametername">loggerFactory</span></td>
+        <td><p>The logger factory to register.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">replace</span></td>
+        <td><p>True to replace existing logger registrations.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_Microsoft_Extensions_Logging_ILoggerFactory_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Prefer <a class="xref" href="FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__">CreateLoggerFactory(Mocker, Action&lt;ILoggingBuilder&gt;?)</a> when you want log output to flow into <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_LogEntries">LogEntries</a> and <a class="xref" href="FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_VerifyLogged_FastMoq_Mocker_Microsoft_Extensions_Logging_LogLevel_System_String_">VerifyLogged(Mocker, LogLevel, string)</a>.</p>
+</div>
+  <a id="FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_" data-uid="FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory*"></a>
+  <h4 id="FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean_" data-uid="FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)">AddLoggerFactory(Mocker, Action&lt;ILoggingBuilder&gt;?, bool)</h4>
+  <div class="markdown level1 summary"><p>Creates and registers a logger factory along with direct <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a> and <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger&lt;TCategoryName&gt;</a> resolution support.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Mocker AddLoggerFactory(this Mocker mocker, Action&lt;ILoggingBuilder&gt;? configureLogging = null, bool replace = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggingbuilder">ILoggingBuilder</a>&gt;</td>
+        <td><span class="parametername">configureLogging</span></td>
+        <td><p>Optional logging builder customization applied before the FastMoq capture provider is added.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">replace</span></td>
+        <td><p>True to replace existing logger registrations.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean__examples">Examples</h5>
+  <pre><code class="lang-csharp">var mocker = new Mocker()
+    .AddLoggerFactory();
+
+var logger = mocker.GetObject&lt;ILogger&lt;CheckoutService&gt;&gt;();
+logger.LogInformation("submitted order");
+
+mocker.VerifyLogged(LogLevel.Information, "submitted order");</code></pre>
+
+  <a id="FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_" data-uid="FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory*"></a>
+  <h4 id="FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean_" data-uid="FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)">AddLoggerFactory(Mocker, Action&lt;LogLevel, EventId, string, Exception?&gt;, Action&lt;ILoggingBuilder&gt;?, bool)</h4>
+  <div class="markdown level1 summary"><p>Creates and registers a logger factory that mirrors captured log entries to the supplied sink while still forwarding them into the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Mocker AddLoggerFactory(this Mocker mocker, Action&lt;LogLevel, EventId, string, Exception?&gt; sink, Action&lt;ILoggingBuilder&gt;? configureLogging = null, bool replace = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-4">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a>&gt;</td>
+        <td><span class="parametername">sink</span></td>
+        <td><p>A sink that receives each captured log entry after FastMoq records it.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggingbuilder">ILoggingBuilder</a>&gt;</td>
+        <td><span class="parametername">configureLogging</span></td>
+        <td><p>Optional logging builder customization applied before the FastMoq capture provider is added.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">replace</span></td>
+        <td><p>True to replace existing logger registrations.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_" data-uid="FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory*"></a>
+  <h4 id="FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_System_String__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean_" data-uid="FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)">AddLoggerFactory(Mocker, Action&lt;string&gt;, Action&lt;ILoggingBuilder&gt;?, bool)</h4>
+  <div class="markdown level1 summary"><p>Creates and registers a logger factory that mirrors formatted log lines to the supplied writer while still forwarding captured entries into the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Mocker AddLoggerFactory(this Mocker mocker, Action&lt;string&gt; lineWriter, Action&lt;ILoggingBuilder&gt;? configureLogging = null, bool replace = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><span class="parametername">lineWriter</span></td>
+        <td><p>A line writer that receives a formatted representation of each captured log entry.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggingbuilder">ILoggingBuilder</a>&gt;</td>
+        <td><span class="parametername">configureLogging</span></td>
+        <td><p>Optional logging builder customization applied before the FastMoq capture provider is added.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">replace</span></td>
+        <td><p>True to replace existing logger registrations.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_" data-uid="FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory*"></a>
+  <h4 id="FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__" data-uid="FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})">CreateLoggerFactory(Mocker, Action&lt;ILoggingBuilder&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Creates a logger factory that forwards captured log entries into the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ILoggerFactory CreateLoggerFactory(this Mocker mocker, Action&lt;ILoggingBuilder&gt;? configureLogging = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggingbuilder">ILoggingBuilder</a>&gt;</td>
+        <td><span class="parametername">configureLogging</span></td>
+        <td><p>Optional logging builder customization applied before the FastMoq capture provider is added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a></td>
+        <td><p>A logger factory that writes into <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_LogEntries">LogEntries</a> through the current mocker callback.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder___examples">Examples</h5>
+  <pre><code class="lang-csharp">var loggerFactory = Mocks.CreateLoggerFactory();
+var provider = Mocks.CreateTypedServiceProvider(services =&gt;
+{
+    services.AddSingleton(loggerFactory);
+    services.AddSingleton(typeof(ILogger&lt;&gt;), typeof(Logger&lt;&gt;));
+});</code></pre>
+
+  <a id="FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_" data-uid="FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory*"></a>
+  <h4 id="FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__" data-uid="FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})">CreateLoggerFactory(Mocker, Action&lt;LogLevel, EventId, string, Exception?&gt;, Action&lt;ILoggingBuilder&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Creates a logger factory that mirrors captured log entries to the supplied sink while still forwarding them into the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ILoggerFactory CreateLoggerFactory(this Mocker mocker, Action&lt;LogLevel, EventId, string, Exception?&gt; sink, Action&lt;ILoggingBuilder&gt;? configureLogging = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-4">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.eventid">EventId</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a>&gt;</td>
+        <td><span class="parametername">sink</span></td>
+        <td><p>A sink that receives each captured log entry after FastMoq records it.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggingbuilder">ILoggingBuilder</a>&gt;</td>
+        <td><span class="parametername">configureLogging</span></td>
+        <td><p>Optional logging builder customization applied before the FastMoq capture provider is added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a></td>
+        <td><p>A logger factory that mirrors captured entries to <code class="paramref">sink</code> and <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_LogEntries">LogEntries</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder___examples">Examples</h5>
+  <pre><code class="lang-csharp">var loggerFactory = Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) =&gt;
+{
+    output.WriteLine($"[{logLevel}] {message}");
+});</code></pre>
+
+  <a id="FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_" data-uid="FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory*"></a>
+  <h4 id="FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_System_String__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__" data-uid="FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})">CreateLoggerFactory(Mocker, Action&lt;string&gt;, Action&lt;ILoggingBuilder&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Creates a logger factory that mirrors formatted log lines to the supplied writer while still forwarding captured entries into the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ILoggerFactory CreateLoggerFactory(this Mocker mocker, Action&lt;string&gt; lineWriter, Action&lt;ILoggingBuilder&gt;? configureLogging = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><span class="parametername">lineWriter</span></td>
+        <td><p>A line writer that receives a formatted representation of each captured log entry.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggingbuilder">ILoggingBuilder</a>&gt;</td>
+        <td><span class="parametername">configureLogging</span></td>
+        <td><p>Optional logging builder customization applied before the FastMoq capture provider is added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.iloggerfactory">ILoggerFactory</a></td>
+        <td><p>A logger factory that mirrors formatted log lines to <code class="paramref">lineWriter</code> and raw entries to <a class="xref" href="FastMoq.Mocker.html#FastMoq_Mocker_LogEntries">LogEntries</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_System_String__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder___examples">Examples</h5>
+  <pre><code class="lang-csharp">var loggerFactory = Mocks.CreateLoggerFactory(output.WriteLine);</code></pre>
+
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

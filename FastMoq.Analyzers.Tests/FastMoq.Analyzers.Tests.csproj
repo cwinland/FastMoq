@@ -35,6 +35,7 @@
     <ProjectReference Include="..\FastMoq.Core\FastMoq.Core.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.Moq\FastMoq.Provider.Moq.csproj" />
     <ProjectReference Include="..\FastMoq.Provider.NSubstitute\FastMoq.Provider.NSubstitute.csproj" />
+    <ProjectReference Include="..\FastMoq.Web\FastMoq.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

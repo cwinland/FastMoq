@@ -119,6 +119,31 @@ Per-call options may still override the relevant creation or invocation behavior
   </div>
   <h3 id="properties">Properties
 </h3>
+  <a id="FastMoq_MockerPolicyOptions_DefaultConstructorAmbiguityBehavior_" data-uid="FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior*"></a>
+  <h4 id="FastMoq_MockerPolicyOptions_DefaultConstructorAmbiguityBehavior" data-uid="FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior">DefaultConstructorAmbiguityBehavior</h4>
+  <div class="markdown level1 summary"><p>Controls how FastMoq resolves constructor ambiguity when multiple equally viable constructors remain after candidate filtering.
+The default preserves the existing throw behavior for backward compatibility.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ConstructorAmbiguityBehavior DefaultConstructorAmbiguityBehavior { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.ConstructorAmbiguityBehavior.html">ConstructorAmbiguityBehavior</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <a id="FastMoq_MockerPolicyOptions_DefaultFallbackToNonPublicConstructors_" data-uid="FastMoq.MockerPolicyOptions.DefaultFallbackToNonPublicConstructors*"></a>
   <h4 id="FastMoq_MockerPolicyOptions_DefaultFallbackToNonPublicConstructors" data-uid="FastMoq.MockerPolicyOptions.DefaultFallbackToNonPublicConstructors">DefaultFallbackToNonPublicConstructors</h4>
   <div class="markdown level1 summary"><p>Indicates whether instance creation should fall back to non-public constructors by default when no public constructor can satisfy the request.</p>
@@ -298,7 +323,7 @@ DbContext-specific mock creation path, which stays on the supported DbContext he
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

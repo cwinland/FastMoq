@@ -2,9 +2,12 @@ using FastMoq.Web;
 using FastMoq.Web.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FastMoq.Tests.Web
@@ -416,6 +419,57 @@ namespace FastMoq.Tests.Web
             httpContext.Request.Headers["X-Correlation-Id"].ToString().Should().Be("corr-123");
             httpContext.Request.Headers["X-Tenant"].ToString().Should().Be("tenant-a");
             httpContext.Request.Headers["X-Roles"].Should().BeEquivalentTo(["Admin", "Writer"]);
+        }
+
+        [Fact]
+        public async Task SetRequestBody_ShouldApplySeekableStreamAndResetPosition()
+        {
+            var httpContext = new DefaultHttpContext();
+            var body = new MemoryStream(Encoding.UTF8.GetBytes("alpha"));
+            body.Position = body.Length;
+
+            httpContext.SetRequestBody(body, "text/plain; charset=utf-8");
+
+            httpContext.Request.ContentType.Should().Be("text/plain; charset=utf-8");
+            httpContext.Request.ContentLength.Should().Be(body.Length);
+            httpContext.Request.Body.Position.Should().Be(0);
+
+            using var reader = new StreamReader(httpContext.Request.Body, Encoding.UTF8, leaveOpen: true);
+            var payload = await reader.ReadToEndAsync();
+
+            payload.Should().Be("alpha");
+        }
+
+        [Fact]
+        public async Task SetRequestBody_ShouldApplyStringPayloadUsingRequestedEncoding()
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.SetRequestBody("hello", Encoding.Unicode, "text/plain; charset=utf-16");
+
+            httpContext.Request.ContentType.Should().Be("text/plain; charset=utf-16");
+            httpContext.Request.ContentLength.Should().BeGreaterThan(0);
+
+            using var reader = new StreamReader(httpContext.Request.Body, Encoding.Unicode, leaveOpen: true);
+            var payload = await reader.ReadToEndAsync();
+
+            payload.Should().Be("hello");
+        }
+
+        [Fact]
+        public async Task SetRequestJsonBody_ShouldSerializePayloadAndStampJsonContentType()
+        {
+            var httpContext = new DefaultHttpContext();
+
+            httpContext.SetRequestJsonBody(new SamplePayload("json-value"));
+
+            httpContext.Request.ContentType.Should().Be("application/json; charset=utf-8");
+            httpContext.Request.ContentLength.Should().BeGreaterThan(0);
+            httpContext.Request.Body.Position.Should().Be(0);
+
+            var payload = await JsonSerializer.DeserializeAsync<SamplePayload>(httpContext.Request.Body);
+
+            payload.Should().Be(new SamplePayload("json-value"));
         }
 
         [Fact]

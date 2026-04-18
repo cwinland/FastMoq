@@ -812,6 +812,12 @@ references:
   fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.IServiceProvider, Boolean)
   nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, IServiceProvider, bool)
   nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, IServiceProvider, Boolean)
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+  name: AddFunctionContextInstanceServices(IFastMock, IServiceProvider)
+  href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Providers_IFastMock_System_IServiceProvider_
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock, System.IServiceProvider)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(IFastMock, IServiceProvider)
 - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices*
   name: AddFunctionContextInstanceServices
   href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_
@@ -819,6 +825,31 @@ references:
   isSpec: "True"
   fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices
   nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Mocker,System.String,System.Boolean)
+  name: AddFunctionContextInvocationId(Mocker, string, bool)
+  href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Mocker_System_String_System_Boolean_
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Mocker,System.String,System.Boolean)
+  name.vb: AddFunctionContextInvocationId(Mocker, String, Boolean)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Mocker, string, bool)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Mocker, String, Boolean)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInvocationId(Mocker, string, bool)
+  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInvocationId(Mocker, String, Boolean)
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+  name: AddFunctionContextInvocationId(IFastMock, string)
+  href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Providers_IFastMock_System_String_
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+  name.vb: AddFunctionContextInvocationId(IFastMock, String)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock, string)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock, String)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInvocationId(IFastMock, string)
+  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInvocationId(IFastMock, String)
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId*
+  name: AddFunctionContextInvocationId
+  href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInvocationId
 - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
   name: CreateFunctionContextInstanceServices(Mocker, Action<IServiceCollection>?, bool)
   href: api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_CreateFunctionContextInstanceServices_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
@@ -835,6 +866,433 @@ references:
   isSpec: "True"
   fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices
   nameWithType: FunctionContextTestExtensions.CreateFunctionContextInstanceServices
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  name: HttpTriggerTestExtensions
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html
+  commentId: T:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+  nameWithType: HttpTriggerTestExtensions
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  name: CreateHttpRequestData(Mocker, Action<HttpRequestDataBuilder>?)
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpRequestData_FastMoq_Mocker_System_Action_FastMoq_AzureFunctions_Http_HttpRequestDataBuilder__
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  name.vb: CreateHttpRequestData(Mocker, Action(Of HttpRequestDataBuilder))
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(FastMoq.Mocker, System.Action<FastMoq.AzureFunctions.Http.HttpRequestDataBuilder>?)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(FastMoq.Mocker, System.Action(Of FastMoq.AzureFunctions.Http.HttpRequestDataBuilder))
+  nameWithType: HttpTriggerTestExtensions.CreateHttpRequestData(Mocker, Action<HttpRequestDataBuilder>?)
+  nameWithType.vb: HttpTriggerTestExtensions.CreateHttpRequestData(Mocker, Action(Of HttpRequestDataBuilder))
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  name: CreateHttpRequestData(FunctionContext, Action<HttpRequestDataBuilder>?)
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpRequestData_Microsoft_Azure_Functions_Worker_FunctionContext_System_Action_FastMoq_AzureFunctions_Http_HttpRequestDataBuilder__
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpRequestDataBuilder})
+  name.vb: CreateHttpRequestData(FunctionContext, Action(Of HttpRequestDataBuilder))
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext, System.Action<FastMoq.AzureFunctions.Http.HttpRequestDataBuilder>?)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData(Microsoft.Azure.Functions.Worker.FunctionContext, System.Action(Of FastMoq.AzureFunctions.Http.HttpRequestDataBuilder))
+  nameWithType: HttpTriggerTestExtensions.CreateHttpRequestData(FunctionContext, Action<HttpRequestDataBuilder>?)
+  nameWithType.vb: HttpTriggerTestExtensions.CreateHttpRequestData(FunctionContext, Action(Of HttpRequestDataBuilder))
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData*
+  name: CreateHttpRequestData
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpRequestData_
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpRequestData
+  nameWithType: HttpTriggerTestExtensions.CreateHttpRequestData
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  name: CreateHttpResponseData(Mocker, Action<HttpResponseDataBuilder>?)
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpResponseData_FastMoq_Mocker_System_Action_FastMoq_AzureFunctions_Http_HttpResponseDataBuilder__
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(FastMoq.Mocker,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  name.vb: CreateHttpResponseData(Mocker, Action(Of HttpResponseDataBuilder))
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(FastMoq.Mocker, System.Action<FastMoq.AzureFunctions.Http.HttpResponseDataBuilder>?)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(FastMoq.Mocker, System.Action(Of FastMoq.AzureFunctions.Http.HttpResponseDataBuilder))
+  nameWithType: HttpTriggerTestExtensions.CreateHttpResponseData(Mocker, Action<HttpResponseDataBuilder>?)
+  nameWithType.vb: HttpTriggerTestExtensions.CreateHttpResponseData(Mocker, Action(Of HttpResponseDataBuilder))
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  name: CreateHttpResponseData(FunctionContext, Action<HttpResponseDataBuilder>?)
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpResponseData_Microsoft_Azure_Functions_Worker_FunctionContext_System_Action_FastMoq_AzureFunctions_Http_HttpResponseDataBuilder__
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext,System.Action{FastMoq.AzureFunctions.Http.HttpResponseDataBuilder})
+  name.vb: CreateHttpResponseData(FunctionContext, Action(Of HttpResponseDataBuilder))
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext, System.Action<FastMoq.AzureFunctions.Http.HttpResponseDataBuilder>?)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData(Microsoft.Azure.Functions.Worker.FunctionContext, System.Action(Of FastMoq.AzureFunctions.Http.HttpResponseDataBuilder))
+  nameWithType: HttpTriggerTestExtensions.CreateHttpResponseData(FunctionContext, Action<HttpResponseDataBuilder>?)
+  nameWithType.vb: HttpTriggerTestExtensions.CreateHttpResponseData(FunctionContext, Action(Of HttpResponseDataBuilder))
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData*
+  name: CreateHttpResponseData
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_CreateHttpResponseData_
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.CreateHttpResponseData
+  nameWithType: HttpTriggerTestExtensions.CreateHttpResponseData
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync*
+  name: ReadBodyAsJsonAsync
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsJsonAsync_
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsJsonAsync
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  name: ReadBodyAsJsonAsync<TValue>(HttpRequestData, JsonSerializerOptions?, CancellationToken)
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsJsonAsync__1_Microsoft_Azure_Functions_Worker_Http_HttpRequestData_System_Text_Json_JsonSerializerOptions_System_Threading_CancellationToken_
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  name.vb: ReadBodyAsJsonAsync(Of TValue)(HttpRequestData, JsonSerializerOptions, CancellationToken)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync<TValue>(Microsoft.Azure.Functions.Worker.Http.HttpRequestData, System.Text.Json.JsonSerializerOptions?, System.Threading.CancellationToken)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync(Of TValue)(Microsoft.Azure.Functions.Worker.Http.HttpRequestData, System.Text.Json.JsonSerializerOptions, System.Threading.CancellationToken)
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsJsonAsync<TValue>(HttpRequestData, JsonSerializerOptions?, CancellationToken)
+  nameWithType.vb: HttpTriggerTestExtensions.ReadBodyAsJsonAsync(Of TValue)(HttpRequestData, JsonSerializerOptions, CancellationToken)
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  name: ReadBodyAsJsonAsync<TValue>(HttpResponseData, JsonSerializerOptions?, CancellationToken)
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsJsonAsync__1_Microsoft_Azure_Functions_Worker_Http_HttpResponseData_System_Text_Json_JsonSerializerOptions_System_Threading_CancellationToken_
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync``1(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)
+  name.vb: ReadBodyAsJsonAsync(Of TValue)(HttpResponseData, JsonSerializerOptions, CancellationToken)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync<TValue>(Microsoft.Azure.Functions.Worker.Http.HttpResponseData, System.Text.Json.JsonSerializerOptions?, System.Threading.CancellationToken)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsJsonAsync(Of TValue)(Microsoft.Azure.Functions.Worker.Http.HttpResponseData, System.Text.Json.JsonSerializerOptions, System.Threading.CancellationToken)
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsJsonAsync<TValue>(HttpResponseData, JsonSerializerOptions?, CancellationToken)
+  nameWithType.vb: HttpTriggerTestExtensions.ReadBodyAsJsonAsync(Of TValue)(HttpResponseData, JsonSerializerOptions, CancellationToken)
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Encoding)
+  name: ReadBodyAsStringAsync(HttpRequestData, Encoding?)
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsStringAsync_Microsoft_Azure_Functions_Worker_Http_HttpRequestData_System_Text_Encoding_
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData,System.Text.Encoding)
+  name.vb: ReadBodyAsStringAsync(HttpRequestData, Encoding)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData, System.Text.Encoding?)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpRequestData, System.Text.Encoding)
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsStringAsync(HttpRequestData, Encoding?)
+  nameWithType.vb: HttpTriggerTestExtensions.ReadBodyAsStringAsync(HttpRequestData, Encoding)
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Encoding)
+  name: ReadBodyAsStringAsync(HttpResponseData, Encoding?)
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsStringAsync_Microsoft_Azure_Functions_Worker_Http_HttpResponseData_System_Text_Encoding_
+  commentId: M:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData,System.Text.Encoding)
+  name.vb: ReadBodyAsStringAsync(HttpResponseData, Encoding)
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData, System.Text.Encoding?)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync(Microsoft.Azure.Functions.Worker.Http.HttpResponseData, System.Text.Encoding)
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsStringAsync(HttpResponseData, Encoding?)
+  nameWithType.vb: HttpTriggerTestExtensions.ReadBodyAsStringAsync(HttpResponseData, Encoding)
+- uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync*
+  name: ReadBodyAsStringAsync
+  href: api/FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.html#FastMoq_AzureFunctions_Extensions_HttpTriggerTestExtensions_ReadBodyAsStringAsync_
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions.ReadBodyAsStringAsync
+  nameWithType: HttpTriggerTestExtensions.ReadBodyAsStringAsync
+- uid: FastMoq.AzureFunctions.Http
+  name: FastMoq.AzureFunctions.Http
+  href: api/FastMoq.AzureFunctions.Http.html
+  commentId: N:FastMoq.AzureFunctions.Http
+  fullName: FastMoq.AzureFunctions.Http
+  nameWithType: FastMoq.AzureFunctions.Http
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder
+  name: HttpRequestDataBuilder
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html
+  commentId: T:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder
+  nameWithType: HttpRequestDataBuilder
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.#ctor(Microsoft.Azure.Functions.Worker.FunctionContext)
+  name: HttpRequestDataBuilder(FunctionContext)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder__ctor_Microsoft_Azure_Functions_Worker_FunctionContext_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.#ctor(Microsoft.Azure.Functions.Worker.FunctionContext)
+  name.vb: New(FunctionContext)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.HttpRequestDataBuilder(Microsoft.Azure.Functions.Worker.FunctionContext)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.New(Microsoft.Azure.Functions.Worker.FunctionContext)
+  nameWithType: HttpRequestDataBuilder.HttpRequestDataBuilder(FunctionContext)
+  nameWithType.vb: HttpRequestDataBuilder.New(FunctionContext)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.#ctor*
+  name: HttpRequestDataBuilder
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder__ctor_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.HttpRequestDataBuilder
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.New
+  nameWithType: HttpRequestDataBuilder.HttpRequestDataBuilder
+  nameWithType.vb: HttpRequestDataBuilder.New
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.Build
+  name: Build()
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_Build
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.Build
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.Build()
+  nameWithType: HttpRequestDataBuilder.Build()
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.Build*
+  name: Build
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_Build_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.Build
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.Build
+  nameWithType: HttpRequestDataBuilder.Build
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody(System.IO.Stream,System.String)
+  name: WithBody(Stream, string?)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithBody_System_IO_Stream_System_String_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody(System.IO.Stream,System.String)
+  name.vb: WithBody(Stream, String)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody(System.IO.Stream, string?)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody(System.IO.Stream, String)
+  nameWithType: HttpRequestDataBuilder.WithBody(Stream, string?)
+  nameWithType.vb: HttpRequestDataBuilder.WithBody(Stream, String)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody(System.String,System.Text.Encoding,System.String)
+  name: WithBody(string, Encoding?, string?)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithBody_System_String_System_Text_Encoding_System_String_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody(System.String,System.Text.Encoding,System.String)
+  name.vb: WithBody(String, Encoding, String)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody(string, System.Text.Encoding?, string?)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody(String, System.Text.Encoding, String)
+  nameWithType: HttpRequestDataBuilder.WithBody(string, Encoding?, string?)
+  nameWithType.vb: HttpRequestDataBuilder.WithBody(String, Encoding, String)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody*
+  name: WithBody
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithBody_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithBody
+  nameWithType: HttpRequestDataBuilder.WithBody
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithClaimsPrincipal(System.Security.Claims.ClaimsPrincipal)
+  name: WithClaimsPrincipal(ClaimsPrincipal)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithClaimsPrincipal_System_Security_Claims_ClaimsPrincipal_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithClaimsPrincipal(System.Security.Claims.ClaimsPrincipal)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithClaimsPrincipal(System.Security.Claims.ClaimsPrincipal)
+  nameWithType: HttpRequestDataBuilder.WithClaimsPrincipal(ClaimsPrincipal)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithClaimsPrincipal*
+  name: WithClaimsPrincipal
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithClaimsPrincipal_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithClaimsPrincipal
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithClaimsPrincipal
+  nameWithType: HttpRequestDataBuilder.WithClaimsPrincipal
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithCookie(System.String,System.String,System.String,System.String)
+  name: WithCookie(string, string, string?, string?)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithCookie_System_String_System_String_System_String_System_String_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithCookie(System.String,System.String,System.String,System.String)
+  name.vb: WithCookie(String, String, String, String)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithCookie(string, string, string?, string?)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithCookie(String, String, String, String)
+  nameWithType: HttpRequestDataBuilder.WithCookie(string, string, string?, string?)
+  nameWithType.vb: HttpRequestDataBuilder.WithCookie(String, String, String, String)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithCookie*
+  name: WithCookie
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithCookie_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithCookie
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithCookie
+  nameWithType: HttpRequestDataBuilder.WithCookie
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithHeader(System.String,System.String)
+  name: WithHeader(string, string)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithHeader_System_String_System_String_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithHeader(System.String,System.String)
+  name.vb: WithHeader(String, String)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithHeader(string, string)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithHeader(String, String)
+  nameWithType: HttpRequestDataBuilder.WithHeader(string, string)
+  nameWithType.vb: HttpRequestDataBuilder.WithHeader(String, String)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithHeader*
+  name: WithHeader
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithHeader_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithHeader
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithHeader
+  nameWithType: HttpRequestDataBuilder.WithHeader
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithIdentity(System.Security.Claims.ClaimsIdentity)
+  name: WithIdentity(ClaimsIdentity)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithIdentity_System_Security_Claims_ClaimsIdentity_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithIdentity(System.Security.Claims.ClaimsIdentity)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithIdentity(System.Security.Claims.ClaimsIdentity)
+  nameWithType: HttpRequestDataBuilder.WithIdentity(ClaimsIdentity)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithIdentity*
+  name: WithIdentity
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithIdentity_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithIdentity
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithIdentity
+  nameWithType: HttpRequestDataBuilder.WithIdentity
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithJsonBody*
+  name: WithJsonBody
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithJsonBody_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithJsonBody
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithJsonBody
+  nameWithType: HttpRequestDataBuilder.WithJsonBody
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithJsonBody``1(``0,System.Text.Json.JsonSerializerOptions)
+  name: WithJsonBody<TValue>(TValue, JsonSerializerOptions?)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithJsonBody__1___0_System_Text_Json_JsonSerializerOptions_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithJsonBody``1(``0,System.Text.Json.JsonSerializerOptions)
+  name.vb: WithJsonBody(Of TValue)(TValue, JsonSerializerOptions)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithJsonBody<TValue>(TValue, System.Text.Json.JsonSerializerOptions?)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithJsonBody(Of TValue)(TValue, System.Text.Json.JsonSerializerOptions)
+  nameWithType: HttpRequestDataBuilder.WithJsonBody<TValue>(TValue, JsonSerializerOptions?)
+  nameWithType.vb: HttpRequestDataBuilder.WithJsonBody(Of TValue)(TValue, JsonSerializerOptions)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithMethod(System.String)
+  name: WithMethod(string)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithMethod_System_String_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithMethod(System.String)
+  name.vb: WithMethod(String)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithMethod(string)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithMethod(String)
+  nameWithType: HttpRequestDataBuilder.WithMethod(string)
+  nameWithType.vb: HttpRequestDataBuilder.WithMethod(String)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithMethod*
+  name: WithMethod
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithMethod_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithMethod
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithMethod
+  nameWithType: HttpRequestDataBuilder.WithMethod
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithQueryParameter(System.String,System.String)
+  name: WithQueryParameter(string, string?)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithQueryParameter_System_String_System_String_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithQueryParameter(System.String,System.String)
+  name.vb: WithQueryParameter(String, String)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithQueryParameter(string, string?)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithQueryParameter(String, String)
+  nameWithType: HttpRequestDataBuilder.WithQueryParameter(string, string?)
+  nameWithType.vb: HttpRequestDataBuilder.WithQueryParameter(String, String)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithQueryParameter*
+  name: WithQueryParameter
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithQueryParameter_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithQueryParameter
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithQueryParameter
+  nameWithType: HttpRequestDataBuilder.WithQueryParameter
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl(System.String)
+  name: WithUrl(string)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithUrl_System_String_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl(System.String)
+  name.vb: WithUrl(String)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl(string)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl(String)
+  nameWithType: HttpRequestDataBuilder.WithUrl(string)
+  nameWithType.vb: HttpRequestDataBuilder.WithUrl(String)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl(System.Uri)
+  name: WithUrl(Uri)
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithUrl_System_Uri_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl(System.Uri)
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl(System.Uri)
+  nameWithType: HttpRequestDataBuilder.WithUrl(Uri)
+- uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl*
+  name: WithUrl
+  href: api/FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.html#FastMoq_AzureFunctions_Http_HttpRequestDataBuilder_WithUrl_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder.WithUrl
+  nameWithType: HttpRequestDataBuilder.WithUrl
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder
+  name: HttpResponseDataBuilder
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html
+  commentId: T:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder
+  nameWithType: HttpResponseDataBuilder
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.#ctor(Microsoft.Azure.Functions.Worker.FunctionContext)
+  name: HttpResponseDataBuilder(FunctionContext)
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder__ctor_Microsoft_Azure_Functions_Worker_FunctionContext_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.#ctor(Microsoft.Azure.Functions.Worker.FunctionContext)
+  name.vb: New(FunctionContext)
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.HttpResponseDataBuilder(Microsoft.Azure.Functions.Worker.FunctionContext)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.New(Microsoft.Azure.Functions.Worker.FunctionContext)
+  nameWithType: HttpResponseDataBuilder.HttpResponseDataBuilder(FunctionContext)
+  nameWithType.vb: HttpResponseDataBuilder.New(FunctionContext)
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.#ctor*
+  name: HttpResponseDataBuilder
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder__ctor_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.HttpResponseDataBuilder
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.New
+  nameWithType: HttpResponseDataBuilder.HttpResponseDataBuilder
+  nameWithType.vb: HttpResponseDataBuilder.New
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.Build
+  name: Build()
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_Build
+  commentId: M:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.Build
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.Build()
+  nameWithType: HttpResponseDataBuilder.Build()
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.Build*
+  name: Build
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_Build_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.Build
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.Build
+  nameWithType: HttpResponseDataBuilder.Build
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody(System.IO.Stream,System.String)
+  name: WithBody(Stream, string?)
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithBody_System_IO_Stream_System_String_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody(System.IO.Stream,System.String)
+  name.vb: WithBody(Stream, String)
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody(System.IO.Stream, string?)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody(System.IO.Stream, String)
+  nameWithType: HttpResponseDataBuilder.WithBody(Stream, string?)
+  nameWithType.vb: HttpResponseDataBuilder.WithBody(Stream, String)
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody(System.String,System.Text.Encoding,System.String)
+  name: WithBody(string, Encoding?, string?)
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithBody_System_String_System_Text_Encoding_System_String_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody(System.String,System.Text.Encoding,System.String)
+  name.vb: WithBody(String, Encoding, String)
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody(string, System.Text.Encoding?, string?)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody(String, System.Text.Encoding, String)
+  nameWithType: HttpResponseDataBuilder.WithBody(string, Encoding?, string?)
+  nameWithType.vb: HttpResponseDataBuilder.WithBody(String, Encoding, String)
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody*
+  name: WithBody
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithBody_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithBody
+  nameWithType: HttpResponseDataBuilder.WithBody
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithCookie(System.String,System.String,System.String,System.String,System.Nullable{System.Boolean},System.Nullable{System.Boolean})
+  name: WithCookie(string, string, string?, string?, bool?, bool?)
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithCookie_System_String_System_String_System_String_System_String_System_Nullable_System_Boolean__System_Nullable_System_Boolean__
+  commentId: M:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithCookie(System.String,System.String,System.String,System.String,System.Nullable{System.Boolean},System.Nullable{System.Boolean})
+  name.vb: WithCookie(String, String, String, String, Boolean?, Boolean?)
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithCookie(string, string, string?, string?, bool?, bool?)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithCookie(String, String, String, String, Boolean?, Boolean?)
+  nameWithType: HttpResponseDataBuilder.WithCookie(string, string, string?, string?, bool?, bool?)
+  nameWithType.vb: HttpResponseDataBuilder.WithCookie(String, String, String, String, Boolean?, Boolean?)
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithCookie*
+  name: WithCookie
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithCookie_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithCookie
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithCookie
+  nameWithType: HttpResponseDataBuilder.WithCookie
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithHeader(System.String,System.String)
+  name: WithHeader(string, string)
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithHeader_System_String_System_String_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithHeader(System.String,System.String)
+  name.vb: WithHeader(String, String)
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithHeader(string, string)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithHeader(String, String)
+  nameWithType: HttpResponseDataBuilder.WithHeader(string, string)
+  nameWithType.vb: HttpResponseDataBuilder.WithHeader(String, String)
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithHeader*
+  name: WithHeader
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithHeader_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithHeader
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithHeader
+  nameWithType: HttpResponseDataBuilder.WithHeader
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithJsonBody*
+  name: WithJsonBody
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithJsonBody_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithJsonBody
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithJsonBody
+  nameWithType: HttpResponseDataBuilder.WithJsonBody
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithJsonBody``1(``0,System.Text.Json.JsonSerializerOptions)
+  name: WithJsonBody<TValue>(TValue, JsonSerializerOptions?)
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithJsonBody__1___0_System_Text_Json_JsonSerializerOptions_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithJsonBody``1(``0,System.Text.Json.JsonSerializerOptions)
+  name.vb: WithJsonBody(Of TValue)(TValue, JsonSerializerOptions)
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithJsonBody<TValue>(TValue, System.Text.Json.JsonSerializerOptions?)
+  fullName.vb: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithJsonBody(Of TValue)(TValue, System.Text.Json.JsonSerializerOptions)
+  nameWithType: HttpResponseDataBuilder.WithJsonBody<TValue>(TValue, JsonSerializerOptions?)
+  nameWithType.vb: HttpResponseDataBuilder.WithJsonBody(Of TValue)(TValue, JsonSerializerOptions)
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithStatusCode(System.Net.HttpStatusCode)
+  name: WithStatusCode(HttpStatusCode)
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithStatusCode_System_Net_HttpStatusCode_
+  commentId: M:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithStatusCode(System.Net.HttpStatusCode)
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithStatusCode(System.Net.HttpStatusCode)
+  nameWithType: HttpResponseDataBuilder.WithStatusCode(HttpStatusCode)
+- uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithStatusCode*
+  name: WithStatusCode
+  href: api/FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.html#FastMoq_AzureFunctions_Http_HttpResponseDataBuilder_WithStatusCode_
+  commentId: Overload:FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithStatusCode
+  isSpec: "True"
+  fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.WithStatusCode
+  nameWithType: HttpResponseDataBuilder.WithStatusCode
 - uid: FastMoq.BuiltInTypeResolutionFlags
   name: BuiltInTypeResolutionFlags
   href: api/FastMoq.BuiltInTypeResolutionFlags.html
@@ -889,6 +1347,24 @@ references:
   commentId: F:FastMoq.BuiltInTypeResolutionFlags.Uri
   fullName: FastMoq.BuiltInTypeResolutionFlags.Uri
   nameWithType: BuiltInTypeResolutionFlags.Uri
+- uid: FastMoq.ConstructorAmbiguityBehavior
+  name: ConstructorAmbiguityBehavior
+  href: api/FastMoq.ConstructorAmbiguityBehavior.html
+  commentId: T:FastMoq.ConstructorAmbiguityBehavior
+  fullName: FastMoq.ConstructorAmbiguityBehavior
+  nameWithType: ConstructorAmbiguityBehavior
+- uid: FastMoq.ConstructorAmbiguityBehavior.PreferParameterlessConstructor
+  name: PreferParameterlessConstructor
+  href: api/FastMoq.ConstructorAmbiguityBehavior.html#FastMoq_ConstructorAmbiguityBehavior_PreferParameterlessConstructor
+  commentId: F:FastMoq.ConstructorAmbiguityBehavior.PreferParameterlessConstructor
+  fullName: FastMoq.ConstructorAmbiguityBehavior.PreferParameterlessConstructor
+  nameWithType: ConstructorAmbiguityBehavior.PreferParameterlessConstructor
+- uid: FastMoq.ConstructorAmbiguityBehavior.Throw
+  name: Throw
+  href: api/FastMoq.ConstructorAmbiguityBehavior.html#FastMoq_ConstructorAmbiguityBehavior_Throw
+  commentId: F:FastMoq.ConstructorAmbiguityBehavior.Throw
+  fullName: FastMoq.ConstructorAmbiguityBehavior.Throw
+  nameWithType: ConstructorAmbiguityBehavior.Throw
 - uid: FastMoq.DbContextHandleOptions`1
   name: DbContextHandleOptions<TContext>
   href: api/FastMoq.DbContextHandleOptions-1.html
@@ -1199,6 +1675,89 @@ references:
   isSpec: "True"
   fullName: FastMoq.Extensions.IdentityHelperExtensions.SetUser
   nameWithType: IdentityHelperExtensions.SetUser
+- uid: FastMoq.Extensions.LoggingTestExtensions
+  name: LoggingTestExtensions
+  href: api/FastMoq.Extensions.LoggingTestExtensions.html
+  commentId: T:FastMoq.Extensions.LoggingTestExtensions
+  fullName: FastMoq.Extensions.LoggingTestExtensions
+  nameWithType: LoggingTestExtensions
+- uid: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,Microsoft.Extensions.Logging.ILoggerFactory,System.Boolean)
+  name: AddLoggerFactory(Mocker, ILoggerFactory, bool)
+  href: api/FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_Microsoft_Extensions_Logging_ILoggerFactory_System_Boolean_
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,Microsoft.Extensions.Logging.ILoggerFactory,System.Boolean)
+  name.vb: AddLoggerFactory(Mocker, ILoggerFactory, Boolean)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, Microsoft.Extensions.Logging.ILoggerFactory, bool)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, Microsoft.Extensions.Logging.ILoggerFactory, Boolean)
+  nameWithType: LoggingTestExtensions.AddLoggerFactory(Mocker, ILoggerFactory, bool)
+  nameWithType.vb: LoggingTestExtensions.AddLoggerFactory(Mocker, ILoggerFactory, Boolean)
+- uid: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  name: AddLoggerFactory(Mocker, Action<ILoggingBuilder>?, bool)
+  href: api/FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean_
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  name.vb: AddLoggerFactory(Mocker, Action(Of ILoggingBuilder), Boolean)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?, bool)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder), Boolean)
+  nameWithType: LoggingTestExtensions.AddLoggerFactory(Mocker, Action<ILoggingBuilder>?, bool)
+  nameWithType.vb: LoggingTestExtensions.AddLoggerFactory(Mocker, Action(Of ILoggingBuilder), Boolean)
+- uid: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  name: AddLoggerFactory(Mocker, Action<LogLevel, EventId, string, Exception?>, Action<ILoggingBuilder>?, bool)
+  href: api/FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean_
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  name.vb: AddLoggerFactory(Mocker, Action(Of LogLevel, EventId, String, Exception), Action(Of ILoggingBuilder), Boolean)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception?>, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?, bool)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception), System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder), Boolean)
+  nameWithType: LoggingTestExtensions.AddLoggerFactory(Mocker, Action<LogLevel, EventId, string, Exception?>, Action<ILoggingBuilder>?, bool)
+  nameWithType.vb: LoggingTestExtensions.AddLoggerFactory(Mocker, Action(Of LogLevel, EventId, String, Exception), Action(Of ILoggingBuilder), Boolean)
+- uid: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  name: AddLoggerFactory(Mocker, Action<string>, Action<ILoggingBuilder>?, bool)
+  href: api/FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_FastMoq_Mocker_System_Action_System_String__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__System_Boolean_
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder},System.Boolean)
+  name.vb: AddLoggerFactory(Mocker, Action(Of String), Action(Of ILoggingBuilder), Boolean)
+  fullName: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action<string>, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?, bool)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory(FastMoq.Mocker, System.Action(Of String), System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder), Boolean)
+  nameWithType: LoggingTestExtensions.AddLoggerFactory(Mocker, Action<string>, Action<ILoggingBuilder>?, bool)
+  nameWithType.vb: LoggingTestExtensions.AddLoggerFactory(Mocker, Action(Of String), Action(Of ILoggingBuilder), Boolean)
+- uid: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory*
+  name: AddLoggerFactory
+  href: api/FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_AddLoggerFactory_
+  commentId: Overload:FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory
+  isSpec: "True"
+  fullName: FastMoq.Extensions.LoggingTestExtensions.AddLoggerFactory
+  nameWithType: LoggingTestExtensions.AddLoggerFactory
+- uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  name: CreateLoggerFactory(Mocker, Action<ILoggingBuilder>?)
+  href: api/FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  name.vb: CreateLoggerFactory(Mocker, Action(Of ILoggingBuilder))
+  fullName: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder))
+  nameWithType: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action<ILoggingBuilder>?)
+  nameWithType.vb: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action(Of ILoggingBuilder))
+- uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  name: CreateLoggerFactory(Mocker, Action<LogLevel, EventId, string, Exception?>, Action<ILoggingBuilder>?)
+  href: api/FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_Microsoft_Extensions_Logging_LogLevel_Microsoft_Extensions_Logging_EventId_System_String_System_Exception__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,System.Exception},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  name.vb: CreateLoggerFactory(Mocker, Action(Of LogLevel, EventId, String, Exception), Action(Of ILoggingBuilder))
+  fullName: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action<Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, string, System.Exception?>, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.Logging.LogLevel, Microsoft.Extensions.Logging.EventId, String, System.Exception), System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder))
+  nameWithType: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action<LogLevel, EventId, string, Exception?>, Action<ILoggingBuilder>?)
+  nameWithType.vb: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action(Of LogLevel, EventId, String, Exception), Action(Of ILoggingBuilder))
+- uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  name: CreateLoggerFactory(Mocker, Action<string>, Action<ILoggingBuilder>?)
+  href: api/FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_FastMoq_Mocker_System_Action_System_String__System_Action_Microsoft_Extensions_Logging_ILoggingBuilder__
+  commentId: M:FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker,System.Action{System.String},System.Action{Microsoft.Extensions.Logging.ILoggingBuilder})
+  name.vb: CreateLoggerFactory(Mocker, Action(Of String), Action(Of ILoggingBuilder))
+  fullName: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action<string>, System.Action<Microsoft.Extensions.Logging.ILoggingBuilder>?)
+  fullName.vb: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory(FastMoq.Mocker, System.Action(Of String), System.Action(Of Microsoft.Extensions.Logging.ILoggingBuilder))
+  nameWithType: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action<string>, Action<ILoggingBuilder>?)
+  nameWithType.vb: LoggingTestExtensions.CreateLoggerFactory(Mocker, Action(Of String), Action(Of ILoggingBuilder))
+- uid: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory*
+  name: CreateLoggerFactory
+  href: api/FastMoq.Extensions.LoggingTestExtensions.html#FastMoq_Extensions_LoggingTestExtensions_CreateLoggerFactory_
+  commentId: Overload:FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory
+  isSpec: "True"
+  fullName: FastMoq.Extensions.LoggingTestExtensions.CreateLoggerFactory
+  nameWithType: LoggingTestExtensions.CreateLoggerFactory
 - uid: FastMoq.Extensions.MockerBooleanExtensions
   name: MockerBooleanExtensions
   href: api/FastMoq.Extensions.MockerBooleanExtensions.html
@@ -1659,21 +2218,123 @@ references:
   fullName.vb: FastMoq.Extensions.ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
   nameWithType: ObjectExtensions.RaiseIfNull<T>(T?, string?, string?, int?, string?)
   nameWithType.vb: ObjectExtensions.RaiseIfNull(Of T)(T, String, String, Integer?, String)
+- uid: FastMoq.Extensions.OptionsTestExtensions
+  name: OptionsTestExtensions
+  href: api/FastMoq.Extensions.OptionsTestExtensions.html
+  commentId: T:FastMoq.Extensions.OptionsTestExtensions
+  fullName: FastMoq.Extensions.OptionsTestExtensions
+  nameWithType: OptionsTestExtensions
+- uid: FastMoq.Extensions.OptionsTestExtensions.SetupOptions*
+  name: SetupOptions
+  href: api/FastMoq.Extensions.OptionsTestExtensions.html#FastMoq_Extensions_OptionsTestExtensions_SetupOptions_
+  commentId: Overload:FastMoq.Extensions.OptionsTestExtensions.SetupOptions
+  isSpec: "True"
+  fullName: FastMoq.Extensions.OptionsTestExtensions.SetupOptions
+  nameWithType: OptionsTestExtensions.SetupOptions
+- uid: FastMoq.Extensions.OptionsTestExtensions.SetupOptions``1(FastMoq.Mocker,System.Boolean)
+  name: SetupOptions<T>(Mocker, bool)
+  href: api/FastMoq.Extensions.OptionsTestExtensions.html#FastMoq_Extensions_OptionsTestExtensions_SetupOptions__1_FastMoq_Mocker_System_Boolean_
+  commentId: M:FastMoq.Extensions.OptionsTestExtensions.SetupOptions``1(FastMoq.Mocker,System.Boolean)
+  name.vb: SetupOptions(Of T)(Mocker, Boolean)
+  fullName: FastMoq.Extensions.OptionsTestExtensions.SetupOptions<T>(FastMoq.Mocker, bool)
+  fullName.vb: FastMoq.Extensions.OptionsTestExtensions.SetupOptions(Of T)(FastMoq.Mocker, Boolean)
+  nameWithType: OptionsTestExtensions.SetupOptions<T>(Mocker, bool)
+  nameWithType.vb: OptionsTestExtensions.SetupOptions(Of T)(Mocker, Boolean)
+- uid: FastMoq.Extensions.OptionsTestExtensions.SetupOptions``1(FastMoq.Mocker,System.Func{``0},System.Boolean)
+  name: SetupOptions<T>(Mocker, Func<T>, bool)
+  href: api/FastMoq.Extensions.OptionsTestExtensions.html#FastMoq_Extensions_OptionsTestExtensions_SetupOptions__1_FastMoq_Mocker_System_Func___0__System_Boolean_
+  commentId: M:FastMoq.Extensions.OptionsTestExtensions.SetupOptions``1(FastMoq.Mocker,System.Func{``0},System.Boolean)
+  name.vb: SetupOptions(Of T)(Mocker, Func(Of T), Boolean)
+  fullName: FastMoq.Extensions.OptionsTestExtensions.SetupOptions<T>(FastMoq.Mocker, System.Func<T>, bool)
+  fullName.vb: FastMoq.Extensions.OptionsTestExtensions.SetupOptions(Of T)(FastMoq.Mocker, System.Func(Of T), Boolean)
+  nameWithType: OptionsTestExtensions.SetupOptions<T>(Mocker, Func<T>, bool)
+  nameWithType.vb: OptionsTestExtensions.SetupOptions(Of T)(Mocker, Func(Of T), Boolean)
+- uid: FastMoq.Extensions.OptionsTestExtensions.SetupOptions``1(FastMoq.Mocker,``0,System.Boolean)
+  name: SetupOptions<T>(Mocker, T, bool)
+  href: api/FastMoq.Extensions.OptionsTestExtensions.html#FastMoq_Extensions_OptionsTestExtensions_SetupOptions__1_FastMoq_Mocker___0_System_Boolean_
+  commentId: M:FastMoq.Extensions.OptionsTestExtensions.SetupOptions``1(FastMoq.Mocker,``0,System.Boolean)
+  name.vb: SetupOptions(Of T)(Mocker, T, Boolean)
+  fullName: FastMoq.Extensions.OptionsTestExtensions.SetupOptions<T>(FastMoq.Mocker, T, bool)
+  fullName.vb: FastMoq.Extensions.OptionsTestExtensions.SetupOptions(Of T)(FastMoq.Mocker, T, Boolean)
+  nameWithType: OptionsTestExtensions.SetupOptions<T>(Mocker, T, bool)
+  nameWithType.vb: OptionsTestExtensions.SetupOptions(Of T)(Mocker, T, Boolean)
+- uid: FastMoq.Extensions.PropertySetterCaptureExtensions
+  name: PropertySetterCaptureExtensions
+  href: api/FastMoq.Extensions.PropertySetterCaptureExtensions.html
+  commentId: T:FastMoq.Extensions.PropertySetterCaptureExtensions
+  fullName: FastMoq.Extensions.PropertySetterCaptureExtensions
+  nameWithType: PropertySetterCaptureExtensions
+- uid: FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture*
+  name: AddPropertySetterCapture
+  href: api/FastMoq.Extensions.PropertySetterCaptureExtensions.html#FastMoq_Extensions_PropertySetterCaptureExtensions_AddPropertySetterCapture_
+  commentId: Overload:FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture
+  isSpec: "True"
+  fullName: FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture
+  nameWithType: PropertySetterCaptureExtensions.AddPropertySetterCapture
+- uid: FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},FastMoq.PropertyValueCapture{``1},System.Boolean)
+  name: AddPropertySetterCapture<TService, TValue>(Mocker, Expression<Func<TService, TValue>>, PropertyValueCapture<TValue>, bool)
+  href: api/FastMoq.Extensions.PropertySetterCaptureExtensions.html#FastMoq_Extensions_PropertySetterCaptureExtensions_AddPropertySetterCapture__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0___1___FastMoq_PropertyValueCapture___1__System_Boolean_
+  commentId: M:FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},FastMoq.PropertyValueCapture{``1},System.Boolean)
+  name.vb: AddPropertySetterCapture(Of TService, TValue)(Mocker, Expression(Of Func(Of TService, TValue)), PropertyValueCapture(Of TValue), Boolean)
+  fullName: FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture<TService, TValue>(FastMoq.Mocker, System.Linq.Expressions.Expression<System.Func<TService, TValue>>, FastMoq.PropertyValueCapture<TValue>, bool)
+  fullName.vb: FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture(Of TService, TValue)(FastMoq.Mocker, System.Linq.Expressions.Expression(Of System.Func(Of TService, TValue)), FastMoq.PropertyValueCapture(Of TValue), Boolean)
+  nameWithType: PropertySetterCaptureExtensions.AddPropertySetterCapture<TService, TValue>(Mocker, Expression<Func<TService, TValue>>, PropertyValueCapture<TValue>, bool)
+  nameWithType.vb: PropertySetterCaptureExtensions.AddPropertySetterCapture(Of TService, TValue)(Mocker, Expression(Of Func(Of TService, TValue)), PropertyValueCapture(Of TValue), Boolean)
+- uid: FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Boolean)
+  name: AddPropertySetterCapture<TService, TValue>(Mocker, Expression<Func<TService, TValue>>, bool)
+  href: api/FastMoq.Extensions.PropertySetterCaptureExtensions.html#FastMoq_Extensions_PropertySetterCaptureExtensions_AddPropertySetterCapture__2_FastMoq_Mocker_System_Linq_Expressions_Expression_System_Func___0___1___System_Boolean_
+  commentId: M:FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture``2(FastMoq.Mocker,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Boolean)
+  name.vb: AddPropertySetterCapture(Of TService, TValue)(Mocker, Expression(Of Func(Of TService, TValue)), Boolean)
+  fullName: FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture<TService, TValue>(FastMoq.Mocker, System.Linq.Expressions.Expression<System.Func<TService, TValue>>, bool)
+  fullName.vb: FastMoq.Extensions.PropertySetterCaptureExtensions.AddPropertySetterCapture(Of TService, TValue)(FastMoq.Mocker, System.Linq.Expressions.Expression(Of System.Func(Of TService, TValue)), Boolean)
+  nameWithType: PropertySetterCaptureExtensions.AddPropertySetterCapture<TService, TValue>(Mocker, Expression<Func<TService, TValue>>, bool)
+  nameWithType.vb: PropertySetterCaptureExtensions.AddPropertySetterCapture(Of TService, TValue)(Mocker, Expression(Of Func(Of TService, TValue)), Boolean)
+- uid: FastMoq.Extensions.PropertyStateExtensions
+  name: PropertyStateExtensions
+  href: api/FastMoq.Extensions.PropertyStateExtensions.html
+  commentId: T:FastMoq.Extensions.PropertyStateExtensions
+  fullName: FastMoq.Extensions.PropertyStateExtensions
+  nameWithType: PropertyStateExtensions
+- uid: FastMoq.Extensions.PropertyStateExtensions.AddPropertyState*
+  name: AddPropertyState
+  href: api/FastMoq.Extensions.PropertyStateExtensions.html#FastMoq_Extensions_PropertyStateExtensions_AddPropertyState_
+  commentId: Overload:FastMoq.Extensions.PropertyStateExtensions.AddPropertyState
+  isSpec: "True"
+  fullName: FastMoq.Extensions.PropertyStateExtensions.AddPropertyState
+  nameWithType: PropertyStateExtensions.AddPropertyState
+- uid: FastMoq.Extensions.PropertyStateExtensions.AddPropertyState``1(FastMoq.Mocker,FastMoq.PropertyStateMode,System.Boolean)
+  name: AddPropertyState<TService>(Mocker, PropertyStateMode, bool)
+  href: api/FastMoq.Extensions.PropertyStateExtensions.html#FastMoq_Extensions_PropertyStateExtensions_AddPropertyState__1_FastMoq_Mocker_FastMoq_PropertyStateMode_System_Boolean_
+  commentId: M:FastMoq.Extensions.PropertyStateExtensions.AddPropertyState``1(FastMoq.Mocker,FastMoq.PropertyStateMode,System.Boolean)
+  name.vb: AddPropertyState(Of TService)(Mocker, PropertyStateMode, Boolean)
+  fullName: FastMoq.Extensions.PropertyStateExtensions.AddPropertyState<TService>(FastMoq.Mocker, FastMoq.PropertyStateMode, bool)
+  fullName.vb: FastMoq.Extensions.PropertyStateExtensions.AddPropertyState(Of TService)(FastMoq.Mocker, FastMoq.PropertyStateMode, Boolean)
+  nameWithType: PropertyStateExtensions.AddPropertyState<TService>(Mocker, PropertyStateMode, bool)
+  nameWithType.vb: PropertyStateExtensions.AddPropertyState(Of TService)(Mocker, PropertyStateMode, Boolean)
+- uid: FastMoq.Extensions.PropertyStateExtensions.AddPropertyState``1(FastMoq.Mocker,System.Boolean)
+  name: AddPropertyState<TService>(Mocker, bool)
+  href: api/FastMoq.Extensions.PropertyStateExtensions.html#FastMoq_Extensions_PropertyStateExtensions_AddPropertyState__1_FastMoq_Mocker_System_Boolean_
+  commentId: M:FastMoq.Extensions.PropertyStateExtensions.AddPropertyState``1(FastMoq.Mocker,System.Boolean)
+  name.vb: AddPropertyState(Of TService)(Mocker, Boolean)
+  fullName: FastMoq.Extensions.PropertyStateExtensions.AddPropertyState<TService>(FastMoq.Mocker, bool)
+  fullName.vb: FastMoq.Extensions.PropertyStateExtensions.AddPropertyState(Of TService)(FastMoq.Mocker, Boolean)
+  nameWithType: PropertyStateExtensions.AddPropertyState<TService>(Mocker, bool)
+  nameWithType.vb: PropertyStateExtensions.AddPropertyState(Of TService)(Mocker, Boolean)
 - uid: FastMoq.Extensions.ServiceProviderTestExtensions
   name: ServiceProviderTestExtensions
   href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html
   commentId: T:FastMoq.Extensions.ServiceProviderTestExtensions
   fullName: FastMoq.Extensions.ServiceProviderTestExtensions
   nameWithType: ServiceProviderTestExtensions
-- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
-  name: AddServiceProvider(Mocker, Action<IServiceCollection>?, bool)
-  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
-  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
-  name.vb: AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
-  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool)
-  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
-  nameWithType: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action<IServiceCollection>?, bool)
-  nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  name: AddServiceProvider(Mocker, Action<IServiceCollection>?, bool, bool)
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_System_Boolean_
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  name.vb: AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool, bool)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean, Boolean)
+  nameWithType: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action<IServiceCollection>?, bool, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
 - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
   name: AddServiceProvider(Mocker, IServiceProvider, bool)
   href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
@@ -1690,15 +2351,49 @@ references:
   isSpec: "True"
   fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider
   nameWithType: ServiceProviderTestExtensions.AddServiceProvider
-- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
-  name: CreateTypedServiceProvider(Mocker, Action<IServiceCollection>?)
-  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__
-  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
-  name.vb: CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection))
-  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?)
-  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection))
-  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action<IServiceCollection>?)
-  nameWithType.vb: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection))
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,Microsoft.Extensions.DependencyInjection.IServiceScope,System.Boolean)
+  name: AddServiceScope(Mocker, IServiceScope, bool)
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_FastMoq_Mocker_Microsoft_Extensions_DependencyInjection_IServiceScope_System_Boolean_
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,Microsoft.Extensions.DependencyInjection.IServiceScope,System.Boolean)
+  name.vb: AddServiceScope(Mocker, IServiceScope, Boolean)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, Microsoft.Extensions.DependencyInjection.IServiceScope, bool)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, Microsoft.Extensions.DependencyInjection.IServiceScope, Boolean)
+  nameWithType: ServiceProviderTestExtensions.AddServiceScope(Mocker, IServiceScope, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceScope(Mocker, IServiceScope, Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  name: AddServiceScope(Mocker, Action<IServiceCollection>?, bool, bool)
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_System_Boolean_
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  name.vb: AddServiceScope(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool, bool)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean, Boolean)
+  nameWithType: ServiceProviderTestExtensions.AddServiceScope(Mocker, Action<IServiceCollection>?, bool, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceScope(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  name: AddServiceScope(Mocker, IServiceProvider, bool)
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  name.vb: AddServiceScope(Mocker, IServiceProvider, Boolean)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, System.IServiceProvider, bool)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, System.IServiceProvider, Boolean)
+  nameWithType: ServiceProviderTestExtensions.AddServiceScope(Mocker, IServiceProvider, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceScope(Mocker, IServiceProvider, Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope*
+  name: AddServiceScope
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_
+  commentId: Overload:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope
+  isSpec: "True"
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope
+  nameWithType: ServiceProviderTestExtensions.AddServiceScope
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  name: CreateTypedServiceProvider(Mocker, Action<IServiceCollection>?, bool)
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  name.vb: CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
+  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action<IServiceCollection>?, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
 - uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider*
   name: CreateTypedServiceProvider
   href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_
@@ -1706,6 +2401,22 @@ references:
   isSpec: "True"
   fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider
   nameWithType: ServiceProviderTestExtensions.CreateTypedServiceProvider
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  name: CreateTypedServiceScope(Mocker, Action<IServiceCollection>?, bool)
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceScope_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  name.vb: CreateTypedServiceScope(Mocker, Action(Of IServiceCollection), Boolean)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
+  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceScope(Mocker, Action<IServiceCollection>?, bool)
+  nameWithType.vb: ServiceProviderTestExtensions.CreateTypedServiceScope(Mocker, Action(Of IServiceCollection), Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope*
+  name: CreateTypedServiceScope
+  href: api/FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceScope_
+  commentId: Overload:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope
+  isSpec: "True"
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope
+  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceScope
 - uid: FastMoq.Extensions.TestClassExtensions
   name: TestClassExtensions
   href: api/FastMoq.Extensions.TestClassExtensions.html
@@ -1753,15 +2464,6 @@ references:
   fullName.vb: FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action, String, String, System.Action(Of String))
   nameWithType: TestClassExtensions.EnsureNullCheckThrown(Action, string, string?, Action<string>?)
   nameWithType.vb: TestClassExtensions.EnsureNullCheckThrown(Action, String, String, Action(Of String))
-- uid: FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action,System.String,System.String,Xunit.Abstractions.ITestOutputHelper)
-  name: EnsureNullCheckThrown(Action, string, string?, ITestOutputHelper?)
-  href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_EnsureNullCheckThrown_System_Action_System_String_System_String_Xunit_Abstractions_ITestOutputHelper_
-  commentId: M:FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action,System.String,System.String,Xunit.Abstractions.ITestOutputHelper)
-  name.vb: EnsureNullCheckThrown(Action, String, String, ITestOutputHelper)
-  fullName: FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action, string, string?, Xunit.Abstractions.ITestOutputHelper?)
-  fullName.vb: FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown(System.Action, String, String, Xunit.Abstractions.ITestOutputHelper)
-  nameWithType: TestClassExtensions.EnsureNullCheckThrown(Action, string, string?, ITestOutputHelper?)
-  nameWithType.vb: TestClassExtensions.EnsureNullCheckThrown(Action, String, String, ITestOutputHelper)
 - uid: FastMoq.Extensions.TestClassExtensions.EnsureNullCheckThrown*
   name: EnsureNullCheckThrown
   href: api/FastMoq.Extensions.TestClassExtensions.html#FastMoq_Extensions_TestClassExtensions_EnsureNullCheckThrown_
@@ -2153,6 +2855,12 @@ references:
   commentId: F:FastMoq.InstanceCreationFlags.None
   fullName: FastMoq.InstanceCreationFlags.None
   nameWithType: InstanceCreationFlags.None
+- uid: FastMoq.InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity
+  name: PreferParameterlessConstructorOnAmbiguity
+  href: api/FastMoq.InstanceCreationFlags.html#FastMoq_InstanceCreationFlags_PreferParameterlessConstructorOnAmbiguity
+  commentId: F:FastMoq.InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity
+  fullName: FastMoq.InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity
+  nameWithType: InstanceCreationFlags.PreferParameterlessConstructorOnAmbiguity
 - uid: FastMoq.InstanceCreationFlags.PublicConstructorsOnly
   name: PublicConstructorsOnly
   href: api/FastMoq.InstanceCreationFlags.html#FastMoq_InstanceCreationFlags_PublicConstructorsOnly
@@ -2947,6 +3655,79 @@ references:
   fullName.vb: FastMoq.Mocker.CreateInstance(Of T)(ParamArray Object())
   nameWithType: Mocker.CreateInstance<T>(params object?[])
   nameWithType.vb: Mocker.CreateInstance(Of T)(ParamArray Object())
+- uid: FastMoq.Mocker.CreateStandaloneFastMock(System.Type,FastMoq.Providers.MockCreationOptions)
+  name: CreateStandaloneFastMock(Type, MockCreationOptions?)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateStandaloneFastMock_System_Type_FastMoq_Providers_MockCreationOptions_
+  commentId: M:FastMoq.Mocker.CreateStandaloneFastMock(System.Type,FastMoq.Providers.MockCreationOptions)
+  name.vb: CreateStandaloneFastMock(Type, MockCreationOptions)
+  fullName: FastMoq.Mocker.CreateStandaloneFastMock(System.Type, FastMoq.Providers.MockCreationOptions?)
+  fullName.vb: FastMoq.Mocker.CreateStandaloneFastMock(System.Type, FastMoq.Providers.MockCreationOptions)
+  nameWithType: Mocker.CreateStandaloneFastMock(Type, MockCreationOptions?)
+  nameWithType.vb: Mocker.CreateStandaloneFastMock(Type, MockCreationOptions)
+- uid: FastMoq.Mocker.CreateStandaloneFastMock*
+  name: CreateStandaloneFastMock
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateStandaloneFastMock_
+  commentId: Overload:FastMoq.Mocker.CreateStandaloneFastMock
+  isSpec: "True"
+  fullName: FastMoq.Mocker.CreateStandaloneFastMock
+  nameWithType: Mocker.CreateStandaloneFastMock
+- uid: FastMoq.Mocker.CreateStandaloneFastMock``1(FastMoq.Providers.MockCreationOptions)
+  name: CreateStandaloneFastMock<T>(MockCreationOptions?)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_CreateStandaloneFastMock__1_FastMoq_Providers_MockCreationOptions_
+  commentId: M:FastMoq.Mocker.CreateStandaloneFastMock``1(FastMoq.Providers.MockCreationOptions)
+  name.vb: CreateStandaloneFastMock(Of T)(MockCreationOptions)
+  fullName: FastMoq.Mocker.CreateStandaloneFastMock<T>(FastMoq.Providers.MockCreationOptions?)
+  fullName.vb: FastMoq.Mocker.CreateStandaloneFastMock(Of T)(FastMoq.Providers.MockCreationOptions)
+  nameWithType: Mocker.CreateStandaloneFastMock<T>(MockCreationOptions?)
+  nameWithType.vb: Mocker.CreateStandaloneFastMock(Of T)(MockCreationOptions)
+- uid: FastMoq.Mocker.Dispose
+  name: Dispose()
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_Dispose
+  commentId: M:FastMoq.Mocker.Dispose
+  fullName: FastMoq.Mocker.Dispose()
+  nameWithType: Mocker.Dispose()
+- uid: FastMoq.Mocker.Dispose(System.Boolean)
+  name: Dispose(bool)
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_Dispose_System_Boolean_
+  commentId: M:FastMoq.Mocker.Dispose(System.Boolean)
+  name.vb: Dispose(Boolean)
+  fullName: FastMoq.Mocker.Dispose(bool)
+  fullName.vb: FastMoq.Mocker.Dispose(Boolean)
+  nameWithType: Mocker.Dispose(bool)
+  nameWithType.vb: Mocker.Dispose(Boolean)
+- uid: FastMoq.Mocker.Dispose*
+  name: Dispose
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_Dispose_
+  commentId: Overload:FastMoq.Mocker.Dispose
+  isSpec: "True"
+  fullName: FastMoq.Mocker.Dispose
+  nameWithType: Mocker.Dispose
+- uid: FastMoq.Mocker.DisposeAsync
+  name: DisposeAsync()
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_DisposeAsync
+  commentId: M:FastMoq.Mocker.DisposeAsync
+  fullName: FastMoq.Mocker.DisposeAsync()
+  nameWithType: Mocker.DisposeAsync()
+- uid: FastMoq.Mocker.DisposeAsync*
+  name: DisposeAsync
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_DisposeAsync_
+  commentId: Overload:FastMoq.Mocker.DisposeAsync
+  isSpec: "True"
+  fullName: FastMoq.Mocker.DisposeAsync
+  nameWithType: Mocker.DisposeAsync
+- uid: FastMoq.Mocker.DisposeAsyncCore
+  name: DisposeAsyncCore()
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_DisposeAsyncCore
+  commentId: M:FastMoq.Mocker.DisposeAsyncCore
+  fullName: FastMoq.Mocker.DisposeAsyncCore()
+  nameWithType: Mocker.DisposeAsyncCore()
+- uid: FastMoq.Mocker.DisposeAsyncCore*
+  name: DisposeAsyncCore
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_DisposeAsyncCore_
+  commentId: Overload:FastMoq.Mocker.DisposeAsyncCore
+  isSpec: "True"
+  fullName: FastMoq.Mocker.DisposeAsyncCore
+  nameWithType: Mocker.DisposeAsyncCore
 - uid: FastMoq.Mocker.ExceptionLog
   name: ExceptionLog
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_ExceptionLog
@@ -3228,6 +4009,31 @@ references:
   isSpec: "True"
   fullName: FastMoq.Mocker.GetOrCreateMock
   nameWithType: Mocker.GetOrCreateMock
+- uid: FastMoq.Mocker.GetOrCreateMockWithConstructorArgs(System.Type,System.Object[])
+  name: GetOrCreateMockWithConstructorArgs(Type, params object?[])
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMockWithConstructorArgs_System_Type_System_Object___
+  commentId: M:FastMoq.Mocker.GetOrCreateMockWithConstructorArgs(System.Type,System.Object[])
+  name.vb: GetOrCreateMockWithConstructorArgs(Type, ParamArray Object())
+  fullName: FastMoq.Mocker.GetOrCreateMockWithConstructorArgs(System.Type, params object?[])
+  fullName.vb: FastMoq.Mocker.GetOrCreateMockWithConstructorArgs(System.Type, ParamArray Object())
+  nameWithType: Mocker.GetOrCreateMockWithConstructorArgs(Type, params object?[])
+  nameWithType.vb: Mocker.GetOrCreateMockWithConstructorArgs(Type, ParamArray Object())
+- uid: FastMoq.Mocker.GetOrCreateMockWithConstructorArgs*
+  name: GetOrCreateMockWithConstructorArgs
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMockWithConstructorArgs_
+  commentId: Overload:FastMoq.Mocker.GetOrCreateMockWithConstructorArgs
+  isSpec: "True"
+  fullName: FastMoq.Mocker.GetOrCreateMockWithConstructorArgs
+  nameWithType: Mocker.GetOrCreateMockWithConstructorArgs
+- uid: FastMoq.Mocker.GetOrCreateMockWithConstructorArgs``1(System.Object[])
+  name: GetOrCreateMockWithConstructorArgs<T>(params object?[])
+  href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMockWithConstructorArgs__1_System_Object___
+  commentId: M:FastMoq.Mocker.GetOrCreateMockWithConstructorArgs``1(System.Object[])
+  name.vb: GetOrCreateMockWithConstructorArgs(Of T)(ParamArray Object())
+  fullName: FastMoq.Mocker.GetOrCreateMockWithConstructorArgs<T>(params object?[])
+  fullName.vb: FastMoq.Mocker.GetOrCreateMockWithConstructorArgs(Of T)(ParamArray Object())
+  nameWithType: Mocker.GetOrCreateMockWithConstructorArgs<T>(params object?[])
+  nameWithType.vb: Mocker.GetOrCreateMockWithConstructorArgs(Of T)(ParamArray Object())
 - uid: FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)
   name: GetOrCreateMock<T>(MockRequestOptions?)
   href: api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_
@@ -3605,6 +4411,19 @@ references:
   commentId: T:FastMoq.MockerPolicyOptions
   fullName: FastMoq.MockerPolicyOptions
   nameWithType: MockerPolicyOptions
+- uid: FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  name: DefaultConstructorAmbiguityBehavior
+  href: api/FastMoq.MockerPolicyOptions.html#FastMoq_MockerPolicyOptions_DefaultConstructorAmbiguityBehavior
+  commentId: P:FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  fullName: FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  nameWithType: MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+- uid: FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior*
+  name: DefaultConstructorAmbiguityBehavior
+  href: api/FastMoq.MockerPolicyOptions.html#FastMoq_MockerPolicyOptions_DefaultConstructorAmbiguityBehavior_
+  commentId: Overload:FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  isSpec: "True"
+  fullName: FastMoq.MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
+  nameWithType: MockerPolicyOptions.DefaultConstructorAmbiguityBehavior
 - uid: FastMoq.MockerPolicyOptions.DefaultFallbackToNonPublicConstructors
   name: DefaultFallbackToNonPublicConstructors
   href: api/FastMoq.MockerPolicyOptions.html#FastMoq_MockerPolicyOptions_DefaultFallbackToNonPublicConstructors
@@ -3792,6 +4611,23 @@ references:
   fullName.vb: FastMoq.MockerTestBase(Of TComponent).Component
   nameWithType: MockerTestBase<TComponent>.Component
   nameWithType.vb: MockerTestBase(Of TComponent).Component
+- uid: FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes
+  name: ComponentConstructorParameterTypes
+  href: api/FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_ComponentConstructorParameterTypes
+  commentId: P:FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes
+  fullName: FastMoq.MockerTestBase<TComponent>.ComponentConstructorParameterTypes
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).ComponentConstructorParameterTypes
+  nameWithType: MockerTestBase<TComponent>.ComponentConstructorParameterTypes
+  nameWithType.vb: MockerTestBase(Of TComponent).ComponentConstructorParameterTypes
+- uid: FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes*
+  name: ComponentConstructorParameterTypes
+  href: api/FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_ComponentConstructorParameterTypes_
+  commentId: Overload:FastMoq.MockerTestBase`1.ComponentConstructorParameterTypes
+  isSpec: "True"
+  fullName: FastMoq.MockerTestBase<TComponent>.ComponentConstructorParameterTypes
+  fullName.vb: FastMoq.MockerTestBase(Of TComponent).ComponentConstructorParameterTypes
+  nameWithType: MockerTestBase<TComponent>.ComponentConstructorParameterTypes
+  nameWithType.vb: MockerTestBase(Of TComponent).ComponentConstructorParameterTypes
 - uid: FastMoq.MockerTestBase`1.ComponentCreationFlags
   name: ComponentCreationFlags
   href: api/FastMoq.MockerTestBase-1.html#FastMoq_MockerTestBase_1_ComponentCreationFlags
@@ -6011,6 +6847,30 @@ references:
   commentId: F:FastMoq.OptionalParameterResolutionMode.UseDefaultOrNull
   fullName: FastMoq.OptionalParameterResolutionMode.UseDefaultOrNull
   nameWithType: OptionalParameterResolutionMode.UseDefaultOrNull
+- uid: FastMoq.PreferredConstructorAttribute
+  name: PreferredConstructorAttribute
+  href: api/FastMoq.PreferredConstructorAttribute.html
+  commentId: T:FastMoq.PreferredConstructorAttribute
+  fullName: FastMoq.PreferredConstructorAttribute
+  nameWithType: PreferredConstructorAttribute
+- uid: FastMoq.PropertyStateMode
+  name: PropertyStateMode
+  href: api/FastMoq.PropertyStateMode.html
+  commentId: T:FastMoq.PropertyStateMode
+  fullName: FastMoq.PropertyStateMode
+  nameWithType: PropertyStateMode
+- uid: FastMoq.PropertyStateMode.ProxyOnly
+  name: ProxyOnly
+  href: api/FastMoq.PropertyStateMode.html#FastMoq_PropertyStateMode_ProxyOnly
+  commentId: F:FastMoq.PropertyStateMode.ProxyOnly
+  fullName: FastMoq.PropertyStateMode.ProxyOnly
+  nameWithType: PropertyStateMode.ProxyOnly
+- uid: FastMoq.PropertyStateMode.WriteThrough
+  name: WriteThrough
+  href: api/FastMoq.PropertyStateMode.html#FastMoq_PropertyStateMode_WriteThrough
+  commentId: F:FastMoq.PropertyStateMode.WriteThrough
+  fullName: FastMoq.PropertyStateMode.WriteThrough
+  nameWithType: PropertyStateMode.WriteThrough
 - uid: FastMoq.PropertyValueCapture`1
   name: PropertyValueCapture<TValue>
   href: api/FastMoq.PropertyValueCapture-1.html
@@ -10478,6 +11338,31 @@ references:
   isSpec: "True"
   fullName: FastMoq.Web.Extensions.TestWebExtensions.SetQueryString
   nameWithType: TestWebExtensions.SetQueryString
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.IO.Stream,System.String)
+  name: SetRequestBody(HttpContext, Stream, string?)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetRequestBody_Microsoft_AspNetCore_Http_HttpContext_System_IO_Stream_System_String_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.IO.Stream,System.String)
+  name.vb: SetRequestBody(HttpContext, Stream, String)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext, System.IO.Stream, string?)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext, System.IO.Stream, String)
+  nameWithType: TestWebExtensions.SetRequestBody(HttpContext, Stream, string?)
+  nameWithType.vb: TestWebExtensions.SetRequestBody(HttpContext, Stream, String)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.String,System.Text.Encoding,System.String)
+  name: SetRequestBody(HttpContext, string, Encoding?, string?)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetRequestBody_Microsoft_AspNetCore_Http_HttpContext_System_String_System_Text_Encoding_System_String_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext,System.String,System.Text.Encoding,System.String)
+  name.vb: SetRequestBody(HttpContext, String, Encoding, String)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext, string, System.Text.Encoding?, string?)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody(Microsoft.AspNetCore.Http.HttpContext, String, System.Text.Encoding, String)
+  nameWithType: TestWebExtensions.SetRequestBody(HttpContext, string, Encoding?, string?)
+  nameWithType.vb: TestWebExtensions.SetRequestBody(HttpContext, String, Encoding, String)
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody*
+  name: SetRequestBody
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetRequestBody_
+  commentId: Overload:FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody
+  isSpec: "True"
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestBody
+  nameWithType: TestWebExtensions.SetRequestBody
 - uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestHeader(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String[])
   name: SetRequestHeader(HttpContext, string, params string[])
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetRequestHeader_Microsoft_AspNetCore_Http_HttpContext_System_String_System_String___
@@ -10510,6 +11395,22 @@ references:
   isSpec: "True"
   fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestHeaders
   nameWithType: TestWebExtensions.SetRequestHeaders
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody*
+  name: SetRequestJsonBody
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetRequestJsonBody_
+  commentId: Overload:FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody
+  isSpec: "True"
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody
+  nameWithType: TestWebExtensions.SetRequestJsonBody
+- uid: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody``1(Microsoft.AspNetCore.Http.HttpContext,``0,System.Text.Json.JsonSerializerOptions)
+  name: SetRequestJsonBody<TValue>(HttpContext, TValue, JsonSerializerOptions?)
+  href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetRequestJsonBody__1_Microsoft_AspNetCore_Http_HttpContext___0_System_Text_Json_JsonSerializerOptions_
+  commentId: M:FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody``1(Microsoft.AspNetCore.Http.HttpContext,``0,System.Text.Json.JsonSerializerOptions)
+  name.vb: SetRequestJsonBody(Of TValue)(HttpContext, TValue, JsonSerializerOptions)
+  fullName: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody<TValue>(Microsoft.AspNetCore.Http.HttpContext, TValue, System.Text.Json.JsonSerializerOptions?)
+  fullName.vb: FastMoq.Web.Extensions.TestWebExtensions.SetRequestJsonBody(Of TValue)(Microsoft.AspNetCore.Http.HttpContext, TValue, System.Text.Json.JsonSerializerOptions)
+  nameWithType: TestWebExtensions.SetRequestJsonBody<TValue>(HttpContext, TValue, JsonSerializerOptions?)
+  nameWithType.vb: TestWebExtensions.SetRequestJsonBody(Of TValue)(HttpContext, TValue, JsonSerializerOptions)
 - uid: FastMoq.Web.Extensions.TestWebExtensions.SetupClaimsPrincipal(FastMoq.Mocker,FastMoq.Web.TestClaimsPrincipalOptions,System.String[])
   name: SetupClaimsPrincipal(Mocker, TestClaimsPrincipalOptions, params string[])
   href: api/FastMoq.Web.Extensions.TestWebExtensions.html#FastMoq_Web_Extensions_TestWebExtensions_SetupClaimsPrincipal_FastMoq_Mocker_FastMoq_Web_TestClaimsPrincipalOptions_System_String___

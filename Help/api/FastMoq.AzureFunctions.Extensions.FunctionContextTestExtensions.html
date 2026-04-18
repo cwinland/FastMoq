@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class FunctionContextTestExtensions | FastMoq ">
     
-    <meta name="description" content="Provides Azure Functions worker helpers for typed  setup.">
+    <meta name="description" content="Provides Azure Functions worker helpers for typed  setup and execution-context shaping.">
       <link rel="icon" type="image/svg+xml" href="../favicon.svg">
       <link rel="shortcut icon" href="../favicon.svg">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
@@ -81,7 +81,7 @@
 
 
   <h1 id="FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions" data-uid="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions" class="text-break">Class FunctionContextTestExtensions</h1>
-  <div class="markdown level0 summary"><p>Provides Azure Functions worker helpers for typed <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext.instanceservices">InstanceServices</a> setup.</p>
+  <div class="markdown level0 summary"><p>Provides Azure Functions worker helpers for typed <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext.instanceservices">InstanceServices</a> setup and execution-context shaping.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -216,7 +216,7 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">replace</span></td>
-        <td><p>True to replace an existing known-type registration.</p>
+        <td><p>True to replace an existing <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> registration and overwrite previously configured instance-services helper values while preserving other <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a> behavior.</p>
 </td>
       </tr>
     </tbody>
@@ -233,6 +233,194 @@
       <tr>
         <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
         <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_" data-uid="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Providers_IFastMock_System_IServiceProvider_" data-uid="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)">AddFunctionContextInstanceServices(IFastMock, IServiceProvider)</h4>
+  <div class="markdown level1 summary"><p>Configures typed <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext.instanceservices">InstanceServices</a> behavior on a tracked <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a> mock without replacing the enclosing <a class="xref" href="FastMoq.Mocker.html">Mocker</a> service registrations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IFastMock AddFunctionContextInstanceServices(this IFastMock fastMock, IServiceProvider instanceServices)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td><span class="parametername">fastMock</span></td>
+        <td><p>The tracked mock whose <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext.instanceservices">InstanceServices</a> getter should return <code class="paramref">instanceServices</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></td>
+        <td><span class="parametername">instanceServices</span></td>
+        <td><p>The provider to expose through <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext.instanceservices">InstanceServices</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td><p>The current tracked mock.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when <code class="paramref">fastMock</code> does not represent a <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_" data-uid="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Mocker_System_String_System_Boolean_" data-uid="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Mocker,System.String,System.Boolean)">AddFunctionContextInvocationId(Mocker, string, bool)</h4>
+  <div class="markdown level1 summary"><p>Registers a <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a> invocation identifier for the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Mocker AddFunctionContextInvocationId(this Mocker mocker, string invocationId, bool replace = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">invocationId</span></td>
+        <td><p>The invocation identifier to expose through <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext.invocationid">InvocationId</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">replace</span></td>
+        <td><p>True to overwrite a previously configured invocation-identifier helper value while preserving other <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a> behavior.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Mocker_System_String_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This helper configures mock-backed <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a> instances. Concrete contexts with their own immutable execution metadata may ignore this registration.</p>
+</div>
+  <a id="FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_" data-uid="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId*"></a>
+  <h4 id="FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Providers_IFastMock_System_String_" data-uid="FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)">AddFunctionContextInvocationId(IFastMock, string)</h4>
+  <div class="markdown level1 summary"><p>Configures a tracked <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a> mock to return the supplied invocation identifier.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IFastMock AddFunctionContextInvocationId(this IFastMock fastMock, string invocationId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td><span class="parametername">fastMock</span></td>
+        <td><p>The tracked mock whose <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext.invocationid">InvocationId</a> getter should return <code class="paramref">invocationId</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">invocationId</span></td>
+        <td><p>The invocation identifier to expose through <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext.invocationid">InvocationId</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Providers.IFastMock.html">IFastMock</a></td>
+        <td><p>The current tracked mock.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when <code class="paramref">fastMock</code> does not represent a <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext">FunctionContext</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -314,7 +502,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

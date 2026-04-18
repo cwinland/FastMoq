@@ -18,7 +18,7 @@ The selected provider determines whether features such as protected-member acces
 
 ## Capability matrix
 
-These values come from `IMockingProviderCapabilities` in the current repo.
+These values reflect `IMockingProviderCapabilities` in the current v4 release line.
 
 | Capability | Moq | NSubstitute | Reflection |
 | --- | --- | --- | --- |

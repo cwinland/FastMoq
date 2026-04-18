@@ -104,6 +104,12 @@
 <li>Moq compatibility APIs such as <code>GetMock&lt;T&gt;()</code>, <code>VerifyLogger(...)</code>, <code>Protected()</code>, and direct <code>Mock&lt;T&gt;</code> setup require the Moq provider to be selected.</li>
 <li>provider-package extensions such as <code>AsMoq()</code>, <code>Setup(...)</code> on <code>IFastMock&lt;T&gt;</code>, <code>AsNSubstitute()</code>, and <code>Received(...)</code> also require their corresponding provider package and selected provider.</li>
 </ul>
+<p>For concrete mocks that need constructor arguments, stay on the provider-first path instead of falling back to <code>GetMock&lt;T&gt;(...)</code>. When the request only needs constructor arguments, <code>GetOrCreateMockWithConstructorArgs&lt;T&gt;(...)</code> keeps that intent explicit without changing <code>GetOrCreateMock&lt;T&gt;(null)</code> binding:</p>
+<pre><code class="lang-csharp">var queueClient = mocker.GetOrCreateMockWithConstructorArgs&lt;QueueClient&gt;(
+    new Uri(&quot;https://account.queue.core.windows.net/work-items&quot;),
+    new QueueClientOptions());
+</code></pre>
+<p>Use <code>MockRequestOptions</code> when the request also needs a service key or non-public constructor selection. This still depends on the selected provider supporting concrete class mocking; the bundled <code>reflection</code> provider remains limited to interfaces and parameterless concrete types.</p>
 <h2 id="first-decision-do-you-need-a-non-default-provider">First decision: do you need a non-default provider?</h2>
 <p>Use this quick check before reading the rest of the page:</p>
 <ul>
@@ -122,6 +128,16 @@
 </code></pre>
 <p>That keeps the test assembly explicit without requiring a startup hook. This works with xUnit, NUnit, MSTest, or any other test framework because FastMoq reads the assembly attribute during its own provider bootstrap.</p>
 <p>The attribute selects the assembly-wide default provider by name. It does not create a new provider registration or alias.</p>
+<p>If an entire test subtree stays on one provider and your repository already uses <code>Directory.Build.props</code> or <code>Directory.Build.targets</code> to stamp assembly attributes, centralize the default there instead of repeating a bootstrap file in every test project:</p>
+<pre><code class="lang-xml">&lt;Project&gt;
+    &lt;ItemGroup Condition=&quot;'$(IsTestProject)' == 'true'&quot;&gt;
+        &lt;AssemblyAttribute Include=&quot;FastMoq.Providers.FastMoqDefaultProviderAttribute&quot;&gt;
+            &lt;_Parameter1&gt;moq&lt;/_Parameter1&gt;
+        &lt;/AssemblyAttribute&gt;
+    &lt;/ItemGroup&gt;
+&lt;/Project&gt;
+</code></pre>
+<p>That pattern fits repositories that already stamp <code>InternalsVisibleTo</code> or similar assembly metadata from MSBuild. Avoid a repo-wide default when some test projects intentionally stay on <code>reflection</code> or use a different provider.</p>
 <p>When registration and selection need to happen together at assembly scope, use <a href="../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html">FastMoqRegisterProviderAttribute</a>:</p>
 <pre><code class="lang-csharp">using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
@@ -134,6 +150,10 @@ using FastMoq.Providers.MoqProvider;
 <li>choosing the provider dynamically at runtime from configuration, environment, or target-specific logic</li>
 <li>combining provider selection with other one-time test bootstrap work in the same startup path</li>
 <li>running custom registration logic that cannot be expressed as a provider type plus <code>SetAsDefault</code></li>
+</ul>
+<p>Analyzer note:</p>
+<ul>
+<li><code>FMOQ0023</code> warns when legacy Moq-shaped FastMoq APIs remain in a project without explicit Moq onboarding. For core-only package graphs, that means adding <code>FastMoq.Provider.Moq</code> and selecting <code>moq</code> explicitly.</li>
 </ul>
 <h3 id="assembly-startup-alternatives">Assembly startup alternatives</h3>
 <p>The examples below are alternatives to the assembly attributes. Use them when registration and selection need to happen together before the suite creates <code>Mocker</code> instances, but the decision cannot be expressed with <code>FastMoqDefaultProvider(...)</code> or <code>FastMoqRegisterProvider(...)</code>.</p>
@@ -395,7 +415,7 @@ var mocker = new Mocker();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

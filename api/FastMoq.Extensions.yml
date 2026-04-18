@@ -5,11 +5,15 @@ items:
   id: FastMoq.Extensions
   children:
   - FastMoq.Extensions.IdentityHelperExtensions
+  - FastMoq.Extensions.LoggingTestExtensions
   - FastMoq.Extensions.MockerBooleanExtensions
   - FastMoq.Extensions.MockerCreationExtensions
   - FastMoq.Extensions.MockerHttpExtensions
   - FastMoq.Extensions.MockerHttpMoqExtensions
   - FastMoq.Extensions.ObjectExtensions
+  - FastMoq.Extensions.OptionsTestExtensions
+  - FastMoq.Extensions.PropertySetterCaptureExtensions
+  - FastMoq.Extensions.PropertyStateExtensions
   - FastMoq.Extensions.ServiceProviderTestExtensions
   - FastMoq.Extensions.TestClassExtensions
   langs:
@@ -28,6 +32,13 @@ references:
   name: IdentityHelperExtensions
   nameWithType: IdentityHelperExtensions
   fullName: FastMoq.Extensions.IdentityHelperExtensions
+- uid: FastMoq.Extensions.LoggingTestExtensions
+  commentId: T:FastMoq.Extensions.LoggingTestExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.LoggingTestExtensions.html
+  name: LoggingTestExtensions
+  nameWithType: LoggingTestExtensions
+  fullName: FastMoq.Extensions.LoggingTestExtensions
 - uid: FastMoq.Extensions.MockerBooleanExtensions
   commentId: T:FastMoq.Extensions.MockerBooleanExtensions
   parent: FastMoq.Extensions
@@ -56,6 +67,27 @@ references:
   name: ObjectExtensions
   nameWithType: ObjectExtensions
   fullName: FastMoq.Extensions.ObjectExtensions
+- uid: FastMoq.Extensions.OptionsTestExtensions
+  commentId: T:FastMoq.Extensions.OptionsTestExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.OptionsTestExtensions.html
+  name: OptionsTestExtensions
+  nameWithType: OptionsTestExtensions
+  fullName: FastMoq.Extensions.OptionsTestExtensions
+- uid: FastMoq.Extensions.PropertySetterCaptureExtensions
+  commentId: T:FastMoq.Extensions.PropertySetterCaptureExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.PropertySetterCaptureExtensions.html
+  name: PropertySetterCaptureExtensions
+  nameWithType: PropertySetterCaptureExtensions
+  fullName: FastMoq.Extensions.PropertySetterCaptureExtensions
+- uid: FastMoq.Extensions.PropertyStateExtensions
+  commentId: T:FastMoq.Extensions.PropertyStateExtensions
+  parent: FastMoq.Extensions
+  href: FastMoq.Extensions.PropertyStateExtensions.html
+  name: PropertyStateExtensions
+  nameWithType: PropertyStateExtensions
+  fullName: FastMoq.Extensions.PropertyStateExtensions
 - uid: FastMoq.Extensions.ServiceProviderTestExtensions
   commentId: T:FastMoq.Extensions.ServiceProviderTestExtensions
   parent: FastMoq.Extensions

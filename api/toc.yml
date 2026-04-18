@@ -27,6 +27,9 @@ items:
   - uid: FastMoq.BuiltInTypeResolutionFlags
     name: BuiltInTypeResolutionFlags
     type: Enum
+  - uid: FastMoq.ConstructorAmbiguityBehavior
+    name: ConstructorAmbiguityBehavior
+    type: Enum
   - uid: FastMoq.DbContextHandleOptions`1
     name: DbContextHandleOptions<TContext>
     type: Class
@@ -69,6 +72,12 @@ items:
   - uid: FastMoq.OptionalParameterResolutionMode
     name: OptionalParameterResolutionMode
     type: Enum
+  - uid: FastMoq.PreferredConstructorAttribute
+    name: PreferredConstructorAttribute
+    type: Class
+  - uid: FastMoq.PropertyStateMode
+    name: PropertyStateMode
+    type: Enum
   - uid: FastMoq.PropertyValueCapture`1
     name: PropertyValueCapture<TValue>
     type: Class
@@ -82,12 +91,28 @@ items:
   - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
     name: FunctionContextTestExtensions
     type: Class
+  - uid: FastMoq.AzureFunctions.Extensions.HttpTriggerTestExtensions
+    name: HttpTriggerTestExtensions
+    type: Class
+- uid: FastMoq.AzureFunctions.Http
+  name: FastMoq.AzureFunctions.Http
+  type: Namespace
+  items:
+  - uid: FastMoq.AzureFunctions.Http.HttpRequestDataBuilder
+    name: HttpRequestDataBuilder
+    type: Class
+  - uid: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder
+    name: HttpResponseDataBuilder
+    type: Class
 - uid: FastMoq.Extensions
   name: FastMoq.Extensions
   type: Namespace
   items:
   - uid: FastMoq.Extensions.IdentityHelperExtensions
     name: IdentityHelperExtensions
+    type: Class
+  - uid: FastMoq.Extensions.LoggingTestExtensions
+    name: LoggingTestExtensions
     type: Class
   - uid: FastMoq.Extensions.MockerBooleanExtensions
     name: MockerBooleanExtensions
@@ -103,6 +128,15 @@ items:
     type: Class
   - uid: FastMoq.Extensions.ObjectExtensions
     name: ObjectExtensions
+    type: Class
+  - uid: FastMoq.Extensions.OptionsTestExtensions
+    name: OptionsTestExtensions
+    type: Class
+  - uid: FastMoq.Extensions.PropertySetterCaptureExtensions
+    name: PropertySetterCaptureExtensions
+    type: Class
+  - uid: FastMoq.Extensions.PropertyStateExtensions
+    name: PropertyStateExtensions
     type: Class
   - uid: FastMoq.Extensions.ServiceProviderTestExtensions
     name: ServiceProviderTestExtensions

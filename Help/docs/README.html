@@ -77,9 +77,10 @@
 <p>If you are coming from the last public <code>3.0.0</code> package, the biggest changes in the current line are:</p>
 <ul>
 <li>provider-first architecture with explicit provider registration and selection</li>
-<li>new package split across abstractions, database helpers, and provider-specific adapters</li>
+<li>new package split across the aggregate runtime, Azure SDK helpers, Azure Functions helpers, database helpers, web helpers, and provider-specific adapters</li>
+<li>first-party Azure SDK and Azure Functions HTTP-trigger helpers, with analyzer assets included by default in the aggregate <code>FastMoq</code> package</li>
 <li>provider-neutral verification with <code>TimesSpec</code>, <code>Verify(...)</code>, and <code>VerifyLogged(...)</code></li>
-<li>fluent <code>Scenario.With(...).When(...).Then(...).Verify(...)</code> support</li>
+<li>fluent <code>Scenario.With(...).When(...).Then(...).Verify(...)</code> support for workflow-style tests</li>
 <li>explicit policy surfaces for constructor fallback, method fallback, known-type resolution, and optional-parameter behavior</li>
 <li>expanded migration guidance, executable examples, and generated API coverage</li>
 </ul>
@@ -92,6 +93,8 @@
 <li><a href="getting-started/provider-selection.html">Provider selection and setup</a></li>
 <li><a href="getting-started/provider-capabilities.html">Provider capabilities matrix</a></li>
 <li><a href="getting-started/testing-guide.html">Repo-native testing guide</a></li>
+<li><a href="getting-started/testing-guide.html#typed-iserviceprovider-helpers">Typed <code>IServiceProvider</code> helpers</a></li>
+<li><a href="getting-started/testing-guide.html#explicit-constructor-selection-in-tests">Explicit constructor selection in tests</a></li>
 <li><a href="getting-started/testing-guide.html#controller-testing">Web helper guidance for controller and request tests</a></li>
 <li><a href="samples/testing-examples.html">Executable testing examples</a></li>
 <li>Understanding the architecture</li>
@@ -141,6 +144,9 @@
 <p>Intentional v4 breaking changes, with migration notes for changed behavior.</p>
 <h3 id="-migration-guide">🔄 <a href="migration/README.html">Migration Guide</a></h3>
 <p>Practical guidance for moving from the <code>3.0.0</code> public release toward the current v4 provider-first patterns.</p>
+<ul>
+<li>Complete analyzer catalog and package-aware migration guidance</li>
+</ul>
 <h2 id="-quick-navigation">🎯 Quick Navigation</h2>
 <h3 id="by-experience-level">By Experience Level</h3>
 <table>
@@ -211,9 +217,10 @@
 </tr>
 </tbody>
 </table>
-<p>Package note: <code>FastMoq</code> is the aggregate package. Provider contracts live in <code>FastMoq.Abstractions</code>, <code>FastMoq.Core</code> stays lighter, EF-specific helpers live in <code>FastMoq.Database</code>, Azure Functions worker helpers live in <code>FastMoq.AzureFunctions.Extensions</code>, provider-specific adapters live in <code>FastMoq.Provider.*</code>, and web helpers live in <code>FastMoq.Web.Extensions</code> while the primary runtime calls stay in the <code>FastMoq</code> or <code>FastMoq.Extensions</code> namespaces.</p>
+<p>Package note: <code>FastMoq</code> is the aggregate package. Provider contracts for custom providers and advanced extensions live in <code>FastMoq.Abstractions</code>, <code>FastMoq.Core</code> keeps the provider-neutral runtime, shared Azure SDK helpers live in the <code>FastMoq.Azure.*</code> namespaces, EF-specific helpers live in <code>FastMoq.Database</code>, Azure Functions worker and HTTP-trigger helpers live in <code>FastMoq.AzureFunctions.Extensions</code>, provider-specific adapters live in <code>FastMoq.Provider.*</code>, web helpers live in <code>FastMoq.Web.Extensions</code>, and analyzer assets ship with both <code>FastMoq</code> and <code>FastMoq.Core</code> by default while the primary runtime calls stay in the <code>FastMoq</code> or <code>FastMoq.Extensions</code> namespaces.</p>
 <p>Web helper note: if your test project references the aggregate <code>FastMoq</code> package, the web helpers are already included. If your test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.Web</code> before using helpers such as <code>CreateHttpContext(...)</code>, <code>CreateControllerContext(...)</code>, <code>SetupClaimsPrincipal(...)</code>, <code>AddHttpContext(...)</code>, or <code>AddHttpContextAccessor(...)</code>.</p>
-<p>Azure Functions helper note: if your test project references the aggregate <code>FastMoq</code> package, the Azure Functions helpers are already included. If your test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.AzureFunctions</code> and import <code>FastMoq.AzureFunctions.Extensions</code> before using <code>CreateFunctionContextInstanceServices(...)</code> or <code>AddFunctionContextInstanceServices(...)</code>.</p>
+<p>Azure SDK helper note: if your test project references the aggregate <code>FastMoq</code> package, the shared Azure SDK helpers are already included. If your test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.Azure</code> before using <code>PageableBuilder</code>, the credential helpers, Azure-oriented configuration/service-provider helpers, or the client registration helpers.</p>
+<p>Azure Functions helper note: if your test project references the aggregate <code>FastMoq</code> package, the Azure Functions helpers are already included. If your test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.AzureFunctions</code> and import <code>FastMoq.AzureFunctions.Extensions</code> before using <code>CreateFunctionContextInstanceServices(...)</code>, <code>AddFunctionContextInstanceServices(...)</code>, <code>CreateHttpRequestData(...)</code>, or <code>CreateHttpResponseData(...)</code>.</p>
 <p>See <a href="getting-started/README.html#package-choices">Getting Started package choices</a> when you need the full install matrix instead of a quick reminder.</p>
 <h2 id="-key-advantages">🏆 Key Advantages</h2>
 <p>FastMoq is designed for <strong>developer productivity</strong> and <strong>maintainable tests</strong>:</p>
@@ -297,7 +304,7 @@
 <li><strong>Release Notes</strong>: <a href="https://github.com/cwinland/FastMoq/releases">GitHub Releases</a></li>
 </ul>
 <h2 id="-version-information">🏷️ Version Information</h2>
-<p>This documentation tracks the current post-<code>3.0.0</code> FastMoq v4 release line.</p>
+<p>This documentation tracks the published FastMoq <code>4.1.0</code> line and the current v4 package layout.</p>
 <hr>
 <p><strong>Ready to get started?</strong> Jump to <a href="getting-started/README.html">Getting Started</a> or pick a specific topic from the navigation above!</p>
 
@@ -322,7 +329,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

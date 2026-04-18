@@ -1395,6 +1395,29 @@ var provider = Mocks.CreateTypedServiceProvider(services =>
 
 That keeps the logger-registration story framework-neutral while still letting `Mocks.VerifyLogged(...)` assert on the captured entries.
 
+When the test already has a line-oriented sink after `Mocker` construction, use the sink-aware overloads instead of keeping a private logger wrapper:
+
+```csharp
+var lines = new List<string>();
+var mocker = new Mocker()
+    .AddLoggerFactory(lines.Add, replace: true);
+
+var logger = mocker.GetObject<ILogger<OrderProcessingService>>();
+logger.LogInformation("Processing complete");
+
+lines.Should().ContainSingle(line => line.Contains("Processing complete"));
+mocker.VerifyLogged(LogLevel.Information, "Processing complete");
+```
+
+If the sink needs custom formatting instead of the default line-writer format, use the raw callback overload:
+
+```csharp
+var loggerFactory = Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) =>
+{
+    output.WriteLine($"[{logLevel}] {message}");
+});
+```
+
 ### Service with Logging
 
 ```csharp

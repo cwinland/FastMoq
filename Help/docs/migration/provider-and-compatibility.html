@@ -100,14 +100,34 @@
 </thead>
 <tbody>
 <tr>
+<td><code>FastMoq</code></td>
+<td><code>FastMoq</code>, <code>FastMoq.Extensions</code>, <code>FastMoq.Providers</code>, plus any helper namespaces you choose to use</td>
+<td>Aggregate package that brings the primary runtime, shared helper packages, and analyzer assets into one install</td>
+</tr>
+<tr>
 <td><code>FastMoq.Core</code></td>
 <td><code>FastMoq</code>, <code>FastMoq.Extensions</code>, <code>FastMoq.Providers</code></td>
 <td><code>Mocker</code>, <code>MockerTestBase&lt;T&gt;</code>, <code>GetOrCreateMock&lt;T&gt;()</code>, <code>GetObject&lt;T&gt;()</code>, <code>Verify(...)</code>, <code>VerifyLogged(...)</code>, <code>MockingProviderRegistry</code></td>
 </tr>
 <tr>
+<td><code>FastMoq.Abstractions</code></td>
+<td><code>FastMoq.Providers</code></td>
+<td><code>IMockingProvider</code>, <code>IMockingProviderCapabilities</code>, <code>IFastMock</code>, <code>TimesSpec</code>, <code>MockCreationOptions</code>, <code>FastMoqDefaultProviderAttribute</code>, <code>FastMoqRegisterProviderAttribute</code></td>
+</tr>
+<tr>
+<td><code>FastMoq.Azure</code></td>
+<td><code>FastMoq.Azure.Pageable</code>, <code>FastMoq.Azure.Credentials</code>, <code>FastMoq.Azure.DependencyInjection</code>, <code>FastMoq.Azure.KeyVault</code>, <code>FastMoq.Azure.Storage</code></td>
+<td><code>PageableBuilder</code>, credential helpers, Azure DI/config helpers, and common Azure client registration helpers</td>
+</tr>
+<tr>
 <td><code>FastMoq.AzureFunctions</code></td>
 <td><code>FastMoq.AzureFunctions.Extensions</code></td>
 <td><code>CreateFunctionContextInstanceServices(...)</code>, <code>AddFunctionContextInstanceServices(...)</code></td>
+</tr>
+<tr>
+<td><code>FastMoq.Analyzers</code></td>
+<td>n/a at runtime</td>
+<td>Roslyn diagnostics and targeted code fixes such as <code>FMOQ0003</code> and <code>FMOQ0013</code>, plus advisory migration diagnostics such as <code>FMOQ0030</code>, for provider-first authoring guidance</td>
 </tr>
 <tr>
 <td><code>FastMoq.Provider.Moq</code></td>
@@ -132,6 +152,7 @@
 </tbody>
 </table>
 <p>Packages control availability. Namespaces control extension discovery and which APIs light up in the editor.</p>
+<p>Most test projects should start with <code>FastMoq</code> or <code>FastMoq.Core</code>. <code>FastMoq.Abstractions</code> is mainly for custom-provider or advanced extension work, while <code>FastMoq.Analyzers</code> only contributes diagnostics and code fixes at build time.</p>
 <p>Installing <code>FastMoq.Core</code> plus <code>FastMoq.Provider.Moq</code> is not enough by itself. The Moq provider still needs to be selected as the default for that test assembly.</p>
 <p>FastMoq is also not limited to the bundled providers. If your suite uses another mocking library, you can implement <code>IMockingProvider</code> and register your own provider instead of adopting <code>moq</code> or <code>nsubstitute</code>.</p>
 <p>If you need a provider-by-provider answer for what is supported today, see <a href="../getting-started/provider-capabilities.html">Provider Capabilities</a>.</p>
@@ -250,8 +271,8 @@ public sealed class TestAssemblyProviderBootstrap
 <td><code>AddKnownType(...)</code></td>
 </tr>
 <tr>
-<td>mocked <code>IServiceProvider</code> shims</td>
-<td><code>CreateTypedServiceProvider(...)</code>, <code>AddServiceProvider(...)</code>, and <code>AddFunctionContextInstanceServices(...)</code> with <code>FastMoq.AzureFunctions</code> installed for the <code>FunctionContext</code> helper path</td>
+<td>mocked <code>IServiceProvider</code> / <code>IServiceScopeFactory</code> / <code>IServiceScope</code> shims</td>
+<td><code>CreateTypedServiceProvider(...)</code>, <code>CreateTypedServiceScope(...)</code>, <code>AddServiceProvider(...)</code>, <code>AddServiceScope(...)</code>, and <code>AddFunctionContextInstanceServices(...)</code> with <code>FastMoq.AzureFunctions</code> installed for the <code>FunctionContext</code> helper path</td>
 </tr>
 </tbody>
 </table>
@@ -262,7 +283,8 @@ public sealed class TestAssemblyProviderBootstrap
 </ul>
 <p>Analyzer notes:</p>
 <ul>
-<li><code>FMOQ0013</code> warns on raw <code>IServiceProvider</code> mock setup and pushes it toward the typed helper path</li>
+<li><code>FMOQ0013</code> warns on raw <code>IServiceProvider</code>, <code>IServiceScopeFactory</code>, and <code>IServiceScope</code> shims, plus manual scope-factory extraction, and pushes them toward the typed helper path</li>
+<li>for Azure Functions worker tests, <code>FMOQ0013</code> also warns on direct <code>FunctionContext.InstanceServices</code> <code>Setup(...)</code>, <code>SetupGet(...)</code>, and <code>SetupProperty(...)</code> usage, and the auto-fix appears when <code>FastMoq.AzureFunctions</code> is already referenced for the direct provider-assignment shapes that can become <code>context.AddFunctionContextInstanceServices(provider)</code></li>
 <li><code>FMOQ0014</code> warns on context-aware compatibility <code>AddType(...)</code> usage and pushes it toward <code>AddKnownType(...)</code></li>
 <li><code>FMOQ0015</code> warns when same-type keyed constructor dependencies are accidentally collapsed into one unkeyed double</li>
 </ul>
@@ -332,7 +354,7 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Run(&quot;alpha&quot;), TimesSpec.On
 <li>some <code>out</code> / <code>ref</code> verification patterns</li>
 </ul>
 <p>When a test depends on those features, either keep it on the Moq provider or replace the collaborator with a fake or stub through <code>AddType(...)</code>.</p>
-<p>For <code>SetupSet(...)</code>-heavy tests, the preferred non-Moq migration target is usually a fake that records assignments through <code>PropertyValueCapture&lt;TValue&gt;</code>.</p>
+<p>For simple interface-property <code>SetupSet(...)</code> cases, the preferred non-Moq migration target is <code>AddPropertySetterCapture&lt;TService, TValue&gt;(...)</code>. For simple interface-property <code>SetupAllProperties()</code> cases, prefer <code>AddPropertyState&lt;TService&gt;(...)</code>. When the component under test is already created through <code>MockerTestBase&lt;TComponent&gt;</code>, add the helper before construction or call <code>CreateComponent()</code> after the registration change. When the collaborator needs broader behavior, or the target is not an interface, fall back to a fake that records assignments through <code>PropertyValueCapture&lt;TValue&gt;</code> or exposes real property state directly.</p>
 
 </article>
           </div>
@@ -355,7 +377,7 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Run(&quot;alpha&quot;), TimesSpec.On
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

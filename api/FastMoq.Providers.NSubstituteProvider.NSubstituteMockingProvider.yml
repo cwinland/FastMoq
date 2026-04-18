@@ -33,7 +33,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: NSubstituteMockingProvider
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -92,7 +92,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -121,7 +121,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: Capabilities
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -154,7 +154,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsCallBase
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -187,7 +187,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsSetupAllProperties
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -220,7 +220,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsProtectedMembers
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -253,7 +253,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsInvocationTracking
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -286,7 +286,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsLoggerCapture
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -319,7 +319,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -356,7 +356,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -396,7 +396,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -436,7 +436,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAllProperties
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -469,7 +469,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: SetCallBase
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -507,7 +507,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -549,7 +549,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -582,7 +582,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureProperties
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -615,7 +615,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureLogger
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -653,7 +653,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetLegacy
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -688,7 +688,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: TryWrapLegacy
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/NSubstituteMockingProvider.cs
@@ -4900,3 +4900,4 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.type
   - name: )
+

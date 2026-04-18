@@ -881,7 +881,7 @@ Use the preset helpers when you want a complete behavior profile. Use `Strict` o
 Breaking-change note:
 
 - In `3.0.0`, `Strict` was often treated as a broader all-in-one switch.
-- In the current repo, [UseStrictPreset()](../../api/FastMoq.Mocker.yml) is the explicit way to request the broader strict profile.
+- In the current v4 release line, [UseStrictPreset()](../../api/FastMoq.Mocker.yml) is the explicit way to request the broader strict profile.
 - `Strict` remains available, but it should now be read as the narrower compatibility path rather than the full profile selector.
 
 Separate compatibility note for known types:

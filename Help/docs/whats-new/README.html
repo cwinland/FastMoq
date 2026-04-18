@@ -72,7 +72,31 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="whats-new-since-300">What's New Since 3.0.0</h1>
 
-<p>This page summarizes the release delta between the last public <code>3.0.0</code> package and the current v4 code line in this repository.</p>
+<p>This page summarizes the release delta between the last public <code>3.0.0</code> package and the current published <code>4.2.0</code> v4 line in this repository.</p>
+<h2 id="420">4.2.0</h2>
+<p>FastMoq <code>4.2.0</code> focuses on provider-first release hardening rather than another large package-boundary shift.</p>
+<p>Consumer impact:</p>
+<ul>
+<li>provider-selection analyzers now handle outer scoped provider bootstrap more accurately, including provider-specific assertions invoked inside lambdas that live under an already-selected provider scope</li>
+<li>Moq transition messaging is quieter for projects that already reference <code>FastMoq.Provider.Moq</code> explicitly, while the bundled-path warning remains available for suites that still rely on the implicit v4 compatibility path</li>
+<li>provider-neutral property-state, property-setter capture, typed service-scope helpers, and logger-factory helpers round out the common migration gaps that previously forced provider-specific setup noise</li>
+<li>constructor-resolution failures now surface actionable <code>InvalidOperationException</code> guidance instead of generic <code>NotImplementedException</code> failures</li>
+</ul>
+<p>Validation run for this change:</p>
+<ul>
+<li><code>dotnet test .\FastMoq.Tests\FastMoq.Tests.csproj -c Release</code></li>
+<li><code>dotnet test .\FastMoq.Analyzers.Tests\FastMoq.Analyzers.Tests.csproj -c Release</code></li>
+<li><code>dotnet build .\FastMoq-Release.sln -c Release</code></li>
+</ul>
+<h2 id="410">4.1.0</h2>
+<p>FastMoq <code>4.1.0</code> updates the published v4 line to match the broader package split and helper surface that had been taking shape in the repository.</p>
+<p>Consumer impact:</p>
+<ul>
+<li>the aggregate <code>FastMoq</code> package now pulls together the core runtime, shared Azure SDK helpers, Azure Functions HTTP-trigger helpers, database helpers, web support, provider integrations, and analyzer assets by default</li>
+<li><code>FastMoq.Azure</code> is the first-party package for <code>PageableBuilder</code>, token and default credential helpers, Azure-oriented configuration or service-provider helpers, and common Azure client registration</li>
+<li><code>FastMoq.AzureFunctions</code> is the first-party package for typed <code>FunctionContext.InstanceServices</code> setup, concrete <code>HttpRequestData</code> and <code>HttpResponseData</code> builders, and body readers for request or response assertions</li>
+<li>the docs now steer consumers more directly between the aggregate package path and split-package installs based on which helpers a test project actually needs</li>
+</ul>
 <h2 id="403">4.0.3</h2>
 <p>FastMoq.Web now uses <code>bunit</code> <code>2.7.2</code> for Blazor component tests. The FastMoq Blazor helper layer was updated to keep existing test suites moving with low source churn while matching bUnit 2's renderer, parameter, authorization, and navigation changes.</p>
 <p>Consumer impact:</p>
@@ -101,7 +125,9 @@
 <p>At a high level, the current line adds:</p>
 <ul>
 <li>a provider-first architecture with explicit provider registration and selection</li>
-<li>a new package split for abstractions, database helpers, and provider-specific adapters</li>
+<li>a new package split for abstractions, Azure SDK helpers, Azure Functions helpers, database helpers, web helpers, and provider-specific adapters</li>
+<li>first-party Azure testing helpers for storage-client registration and Azure Functions worker or HTTP-trigger setup</li>
+<li>analyzer guidance that can be consumed as a standalone package or through the aggregate <code>FastMoq</code> package by default</li>
 <li>provider-neutral verification and scenario-building APIs for newer tests</li>
 <li>explicit policy surfaces for constructor fallback, method fallback, built-in known types, and optional-parameter resolution</li>
 <li>expanded repo-native documentation, migration guidance, and executable examples</li>
@@ -123,10 +149,12 @@
 <p>The package boundary is much clearer than it was in <code>3.0.0</code>.</p>
 <p>Notable additions and changes:</p>
 <ul>
+<li><code>FastMoq.Azure</code> now carries the shared Azure SDK helpers for pageable builders, credentials, Azure-oriented DI/configuration, and common client registration flows.</li>
 <li><code>FastMoq.Abstractions</code> now carries the provider contracts shared by core and provider packages.</li>
 <li><code>FastMoq.Provider.Moq</code> now owns the Moq compatibility provider and Moq-specific convenience extensions.</li>
 <li><code>FastMoq.Provider.NSubstitute</code> adds an optional NSubstitute provider package.</li>
-<li><code>FastMoq.AzureFunctions</code> now owns the Azure Functions worker helpers for <code>FunctionContext.InstanceServices</code>.</li>
+<li><code>FastMoq.AzureFunctions</code> now owns the Azure Functions worker helpers for <code>FunctionContext.InstanceServices</code> plus concrete <code>HttpRequestData</code> and <code>HttpResponseData</code> builders and body helpers for HTTP-trigger tests.</li>
+<li><code>FastMoq.Analyzers</code> remains available as a standalone package, and both <code>FastMoq</code> and <code>FastMoq.Core</code> now include those analyzer assets by default.</li>
 <li><code>FastMoq.Database</code> now owns the EF- and DbContext-specific helpers that previously lived in core.</li>
 <li><code>FastMoq.Core</code> stays lighter and focuses on provider-neutral construction, tracking, verification, and built-in known-type handling.</li>
 </ul>
@@ -182,7 +210,8 @@
 <li><code>DbContextMockerExtensions</code></li>
 </ul>
 <p><code>GetMockDbContext&lt;TContext&gt;()</code> remains available through the <code>FastMoq</code> namespace for low-churn usage, but the implementation and EF-specific dependencies now live in <code>FastMoq.Database</code>.</p>
-<p>The mocked-sets path still uses the existing Moq-based <code>DbContextMock&lt;TContext&gt;</code> internals, while real EF-backed in-memory behavior is now exposed explicitly through <code>DbContextTestMode.RealInMemory</code>.</p>
+<p>The mocked-sets helper continues to create and configure the tracked DbContext, while real EF-backed in-memory behavior is now exposed explicitly through <code>DbContextTestMode.RealInMemory</code>. That same tracked context is also available through provider-first retrieval such as <code>GetOrCreateMock&lt;TContext&gt;()</code>.</p>
+<p>Constructor-selection updates in this PR also add an explicit <code>MockerTestBase&lt;TComponent&gt;.ComponentConstructorParameterTypes</code> hook, a <code>[PreferredConstructor]</code> attribute for production types that advertise a default constructor choice, and <code>ConstructorAmbiguityBehavior</code> policy support for opt-in fallback behavior.</p>
 <h3 id="compatibility-and-behavior-cleanup">Compatibility and behavior cleanup</h3>
 <p>Several compatibility surfaces were kept, but their role is narrower and more explicit.</p>
 <p>Important points:</p>
@@ -191,12 +220,14 @@
 <li><code>UseStrictPreset()</code> and <code>UseLenientPreset()</code> now express the broader behavior profiles directly.</li>
 <li>Moq-specific HTTP helpers such as <code>SetupHttpMessage(...)</code> moved out of <code>FastMoq.Core</code> and into <code>FastMoq.Provider.Moq</code>, while remaining in the <code>FastMoq.Extensions</code> namespace for lower source churn.</li>
 <li><code>MockerTestBase&lt;TComponent&gt;</code> gained clearer component-construction and policy hooks.</li>
+<li><code>MockerTestBase&lt;TComponent&gt;.WaitFor&lt;T&gt;(...)</code> now consistently treats timeout as a failure and throws <code>ApplicationException</code> when the polling logic never produces a non-<code>default(T)</code> result.</li>
 </ul>
 <h3 id="breaking-behavior-to-account-for">Breaking behavior to account for</h3>
-<p>Two release-facing behavior changes deserve special attention:</p>
+<p>Three release-facing behavior changes deserve special attention:</p>
 <ul>
 <li>strict-mode semantics are now more explicit and less overloaded than they were in <code>3.0.0</code></li>
 <li>strict <code>IFileSystem</code> mocks now stay enriched by the built-in in-memory file system pipeline instead of behaving like a raw empty Moq mock</li>
+<li><code>WaitFor&lt;T&gt;(...)</code> no longer falls through and returns <code>default(T)</code> on timeout; timeout now surfaces as the documented exception path</li>
 </ul>
 <p>For detailed migration notes, see <a href="../breaking-changes/README.html">Breaking Changes</a>.</p>
 <h3 id="documentation-api-reference-and-executable-examples">Documentation, API reference, and executable examples</h3>
@@ -221,6 +252,7 @@
 <ul>
 <li>libraries now target <code>net8.0</code>, <code>net9.0</code>, and <code>net10.0</code></li>
 <li>older packaging based on per-project <code>.nuspec</code> files was removed in favor of SDK-style package metadata in the project files</li>
+<li>the aggregate <code>FastMoq</code> package now ships analyzer assets by default while the split-package path keeps analyzers opt-in</li>
 <li>solution and test coverage expanded to include provider-specific packages and verification matrices</li>
 </ul>
 <h2 id="recommended-reading-order">Recommended reading order</h2>
@@ -228,7 +260,7 @@
 <ol>
 <li><a href="README.html">What's New Since 3.0.0</a></li>
 <li><a href="../breaking-changes/README.html">Breaking Changes</a></li>
-<li><a href="../migration/README.html">Migration Guide: 3.0.0 To Current Repo</a></li>
+<li><a href="../migration/README.html">Migration Guide: 3.0.0 To The Current v4 Line</a></li>
 <li><a href="../getting-started/provider-selection.html">Provider Selection Guide</a></li>
 <li><a href="../samples/testing-examples.html">Executable Testing Examples</a></li>
 </ol>
@@ -254,7 +286,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

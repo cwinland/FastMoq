@@ -15,7 +15,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/MockDbContextOptions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: MockDbContextOptions
     path: FastMoq.Database/Models/MockDbContextOptions.cs
@@ -11929,3 +11929,4 @@ references:
   - uid: FastMoq.Extensions
     name: Extensions
     href: FastMoq.Extensions.html
+

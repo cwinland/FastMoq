@@ -122,13 +122,13 @@
   <h3 id="methods">Methods
 </h3>
   <a id="FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider*"></a>
-  <h4 id="FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)">AddServiceProvider(Mocker, Action&lt;IServiceCollection&gt;?, bool)</h4>
+  <h4 id="FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_System_Boolean_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)">AddServiceProvider(Mocker, Action&lt;IServiceCollection&gt;?, bool, bool)</h4>
   <div class="markdown level1 summary"><p>Builds and registers a typed <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> for the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Mocker AddServiceProvider(this Mocker mocker, Action&lt;IServiceCollection&gt;? configureServices, bool replace = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Mocker AddServiceProvider(this Mocker mocker, Action&lt;IServiceCollection&gt;? configureServices, bool replace = false, bool includeMockerFallback = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -156,6 +156,12 @@
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td><span class="parametername">replace</span></td>
         <td><p>True to replace an existing registration.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">includeMockerFallback</span></td>
+        <td><p>True to fall back to the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> for unregistered class and interface resolutions.</p>
 </td>
       </tr>
     </tbody>
@@ -231,14 +237,185 @@
       </tr>
     </tbody>
   </table>
+  <a id="FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope*"></a>
+  <h4 id="FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_FastMoq_Mocker_Microsoft_Extensions_DependencyInjection_IServiceScope_System_Boolean_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,Microsoft.Extensions.DependencyInjection.IServiceScope,System.Boolean)">AddServiceScope(Mocker, IServiceScope, bool)</h4>
+  <div class="markdown level1 summary"><p>Registers a typed <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope">IServiceScope</a> for the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Mocker AddServiceScope(this Mocker mocker, IServiceScope serviceScope, bool replace = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope">IServiceScope</a></td>
+        <td><span class="parametername">serviceScope</span></td>
+        <td><p>The scope to register.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">replace</span></td>
+        <td><p>True to replace an existing registration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope*"></a>
+  <h4 id="FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_System_Boolean_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)">AddServiceScope(Mocker, Action&lt;IServiceCollection&gt;?, bool, bool)</h4>
+  <div class="markdown level1 summary"><p>Builds and registers a typed <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope">IServiceScope</a> for the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Mocker AddServiceScope(this Mocker mocker, Action&lt;IServiceCollection&gt;? configureServices, bool replace = false, bool includeMockerFallback = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a>&gt;</td>
+        <td><span class="parametername">configureServices</span></td>
+        <td><p>Optional service registrations to apply before the scope is built.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">replace</span></td>
+        <td><p>True to replace an existing registration.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">includeMockerFallback</span></td>
+        <td><p>True to fall back to the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> for unregistered class and interface resolutions.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <a id="FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope*"></a>
+  <h4 id="FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_FastMoq_Mocker_System_IServiceProvider_System_Boolean_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.IServiceProvider,System.Boolean)">AddServiceScope(Mocker, IServiceProvider, bool)</h4>
+  <div class="markdown level1 summary"><p>Registers a fixed <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope">IServiceScope</a> backed by the supplied <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> for the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Mocker AddServiceScope(this Mocker mocker, IServiceProvider serviceProvider, bool replace = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></td>
+        <td><span class="parametername">serviceProvider</span></td>
+        <td><p>The provider to expose through the registered scope.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">replace</span></td>
+        <td><p>True to replace an existing registration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <a id="FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider*"></a>
-  <h4 id="FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})">CreateTypedServiceProvider(Mocker, Action&lt;IServiceCollection&gt;?)</h4>
+  <h4 id="FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)">CreateTypedServiceProvider(Mocker, Action&lt;IServiceCollection&gt;?, bool)</h4>
   <div class="markdown level1 summary"><p>Creates a typed <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a> from the supplied service registrations.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceProvider CreateTypedServiceProvider(this Mocker mocker, Action&lt;IServiceCollection&gt;? configureServices = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceProvider CreateTypedServiceProvider(this Mocker mocker, Action&lt;IServiceCollection&gt;? configureServices = null, bool includeMockerFallback = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -262,6 +439,12 @@
         <td><p>Optional service registrations to apply before the provider is built.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">includeMockerFallback</span></td>
+        <td><p>True to fall back to the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> for unregistered class and interface resolutions.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -280,13 +463,68 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection___examples">Examples</h5>
+  <h5 id="FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean__examples">Examples</h5>
   <pre><code class="lang-csharp">var serviceProvider = Mocks.CreateTypedServiceProvider(services =&gt;
 {
     services.AddSingleton(new Uri("https://fastmoq.dev"));
     services.AddOptions();
 });</code></pre>
 
+  <a id="FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceScope_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope*"></a>
+  <h4 id="FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceScope_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_" data-uid="FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)">CreateTypedServiceScope(Mocker, Action&lt;IServiceCollection&gt;?, bool)</h4>
+  <div class="markdown level1 summary"><p>Creates a typed <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope">IServiceScope</a> from the supplied service registrations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceScope CreateTypedServiceScope(this Mocker mocker, Action&lt;IServiceCollection&gt;? configureServices = null, bool includeMockerFallback = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="FastMoq.Mocker.html">Mocker</a></td>
+        <td><span class="parametername">mocker</span></td>
+        <td><p>The current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a>&gt;</td>
+        <td><span class="parametername">configureServices</span></td>
+        <td><p>Optional service registrations to apply before the scope is built.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">includeMockerFallback</span></td>
+        <td><p>True to fall back to the current <a class="xref" href="FastMoq.Mocker.html">Mocker</a> for unregistered class and interface resolutions.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope">IServiceScope</a></td>
+        <td><p>A real service scope whose <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope.serviceprovider">ServiceProvider</a> resolves services by requested type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 
 </article>
           </div>
@@ -309,7 +547,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

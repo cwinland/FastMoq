@@ -7,6 +7,9 @@ items:
   children:
   - FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
   - FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  - FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+  - FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Mocker,System.String,System.Boolean)
+  - FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
   - FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
   langs:
   - csharp
@@ -18,15 +21,15 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: FunctionContextTestExtensions
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-    startLine: 14
+    startLine: 15
   assemblies:
   - FastMoq.AzureFunctions
   namespace: FastMoq.AzureFunctions.Extensions
-  summary: Provides Azure Functions worker helpers for typed <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices" data-throw-if-not-resolved="false"></xref> setup.
+  summary: Provides Azure Functions worker helpers for typed <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices" data-throw-if-not-resolved="false"></xref> setup and execution-context shaping.
   example: []
   syntax:
     content: public static class FunctionContextTestExtensions
@@ -41,6 +44,52 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+  id: AddFunctionContextInvocationId(FastMoq.Providers.IFastMock,System.String)
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddFunctionContextInvocationId(IFastMock, string)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInvocationId(IFastMock, string)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock, string)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AddFunctionContextInvocationId
+    path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
+    startLine: 45
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Configures a tracked <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref> mock to return the supplied invocation identifier.
+  example: []
+  syntax:
+    content: public static IFastMock AddFunctionContextInvocationId(this IFastMock fastMock, string invocationId)
+    parameters:
+    - id: fastMock
+      type: FastMoq.Providers.IFastMock
+      description: The tracked mock whose <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InvocationId" data-throw-if-not-resolved="false"></xref> getter should return <code class="paramref">invocationId</code>.
+    - id: invocationId
+      type: System.String
+      description: The invocation identifier to expose through <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InvocationId" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: FastMoq.Providers.IFastMock
+      description: The current tracked mock.
+    content.vb: Public Shared Function AddFunctionContextInvocationId(fastMock As IFastMock, invocationId As String) As IFastMock
+  overload: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when <code class="paramref">fastMock</code> does not represent a <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref>.
+  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInvocationId(IFastMock, String)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Providers.IFastMock, String)
+  name.vb: AddFunctionContextInvocationId(IFastMock, String)
 - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
   commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
   id: CreateFunctionContextInstanceServices(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
@@ -56,11 +105,11 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateFunctionContextInstanceServices
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-    startLine: 33
+    startLine: 66
   assemblies:
   - FastMoq.AzureFunctions
   namespace: FastMoq.AzureFunctions.Extensions
@@ -86,6 +135,49 @@ items:
   nameWithType.vb: FunctionContextTestExtensions.CreateFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean)
   fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.CreateFunctionContextInstanceServices(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
   name.vb: CreateFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean)
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+  id: AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock,System.IServiceProvider)
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddFunctionContextInstanceServices(IFastMock, IServiceProvider)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices(IFastMock, IServiceProvider)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Providers.IFastMock, System.IServiceProvider)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AddFunctionContextInstanceServices
+    path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
+    startLine: 95
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Configures typed <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices" data-throw-if-not-resolved="false"></xref> behavior on a tracked <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref> mock without replacing the enclosing <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> service registrations.
+  example: []
+  syntax:
+    content: public static IFastMock AddFunctionContextInstanceServices(this IFastMock fastMock, IServiceProvider instanceServices)
+    parameters:
+    - id: fastMock
+      type: FastMoq.Providers.IFastMock
+      description: The tracked mock whose <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices" data-throw-if-not-resolved="false"></xref> getter should return <code class="paramref">instanceServices</code>.
+    - id: instanceServices
+      type: System.IServiceProvider
+      description: The provider to expose through <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: FastMoq.Providers.IFastMock
+      description: The current tracked mock.
+    content.vb: Public Shared Function AddFunctionContextInstanceServices(fastMock As IFastMock, instanceServices As IServiceProvider) As IFastMock
+  overload: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Thrown when <code class="paramref">fastMock</code> does not represent a <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref>.
 - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
   commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
   id: AddFunctionContextInstanceServices(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
@@ -101,11 +193,11 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: AddFunctionContextInstanceServices
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-    startLine: 62
+    startLine: 116
   assemblies:
   - FastMoq.AzureFunctions
   namespace: FastMoq.AzureFunctions.Extensions
@@ -122,7 +214,7 @@ items:
       description: The provider to expose through <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices" data-throw-if-not-resolved="false"></xref>.
     - id: replace
       type: System.Boolean
-      description: True to replace an existing known-type registration.
+      description: True to replace an existing <xref href="System.IServiceProvider" data-throw-if-not-resolved="false"></xref> registration and overwrite previously configured instance-services helper values while preserving other <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref> behavior.
     return:
       type: FastMoq.Mocker
       description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
@@ -146,11 +238,11 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: AddFunctionContextInstanceServices
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-    startLine: 90
+    startLine: 143
   assemblies:
   - FastMoq.AzureFunctions
   namespace: FastMoq.AzureFunctions.Extensions
@@ -179,6 +271,52 @@ items:
   nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
   fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean, Boolean)
   name.vb: AddFunctionContextInstanceServices(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Mocker,System.String,System.Boolean)
+  commentId: M:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Mocker,System.String,System.Boolean)
+  id: AddFunctionContextInvocationId(FastMoq.Mocker,System.String,System.Boolean)
+  isExtensionMethod: true
+  parent: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddFunctionContextInvocationId(Mocker, string, bool)
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInvocationId(Mocker, string, bool)
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Mocker, string, bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AddFunctionContextInvocationId
+    path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
+    startLine: 162
+  assemblies:
+  - FastMoq.AzureFunctions
+  namespace: FastMoq.AzureFunctions.Extensions
+  summary: Registers a <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref> invocation identifier for the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  remarks: This helper configures mock-backed <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref> instances. Concrete contexts with their own immutable execution metadata may ignore this registration.
+  example: []
+  syntax:
+    content: public static Mocker AddFunctionContextInvocationId(this Mocker mocker, string invocationId, bool replace = false)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: invocationId
+      type: System.String
+      description: The invocation identifier to expose through <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InvocationId" data-throw-if-not-resolved="false"></xref>.
+    - id: replace
+      type: System.Boolean
+      description: True to overwrite a previously configured invocation-identifier helper value while preserving other <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref> behavior.
+    return:
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function AddFunctionContextInvocationId(mocker As Mocker, invocationId As String, replace As Boolean = False) As Mocker
+  overload: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId*
+  nameWithType.vb: FunctionContextTestExtensions.AddFunctionContextInvocationId(Mocker, String, Boolean)
+  fullName.vb: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId(FastMoq.Mocker, String, Boolean)
+  name.vb: AddFunctionContextInvocationId(Mocker, String, Boolean)
 references:
 - uid: Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices
   commentId: P:Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices
@@ -454,6 +592,121 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: Microsoft.Azure.Functions.Worker.FunctionContext
+  commentId: T:Microsoft.Azure.Functions.Worker.FunctionContext
+  parent: Microsoft.Azure.Functions.Worker
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext
+  name: FunctionContext
+  nameWithType: FunctionContext
+  fullName: Microsoft.Azure.Functions.Worker.FunctionContext
+- uid: Microsoft.Azure.Functions.Worker.FunctionContext.InvocationId
+  commentId: P:Microsoft.Azure.Functions.Worker.FunctionContext.InvocationId
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker.functioncontext.invocationid
+  name: InvocationId
+  nameWithType: FunctionContext.InvocationId
+  fullName: Microsoft.Azure.Functions.Worker.FunctionContext.InvocationId
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentexception
+  name: ArgumentException
+  nameWithType: ArgumentException
+  fullName: System.ArgumentException
+- uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId*
+  commentId: Overload:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId
+  href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInvocationId_FastMoq_Providers_IFastMock_System_String_
+  name: AddFunctionContextInvocationId
+  nameWithType: FunctionContextTestExtensions.AddFunctionContextInvocationId
+  fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInvocationId
+- uid: FastMoq.Providers.IFastMock
+  commentId: T:FastMoq.Providers.IFastMock
+  parent: FastMoq.Providers
+  href: FastMoq.Providers.IFastMock.html
+  name: IFastMock
+  nameWithType: IFastMock
+  fullName: FastMoq.Providers.IFastMock
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Microsoft.Azure.Functions.Worker
+  commentId: N:Microsoft.Azure.Functions.Worker
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Azure.Functions.Worker
+  nameWithType: Microsoft.Azure.Functions.Worker
+  fullName: Microsoft.Azure.Functions.Worker
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure
+  - name: .
+  - uid: Microsoft.Azure.Functions
+    name: Functions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions
+  - name: .
+  - uid: Microsoft.Azure.Functions.Worker
+    name: Worker
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Azure
+    name: Azure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure
+  - name: .
+  - uid: Microsoft.Azure.Functions
+    name: Functions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions
+  - name: .
+  - uid: Microsoft.Azure.Functions.Worker
+    name: Worker
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.azure.functions.worker
+- uid: FastMoq.Providers
+  commentId: N:FastMoq.Providers
+  href: FastMoq.html
+  name: FastMoq.Providers
+  nameWithType: FastMoq.Providers
+  fullName: FastMoq.Providers
+  spec.csharp:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
+  spec.vb:
+  - uid: FastMoq
+    name: FastMoq
+    href: FastMoq.html
+  - name: .
+  - uid: FastMoq.Providers
+    name: Providers
+    href: FastMoq.Providers.html
 - uid: FastMoq.Mocker
   commentId: T:FastMoq.Mocker
   parent: FastMoq
@@ -564,7 +817,8 @@ references:
   - name: )
 - uid: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices*
   commentId: Overload:FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices
-  href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
+  href: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html#FastMoq_AzureFunctions_Extensions_FunctionContextTestExtensions_AddFunctionContextInstanceServices_FastMoq_Providers_IFastMock_System_IServiceProvider_
   name: AddFunctionContextInstanceServices
   nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices
   fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices
+

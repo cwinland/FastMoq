@@ -5,9 +5,13 @@ items:
   id: ServiceProviderTestExtensions
   parent: FastMoq.Extensions
   children:
-  - FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  - FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
   - FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
-  - FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+  - FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,Microsoft.Extensions.DependencyInjection.IServiceScope,System.Boolean)
+  - FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  - FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  - FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  - FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
   langs:
   - csharp
   - vb
@@ -18,7 +22,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: ServiceProviderTestExtensions
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
@@ -41,26 +45,26 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
-  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
-  id: CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  id: CreateTypedServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
   isExtensionMethod: true
   parent: FastMoq.Extensions.ServiceProviderTestExtensions
   langs:
   - csharp
   - vb
-  name: CreateTypedServiceProvider(Mocker, Action<IServiceCollection>?)
-  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action<IServiceCollection>?)
-  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?)
+  name: CreateTypedServiceProvider(Mocker, Action<IServiceCollection>?, bool)
+  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action<IServiceCollection>?, bool)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool)
   type: Method
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateTypedServiceProvider
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-    startLine: 24
+    startLine: 25
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -74,7 +78,7 @@ items:
         services.AddOptions();
     });</code></pre>
   syntax:
-    content: public static IServiceProvider CreateTypedServiceProvider(this Mocker mocker, Action<IServiceCollection>? configureServices = null)
+    content: public static IServiceProvider CreateTypedServiceProvider(this Mocker mocker, Action<IServiceCollection>? configureServices = null, bool includeMockerFallback = false)
     parameters:
     - id: mocker
       type: FastMoq.Mocker
@@ -82,14 +86,62 @@ items:
     - id: configureServices
       type: System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection}
       description: Optional service registrations to apply before the provider is built.
+    - id: includeMockerFallback
+      type: System.Boolean
+      description: True to fall back to the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> for unregistered class and interface resolutions.
     return:
       type: System.IServiceProvider
       description: A real service provider that resolves services by requested type.
-    content.vb: Public Shared Function CreateTypedServiceProvider(mocker As Mocker, configureServices As Action(Of IServiceCollection) = Nothing) As IServiceProvider
+    content.vb: Public Shared Function CreateTypedServiceProvider(mocker As Mocker, configureServices As Action(Of IServiceCollection) = Nothing, includeMockerFallback As Boolean = False) As IServiceProvider
   overload: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider*
-  nameWithType.vb: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection))
-  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection))
-  name.vb: CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection))
+  nameWithType.vb: ServiceProviderTestExtensions.CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
+  name.vb: CreateTypedServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  id: CreateTypedServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.ServiceProviderTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: CreateTypedServiceScope(Mocker, Action<IServiceCollection>?, bool)
+  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceScope(Mocker, Action<IServiceCollection>?, bool)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://github.com/cwinland/FastMoq.git
+    id: CreateTypedServiceScope
+    path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
+    startLine: 47
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Creates a typed <xref href="Microsoft.Extensions.DependencyInjection.IServiceScope" data-throw-if-not-resolved="false"></xref> from the supplied service registrations.
+  example: []
+  syntax:
+    content: public static IServiceScope CreateTypedServiceScope(this Mocker mocker, Action<IServiceCollection>? configureServices = null, bool includeMockerFallback = false)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: configureServices
+      type: System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection}
+      description: Optional service registrations to apply before the scope is built.
+    - id: includeMockerFallback
+      type: System.Boolean
+      description: True to fall back to the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> for unregistered class and interface resolutions.
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceScope
+      description: A real service scope whose <xref href="Microsoft.Extensions.DependencyInjection.IServiceScope.ServiceProvider" data-throw-if-not-resolved="false"></xref> resolves services by requested type.
+    content.vb: Public Shared Function CreateTypedServiceScope(mocker As Mocker, configureServices As Action(Of IServiceCollection) = Nothing, includeMockerFallback As Boolean = False) As IServiceScope
+  overload: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope*
+  nameWithType.vb: ServiceProviderTestExtensions.CreateTypedServiceScope(Mocker, Action(Of IServiceCollection), Boolean)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
+  name.vb: CreateTypedServiceScope(Mocker, Action(Of IServiceCollection), Boolean)
 - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
   commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
   id: AddServiceProvider(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
@@ -105,11 +157,11 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: AddServiceProvider
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-    startLine: 40
+    startLine: 76
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
@@ -135,33 +187,123 @@ items:
   nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, IServiceProvider, Boolean)
   fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.IServiceProvider, Boolean)
   name.vb: AddServiceProvider(Mocker, IServiceProvider, Boolean)
-- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
-  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
-  id: AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,Microsoft.Extensions.DependencyInjection.IServiceScope,System.Boolean)
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,Microsoft.Extensions.DependencyInjection.IServiceScope,System.Boolean)
+  id: AddServiceScope(FastMoq.Mocker,Microsoft.Extensions.DependencyInjection.IServiceScope,System.Boolean)
   isExtensionMethod: true
   parent: FastMoq.Extensions.ServiceProviderTestExtensions
   langs:
   - csharp
   - vb
-  name: AddServiceProvider(Mocker, Action<IServiceCollection>?, bool)
-  nameWithType: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action<IServiceCollection>?, bool)
-  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool)
+  name: AddServiceScope(Mocker, IServiceScope, bool)
+  nameWithType: ServiceProviderTestExtensions.AddServiceScope(Mocker, IServiceScope, bool)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, Microsoft.Extensions.DependencyInjection.IServiceScope, bool)
   type: Method
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: AnalyzersAndHelpers
+      branch: feat/first-six-priority-issues
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AddServiceScope
+    path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
+    startLine: 103
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Registers a typed <xref href="Microsoft.Extensions.DependencyInjection.IServiceScope" data-throw-if-not-resolved="false"></xref> for the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example: []
+  syntax:
+    content: public static Mocker AddServiceScope(this Mocker mocker, IServiceScope serviceScope, bool replace = false)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: serviceScope
+      type: Microsoft.Extensions.DependencyInjection.IServiceScope
+      description: The scope to register.
+    - id: replace
+      type: System.Boolean
+      description: True to replace an existing registration.
+    return:
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function AddServiceScope(mocker As Mocker, serviceScope As IServiceScope, replace As Boolean = False) As Mocker
+  overload: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope*
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceScope(Mocker, IServiceScope, Boolean)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, Microsoft.Extensions.DependencyInjection.IServiceScope, Boolean)
+  name.vb: AddServiceScope(Mocker, IServiceScope, Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  id: AddServiceScope(FastMoq.Mocker,System.IServiceProvider,System.Boolean)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.ServiceProviderTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddServiceScope(Mocker, IServiceProvider, bool)
+  nameWithType: ServiceProviderTestExtensions.AddServiceScope(Mocker, IServiceProvider, bool)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, System.IServiceProvider, bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AddServiceScope
+    path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
+    startLine: 119
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Registers a fixed <xref href="Microsoft.Extensions.DependencyInjection.IServiceScope" data-throw-if-not-resolved="false"></xref> backed by the supplied <xref href="System.IServiceProvider" data-throw-if-not-resolved="false"></xref> for the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example: []
+  syntax:
+    content: public static Mocker AddServiceScope(this Mocker mocker, IServiceProvider serviceProvider, bool replace = false)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: serviceProvider
+      type: System.IServiceProvider
+      description: The provider to expose through the registered scope.
+    - id: replace
+      type: System.Boolean
+      description: True to replace an existing registration.
+    return:
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function AddServiceScope(mocker As Mocker, serviceProvider As IServiceProvider, replace As Boolean = False) As Mocker
+  overload: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope*
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceScope(Mocker, IServiceProvider, Boolean)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, System.IServiceProvider, Boolean)
+  name.vb: AddServiceScope(Mocker, IServiceProvider, Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  id: AddServiceProvider(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.ServiceProviderTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddServiceProvider(Mocker, Action<IServiceCollection>?, bool, bool)
+  nameWithType: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action<IServiceCollection>?, bool, bool)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool, bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
+      branch: feat/first-six-priority-issues
       repo: https://github.com/cwinland/FastMoq.git
     id: AddServiceProvider
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-    startLine: 67
+    startLine: 145
   assemblies:
   - FastMoq.Core
   namespace: FastMoq.Extensions
   summary: Builds and registers a typed <xref href="System.IServiceProvider" data-throw-if-not-resolved="false"></xref> for the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
   example: []
   syntax:
-    content: public static Mocker AddServiceProvider(this Mocker mocker, Action<IServiceCollection>? configureServices, bool replace = false)
+    content: public static Mocker AddServiceProvider(this Mocker mocker, Action<IServiceCollection>? configureServices, bool replace = false, bool includeMockerFallback = false)
     parameters:
     - id: mocker
       type: FastMoq.Mocker
@@ -172,14 +314,65 @@ items:
     - id: replace
       type: System.Boolean
       description: True to replace an existing registration.
+    - id: includeMockerFallback
+      type: System.Boolean
+      description: True to fall back to the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> for unregistered class and interface resolutions.
     return:
       type: FastMoq.Mocker
       description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
-    content.vb: Public Shared Function AddServiceProvider(mocker As Mocker, configureServices As Action(Of IServiceCollection), replace As Boolean = False) As Mocker
+    content.vb: Public Shared Function AddServiceProvider(mocker As Mocker, configureServices As Action(Of IServiceCollection), replace As Boolean = False, includeMockerFallback As Boolean = False) As Mocker
   overload: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider*
-  nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
-  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean)
-  name.vb: AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean)
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean, Boolean)
+  name.vb: AddServiceProvider(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  commentId: M:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  id: AddServiceScope(FastMoq.Mocker,System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Boolean,System.Boolean)
+  isExtensionMethod: true
+  parent: FastMoq.Extensions.ServiceProviderTestExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddServiceScope(Mocker, Action<IServiceCollection>?, bool, bool)
+  nameWithType: ServiceProviderTestExtensions.AddServiceScope(Mocker, Action<IServiceCollection>?, bool, bool)
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>?, bool, bool)
+  type: Method
+  source:
+    remote:
+      path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
+      branch: feat/first-six-priority-issues
+      repo: https://github.com/cwinland/FastMoq.git
+    id: AddServiceScope
+    path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
+    startLine: 171
+  assemblies:
+  - FastMoq.Core
+  namespace: FastMoq.Extensions
+  summary: Builds and registers a typed <xref href="Microsoft.Extensions.DependencyInjection.IServiceScope" data-throw-if-not-resolved="false"></xref> for the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+  example: []
+  syntax:
+    content: public static Mocker AddServiceScope(this Mocker mocker, Action<IServiceCollection>? configureServices, bool replace = false, bool includeMockerFallback = false)
+    parameters:
+    - id: mocker
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    - id: configureServices
+      type: System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection}
+      description: Optional service registrations to apply before the scope is built.
+    - id: replace
+      type: System.Boolean
+      description: True to replace an existing registration.
+    - id: includeMockerFallback
+      type: System.Boolean
+      description: True to fall back to the current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> for unregistered class and interface resolutions.
+    return:
+      type: FastMoq.Mocker
+      description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
+    content.vb: Public Shared Function AddServiceScope(mocker As Mocker, configureServices As Action(Of IServiceCollection), replace As Boolean = False, includeMockerFallback As Boolean = False) As Mocker
+  overload: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope*
+  nameWithType.vb: ServiceProviderTestExtensions.AddServiceScope(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
+  fullName.vb: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope(FastMoq.Mocker, System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection), Boolean, Boolean)
+  name.vb: AddServiceScope(Mocker, Action(Of IServiceCollection), Boolean, Boolean)
 references:
 - uid: FastMoq.Extensions
   commentId: N:FastMoq.Extensions
@@ -457,7 +650,7 @@ references:
   fullName: FastMoq.Mocker
 - uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider*
   commentId: Overload:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider
-  href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__
+  href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceProvider_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
   name: CreateTypedServiceProvider
   nameWithType: ServiceProviderTestExtensions.CreateTypedServiceProvider
   fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceProvider
@@ -496,6 +689,17 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
   - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: FastMoq
   commentId: N:FastMoq
   href: FastMoq.html
@@ -530,20 +734,74 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: Microsoft.Extensions.DependencyInjection.IServiceScope
+  commentId: T:Microsoft.Extensions.DependencyInjection.IServiceScope
+  parent: Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope
+  name: IServiceScope
+  nameWithType: IServiceScope
+  fullName: Microsoft.Extensions.DependencyInjection.IServiceScope
+- uid: Microsoft.Extensions.DependencyInjection.IServiceScope.ServiceProvider
+  commentId: P:Microsoft.Extensions.DependencyInjection.IServiceScope.ServiceProvider
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicescope.serviceprovider
+  name: ServiceProvider
+  nameWithType: IServiceScope.ServiceProvider
+  fullName: Microsoft.Extensions.DependencyInjection.IServiceScope.ServiceProvider
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope*
+  commentId: Overload:FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope
+  href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_CreateTypedServiceScope_FastMoq_Mocker_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__System_Boolean_
+  name: CreateTypedServiceScope
+  nameWithType: ServiceProviderTestExtensions.CreateTypedServiceScope
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.CreateTypedServiceScope
+- uid: Microsoft.Extensions.DependencyInjection
+  commentId: N:Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.DependencyInjection
+  nameWithType: Microsoft.Extensions.DependencyInjection
+  fullName: Microsoft.Extensions.DependencyInjection
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
 - uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider*
   commentId: Overload:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider
   href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceProvider_FastMoq_Mocker_System_IServiceProvider_System_Boolean_
   name: AddServiceProvider
   nameWithType: ServiceProviderTestExtensions.AddServiceProvider
   fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceProvider
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.boolean
-  name: bool
-  nameWithType: bool
-  fullName: bool
-  nameWithType.vb: Boolean
-  fullName.vb: Boolean
-  name.vb: Boolean
+- uid: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope*
+  commentId: Overload:FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope
+  href: FastMoq.Extensions.ServiceProviderTestExtensions.html#FastMoq_Extensions_ServiceProviderTestExtensions_AddServiceScope_FastMoq_Mocker_Microsoft_Extensions_DependencyInjection_IServiceScope_System_Boolean_
+  name: AddServiceScope
+  nameWithType: ServiceProviderTestExtensions.AddServiceScope
+  fullName: FastMoq.Extensions.ServiceProviderTestExtensions.AddServiceScope
+

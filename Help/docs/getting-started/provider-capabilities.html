@@ -86,7 +86,7 @@
 </ul>
 <p>The selected provider determines whether features such as protected-member access, automatic property backing, base-call behavior, and logger capture are available.</p>
 <h2 id="capability-matrix">Capability matrix</h2>
-<p>These values come from <code>IMockingProviderCapabilities</code> in the current repo.</p>
+<p>These values reflect <code>IMockingProviderCapabilities</code> in the current v4 release line.</p>
 <table>
 <thead>
 <tr>
@@ -165,7 +165,7 @@
 </tr>
 <tr>
 <td><code>VerifyLogger(...)</code></td>
-<td>Prefer <code>VerifyLogged(...)</code> when the provider supports logger capture. If the provider does not support logger capture, register a collecting logger fake via <code>AddType(...)</code>.</td>
+<td>Prefer <code>VerifyLogged(...)</code>. For a first-party registration story, use <code>AddLoggerFactory()</code> to register callback-backed <code>ILoggerFactory</code>, <code>ILogger</code>, and <code>ILogger&lt;T&gt;</code> services directly on <code>Mocker</code>, or use <code>CreateLoggerFactory()</code> when you want to plug the same capture-backed factory into a typed <code>IServiceProvider</code> recipe.</td>
 <td>When you are intentionally preserving older Moq-shaped logger assertions with minimal churn.</td>
 </tr>
 <tr>
@@ -180,12 +180,12 @@
 </tr>
 <tr>
 <td><code>SetupSet(...)</code></td>
-<td>Prefer a fake or stub registered with <code>AddType(...)</code> that captures assigned values, usually with <code>PropertyValueCapture&lt;TValue&gt;</code>, or verify the observable downstream behavior instead of the setter interception itself.</td>
-<td>When the setter interception is the important behavior and introducing a fake would create more churn than value.</td>
+<td>For simple interface-property cases, prefer <code>AddPropertySetterCapture&lt;TService, TValue&gt;(...)</code>. For broader collaborator behavior, prefer a fake or stub registered with <code>AddType(...)</code> that captures assigned values, usually with <code>PropertyValueCapture&lt;TValue&gt;</code>, or verify the observable downstream behavior instead of the setter interception itself.</td>
+<td>When the setter interception is the important behavior and introducing a helper-backed replacement or fake would create more churn than value.</td>
 </tr>
 <tr>
 <td><code>SetupAllProperties()</code></td>
-<td>Prefer a concrete fake or lightweight test double with real property state. For ordinary collaborator behavior, use <code>AddType(...)</code> or a purpose-built fake instead of expecting provider-managed property backing.</td>
+<td>For simple interface-property state, prefer <code>AddPropertyState&lt;TService&gt;(...)</code>. For broader collaborator behavior or class targets, prefer a concrete fake or lightweight test double with real property state via <code>AddType(...)</code>.</td>
 <td>When you specifically want mocking-library-managed property backing without creating a custom fake.</td>
 </tr>
 <tr>
@@ -257,7 +257,33 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(&quot;alpha&quot;), TimesSpe
     .AsMoq()
     .SetupSet(x =&gt; x.Mode = It.IsAny&lt;string&gt;());
 </code></pre>
-<p>For <code>SetupSet(...)</code>-heavy tests, the preferred first-party answer is usually a small fake plus <a class="xref" href="../../api/FastMoq.PropertyValueCapture-1.html">PropertyValueCapture&lt;TValue&gt;</a>:</p>
+<p>For simple <code>SetupSet(...)</code> cases on interface properties, the preferred first-party answer is <code>AddPropertySetterCapture&lt;TService, TValue&gt;(...)</code>:</p>
+<pre><code class="lang-csharp">var modeCapture = Mocks.AddPropertySetterCapture&lt;IOrderGateway, string?&gt;(x =&gt; x.Mode);
+CreateComponent();
+
+Component.Run();
+
+modeCapture.Value.Should().Be(&quot;fast&quot;);
+</code></pre>
+<p>When the component under test comes from <code>MockerTestBase&lt;TComponent&gt;</code>, call <code>CreateComponent()</code> after adding the capture unless you registered it in the test base setup path before component creation.</p>
+<p>For simple <code>SetupAllProperties()</code> cases on interface collaborators, the preferred first-party answer is <code>AddPropertyState&lt;TService&gt;(...)</code>:</p>
+<pre><code class="lang-csharp">var channel = Mocks.AddPropertyState&lt;IOrderSubmissionChannel&gt;();
+CreateComponent();
+
+await Component.SubmitAsync(&quot;order-42&quot;, expedited: true, CancellationToken.None);
+
+channel.Mode.Should().Be(&quot;fast&quot;);
+</code></pre>
+<p>That keeps the important part of the test explicit: the collaborator needs real property state, not Moq-specific property plumbing.</p>
+<p><code>AddPropertyState&lt;TService&gt;(...)</code> keeps its original write-through behavior by default. If the test needs detached property state on the proxy registration without mutating the previously wrapped instance, use <code>PropertyStateMode.ProxyOnly</code>:</p>
+<pre><code class="lang-csharp">var channel = Mocks.AddPropertyState&lt;IOrderSubmissionChannel&gt;(PropertyStateMode.ProxyOnly);
+CreateComponent();
+
+await Component.SubmitAsync(&quot;order-42&quot;, expedited: true, CancellationToken.None);
+
+channel.Mode.Should().Be(&quot;fast&quot;);
+</code></pre>
+<p>If the collaborator needs more behavior than one captured property, or the target is not an interface, fall back to a fake plus <a class="xref" href="../../api/FastMoq.PropertyValueCapture-1.html">PropertyValueCapture&lt;TValue&gt;</a>:</p>
 <pre><code class="lang-csharp">var modeCapture = new PropertyValueCapture&lt;string?&gt;();
 Mocks.AddType&lt;IOrderGateway&gt;(_ =&gt; new OrderGatewayStub(modeCapture));
 
@@ -274,7 +300,7 @@ sealed class OrderGatewayStub(PropertyValueCapture&lt;string?&gt; capture) : IOr
     }
 }
 </code></pre>
-<p>That pattern stays portable across providers, makes the arranged state explicit, and avoids tying the test to Moq-only setter interception when the important behavior is the assigned value.</p>
+<p>That combination keeps the test portable across providers, makes the arranged state explicit, and avoids tying the test to Moq-only setter interception when the important behavior is the assigned value.</p>
 <p>Repo-backed references:</p>
 <ul>
 <li><code>FastMoq.Tests/MoqProviderExtensionTests.cs</code></li>
@@ -326,7 +352,7 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(&quot;alpha&quot;), TimesSpe
 <li><code>SetupSequence(...)</code> becomes <code>Returns(value1, value2, ...)</code></li>
 <li><code>SetupGet(...)</code> becomes a direct property <code>Returns(...)</code></li>
 </ul>
-<p>If a migrated test still needs <code>SetupSet(...)</code>, <code>Protected()</code>, <code>SetupAllProperties()</code>, or <code>CallBase</code>, that test should usually stay on Moq or move to a fake rather than trying to force an NSubstitute equivalent. <code>PropertyValueCapture&lt;TValue&gt;</code> is the default FastMoq answer when the test only needs to observe property assignments rather than exercise Moq itself.</p>
+<p>If a migrated test still needs <code>Protected()</code> or <code>CallBase</code>, that test should usually stay on Moq or move to a fake rather than trying to force an NSubstitute equivalent. For simple interface-property cases, prefer <code>AddPropertySetterCapture&lt;TService, TValue&gt;(...)</code> or <code>AddPropertyState&lt;TService&gt;(...)</code> before keeping <code>SetupSet(...)</code> or <code>SetupAllProperties()</code> purely for habit. <code>PropertyValueCapture&lt;TValue&gt;</code> remains the default FastMoq answer when the test only needs to observe property assignments rather than exercise Moq itself.</p>
 <p>Repo-backed references:</p>
 <ul>
 <li><code>FastMoq.Tests/NSubstituteProviderExtensionTests.cs</code></li>
@@ -425,7 +451,7 @@ Mocks.VerifyNoOtherCalls&lt;IOrderGateway&gt;();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

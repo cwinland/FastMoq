@@ -556,8 +556,7 @@ public class BlogService
 {
     protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
     {
-        var dbContextMock = mocker.GetMockDbContext&lt;BlogContext&gt;();
-        mocker.AddType(_ =&gt; dbContextMock.Object);
+        _ = mocker.GetMockDbContext&lt;BlogContext&gt;();
     };
 
     [Fact]
@@ -634,8 +633,6 @@ public class BlogService
         // Setup specific DbSet behavior if needed
         var blogSet = dbContextMock.Object.Set&lt;Blog&gt;();
         // Additional setup...
-        
-        mocker.AddType(_ =&gt; dbContextMock.Object);
     };
 
     [Fact]
@@ -859,8 +856,7 @@ public class WeatherServiceQuickTests : MockerTestBase&lt;WeatherService&gt;
 {
     protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
     {
-        mocker.AddType&lt;IOptions&lt;WeatherApiOptions&gt;&gt;(() =&gt;
-            Options.Create(new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; }));
+        mocker.SetupOptions(new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; });
         
         // ✅ EASIEST - CreateHttpClient with defaults (auto-registers HttpClient)
         mocker.CreateHttpClient(
@@ -911,8 +907,7 @@ public class WeatherServiceAdvancedTests : MockerTestBase&lt;WeatherService&gt;
 {
     protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
     {
-        mocker.AddType&lt;IOptions&lt;WeatherApiOptions&gt;&gt;(() =&gt;
-            Options.Create(new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; }));
+        mocker.SetupOptions(new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; });
     };
 
     [Fact]
@@ -991,8 +986,7 @@ public class WeatherServiceMoqCompatibilityTests : MockerTestBase&lt;WeatherServ
 {
     protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
     {
-        mocker.AddType&lt;IOptions&lt;WeatherApiOptions&gt;&gt;(() =&gt;
-            Options.Create(new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; }));
+        mocker.SetupOptions(new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; });
     };
 
     [Fact]
@@ -1022,8 +1016,7 @@ public class WeatherServiceFactoryTests : MockerTestBase&lt;WeatherService&gt;
 {
     protected override Action&lt;Mocker&gt; SetupMocksAction =&gt; mocker =&gt;
     {
-        mocker.AddType&lt;IOptions&lt;WeatherApiOptions&gt;&gt;(() =&gt;
-            Options.Create(new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; }));
+        mocker.SetupOptions(new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; });
         
         // ✅ CreateHttpClient automatically sets up IHttpClientFactory
         mocker.CreateHttpClient(
@@ -1260,9 +1253,7 @@ public class EmailService
             EnableSsl = true
         };
 
-        mocker.GetMock&lt;IOptions&lt;EmailOptions&gt;&gt;()
-            .Setup(x =&gt; x.Value)
-            .Returns(emailOptions);
+        mocker.SetupOptions(emailOptions);
 
         // Setup configuration
         var configurationData = new Dictionary&lt;string, string&gt;
@@ -1303,9 +1294,7 @@ public class EmailService
     {
         // Arrange - Override options with empty SMTP host
         var emailOptions = new EmailOptions { SmtpHost = &quot;&quot; };
-        Mocks.GetMock&lt;IOptions&lt;EmailOptions&gt;&gt;()
-            .Setup(x =&gt; x.Value)
-            .Returns(emailOptions);
+        Mocks.SetupOptions(emailOptions, replace: true);
 
         // Act
         var result = await Component.SendEmailAsync(&quot;test@example.com&quot;, &quot;Subject&quot;, &quot;Body&quot;);
@@ -1341,6 +1330,19 @@ public class EmailService
     }
 }
 </code></pre>
+<h3 id="options-setup-without-repeated-ioptions-boilerplate">Options Setup Without Repeated IOptions Boilerplate</h3>
+<p>When a test only needs to provide a concrete options value, prefer <code>SetupOptions(...)</code> over repeated <code>GetMock&lt;IOptions&lt;T&gt;&gt;().Setup(x =&gt; x.Value)...</code> or <code>AddType&lt;IOptions&lt;T&gt;&gt;(Options.Create(...))</code> patterns:</p>
+<pre><code class="lang-csharp">var mocker = new Mocker()
+    .SetupOptions(new EmailOptions
+    {
+        SmtpHost = &quot;smtp.example.com&quot;,
+        SmtpPort = 587,
+    });
+
+var options = mocker.GetObject&lt;IOptions&lt;EmailOptions&gt;&gt;();
+options.Value.SmtpHost.Should().Be(&quot;smtp.example.com&quot;);
+</code></pre>
+<p>Use <code>AddType(instance, replace: true)</code> for non-options real dependencies such as <code>MemoryCache</code>, file systems, or fixed runtime objects. <code>SetupOptions(...)</code> is intentionally the narrow convenience helper for <code>IOptions&lt;T&gt;</code> registration only.</p>
 <h3 id="testing-with-ioptionsmonitor">Testing with IOptionsMonitor</h3>
 <pre><code class="lang-csharp">public class EmailServiceWithMonitorTests : MockerTestBase&lt;EmailService&gt;
 {
@@ -1388,6 +1390,43 @@ Mocks.GetMock&lt;ILogger&lt;MyService&gt;&gt;()
     .VerifyLogger(LogLevel.Information, &quot;Processing complete&quot;, 1);
 </code></pre>
 <p><code>VerifyLogged(...)</code> is provider-safe because the active provider is responsible for wiring <code>ILogger</code> capture through <code>IMockingProvider.ConfigureLogger(...)</code>, while FastMoq core owns the assertion semantics. Providers that cannot capture logger callbacks advertise that through capabilities and FastMoq fails fast instead of silently giving a false negative.</p>
+<h3 id="logger-registration-without-a-private-helper-layer">Logger Registration Without A Private Helper Layer</h3>
+<p>If the suite needs a reusable registration path for <code>ILoggerFactory</code>, <code>ILogger</code>, or <code>ILogger&lt;T&gt;</code>, use the first-party logging helpers instead of maintaining a framework-specific adapter layer:</p>
+<pre><code class="lang-csharp">var mocker = new Mocker()
+    .AddLoggerFactory();
+
+var logger = mocker.GetObject&lt;ILogger&lt;OrderProcessingService&gt;&gt;();
+
+logger.LogInformation(&quot;Processing complete&quot;);
+
+mocker.VerifyLogged(LogLevel.Information, &quot;Processing complete&quot;);
+</code></pre>
+<p>When the test already builds a typed service provider, create the same callback-backed factory explicitly and register it into the service collection:</p>
+<pre><code class="lang-csharp">var loggerFactory = Mocks.CreateLoggerFactory();
+var provider = Mocks.CreateTypedServiceProvider(services =&gt;
+{
+    services.AddSingleton(loggerFactory);
+    services.AddSingleton(typeof(ILogger&lt;&gt;), typeof(Logger&lt;&gt;));
+});
+</code></pre>
+<p>That keeps the logger-registration story framework-neutral while still letting <code>Mocks.VerifyLogged(...)</code> assert on the captured entries.</p>
+<p>When the test already has a line-oriented sink after <code>Mocker</code> construction, use the sink-aware overloads instead of keeping a private logger wrapper:</p>
+<pre><code class="lang-csharp">var lines = new List&lt;string&gt;();
+var mocker = new Mocker()
+    .AddLoggerFactory(lines.Add, replace: true);
+
+var logger = mocker.GetObject&lt;ILogger&lt;OrderProcessingService&gt;&gt;();
+logger.LogInformation(&quot;Processing complete&quot;);
+
+lines.Should().ContainSingle(line =&gt; line.Contains(&quot;Processing complete&quot;));
+mocker.VerifyLogged(LogLevel.Information, &quot;Processing complete&quot;);
+</code></pre>
+<p>If the sink needs custom formatting instead of the default line-writer format, use the raw callback overload:</p>
+<pre><code class="lang-csharp">var loggerFactory = Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) =&gt;
+{
+    output.WriteLine($&quot;[{logLevel}] {message}&quot;);
+});
+</code></pre>
 <h3 id="service-with-logging">Service with Logging</h3>
 <pre><code class="lang-csharp">public class OrderProcessingService
 {
@@ -1679,7 +1718,7 @@ Mocks.GetMock&lt;ILogger&lt;MyService&gt;&gt;()
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-10 08:54 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>
