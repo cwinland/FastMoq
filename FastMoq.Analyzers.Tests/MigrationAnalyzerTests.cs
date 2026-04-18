@@ -41,6 +41,7 @@ namespace FastMoq.Analyzers.Tests
             { new MissingHelperPackageAnalyzer(), DiagnosticDescriptors.ReferenceFastMoqHelperPackage },
             { new HttpRequestHelperAuthoringAnalyzer(), DiagnosticDescriptors.PreferProviderNeutralHttpHelpers },
             { new ServiceProviderShimAnalyzer(), DiagnosticDescriptors.PreferTypedServiceProviderHelpers },
+            { new ServiceProviderShimAnalyzer(), DiagnosticDescriptors.PreferFunctionContextExecutionHelpers },
             { new KnownTypeAuthoringAnalyzer(), DiagnosticDescriptors.PreferKnownTypeRegistrations },
             { new KeyedDependencyAnalyzer(), DiagnosticDescriptors.PreserveKeyedServiceDistinctness },
             { new TrackedAddTypeMigrationAnalyzer(), DiagnosticDescriptors.PreserveTrackedResolutionDuringAddTypeMigration },
@@ -73,6 +74,7 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.ReferenceFastMoqHelperPackage, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferProviderNeutralHttpHelpers, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferTypedServiceProviderHelpers, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.PreferFunctionContextExecutionHelpers, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.PreferKnownTypeRegistrations, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.PreserveKeyedServiceDistinctness, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.PreserveTrackedResolutionDuringAddTypeMigration, DiagnosticSeverity.Warning },
@@ -83,8 +85,7 @@ namespace FastMoq.Analyzers.Tests
         [MemberData(nameof(AnalyzerDescriptorPairs))]
         public void Analyzer_ShouldExposeExpectedSupportedDescriptor(DiagnosticAnalyzer analyzer, DiagnosticDescriptor expectedDescriptor)
         {
-            var actualDescriptor = Assert.Single(analyzer.SupportedDiagnostics);
-            Assert.Same(expectedDescriptor, actualDescriptor);
+            Assert.Contains(expectedDescriptor, analyzer.SupportedDiagnostics);
         }
 
         [Theory]
@@ -1151,6 +1152,52 @@ class Sample
         }
 
         [Fact]
+        public async Task SetupSetAnalyzer_ShouldReportAndFix_SimpleInterfacePropertyCapture()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+public interface IOrderGateway
+{
+    string? Mode { get; set; }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var gateway = Mocks.GetOrCreateMock<IOrderGateway>();
+        gateway.AsMoq().SetupSet(x => x.Mode = It.IsAny<string?>());
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new SetupSetAnalyzer(), codeFixProvider, DiagnosticIds.PreferPropertySetterCaptureHelper);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using FastMoq.Extensions;
+
+public interface IOrderGateway
+{
+    string? Mode { get; set; }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var gateway = Mocks.GetOrCreateMock<IOrderGateway>();
+        Mocks.AddPropertySetterCapture<IOrderGateway, string?>(x => x.Mode);
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
         public async Task SetupSetAnalyzer_ShouldReportFakePatternSuggestion_ForChainedSetupSetUsage()
         {
             const string SOURCE = @"
@@ -1177,6 +1224,32 @@ class Sample
 
             Assert.Equal(DiagnosticIds.PreferPropertySetterCaptureHelper, diagnostic.Id);
             Assert.Contains("PropertyValueCapture<string?>", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task SetupSetAnalyzer_ShouldNotOfferFix_ForChainedSetupSetUsage()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+public interface IOrderGateway
+{
+    string? Mode { get; set; }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var gateway = Mocks.GetOrCreateMock<IOrderGateway>();
+        gateway.AsMoq().SetupSet(x => x.Mode = It.IsAny<string?>()).Verifiable();
+    }
+}";
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(SOURCE, new SetupSetAnalyzer(), codeFixProvider, DiagnosticIds.PreferPropertySetterCaptureHelper);
+            Assert.Empty(codeFixTitles);
         }
 
         [Fact]
@@ -1208,6 +1281,50 @@ class Sample
         }
 
         [Fact]
+        public async Task SetupAllPropertiesAnalyzer_ShouldReportAndFix_SimpleInterfaceUsage()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+public interface IOrderGateway
+{
+    string? Mode { get; set; }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var gateway = Mocks.GetOrCreateMock<IOrderGateway>();
+        gateway.AsMoq().SetupAllProperties();
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new SetupAllPropertiesAnalyzer(), codeFixProvider, DiagnosticIds.PreferPropertyStateHelper);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using FastMoq.Extensions;
+
+public interface IOrderGateway
+{
+    string? Mode { get; set; }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var gateway = Mocks.GetOrCreateMock<IOrderGateway>();
+        Mocks.AddPropertyState<IOrderGateway>();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
         public async Task SetupAllPropertiesAnalyzer_ShouldReportFakeSuggestion_ForClassUsage()
         {
             const string SOURCE = @"
@@ -1233,6 +1350,31 @@ class Sample
 
             Assert.Equal(DiagnosticIds.PreferPropertyStateHelper, diagnostic.Id);
             Assert.Contains("concrete fake or stub registered with AddType(...)", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task SetupAllPropertiesAnalyzer_ShouldNotOfferFix_ForClassUsage()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+public class OrderGateway
+{
+    public virtual string? Mode { get; set; }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var gateway = Mocks.GetOrCreateMock<OrderGateway>();
+        gateway.AsMoq().SetupAllProperties();
+    }
+}";
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(SOURCE, new SetupAllPropertiesAnalyzer(), codeFixProvider, DiagnosticIds.PreferPropertyStateHelper);
+            Assert.Empty(codeFixTitles);
         }
 
         [Fact]
@@ -1381,6 +1523,65 @@ class Sample
     {
         var context = Mocks.GetOrCreateMock<Microsoft.Azure.Functions.Worker.FunctionContext>();
         context.AddFunctionContextInstanceServices(provider);
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldReportAndFix_FunctionContextInvocationIdReturnsUsage()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+namespace Microsoft.Azure.Functions.Worker
+{
+    abstract class FunctionContext
+    {
+        public abstract string InvocationId { get; }
+    }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var context = Mocks.GetOrCreateMock<Microsoft.Azure.Functions.Worker.FunctionContext>();
+        context.SetupGet(x => x.InvocationId).Returns(""inv-123"");
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, includeAzureFunctionsHelpers: true, new ServiceProviderShimAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferFunctionContextExecutionHelpers));
+            Assert.Equal(DiagnosticIds.PreferFunctionContextExecutionHelpers, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new ServiceProviderShimAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.PreferFunctionContextExecutionHelpers,
+                includeAzureFunctionsHelpers: true);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using FastMoq.AzureFunctions.Extensions;
+
+namespace Microsoft.Azure.Functions.Worker
+{
+    abstract class FunctionContext
+    {
+        public abstract string InvocationId { get; }
+    }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var context = Mocks.GetOrCreateMock<Microsoft.Azure.Functions.Worker.FunctionContext>();
+        context.AddFunctionContextInvocationId(""inv-123"");
     }
 }");
 
@@ -2448,6 +2649,47 @@ class Sample
         }
 
         [Fact]
+        public async Task NativeMockAuthoringAnalyzer_ShouldReportAndFix_WhenGetNativeMockIsUsedInMoqOrientedFile()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var native = mocks.GetNativeMock<IService>();
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new NativeMockAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferTypedProviderExtensions);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var native = mocks.GetOrCreateMock<IService>().AsMoq();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
         public async Task NativeMockAuthoringAnalyzer_ShouldReport_WhenNativeMockPropertyIsUsedInNSubstituteOrientedFile()
         {
             const string SOURCE = @"
@@ -2471,6 +2713,49 @@ class Sample
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new NativeMockAuthoringAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferTypedProviderExtensions));
             Assert.Equal(DiagnosticIds.PreferTypedProviderExtensions, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task NativeMockAuthoringAnalyzer_ShouldReportAndFix_WhenNativeMockPropertyIsUsedInNSubstituteOrientedFile()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.NSubstituteProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var fast = mocks.GetOrCreateMock<IService>();
+        var native = fast.NativeMock;
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new NativeMockAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferTypedProviderExtensions);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers.NSubstituteProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var fast = mocks.GetOrCreateMock<IService>();
+        var native = fast.AsNSubstitute();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
         }
 
         [Fact]
@@ -2517,6 +2802,38 @@ class Sample
         }
 
         [Fact]
+        public async Task WebHelperAuthoringAnalyzer_ShouldReportAndFix_WhenAddTypeRegistersHttpContext()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.AspNetCore.Http;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.AddType<HttpContext>(_ => new DefaultHttpContext());
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new WebHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferWebTestHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Microsoft.AspNetCore.Http;
+using FastMoq.Web.Extensions;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.AddHttpContext();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
         public async Task WebHelperAuthoringAnalyzer_ShouldReport_WhenAddTypeRegistersHttpContextAccessor()
         {
             const string SOURCE = @"
@@ -2534,6 +2851,38 @@ class Sample
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new WebHelperAuthoringAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferWebTestHelpers));
             Assert.Equal(DiagnosticIds.PreferWebTestHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task WebHelperAuthoringAnalyzer_ShouldReportAndFix_WhenAddTypeRegistersHttpContextAccessor()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.AspNetCore.Http;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.AddType<IHttpContextAccessor, HttpContextAccessor>(_ => new HttpContextAccessor());
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new WebHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferWebTestHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Microsoft.AspNetCore.Http;
+using FastMoq.Web.Extensions;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.AddHttpContextAccessor();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
         }
 
         [Fact]
@@ -2601,6 +2950,90 @@ class Sample
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new WebHelperAuthoringAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferWebTestHelpers));
             Assert.Equal(DiagnosticIds.PreferWebTestHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task WebHelperAuthoringAnalyzer_ShouldReport_WhenCreateHttpContextDirectlySetsRequestBody()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Web.Extensions;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Text;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.CreateHttpContext().Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(""alpha""));
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new WebHelperAuthoringAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferWebTestHelpers));
+            Assert.Equal(DiagnosticIds.PreferWebTestHelpers, diagnostic.Id);
+            Assert.Contains("SetRequestBody(...) or SetRequestJsonBody(...)", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task WebHelperAuthoringAnalyzer_ShouldReportAndFix_WhenCreateHttpContextDirectlySetsRequestBodyAndContentType()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Web.Extensions;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Text;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.CreateHttpContext().Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(""alpha""));
+        mocks.CreateHttpContext().Request.ContentType = ""text/plain"";
+    }
+}";
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new WebHelperAuthoringAnalyzer(), codeFixProvider, DiagnosticIds.PreferWebTestHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Web.Extensions;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Text;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.CreateHttpContext().SetRequestBody(new MemoryStream(Encoding.UTF8.GetBytes(""alpha"")), ""text/plain"");
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task WebHelperAuthoringAnalyzer_ShouldReport_WhenCreateHttpContextDirectlySetsRequestContentType()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Web.Extensions;
+using Microsoft.AspNetCore.Http;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.CreateHttpContext().Request.ContentType = ""application/json"";
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new WebHelperAuthoringAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferWebTestHelpers));
+            Assert.Equal(DiagnosticIds.PreferWebTestHelpers, diagnostic.Id);
+            Assert.Contains("SetRequestBody(...) or SetRequestJsonBody(...)", diagnostic.GetMessage());
         }
 
         [Fact]

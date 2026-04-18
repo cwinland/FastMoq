@@ -157,7 +157,7 @@ namespace FastMoq.Analyzers
             Category,
             DiagnosticSeverity.Info,
             isEnabledByDefault: true,
-            description: "Prefer CreateHttpContext(...), CreateControllerContext(...), AddHttpContext(...), and AddHttpContextAccessor(...) over hand-rolled AddType(...), DefaultHttpContext, or ControllerContext setup for common web test primitives.");
+            description: "Prefer CreateHttpContext(...), CreateControllerContext(...), AddHttpContext(...), AddHttpContextAccessor(...), SetRequestBody(...), and SetRequestJsonBody(...) over hand-rolled AddType(...), DefaultHttpContext, or direct HttpRequest body wiring for common web test primitives.");
 
         public static readonly DiagnosticDescriptor PreferProviderNeutralHttpHelpers = new(
             DiagnosticIds.PreferProviderNeutralHttpHelpers,
@@ -176,6 +176,15 @@ namespace FastMoq.Analyzers
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: "Mocking IServiceProvider, IServiceScopeFactory, or IServiceScope directly often creates one-object-for-all-types shims. Prefer CreateTypedServiceProvider(...), CreateTypedServiceScope(...), AddServiceProvider(...), AddServiceScope(...), CreateFunctionContextInstanceServices(...), or AddFunctionContextInstanceServices(...) so framework code resolves services by requested type.");
+
+        public static readonly DiagnosticDescriptor PreferFunctionContextExecutionHelpers = new(
+            DiagnosticIds.PreferFunctionContextExecutionHelpers,
+            "Prefer FunctionContext execution helpers",
+            "Prefer FastMoq's FunctionContext execution helpers instead of '{0}' for Azure Functions execution metadata setup",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "Prefer AddFunctionContextInvocationId(...) over raw provider-native InvocationId setup so Azure Functions tests stay on FastMoq's helper surface and package-aware guidance remains consistent.");
 
         public static readonly DiagnosticDescriptor PreferKnownTypeRegistrations = new(
             DiagnosticIds.PreferKnownTypeRegistrations,

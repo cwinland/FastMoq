@@ -126,14 +126,21 @@ namespace FastMoq.AzureFunctions.Extensions
 
         private static FunctionContext GetOrCreateConfiguredFunctionContext(Mocker mocker)
         {
-            var containsFunctionContext = mocker.Contains(typeof(FunctionContext));
-            if (containsFunctionContext)
+            var hasTrackedFunctionContext = mocker.Contains(typeof(FunctionContext));
+            var hasKnownFunctionContextRegistration = mocker.KnownTypeRegistrations.Any(registration => registration.ServiceType == typeof(FunctionContext));
+            if (hasTrackedFunctionContext || hasKnownFunctionContextRegistration)
             {
                 var existingFunctionContext = mocker.GetObject<FunctionContext>();
                 if (existingFunctionContext?.InstanceServices is not null)
                 {
                     return existingFunctionContext;
                 }
+
+                var existingProvider = mocker.HasTypeRegistration(typeof(IServiceProvider))
+                    ? mocker.GetRequiredObject<IServiceProvider>()
+                    : mocker.CreateFunctionContextInstanceServices();
+                mocker.GetOrCreateMock<FunctionContext>().AddFunctionContextInstanceServices(existingProvider);
+                return mocker.GetRequiredObject<FunctionContext>();
             }
 
             if (mocker.HasTypeRegistration(typeof(IServiceProvider)))
@@ -142,7 +149,7 @@ namespace FastMoq.AzureFunctions.Extensions
                 return mocker.GetRequiredObject<FunctionContext>();
             }
 
-            mocker.AddFunctionContextInstanceServices(replace: containsFunctionContext);
+            mocker.AddFunctionContextInstanceServices();
             return mocker.GetRequiredObject<FunctionContext>();
         }
 

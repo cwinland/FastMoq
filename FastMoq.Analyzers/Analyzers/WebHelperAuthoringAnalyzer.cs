@@ -22,6 +22,22 @@ namespace FastMoq.Analyzers.Analyzers
         private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
+            if (FastMoqAnalysisHelpers.TryGetHttpRequestBodyHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out var requestBodyHelperName, out var requestBodySetupKind))
+            {
+                if (context.ContainingSymbol?.ContainingAssembly?.Name == "FastMoq.Web" ||
+                    !FastMoqAnalysisHelpers.HasWebHelperPackage(context.SemanticModel))
+                {
+                    return;
+                }
+
+                context.ReportDiagnostic(Diagnostic.Create(
+                    DiagnosticDescriptors.PreferWebTestHelpers,
+                    FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
+                    requestBodyHelperName,
+                    requestBodySetupKind));
+                return;
+            }
+
             if (!FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) ||
                 method is null ||
                 !FastMoqAnalysisHelpers.TryGetFastMoqWebHelperSuggestion(method, out var helperName, out var setupKind))

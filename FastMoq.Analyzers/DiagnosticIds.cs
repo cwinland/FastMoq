@@ -30,5 +30,6 @@ namespace FastMoq.Analyzers
         public const string AvoidTrackedMockShimAlias = "FMOQ0026";
         public const string AvoidRawMockCreationInFastMoqSuites = "FMOQ0027";
         public const string ReferenceFastMoqHelperPackage = "FMOQ0028";
+        public const string PreferFunctionContextExecutionHelpers = "FMOQ0029";
     }
 }

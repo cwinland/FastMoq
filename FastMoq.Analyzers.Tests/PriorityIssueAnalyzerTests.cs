@@ -475,5 +475,45 @@ class Sample
             Assert.Contains("FastMoq.AzureFunctions.Extensions", diagnostic.GetMessage());
             Assert.Contains("AddFunctionContextInstanceServices", diagnostic.GetMessage());
         }
+
+        [Fact]
+        public async Task MissingHelperPackageAnalyzer_ShouldReport_WhenFunctionContextInvocationIdHelpersAreMissing()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+namespace Microsoft.Azure.Functions.Worker
+{
+    abstract class FunctionContext
+    {
+        public abstract string InvocationId { get; }
+    }
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var context = Mocks.GetOrCreateMock<Microsoft.Azure.Functions.Worker.FunctionContext>();
+        context.SetupGet(x => x.InvocationId).Returns(""inv-123"");
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: true,
+                includeWebHelpers: true,
+                new MissingHelperPackageAnalyzer(),
+                new ServiceProviderShimAnalyzer());
+
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.ReferenceFastMoqHelperPackage));
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferFunctionContextExecutionHelpers);
+            Assert.Contains("FastMoq.AzureFunctions", diagnostic.GetMessage());
+            Assert.Contains("FastMoq.AzureFunctions.Extensions", diagnostic.GetMessage());
+            Assert.Contains("AddFunctionContextInvocationId", diagnostic.GetMessage());
+        }
     }
 }

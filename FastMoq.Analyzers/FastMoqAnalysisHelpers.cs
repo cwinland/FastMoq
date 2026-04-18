@@ -48,6 +48,7 @@ namespace FastMoq.Analyzers
         internal const string FastMoqMoqProviderAssemblyName = "FastMoq.Provider.Moq";
         internal const string FastMoqNSubstituteProviderAssemblyName = "FastMoq.Provider.NSubstitute";
         internal const string FastMoqWebExtensionsMetadataName = "FastMoq.Web.Extensions.TestWebExtensions";
+        internal const string FastMoqWebExtensionsTypeName = "FastMoq.Web.Extensions.TestWebExtensions";
         internal const string MoqProviderNamespace = "FastMoq.Providers.MoqProvider";
         internal const string NSubstituteProviderNamespace = "FastMoq.Providers.NSubstituteProvider";
         internal const string MockingProviderRegistryTypeName = "FastMoq.Providers.MockingProviderRegistry";
@@ -63,7 +64,13 @@ namespace FastMoq.Analyzers
         private const string DEFAULT_HTTP_CONTEXT_TYPE = "Microsoft.AspNetCore.Http.DefaultHttpContext";
         private const string FROM_KEYED_SERVICES_ATTRIBUTE = "Microsoft.Extensions.DependencyInjection.FromKeyedServicesAttribute";
         private const string FUNCTION_CONTEXT_TYPE = "Microsoft.Azure.Functions.Worker.FunctionContext";
+        private const string FUNCTION_CONTEXT_INVOCATION_ID_PROPERTY = "InvocationId";
         private const string FUNCTION_CONTEXT_INSTANCE_SERVICES_PROPERTY = "InstanceServices";
+        private const string HTTP_CONTEXT_TYPE = "Microsoft.AspNetCore.Http.HttpContext";
+        private const string HTTP_CONTEXT_ACCESSOR_TYPE = "Microsoft.AspNetCore.Http.HttpContextAccessor";
+        private const string IHTTP_CONTEXT_ACCESSOR_TYPE = "Microsoft.AspNetCore.Http.IHttpContextAccessor";
+        private const string HTTP_REQUEST_TYPE = "Microsoft.AspNetCore.Http.HttpRequest";
+        private const string STREAM_TYPE = "System.IO.Stream";
         private const string SERVICE_PROVIDER_TYPE = "System.IServiceProvider";
         private const string SERVICE_SCOPE_FACTORY_TYPE = "Microsoft.Extensions.DependencyInjection.IServiceScopeFactory";
         private const string SERVICE_SCOPE_TYPE = "Microsoft.Extensions.DependencyInjection.IServiceScope";
@@ -706,6 +713,30 @@ namespace FastMoq.Analyzers
             return true;
         }
 
+        public static bool TryBuildSetupSetReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+
+            if (!TryGetSetupSetProperty(invocationExpression, semanticModel, cancellationToken, out var origin, out var property, out var lambdaExpression))
+            {
+                return false;
+            }
+
+            if (origin.ServiceType.TypeKind != TypeKind.Interface ||
+                invocationExpression.Parent is MemberAccessExpressionSyntax ||
+                property.SetMethod is null ||
+                !TryBuildSetupSetPropertySelector(lambdaExpression, out var propertySelector))
+            {
+                return false;
+            }
+
+            var mockerExpression = origin.MockerExpression.WithoutTrivia().ToString();
+            var serviceTypeName = GetMinimalTypeName(origin.ServiceType, semanticModel, invocationExpression.SpanStart);
+            var propertyTypeName = GetMinimalTypeName(property.Type, semanticModel, invocationExpression.SpanStart);
+            replacement = $"{mockerExpression}.AddPropertySetterCapture<{serviceTypeName}, {propertyTypeName}>({propertySelector})";
+            return true;
+        }
+
         public static bool TryBuildSetupAllPropertiesGuidance(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string guidance)
         {
             guidance = string.Empty;
@@ -741,6 +772,153 @@ namespace FastMoq.Analyzers
             }
 
             guidance = "a concrete fake or stub registered with AddType(...)";
+            return true;
+        }
+
+        public static bool TryBuildSetupAllPropertiesReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "SetupAllProperties" ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression ||
+                invocationExpression.Parent is MemberAccessExpressionSyntax ||
+                !TryResolveTrackedMockOrigin(memberAccessExpression.Expression, semanticModel, cancellationToken, out var origin) ||
+                origin.ServiceType.TypeKind != TypeKind.Interface)
+            {
+                return false;
+            }
+
+            var mockerExpression = origin.MockerExpression.WithoutTrivia().ToString();
+            var serviceTypeName = GetMinimalTypeName(origin.ServiceType, semanticModel, invocationExpression.SpanStart);
+            replacement = $"{mockerExpression}.AddPropertyState<{serviceTypeName}>()";
+            return true;
+        }
+
+        public static bool TryBuildTypedProviderExtensionReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (!IsFastMoqMockerMethod(method, "GetNativeMock") ||
+                method.TypeArguments.Length != 1 ||
+                invocationExpression.ArgumentList.Arguments.Count != 0 ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression ||
+                !TryGetSingleProviderNamespacePreference(invocationExpression, out _, out var providerExtensionName))
+            {
+                return false;
+            }
+
+            var mockerExpression = memberAccessExpression.Expression.WithoutTrivia().ToString();
+            var serviceTypeName = GetMinimalTypeName(method.TypeArguments[0], semanticModel, invocationExpression.SpanStart);
+            replacement = $"{mockerExpression}.GetOrCreateMock<{serviceTypeName}>().{providerExtensionName}";
+            return true;
+        }
+
+        public static bool TryBuildTypedProviderExtensionReplacement(MemberAccessExpressionSyntax memberAccessExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+
+            if (!TryGetPropertySymbol(memberAccessExpression, semanticModel, cancellationToken, out var property) ||
+                property is null ||
+                !IsFastMoqNativeMockProperty(property) ||
+                memberAccessExpression.Name.Identifier.ValueText != "NativeMock" ||
+                !TryGetSingleProviderNamespacePreference(memberAccessExpression, out _, out var providerExtensionName))
+            {
+                return false;
+            }
+
+            replacement = $"{memberAccessExpression.Expression.WithoutTrivia()}.{providerExtensionName}";
+            return true;
+        }
+
+        public static bool TryBuildWebHelperInvocationReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (!IsFastMoqMockerAddTypeMethod(method) ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression)
+            {
+                return false;
+            }
+
+            var mockerExpression = memberAccessExpression.Expression.WithoutTrivia().ToString();
+            return TryBuildHttpContextRegistrationReplacement(invocationExpression, semanticModel, cancellationToken, method, mockerExpression, out replacement) ||
+                TryBuildHttpContextAccessorRegistrationReplacement(invocationExpression, semanticModel, cancellationToken, method, mockerExpression, out replacement);
+        }
+
+        public static bool TryBuildWebHelperRequestBodyReplacement(AssignmentExpressionSyntax assignmentExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out ExpressionStatementSyntax targetStatement, out string replacement, out ExpressionStatementSyntax? linkedStatementToRemove)
+        {
+            targetStatement = null!;
+            replacement = string.Empty;
+            linkedStatementToRemove = null;
+
+            if (!TryGetCreateHttpContextRequestAssignment(assignmentExpression, semanticModel, cancellationToken, out var createHttpContextInvocation, out var propertyName, out var assignedExpression) ||
+                assignmentExpression.Parent is not ExpressionStatementSyntax currentStatement)
+            {
+                return false;
+            }
+
+            ExpressionSyntax bodyExpression;
+            ExpressionSyntax? contentTypeExpression = null;
+            ExpressionStatementSyntax bodyStatement;
+            ExpressionStatementSyntax? contentTypeStatement = null;
+
+            if (propertyName == "Body")
+            {
+                if (!IsSupportedRequestBodyExpression(assignedExpression, semanticModel, cancellationToken))
+                {
+                    return false;
+                }
+
+                bodyExpression = assignedExpression;
+                bodyStatement = currentStatement;
+
+                if (TryFindSiblingCreateHttpContextRequestAssignment(currentStatement, createHttpContextInvocation, "ContentType", semanticModel, cancellationToken, out var siblingContentTypeAssignment) &&
+                    siblingContentTypeAssignment.Parent is ExpressionStatementSyntax siblingContentTypeStatement)
+                {
+                    contentTypeExpression = siblingContentTypeAssignment.Right;
+                    contentTypeStatement = siblingContentTypeStatement;
+                }
+            }
+            else
+            {
+                contentTypeExpression = assignedExpression;
+                contentTypeStatement = currentStatement;
+
+                if (!TryFindSiblingCreateHttpContextRequestAssignment(currentStatement, createHttpContextInvocation, "Body", semanticModel, cancellationToken, out var siblingBodyAssignment) ||
+                    siblingBodyAssignment.Parent is not ExpressionStatementSyntax siblingBodyStatement ||
+                    !IsSupportedRequestBodyExpression(siblingBodyAssignment.Right, semanticModel, cancellationToken))
+                {
+                    return false;
+                }
+
+                bodyExpression = siblingBodyAssignment.Right;
+                bodyStatement = siblingBodyStatement;
+            }
+
+            targetStatement = bodyStatement;
+            linkedStatementToRemove = contentTypeStatement is not null && contentTypeStatement != bodyStatement ? contentTypeStatement : null;
+            replacement = BuildWebRequestBodyReplacement(createHttpContextInvocation, bodyExpression, contentTypeExpression);
             return true;
         }
 
@@ -816,6 +994,43 @@ namespace FastMoq.Analyzers
             {
                 helperName = "CreateHttpContext(...) or AddHttpContext(...)";
                 setupKind = "HttpContext";
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool TryGetHttpRequestBodyHelperSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string helperName, out string setupKind)
+        {
+            helperName = string.Empty;
+            setupKind = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "CreateHttpContext" ||
+                method.ContainingType.ToDisplayString() != FastMoqWebExtensionsTypeName ||
+                invocationExpression.Parent is not MemberAccessExpressionSyntax requestAccess ||
+                requestAccess.Name.Identifier.ValueText != "Request" ||
+                requestAccess.Parent is not MemberAccessExpressionSyntax targetAccess)
+            {
+                return false;
+            }
+
+            if (targetAccess.Name.Identifier.ValueText == "Body")
+            {
+                helperName = "SetRequestBody(...) or SetRequestJsonBody(...)";
+                setupKind = "HttpRequest.Body";
+                return true;
+            }
+
+            if (targetAccess.Name.Identifier.ValueText == "ContentType")
+            {
+                helperName = "SetRequestBody(...) or SetRequestJsonBody(...)";
+                setupKind = "HttpRequest.ContentType";
                 return true;
             }
 
@@ -1022,6 +1237,44 @@ namespace FastMoq.Analyzers
             return true;
         }
 
+        public static bool TryGetFunctionContextInvocationIdHelperSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string currentApi)
+        {
+            currentApi = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name is not "Setup" and not "SetupGet")
+            {
+                return false;
+            }
+
+            if (invocationExpression.Parent is not MemberAccessExpressionSyntax returnsAccess ||
+                returnsAccess.Parent is not InvocationExpressionSyntax returnsInvocation ||
+                !TryGetMethodSymbol(returnsInvocation, semanticModel, cancellationToken, out var returnsMethod) ||
+                returnsMethod is null)
+            {
+                return false;
+            }
+
+            returnsMethod = returnsMethod.ReducedFrom ?? returnsMethod;
+            if (returnsMethod.Name != "Returns")
+            {
+                return false;
+            }
+
+            if (!TryGetFunctionContextInvocationIdMemberAccess(invocationExpression, semanticModel, cancellationToken, out _))
+            {
+                return false;
+            }
+
+            currentApi = $"{method.Name}(x => x.InvocationId).Returns(...)";
+            return true;
+        }
+
         public static bool HasFunctionContextInstanceServicesMockHelper(SemanticModel semanticModel)
         {
             var helperType = semanticModel.Compilation.GetTypeByMetadataName("FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions");
@@ -1038,6 +1291,24 @@ namespace FastMoq.Analyzers
                     method.Parameters.Length == 2 &&
                     method.Parameters[0].Type.ToDisplayString() == "FastMoq.Providers.IFastMock" &&
                     method.Parameters[1].Type.ToDisplayString() == SERVICE_PROVIDER_TYPE);
+        }
+
+        public static bool HasFunctionContextInvocationIdMockHelper(SemanticModel semanticModel)
+        {
+            var helperType = semanticModel.Compilation.GetTypeByMetadataName("FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions");
+            if (helperType is null)
+            {
+                return false;
+            }
+
+            return helperType
+                .GetMembers("AddFunctionContextInvocationId")
+                .OfType<IMethodSymbol>()
+                .Any(method =>
+                    method.IsExtensionMethod &&
+                    method.Parameters.Length >= 2 &&
+                    method.Parameters[0].Type.ToDisplayString() == "FastMoq.Providers.IFastMock" &&
+                    method.Parameters[1].Type.SpecialType == SpecialType.System_String);
         }
 
         private static bool TryGetTrackedServiceGraphShimSuggestion(IMethodSymbol method, out string currentApi)
@@ -1607,6 +1878,194 @@ namespace FastMoq.Analyzers
             return true;
         }
 
+        private static bool TryBuildHttpContextRegistrationReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, IMethodSymbol method, string mockerExpression, out string replacement)
+        {
+            replacement = string.Empty;
+
+            if (method.TypeArguments.Length != 1 || method.TypeArguments[0].ToDisplayString() != HTTP_CONTEXT_TYPE || invocationExpression.ArgumentList.Arguments.Count is 0 or > 2)
+            {
+                return false;
+            }
+
+            if (!TryGetSimpleFactoryExpression(invocationExpression.ArgumentList.Arguments[0].Expression, out var factoryExpression) ||
+                semanticModel.GetTypeInfo(factoryExpression, cancellationToken).ConvertedType?.ToDisplayString() != HTTP_CONTEXT_TYPE)
+            {
+                return false;
+            }
+
+            var httpContextArgument = semanticModel.GetTypeInfo(factoryExpression, cancellationToken).Type?.ToDisplayString() == DEFAULT_HTTP_CONTEXT_TYPE
+                ? null
+                : factoryExpression.WithoutTrivia().ToString();
+            var replaceArgument = TryBuildOptionalReplaceNamedArgument(invocationExpression, semanticModel, cancellationToken);
+            replacement = BuildHttpContextHelperInvocation(mockerExpression, "AddHttpContext", httpContextArgument, replaceArgument);
+            return true;
+        }
+
+        private static bool TryBuildHttpContextAccessorRegistrationReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, IMethodSymbol method, string mockerExpression, out string replacement)
+        {
+            replacement = string.Empty;
+
+            var typeNames = new HashSet<string>(method.TypeArguments.Select(type => type.ToDisplayString()), StringComparer.Ordinal);
+            if (!typeNames.Contains(IHTTP_CONTEXT_ACCESSOR_TYPE) && !typeNames.Contains(HTTP_CONTEXT_ACCESSOR_TYPE))
+            {
+                return false;
+            }
+
+            if (invocationExpression.ArgumentList.Arguments.Count is 0 or > 2 ||
+                !TryGetSimpleFactoryExpression(invocationExpression.ArgumentList.Arguments[0].Expression, out var factoryExpression))
+            {
+                return false;
+            }
+
+            if (!TryGetHttpContextAccessorArgument(factoryExpression, semanticModel, cancellationToken, out var httpContextArgument))
+            {
+                return false;
+            }
+
+            var replaceArgument = TryBuildOptionalReplaceNamedArgument(invocationExpression, semanticModel, cancellationToken);
+            replacement = BuildHttpContextHelperInvocation(mockerExpression, "AddHttpContextAccessor", httpContextArgument, replaceArgument);
+            return true;
+        }
+
+        private static bool TryGetSimpleFactoryExpression(ExpressionSyntax expression, out ExpressionSyntax factoryExpression)
+        {
+            expression = Unwrap(expression);
+
+            if (expression is ParenthesizedLambdaExpressionSyntax parenthesizedLambdaExpression)
+            {
+                if (parenthesizedLambdaExpression.Body is ExpressionSyntax lambdaExpressionBody)
+                {
+                    factoryExpression = Unwrap(lambdaExpressionBody);
+                    return true;
+                }
+
+                if (parenthesizedLambdaExpression.Body is BlockSyntax lambdaBlock &&
+                    lambdaBlock.Statements.Count == 1 &&
+                    lambdaBlock.Statements[0] is ReturnStatementSyntax lambdaReturnStatement &&
+                    lambdaReturnStatement.Expression is not null)
+                {
+                    factoryExpression = Unwrap(lambdaReturnStatement.Expression);
+                    return true;
+                }
+            }
+
+            if (expression is SimpleLambdaExpressionSyntax simpleLambdaExpression)
+            {
+                if (simpleLambdaExpression.Body is ExpressionSyntax lambdaExpressionBody)
+                {
+                    factoryExpression = Unwrap(lambdaExpressionBody);
+                    return true;
+                }
+
+                if (simpleLambdaExpression.Body is BlockSyntax lambdaBlock &&
+                    lambdaBlock.Statements.Count == 1 &&
+                    lambdaBlock.Statements[0] is ReturnStatementSyntax lambdaReturnStatement &&
+                    lambdaReturnStatement.Expression is not null)
+                {
+                    factoryExpression = Unwrap(lambdaReturnStatement.Expression);
+                    return true;
+                }
+            }
+
+            if (expression is AnonymousMethodExpressionSyntax anonymousMethodExpression &&
+                anonymousMethodExpression.Body is BlockSyntax anonymousMethodBlock &&
+                anonymousMethodBlock.Statements.Count == 1 &&
+                anonymousMethodBlock.Statements[0] is ReturnStatementSyntax anonymousMethodReturnStatement &&
+                anonymousMethodReturnStatement.Expression is not null)
+            {
+                factoryExpression = Unwrap(anonymousMethodReturnStatement.Expression);
+                return true;
+            }
+
+            factoryExpression = null!;
+            return false;
+        }
+
+        private static bool TryGetHttpContextAccessorArgument(ExpressionSyntax factoryExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string? httpContextArgument)
+        {
+            httpContextArgument = null;
+
+            if (factoryExpression is not ObjectCreationExpressionSyntax objectCreationExpression ||
+                semanticModel.GetTypeInfo(objectCreationExpression, cancellationToken).Type?.ToDisplayString() != HTTP_CONTEXT_ACCESSOR_TYPE)
+            {
+                return false;
+            }
+
+            if (objectCreationExpression.Initializer is null || objectCreationExpression.Initializer.Expressions.Count == 0)
+            {
+                return true;
+            }
+
+            if (objectCreationExpression.Initializer.Expressions.Count != 1 ||
+                objectCreationExpression.Initializer.Expressions[0] is not AssignmentExpressionSyntax assignmentExpression)
+            {
+                return false;
+            }
+
+            var propertyName = assignmentExpression.Left switch
+            {
+                IdentifierNameSyntax identifierName => identifierName.Identifier.ValueText,
+                MemberAccessExpressionSyntax memberAccessExpression => memberAccessExpression.Name.Identifier.ValueText,
+                _ => string.Empty,
+            };
+
+            if (propertyName != "HttpContext")
+            {
+                return false;
+            }
+
+            var httpContextExpression = Unwrap(assignmentExpression.Right);
+            var convertedTypeName = semanticModel.GetTypeInfo(httpContextExpression, cancellationToken).ConvertedType?.ToDisplayString();
+            if (convertedTypeName != HTTP_CONTEXT_TYPE)
+            {
+                return false;
+            }
+
+            if (semanticModel.GetTypeInfo(httpContextExpression, cancellationToken).Type?.ToDisplayString() == DEFAULT_HTTP_CONTEXT_TYPE)
+            {
+                return true;
+            }
+
+            httpContextArgument = httpContextExpression.WithoutTrivia().ToString();
+            return true;
+        }
+
+        private static string? TryBuildOptionalReplaceNamedArgument(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            if (invocationExpression.ArgumentList.Arguments.Count < 2)
+            {
+                return null;
+            }
+
+            var replaceExpression = invocationExpression.ArgumentList.Arguments[1].Expression;
+            if (TryGetBooleanConstant(replaceExpression, semanticModel, cancellationToken, out var replaceConstant) && !replaceConstant)
+            {
+                return null;
+            }
+
+            return replaceExpression.WithoutTrivia().ToString();
+        }
+
+        private static string BuildHttpContextHelperInvocation(string mockerExpression, string helperName, string? primaryArgument, string? replaceArgument)
+        {
+            if (primaryArgument is null && replaceArgument is null)
+            {
+                return $"{mockerExpression}.{helperName}()";
+            }
+
+            if (primaryArgument is null)
+            {
+                return $"{mockerExpression}.{helperName}(replace: {replaceArgument})";
+            }
+
+            if (replaceArgument is null)
+            {
+                return $"{mockerExpression}.{helperName}({primaryArgument})";
+            }
+
+            return $"{mockerExpression}.{helperName}({primaryArgument}, replace: {replaceArgument})";
+        }
+
         private static bool TryBuildFunctionContextInstanceServicesReturnsReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)
         {
             targetInvocation = null!;
@@ -1651,6 +2110,53 @@ namespace FastMoq.Analyzers
 
             targetInvocation = returnsInvocation;
             replacement = BuildFunctionContextInstanceServicesReplacement(origin.TrackedMockExpression, providerExpression);
+            return true;
+        }
+
+        private static bool TryBuildFunctionContextInvocationIdReturnsReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)
+        {
+            targetInvocation = null!;
+            replacement = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name is not "Setup" and not "SetupGet" ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax setupAccess ||
+                !TryResolveTrackedMockOrigin(setupAccess.Expression, semanticModel, cancellationToken, out var origin) ||
+                origin.ServiceType.ToDisplayString() != FUNCTION_CONTEXT_TYPE ||
+                invocationExpression.Parent is not MemberAccessExpressionSyntax returnsAccess ||
+                returnsAccess.Parent is not InvocationExpressionSyntax returnsInvocation ||
+                !TryGetMethodSymbol(returnsInvocation, semanticModel, cancellationToken, out var returnsMethod) ||
+                returnsMethod is null)
+            {
+                return false;
+            }
+
+            returnsMethod = returnsMethod.ReducedFrom ?? returnsMethod;
+            if (returnsMethod.Name != "Returns" ||
+                returnsInvocation.ArgumentList.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            var invocationIdExpression = Unwrap(returnsInvocation.ArgumentList.Arguments[0].Expression);
+            if (invocationIdExpression is LambdaExpressionSyntax or AnonymousMethodExpressionSyntax)
+            {
+                return false;
+            }
+
+            if (!TryGetFunctionContextInvocationIdMemberAccess(invocationExpression, semanticModel, cancellationToken, out _))
+            {
+                return false;
+            }
+
+            targetInvocation = returnsInvocation;
+            replacement = BuildFunctionContextInvocationIdReplacement(origin.TrackedMockExpression, invocationIdExpression);
             return true;
         }
 
@@ -1713,6 +2219,35 @@ namespace FastMoq.Analyzers
 
             memberAccessExpression = memberAccess;
             return true;
+        }
+
+        private static bool TryGetFunctionContextInvocationIdMemberAccess(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out MemberAccessExpressionSyntax memberAccessExpression)
+        {
+            memberAccessExpression = null!;
+
+            if (invocationExpression.ArgumentList.Arguments.Count == 0)
+            {
+                return false;
+            }
+
+            var candidateExpression = Unwrap(invocationExpression.ArgumentList.Arguments[0].Expression);
+            if (candidateExpression is not LambdaExpressionSyntax lambdaExpression ||
+                lambdaExpression.Body is not MemberAccessExpressionSyntax memberAccess ||
+                !TryGetPropertySymbol(memberAccess, semanticModel, cancellationToken, out var property) ||
+                property is null ||
+                property.Name != FUNCTION_CONTEXT_INVOCATION_ID_PROPERTY ||
+                property.ContainingType.ToDisplayString() != FUNCTION_CONTEXT_TYPE)
+            {
+                return false;
+            }
+
+            memberAccessExpression = memberAccess;
+            return true;
+        }
+
+        public static bool TryBuildFunctionContextInvocationIdReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax targetInvocation, out string replacement)
+        {
+            return TryBuildFunctionContextInvocationIdReturnsReplacement(invocationExpression, semanticModel, cancellationToken, out targetInvocation, out replacement);
         }
 
         public static bool TryGetKnownTypeRegistrationSuggestion(IMethodSymbol method, out string currentApi)
@@ -1846,6 +2381,91 @@ namespace FastMoq.Analyzers
             }
 
             return false;
+        }
+
+        private static bool TryGetCreateHttpContextRequestAssignment(AssignmentExpressionSyntax assignmentExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax createHttpContextInvocation, out string propertyName, out ExpressionSyntax assignedExpression)
+        {
+            createHttpContextInvocation = null!;
+            propertyName = string.Empty;
+            assignedExpression = null!;
+
+            if (assignmentExpression.Left is not MemberAccessExpressionSyntax targetAccess ||
+                targetAccess.Expression is not MemberAccessExpressionSyntax requestAccess ||
+                requestAccess.Name.Identifier.ValueText != "Request" ||
+                requestAccess.Expression is not InvocationExpressionSyntax candidateInvocation ||
+                !TryGetMethodSymbol(candidateInvocation, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "CreateHttpContext" ||
+                method.ContainingType.ToDisplayString() != FastMoqWebExtensionsTypeName ||
+                targetAccess.Name.Identifier.ValueText is not "Body" and not "ContentType")
+            {
+                return false;
+            }
+
+            createHttpContextInvocation = candidateInvocation;
+            propertyName = targetAccess.Name.Identifier.ValueText;
+            assignedExpression = assignmentExpression.Right;
+            return true;
+        }
+
+        private static bool TryFindSiblingCreateHttpContextRequestAssignment(ExpressionStatementSyntax referenceStatement, InvocationExpressionSyntax createHttpContextInvocation, string propertyName, SemanticModel semanticModel, CancellationToken cancellationToken, out AssignmentExpressionSyntax matchingAssignment)
+        {
+            matchingAssignment = null!;
+
+            if (referenceStatement.Parent is not BlockSyntax block)
+            {
+                return false;
+            }
+
+            foreach (var statement in block.Statements.OfType<ExpressionStatementSyntax>())
+            {
+                if (statement == referenceStatement || statement.Expression is not AssignmentExpressionSyntax assignmentExpression)
+                {
+                    continue;
+                }
+
+                if (!TryGetCreateHttpContextRequestAssignment(assignmentExpression, semanticModel, cancellationToken, out var candidateInvocation, out var candidatePropertyName, out _))
+                {
+                    continue;
+                }
+
+                if (candidatePropertyName == propertyName && SyntaxFactory.AreEquivalent(Unwrap(candidateInvocation), Unwrap(createHttpContextInvocation)))
+                {
+                    matchingAssignment = assignmentExpression;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsSupportedRequestBodyExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = Unwrap(expression);
+            if (expression is LambdaExpressionSyntax or AnonymousMethodExpressionSyntax)
+            {
+                return false;
+            }
+
+            var convertedType = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
+            return convertedType?.ToDisplayString() == STREAM_TYPE || convertedType?.SpecialType == SpecialType.System_String;
+        }
+
+        private static string BuildWebRequestBodyReplacement(InvocationExpressionSyntax createHttpContextInvocation, ExpressionSyntax bodyExpression, ExpressionSyntax? contentTypeExpression)
+        {
+            var createHttpContextText = createHttpContextInvocation.WithoutTrivia().ToString();
+            var bodyExpressionText = bodyExpression.WithoutTrivia().ToString();
+            if (contentTypeExpression is null)
+            {
+                return $"{createHttpContextText}.SetRequestBody({bodyExpressionText});";
+            }
+
+            return $"{createHttpContextText}.SetRequestBody({bodyExpressionText}, {contentTypeExpression.WithoutTrivia()});";
         }
 
         private static bool IsControllerContextHttpContextInitializer(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -2118,6 +2738,13 @@ namespace FastMoq.Analyzers
             var trackedMockExpression = trackedMockExpressionSyntax.WithoutTrivia().ToString();
             var providerExpression = providerExpressionSyntax.WithoutTrivia().ToString();
             return $"{trackedMockExpression}.AddFunctionContextInstanceServices({providerExpression})";
+        }
+
+        private static string BuildFunctionContextInvocationIdReplacement(ExpressionSyntax trackedMockExpressionSyntax, ExpressionSyntax invocationIdExpressionSyntax)
+        {
+            var trackedMockExpression = trackedMockExpressionSyntax.WithoutTrivia().ToString();
+            var invocationIdExpression = invocationIdExpressionSyntax.WithoutTrivia().ToString();
+            return $"{trackedMockExpression}.AddFunctionContextInvocationId({invocationIdExpression})";
         }
 
         private static IEnumerable<INamedTypeSymbol> GetCandidateTestTargetTypes(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)

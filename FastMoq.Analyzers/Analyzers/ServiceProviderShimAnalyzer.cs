@@ -8,7 +8,9 @@ namespace FastMoq.Analyzers.Analyzers
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class ServiceProviderShimAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DiagnosticDescriptors.PreferTypedServiceProviderHelpers);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
+            DiagnosticDescriptors.PreferTypedServiceProviderHelpers,
+            DiagnosticDescriptors.PreferFunctionContextExecutionHelpers);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -32,6 +34,16 @@ namespace FastMoq.Analyzers.Analyzers
                     DiagnosticDescriptors.PreferTypedServiceProviderHelpers,
                     FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
                     typedHelperApi));
+                return;
+            }
+
+            if (FastMoqAnalysisHelpers.HasFunctionContextInvocationIdMockHelper(context.SemanticModel) &&
+                FastMoqAnalysisHelpers.TryGetFunctionContextInvocationIdHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out var invocationIdApi))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    DiagnosticDescriptors.PreferFunctionContextExecutionHelpers,
+                    FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
+                    invocationIdApi));
                 return;
             }
 

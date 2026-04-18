@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 
 namespace FastMoq.Web.Extensions
 {
@@ -368,6 +370,54 @@ namespace FastMoq.Web.Extensions
             }
 
             return httpContext;
+        }
+
+        /// <summary>
+        /// Sets the request body stream and optionally updates the content type.
+        /// </summary>
+        public static HttpContext SetRequestBody(this HttpContext httpContext, Stream body, string? contentType = null)
+        {
+            ArgumentNullException.ThrowIfNull(httpContext);
+            ArgumentNullException.ThrowIfNull(body);
+
+            if (body.CanSeek)
+            {
+                body.Position = 0;
+            }
+
+            httpContext.Request.Body = body;
+            httpContext.Request.ContentLength = body.CanSeek ? body.Length : null;
+
+            if (!string.IsNullOrWhiteSpace(contentType))
+            {
+                httpContext.Request.ContentType = contentType;
+            }
+
+            return httpContext;
+        }
+
+        /// <summary>
+        /// Sets the request body from a string payload.
+        /// </summary>
+        public static HttpContext SetRequestBody(this HttpContext httpContext, string body, Encoding? encoding = null, string? contentType = null)
+        {
+            ArgumentNullException.ThrowIfNull(httpContext);
+            ArgumentNullException.ThrowIfNull(body);
+
+            var resolvedEncoding = encoding ?? Encoding.UTF8;
+            var requestBody = new MemoryStream(resolvedEncoding.GetBytes(body));
+            return httpContext.SetRequestBody(requestBody, contentType);
+        }
+
+        /// <summary>
+        /// Sets the request body from a JSON payload and stamps the JSON content type.
+        /// </summary>
+        public static HttpContext SetRequestJsonBody<TValue>(this HttpContext httpContext, TValue value, JsonSerializerOptions? jsonSerializerOptions = null)
+        {
+            ArgumentNullException.ThrowIfNull(httpContext);
+
+            var requestBody = new MemoryStream(JsonSerializer.SerializeToUtf8Bytes(value, jsonSerializerOptions));
+            return httpContext.SetRequestBody(requestBody, "application/json; charset=utf-8");
         }
 
         /// <summary>

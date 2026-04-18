@@ -37,6 +37,19 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
+            if (context.ContainingSymbol?.ContainingAssembly?.Name != "FastMoq.AzureFunctions" &&
+                !FastMoqAnalysisHelpers.HasFunctionContextInvocationIdMockHelper(context.SemanticModel) &&
+                FastMoqAnalysisHelpers.TryGetFunctionContextInvocationIdHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out _))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    DiagnosticDescriptors.ReferenceFastMoqHelperPackage,
+                    FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
+                    "AddFunctionContextInvocationId(...)",
+                    "FastMoq.AzureFunctions",
+                    "FastMoq.AzureFunctions.Extensions"));
+                return;
+            }
+
             if (context.ContainingSymbol?.ContainingAssembly?.Name == "FastMoq.AzureFunctions" ||
                 FastMoqAnalysisHelpers.HasFunctionContextInstanceServicesMockHelper(context.SemanticModel) ||
                 !FastMoqAnalysisHelpers.TryGetFunctionContextInstanceServicesHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out _))

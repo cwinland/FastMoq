@@ -23,10 +23,15 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.UseProviderFirstVerify,
             DiagnosticIds.UseConsistentMockRetrieval,
             DiagnosticIds.UseProviderFirstMockRetrieval,
+            DiagnosticIds.PreferTypedProviderExtensions,
+            DiagnosticIds.PreferWebTestHelpers,
             DiagnosticIds.PreferTypedServiceProviderHelpers,
+            DiagnosticIds.PreferFunctionContextExecutionHelpers,
             DiagnosticIds.UseExplicitOptionalParameterResolution,
             DiagnosticIds.ReplaceInitializeCompatibilityWrapper,
             DiagnosticIds.PreferSetupOptionsHelper,
+            DiagnosticIds.PreferPropertySetterCaptureHelper,
+            DiagnosticIds.PreferPropertyStateHelper,
             DiagnosticIds.RequireExplicitMoqOnboarding,
             DiagnosticIds.PreferProviderNeutralHttpHelpers);
 
@@ -130,6 +135,86 @@ namespace FastMoq.Analyzers.CodeFixes
                         break;
                     }
 
+                case DiagnosticIds.PreferTypedProviderExtensions:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is not null)
+                        {
+                            var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                            if (semanticModel is not null &&
+                                FastMoqAnalysisHelpers.TryBuildTypedProviderExtensionReplacement(invocationExpression, semanticModel, context.CancellationToken, out _))
+                            {
+                                context.RegisterCodeFix(
+                                    CodeAction.Create(
+                                        "Use typed provider extension",
+                                        cancellationToken => ReplaceTypedProviderExtensionInvocationAsync(document, invocationExpression, cancellationToken),
+                                        nameof(DiagnosticIds.PreferTypedProviderExtensions) + ".invocation"),
+                                    diagnostic);
+                                break;
+                            }
+                        }
+
+                        var memberAccess = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<MemberAccessExpressionSyntax>();
+                        if (memberAccess is null)
+                        {
+                            return;
+                        }
+
+                        var propertySemanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (propertySemanticModel is not null &&
+                            FastMoqAnalysisHelpers.TryBuildTypedProviderExtensionReplacement(memberAccess, propertySemanticModel, context.CancellationToken, out _))
+                        {
+                            context.RegisterCodeFix(
+                                CodeAction.Create(
+                                    "Use typed provider extension",
+                                    cancellationToken => ReplaceTypedProviderExtensionMemberAccessAsync(document, memberAccess, cancellationToken),
+                                    nameof(DiagnosticIds.PreferTypedProviderExtensions) + ".property"),
+                                diagnostic);
+                        }
+
+                        break;
+                    }
+
+                case DiagnosticIds.PreferWebTestHelpers:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is not null)
+                        {
+                            var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                            if (semanticModel is not null &&
+                                FastMoqAnalysisHelpers.TryBuildWebHelperInvocationReplacement(invocationExpression, semanticModel, context.CancellationToken, out _))
+                            {
+                                context.RegisterCodeFix(
+                                    CodeAction.Create(
+                                        "Use FastMoq.Web helper",
+                                        cancellationToken => ReplaceWebHelperInvocationAsync(document, invocationExpression, cancellationToken),
+                                        nameof(DiagnosticIds.PreferWebTestHelpers) + ".invocation"),
+                                    diagnostic);
+                                break;
+                            }
+                        }
+
+                        var assignmentExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<AssignmentExpressionSyntax>();
+                        if (assignmentExpression is null)
+                        {
+                            return;
+                        }
+
+                        var assignmentSemanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (assignmentSemanticModel is not null &&
+                            FastMoqAnalysisHelpers.TryBuildWebHelperRequestBodyReplacement(assignmentExpression, assignmentSemanticModel, context.CancellationToken, out _, out _, out _))
+                        {
+                            context.RegisterCodeFix(
+                                CodeAction.Create(
+                                    "Use FastMoq.Web request-body helper",
+                                    cancellationToken => ReplaceWebHelperRequestBodyAssignmentAsync(document, assignmentExpression, cancellationToken),
+                                    nameof(DiagnosticIds.PreferWebTestHelpers) + ".requestBody"),
+                                diagnostic);
+                        }
+
+                        break;
+                    }
+
                 case DiagnosticIds.PreferTypedServiceProviderHelpers:
                     {
                         var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
@@ -162,6 +247,80 @@ namespace FastMoq.Analyzers.CodeFixes
                                     "Use AddFunctionContextInstanceServices(...)",
                                     cancellationToken => ReplaceFunctionContextInstanceServicesInvocationAsync(document, invocationExpression, cancellationToken),
                                     nameof(DiagnosticIds.PreferTypedServiceProviderHelpers) + ".functions"),
+                                diagnostic);
+                        }
+
+                        break;
+                    }
+
+                case DiagnosticIds.PreferFunctionContextExecutionHelpers:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (semanticModel is null)
+                        {
+                            return;
+                        }
+
+                        if (FastMoqAnalysisHelpers.HasFunctionContextInvocationIdMockHelper(semanticModel) &&
+                            FastMoqAnalysisHelpers.TryBuildFunctionContextInvocationIdReplacement(invocationExpression, semanticModel, context.CancellationToken, out _, out _))
+                        {
+                            context.RegisterCodeFix(
+                                CodeAction.Create(
+                                    "Use AddFunctionContextInvocationId(...)",
+                                    cancellationToken => ReplaceFunctionContextInvocationIdInvocationAsync(document, invocationExpression, cancellationToken),
+                                    nameof(DiagnosticIds.PreferFunctionContextExecutionHelpers) + ".invocationId"),
+                                diagnostic);
+                        }
+
+                        break;
+                    }
+
+                case DiagnosticIds.PreferPropertySetterCaptureHelper:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (semanticModel is not null &&
+                            FastMoqAnalysisHelpers.TryBuildSetupSetReplacement(invocationExpression, semanticModel, context.CancellationToken, out _))
+                        {
+                            context.RegisterCodeFix(
+                                CodeAction.Create(
+                                    "Use AddPropertySetterCapture(...)",
+                                    cancellationToken => ReplaceSetupSetInvocationAsync(document, invocationExpression, cancellationToken),
+                                    nameof(DiagnosticIds.PreferPropertySetterCaptureHelper)),
+                                diagnostic);
+                        }
+
+                        break;
+                    }
+
+                case DiagnosticIds.PreferPropertyStateHelper:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (semanticModel is not null &&
+                            FastMoqAnalysisHelpers.TryBuildSetupAllPropertiesReplacement(invocationExpression, semanticModel, context.CancellationToken, out _))
+                        {
+                            context.RegisterCodeFix(
+                                CodeAction.Create(
+                                    "Use AddPropertyState(...)",
+                                    cancellationToken => ReplaceSetupAllPropertiesInvocationAsync(document, invocationExpression, cancellationToken),
+                                    nameof(DiagnosticIds.PreferPropertyStateHelper)),
                                 diagnostic);
                         }
 
@@ -329,6 +488,161 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
                 .WithTriviaFrom(invocationExpression);
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> ReplaceTypedProviderExtensionInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            if (!FastMoqAnalysisHelpers.TryBuildTypedProviderExtensionReplacement(invocationExpression, semanticModel, cancellationToken, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> ReplaceTypedProviderExtensionMemberAccessAsync(Document document, MemberAccessExpressionSyntax memberAccessExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            if (!FastMoqAnalysisHelpers.TryBuildTypedProviderExtensionReplacement(memberAccessExpression, semanticModel, cancellationToken, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(memberAccessExpression);
+            var updatedRoot = root.ReplaceNode(memberAccessExpression, replacementExpression);
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> ReplaceWebHelperInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            if (!FastMoqAnalysisHelpers.TryBuildWebHelperInvocationReplacement(invocationExpression, semanticModel, cancellationToken, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Web.Extensions");
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> ReplaceWebHelperRequestBodyAssignmentAsync(Document document, AssignmentExpressionSyntax assignmentExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            if (!FastMoqAnalysisHelpers.TryBuildWebHelperRequestBodyReplacement(assignmentExpression, semanticModel, cancellationToken, out var targetStatement, out var replacementText, out var linkedStatementToRemove))
+            {
+                return document;
+            }
+
+            var targetAnnotation = new SyntaxAnnotation();
+            var removalAnnotation = linkedStatementToRemove is null ? null : new SyntaxAnnotation();
+            var nodesToAnnotate = new List<SyntaxNode>
+            {
+                targetStatement,
+            };
+
+            if (linkedStatementToRemove is not null)
+            {
+                nodesToAnnotate.Add(linkedStatementToRemove);
+            }
+
+            var updatedRoot = root.ReplaceNodes(
+                nodesToAnnotate,
+                (originalNode, rewrittenNode) =>
+                {
+                    if (originalNode == targetStatement)
+                    {
+                        return rewrittenNode.WithAdditionalAnnotations(targetAnnotation);
+                    }
+
+                    return rewrittenNode.WithAdditionalAnnotations(removalAnnotation!);
+                });
+
+            if (removalAnnotation is not null)
+            {
+                var annotatedRemovalNode = updatedRoot.GetAnnotatedNodes(removalAnnotation).Single();
+                updatedRoot = updatedRoot.RemoveNode(annotatedRemovalNode, SyntaxRemoveOptions.KeepExteriorTrivia) ?? updatedRoot;
+            }
+
+            var annotatedTargetStatement = updatedRoot.GetAnnotatedNodes(targetAnnotation).Single();
+            var replacementStatement = SyntaxFactory.ParseStatement(replacementText)
+                .WithTriviaFrom(annotatedTargetStatement);
+            updatedRoot = updatedRoot.ReplaceNode(annotatedTargetStatement, replacementStatement);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Web.Extensions");
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> ReplaceSetupSetInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            if (!FastMoqAnalysisHelpers.TryBuildSetupSetReplacement(invocationExpression, semanticModel, cancellationToken, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions");
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> ReplaceSetupAllPropertiesInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            if (!FastMoqAnalysisHelpers.TryBuildSetupAllPropertiesReplacement(invocationExpression, semanticModel, cancellationToken, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions");
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -517,6 +831,27 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             if (!FastMoqAnalysisHelpers.TryBuildFunctionContextInstanceServicesReplacement(invocationExpression, semanticModel, cancellationToken, out var targetInvocation, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(targetInvocation);
+            var updatedRoot = root.ReplaceNode(targetInvocation, replacementExpression);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.AzureFunctions.Extensions");
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> ReplaceFunctionContextInvocationIdInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            if (!FastMoqAnalysisHelpers.TryBuildFunctionContextInvocationIdReplacement(invocationExpression, semanticModel, cancellationToken, out var targetInvocation, out var replacementText))
             {
                 return document;
             }

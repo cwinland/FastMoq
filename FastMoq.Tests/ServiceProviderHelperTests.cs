@@ -409,6 +409,61 @@ namespace FastMoq.Tests
         [Theory]
         [InlineData("moq")]
         [InlineData("nsubstitute")]
+        public void AddFunctionContextInvocationId_ShouldConfigureTrackedFunctionContext(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            mocker.AddFunctionContextInvocationId("inv-123", replace: true);
+
+            var functionContext = mocker.GetObject<FunctionContext>();
+
+            functionContext.Should().NotBeNull();
+            functionContext!.InvocationId.Should().Be("inv-123");
+        }
+
+        [Fact]
+        public void AddFunctionContextInvocationId_ShouldUpdateExistingTrackedFunctionContext()
+        {
+            using var providerScope = PushProviderScope("moq");
+            var mocker = new Mocker();
+            var existing = mocker.GetOrCreateMock<FunctionContext>();
+
+            mocker.AddFunctionContextInvocationId("inv-456", replace: true);
+
+            existing.Instance.InvocationId.Should().Be("inv-456");
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        public void AddFunctionContextInvocationId_OnTrackedMock_ShouldConfigureOnlyTheFunctionContextMock(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+            var context = mocker.GetOrCreateMock<FunctionContext>();
+
+            context.AddFunctionContextInvocationId("inv-789");
+
+            context.Instance.InvocationId.Should().Be("inv-789");
+        }
+
+        [Fact]
+        public void CreateHttpRequestData_ShouldReuseConfiguredFunctionContextInvocationId()
+        {
+            using var providerScope = PushProviderScope("moq");
+            var mocker = new Mocker();
+
+            mocker.AddFunctionContextInvocationId("inv-request", replace: true);
+
+            var request = mocker.CreateHttpRequestData();
+
+            request.FunctionContext.InvocationId.Should().Be("inv-request");
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
         public void AddFunctionContextInstanceServices_OnTrackedMock_ShouldNotReplaceGlobalServiceProvider(string providerName)
         {
             using var providerScope = PushProviderScope(providerName);
