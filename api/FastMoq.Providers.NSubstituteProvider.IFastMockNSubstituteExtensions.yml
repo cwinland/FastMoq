@@ -23,7 +23,7 @@ items:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: IFastMockNSubstituteExtensions
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
     startLine: 9
@@ -66,7 +66,7 @@ items:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AsNSubstitute
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
     startLine: 27
@@ -122,7 +122,7 @@ items:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Received
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
     startLine: 45
@@ -161,7 +161,7 @@ items:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Received
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
     startLine: 53
@@ -202,7 +202,7 @@ items:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ReceivedWithAnyArgs
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
     startLine: 61
@@ -241,7 +241,7 @@ items:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DidNotReceive
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
     startLine: 69
@@ -280,7 +280,7 @@ items:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DidNotReceiveWithAnyArgs
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
     startLine: 77
@@ -319,7 +319,7 @@ items:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ClearReceivedCalls
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
     startLine: 85
@@ -815,3 +815,4 @@ references:
   name: ClearReceivedCalls
   nameWithType: IFastMockNSubstituteExtensions.ClearReceivedCalls
   fullName: FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.ClearReceivedCalls
+

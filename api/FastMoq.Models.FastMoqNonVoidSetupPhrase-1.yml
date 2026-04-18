@@ -18,7 +18,7 @@ items:
     remote:
       path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: FastMoqNonVoidSetupPhrase
     path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
     startLine: 12
@@ -82,7 +82,7 @@ items:
     remote:
       path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
     startLine: 12
@@ -118,7 +118,7 @@ items:
     remote:
       path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Returns
     path: FastMoq.Core/Models/FastMoqNonVoidSetupPhrase.cs
     startLine: 19
@@ -3531,3 +3531,4 @@ references:
   - uid: Moq.Language.Flow
     name: Flow
     isExternal: true
+

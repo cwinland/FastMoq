@@ -17,7 +17,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: IFastMock
     path: FastMoq.Abstractions/Providers/IMock.cs
     startLine: 35
@@ -91,7 +91,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Abstractions/Providers/IMock.cs
     startLine: 41
@@ -5024,3 +5024,4 @@ references:
   name: T
   nameWithType: T
   fullName: T
+

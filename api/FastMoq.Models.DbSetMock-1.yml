@@ -21,7 +21,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DbSetMock
     path: FastMoq.Database/Models/DbSetMock.cs
     startLine: 10
@@ -234,7 +234,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbSetMock.cs
     startLine: 21
@@ -266,7 +266,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbSetMock.cs
     startLine: 24
@@ -299,7 +299,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupAsyncListMethods
     path: FastMoq.Database/Models/DbSetMock.cs
     startLine: 43
@@ -331,7 +331,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupListMethods
     path: FastMoq.Database/Models/DbSetMock.cs
     startLine: 62
@@ -363,7 +363,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockMethods
     path: FastMoq.Database/Models/DbSetMock.cs
     startLine: 78
@@ -12373,3 +12373,4 @@ references:
     href: FastMoq.Models.IDbSetMock.html#FastMoq_Models_IDbSetMock_SetupMockMethods
   - name: (
   - name: )
+

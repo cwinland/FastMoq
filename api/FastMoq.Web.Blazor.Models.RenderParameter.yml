@@ -24,7 +24,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: RenderParameter
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
     startLine: 16
@@ -82,7 +82,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
     startLine: 24
@@ -123,7 +123,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Name
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
     startLine: 34
@@ -154,7 +154,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Value
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
     startLine: 39
@@ -185,7 +185,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: IsCascadingValue
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
     startLine: 44
@@ -216,7 +216,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Create
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
     startLine: 57
@@ -258,7 +258,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateCascading
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
     startLine: 73
@@ -300,7 +300,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: op_Implicit
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
     startLine: 87
@@ -338,7 +338,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: op_Implicit
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
     startLine: 101
@@ -2826,3 +2826,4 @@ references:
   - name: " "
   - name: T3
   - name: )
+

@@ -25,7 +25,7 @@ items:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: FakeNavigationManager
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 387
@@ -82,7 +82,7 @@ items:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 395
@@ -117,7 +117,7 @@ items:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InnerManager
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 403
@@ -148,7 +148,7 @@ items:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: BaseUri
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 408
@@ -179,7 +179,7 @@ items:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 413
@@ -210,7 +210,7 @@ items:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: History
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 424
@@ -245,7 +245,7 @@ items:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: NavigateTo
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 432
@@ -286,7 +286,7 @@ items:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: NavigateTo
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 442
@@ -324,7 +324,7 @@ items:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ToAbsoluteUri
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 452
@@ -362,7 +362,7 @@ items:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ToBaseRelativePath
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
     startLine: 462
@@ -3649,3 +3649,4 @@ references:
   name: ToBaseRelativePath
   nameWithType: FakeNavigationManager.ToBaseRelativePath
   fullName: Bunit.TestDoubles.FakeNavigationManager.ToBaseRelativePath
+

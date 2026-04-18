@@ -21,7 +21,7 @@ items:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: MockerPolicyOptions
     path: FastMoq.Core/MockerPolicyOptions.cs
     startLine: 6
@@ -80,7 +80,7 @@ items:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: EnabledBuiltInTypeResolutions
     path: FastMoq.Core/MockerPolicyOptions.cs
     startLine: 11
@@ -111,7 +111,7 @@ items:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DefaultFallbackToNonPublicConstructors
     path: FastMoq.Core/MockerPolicyOptions.cs
     startLine: 16
@@ -142,7 +142,7 @@ items:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DefaultConstructorAmbiguityBehavior
     path: FastMoq.Core/MockerPolicyOptions.cs
     startLine: 22
@@ -176,7 +176,7 @@ items:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DefaultFallbackToNonPublicMethods
     path: FastMoq.Core/MockerPolicyOptions.cs
     startLine: 27
@@ -207,7 +207,7 @@ items:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DefaultStrictMockCreation
     path: FastMoq.Core/MockerPolicyOptions.cs
     startLine: 35
@@ -3359,3 +3359,4 @@ references:
   - name: " "
   - name: T
   - name: )
+

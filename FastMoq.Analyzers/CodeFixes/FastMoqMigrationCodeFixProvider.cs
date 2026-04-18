@@ -33,8 +33,7 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.PreferPropertySetterCaptureHelper,
             DiagnosticIds.PreferPropertyStateHelper,
             DiagnosticIds.RequireExplicitMoqOnboarding,
-            DiagnosticIds.PreferProviderNeutralHttpHelpers,
-            DiagnosticIds.PreferLoggerFactoryHelpers);
+            DiagnosticIds.PreferProviderNeutralHttpHelpers);
 
         public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -375,23 +374,6 @@ namespace FastMoq.Analyzers.CodeFixes
                                 "Use SetupOptions(...)",
                                 cancellationToken => ReplaceSetupOptionsInvocationAsync(document, invocationExpression, cancellationToken),
                                 nameof(DiagnosticIds.PreferSetupOptionsHelper)),
-                            diagnostic);
-                        break;
-                    }
-
-                case DiagnosticIds.PreferLoggerFactoryHelpers:
-                    {
-                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
-                        if (invocationExpression is null)
-                        {
-                            return;
-                        }
-
-                        context.RegisterCodeFix(
-                            CodeAction.Create(
-                                "Use AddLoggerFactory(...)",
-                                cancellationToken => ReplaceLoggerFactoryHelperInvocationAsync(document, invocationExpression, cancellationToken),
-                                nameof(DiagnosticIds.PreferLoggerFactoryHelpers)),
                             diagnostic);
                         break;
                     }

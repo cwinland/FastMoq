@@ -17,7 +17,7 @@ items:
     remote:
       path: FastMoq.Database/Models/IDbContextMockT.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: IDbContextMock
     path: FastMoq.Database/Models/IDbContextMockT.cs
     startLine: 6
@@ -77,7 +77,7 @@ items:
     remote:
       path: FastMoq.Database/Models/IDbContextMockT.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSets
     path: FastMoq.Database/Models/IDbContextMockT.cs
     startLine: 13
@@ -3382,3 +3382,4 @@ references:
   - name: " "
   - name: TEntity
   - name: )
+

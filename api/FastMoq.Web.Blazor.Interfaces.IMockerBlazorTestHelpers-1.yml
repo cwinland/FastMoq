@@ -49,7 +49,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: IMockerBlazorTestHelpers
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 11
@@ -104,7 +104,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 20
@@ -148,7 +148,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 29
@@ -192,7 +192,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 40
@@ -242,7 +242,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 51
@@ -290,7 +290,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ClickButton
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 62
@@ -341,7 +341,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ClickDropdownItem
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 74
@@ -391,7 +391,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ClickDropdownItem
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 85
@@ -438,7 +438,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: FindAllByTag
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 94
@@ -476,7 +476,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: FindById
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 101
@@ -514,7 +514,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 113
@@ -552,7 +552,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 133
@@ -601,7 +601,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 147
@@ -643,7 +643,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 167
@@ -692,7 +692,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetComponents
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 181
@@ -734,7 +734,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 188
@@ -771,7 +771,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 195
@@ -808,7 +808,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetInjections
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 203
@@ -848,7 +848,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 211
@@ -888,7 +888,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 218
@@ -925,7 +925,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 225
@@ -962,7 +962,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InjectComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 233
@@ -1001,7 +1001,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: IsExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 241
@@ -1042,7 +1042,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 260
@@ -1088,7 +1088,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: RenderComponent
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 285
@@ -1143,7 +1143,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetAutoComplete
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 295
@@ -1190,7 +1190,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetElementCheck
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 315
@@ -1254,7 +1254,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetElementSwitch
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 330
@@ -1311,7 +1311,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 342
@@ -1358,7 +1358,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetElementText
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 360
@@ -1416,7 +1416,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WaitDelay
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 369
@@ -1453,7 +1453,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WaitForExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 377
@@ -1494,7 +1494,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WaitForNotExists
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 385
@@ -1535,7 +1535,7 @@ items:
     remote:
       path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WaitForState
     path: FastMoq.Web/Blazor/Interfaces/IMockerBlazorTestHelpers.cs
     startLine: 393
@@ -5613,3 +5613,4 @@ references:
   fullName: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers<T>.WaitForState
   nameWithType.vb: IMockerBlazorTestHelpers(Of T).WaitForState
   fullName.vb: FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers(Of T).WaitForState
+

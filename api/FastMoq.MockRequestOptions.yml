@@ -19,7 +19,7 @@ items:
     remote:
       path: FastMoq.Core/MockRequestOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: MockRequestOptions
     path: FastMoq.Core/MockRequestOptions.cs
     startLine: 5
@@ -75,7 +75,7 @@ items:
     remote:
       path: FastMoq.Core/MockRequestOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ServiceKey
     path: FastMoq.Core/MockRequestOptions.cs
     startLine: 10
@@ -106,7 +106,7 @@ items:
     remote:
       path: FastMoq.Core/MockRequestOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AllowNonPublicConstructors
     path: FastMoq.Core/MockRequestOptions.cs
     startLine: 16
@@ -140,7 +140,7 @@ items:
     remote:
       path: FastMoq.Core/MockRequestOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorArgs
     path: FastMoq.Core/MockRequestOptions.cs
     startLine: 21
@@ -3265,3 +3265,4 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object
   - name: (
   - name: )
+

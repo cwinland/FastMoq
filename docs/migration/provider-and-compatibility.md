@@ -31,7 +31,7 @@ Use this table when package names and in-editor namespace discovery drift apart 
 | `FastMoq.Abstractions` | `FastMoq.Providers` | `IMockingProvider`, `IMockingProviderCapabilities`, `IFastMock`, `TimesSpec`, `MockCreationOptions`, `FastMoqDefaultProviderAttribute`, `FastMoqRegisterProviderAttribute` |
 | `FastMoq.Azure` | `FastMoq.Azure.Pageable`, `FastMoq.Azure.Credentials`, `FastMoq.Azure.DependencyInjection`, `FastMoq.Azure.KeyVault`, `FastMoq.Azure.Storage` | `PageableBuilder`, credential helpers, Azure DI/config helpers, and common Azure client registration helpers |
 | `FastMoq.AzureFunctions` | `FastMoq.AzureFunctions.Extensions` | `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)` |
-| `FastMoq.Analyzers` | n/a at runtime | Roslyn diagnostics and code fixes such as `FMOQ0003`, `FMOQ0013`, and `FMOQ0030` for migration cleanup and provider-first authoring guidance |
+| `FastMoq.Analyzers` | n/a at runtime | Roslyn diagnostics and targeted code fixes such as `FMOQ0003` and `FMOQ0013`, plus advisory migration diagnostics such as `FMOQ0030`, for provider-first authoring guidance |
 | `FastMoq.Provider.Moq` | `FastMoq.Providers.MoqProvider` | `MoqMockingProvider`, `AsMoq()`, `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, `Protected()` |
 | `FastMoq.Provider.NSubstitute` | `FastMoq.Providers.NSubstituteProvider` | `NSubstituteMockingProvider`, `AsNSubstitute()`, `Received(...)`, `DidNotReceive()` |
 | `FastMoq.Web` | `FastMoq.Web`, `FastMoq.Web.Extensions` | `TestClaimsPrincipalOptions`, `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, `AddHttpContextAccessor(...)` |

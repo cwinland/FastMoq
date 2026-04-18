@@ -21,7 +21,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: MockCreationOptions
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 5
@@ -79,7 +79,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 14
@@ -123,7 +123,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Strict
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 29
@@ -154,7 +154,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallBase
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 34
@@ -185,7 +185,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorArgs
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 39
@@ -216,7 +216,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AllowNonPublic
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
     startLine: 44
@@ -3393,3 +3393,4 @@ references:
   name: AllowNonPublic
   nameWithType: MockCreationOptions.AllowNonPublic
   fullName: FastMoq.Providers.MockCreationOptions.AllowNonPublic
+

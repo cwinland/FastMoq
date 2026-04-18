@@ -16,7 +16,7 @@ items:
     remote:
       path: FastMoq.Core/Models/IHistoryModel.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: IHistoryModel
     path: FastMoq.Core/Models/IHistoryModel.cs
     startLine: 9
@@ -2920,3 +2920,4 @@ references:
   - uid: FastMoq.Extensions
     name: Extensions
     href: FastMoq.Extensions.html
+

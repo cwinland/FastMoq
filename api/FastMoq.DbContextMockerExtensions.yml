@@ -21,7 +21,7 @@ items:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DbContextMockerExtensions
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 9
@@ -59,7 +59,7 @@ items:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetDbContextHandle
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 14
@@ -100,7 +100,7 @@ items:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMockDbContext
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 44
@@ -139,7 +139,7 @@ items:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMockDbContext
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 53
@@ -174,7 +174,7 @@ items:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: TryCreateManagedDbContextInstance
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 76
@@ -218,7 +218,7 @@ items:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateLegacyDbContextMock
     path: FastMoq.Database/DbContextMockerExtensions.cs
     startLine: 157
@@ -763,3 +763,4 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object
   - name: (
   - name: )
+

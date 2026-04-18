@@ -47,7 +47,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: TestClassExtensions
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 30
@@ -95,7 +95,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallGenericMethod
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 61
@@ -153,7 +153,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: EnsureNullCheckThrown
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 88
@@ -202,7 +202,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetDefaultValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 123
@@ -238,7 +238,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetField
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 140
@@ -283,7 +283,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldInfo
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 151
@@ -328,7 +328,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 165
@@ -375,7 +375,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 174
@@ -420,7 +420,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 184
@@ -468,7 +468,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMember
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 195
@@ -515,7 +515,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberExpression
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 204
@@ -557,7 +557,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberExpression
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 211
@@ -593,7 +593,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberName
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 221
@@ -640,7 +640,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMemberName
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 229
@@ -676,7 +676,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMethod
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 238
@@ -721,7 +721,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 251
@@ -772,7 +772,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetProperty
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 262
@@ -817,7 +817,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetPropertyValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 274
@@ -865,7 +865,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetTestData
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 285
@@ -910,7 +910,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetTypeFromInterface
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 296
@@ -959,7 +959,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 448
@@ -1001,7 +1001,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddFiles
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 462
@@ -1041,7 +1041,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 477
@@ -1086,7 +1086,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetAmbiguousConstructorImplementationException
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 496
@@ -1125,7 +1125,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetFieldValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 506
@@ -1170,7 +1170,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetPropertyValue
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 516
@@ -1215,7 +1215,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 530
@@ -1261,7 +1261,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 536
@@ -1302,7 +1302,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 542
@@ -1343,7 +1343,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 549
@@ -1389,7 +1389,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 555
@@ -1434,7 +1434,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/TestClassExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: VerifyLogged
     path: FastMoq.Core/Extensions/TestClassExtensions.cs
     startLine: 561
@@ -2857,3 +2857,4 @@ references:
     name: TimesSpec
     href: FastMoq.Providers.TimesSpec.html
   - name: '?'
+

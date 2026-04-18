@@ -19,7 +19,7 @@ items:
     remote:
       path: FastMoq.Database/Models/IDbSetMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: IDbSetMock
     path: FastMoq.Database/Models/IDbSetMock.cs
     startLine: 5
@@ -68,7 +68,7 @@ items:
     remote:
       path: FastMoq.Database/Models/IDbSetMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupAsyncListMethods
     path: FastMoq.Database/Models/IDbSetMock.cs
     startLine: 10
@@ -96,7 +96,7 @@ items:
     remote:
       path: FastMoq.Database/Models/IDbSetMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupListMethods
     path: FastMoq.Database/Models/IDbSetMock.cs
     startLine: 15
@@ -124,7 +124,7 @@ items:
     remote:
       path: FastMoq.Database/Models/IDbSetMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockMethods
     path: FastMoq.Database/Models/IDbSetMock.cs
     startLine: 20
@@ -2968,3 +2968,4 @@ references:
   name: SetupMockMethods
   nameWithType: IDbSetMock.SetupMockMethods
   fullName: FastMoq.Models.IDbSetMock.SetupMockMethods
+

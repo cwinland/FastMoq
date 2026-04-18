@@ -21,7 +21,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: MockerHttpMoqExtensions
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
     startLine: 11
@@ -64,7 +64,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupHttpMessage
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
     startLine: 17
@@ -108,7 +108,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessage
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
     startLine: 40
@@ -150,7 +150,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageAsync
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
     startLine: 56
@@ -192,7 +192,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageProtected
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
     startLine: 72
@@ -236,7 +236,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupMessageProtectedAsync
     path: FastMoq.Provider.Moq/Extensions/MockerHttpMoqExtensions.cs
     startLine: 88
@@ -865,3 +865,4 @@ references:
   name: SetupMessageProtectedAsync
   nameWithType: MockerHttpMoqExtensions.SetupMessageProtectedAsync
   fullName: FastMoq.Extensions.MockerHttpMoqExtensions.SetupMessageProtectedAsync
+

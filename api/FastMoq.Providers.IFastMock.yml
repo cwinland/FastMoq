@@ -20,7 +20,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: IFastMock
     path: FastMoq.Abstractions/Providers/IMock.cs
     startLine: 6
@@ -76,7 +76,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: MockedType
     path: FastMoq.Abstractions/Providers/IMock.cs
     startLine: 11
@@ -107,7 +107,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Abstractions/Providers/IMock.cs
     startLine: 17
@@ -141,7 +141,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: NativeMock
     path: FastMoq.Abstractions/Providers/IMock.cs
     startLine: 23
@@ -175,7 +175,7 @@ items:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Reset
     path: FastMoq.Abstractions/Providers/IMock.cs
     startLine: 29
@@ -3374,3 +3374,4 @@ references:
   name: Reset
   nameWithType: IFastMock.Reset
   fullName: FastMoq.Providers.IFastMock.Reset
+

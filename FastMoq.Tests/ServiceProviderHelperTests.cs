@@ -510,6 +510,36 @@ namespace FastMoq.Tests
         }
 
         [Theory]
+        [InlineData("moq", true)]
+        [InlineData("moq", false)]
+        [InlineData("nsubstitute", true)]
+        [InlineData("nsubstitute", false)]
+        public void CreateHttpRequestData_ShouldPreserveComposedFunctionContextHelpers(string providerName, bool registerInvocationIdFirst)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+            var expectedUri = new Uri("https://composed.fastmoq/");
+            var provider = mocker.CreateFunctionContextInstanceServices(services => services.AddSingleton(expectedUri));
+
+            if (registerInvocationIdFirst)
+            {
+                mocker.AddFunctionContextInvocationId("inv-composed", replace: true);
+                mocker.AddFunctionContextInstanceServices(provider, replace: true);
+            }
+            else
+            {
+                mocker.AddFunctionContextInstanceServices(provider, replace: true);
+                mocker.AddFunctionContextInvocationId("inv-composed", replace: true);
+            }
+
+            var request = mocker.CreateHttpRequestData();
+
+            request.FunctionContext.InvocationId.Should().Be("inv-composed");
+            request.FunctionContext.InstanceServices.Should().BeSameAs(provider);
+            request.FunctionContext.InstanceServices.GetService(typeof(Uri)).Should().BeSameAs(expectedUri);
+        }
+
+        [Theory]
         [InlineData("moq")]
         [InlineData("nsubstitute")]
         public void AddFunctionContextInvocationId_OnTrackedMock_ShouldConfigureOnlyTheFunctionContextMock(string providerName)

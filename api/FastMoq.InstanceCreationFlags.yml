@@ -22,7 +22,7 @@ items:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InstanceCreationFlags
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 6
@@ -74,7 +74,7 @@ items:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: None
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 12
@@ -102,7 +102,7 @@ items:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: PublicConstructorsOnly
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 17
@@ -130,7 +130,7 @@ items:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AllowNonPublicConstructorFallback
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 22
@@ -158,7 +158,7 @@ items:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ResolveOptionalParametersViaMocker
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 27
@@ -186,7 +186,7 @@ items:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: UseDefaultOrNullOptionalParameters
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 32
@@ -214,7 +214,7 @@ items:
     remote:
       path: FastMoq.Core/InstanceCreationFlags.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: PreferParameterlessConstructorOnAmbiguity
     path: FastMoq.Core/InstanceCreationFlags.cs
     startLine: 37
@@ -2033,3 +2033,4 @@ references:
   name: InstanceCreationFlags
   nameWithType: InstanceCreationFlags
   fullName: FastMoq.InstanceCreationFlags
+

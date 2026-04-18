@@ -939,9 +939,51 @@ namespace FastMoq.Analyzers
                 TryBuildFunctionContextInstanceServicesSetupPropertyReplacement(invocationExpression, semanticModel, cancellationToken, out targetInvocation, out replacement);
         }
 
+        public static bool TryGetLoggerFactoryHelperSuggestion(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string helperName)
+        {
+            helperName = string.Empty;
+
+            if (!TryGetLoggerFactoryHelperInvocation(invocationExpression, semanticModel, cancellationToken, out _, out var objectCreationExpression, out _) ||
+                objectCreationExpression.ArgumentList is not ArgumentListSyntax argumentList ||
+                !TryBuildITestOutputHelperLineWriter(argumentList.Arguments[0].Expression, semanticModel, cancellationToken, out _))
+            {
+                return false;
+            }
+
+            helperName = "AddLoggerFactory(...)";
+            return true;
+        }
+
         public static bool TryBuildLoggerFactoryHelperReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
         {
             replacement = string.Empty;
+
+            if (!TryGetLoggerFactoryHelperInvocation(invocationExpression, semanticModel, cancellationToken, out var memberAccessExpression, out var objectCreationExpression, out var replaceArgument))
+            {
+                return false;
+            }
+
+            if (objectCreationExpression.ArgumentList is not ArgumentListSyntax argumentList ||
+                !TryBuildITestOutputHelperLineWriter(argumentList.Arguments[0].Expression, semanticModel, cancellationToken, out var lineWriterExpression))
+            {
+                return false;
+            }
+
+            replacement = $"{memberAccessExpression.Expression.WithoutTrivia()}.AddLoggerFactory({lineWriterExpression}{replaceArgument})";
+            return true;
+        }
+
+        private static bool TryGetLoggerFactoryHelperInvocation(
+            InvocationExpressionSyntax invocationExpression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken,
+            out MemberAccessExpressionSyntax memberAccessExpression,
+            out ObjectCreationExpressionSyntax objectCreationExpression,
+            out string replaceArgument)
+        {
+            memberAccessExpression = null!;
+            objectCreationExpression = null!;
+            replaceArgument = string.Empty;
 
             if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
                 method is null)
@@ -954,7 +996,7 @@ namespace FastMoq.Analyzers
                 method.TypeArguments.Length != 1 ||
                 !IsLoggerRegistrationType(method.TypeArguments[0]) ||
                 method.Parameters.Any(parameter => IsContextAwareFactoryParameter(parameter.Type)) ||
-                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax resolvedMemberAccessExpression ||
                 invocationExpression.ArgumentList.Arguments.Count == 0 ||
                 invocationExpression.ArgumentList.Arguments.Count > 2)
             {
@@ -968,29 +1010,24 @@ namespace FastMoq.Analyzers
             }
 
             var valueExpression = Unwrap(invocationExpression.ArgumentList.Arguments[0].Expression);
-            if (valueExpression is not ObjectCreationExpressionSyntax objectCreationExpression ||
-                objectCreationExpression.Initializer is not null ||
-                objectCreationExpression.ArgumentList?.Arguments.Count != 1)
+            if (valueExpression is not ObjectCreationExpressionSyntax resolvedObjectCreationExpression ||
+                resolvedObjectCreationExpression.Initializer is not null ||
+                resolvedObjectCreationExpression.ArgumentList?.Arguments.Count != 1)
             {
                 return false;
             }
 
-            var createdType = semanticModel.GetTypeInfo(objectCreationExpression, cancellationToken).Type;
+            var createdType = semanticModel.GetTypeInfo(resolvedObjectCreationExpression, cancellationToken).Type;
             if (createdType is null || !IsMatchingOrImplementingType(createdType, method.TypeArguments[0].ToDisplayString()))
             {
                 return false;
             }
 
-            if (!TryBuildITestOutputHelperLineWriter(objectCreationExpression.ArgumentList.Arguments[0].Expression, semanticModel, cancellationToken, out var lineWriterExpression))
-            {
-                return false;
-            }
-
-            var replaceArgument = invocationExpression.ArgumentList.Arguments.Count == 2
+            memberAccessExpression = resolvedMemberAccessExpression;
+            objectCreationExpression = resolvedObjectCreationExpression;
+            replaceArgument = invocationExpression.ArgumentList.Arguments.Count == 2
                 ? $", replace: {invocationExpression.ArgumentList.Arguments[1].Expression.WithoutTrivia()}"
                 : string.Empty;
-
-            replacement = $"{memberAccessExpression.Expression.WithoutTrivia()}.AddLoggerFactory({lineWriterExpression}{replaceArgument})";
             return true;
         }
 
@@ -1074,7 +1111,9 @@ namespace FastMoq.Analyzers
                 method.ContainingType.ToDisplayString() != FastMoqWebExtensionsTypeName ||
                 invocationExpression.Parent is not MemberAccessExpressionSyntax requestAccess ||
                 requestAccess.Name.Identifier.ValueText != "Request" ||
-                requestAccess.Parent is not MemberAccessExpressionSyntax targetAccess)
+                requestAccess.Parent is not MemberAccessExpressionSyntax targetAccess ||
+                targetAccess.Parent is not AssignmentExpressionSyntax assignmentExpression ||
+                assignmentExpression.Left != targetAccess)
             {
                 return false;
             }

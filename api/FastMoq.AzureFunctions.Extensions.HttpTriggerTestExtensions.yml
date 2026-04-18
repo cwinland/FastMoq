@@ -24,7 +24,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: HttpTriggerTestExtensions
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
     startLine: 12
@@ -62,7 +62,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpRequestData
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
     startLine: 20
@@ -104,7 +104,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpRequestData
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
     startLine: 33
@@ -146,7 +146,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpResponseData
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
     startLine: 48
@@ -188,7 +188,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpResponseData
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
     startLine: 61
@@ -230,7 +230,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ReadBodyAsStringAsync
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
     startLine: 76
@@ -272,7 +272,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ReadBodyAsJsonAsync
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
     startLine: 91
@@ -320,7 +320,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ReadBodyAsStringAsync
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
     startLine: 104
@@ -362,7 +362,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ReadBodyAsJsonAsync
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
     startLine: 119
@@ -1165,3 +1165,4 @@ references:
     name: Threading
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading
+

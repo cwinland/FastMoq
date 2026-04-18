@@ -22,7 +22,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: MoqMockAdapter
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
     startLine: 47
@@ -83,7 +83,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
     startLine: 52
@@ -117,7 +117,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Inner
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
     startLine: 60
@@ -148,7 +148,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: MockedType
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
     startLine: 65
@@ -181,7 +181,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
     startLine: 70
@@ -214,7 +214,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: NativeMock
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
     startLine: 75
@@ -247,7 +247,7 @@ items:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Reset
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
     startLine: 80
@@ -3675,3 +3675,4 @@ references:
     href: FastMoq.Providers.IFastMock.html#FastMoq_Providers_IFastMock_Reset
   - name: (
   - name: )
+

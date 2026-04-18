@@ -22,7 +22,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/ObjectExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ObjectExtensions
     path: FastMoq.Core/Extensions/ObjectExtensions.cs
     startLine: 9
@@ -60,7 +60,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/ObjectExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddOrUpdate
     path: FastMoq.Core/Extensions/ObjectExtensions.cs
     startLine: 19
@@ -106,7 +106,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/ObjectExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: RaiseIf
     path: FastMoq.Core/Extensions/ObjectExtensions.cs
     startLine: 36
@@ -161,7 +161,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/ObjectExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: RaiseIfNull
     path: FastMoq.Core/Extensions/ObjectExtensions.cs
     startLine: 51
@@ -226,7 +226,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/ObjectExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: RaiseIfNull
     path: FastMoq.Core/Extensions/ObjectExtensions.cs
     startLine: 72
@@ -285,7 +285,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/ObjectExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: RaiseIfNullOrEmpty
     path: FastMoq.Core/Extensions/ObjectExtensions.cs
     startLine: 85
@@ -337,7 +337,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/ObjectExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: RaiseIfNullOrWhitespace
     path: FastMoq.Core/Extensions/ObjectExtensions.cs
     startLine: 97
@@ -974,3 +974,4 @@ references:
   name: RaiseIfNullOrWhitespace
   nameWithType: ObjectExtensions.RaiseIfNullOrWhitespace
   fullName: FastMoq.Extensions.ObjectExtensions.RaiseIfNullOrWhitespace
+

@@ -20,7 +20,7 @@ items:
     remote:
       path: FastMoq.Core/Models/InstanceModel.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InstanceModel
     path: FastMoq.Core/Models/InstanceModel.cs
     startLine: 11
@@ -114,7 +114,7 @@ items:
     remote:
       path: FastMoq.Core/Models/InstanceModel.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Arguments
     path: FastMoq.Core/Models/InstanceModel.cs
     startLine: 63
@@ -148,7 +148,7 @@ items:
     remote:
       path: FastMoq.Core/Models/InstanceModel.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateFunc
     path: FastMoq.Core/Models/InstanceModel.cs
     startLine: 66
@@ -182,7 +182,7 @@ items:
     remote:
       path: FastMoq.Core/Models/InstanceModel.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InstanceType
     path: FastMoq.Core/Models/InstanceModel.cs
     startLine: 69
@@ -216,7 +216,7 @@ items:
     remote:
       path: FastMoq.Core/Models/InstanceModel.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Type
     path: FastMoq.Core/Models/InstanceModel.cs
     startLine: 72
@@ -3505,3 +3505,4 @@ references:
   name: Type
   nameWithType: IInstanceModel.Type
   fullName: FastMoq.Models.IInstanceModel.Type
+

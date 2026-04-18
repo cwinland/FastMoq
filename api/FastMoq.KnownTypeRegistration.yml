@@ -23,7 +23,7 @@ items:
     remote:
       path: FastMoq.Core/KnownTypeRegistration.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: KnownTypeRegistration
     path: FastMoq.Core/KnownTypeRegistration.cs
     startLine: 8
@@ -82,7 +82,7 @@ items:
     remote:
       path: FastMoq.Core/KnownTypeRegistration.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/KnownTypeRegistration.cs
     startLine: 13
@@ -116,7 +116,7 @@ items:
     remote:
       path: FastMoq.Core/KnownTypeRegistration.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ServiceType
     path: FastMoq.Core/KnownTypeRegistration.cs
     startLine: 21
@@ -147,7 +147,7 @@ items:
     remote:
       path: FastMoq.Core/KnownTypeRegistration.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: IncludeDerivedTypes
     path: FastMoq.Core/KnownTypeRegistration.cs
     startLine: 26
@@ -178,7 +178,7 @@ items:
     remote:
       path: FastMoq.Core/KnownTypeRegistration.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DirectInstanceFactory
     path: FastMoq.Core/KnownTypeRegistration.cs
     startLine: 32
@@ -212,7 +212,7 @@ items:
     remote:
       path: FastMoq.Core/KnownTypeRegistration.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ManagedInstanceFactory
     path: FastMoq.Core/KnownTypeRegistration.cs
     startLine: 38
@@ -246,7 +246,7 @@ items:
     remote:
       path: FastMoq.Core/KnownTypeRegistration.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureMock
     path: FastMoq.Core/KnownTypeRegistration.cs
     startLine: 44
@@ -280,7 +280,7 @@ items:
     remote:
       path: FastMoq.Core/KnownTypeRegistration.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ApplyObjectDefaults
     path: FastMoq.Core/KnownTypeRegistration.cs
     startLine: 49
@@ -3792,3 +3792,4 @@ references:
   - name: " "
   - name: T2
   - name: )
+

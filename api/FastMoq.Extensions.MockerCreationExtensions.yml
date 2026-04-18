@@ -31,7 +31,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: MockerCreationExtensions
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 23
@@ -82,7 +82,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 48
@@ -144,7 +144,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 60
@@ -194,7 +194,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 77
@@ -243,7 +243,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 90
@@ -295,7 +295,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 108
@@ -346,7 +346,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 122
@@ -400,7 +400,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 141
@@ -453,7 +453,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 156
@@ -509,7 +509,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 176
@@ -564,7 +564,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 192
@@ -622,7 +622,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInternal
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 254
@@ -671,7 +671,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateMockInternal
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 267
@@ -726,7 +726,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 458
@@ -771,7 +771,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 471
@@ -816,7 +816,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockProperty
     path: FastMoq.Core/Extensions/MockerCreationExtensions.cs
     startLine: 494
@@ -1616,3 +1616,4 @@ references:
     name: Expressions
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+

@@ -22,7 +22,7 @@ items:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ObservableLogEntries
     path: FastMoq.Core/Models/ObservableLogEntries.cs
     startLine: 10
@@ -85,7 +85,7 @@ items:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/ObservableLogEntries.cs
     startLine: 18
@@ -116,7 +116,7 @@ items:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Items
     path: FastMoq.Core/Models/ObservableLogEntries.cs
     startLine: 31
@@ -147,7 +147,7 @@ items:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CollectionChanged
     path: FastMoq.Core/Models/ObservableLogEntries.cs
     startLine: 36
@@ -178,7 +178,7 @@ items:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: PropertyChanged
     path: FastMoq.Core/Models/ObservableLogEntries.cs
     startLine: 45
@@ -209,7 +209,7 @@ items:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetEnumerator
     path: FastMoq.Core/Models/ObservableLogEntries.cs
     startLine: 55
@@ -242,7 +242,7 @@ items:
     remote:
       path: FastMoq.Core/Models/ObservableLogEntries.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Count
     path: FastMoq.Core/Models/ObservableLogEntries.cs
     startLine: 62
@@ -3793,3 +3793,4 @@ references:
   fullName: System.Collections.Generic.IReadOnlyCollection<T>.Count
   nameWithType.vb: IReadOnlyCollection(Of T).Count
   fullName.vb: System.Collections.Generic.IReadOnlyCollection(Of T).Count
+

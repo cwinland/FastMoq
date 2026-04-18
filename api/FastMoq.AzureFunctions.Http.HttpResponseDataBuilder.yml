@@ -24,7 +24,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: HttpResponseDataBuilder
     path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
     startLine: 11
@@ -80,7 +80,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
     startLine: 23
@@ -115,7 +115,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WithStatusCode
     path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
     startLine: 35
@@ -150,7 +150,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WithHeader
     path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
     startLine: 47
@@ -191,7 +191,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WithBody
     path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
     startLine: 62
@@ -232,7 +232,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WithBody
     path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
     startLine: 84
@@ -276,7 +276,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WithJsonBody
     path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
     startLine: 106
@@ -320,7 +320,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WithCookie
     path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
     startLine: 123
@@ -373,7 +373,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Build
     path: FastMoq.AzureFunctions/Http/HttpResponseDataBuilder.cs
     startLine: 136
@@ -3817,3 +3817,4 @@ references:
   name: Build
   nameWithType: HttpResponseDataBuilder.Build
   fullName: FastMoq.AzureFunctions.Http.HttpResponseDataBuilder.Build
+

@@ -1,6 +1,7 @@
 using Azure.Core;
 using Azure.Core.Serialization;
 using System.Reflection;
+using System.Linq;
 using FastMoq.Extensions;
 using FastMoq.Providers;
 using Microsoft.Azure.Functions.Worker;
@@ -111,7 +112,7 @@ namespace FastMoq.AzureFunctions.Extensions
         /// </summary>
         /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
         /// <param name="instanceServices">The provider to expose through <see cref="FunctionContext.InstanceServices" />.</param>
-        /// <param name="replace">True to replace an existing known-type registration.</param>
+        /// <param name="replace">True to replace an existing <see cref="IServiceProvider" /> registration and overwrite previously configured instance-services helper values while preserving other <see cref="FunctionContext" /> behavior.</param>
         /// <returns>The current <see cref="Mocker" /> instance.</returns>
         public static Mocker AddFunctionContextInstanceServices(this Mocker mocker, IServiceProvider instanceServices, bool replace = false)
         {
@@ -119,11 +120,10 @@ namespace FastMoq.AzureFunctions.Extensions
             ArgumentNullException.ThrowIfNull(instanceServices);
 
             mocker.AddServiceProvider(instanceServices, replace);
-            mocker.AddKnownType<FunctionContext>(
-                configureMock: (_, _, fastMock) => ConfigureFunctionContextInstanceServices(fastMock, instanceServices),
-                applyObjectDefaults: (_, functionContext) => AssignFunctionContextInstanceServices(functionContext, instanceServices),
-                includeDerivedTypes: true,
-                replace: replace);
+            AddOrUpdateFunctionContextKnownTypeRegistration(
+                mocker,
+                configureMock: fastMock => ConfigureFunctionContextInstanceServices(fastMock, instanceServices),
+                applyObjectDefaults: functionContext => AssignFunctionContextInstanceServices(functionContext, instanceServices));
 
             if (mocker.Contains(typeof(FunctionContext)))
             {
@@ -155,7 +155,7 @@ namespace FastMoq.AzureFunctions.Extensions
         /// </summary>
         /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
         /// <param name="invocationId">The invocation identifier to expose through <see cref="FunctionContext.InvocationId" />.</param>
-        /// <param name="replace">True to replace an existing known-type registration.</param>
+        /// <param name="replace">True to overwrite a previously configured invocation-identifier helper value while preserving other <see cref="FunctionContext" /> behavior.</param>
         /// <returns>The current <see cref="Mocker" /> instance.</returns>
         /// <remarks>
         /// This helper configures mock-backed <see cref="FunctionContext" /> instances. Concrete contexts with their own immutable execution metadata may ignore this registration.
@@ -165,10 +165,9 @@ namespace FastMoq.AzureFunctions.Extensions
             ArgumentNullException.ThrowIfNull(mocker);
             ArgumentException.ThrowIfNullOrWhiteSpace(invocationId);
 
-            mocker.AddKnownType<FunctionContext>(
-                configureMock: (_, _, fastMock) => ConfigureFunctionContextInvocationId(fastMock, invocationId),
-                includeDerivedTypes: true,
-                replace: replace);
+            AddOrUpdateFunctionContextKnownTypeRegistration(
+                mocker,
+                configureMock: fastMock => ConfigureFunctionContextInvocationId(fastMock, invocationId));
 
             if (mocker.Contains(typeof(FunctionContext)))
             {
@@ -176,6 +175,77 @@ namespace FastMoq.AzureFunctions.Extensions
             }
 
             return mocker;
+        }
+
+        private static void AddOrUpdateFunctionContextKnownTypeRegistration(
+            Mocker mocker,
+            Action<IFastMock>? configureMock = null,
+            Action<FunctionContext>? applyObjectDefaults = null)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+
+            var existingRegistration = mocker.KnownTypeRegistrations.LastOrDefault(registration => registration.ServiceType == typeof(FunctionContext));
+            var mergedRegistration = new KnownTypeRegistration(typeof(FunctionContext))
+            {
+                IncludeDerivedTypes = existingRegistration?.IncludeDerivedTypes ?? true,
+                DirectInstanceFactory = existingRegistration?.DirectInstanceFactory,
+                ManagedInstanceFactory = existingRegistration?.ManagedInstanceFactory,
+                ConfigureMock = ComposeFunctionContextConfigureMock(existingRegistration?.ConfigureMock, configureMock),
+                ApplyObjectDefaults = ComposeFunctionContextObjectDefaults(existingRegistration?.ApplyObjectDefaults, applyObjectDefaults),
+            };
+
+            mocker.AddKnownType(mergedRegistration, replace: existingRegistration is not null);
+        }
+
+        private static Action<Mocker, Type, IFastMock>? ComposeFunctionContextConfigureMock(
+            Action<Mocker, Type, IFastMock>? existing,
+            Action<IFastMock>? additional)
+        {
+            if (additional is null)
+            {
+                return existing;
+            }
+
+            if (existing is null)
+            {
+                return (_, _, fastMock) => additional(fastMock);
+            }
+
+            return (registeredMocker, requestedType, fastMock) =>
+            {
+                existing(registeredMocker, requestedType, fastMock);
+                additional(fastMock);
+            };
+        }
+
+        private static Action<Mocker, object>? ComposeFunctionContextObjectDefaults(
+            Action<Mocker, object>? existing,
+            Action<FunctionContext>? additional)
+        {
+            if (additional is null)
+            {
+                return existing;
+            }
+
+            if (existing is null)
+            {
+                return (_, value) =>
+                {
+                    if (value is FunctionContext functionContext)
+                    {
+                        additional(functionContext);
+                    }
+                };
+            }
+
+            return (registeredMocker, value) =>
+            {
+                existing(registeredMocker, value);
+                if (value is FunctionContext functionContext)
+                {
+                    additional(functionContext);
+                }
+            };
         }
 
         private static void ConfigureFunctionContextInstanceServices(IFastMock fastMock, IServiceProvider instanceServices)

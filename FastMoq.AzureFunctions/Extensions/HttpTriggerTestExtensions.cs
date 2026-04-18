@@ -126,10 +126,10 @@ namespace FastMoq.AzureFunctions.Extensions
 
         private static FunctionContext GetOrCreateConfiguredFunctionContext(Mocker mocker)
         {
-            var hasTrackedFunctionContext = mocker.Contains(typeof(FunctionContext));
+            var hadTrackedFunctionContext = mocker.Contains(typeof(FunctionContext));
             var hasFunctionContextTypeRegistration = mocker.HasTypeRegistration(typeof(FunctionContext));
             var hasKnownFunctionContextRegistration = mocker.KnownTypeRegistrations.Any(registration => registration.ServiceType == typeof(FunctionContext));
-            if (hasTrackedFunctionContext || hasFunctionContextTypeRegistration || hasKnownFunctionContextRegistration)
+            if (hadTrackedFunctionContext || hasFunctionContextTypeRegistration || hasKnownFunctionContextRegistration)
             {
                 var existingFunctionContext = mocker.GetObject<FunctionContext>();
                 if (existingFunctionContext?.InstanceServices is not null)
@@ -142,7 +142,10 @@ namespace FastMoq.AzureFunctions.Extensions
                     : mocker.CreateFunctionContextInstanceServices();
 
                 var configuredExistingFunctionContext = TryAssignFunctionContextInstanceServices(existingFunctionContext, existingProvider);
-                if (hasTrackedFunctionContext)
+                // GetObject<FunctionContext>() can materialize a tracked mock from a known-type registration,
+                // so re-check the tracked shape after resolution before configuring mock-specific behavior.
+                var hasTrackedFunctionContextAfterResolution = mocker.Contains(typeof(FunctionContext));
+                if (hasTrackedFunctionContextAfterResolution)
                 {
                     mocker.GetOrCreateMock<FunctionContext>().AddFunctionContextInstanceServices(existingProvider);
                 }

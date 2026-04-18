@@ -199,7 +199,7 @@ Analyzer note:
 
 - `FMOQ0003` prefers `VerifyLogged(...)` over legacy `VerifyLogger(...)` when the assertion can stay provider-safe.
 - `FMOQ0019` prefers `SetupOptions(...)` over repeated manual `IOptions<T>` setup.
-- `FMOQ0030` prefers `AddLoggerFactory(...)` over direct `AddType<ILoggerFactory>(new ...output-helper...)`, `AddType<ILogger>(new ...output-helper...)`, and `AddType<ILogger<T>>(new ...output-helper...)` registrations when the logger registration is just mirroring logs into an xUnit-style output helper. The built-in fix handles direct `Mocker` registrations whose logger constructor takes `ITestOutputHelper` or `Func<ITestOutputHelper>`; shared repo-local wrapper layers still need manual cleanup.
+- `FMOQ0030` prefers `AddLoggerFactory(...)` over direct `AddType<ILoggerFactory>(new ...output-helper...)`, `AddType<ILogger>(new ...output-helper...)`, and `AddType<ILogger<T>>(new ...output-helper...)` registrations when the logger registration is just mirroring logs into an xUnit-style output helper. The diagnostic is advisory only because repo-local logger wrappers can carry extra formatting, filtering, or scope behavior that FastMoq cannot prove is safe to rewrite automatically.
 
 ## Web test helpers
 

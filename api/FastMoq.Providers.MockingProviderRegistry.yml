@@ -25,7 +25,7 @@ items:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: MockingProviderRegistry
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 10
@@ -62,7 +62,7 @@ items:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Register
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 33
@@ -103,7 +103,7 @@ items:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: TryGet
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 50
@@ -144,7 +144,7 @@ items:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: RegisteredProviderNames
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 65
@@ -175,7 +175,7 @@ items:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Default
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 71
@@ -209,7 +209,7 @@ items:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: WrapLegacy
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 80
@@ -254,7 +254,7 @@ items:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetDefault
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 116
@@ -289,7 +289,7 @@ items:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 133
@@ -324,7 +324,7 @@ items:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Push
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 145
@@ -362,7 +362,7 @@ items:
     remote:
       path: FastMoq.Core/Providers/MockingProviderRegistry.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Clear
     path: FastMoq.Core/Providers/MockingProviderRegistry.cs
     startLine: 160
@@ -896,3 +896,4 @@ references:
   name: Clear
   nameWithType: MockingProviderRegistry.Clear
   fullName: FastMoq.Providers.MockingProviderRegistry.Clear
+

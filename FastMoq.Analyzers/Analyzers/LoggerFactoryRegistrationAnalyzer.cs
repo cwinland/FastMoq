@@ -20,7 +20,7 @@ namespace FastMoq.Analyzers.Analyzers
         private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
-            if (!FastMoqAnalysisHelpers.TryBuildLoggerFactoryHelperReplacement(invocationExpression, context.SemanticModel, context.CancellationToken, out var replacement))
+            if (!FastMoqAnalysisHelpers.TryGetLoggerFactoryHelperSuggestion(invocationExpression, context.SemanticModel, context.CancellationToken, out var helperName))
             {
                 return;
             }
@@ -28,7 +28,7 @@ namespace FastMoq.Analyzers.Analyzers
             context.ReportDiagnostic(Diagnostic.Create(
                 DiagnosticDescriptors.PreferLoggerFactoryHelpers,
                 FastMoqAnalysisHelpers.GetTargetNameLocation(invocationExpression.Expression),
-                replacement));
+                helperName));
         }
     }
 }

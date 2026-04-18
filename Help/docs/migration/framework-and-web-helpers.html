@@ -218,7 +218,7 @@ var loggerFactory = Mocks.CreateLoggerFactory((logLevel, eventId, message, excep
 <ul>
 <li><code>FMOQ0003</code> prefers <code>VerifyLogged(...)</code> over legacy <code>VerifyLogger(...)</code> when the assertion can stay provider-safe.</li>
 <li><code>FMOQ0019</code> prefers <code>SetupOptions(...)</code> over repeated manual <code>IOptions&lt;T&gt;</code> setup.</li>
-<li><code>FMOQ0030</code> prefers <code>AddLoggerFactory(...)</code> over direct <code>AddType&lt;ILoggerFactory&gt;(new ...output-helper...)</code>, <code>AddType&lt;ILogger&gt;(new ...output-helper...)</code>, and <code>AddType&lt;ILogger&lt;T&gt;&gt;(new ...output-helper...)</code> registrations when the logger registration is just mirroring logs into an xUnit-style output helper. The built-in fix handles direct <code>Mocker</code> registrations whose logger constructor takes <code>ITestOutputHelper</code> or <code>Func&lt;ITestOutputHelper&gt;</code>; shared repo-local wrapper layers still need manual cleanup.</li>
+<li><code>FMOQ0030</code> prefers <code>AddLoggerFactory(...)</code> over direct <code>AddType&lt;ILoggerFactory&gt;(new ...output-helper...)</code>, <code>AddType&lt;ILogger&gt;(new ...output-helper...)</code>, and <code>AddType&lt;ILogger&lt;T&gt;&gt;(new ...output-helper...)</code> registrations when the logger registration is just mirroring logs into an xUnit-style output helper. The diagnostic is advisory only because repo-local logger wrappers can carry extra formatting, filtering, or scope behavior that FastMoq cannot prove is safe to rewrite automatically.</li>
 </ul>
 <h2 id="web-test-helpers">Web test helpers</h2>
 <p>For controller tests, request-driven tests, and <code>IHttpContextAccessor</code>-driven tests, prefer the <code>FastMoq.Web</code> helpers instead of continuing to hand-roll local request and principal setup.</p>
@@ -359,7 +359,7 @@ public class OrdersControllerClaimTests : MockerTestBase&lt;OrdersController&gt;
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:19 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
       
           </div>
         </div>

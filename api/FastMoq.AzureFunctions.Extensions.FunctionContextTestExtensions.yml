@@ -22,10 +22,10 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: FunctionContextTestExtensions
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-    startLine: 14
+    startLine: 15
   assemblies:
   - FastMoq.AzureFunctions
   namespace: FastMoq.AzureFunctions.Extensions
@@ -60,10 +60,10 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddFunctionContextInvocationId
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-    startLine: 44
+    startLine: 45
   assemblies:
   - FastMoq.AzureFunctions
   namespace: FastMoq.AzureFunctions.Extensions
@@ -106,10 +106,10 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateFunctionContextInstanceServices
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-    startLine: 65
+    startLine: 66
   assemblies:
   - FastMoq.AzureFunctions
   namespace: FastMoq.AzureFunctions.Extensions
@@ -151,10 +151,10 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddFunctionContextInstanceServices
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-    startLine: 94
+    startLine: 95
   assemblies:
   - FastMoq.AzureFunctions
   namespace: FastMoq.AzureFunctions.Extensions
@@ -194,10 +194,10 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddFunctionContextInstanceServices
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
-    startLine: 115
+    startLine: 116
   assemblies:
   - FastMoq.AzureFunctions
   namespace: FastMoq.AzureFunctions.Extensions
@@ -214,7 +214,7 @@ items:
       description: The provider to expose through <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InstanceServices" data-throw-if-not-resolved="false"></xref>.
     - id: replace
       type: System.Boolean
-      description: True to replace an existing known-type registration.
+      description: True to replace an existing <xref href="System.IServiceProvider" data-throw-if-not-resolved="false"></xref> registration and overwrite previously configured instance-services helper values while preserving other <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref> behavior.
     return:
       type: FastMoq.Mocker
       description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
@@ -239,7 +239,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddFunctionContextInstanceServices
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
     startLine: 143
@@ -287,7 +287,7 @@ items:
     remote:
       path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddFunctionContextInvocationId
     path: FastMoq.AzureFunctions/Extensions/FunctionContextTestExtensions.cs
     startLine: 162
@@ -308,7 +308,7 @@ items:
       description: The invocation identifier to expose through <xref href="Microsoft.Azure.Functions.Worker.FunctionContext.InvocationId" data-throw-if-not-resolved="false"></xref>.
     - id: replace
       type: System.Boolean
-      description: True to replace an existing known-type registration.
+      description: True to overwrite a previously configured invocation-identifier helper value while preserving other <xref href="Microsoft.Azure.Functions.Worker.FunctionContext" data-throw-if-not-resolved="false"></xref> behavior.
     return:
       type: FastMoq.Mocker
       description: The current <xref href="FastMoq.Mocker" data-throw-if-not-resolved="false"></xref> instance.
@@ -821,3 +821,4 @@ references:
   name: AddFunctionContextInstanceServices
   nameWithType: FunctionContextTestExtensions.AddFunctionContextInstanceServices
   fullName: FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.AddFunctionContextInstanceServices
+

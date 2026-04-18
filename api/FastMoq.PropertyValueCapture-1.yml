@@ -21,7 +21,7 @@ items:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: PropertyValueCapture
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 16
@@ -93,7 +93,7 @@ items:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Value
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 23
@@ -126,7 +126,7 @@ items:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: HasValue
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 28
@@ -159,7 +159,7 @@ items:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: History
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 33
@@ -192,7 +192,7 @@ items:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Record
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 39
@@ -226,7 +226,7 @@ items:
     remote:
       path: FastMoq.Core/PropertyValueCapture.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Clear
     path: FastMoq.Core/PropertyValueCapture.cs
     startLine: 49
@@ -3606,3 +3606,4 @@ references:
   fullName: FastMoq.PropertyValueCapture<TValue>.Clear
   nameWithType.vb: PropertyValueCapture(Of TValue).Clear
   fullName.vb: FastMoq.PropertyValueCapture(Of TValue).Clear
+

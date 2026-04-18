@@ -120,7 +120,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.Supplemental.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Mocker
     path: FastMoq.Core/Mocker.Supplemental.cs
     startLine: 6
@@ -284,7 +284,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: fileSystem
     path: FastMoq.Core/Mocker.cs
     startLine: 90
@@ -313,7 +313,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: creatingTypeList
     path: FastMoq.Core/Mocker.cs
     startLine: 95
@@ -342,7 +342,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: mockCollection
     path: FastMoq.Core/Mocker.cs
     startLine: 100
@@ -371,7 +371,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorHistory
     path: FastMoq.Core/Mocker.cs
     startLine: 112
@@ -402,7 +402,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/Mocker.cs
     startLine: 117
@@ -433,7 +433,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: OptionalParameterResolution
     path: FastMoq.Core/Mocker.cs
     startLine: 124
@@ -464,7 +464,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Policy
     path: FastMoq.Core/Mocker.cs
     startLine: 129
@@ -495,7 +495,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: ExceptionLog
     path: FastMoq.Core/Mocker.cs
     startLine: 192
@@ -526,7 +526,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: LogEntries
     path: FastMoq.Core/Mocker.cs
     startLine: 197
@@ -557,7 +557,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: HttpClient
     path: FastMoq.Core/Mocker.cs
     startLine: 202
@@ -588,7 +588,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Core/Mocker.cs
     startLine: 207
@@ -619,7 +619,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Behavior
     path: FastMoq.Core/Mocker.cs
     startLine: 212
@@ -650,7 +650,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: UseStrictPreset
     path: FastMoq.Core/Mocker.cs
     startLine: 261
@@ -681,7 +681,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: UseLenientPreset
     path: FastMoq.Core/Mocker.cs
     startLine: 271
@@ -712,7 +712,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
     startLine: 281
@@ -743,7 +743,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
     startLine: 287
@@ -778,7 +778,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
     startLine: 296
@@ -813,7 +813,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
     startLine: 310
@@ -848,7 +848,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
     startLine: 317
@@ -886,7 +886,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
     startLine: 325
@@ -924,7 +924,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
     startLine: 364
@@ -974,7 +974,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
     startLine: 406
@@ -1026,7 +1026,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
     startLine: 424
@@ -1067,7 +1067,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
     startLine: 430
@@ -1110,7 +1110,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
     startLine: 436
@@ -1152,7 +1152,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
     startLine: 441
@@ -1198,7 +1198,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
     startLine: 455
@@ -1240,7 +1240,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
     startLine: 477
@@ -1283,7 +1283,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
     startLine: 483
@@ -1328,7 +1328,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
     startLine: 490
@@ -1372,7 +1372,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddFileSystemAbstractionMapping
     path: FastMoq.Core/Mocker.cs
     startLine: 568
@@ -1400,7 +1400,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddKnownType
     path: FastMoq.Core/Mocker.cs
     startLine: 589
@@ -1441,7 +1441,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddKnownType
     path: FastMoq.Core/Mocker.cs
     startLine: 614
@@ -1489,7 +1489,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddInjections
     path: FastMoq.Core/Mocker.cs
     startLine: 740
@@ -1533,7 +1533,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
     startLine: 765
@@ -1574,7 +1574,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
     startLine: 821
@@ -1614,7 +1614,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
     startLine: 914
@@ -1649,7 +1649,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
     startLine: 955
@@ -1705,7 +1705,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
     startLine: 959
@@ -1743,7 +1743,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
     startLine: 964
@@ -1781,7 +1781,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
     startLine: 969
@@ -1821,7 +1821,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
     startLine: 974
@@ -1859,7 +1859,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
     startLine: 1010
@@ -1899,7 +1899,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
     startLine: 1059
@@ -1939,7 +1939,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
     startLine: 1066
@@ -1977,7 +1977,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
     startLine: 1072
@@ -2017,7 +2017,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
     startLine: 1118
@@ -2055,7 +2055,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
     startLine: 1126
@@ -2095,7 +2095,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: HasParameterlessConstructor
     path: FastMoq.Core/Mocker.cs
     startLine: 1606
@@ -2133,7 +2133,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
     startLine: 1947
@@ -2169,7 +2169,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
     startLine: 1963
@@ -2210,7 +2210,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMockModel
     path: FastMoq.Core/Mocker.cs
     startLine: 1975
@@ -2245,7 +2245,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
     startLine: 2195
@@ -2281,7 +2281,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
     startLine: 2204
@@ -2311,7 +2311,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
     startLine: 2209
@@ -2351,7 +2351,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
     startLine: 2223
@@ -2391,7 +2391,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
     startLine: 2237
@@ -2433,7 +2433,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
     startLine: 2252
@@ -2469,7 +2469,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
     startLine: 2260
@@ -2507,7 +2507,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodDefaultData
     path: FastMoq.Core/Mocker.cs
     startLine: 2278
@@ -2543,7 +2543,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
     startLine: 2291
@@ -2578,7 +2578,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
     startLine: 2299
@@ -2616,7 +2616,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
     startLine: 2305
@@ -2654,7 +2654,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2400
@@ -2696,7 +2696,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2409
@@ -2740,7 +2740,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2440
@@ -2784,7 +2784,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2449
@@ -2830,7 +2830,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2481
@@ -2872,7 +2872,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2487
@@ -2916,7 +2916,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2496
@@ -2956,7 +2956,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2505
@@ -2998,7 +2998,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2527
@@ -3034,7 +3034,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2532
@@ -3072,7 +3072,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2537
@@ -3112,7 +3112,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2542
@@ -3154,7 +3154,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2547
@@ -3190,7 +3190,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
     startLine: 2552
@@ -3228,7 +3228,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
     startLine: 2557
@@ -3268,7 +3268,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
     startLine: 2568
@@ -3310,7 +3310,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetStringContent
     path: FastMoq.Core/Mocker.cs
     startLine: 2596
@@ -3346,7 +3346,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredObject
     path: FastMoq.Core/Mocker.cs
     startLine: 2601
@@ -3381,7 +3381,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.Disposal.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/Mocker.Disposal.cs
     startLine: 21
@@ -3411,7 +3411,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.Disposal.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DisposeAsync
     path: FastMoq.Core/Mocker.Disposal.cs
     startLine: 31
@@ -3444,7 +3444,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.Disposal.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/Mocker.Disposal.cs
     startLine: 42
@@ -3482,7 +3482,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.Disposal.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DisposeAsyncCore
     path: FastMoq.Core/Mocker.Disposal.cs
     startLine: 67
@@ -3516,7 +3516,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 41
@@ -3593,7 +3593,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMockWithConstructorArgs
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 54
@@ -3638,7 +3638,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 66
@@ -3679,7 +3679,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMockWithConstructorArgs
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 80
@@ -3724,7 +3724,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: TryGetTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 93
@@ -3768,7 +3768,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: TryGetTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 108
@@ -3814,7 +3814,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: TryGetTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 123
@@ -3858,7 +3858,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: TryGetTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 139
@@ -3904,7 +3904,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 157
@@ -3939,7 +3939,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 170
@@ -3977,7 +3977,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 183
@@ -4010,7 +4010,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 197
@@ -4048,7 +4048,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 211
@@ -4086,7 +4086,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 226
@@ -4119,7 +4119,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateStandaloneFastMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 240
@@ -4161,7 +4161,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateStandaloneFastMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 251
@@ -4200,7 +4200,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CreateFastMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
     startLine: 260
@@ -4238,7 +4238,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.Supplemental.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Core/Mocker.Supplemental.cs
     startLine: 11
@@ -4273,7 +4273,7 @@ items:
     remote:
       path: FastMoq.Core/Mocker.Supplemental.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: Scenario
     path: FastMoq.Core/Mocker.Supplemental.cs
     startLine: 16
@@ -18446,3 +18446,4 @@ references:
   - name: " "
   - name: T
   - name: )
+

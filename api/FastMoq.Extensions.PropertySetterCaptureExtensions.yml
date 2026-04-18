@@ -18,7 +18,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: PropertySetterCaptureExtensions
     path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
     startLine: 8
@@ -56,7 +56,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddPropertySetterCapture
     path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
     startLine: 32
@@ -117,7 +117,7 @@ items:
     remote:
       path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: AddPropertySetterCapture
     path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
     startLine: 54
@@ -611,3 +611,4 @@ references:
     name: Expressions
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
+

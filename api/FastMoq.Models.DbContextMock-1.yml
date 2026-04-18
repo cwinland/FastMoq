@@ -27,7 +27,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: DbContextMock
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 12
@@ -176,7 +176,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: CallBase
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 15
@@ -213,7 +213,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 24
@@ -245,7 +245,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 27
@@ -281,7 +281,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 30
@@ -324,7 +324,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 33
@@ -366,7 +366,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 38
@@ -411,7 +411,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbContextSetMethods
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 61
@@ -447,7 +447,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetProperties
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 83
@@ -487,7 +487,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetPropertyGet
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 90
@@ -527,7 +527,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupSetMethod
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 99
@@ -573,7 +573,7 @@ items:
     remote:
       path: FastMoq.Database/Models/DbContextMock.cs
       branch: feat/first-six-priority-issues
-      repo: https://cwinland@github.com/cwinland/FastMoq.git
+      repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSets
     path: FastMoq.Database/Models/DbContextMock.cs
     startLine: 129
@@ -12182,3 +12182,4 @@ references:
   name: FastMoq
   nameWithType: FastMoq
   fullName: FastMoq
+
