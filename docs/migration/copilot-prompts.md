@@ -1,6 +1,6 @@
 # Copilot Migration Prompts
 
-Use [Migration Guide: 3.0.0 To Current Repo](./README.md) and its linked detail pages as the source of truth.
+Use [Migration Guide: 3.0.0 To The Current v4 Line](./README.md) and its linked detail pages as the source of truth.
 
 This page only collects reusable AI prompt templates that point back to those migration docs. If you copy one of these prompts into a custom prompt, keep the doc links in the prompt body; the model does not need this page at runtime.
 

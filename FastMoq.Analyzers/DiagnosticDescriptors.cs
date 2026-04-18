@@ -114,6 +114,15 @@ namespace FastMoq.Analyzers
             isEnabledByDefault: true,
             description: "Prefer SetupOptions<T>(...) over repeated IOptions<T> AddType(...)/Options.Create(...) and Setup(x => x.Value).Returns(...) patterns when registering test options values.");
 
+        public static readonly DiagnosticDescriptor PreferLoggerFactoryHelpers = new(
+            DiagnosticIds.PreferLoggerFactoryHelpers,
+            "Prefer AddLoggerFactory for output-helper logger registration",
+            "Use '{0}' instead of direct output-helper logger registration",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "Prefer AddLoggerFactory(...) over direct AddType<ILoggerFactory>(new ...output-helper...), AddType<ILogger>(new ...output-helper...), or AddType<ILogger<T>>(new ...output-helper...) registrations when the logger registration only mirrors logs into xUnit-style output helpers.");
+
         public static readonly DiagnosticDescriptor PreferPropertySetterCaptureHelper = new(
             DiagnosticIds.PreferPropertySetterCaptureHelper,
             "Prefer provider-neutral property setter capture",

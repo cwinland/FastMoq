@@ -31,5 +31,6 @@ namespace FastMoq.Analyzers
         public const string AvoidRawMockCreationInFastMoqSuites = "FMOQ0027";
         public const string ReferenceFastMoqHelperPackage = "FMOQ0028";
         public const string PreferFunctionContextExecutionHelpers = "FMOQ0029";
+        public const string PreferLoggerFactoryHelpers = "FMOQ0030";
     }
 }

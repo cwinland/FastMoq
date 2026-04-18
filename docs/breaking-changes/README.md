@@ -8,15 +8,15 @@ This page tracks intentional v4 breaking changes relative to the last public `3.
 
 ## Current breaking changes
 
-### Constructor-check output helpers in `FastMoq.Core` are now framework-neutral
+### Constructor-check output helpers are now framework-neutral
 
-The framework-specific output-helper overload for constructor-check diagnostics is no longer part of the `FastMoq.Core` production surface.
+The framework-specific output-helper overload for constructor-check diagnostics is no longer part of the public FastMoq helper surface.
 
 What changed:
 
-- `FastMoq.Core` no longer exposes the `EnsureNullCheckThrown(...)` overload that directly depended on a test-framework output abstraction.
+- FastMoq no longer exposes the `EnsureNullCheckThrown(...)` overload that directly depended on a test-framework output abstraction.
 - the supported path is the existing framework-neutral `Action<string>` callback overload.
-- test-framework-specific output adapters now belong in the test project or local helper layer, not in `FastMoq.Core`.
+- test-framework-specific output adapters now belong in the test project or local helper layer, not in shared FastMoq helpers.
 
 Migration guidance:
 
@@ -34,7 +34,7 @@ For the detailed replacement guidance, see [API Replacements And Migration Excep
 
 ### `FastMoq.Web` Blazor helpers now align with bUnit 2
 
-The current branch upgrades `FastMoq.Web` from bUnit `1.38.5` to `2.7.2`.
+`FastMoq.Web` now uses bUnit `2.7.2` instead of the older `1.38.5` line.
 
 What changed:
 
@@ -84,7 +84,7 @@ Treat this as a package move with a preferred API change, not as a namespace-ren
 
 In `3.0.0`, `Strict` was documented as a broader switch that affected multiple behaviors at once, including preconfigured object substitution, non-public fallback behavior, and strict Moq behavior.
 
-In the current repo, `Strict` is primarily a compatibility property layered over `MockFeatures.FailOnUnconfigured` rather than the single entry point for the full strict profile.
+In the current v4 release line, `Strict` is primarily a compatibility property layered over `MockFeatures.FailOnUnconfigured` rather than the single entry point for the full strict profile.
 
 What changed:
 
@@ -113,7 +113,7 @@ Use `UseStrictPreset()` when the test intends to opt into the full strict behavi
 
 In `3.0.0`, strict `IFileSystem` behavior was documented and demonstrated as using a raw Moq mock rather than the built-in `MockFileSystem` defaults.
 
-In the current repo, tracked `IFileSystem` mocks are still preconfigured against FastMoq's built-in in-memory file system even when `Strict` or `MockFeatures.FailOnUnconfigured` is enabled.
+In the current v4 release line, tracked `IFileSystem` mocks are still preconfigured against FastMoq's built-in in-memory file system even when `Strict` or `MockFeatures.FailOnUnconfigured` is enabled.
 
 What changed:
 
@@ -136,7 +136,7 @@ var fileSystem = Mocks.GetMock<IFileSystem>().Object;
 fileSystem.Directory.Should().BeNull();
 ```
 
-Current repo behavior:
+Current v4 behavior:
 
 ```csharp
 Mocks.Behavior.Enabled |= MockFeatures.FailOnUnconfigured;
@@ -208,5 +208,5 @@ The root README previously carried this older package-line summary. It is kept h
 ## Related docs
 
 - [What's New Since 3.0.0](../whats-new/README.md)
-- [Migration Guide: 3.0.0 To Current Repo](../migration/README.md)
+- [Migration Guide: 3.0.0 To The Current v4 Line](../migration/README.md)
 - [Executable Testing Examples](../samples/testing-examples.md)

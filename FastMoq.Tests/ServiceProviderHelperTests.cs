@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Azure.Core.Serialization;
 using FastMoq.AzureFunctions.Extensions;
 using FastMoq.Extensions;
@@ -306,6 +307,41 @@ namespace FastMoq.Tests
             mocker.VerifyLogged(LogLevel.Warning, "typed logger");
         }
 
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void AddLoggerFactory_WithSink_ShouldMirrorLogsAndPreserveVerification(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mirroredEntries = new List<string>();
+            var constructorEntries = new List<string>();
+            var mocker = new Mocker((_, _, message, _) => constructorEntries.Add(message));
+
+            mocker.AddLoggerFactory((logLevel, eventId, message, exception) =>
+            {
+                mirroredEntries.Add($"{logLevel}:{eventId.Id}:{message}:{exception?.Message}");
+            }, replace: true);
+
+            var loggerFactory = mocker.GetObject<ILoggerFactory>();
+            var logger = mocker.GetObject<ILogger<ServiceProviderHelperTests>>();
+
+            loggerFactory.Should().NotBeNull();
+            logger.Should().NotBeNull();
+
+            loggerFactory!.CreateLogger("fastmoq.sink").LogInformation("factory sink logger");
+            logger!.LogError(12, new InvalidOperationException("sink boom"), "typed sink logger");
+
+            mirroredEntries.Should().HaveCount(2);
+            mirroredEntries[0].Should().Contain("Information:0:factory sink logger");
+            mirroredEntries[1].Should().Contain("Error:12:typed sink logger:sink boom");
+            constructorEntries.Should().Contain("factory sink logger");
+            constructorEntries.Should().Contain("typed sink logger");
+
+            mocker.VerifyLogged(LogLevel.Information, "factory sink logger");
+            mocker.VerifyLogged(LogLevel.Error, "typed sink logger", new InvalidOperationException("sink boom"), 12, TimesSpec.Once);
+        }
+
         [Fact]
         public void CreateLoggerFactory_ShouldSupportTypedServiceProviderComposition()
         {
@@ -333,6 +369,42 @@ namespace FastMoq.Tests
 
             mocker.VerifyLogged(LogLevel.Information, "service provider factory");
             mocker.VerifyLogged(LogLevel.Error, "service provider typed logger");
+        }
+
+        [Fact]
+        public void CreateLoggerFactory_WithLineWriter_ShouldMirrorFormattedOutputForTypedServiceProvider()
+        {
+            using var providerScope = PushProviderScope("reflection");
+            var lines = new List<string>();
+            var mocker = new Mocker();
+            var loggerFactory = mocker.CreateLoggerFactory(lines.Add);
+            var provider = mocker.CreateTypedServiceProvider(services =>
+            {
+                services.AddSingleton(loggerFactory);
+                services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            });
+
+            mocker.AddServiceProvider(provider, replace: true);
+
+            var serviceProvider = mocker.GetObject<IServiceProvider>();
+            serviceProvider.Should().NotBeNull();
+
+            var resolvedFactory = serviceProvider!.GetRequiredService<ILoggerFactory>();
+            var typedLogger = serviceProvider.GetRequiredService<ILogger<ServiceProviderHelperTests>>();
+
+            resolvedFactory.CreateLogger("line-writer").LogInformation("line sink factory");
+            typedLogger.LogError(12, new InvalidOperationException("line sink boom"), "line sink typed");
+
+            lines.Should().HaveCount(2);
+            lines[0].Should().Contain("[I]");
+            lines[0].Should().Contain("line sink factory");
+            lines[1].Should().Contain("[E]");
+            lines[1].Should().Contain("12");
+            lines[1].Should().Contain("line sink typed");
+            lines[1].Should().Contain("line sink boom");
+
+            mocker.VerifyLogged(LogLevel.Information, "line sink factory");
+            mocker.VerifyLogged(LogLevel.Error, "line sink typed", new InvalidOperationException("line sink boom"), 12, TimesSpec.Once);
         }
 
         [Fact]

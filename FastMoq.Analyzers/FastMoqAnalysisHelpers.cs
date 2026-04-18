@@ -69,7 +69,11 @@ namespace FastMoq.Analyzers
         private const string HTTP_CONTEXT_TYPE = "Microsoft.AspNetCore.Http.HttpContext";
         private const string HTTP_CONTEXT_ACCESSOR_TYPE = "Microsoft.AspNetCore.Http.HttpContextAccessor";
         private const string IHTTP_CONTEXT_ACCESSOR_TYPE = "Microsoft.AspNetCore.Http.IHttpContextAccessor";
+        private const string ILOGGER_TYPE = "Microsoft.Extensions.Logging.ILogger";
         private const string HTTP_REQUEST_TYPE = "Microsoft.AspNetCore.Http.HttpRequest";
+        private const string ILOGGER_FACTORY_TYPE = "Microsoft.Extensions.Logging.ILoggerFactory";
+        private const string ITEST_OUTPUT_HELPER_TYPE = "Xunit.ITestOutputHelper";
+        private const string ITEST_OUTPUT_HELPER_ABSTRACTIONS_TYPE = "Xunit.Abstractions.ITestOutputHelper";
         private const string STREAM_TYPE = "System.IO.Stream";
         private const string SERVICE_PROVIDER_TYPE = "System.IServiceProvider";
         private const string SERVICE_SCOPE_FACTORY_TYPE = "Microsoft.Extensions.DependencyInjection.IServiceScopeFactory";
@@ -933,6 +937,61 @@ namespace FastMoq.Analyzers
 
             return TryBuildFunctionContextInstanceServicesReturnsReplacement(invocationExpression, semanticModel, cancellationToken, out targetInvocation, out replacement) ||
                 TryBuildFunctionContextInstanceServicesSetupPropertyReplacement(invocationExpression, semanticModel, cancellationToken, out targetInvocation, out replacement);
+        }
+
+        public static bool TryBuildLoggerFactoryHelperReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (!IsFastMoqMockerAddTypeMethod(method) ||
+                method.TypeArguments.Length != 1 ||
+                !IsLoggerRegistrationType(method.TypeArguments[0]) ||
+                method.Parameters.Any(parameter => IsContextAwareFactoryParameter(parameter.Type)) ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression ||
+                invocationExpression.ArgumentList.Arguments.Count == 0 ||
+                invocationExpression.ArgumentList.Arguments.Count > 2)
+            {
+                return false;
+            }
+
+            if (invocationExpression.ArgumentList.Arguments.Count == 2 &&
+                (method.Parameters.Length < 2 || method.Parameters[1].Type.SpecialType != SpecialType.System_Boolean))
+            {
+                return false;
+            }
+
+            var valueExpression = Unwrap(invocationExpression.ArgumentList.Arguments[0].Expression);
+            if (valueExpression is not ObjectCreationExpressionSyntax objectCreationExpression ||
+                objectCreationExpression.Initializer is not null ||
+                objectCreationExpression.ArgumentList?.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            var createdType = semanticModel.GetTypeInfo(objectCreationExpression, cancellationToken).Type;
+            if (createdType is null || !IsMatchingOrImplementingType(createdType, method.TypeArguments[0].ToDisplayString()))
+            {
+                return false;
+            }
+
+            if (!TryBuildITestOutputHelperLineWriter(objectCreationExpression.ArgumentList.Arguments[0].Expression, semanticModel, cancellationToken, out var lineWriterExpression))
+            {
+                return false;
+            }
+
+            var replaceArgument = invocationExpression.ArgumentList.Arguments.Count == 2
+                ? $", replace: {invocationExpression.ArgumentList.Arguments[1].Expression.WithoutTrivia()}"
+                : string.Empty;
+
+            replacement = $"{memberAccessExpression.Expression.WithoutTrivia()}.AddLoggerFactory({lineWriterExpression}{replaceArgument})";
+            return true;
         }
 
         public static Location GetTargetNameLocation(ExpressionSyntax expression)
@@ -3071,6 +3130,68 @@ namespace FastMoq.Analyzers
         private static bool IsNestedExecutableScope(SyntaxNode node)
         {
             return node is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax;
+        }
+
+        private static bool IsITestOutputHelperType(ITypeSymbol? type)
+        {
+            if (type is null)
+            {
+                return false;
+            }
+
+            var typeName = type.ToDisplayString();
+            return typeName is ITEST_OUTPUT_HELPER_TYPE or ITEST_OUTPUT_HELPER_ABSTRACTIONS_TYPE;
+        }
+
+        private static bool IsLoggerRegistrationType(ITypeSymbol type)
+        {
+            if (type.ToDisplayString() is ILOGGER_FACTORY_TYPE or ILOGGER_TYPE)
+            {
+                return true;
+            }
+
+            return type is INamedTypeSymbol namedType &&
+                namedType.IsGenericType &&
+                namedType.Name == "ILogger" &&
+                namedType.ContainingNamespace.ToDisplayString() == "Microsoft.Extensions.Logging";
+        }
+
+        private static bool IsMatchingOrImplementingType(ITypeSymbol type, string metadataName)
+        {
+            if (type.ToDisplayString() == metadataName)
+            {
+                return true;
+            }
+
+            return type.AllInterfaces.Any(interfaceType => interfaceType.ToDisplayString() == metadataName);
+        }
+
+        private static bool TryBuildITestOutputHelperLineWriter(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+
+            var candidateExpression = Unwrap(expression);
+            var typeInfo = semanticModel.GetTypeInfo(candidateExpression, cancellationToken);
+            var expressionType = typeInfo.ConvertedType ?? typeInfo.Type;
+            if (IsITestOutputHelperType(expressionType))
+            {
+                replacement = $"line => ({candidateExpression.WithoutTrivia()}).WriteLine(line)";
+                return true;
+            }
+
+            if (expressionType is not INamedTypeSymbol delegateType || delegateType.TypeKind != TypeKind.Delegate)
+            {
+                return false;
+            }
+
+            var invokeMethod = delegateType.DelegateInvokeMethod;
+            if (invokeMethod is null || !IsITestOutputHelperType(invokeMethod.ReturnType))
+            {
+                return false;
+            }
+
+            replacement = $"line => ({candidateExpression.WithoutTrivia()})().WriteLine(line)";
+            return true;
         }
 
         private static bool HasUsingDirective(SyntaxNode node, string namespaceName)

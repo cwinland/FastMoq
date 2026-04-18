@@ -29,6 +29,7 @@ namespace FastMoq.Analyzers.Tests
             { new StrictCompatibilityAnalyzer(), DiagnosticDescriptors.AvoidStrictCompatibilityProperty },
             { new TimesSpecHelperBoundaryAnalyzer(), DiagnosticDescriptors.UseTimesSpecAtHelperBoundary },
             { new OptionsSetupAnalyzer(), DiagnosticDescriptors.PreferSetupOptionsHelper },
+            { new LoggerFactoryRegistrationAnalyzer(), DiagnosticDescriptors.PreferLoggerFactoryHelpers },
             { new SetupSetAnalyzer(), DiagnosticDescriptors.PreferPropertySetterCaptureHelper },
             { new SetupAllPropertiesAnalyzer(), DiagnosticDescriptors.PreferPropertyStateHelper },
             { new TrackedMockVerificationAnalyzer(), DiagnosticDescriptors.UseProviderFirstVerify },
@@ -62,6 +63,7 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.AvoidStrictCompatibilityProperty, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.UseTimesSpecAtHelperBoundary, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferSetupOptionsHelper, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.PreferLoggerFactoryHelpers, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferPropertySetterCaptureHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferPropertyStateHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.UseProviderFirstVerify, DiagnosticSeverity.Warning },
@@ -1651,6 +1653,498 @@ class KeyedSample
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new KeyedDependencyAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreserveKeyedServiceDistinctness));
             Assert.Equal(DiagnosticIds.PreserveKeyedServiceDistinctness, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task LoggerFactoryRegistrationAnalyzer_ShouldReportAndFix_DirectOutputHelperLoggerFactoryRegistration()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Xunit.ITestOutputHelper output)
+    {
+        Mocks.AddType<ILoggerFactory>(new OutputLoggerFactory(output), true);
+    }
+}
+
+sealed class OutputLoggerFactory : ILoggerFactory
+{
+    public OutputLoggerFactory(Xunit.ITestOutputHelper output)
+    {
+    }
+
+    public void AddProvider(ILoggerProvider provider)
+    {
+    }
+
+    public ILogger CreateLogger(string categoryName) => throw new System.NotImplementedException();
+
+    public void Dispose()
+    {
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferLoggerFactoryHelpers));
+            Assert.Equal(DiagnosticIds.PreferLoggerFactoryHelpers, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer(), codeFixProvider, DiagnosticIds.PreferLoggerFactoryHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Xunit.ITestOutputHelper output)
+    {
+        Mocks.AddLoggerFactory(line => (output).WriteLine(line), replace: true);
+    }
+}
+
+sealed class OutputLoggerFactory : ILoggerFactory
+{
+    public OutputLoggerFactory(Xunit.ITestOutputHelper output)
+    {
+    }
+
+    public void AddProvider(ILoggerProvider provider)
+    {
+    }
+
+    public ILogger CreateLogger(string categoryName) => throw new System.NotImplementedException();
+
+    public void Dispose()
+    {
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task LoggerFactoryRegistrationAnalyzer_ShouldReportAndFix_FuncOutputHelperLoggerFactoryRegistration()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Func<Xunit.ITestOutputHelper> output)
+    {
+        Mocks.AddType<ILoggerFactory>(new OutputLoggerFactory(output), true);
+    }
+}
+
+sealed class OutputLoggerFactory : ILoggerFactory
+{
+    public OutputLoggerFactory(Func<Xunit.ITestOutputHelper> output)
+    {
+    }
+
+    public void AddProvider(ILoggerProvider provider)
+    {
+    }
+
+    public ILogger CreateLogger(string categoryName) => throw new System.NotImplementedException();
+
+    public void Dispose()
+    {
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferLoggerFactoryHelpers));
+            Assert.Equal(DiagnosticIds.PreferLoggerFactoryHelpers, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer(), codeFixProvider, DiagnosticIds.PreferLoggerFactoryHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using FastMoq;
+using Microsoft.Extensions.Logging;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Func<Xunit.ITestOutputHelper> output)
+    {
+        Mocks.AddLoggerFactory(line => (output)().WriteLine(line), replace: true);
+    }
+}
+
+sealed class OutputLoggerFactory : ILoggerFactory
+{
+    public OutputLoggerFactory(Func<Xunit.ITestOutputHelper> output)
+    {
+    }
+
+    public void AddProvider(ILoggerProvider provider)
+    {
+    }
+
+    public ILogger CreateLogger(string categoryName) => throw new System.NotImplementedException();
+
+    public void Dispose()
+    {
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task LoggerFactoryRegistrationAnalyzer_ShouldReportAndFix_DirectTypedOutputHelperLoggerRegistration()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Xunit.ITestOutputHelper output)
+    {
+        Mocks.AddType<ILogger<Sample>>(new OutputLogger<Sample>(output), true);
+    }
+}
+
+sealed class OutputLogger<T> : ILogger<T>
+{
+    public OutputLogger(Xunit.ITestOutputHelper output)
+    {
+    }
+
+    public System.IDisposable BeginScope<TState>(TState state)
+        where TState : notnull
+        => null!;
+
+    public bool IsEnabled(LogLevel logLevel) => true;
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter)
+    {
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferLoggerFactoryHelpers));
+            Assert.Equal(DiagnosticIds.PreferLoggerFactoryHelpers, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer(), codeFixProvider, DiagnosticIds.PreferLoggerFactoryHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Xunit.ITestOutputHelper output)
+    {
+        Mocks.AddLoggerFactory(line => (output).WriteLine(line), replace: true);
+    }
+}
+
+sealed class OutputLogger<T> : ILogger<T>
+{
+    public OutputLogger(Xunit.ITestOutputHelper output)
+    {
+    }
+
+    public System.IDisposable BeginScope<TState>(TState state)
+        where TState : notnull
+        => null!;
+
+    public bool IsEnabled(LogLevel logLevel) => true;
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter)
+    {
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task LoggerFactoryRegistrationAnalyzer_ShouldReportAndFix_FuncOutputHelperTypedLoggerRegistration()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Func<Xunit.ITestOutputHelper> output)
+    {
+        Mocks.AddType<ILogger<Sample>>(new OutputLogger<Sample>(output), true);
+    }
+}
+
+sealed class OutputLogger<T> : ILogger<T>
+{
+    public OutputLogger(Func<Xunit.ITestOutputHelper> output)
+    {
+    }
+
+    public System.IDisposable BeginScope<TState>(TState state)
+        where TState : notnull
+        => null!;
+
+    public bool IsEnabled(LogLevel logLevel) => true;
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter)
+    {
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferLoggerFactoryHelpers));
+            Assert.Equal(DiagnosticIds.PreferLoggerFactoryHelpers, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer(), codeFixProvider, DiagnosticIds.PreferLoggerFactoryHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using FastMoq;
+using Microsoft.Extensions.Logging;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Func<Xunit.ITestOutputHelper> output)
+    {
+        Mocks.AddLoggerFactory(line => (output)().WriteLine(line), replace: true);
+    }
+}
+
+sealed class OutputLogger<T> : ILogger<T>
+{
+    public OutputLogger(Func<Xunit.ITestOutputHelper> output)
+    {
+    }
+
+    public System.IDisposable BeginScope<TState>(TState state)
+        where TState : notnull
+        => null!;
+
+    public bool IsEnabled(LogLevel logLevel) => true;
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter)
+    {
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task LoggerFactoryRegistrationAnalyzer_ShouldReportAndFix_DirectOutputHelperLoggerRegistration()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Xunit.ITestOutputHelper output)
+    {
+        Mocks.AddType<ILogger>(new OutputLogger(output), true);
+    }
+}
+
+sealed class OutputLogger : ILogger
+{
+    public OutputLogger(Xunit.ITestOutputHelper output)
+    {
+    }
+
+    public System.IDisposable BeginScope<TState>(TState state)
+        where TState : notnull
+        => null!;
+
+    public bool IsEnabled(LogLevel logLevel) => true;
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter)
+    {
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferLoggerFactoryHelpers));
+            Assert.Equal(DiagnosticIds.PreferLoggerFactoryHelpers, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer(), codeFixProvider, DiagnosticIds.PreferLoggerFactoryHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Xunit.ITestOutputHelper output)
+    {
+        Mocks.AddLoggerFactory(line => (output).WriteLine(line), replace: true);
+    }
+}
+
+sealed class OutputLogger : ILogger
+{
+    public OutputLogger(Xunit.ITestOutputHelper output)
+    {
+    }
+
+    public System.IDisposable BeginScope<TState>(TState state)
+        where TState : notnull
+        => null!;
+
+    public bool IsEnabled(LogLevel logLevel) => true;
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter)
+    {
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task LoggerFactoryRegistrationAnalyzer_ShouldReportAndFix_FuncOutputHelperLoggerRegistration()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Func<Xunit.ITestOutputHelper> output)
+    {
+        Mocks.AddType<ILogger>(new OutputLogger(output), true);
+    }
+}
+
+sealed class OutputLogger : ILogger
+{
+    public OutputLogger(Func<Xunit.ITestOutputHelper> output)
+    {
+    }
+
+    public System.IDisposable BeginScope<TState>(TState state)
+        where TState : notnull
+        => null!;
+
+    public bool IsEnabled(LogLevel logLevel) => true;
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter)
+    {
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferLoggerFactoryHelpers));
+            Assert.Equal(DiagnosticIds.PreferLoggerFactoryHelpers, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer(), codeFixProvider, DiagnosticIds.PreferLoggerFactoryHelpers);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using FastMoq;
+using Microsoft.Extensions.Logging;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Func<Xunit.ITestOutputHelper> output)
+    {
+        Mocks.AddLoggerFactory(line => (output)().WriteLine(line), replace: true);
+    }
+}
+
+sealed class OutputLogger : ILogger
+{
+    public OutputLogger(Func<Xunit.ITestOutputHelper> output)
+    {
+    }
+
+    public System.IDisposable BeginScope<TState>(TState state)
+        where TState : notnull
+        => null!;
+
+    public bool IsEnabled(LogLevel logLevel) => true;
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, System.Exception exception, System.Func<TState, System.Exception, string> formatter)
+    {
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task LoggerFactoryRegistrationAnalyzer_ShouldNotReport_WhenLoggerFactoryConstructorDoesNotUseOutputHelper()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Action<string> writeLine)
+    {
+        Mocks.AddType<ILoggerFactory>(new OutputLoggerFactory(writeLine), true);
+    }
+}
+
+sealed class OutputLoggerFactory : ILoggerFactory
+{
+    public OutputLoggerFactory(Action<string> writeLine)
+    {
+    }
+
+    public void AddProvider(ILoggerProvider provider)
+    {
+    }
+
+    public ILogger CreateLogger(string categoryName) => throw new System.NotImplementedException();
+
+    public void Dispose()
+    {
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferLoggerFactoryHelpers);
+        }
+
+        [Fact]
+        public async Task LoggerFactoryRegistrationAnalyzer_ShouldNotReport_WhenOutputHelperRegistrationIsNotForLoggerTypes()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class Sample
+{
+    void Execute(Mocker Mocks, Xunit.ITestOutputHelper output)
+    {
+        Mocks.AddType<IOutputAwareService>(new OutputAwareService(output), true);
+    }
+}
+
+interface IOutputAwareService
+{
+}
+
+sealed class OutputAwareService : IOutputAwareService
+{
+    public OutputAwareService(Xunit.ITestOutputHelper output)
+    {
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferLoggerFactoryHelpers);
         }
 
         [Fact]

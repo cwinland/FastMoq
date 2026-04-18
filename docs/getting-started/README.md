@@ -56,7 +56,7 @@ For the repo-native testing conventions and framework-specific guidance used by 
 
 If you want examples that run directly in this repository instead of static snippets only, see [Executable Testing Examples](../samples/testing-examples.md).
 
-If you are updating older FastMoq usage from the last public `3.0.0` release, see [Migration Guide: 3.0.0 To Current Repo](../migration/README.md).
+If you are updating older FastMoq usage from the last public `3.0.0` release, see [Migration Guide: 3.0.0 To The Current v4 Line](../migration/README.md).
 
 If you need to choose or bootstrap a provider explicitly, see the [Provider Selection Guide](./provider-selection.md).
 
@@ -81,6 +81,7 @@ Use this table when you are deciding which package line your test project should
 | --- | --- | --- |
 | simplest all-in-one experience | `FastMoq` | Aggregate package that includes the primary runtime, shared Azure SDK helpers, database helpers, web support, Azure Functions helpers, and the FastMoq analyzer pack by default |
 | lighter core-only usage | `FastMoq.Core` | Provider-first runtime without the extra EF, web-specific, or analyzer package payloads |
+| custom provider or advanced extension authoring | `FastMoq.Abstractions` | Shared provider contracts such as `IMockingProvider`, `IFastMock`, `TimesSpec`, and provider-registration attributes. Most test projects do not need to reference this package directly |
 | Azure SDK credentials, pageable builders, or Azure-oriented DI/config helpers while using `FastMoq.Core` | `FastMoq.Azure` | Adds `PageableBuilder`, token/default-credential helpers, Azure-oriented configuration/service-provider helpers, and common Azure client registration helpers |
 | Azure Functions worker helpers while using `FastMoq.Core` | `FastMoq.AzureFunctions` | Adds `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)`, `CreateHttpRequestData(...)`, `CreateHttpResponseData(...)`, and body readers in `FastMoq.AzureFunctions.Extensions` while keeping the typed `IServiceProvider` helpers in core |
 | DbContext and EF-specific helpers while using `FastMoq.Core` | `FastMoq.Database` | Adds `GetMockDbContext<TContext>()` and the explicit DbContext handle modes |
@@ -94,7 +95,7 @@ Important package boundaries in the current v4 line:
 `FastMoq` already includes the common end-user surface, including shared Azure SDK helpers, web, database, and Azure Functions helpers
 
 - `FastMoq` also includes the FastMoq analyzer assets by default so most test projects get migration guidance without extra setup
-- `FastMoq.Core` stays lighter on purpose, so shared Azure SDK helpers, EF helpers, Azure Functions helpers, and web helpers are separate package decisions when you consume core directly
+- `FastMoq.Core` keeps the provider-neutral runtime separate from the shared Azure SDK, EF, Azure Functions, and web helper packages when you consume core directly
 - `FastMoq.Core` does not include analyzer assets; add `FastMoq.Analyzers` explicitly if you want analyzer guidance in a core-only package graph
 - if a core-only test project stays on the legacy Moq-shaped path with `GetMock<T>()`, `VerifyLogger(...)`, `MockModel.Mock`, `SetupSet(...)`, `SetupAllProperties()`, or other Moq-specific compatibility flows, add `FastMoq.Analyzers` and `FastMoq.Provider.Moq` explicitly, then select `moq` at assembly scope instead of relying on the default `reflection` provider
 - `FastMoq.Core` includes the built-in `reflection` provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as `Setup(...)` and `Protected()` still belong to the `FastMoq.Provider.Moq` package
@@ -102,6 +103,7 @@ Important package boundaries in the current v4 line:
 - if you are wiring Azure SDK clients, pageable sequences, or token credentials through tests while consuming `FastMoq.Core` directly, add `FastMoq.Azure`
 - if you are wiring Azure Functions worker tests through `FunctionContext.InstanceServices` or concrete HTTP-trigger request and response objects, add `FastMoq.AzureFunctions` when you consume `FastMoq.Core` directly
 - if you are unsure whether your web tests need another package, see the web-helper notes in [Testing Guide](./testing-guide.md#controller-testing) and the migration-specific notes in [Framework and web helper migration](../migration/framework-and-web-helpers.md#web-test-helpers)
+- for the full analyzer catalog and package-aware migration guidance, see [Migration Guide](../migration/README.md#analyzer-catalog)
 
 If your team wants the aggregate runtime package without analyzer diagnostics in a specific test project, you can opt out with:
 
@@ -150,9 +152,9 @@ Split-package example:
 ```
 
 > Note: this guide targets the current v4 release line. For the release delta relative to the last public `3.0.0` package, see [What's New Since 3.0.0](../whats-new/README.md).
-> Note: in the current repository, `GetMockDbContext<TContext>()` keeps the same `FastMoq` namespace call shape, but direct `FastMoq.Core` consumers should add `FastMoq.Database` for EF-specific helpers. Direct shared Azure SDK helper consumers should add `FastMoq.Azure`. Direct Azure Functions helper consumers should add `FastMoq.AzureFunctions`. Direct web-helper consumers should add `FastMoq.Web`.
+> Note: in the current v4 package line, `GetMockDbContext<TContext>()` keeps the same `FastMoq` namespace call shape, but direct `FastMoq.Core` consumers should add `FastMoq.Database` for EF-specific helpers. Direct shared Azure SDK helper consumers should add `FastMoq.Azure`. Direct Azure Functions helper consumers should add `FastMoq.AzureFunctions`. Direct web-helper consumers should add `FastMoq.Web`.
 
-In the current v4 transition layout, `FastMoq.Core` bundles the built-in `moq` provider and the internal `reflection` fallback. The default provider is `reflection`. Optional providers such as `nsubstitute` can be added explicitly and then selected by their canonical name once the package is present, or registered manually under a custom alias. You can also register your own provider by implementing `IMockingProvider`; the bundled providers are examples, not the only supported choices.
+In the current v4 release line, `FastMoq.Core` bundles the built-in `moq` provider and the internal `reflection` fallback. The default provider is `reflection`. Optional providers such as `nsubstitute` can be added explicitly and then selected by their canonical name once the package is present, or registered manually under a custom alias. You can also register your own provider by implementing `IMockingProvider`; the bundled providers are examples, not the only supported choices.
 
 The DbContext helper path now exposes explicit modes through `GetDbContextHandle<TContext>(...)`. `GetMockDbContext<TContext>()` remains the mocked-sets convenience entry point, `DbContextTestMode.RealInMemory` is the real EF-backed option, and provider-first APIs such as `GetOrCreateMock<TContext>()` and `GetMockModel<TContext>()` return the same tracked context after the helper creates it.
 
@@ -490,7 +492,7 @@ Now that you understand the basics, explore these advanced topics:
 
 Prefer `Mocks.VerifyLogged(...)` for new code. It is provider-safe because FastMoq captures `ILogger` callbacks through the active `IMockingProvider` and verifies the captured entries in core.
 
-If the test suite needs a first-party registration story for `ILoggerFactory`, `ILogger`, or `ILogger<T>`, use `Mocks.AddLoggerFactory()` for direct FastMoq resolution, or `Mocks.CreateLoggerFactory()` when you want to plug the same callback-backed factory into a typed `IServiceProvider` recipe.
+If the test suite needs a first-party registration story for `ILoggerFactory`, `ILogger`, or `ILogger<T>`, use `Mocks.AddLoggerFactory()` for direct FastMoq resolution, or `Mocks.CreateLoggerFactory()` when you want to plug the same callback-backed factory into a typed `IServiceProvider` recipe. When the test also needs to mirror log output to a local sink after `Mocker` already exists, use the sink-aware overloads such as `Mocks.AddLoggerFactory(output.WriteLine, replace: true)` or `Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) => ...)` instead of maintaining a private logger wrapper.
 
 Use `GetOrCreateMock<ILogger<T>>().AsMoq().VerifyLogger(...)` only when you intentionally want the legacy Moq-specific behavior. That API is a compatibility shim and is planned to leave core in v5.
 

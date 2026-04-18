@@ -33,7 +33,8 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.PreferPropertySetterCaptureHelper,
             DiagnosticIds.PreferPropertyStateHelper,
             DiagnosticIds.RequireExplicitMoqOnboarding,
-            DiagnosticIds.PreferProviderNeutralHttpHelpers);
+            DiagnosticIds.PreferProviderNeutralHttpHelpers,
+            DiagnosticIds.PreferLoggerFactoryHelpers);
 
         public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
@@ -374,6 +375,23 @@ namespace FastMoq.Analyzers.CodeFixes
                                 "Use SetupOptions(...)",
                                 cancellationToken => ReplaceSetupOptionsInvocationAsync(document, invocationExpression, cancellationToken),
                                 nameof(DiagnosticIds.PreferSetupOptionsHelper)),
+                            diagnostic);
+                        break;
+                    }
+
+                case DiagnosticIds.PreferLoggerFactoryHelpers:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                "Use AddLoggerFactory(...)",
+                                cancellationToken => ReplaceLoggerFactoryHelperInvocationAsync(document, invocationExpression, cancellationToken),
+                                nameof(DiagnosticIds.PreferLoggerFactoryHelpers)),
                             diagnostic);
                         break;
                     }
@@ -721,6 +739,14 @@ namespace FastMoq.Analyzers.CodeFixes
                 : null;
         }
 
+        private static string? BuildLoggerFactoryHelperReplacementAsync(Document document, SemanticModel semanticModel, SyntaxNode syntaxNode, CancellationToken cancellationToken)
+        {
+            return syntaxNode is InvocationExpressionSyntax invocationExpression &&
+                FastMoqAnalysisHelpers.TryBuildLoggerFactoryHelperReplacement(invocationExpression, semanticModel, cancellationToken, out var replacement)
+                ? replacement
+                : null;
+        }
+
         private static async Task<Document> ReplaceSetupOptionsInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -731,6 +757,28 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             if (!FastMoqAnalysisHelpers.TryBuildSetupOptionsReplacement(invocationExpression, semanticModel, cancellationToken, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+
+            return document.WithSyntaxRoot(AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions"));
+        }
+
+        private static async Task<Document> ReplaceLoggerFactoryHelperInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            var replacementText = BuildLoggerFactoryHelperReplacementAsync(document, semanticModel, invocationExpression, cancellationToken);
+            if (replacementText is null)
             {
                 return document;
             }

@@ -231,6 +231,6 @@ If you are evaluating the release delta first, use this order:
 
 1. [What's New Since 3.0.0](../whats-new/README.md)
 2. [Breaking Changes](../breaking-changes/README.md)
-3. [Migration Guide: 3.0.0 To Current Repo](../migration/README.md)
+3. [Migration Guide: 3.0.0 To The Current v4 Line](../migration/README.md)
 4. [Provider Selection Guide](../getting-started/provider-selection.md)
 5. [Executable Testing Examples](../samples/testing-examples.md)
