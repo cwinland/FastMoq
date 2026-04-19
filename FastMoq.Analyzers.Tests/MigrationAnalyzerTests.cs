@@ -565,6 +565,30 @@ class Sample
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LegacyMoqCreationLifecycleAnalyzer());
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidLegacyMockCreationAndLifecycleApis));
             Assert.Equal(DiagnosticIds.AvoidLegacyMockCreationAndLifecycleApis, diagnostic.Id);
+            Assert.Contains("CreateStandaloneFastMock<ILogger<Sample>>()", diagnostic.GetMessage());
+            Assert.Contains("MockingProviderRegistry.Default.CreateMock<ILogger<Sample>>()", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task LegacyMoqCreationLifecycleAnalyzer_ShouldReport_WhenCreateMockInstanceIsUsed()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var logger = Mocks.CreateMockInstance<ILogger<Sample>>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LegacyMoqCreationLifecycleAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidLegacyMockCreationAndLifecycleApis));
+            Assert.Equal(DiagnosticIds.AvoidLegacyMockCreationAndLifecycleApis, diagnostic.Id);
+            Assert.Contains("CreateStandaloneFastMock<ILogger<Sample>>()", diagnostic.GetMessage());
+            Assert.Contains("MockingProviderRegistry.Default.CreateMock<ILogger<Sample>>()", diagnostic.GetMessage());
         }
 
         [Fact]

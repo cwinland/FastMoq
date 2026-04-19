@@ -39,6 +39,27 @@ namespace FastMoq.Analyzers
         }
     }
 
+    internal readonly struct DetachedMockOrigin
+    {
+        public DetachedMockOrigin(ExpressionSyntax fastMockExpression, ITypeSymbol serviceType, bool canReuseFastMockExpression)
+        {
+            FastMockExpression = fastMockExpression;
+            ServiceType = serviceType;
+            CanReuseFastMockExpression = canReuseFastMockExpression;
+        }
+
+        public ExpressionSyntax FastMockExpression { get; }
+
+        public ITypeSymbol ServiceType { get; }
+
+        public bool CanReuseFastMockExpression { get; }
+
+        public DetachedMockOrigin WithFastMockExpression(ExpressionSyntax fastMockExpression, bool canReuseFastMockExpression)
+        {
+            return new DetachedMockOrigin(fastMockExpression, ServiceType, canReuseFastMockExpression);
+        }
+    }
+
     internal static class FastMoqAnalysisHelpers
     {
         internal const string FastMoqMockerTypeName = "FastMoq.Mocker";
@@ -126,6 +147,22 @@ namespace FastMoq.Analyzers
 
             var originalDefinitionName = namedType.OriginalDefinition.ToDisplayString();
             return originalDefinitionName is FastMoqMockModelTypeName or FastMoqMockModelGenericTypeName;
+        }
+
+        public static bool IsFastMoqFastMockType(ITypeSymbol? type)
+        {
+            if (type is null)
+            {
+                return false;
+            }
+
+            if (type.ToDisplayString() == "FastMoq.Providers.IFastMock")
+            {
+                return true;
+            }
+
+            return type is INamedTypeSymbol namedType &&
+                   namedType.OriginalDefinition.ToDisplayString() == "FastMoq.Providers.IFastMock<T>";
         }
 
         public static bool IsFastMoqMockerMethod(IMethodSymbol method, string methodName)
@@ -474,6 +511,133 @@ namespace FastMoq.Analyzers
             }
         }
 
+        public static bool TryResolveDetachedMockOrigin(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out DetachedMockOrigin origin)
+        {
+            return TryResolveDetachedMockOrigin(expression, semanticModel, cancellationToken, new HashSet<ISymbol>(SymbolEqualityComparer.Default), out origin);
+        }
+
+        private static bool TryResolveDetachedMockOrigin(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out DetachedMockOrigin origin)
+        {
+            expression = Unwrap(expression);
+
+            if (expression is InvocationExpressionSyntax invocationExpression &&
+                TryResolveDetachedMockOrigin(invocationExpression, semanticModel, cancellationToken, visitedSymbols, out origin))
+            {
+                return true;
+            }
+
+            if (TryResolveDetachedMockOriginFromSymbol(expression, semanticModel, cancellationToken, visitedSymbols, out origin))
+            {
+                return true;
+            }
+
+            origin = default;
+            return false;
+        }
+
+        private static bool TryResolveDetachedMockOrigin(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out DetachedMockOrigin origin)
+        {
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
+            {
+                origin = default;
+                return false;
+            }
+
+            if (IsFastMoqMockerMethod(method, "CreateStandaloneFastMock") && method.TypeArguments.Length == 1)
+            {
+                origin = new DetachedMockOrigin(invocationExpression, method.TypeArguments[0], canReuseFastMockExpression: false);
+                return true;
+            }
+
+            if (TryGetRegistryCreateMockServiceType(invocationExpression, method, semanticModel, cancellationToken, out var serviceType))
+            {
+                origin = new DetachedMockOrigin(invocationExpression, serviceType, canReuseFastMockExpression: false);
+                return true;
+            }
+
+            if ((method.Name == "AsMoq" || method.Name == "AsNSubstitute") && invocationExpression.Expression is MemberAccessExpressionSyntax adapterAccess)
+            {
+                if (TryResolveDetachedMockOrigin(adapterAccess.Expression, semanticModel, cancellationToken, visitedSymbols, out origin))
+                {
+                    if (CanReuseDetachedFastMockExpression(adapterAccess.Expression, semanticModel, cancellationToken))
+                    {
+                        origin = origin.WithFastMockExpression(adapterAccess.Expression, canReuseFastMockExpression: true);
+                    }
+
+                    return true;
+                }
+            }
+
+            origin = default;
+            return false;
+        }
+
+        private static bool TryResolveDetachedMockOriginFromSymbol(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out DetachedMockOrigin origin)
+        {
+            var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
+            var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
+            if (symbol is null || !visitedSymbols.Add(symbol))
+            {
+                origin = default;
+                return false;
+            }
+
+            foreach (var sourceExpression in GetTrackedMockSourceExpressions(symbol, semanticModel, cancellationToken))
+            {
+                if (TryResolveDetachedMockOrigin(sourceExpression, semanticModel, cancellationToken, visitedSymbols, out origin))
+                {
+                    if (CanReuseDetachedFastMockExpression(expression, semanticModel, cancellationToken))
+                    {
+                        origin = origin.WithFastMockExpression(expression, canReuseFastMockExpression: true);
+                    }
+
+                    return true;
+                }
+            }
+
+            origin = default;
+            return false;
+        }
+
+        private static bool CanReuseDetachedFastMockExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = Unwrap(expression);
+            if (!IsFastMoqFastMockType(semanticModel.GetTypeInfo(expression, cancellationToken).Type))
+            {
+                return false;
+            }
+
+            var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
+            var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
+            return symbol is ILocalSymbol or IFieldSymbol or IPropertySymbol or IParameterSymbol;
+        }
+
+        private static bool TryGetRegistryCreateMockServiceType(InvocationExpressionSyntax invocationExpression, IMethodSymbol method, SemanticModel semanticModel, CancellationToken cancellationToken, out ITypeSymbol serviceType)
+        {
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "CreateMock" ||
+                method.TypeArguments.Length != 1 ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
+                !IsDefaultMockingProviderAccess(memberAccess.Expression, semanticModel, cancellationToken))
+            {
+                serviceType = default!;
+                return false;
+            }
+
+            serviceType = method.TypeArguments[0];
+            return true;
+        }
+
+        private static bool IsDefaultMockingProviderAccess(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
+            var property = symbolInfo.Symbol as IPropertySymbol ?? symbolInfo.CandidateSymbols.OfType<IPropertySymbol>().FirstOrDefault();
+            return property is not null &&
+                   property.Name == "Default" &&
+                   property.IsStatic &&
+                   property.ContainingType.ToDisplayString() == MockingProviderRegistryTypeName;
+        }
+
         public static bool ContainsGetOrCreateMock(SyntaxNode root, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             return root.DescendantNodes()
@@ -599,6 +763,27 @@ namespace FastMoq.Analyzers
             return true;
         }
 
+        public static bool TryBuildVerifyReplacement(ExpressionSyntax verifyTargetExpression, SemanticModel semanticModel, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken, out string replacement, out bool requiresProvidersNamespace)
+        {
+            if (TryResolveTrackedMockOrigin(verifyTargetExpression, semanticModel, cancellationToken, out var trackedOrigin) &&
+                TryBuildVerifyReplacement(trackedOrigin, semanticModel, invocationExpression, cancellationToken, out replacement))
+            {
+                requiresProvidersNamespace = false;
+                return true;
+            }
+
+            if (TryResolveDetachedMockOrigin(verifyTargetExpression, semanticModel, cancellationToken, out var detachedOrigin) &&
+                TryBuildVerifyReplacement(detachedOrigin, semanticModel, invocationExpression, cancellationToken, out replacement))
+            {
+                requiresProvidersNamespace = true;
+                return true;
+            }
+
+            replacement = string.Empty;
+            requiresProvidersNamespace = false;
+            return false;
+        }
+
         public static bool TryBuildVerifyReplacement(TrackedMockOrigin origin, SemanticModel semanticModel, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken, out string replacement)
         {
             replacement = string.Empty;
@@ -636,6 +821,47 @@ namespace FastMoq.Analyzers
             var mockerExpression = origin.MockerExpression.WithoutTrivia().ToString();
             var serviceType = GetMinimalTypeName(origin.ServiceType, semanticModel, invocationExpression.SpanStart);
             replacement = $"{mockerExpression}.Verify<{serviceType}>({string.Join(", ", replacementArguments)})";
+            return true;
+        }
+
+        private static bool TryBuildVerifyReplacement(DetachedMockOrigin origin, SemanticModel semanticModel, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+            if (!origin.CanReuseFastMockExpression ||
+                !TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null ||
+                !IsMoqVerifyMethod(method))
+            {
+                return false;
+            }
+
+            var arguments = invocationExpression.ArgumentList.Arguments;
+            if (arguments.Count == 0 || arguments.Count > 2)
+            {
+                return false;
+            }
+
+            var replacementArguments = new List<string>
+            {
+                origin.FastMockExpression.WithoutTrivia().ToString(),
+                arguments[0].WithoutTrivia().ToString(),
+            };
+
+            if (arguments.Count == 2)
+            {
+                if (!TryConvertTimesArgument(arguments[1], semanticModel, cancellationToken, invocationExpression.SpanStart, out var convertedArgument, out var omitArgument))
+                {
+                    return false;
+                }
+
+                if (!omitArgument)
+                {
+                    replacementArguments.Add(convertedArgument);
+                }
+            }
+
+            var serviceType = GetMinimalTypeName(origin.ServiceType, semanticModel, invocationExpression.SpanStart);
+            replacement = $"MockingProviderRegistry.Default.Verify<{serviceType}>({string.Join(", ", replacementArguments)})";
             return true;
         }
 

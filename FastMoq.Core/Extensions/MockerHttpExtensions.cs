@@ -15,6 +15,9 @@ namespace FastMoq.Extensions
         /// This entry point remains supported after v5.
         /// New tests should prefer the provider-neutral request helpers in this class for HTTP behavior.
         /// Advanced protected-member setups remain available from the Moq provider package for migration scenarios.
+        /// When the current <see cref="Mocker" /> is still using the built-in HTTP compatibility registrations,
+        /// repeated calls update that built-in handler and <see cref="IHttpClientFactory" /> path.
+        /// If the test replaces <see cref="IHttpClientFactory" /> explicitly, it owns <c>CreateClient(...)</c> behavior.
         /// </remarks>
         public static HttpClient CreateHttpClient(this Mocker mocker, string clientName = "FastMoqHttpClient", string baseAddress = "http://localhost",
             HttpStatusCode statusCode = HttpStatusCode.OK, string stringContent = "[{'id':1}]")
@@ -146,16 +149,43 @@ namespace FastMoq.Extensions
 
         private static void EnsureProviderNeutralHttpDependencies(Mocker mocker, Uri baseUri, HttpStatusCode statusCode, string stringContent)
         {
-            if (!mocker.Contains<HttpMessageHandler>() && !mocker.typeMap.ContainsKey(typeof(HttpMessageHandler)))
+            if (!mocker.Contains<HttpMessageHandler>())
             {
-                var handler = new ConfigurableHttpMessageHandler(() => CreateResponse(statusCode, stringContent));
-                mocker.AddType<HttpMessageHandler>(_ => handler, replace: true);
+                if (mocker.typeMap.TryGetValue(typeof(HttpMessageHandler), out _) &&
+                    mocker.GetObject<HttpMessageHandler>() is ConfigurableHttpMessageHandler existingHandler)
+                {
+                    existingHandler.UpdateDefault(() => CreateResponse(statusCode, stringContent));
+                }
+                else if (!mocker.typeMap.ContainsKey(typeof(HttpMessageHandler)))
+                {
+                    var handler = new ConfigurableHttpMessageHandler(() => CreateResponse(statusCode, stringContent));
+                    mocker.AddType<HttpMessageHandler>(_ => handler, replace: true);
+                }
             }
 
-            if (!mocker.Contains<IHttpClientFactory>() && !mocker.typeMap.ContainsKey(typeof(IHttpClientFactory)))
+            if (!mocker.Contains<IHttpClientFactory>())
             {
-                var factory = new ConfigurableHttpClientFactory(() => mocker.CreateHttpClientInternal(baseUri));
-                mocker.AddType<IHttpClientFactory>(factory, replace: true);
+                if (mocker.typeMap.TryGetValue(typeof(IHttpClientFactory), out _) &&
+                    mocker.GetObject<IHttpClientFactory>() is ConfigurableHttpClientFactory existingFactory)
+                {
+                    existingFactory.UpdateClientFactory(() => mocker.CreateHttpClientInternal(baseUri));
+                }
+                else if (!mocker.typeMap.ContainsKey(typeof(IHttpClientFactory)))
+                {
+                    var factory = new ConfigurableHttpClientFactory(() => mocker.CreateHttpClientInternal(baseUri));
+                    mocker.AddType<IHttpClientFactory>(factory, replace: true);
+                }
+            }
+        }
+
+        internal static void RemoveBuiltInHttpClientFactoryRegistration(Mocker mocker)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+
+            if (mocker.typeMap.TryGetValue(typeof(IHttpClientFactory), out _) &&
+                mocker.GetObject<IHttpClientFactory>() is ConfigurableHttpClientFactory)
+            {
+                mocker.typeMap.Remove(typeof(IHttpClientFactory));
             }
         }
 
@@ -200,8 +230,20 @@ namespace FastMoq.Extensions
             return handler;
         }
 
-        private sealed class ConfigurableHttpClientFactory(Func<HttpClient> clientFactory) : IHttpClientFactory
+        private sealed class ConfigurableHttpClientFactory : IHttpClientFactory
         {
+            private Func<HttpClient> clientFactory;
+
+            public ConfigurableHttpClientFactory(Func<HttpClient> clientFactory)
+            {
+                this.clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
+            }
+
+            internal void UpdateClientFactory(Func<HttpClient> clientFactory)
+            {
+                this.clientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
+            }
+
             public HttpClient CreateClient(string name) => clientFactory();
         }
 

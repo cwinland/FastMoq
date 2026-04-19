@@ -215,9 +215,8 @@ That overload exposes the supplied `IServiceProvider`, a fixed `IServiceScope`, 
 If a constructor takes `IServiceScopeFactory`, prefer this shape:
 
 ```csharp
-var fileSystem = new MockFileSystem();
+var fileSystem = Mocks.GetFileSystem();
 
-Mocks.AddType<IFileSystem>(fileSystem, replace: true);
 Mocks.AddServiceProvider(services =>
 {
     services.AddLogging();
@@ -229,7 +228,9 @@ Mocks.AddServiceProvider(services =>
 var scopeFactory = Mocks.GetRequiredObject<IServiceScopeFactory>();
 ```
 
-instead of building a provider manually and registering only `provider.GetRequiredService<IServiceScopeFactory>()`. Keeping the full typed provider registered makes constructor injection, nested framework resolution, and service-scope behavior stay aligned.
+Reuse `GetFileSystem()` when you want FastMoq's shared in-memory file system to stay aligned across constructor injection and the typed provider. Use `AddType<IFileSystem>(...)` only when you intentionally want to replace that shared instance with a custom file system.
+
+Instead of building a provider manually and registering only `provider.GetRequiredService<IServiceScopeFactory>()`, keep the full typed provider registered so constructor injection, nested framework resolution, and service-scope behavior stay aligned.
 
 When framework code should resolve a mix of real DI registrations and normal FastMoq collaborators, use `includeMockerFallback: true` on `CreateTypedServiceProvider(...)`, `CreateTypedServiceScope(...)`, `AddServiceProvider(...)`, or `AddServiceScope(...)`.
 
@@ -526,12 +527,12 @@ protected override Action<MockerPolicyOptions>? ConfigureMockerPolicy => policy 
 
 ### `IFileSystem`
 
-`GetObject<IFileSystem>()` can return the predefined `MockFileSystem` instance when FastMoq is in lenient mode and you have not already registered or created an `IFileSystem` dependency.
+Use `GetFileSystem()` when you want FastMoq's shared in-memory file system explicitly. `GetObject<IFileSystem>()` resolves that same shared instance when built-in file-system resolution is enabled and you have not already registered or created an `IFileSystem` dependency.
 
 Use this when you want a real in-memory file system quickly:
 
 ```csharp
-var fileSystem = Mocks.GetObject<IFileSystem>();
+var fileSystem = Mocks.GetFileSystem();
 fileSystem.File.WriteAllText("/tmp/test.txt", "hello");
 ```
 
@@ -545,11 +546,25 @@ Mocks.GetOrCreateMock<IFileSystem>()
 
 FastMoq can automatically provide a built-in `IFileSystem` backed by its shared in-memory `MockFileSystem` when the built-in file-system resolution is enabled and you have not already registered `IFileSystem` explicitly.
 
+Reach for `AddType<IFileSystem>(...)` only when you intentionally need to replace that shared file system with a custom or isolated instance.
+
 If you need the wider filesystem abstraction family (`IFile`, `IPath`, `IDirectory`, and related factories) to resolve coherently alongside that shared file system, call [AddFileSystemAbstractionMapping()](../../api/FastMoq.Mocker.yml).
 
 ### `HttpClient`
 
-FastMoq has a built-in `HttpClient` helper path. Use the existing HTTP setup helpers when the subject depends on `HttpClient` directly instead of manually composing handlers for every test.
+FastMoq has a built-in `HttpClient` helper path. Every new `Mocker` starts with a shared `HttpClient` plus a lightweight `IHttpClientFactory` compatibility registration backed by the same provider-neutral handler.
+
+Use that built-in path when the subject depends on `HttpClient` directly or only needs `IHttpClientFactory.CreateClient(...)` to hand back a client. Prefer `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` for provider-neutral response setup instead of manually composing handlers for every test.
+
+Use `GetObject<IHttpClientFactory>()`, `GetRequiredObject<IHttpClientFactory>()`, or normal constructor injection when you want that built-in factory. Do not call `GetOrCreateMock<IHttpClientFactory>()` unless you intentionally want to replace the built-in compatibility factory with a tracked mock.
+
+The built-in compatibility factory accepts the requested client name but does not apply per-name configuration.
+
+If you call `CreateHttpClient(...)` again later with a different base address or default response, FastMoq updates that built-in compatibility factory and handler to match the latest helper call.
+
+If you intentionally replace `IHttpClientFactory` with `GetOrCreateMock<IHttpClientFactory>()` or `AddType<IHttpClientFactory>(...)`, that replacement wins and you own `CreateClient(...)` setup yourself.
+
+If the subject depends on named-client, typed-client, or `AddHttpClient(...)` configuration semantics, register your own `IHttpClientFactory` or typed provider-backed container instead of relying on the built-in compatibility factory.
 
 ### `DbContext`
 

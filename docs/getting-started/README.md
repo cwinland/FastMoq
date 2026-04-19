@@ -166,7 +166,10 @@ dotnet add package FastMoq.Azure
 dotnet add package FastMoq.AzureFunctions
 dotnet add package FastMoq.Database
 dotnet add package FastMoq.Web
+# choose the provider package your tests actually use
 dotnet add package FastMoq.Provider.Moq
+# or
+# dotnet add package FastMoq.Provider.NSubstitute
 ```
 
 ### Package Manager Console
@@ -189,7 +192,10 @@ Split-package example:
 <PackageReference Include="FastMoq.AzureFunctions" Version="4.*" />
 <PackageReference Include="FastMoq.Database" Version="4.*" />
 <PackageReference Include="FastMoq.Web" Version="4.*" />
+<!-- choose the provider package your tests actually use -->
 <PackageReference Include="FastMoq.Provider.Moq" Version="4.*" />
+<!-- or -->
+<!-- <PackageReference Include="FastMoq.Provider.NSubstitute" Version="4.*" /> -->
 ```
 
 > Note: this guide targets the current v4 release line. For the release delta relative to the last public `3.0.0` package, see [What's New Since 3.0.0](../whats-new/README.md).
@@ -227,8 +233,9 @@ If you intentionally want Moq-specific tracked `.Setup(...)`, `SetupSequence(...
 
 ```bash
 dotnet add package FastMoq.Provider.Moq
-dotnet add package Moq
 ```
+
+`FastMoq.Provider.Moq` already brings `Moq` transitively. Add a top-level `Moq` package reference only when you intentionally need to pin or override the transitive Moq version.
 
 ```csharp
 using FastMoq.Providers;
@@ -483,11 +490,10 @@ When a test needs a specific constructor, prefer the explicit constructor-select
 ```csharp
 internal sealed class ArchiveInvokerTests : MockerTestBase<ArchiveInvoker>
 {
-    private readonly MockFileSystem fileSystem = new();
-
     protected override Action<Mocker>? SetupMocksAction => mocker =>
     {
-        mocker.AddType<IFileSystem>(fileSystem, replace: true);
+        var fileSystem = mocker.GetFileSystem();
+
         mocker.AddServiceProvider(services =>
         {
             services.AddLogging();
@@ -501,6 +507,8 @@ internal sealed class ArchiveInvokerTests : MockerTestBase<ArchiveInvoker>
         new Type?[] { typeof(IFileSystem), typeof(IServiceScopeFactory) };
 }
 ```
+
+Use `GetFileSystem()` when you want FastMoq's shared in-memory file system to flow through both constructor injection and the typed provider. Reach for `AddType<IFileSystem>(...)` only when you intentionally need a different `IFileSystem` instance than the built-in one.
 
 See the [Testing Guide](./testing-guide.md#explicit-constructor-selection-in-tests) for the full constructor-selection rules and the [typed `IServiceProvider` helper guidance](./testing-guide.md#typed-iserviceprovider-helpers) for framework-heavy ServiceCollection patterns.
 

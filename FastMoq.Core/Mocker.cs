@@ -2045,6 +2045,7 @@ namespace FastMoq
         internal IFastMock GetOrCreateFastMock(Type type, bool nonPublic = false, params object?[] args)
         {
             type = CleanType(type);
+            PrepareBuiltInOverrideForTrackedMock(type);
             if (!Contains(type))
             {
                 return CreateFastMock(type, nonPublic, args);
@@ -2070,11 +2071,24 @@ namespace FastMoq
             var args = options.ConstructorArgs ?? Array.Empty<object?>();
             var allowNonPublicConstructors = ShouldAllowNonPublicConstructorsForMockRequest(options.AllowNonPublicConstructors);
 
+            if (options.ServiceKey == null)
+            {
+                PrepareBuiltInOverrideForTrackedMock(typeof(T));
+            }
+
             MockModel model = options.ServiceKey == null
                 ? GetMockModelFast(typeof(T), allowNonPublicConstructors, args)
                 : GetKeyedMockModelFast(typeof(T), options.ServiceKey, allowNonPublicConstructors, args);
 
             return GetTypedFastMockFromModel<T>(model);
+        }
+
+        private void PrepareBuiltInOverrideForTrackedMock(Type type)
+        {
+            if (type == typeof(IHttpClientFactory))
+            {
+                MockerHttpExtensions.RemoveBuiltInHttpClientFactoryRegistration(this);
+            }
         }
 
         private IFastMock<T> GetTypedFastMockFromModel<T>(MockModel model) where T : class

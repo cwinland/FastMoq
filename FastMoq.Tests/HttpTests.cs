@@ -196,6 +196,72 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public async Task CreateHttpClient_ShouldUpdateBuiltInHttpClientFactoryConfiguration()
+        {
+            using var client = Mocks.CreateHttpClient(
+                clientName: "WeatherApiClient",
+                baseAddress: "https://api.fastmoq.test/",
+                statusCode: HttpStatusCode.Accepted,
+                stringContent: "{\"temperature\":25}");
+
+            client.BaseAddress.Should().Be(new Uri("https://api.fastmoq.test/"));
+
+            var factory = Mocks.GetObject<IHttpClientFactory>();
+            using var factoryClient = factory!.CreateClient("any-name");
+
+            factoryClient.BaseAddress.Should().Be(new Uri("https://api.fastmoq.test/"));
+
+            var response = await factoryClient.GetAsync("weather");
+
+            response.StatusCode.Should().Be(HttpStatusCode.Accepted);
+            (await Mocks.GetStringContent(response.Content)).Should().Be("{\"temperature\":25}");
+        }
+
+        [Fact]
+        public void GetObject_IHttpClientFactory_ShouldPreferTrackedMock_OverBuiltInCompatibilityFactory()
+        {
+            using var expected = new HttpClient
+            {
+                BaseAddress = new Uri("http://tracked-factory.fastmoq/")
+            };
+
+            var factory = Mocks.GetOrCreateMock<IHttpClientFactory>();
+            factory.AsMoq().Setup(x => x.CreateClient("tracked")).Returns(expected);
+
+            var resolvedFactory = Mocks.GetObject<IHttpClientFactory>();
+            using var client = Mocks.CreateHttpClient(clientName: "tracked");
+
+            resolvedFactory.Should().NotBeNull();
+            client.Should().BeSameAs(expected);
+            resolvedFactory!.CreateClient("tracked").Should().BeSameAs(expected);
+        }
+
+        [Fact]
+        public async Task GetOrCreateMock_KeyedIHttpClientFactory_ShouldNotReplaceUnkeyedBuiltInCompatibilityFactory()
+        {
+            _ = Mocks.CreateHttpClient(
+                clientName: "WeatherApiClient",
+                baseAddress: "https://keyed.fastmoq.test/",
+                statusCode: HttpStatusCode.Accepted,
+                stringContent: "{\"temperature\":31}");
+
+            var keyedFactory = Mocks.GetOrCreateMock<IHttpClientFactory>(new MockRequestOptions
+            {
+                ServiceKey = "keyed"
+            });
+
+            var resolvedFactory = Mocks.GetObject<IHttpClientFactory>();
+            using var builtInClient = resolvedFactory!.CreateClient("any-name");
+            var response = await builtInClient.GetAsync("weather");
+
+            resolvedFactory.Should().NotBeNull();
+            resolvedFactory.Should().NotBeSameAs(keyedFactory.Instance);
+            builtInClient.BaseAddress.Should().Be(new Uri("https://keyed.fastmoq.test/"));
+            response.StatusCode.Should().Be(HttpStatusCode.Accepted);
+            (await Mocks.GetStringContent(response.Content)).Should().Be("{\"temperature\":31}");
+        }
+
+        [Fact]
         public async Task WhenHttpRequestJson_ShouldReturnJsonContent_WithApplicationJsonMediaType()
         {
             Mocks.WhenHttpRequestJson(HttpMethod.Post, "/api/orders", "{\"status\":\"created\"}", HttpStatusCode.Created);

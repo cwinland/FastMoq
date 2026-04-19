@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
+using System.Threading;
 
 namespace FastMoq.Analyzers.Analyzers
 {
@@ -22,7 +23,7 @@ namespace FastMoq.Analyzers.Analyzers
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
             if (!FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) ||
                 method is null ||
-                !TryGetGuidance(method, out var guidance))
+                !TryGetGuidance(invocationExpression, context.SemanticModel, context.CancellationToken, method, out var guidance))
             {
                 return;
             }
@@ -34,7 +35,7 @@ namespace FastMoq.Analyzers.Analyzers
                 guidance));
         }
 
-        private static bool TryGetGuidance(IMethodSymbol method, out string guidance)
+        private static bool TryGetGuidance(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, IMethodSymbol method, out string guidance)
         {
             guidance = string.Empty;
 
@@ -43,15 +44,21 @@ namespace FastMoq.Analyzers.Analyzers
                 return false;
             }
 
+            var serviceTypeName = TryGetServiceTypeName(invocationExpression, semanticModel, method, cancellationToken);
+
             switch (method.Name)
             {
                 case "CreateMock":
-                    guidance = "'GetOrCreateMock(...)' for tracked provider-first mocks";
+                    guidance = serviceTypeName is null
+                        ? "'GetOrCreateMock(...)' for tracked provider-first mocks"
+                        : $"'GetOrCreateMock<{serviceTypeName}>()' for tracked provider-first mocks";
                     return true;
 
                 case "CreateMockInstance":
                 case "CreateDetachedMock":
-                    guidance = "'GetOrCreateMock(...)' on a dedicated Mocker instance when possible, or provider-specific escape hatches only when raw Mock<T> is still required";
+                    guidance = serviceTypeName is null
+                        ? "'CreateStandaloneFastMock<T>()' or 'MockingProviderRegistry.Default.CreateMock<T>()' for detached provider-first handles, and 'GetOrCreateMock(...)' only when the collaborator should stay tracked in the parent Mocker"
+                        : $"'CreateStandaloneFastMock<{serviceTypeName}>()' or 'MockingProviderRegistry.Default.CreateMock<{serviceTypeName}>()' for detached provider-first handles, and 'GetOrCreateMock<{serviceTypeName}>()' only when the collaborator should stay tracked in the parent Mocker";
                     return true;
 
                 case "AddMock":
@@ -65,6 +72,27 @@ namespace FastMoq.Analyzers.Analyzers
                 default:
                     return false;
             }
+        }
+
+        private static string? TryGetServiceTypeName(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, IMethodSymbol method, CancellationToken cancellationToken)
+        {
+            method = method.ReducedFrom ?? method;
+            if (method.TypeArguments.Length == 1)
+            {
+                return FastMoqAnalysisHelpers.GetMinimalTypeName(method.TypeArguments[0], semanticModel, invocationExpression.SpanStart);
+            }
+
+            if (invocationExpression.ArgumentList.Arguments.Count > 0 &&
+                invocationExpression.ArgumentList.Arguments[0].Expression is TypeOfExpressionSyntax typeOfExpression)
+            {
+                var serviceType = semanticModel.GetTypeInfo(typeOfExpression.Type, cancellationToken).Type;
+                if (serviceType is not null)
+                {
+                    return FastMoqAnalysisHelpers.GetMinimalTypeName(serviceType, semanticModel, invocationExpression.SpanStart);
+                }
+            }
+
+            return null;
         }
     }
 }

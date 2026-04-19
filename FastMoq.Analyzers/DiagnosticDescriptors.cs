@@ -234,11 +234,11 @@ namespace FastMoq.Analyzers
         public static readonly DiagnosticDescriptor UseProviderFirstVerify = new(
             DiagnosticIds.UseProviderFirstVerify,
             "Use provider-first verification",
-            "Use '{0}' instead of provider-native Verify(...) on tracked FastMoq mocks",
+            "Use '{0}' instead of provider-native Verify(...) on FastMoq mock handles",
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "Tracked FastMoq mocks should use Mocker.Verify<T>(...) and TimesSpec instead of Moq Verify(...) when the translation is mechanical and provider-neutral." );
+            description: "Tracked FastMoq mocks should use Mocker.Verify<T>(...) and detached IFastMock<T> handles should use MockingProviderRegistry.Default.Verify(...) instead of Moq Verify(...) when the translation is mechanical and provider-neutral." );
 
         public static readonly DiagnosticDescriptor AvoidBareTrackedVerify = new(
             DiagnosticIds.AvoidBareTrackedVerify,
