@@ -1,6 +1,6 @@
 # FastMoq Documentation
 
-This site combines generated API reference with repo-backed guidance for the published FastMoq `4.2.0` line and the current v4 codebase.
+This site combines generated API reference with repo-backed guidance for the FastMoq `4.3.0` line and the current v4 codebase.
 
 ## New to FastMoq
 

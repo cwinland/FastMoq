@@ -1,10 +1,10 @@
 # What's New Since 3.0.0
 
-This page summarizes the release delta between the last public `3.0.0` package and the current published `4.2.0` v4 line in this repository.
+This page summarizes the release delta between the last public `3.0.0` package and the current `4.3.0` v4 line in this repository.
 
-## 4.2.0
+## 4.3.0
 
-FastMoq `4.2.0` focuses on provider-first release hardening rather than another large package-boundary shift.
+FastMoq `4.3.0` focuses on provider-first release hardening rather than another large package-boundary shift.
 
 Consumer impact:
 

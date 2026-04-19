@@ -210,7 +210,7 @@ We welcome contributions! See our:
 
 ## 🏷️ Version Information
 
-This documentation tracks the published FastMoq `4.2.0` line and the current v4 package layout.
+This documentation tracks the FastMoq `4.3.0` line and the current v4 package layout.
 
 ---
 
