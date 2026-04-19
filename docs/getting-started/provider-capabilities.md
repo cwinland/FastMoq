@@ -44,6 +44,18 @@ These are the safest v4 APIs to document as provider-first or provider-neutral:
 
 If you want migration guidance that will carry forward into v5 cleanly, start from those APIs first.
 
+Provider-first verify rule:
+
+- once the assertion is on `Mocks.Verify<T>(...)` or `MockingProviderRegistry.Default.Verify(...)`, use `FastArg.Any(...)`, `FastArg.Is(...)`, `FastArg.IsNull(...)`, `FastArg.IsNotNull(...)`, or `FastArg.AnyExpression<T>()` inside that verification expression instead of `It.IsAny(...)` or `It.Is(...)`
+
+Example:
+
+```csharp
+Mocks.Verify<IOrderRepository>(
+    x => x.Save(FastArg.Any<Order>()),
+    TimesSpec.Once);
+```
+
 ## Alternatives when a Moq feature is unavailable
 
 Some APIs are strongest in Moq today and do not have a fully equivalent provider-neutral shape.

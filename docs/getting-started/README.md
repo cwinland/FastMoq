@@ -46,9 +46,11 @@ Mocks.GetOrCreateMock<ICustomerCsvParser>()
 var importedCount = await Component.ImportAsync(filePath, CancellationToken.None);
 
 Mocks.Verify<ICustomerRepository>(
-    x => x.UpsertAsync(It.IsAny<IReadOnlyList<CustomerImportRow>>(), CancellationToken.None),
+    x => x.UpsertAsync(FastArg.Any<IReadOnlyList<CustomerImportRow>>(), CancellationToken.None),
     TimesSpec.Once);
 ```
+
+When the test has already moved to provider-first `Mocks.Verify<T>(...)` or `MockingProviderRegistry.Default.Verify(...)`, prefer `FastArg` matchers inside that verification expression instead of `It.IsAny(...)` or `It.Is(...)`.
 
 FastMoq is most valuable when the subject has multiple dependencies, when constructor signatures change frequently, or when your tests repeatedly need built-in framework helpers.
 

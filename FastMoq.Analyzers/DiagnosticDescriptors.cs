@@ -276,6 +276,30 @@ namespace FastMoq.Analyzers
             isEnabledByDefault: true,
             description: "MockerTestBase already exposes a shared in-memory file system through GetFileSystem(). Creating a fresh MockFileSystem for an IFileSystem slot inside that test-base flow can desynchronize constructor injection from the rest of the test setup. Prefer the shared FastMoq file system unless the test intentionally needs an independent file system instance.");
 
+        /// <summary>
+        /// Warns when a provider-first Verify expression still uses a Moq matcher that can be rewritten directly to FastArg.
+        /// </summary>
+        public static readonly DiagnosticDescriptor UseFastArgMatcherInProviderFirstVerify = new(
+            DiagnosticIds.UseFastArgMatcherInProviderFirstVerify,
+            "Use FastArg matchers in provider-first Verify",
+            "Use '{0}' instead of '{1}' inside provider-first Verify(...) so the assertion stays provider-neutral",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "Once a test has moved to Mocker.Verify<T>(...) or MockingProviderRegistry.Default.Verify(...), nesting Moq It.* matchers inside the verified expression keeps the assertion provider-specific. Replace direct It.IsAny(...) and compatible It.Is(...) usages with FastArg matchers when the substitution is mechanical.");
+
+        /// <summary>
+        /// Informs when a provider-first Verify expression still uses a Moq matcher that does not have a direct FastArg replacement.
+        /// </summary>
+        public static readonly DiagnosticDescriptor AvoidUnsupportedMoqMatcherInProviderFirstVerify = new(
+            DiagnosticIds.AvoidUnsupportedMoqMatcherInProviderFirstVerify,
+            "Avoid unsupported Moq matchers in provider-first Verify",
+            "'{0}' is a Moq-specific matcher inside provider-first Verify(...). Prefer a FastArg matcher or another provider-neutral assertion shape when possible.",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "Provider-first Verify(...) expressions should avoid Moq-specific matcher helpers. When a direct FastArg replacement does not exist for a given It.* helper, keep the assertion provider-neutral by restructuring the verification or using a provider-neutral value or predicate matcher instead.");
+
         public static readonly DiagnosticDescriptor AvoidTrackedMockShimAlias = new(
             DiagnosticIds.AvoidTrackedMockShimAlias,
             "Avoid tracked Mock<T> shim aliases",

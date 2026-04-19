@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -13,14 +14,19 @@ using System.Threading.Tasks;
 
 namespace FastMoq.Analyzers.CodeFixes
 {
+    /// <summary>
+    /// Provides Roslyn code fixes for FastMoq migration diagnostics.
+    /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FastMoqMigrationCodeFixProvider)), Shared]
     public sealed class FastMoqMigrationCodeFixProvider : CodeFixProvider
     {
+        /// <inheritdoc />
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(
             DiagnosticIds.UseProviderFirstObjectAccess,
             DiagnosticIds.UseProviderFirstReset,
             DiagnosticIds.UseVerifyLogged,
             DiagnosticIds.UseProviderFirstVerify,
+            DiagnosticIds.UseFastArgMatcherInProviderFirstVerify,
             DiagnosticIds.UseConsistentMockRetrieval,
             DiagnosticIds.UseProviderFirstMockRetrieval,
             DiagnosticIds.PreferTypedProviderExtensions,
@@ -35,8 +41,10 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.RequireExplicitMoqOnboarding,
             DiagnosticIds.PreferProviderNeutralHttpHelpers);
 
+        /// <inheritdoc />
         public override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
+        /// <inheritdoc />
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var diagnostic = context.Diagnostics.First();
@@ -131,6 +139,23 @@ namespace FastMoq.Analyzers.CodeFixes
                                 "Use GetOrCreateMock<T>()",
                                 cancellationToken => ReplaceGetMockAsync(document, memberAccess, cancellationToken),
                                 diagnostic.Id),
+                            diagnostic);
+                        break;
+                    }
+
+                case DiagnosticIds.UseFastArgMatcherInProviderFirstVerify:
+                    {
+                        var invocationExpression = FindInvocationExpression(root, diagnostic.Location.SourceSpan);
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                "Use FastArg matcher",
+                                cancellationToken => ReplaceFastArgMatcherAsync(document, invocationExpression, cancellationToken),
+                                nameof(DiagnosticIds.UseFastArgMatcherInProviderFirstVerify)),
                             diagnostic);
                         break;
                     }
@@ -511,6 +536,23 @@ namespace FastMoq.Analyzers.CodeFixes
                 updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
             }
 
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> ReplaceFastArgMatcherAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null ||
+                !FastMoqAnalysisHelpers.TryBuildFastArgMatcherReplacement(invocationExpression, semanticModel, cancellationToken, out var replacementText))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
             return document.WithSyntaxRoot(updatedRoot);
         }
 
@@ -1135,6 +1177,14 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             return root;
+        }
+
+        private static InvocationExpressionSyntax? FindInvocationExpression(SyntaxNode root, TextSpan span)
+        {
+            return root.DescendantNodes()
+                .OfType<InvocationExpressionSyntax>()
+                .FirstOrDefault(invocationExpression => invocationExpression.Span == span)
+                ?? root.FindNode(span).DescendantNodesAndSelf().OfType<InvocationExpressionSyntax>().FirstOrDefault();
         }
 
         private static IReadOnlyList<StatementSyntax> ParseReplacementStatements(IReadOnlyList<string> replacementStatements, StatementSyntax originalStatement)

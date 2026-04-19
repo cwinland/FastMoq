@@ -816,6 +816,88 @@ namespace FastMoq.Analyzers
             return false;
         }
 
+        public static bool TryGetProviderFirstVerifyExpressionArgument(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out ExpressionSyntax expressionArgument)
+        {
+            expressionArgument = null!;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "Verify")
+            {
+                return false;
+            }
+
+            if (method.ContainingType.ToDisplayString() == FastMoqMockerTypeName)
+            {
+                if (invocationExpression.ArgumentList.Arguments.Count == 0)
+                {
+                    return false;
+                }
+
+                expressionArgument = invocationExpression.ArgumentList.Arguments[0].Expression;
+                return true;
+            }
+
+            if (method.ContainingType.ToDisplayString() == MockingProviderRegistryTypeName ||
+                method.ContainingType.ToDisplayString() == "FastMoq.Providers.IMockingProvider")
+            {
+                if (invocationExpression.ArgumentList.Arguments.Count < 2)
+                {
+                    return false;
+                }
+
+                expressionArgument = invocationExpression.ArgumentList.Arguments[1].Expression;
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool TryBuildFastArgMatcherReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null ||
+                !IsMoqItMethod(method))
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name == "IsAny" &&
+                method.TypeArguments.Length == 1 &&
+                invocationExpression.ArgumentList.Arguments.Count == 0)
+            {
+                var typeArgument = method.TypeArguments[0];
+                if (TryGetFastArgAnyExpressionTargetType(typeArgument, out var predicateTargetType))
+                {
+                    replacement = $"FastArg.AnyExpression<{GetMinimalTypeName(predicateTargetType, semanticModel, invocationExpression.SpanStart)}>()";
+                    return true;
+                }
+
+                replacement = $"FastArg.Any<{GetMinimalTypeName(typeArgument, semanticModel, invocationExpression.SpanStart)}>()";
+                return true;
+            }
+
+            if (method.Name == "Is" &&
+                method.TypeArguments.Length == 1 &&
+                method.Parameters.Length == 1 &&
+                invocationExpression.ArgumentList.Arguments.Count == 1 &&
+                IsFastArgPredicateMatcherParameter(method.Parameters[0].Type, method.TypeArguments[0]))
+            {
+                replacement = $"FastArg.Is<{GetMinimalTypeName(method.TypeArguments[0], semanticModel, invocationExpression.SpanStart)}>({invocationExpression.ArgumentList.Arguments[0].WithoutTrivia()})";
+                return true;
+            }
+
+            return false;
+        }
+
         public static bool TryBuildVerifyReplacement(TrackedMockOrigin origin, SemanticModel semanticModel, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken, out string replacement)
         {
             replacement = string.Empty;
@@ -3166,6 +3248,12 @@ namespace FastMoq.Analyzers
                    method.ContainingType.ContainingNamespace.ToDisplayString() == "Moq";
         }
 
+        public static bool IsMoqItMethod(IMethodSymbol method)
+        {
+            method = method.ReducedFrom ?? method;
+            return method.ContainingType.ToDisplayString() == "Moq.It";
+        }
+
         public static bool TryGetMoqMockedType(ITypeSymbol? type, out ITypeSymbol mockedType)
         {
             if (type is INamedTypeSymbol namedType &&
@@ -3581,6 +3669,40 @@ namespace FastMoq.Analyzers
             return constantValue.HasValue &&
                 constantValue.Value is string providerLiteral &&
                 string.Equals(providerLiteral, providerName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool TryGetFastArgAnyExpressionTargetType(ITypeSymbol type, out ITypeSymbol targetType)
+        {
+            if (type is INamedTypeSymbol expressionType &&
+                expressionType.ContainingNamespace.ToDisplayString() == "System.Linq.Expressions" &&
+                expressionType.Name == "Expression" &&
+                expressionType.TypeArguments.Length == 1 &&
+                expressionType.TypeArguments[0] is INamedTypeSymbol delegateType &&
+                delegateType.ContainingNamespace.ToDisplayString() == "System" &&
+                delegateType.Name == "Func" &&
+                delegateType.TypeArguments.Length == 2 &&
+                delegateType.TypeArguments[1].SpecialType == SpecialType.System_Boolean)
+            {
+                targetType = delegateType.TypeArguments[0];
+                return true;
+            }
+
+            targetType = null!;
+            return false;
+        }
+
+        private static bool IsFastArgPredicateMatcherParameter(ITypeSymbol parameterType, ITypeSymbol matcherType)
+        {
+            return parameterType is INamedTypeSymbol expressionType &&
+                expressionType.ContainingNamespace.ToDisplayString() == "System.Linq.Expressions" &&
+                expressionType.Name == "Expression" &&
+                expressionType.TypeArguments.Length == 1 &&
+                expressionType.TypeArguments[0] is INamedTypeSymbol delegateType &&
+                delegateType.ContainingNamespace.ToDisplayString() == "System" &&
+                delegateType.Name == "Func" &&
+                delegateType.TypeArguments.Length == 2 &&
+                SymbolEqualityComparer.Default.Equals(delegateType.TypeArguments[0], matcherType) &&
+                delegateType.TypeArguments[1].SpecialType == SpecialType.System_Boolean;
         }
 
         public static bool TryConvertTimesArgument(ArgumentSyntax argument, SemanticModel semanticModel, CancellationToken cancellationToken, int position, out string replacement, out bool omitArgument)

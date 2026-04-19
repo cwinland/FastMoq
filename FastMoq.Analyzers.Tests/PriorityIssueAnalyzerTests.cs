@@ -311,6 +311,231 @@ interface IDependency
         }
 
         [Fact]
+        public async Task ProviderFirstVerifyMatcherAnalyzer_ShouldReportAndFix_WhenTrackedVerifyUsesMoqPredicateMatcher()
+        {
+            const string SOURCE = @"
+using System.Threading;
+using System.Threading.Tasks;
+using FastMoq;
+using FastMoq.Providers;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.Verify<IDependency>(x => x.RunAsync(It.Is<Request>(request => request.Id == 42), It.IsAny<CancellationToken>()), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    Task RunAsync(Request request, CancellationToken cancellationToken);
+}
+
+class Request
+{
+    public int Id { get; set; }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderFirstVerifyMatcherAnalyzer());
+            var matches = diagnostics.Where(item => item.Id == DiagnosticIds.UseFastArgMatcherInProviderFirstVerify).ToArray();
+
+            Assert.Equal(2, matches.Length);
+
+            var fixedPredicateSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new ProviderFirstVerifyMatcherAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.UseFastArgMatcherInProviderFirstVerify,
+                diagnosticOccurrence: 0);
+
+            var expectedPredicateSource = AnalyzerTestHelpers.NormalizeCode(@"
+using System.Threading;
+using System.Threading.Tasks;
+using FastMoq;
+using FastMoq.Providers;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.Verify<IDependency>(x => x.RunAsync(FastArg.Is<Request>(request => request.Id == 42), It.IsAny<CancellationToken>()), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    Task RunAsync(Request request, CancellationToken cancellationToken);
+}
+
+class Request
+{
+    public int Id { get; set; }
+}");
+
+            Assert.Equal(expectedPredicateSource, fixedPredicateSource);
+
+            var fixedAnySource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new ProviderFirstVerifyMatcherAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.UseFastArgMatcherInProviderFirstVerify,
+                diagnosticOccurrence: 1);
+
+            var expectedAnySource = AnalyzerTestHelpers.NormalizeCode(@"
+using System.Threading;
+using System.Threading.Tasks;
+using FastMoq;
+using FastMoq.Providers;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.Verify<IDependency>(x => x.RunAsync(It.Is<Request>(request => request.Id == 42), FastArg.Any<CancellationToken>()), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    Task RunAsync(Request request, CancellationToken cancellationToken);
+}
+
+class Request
+{
+    public int Id { get; set; }
+}");
+
+            Assert.Equal(expectedAnySource, fixedAnySource);
+        }
+
+        [Fact]
+        public async Task ProviderFirstVerifyMatcherAnalyzer_ShouldReportAndFix_WhenDetachedVerifyUsesExpressionWildcardMatcher()
+        {
+            const string SOURCE = @"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var dependency = Mocks.CreateStandaloneFastMock<IDependency>();
+        MockingProviderRegistry.Default.Verify<IDependency>(dependency, x => x.Match(It.IsAny<Expression<Func<string, bool>>>()), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    void Match(Expression<Func<string, bool>> predicate);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderFirstVerifyMatcherAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.UseFastArgMatcherInProviderFirstVerify));
+
+            Assert.Contains("FastArg.AnyExpression<string>()", diagnostic.GetMessage());
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(
+                SOURCE,
+                new ProviderFirstVerifyMatcherAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.UseFastArgMatcherInProviderFirstVerify);
+
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var dependency = Mocks.CreateStandaloneFastMock<IDependency>();
+        MockingProviderRegistry.Default.Verify<IDependency>(dependency, x => x.Match(FastArg.AnyExpression<string>()), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    void Match(Expression<Func<string, bool>> predicate);
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task ProviderFirstVerifyMatcherAnalyzer_ShouldReportInfoWithoutFix_WhenProviderFirstVerifyUsesUnsupportedMoqMatcher()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.Verify<IDependency>(x => x.Run(It.IsInRange<int>(0, 10, Moq.Range.Inclusive)), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    void Run(int value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderFirstVerifyMatcherAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidUnsupportedMoqMatcherInProviderFirstVerify));
+
+            Assert.Contains("It.IsInRange<int>(0,10,Moq.Range.Inclusive)", string.Concat(diagnostic.GetMessage().Where(character => !char.IsWhiteSpace(character))));
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(
+                SOURCE,
+                new ProviderFirstVerifyMatcherAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.AvoidUnsupportedMoqMatcherInProviderFirstVerify);
+
+            Assert.Empty(codeFixTitles);
+        }
+
+        [Fact]
+        public async Task ProviderFirstVerifyMatcherAnalyzer_ShouldNotReport_WhenMoqMatcherStaysOnProviderNativeVerify()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var dependency = Mocks.GetOrCreateMock<IDependency>().AsMoq();
+        dependency.Verify(x => x.Run(It.IsAny<int>()), Times.Once);
+    }
+}
+
+interface IDependency
+{
+    void Run(int value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderFirstVerifyMatcherAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, item =>
+                item.Id == DiagnosticIds.UseFastArgMatcherInProviderFirstVerify ||
+                item.Id == DiagnosticIds.AvoidUnsupportedMoqMatcherInProviderFirstVerify);
+        }
+
+        [Fact]
         public async Task BareTrackedVerifyAnalyzer_ShouldReport_ForTrackedVerifyWithoutExpression()
         {
             const string SOURCE = @"
