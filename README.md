@@ -124,7 +124,7 @@ If you want a copy-paste example that works under the default provider without M
 - **🧪 [Testing Guide](./docs/getting-started/testing-guide.md)** - Repo-native guidance for `GetOrCreateMock<T>()`, `AddType(...)`, `DbContext`, `IFileSystem`, and known types
 - **🔄 [Migration Guide](./docs/migration)** - Practical old-to-new guidance for the `3.0.0` to `4.3.0` transition
 - **👨‍🍳 [Cookbook](./docs/cookbook)** - Real-world patterns and recipes with compatibility-only pockets labeled explicitly
-- **🔎 [API Reference Overview](./docs/api/index.md)** - Example-first API entry points plus quick routes into the generated reference
+- **🔎 [API Reference](https://help.fastmoq.com/)** - Published HTML API reference for namespaces, types, and members
 - **🌐 [Web Helper Guidance](./docs/getting-started/testing-guide.md#controller-testing)** - Controller, `HttpContext`, `IHttpContextAccessor`, and claims-principal test setup
 - **🔌 [Provider Selection Guide](./docs/getting-started/provider-selection.md)** - How to register, select, and bootstrap providers for a test assembly
 - **📋 [Provider Capabilities](./docs/getting-started/provider-capabilities.md)** - What `moq`, `nsubstitute`, and `reflection` support today, with recommended usage patterns

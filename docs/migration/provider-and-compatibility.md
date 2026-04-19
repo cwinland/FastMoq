@@ -69,7 +69,7 @@ Current fallback rule of thumb:
 
 For example, `GetMock<T>()`, direct `Mock<T>` access, `VerifyLogger(...)`, and `Protected()` still mean `moq`, while `AsNSubstitute()` and `Received(...)` mean `nsubstitute`.
 
-For the built-in `moq` provider, and for `nsubstitute` after its package is referenced, the shortest path is [FastMoqDefaultProviderAttribute](../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.yml):
+For the built-in `moq` provider, and for `nsubstitute` after its package is referenced, the shortest path is [FastMoqDefaultProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html):
 
 ```csharp
 using FastMoq.Providers;
@@ -79,7 +79,7 @@ using FastMoq.Providers;
 
 That attribute works with xUnit too; it is not tied to a particular test framework. It selects the default provider by canonical name during FastMoq bootstrap.
 
-When the provider must be registered and selected together at assembly scope, use [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml):
+When the provider must be registered and selected together at assembly scope, use [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html):
 
 ```csharp
 using FastMoq.Providers;

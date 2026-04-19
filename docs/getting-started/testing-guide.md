@@ -88,9 +88,9 @@ Treat that as a resolution-shape decision, not as a reason to keep retrying unke
 | If the test needs... | Preferred path | Why |
 | --- | --- | --- |
 | one tracked dependency in the current `Mocker` | [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) | default tracked path reused by later `GetObject<T>()` and `Verify(...)` calls |
-| a second distinct role of the same abstraction in the tracked graph | keyed [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)), [AddKeyedType(...)](../../api/FastMoq.Mocker.yml), or `CreateFastMock<T>()` when you intentionally want a new tracked registration | keeps public vs private or primary vs secondary roles separate inside the parent `Mocker` |
+| a second distinct role of the same abstraction in the tracked graph | keyed [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)), [AddKeyedType(...)](https://help.fastmoq.com/api/FastMoq.Mocker.html), or `CreateFastMock<T>()` when you intentionally want a new tracked registration | keeps public vs private or primary vs secondary roles separate inside the parent `Mocker` |
 | a detached collaborator or manual wiring outside the tracked graph | `CreateStandaloneFastMock<T>()` or `MockingProviderRegistry.Default.CreateMock<T>()` | creates a provider-first handle that is not registered as the parent tracked dependency |
-| a specific concrete implementation behind an ambiguous interface | [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) or [AddKeyedType(...)](../../api/FastMoq.Mocker.yml) | makes the intended implementation explicit instead of asking FastMoq to guess |
+| a specific concrete implementation behind an ambiguous interface | [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) or [AddKeyedType(...)](https://help.fastmoq.com/api/FastMoq.Mocker.html) | makes the intended implementation explicit instead of asking FastMoq to guess |
 
 ## Tracked vs Standalone Fast Mocks
 
@@ -548,7 +548,7 @@ FastMoq can automatically provide a built-in `IFileSystem` backed by its shared 
 
 Reach for `AddType<IFileSystem>(...)` only when you intentionally need to replace that shared file system with a custom or isolated instance.
 
-If you need the wider filesystem abstraction family (`IFile`, `IPath`, `IDirectory`, and related factories) to resolve coherently alongside that shared file system, call [AddFileSystemAbstractionMapping()](../../api/FastMoq.Mocker.yml).
+If you need the wider filesystem abstraction family (`IFile`, `IPath`, `IDirectory`, and related factories) to resolve coherently alongside that shared file system, call [AddFileSystemAbstractionMapping()](https://help.fastmoq.com/api/FastMoq.Mocker.html).
 
 ### `HttpClient`
 
@@ -572,7 +572,7 @@ Use [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.
 
 If you consume the aggregate `FastMoq` package, the database helpers remain available with the same API shape. If you consume `FastMoq.Core` directly, install `FastMoq.Database` for EF-specific helpers.
 
-When you need to choose between pure mock behavior and a real EF in-memory context, use [GetDbContextHandle&lt;TContext&gt;(...)](../../api/FastMoq.DbContextMockerExtensions.yml) with [DbContextHandleOptions&lt;TContext&gt;](../../api/FastMoq.DbContextHandleOptions-1.yml). The default mode remains [MockedSets](../../api/FastMoq.DbContextTestMode.yml), and [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) is now the convenience wrapper over that default.
+When you need to choose between pure mock behavior and a real EF in-memory context, use [GetDbContextHandle&lt;TContext&gt;(...)](https://help.fastmoq.com/api/FastMoq.DbContextMockerExtensions.html) with [DbContextHandleOptions&lt;TContext&gt;](https://help.fastmoq.com/api/FastMoq.DbContextHandleOptions-1.html). The default mode remains [MockedSets](https://help.fastmoq.com/api/FastMoq.DbContextTestMode.html), and [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) is now the convenience wrapper over that default.
 
 ```csharp
 protected override Action<Mocker> SetupMocksAction => mocker =>
@@ -670,11 +670,11 @@ public class OrdersControllerTests : MockerTestBase<OrdersController>
 
 Practical rules:
 
-1. Use [CreateHttpContext(...)](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) when you need a reusable request object for middleware or accessors.
-2. Use [AddHttpContext(...)](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) or [AddHttpContextAccessor(...)](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) when the system under test resolves those types from DI.
+1. Use [CreateHttpContext(...)](https://help.fastmoq.com/api/FastMoq.Web.Extensions.TestWebExtensions.html) when you need a reusable request object for middleware or accessors.
+2. Use [AddHttpContext(...)](https://help.fastmoq.com/api/FastMoq.Web.Extensions.TestWebExtensions.html) or [AddHttpContextAccessor(...)](https://help.fastmoq.com/api/FastMoq.Web.Extensions.TestWebExtensions.html) when the system under test resolves those types from DI.
 3. Use `SetRequestHeader(...)`, `SetRequestHeaders(...)`, `SetQueryString(...)`, `SetQueryParameter(...)`, or `SetQueryParameters(...)` to make request intent obvious in the test.
-4. Use [CreateControllerContext(...)](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) when the controller itself reads from `ControllerContext.HttpContext.User`.
-5. Use [GetOkObjectResult()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml), [GetBadRequestObjectResult()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml), [GetConflictObjectResult()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml), and [GetObjectResultContent&lt;T&gt;()](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml) to keep result assertions short.
+4. Use [CreateControllerContext(...)](https://help.fastmoq.com/api/FastMoq.Web.Extensions.TestWebExtensions.html) when the controller itself reads from `ControllerContext.HttpContext.User`.
+5. Use [GetOkObjectResult()](https://help.fastmoq.com/api/FastMoq.Web.Extensions.TestWebExtensions.html), [GetBadRequestObjectResult()](https://help.fastmoq.com/api/FastMoq.Web.Extensions.TestWebExtensions.html), [GetConflictObjectResult()](https://help.fastmoq.com/api/FastMoq.Web.Extensions.TestWebExtensions.html), and [GetObjectResultContent&lt;T&gt;()](https://help.fastmoq.com/api/FastMoq.Web.Extensions.TestWebExtensions.html) to keep result assertions short.
 
 Quick decision table:
 
@@ -754,7 +754,7 @@ var controller = Mocks.CreateInstance<BlobAccessController>();
 
 FastMoq keeps those tracked mocks separate. When the constructor uses `[FromKeyedServices("public")]` and `[FromKeyedServices("private")]`, [CreateInstance(...)](xref:FastMoq.Mocker.CreateInstance``1(FastMoq.InstanceCreationFlags,System.Object[])) and [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1) resolve the matching keyed dependency instead of collapsing them to one unkeyed instance.
 
-Use [AddKeyedType(...)](../../api/FastMoq.Mocker.yml) and [GetKeyedObject&lt;T&gt;()](../../api/FastMoq.Mocker.yml) when a fake or fixed instance reads better than a mock:
+Use [AddKeyedType(...)](https://help.fastmoq.com/api/FastMoq.Mocker.html) and [GetKeyedObject&lt;T&gt;()](https://help.fastmoq.com/api/FastMoq.Mocker.html) when a fake or fixed instance reads better than a mock:
 
 ```csharp
 var publicRepo = new FakeBlobRepository();
@@ -945,11 +945,11 @@ FastMoq is moving toward a provider-based architecture. The stable guidance for 
 
 [ScenarioBuilder](xref:FastMoq.ScenarioBuilder`1) still works with each registered provider because it only orchestrates arrange, act, and assert steps and forwards provider-first verification through [Mocker.Verify(...)](xref:FastMoq.Mocker.Verify``1(System.Linq.Expressions.Expression{System.Action{``0}},System.Nullable{FastMoq.Providers.TimesSpec})). The provider-specific part is still the arrangement code you put inside `With(...)` or `When(...)`.
 
-[VerifyLogged(...)](../../api/FastMoq.Extensions.TestClassExtensions.yml) now follows the same default expectation model as provider-first verification: if you do not specify a count, it means at least once. Use [TimesSpec](../../api/FastMoq.Providers.TimesSpec.yml) when you need [Exactly](../../api/FastMoq.Providers.TimesSpec.yml), [AtLeast](../../api/FastMoq.Providers.TimesSpec.yml), [AtMost](../../api/FastMoq.Providers.TimesSpec.yml), or the zero-invocation aliases [NeverCalled](../../api/FastMoq.Providers.TimesSpec.yml) / [Never()](../../api/FastMoq.Providers.TimesSpec.yml) semantics for captured log entries.
+[VerifyLogged(...)](https://help.fastmoq.com/api/FastMoq.Extensions.TestClassExtensions.html) now follows the same default expectation model as provider-first verification: if you do not specify a count, it means at least once. Use [TimesSpec](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html) when you need [Exactly](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html), [AtLeast](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html), [AtMost](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html), or the zero-invocation aliases [NeverCalled](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html) / [Never()](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html) semantics for captured log entries.
 
-If you need provider-specific behavior for a tracked mock, prefer the typed provider-package extensions first, such as [AsMoq()](../../api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.yml) or [AsNSubstitute()](../../api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.yml).
+If you need provider-specific behavior for a tracked mock, prefer the typed provider-package extensions first, such as [AsMoq()](https://help.fastmoq.com/api/FastMoq.Providers.MoqProvider.IFastMockMoqExtensions.html) or [AsNSubstitute()](https://help.fastmoq.com/api/FastMoq.Providers.NSubstituteProvider.IFastMockNSubstituteExtensions.html).
 
-Use [GetNativeMock(...)](../../api/FastMoq.Mocker.yml) or [MockModel.NativeMock](../../api/FastMoq.Models.MockModel.yml) only when you truly need the raw provider object beyond those typed helpers.
+Use [GetNativeMock(...)](https://help.fastmoq.com/api/FastMoq.Mocker.html) or [MockModel.NativeMock](https://help.fastmoq.com/api/FastMoq.Models.MockModel.html) only when you truly need the raw provider object beyond those typed helpers.
 
 You can also retrieve the provider-first abstraction directly:
 
@@ -967,7 +967,7 @@ fastMock.AsNSubstitute().Load(123).Returns(order);
 
 ## `Strict` vs Presets
 
-`Strict` is now best understood as a compatibility alias for [MockFeatures.FailOnUnconfigured](../../api/FastMoq.MockFeatures.yml).
+`Strict` is now best understood as a compatibility alias for [MockFeatures.FailOnUnconfigured](https://help.fastmoq.com/api/FastMoq.MockFeatures.html).
 
 That means:
 
@@ -975,11 +975,11 @@ That means:
 Mocks.Strict = true;
 ```
 
-turns on fail-on-unconfigured behavior, but it does not replace the rest of the current [Behavior](../../api/FastMoq.Mocker.yml) flags.
+turns on fail-on-unconfigured behavior, but it does not replace the rest of the current [Behavior](https://help.fastmoq.com/api/FastMoq.Mocker.html) flags.
 
 It also still influences some compatibility-era fallback rules, such as whether FastMoq falls back to non-public constructors or methods when public resolution fails.
 
-If you want to switch the whole behavior profile, use the explicit [UseStrictPreset()](../../api/FastMoq.Mocker.yml) and [UseLenientPreset()](../../api/FastMoq.Mocker.yml) helpers instead:
+If you want to switch the whole behavior profile, use the explicit [UseStrictPreset()](https://help.fastmoq.com/api/FastMoq.Mocker.html) and [UseLenientPreset()](https://help.fastmoq.com/api/FastMoq.Mocker.html) helpers instead:
 
 ```csharp
 Mocks.UseStrictPreset();
@@ -991,7 +991,7 @@ Use the preset helpers when you want a complete behavior profile. Use `Strict` o
 Breaking-change note:
 
 - In `3.0.0`, `Strict` was often treated as a broader all-in-one switch.
-- In the current v4 release line, [UseStrictPreset()](../../api/FastMoq.Mocker.yml) is the explicit way to request the broader strict profile.
+- In the current v4 release line, [UseStrictPreset()](https://help.fastmoq.com/api/FastMoq.Mocker.html) is the explicit way to request the broader strict profile.
 - `Strict` remains available, but it should now be read as the narrower compatibility path rather than the full profile selector.
 
 Separate compatibility note for known types:
@@ -1010,7 +1010,7 @@ Start there if you want repo-backed samples for:
 - built-in `IFileSystem` behavior
 - logger verification
 - fluent `Scenario` usage with parameterless arrange/act/assert overloads
-- provider-first verification with [TimesSpec.Once](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.NeverCalled](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.Exactly(...)](../../api/FastMoq.Providers.TimesSpec.yml), [TimesSpec.AtLeast(...)](../../api/FastMoq.Providers.TimesSpec.yml), and [TimesSpec.AtMost(...)](../../api/FastMoq.Providers.TimesSpec.yml)
+- provider-first verification with [TimesSpec.Once](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html), [TimesSpec.NeverCalled](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html), [TimesSpec.Exactly(...)](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html), [TimesSpec.AtLeast(...)](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html), and [TimesSpec.AtMost(...)](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html)
 
 See [Executable Testing Examples](../samples/testing-examples.md).
 

@@ -11,7 +11,7 @@ If you only remember four things from this page, make them these:
 1. `reflection` stays the default provider unless you explicitly change it.
 2. Installing `FastMoq.Provider.Moq` or another provider package does not select that provider automatically.
 3. If the test project uses any non-default provider-specific compatibility or extension APIs, declare the matching provider as the test-assembly default before running the suite.
-4. You are not limited to the bundled providers. Any library can be used through FastMoq if you implement [IMockingProvider](../../api/FastMoq.Providers.IMockingProvider.yml) and register it with `MockingProviderRegistry`.
+4. You are not limited to the bundled providers. Any library can be used through FastMoq if you implement [IMockingProvider](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProvider.html) and register it with `MockingProviderRegistry`.
 
 ## Current defaults
 
@@ -27,7 +27,7 @@ Important boundary:
 - adding `FastMoq.Provider.Moq` gives you the Moq provider package and its extension methods
 - it does not change the default provider by itself
 - if the test assembly uses provider-specific APIs, declare the matching provider explicitly as the default provider
-- selection can happen through [FastMoqDefaultProviderAttribute](../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.yml), [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml), `SetDefault(...)`, `Push(...)`, or `Register(..., setAsDefault: true)`
+- selection can happen through [FastMoqDefaultProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html), [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html), `SetDefault(...)`, `Push(...)`, or `Register(..., setAsDefault: true)`
 - custom providers still need registration before they can be selected
 
 Why this matters:
@@ -61,7 +61,7 @@ If a migrated test project still uses any non-default provider-specific compatib
 
 For example, `GetMock<T>()`, direct `Mock<T>` access, `VerifyLogger(...)`, and `Protected()` still mean `moq`, while `AsNSubstitute()` and `Received(...)` mean `nsubstitute`.
 
-For the built-in `moq` provider, and for `nsubstitute` after its package is referenced, the shortest path is [FastMoqDefaultProviderAttribute](../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.yml):
+For the built-in `moq` provider, and for `nsubstitute` after its package is referenced, the shortest path is [FastMoqDefaultProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html):
 
 ```csharp
 using FastMoq.Providers;
@@ -87,7 +87,7 @@ If an entire test subtree stays on one provider and your repository already uses
 
 That pattern fits repositories that already stamp `InternalsVisibleTo` or similar assembly metadata from MSBuild. Avoid a repo-wide default when some test projects intentionally stay on `reflection` or use a different provider.
 
-When registration and selection need to happen together at assembly scope, use [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml):
+When registration and selection need to happen together at assembly scope, use [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html):
 
 ```csharp
 using FastMoq.Providers;
@@ -208,7 +208,7 @@ Use these rules:
 Resolution order:
 
 1. Use the current async-scoped override set by `Push(...)` if one exists.
-2. Otherwise use the app-wide default provider, whether it came from [FastMoqDefaultProviderAttribute](../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.yml), [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml), `SetDefault(...)`, or `Register(..., setAsDefault: true)`.
+2. Otherwise use the app-wide default provider, whether it came from [FastMoqDefaultProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html), [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html), `SetDefault(...)`, or `Register(..., setAsDefault: true)`.
 
 The important entry points are:
 
@@ -342,9 +342,9 @@ public static class TestAssemblyProviderBootstrap
 
 You do not have to use the bundled FastMoq providers.
 
-If your team wants to integrate a different mocking library, implement [IMockingProvider](../../api/FastMoq.Providers.IMockingProvider.yml), expose the needed [IMockingProviderCapabilities](../../api/FastMoq.Providers.IMockingProviderCapabilities.yml), and register that implementation with `MockingProviderRegistry`.
+If your team wants to integrate a different mocking library, implement [IMockingProvider](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProvider.html), expose the needed [IMockingProviderCapabilities](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProviderCapabilities.html), and register that implementation with `MockingProviderRegistry`.
 
-For custom providers, [FastMoqRegisterProviderAttribute](../../api/FastMoq.Providers.FastMoqRegisterProviderAttribute.yml) is the shortest declarative path when the provider type exposes a public static `Instance` or a public parameterless constructor.
+For custom providers, [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html) is the shortest declarative path when the provider type exposes a public static `Instance` or a public parameterless constructor.
 
 Declarative custom-provider example:
 

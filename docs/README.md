@@ -53,7 +53,7 @@ Practical guidance for moving from the public `3.0.0` release toward the current
 
 ### 🔎 [API Reference](./api/index.md)
 
-Use the docs-side API overview when you want example-first entry points before dropping into the generated YAML pages.
+Use the docs-side API overview when you want example-first entry points and curated type routes. Use [Complete API Documentation](https://help.fastmoq.com/) when you want the full published namespace, type, and member reference.
 
 - Example-first API routes
 - Quick reference for common types

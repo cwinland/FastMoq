@@ -23,11 +23,11 @@ This site combines generated API reference with repo-backed guidance for the Fas
 ## Looking for an API
 
 - [Quick reference for common types](docs/api/quick-reference.md)
-- [Core namespace reference](api/FastMoq.yml)
-- [Provider APIs](api/FastMoq.Providers.yml)
-- [Extension methods](api/FastMoq.Extensions.yml)
-- [Blazor and web APIs](api/FastMoq.Web.Blazor.yml)
-- [Models and helper types](api/FastMoq.Models.yml)
+- [Core namespace reference](https://help.fastmoq.com/api/FastMoq.html)
+- [Provider APIs](https://help.fastmoq.com/api/FastMoq.Providers.html)
+- [Extension methods](https://help.fastmoq.com/api/FastMoq.Extensions.html)
+- [Blazor and web APIs](https://help.fastmoq.com/api/FastMoq.Web.Blazor.html)
+- [Models and helper types](https://help.fastmoq.com/api/FastMoq.Models.html)
 - [API overview page](docs/api/index.md)
 
 ## Real-world examples
@@ -41,17 +41,17 @@ Use the example pages first when you want to understand how FastMoq is applied i
 
 ## Blazor and web testing
 
-- [MockerBlazorTestBase&lt;T&gt;](api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.yml)
-- [IMockerBlazorTestHelpers&lt;T&gt;](api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.yml)
-- [TestWebExtensions](api/FastMoq.Web.Extensions.TestWebExtensions.yml)
+- [MockerBlazorTestBase&lt;T&gt;](https://help.fastmoq.com/api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html)
+- [IMockerBlazorTestHelpers&lt;T&gt;](https://help.fastmoq.com/api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html)
+- [TestWebExtensions](https://help.fastmoq.com/api/FastMoq.Web.Extensions.TestWebExtensions.html)
 
 ## Quick type lookup
 
 - [Quick reference for common types](docs/api/quick-reference.md)
-- [Mocker](api/FastMoq.Mocker.yml)
-- [MockerTestBase&lt;TComponent&gt;](api/FastMoq.MockerTestBase-1.yml)
-- [ScenarioBuilder&lt;T&gt;](api/FastMoq.ScenarioBuilder-1.yml)
-- [MockingProviderRegistry](api/FastMoq.Providers.MockingProviderRegistry.yml)
+- [Mocker](https://help.fastmoq.com/api/FastMoq.Mocker.html)
+- [MockerTestBase&lt;TComponent&gt;](https://help.fastmoq.com/api/FastMoq.MockerTestBase-1.html)
+- [ScenarioBuilder&lt;T&gt;](https://help.fastmoq.com/api/FastMoq.ScenarioBuilder-1.html)
+- [MockingProviderRegistry](https://help.fastmoq.com/api/FastMoq.Providers.MockingProviderRegistry.html)
 
 ## How to find a type fast
 
@@ -65,10 +65,10 @@ Use the example pages first when you want to understand how FastMoq is applied i
 
 The aggregate package that pulls together the core runtime, shared Azure SDK helpers, Azure Functions helpers, database helpers, web support, provider integrations, and analyzer assets.
 
-- [FastMoq namespace](api/FastMoq.yml)
-- [Extension methods](api/FastMoq.Extensions.yml)
-- [Provider APIs](api/FastMoq.Providers.yml)
-- [Web and Blazor APIs](api/FastMoq.Web.Blazor.yml)
+- [FastMoq namespace](https://help.fastmoq.com/api/FastMoq.html)
+- [Extension methods](https://help.fastmoq.com/api/FastMoq.Extensions.html)
+- [Provider APIs](https://help.fastmoq.com/api/FastMoq.Providers.html)
+- [Web and Blazor APIs](https://help.fastmoq.com/api/FastMoq.Web.Blazor.html)
 
 ### FastMoq.Azure
 
@@ -82,60 +82,60 @@ Shared Azure SDK helpers for pageable builders, credential setup, Azure-oriented
 
 Azure Functions worker and HTTP-trigger helpers, including `FunctionContext.InstanceServices`, concrete `HttpRequestData` and `HttpResponseData` builders, and body readers.
 
-- [Azure Functions extensions namespace](api/FastMoq.AzureFunctions.Extensions.yml)
-- [FunctionContextTestExtensions](api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.yml)
+- [Azure Functions extensions namespace](https://help.fastmoq.com/api/FastMoq.AzureFunctions.Extensions.html)
+- [FunctionContextTestExtensions](https://help.fastmoq.com/api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html)
 - [Testing guide](docs/getting-started/testing-guide.md)
 
 ### FastMoq.Abstractions
 
 Provider contracts shared by the core runtime and provider-specific packages.
 
-- [Provider APIs](api/FastMoq.Providers.yml)
-- [IMockingProvider](api/FastMoq.Providers.IMockingProvider.yml)
-- [IMockingProviderCapabilities](api/FastMoq.Providers.IMockingProviderCapabilities.yml)
+- [Provider APIs](https://help.fastmoq.com/api/FastMoq.Providers.html)
+- [IMockingProvider](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProvider.html)
+- [IMockingProviderCapabilities](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProviderCapabilities.html)
 
 ### FastMoq.Core
 
 Core mocking, auto-construction, instance resolution, and provider-neutral verification support.
 
-- [Mocker](api/FastMoq.Mocker.yml)
-- [MockerTestBase&lt;TComponent&gt;](api/FastMoq.MockerTestBase-1.yml)
-- [ScenarioBuilder&lt;T&gt;](api/FastMoq.ScenarioBuilder-1.yml)
-- [MockingProviderRegistry](api/FastMoq.Providers.MockingProviderRegistry.yml)
-- [TimesSpec](api/FastMoq.Providers.TimesSpec.yml)
+- [Mocker](https://help.fastmoq.com/api/FastMoq.Mocker.html)
+- [MockerTestBase&lt;TComponent&gt;](https://help.fastmoq.com/api/FastMoq.MockerTestBase-1.html)
+- [ScenarioBuilder&lt;T&gt;](https://help.fastmoq.com/api/FastMoq.ScenarioBuilder-1.html)
+- [MockingProviderRegistry](https://help.fastmoq.com/api/FastMoq.Providers.MockingProviderRegistry.html)
+- [TimesSpec](https://help.fastmoq.com/api/FastMoq.Providers.TimesSpec.html)
 
 ### FastMoq.Database
 
 EF and DbContext-oriented helpers that stay exposed through the main `FastMoq` namespace.
 
-- [DbContextMockerExtensions](api/FastMoq.DbContextMockerExtensions.yml)
-- [DbContextHandle&lt;TContext&gt;](api/FastMoq.DbContextHandle-1.yml)
-- [DbContextHandleOptions&lt;TContext&gt;](api/FastMoq.DbContextHandleOptions-1.yml)
-- [DbContextTestMode](api/FastMoq.DbContextTestMode.yml)
+- [DbContextMockerExtensions](https://help.fastmoq.com/api/FastMoq.DbContextMockerExtensions.html)
+- [DbContextHandle&lt;TContext&gt;](https://help.fastmoq.com/api/FastMoq.DbContextHandle-1.html)
+- [DbContextHandleOptions&lt;TContext&gt;](https://help.fastmoq.com/api/FastMoq.DbContextHandleOptions-1.html)
+- [DbContextTestMode](https://help.fastmoq.com/api/FastMoq.DbContextTestMode.html)
 
 ### FastMoq.Web
 
 Blazor and web-oriented testing helpers.
 
-- [MockerBlazorTestBase&lt;T&gt;](api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.yml)
-- [IMockerBlazorTestHelpers&lt;T&gt;](api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.yml)
-- [Blazor namespace](api/FastMoq.Web.Blazor.yml)
+- [MockerBlazorTestBase&lt;T&gt;](https://help.fastmoq.com/api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html)
+- [IMockerBlazorTestHelpers&lt;T&gt;](https://help.fastmoq.com/api/FastMoq.Web.Blazor.Interfaces.IMockerBlazorTestHelpers-1.html)
+- [Blazor namespace](https://help.fastmoq.com/api/FastMoq.Web.Blazor.html)
 
 ### FastMoq.Provider.Moq
 
 Moq compatibility provider package for v4 migration and existing Moq-heavy tests.
 
-- [Moq provider types](api/FastMoq.Providers.MoqProvider.yml)
-- [IFastMock&lt;T&gt;](api/FastMoq.Providers.IFastMock-1.yml)
-- [MockingProviderRegistry](api/FastMoq.Providers.MockingProviderRegistry.yml)
+- [Moq provider types](https://help.fastmoq.com/api/FastMoq.Providers.MoqProvider.html)
+- [IFastMock&lt;T&gt;](https://help.fastmoq.com/api/FastMoq.Providers.IFastMock-1.html)
+- [MockingProviderRegistry](https://help.fastmoq.com/api/FastMoq.Providers.MockingProviderRegistry.html)
 
 ### FastMoq.Provider.NSubstitute
 
 Optional NSubstitute provider package for teams standardizing on NSubstitute instead of Moq.
 
-- [NSubstitute provider types](api/FastMoq.Providers.NSubstituteProvider.yml)
-- [IMockingProvider](api/FastMoq.Providers.IMockingProvider.yml)
-- [MockingProviderRegistry](api/FastMoq.Providers.MockingProviderRegistry.yml)
+- [NSubstitute provider types](https://help.fastmoq.com/api/FastMoq.Providers.NSubstituteProvider.html)
+- [IMockingProvider](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProvider.html)
+- [MockingProviderRegistry](https://help.fastmoq.com/api/FastMoq.Providers.MockingProviderRegistry.html)
 
 ### FastMoq.Analyzers
 
@@ -150,11 +150,11 @@ FastMoq v4 defaults to the built-in reflection provider. Moq remains available a
 
 Tracked mock access stays on `GetOrCreateMock<T>()`. Use `CreateStandaloneFastMock<T>()` or `MockingProviderRegistry.Default.CreateMock<T>()` when you need a detached extra handle, and use `CreateFastMock<T>()` only when you intentionally want a new tracked registration in the current `Mocker`.
 
-- [IMockingProvider](api/FastMoq.Providers.IMockingProvider.yml)
-- [IMockingProviderCapabilities](api/FastMoq.Providers.IMockingProviderCapabilities.yml)
-- [MockCreationOptions](api/FastMoq.Providers.MockCreationOptions.yml)
-- [Moq provider types](api/FastMoq.Providers.MoqProvider.yml)
-- [NSubstitute provider types](api/FastMoq.Providers.NSubstituteProvider.yml)
+- [IMockingProvider](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProvider.html)
+- [IMockingProviderCapabilities](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProviderCapabilities.html)
+- [MockCreationOptions](https://help.fastmoq.com/api/FastMoq.Providers.MockCreationOptions.html)
+- [Moq provider types](https://help.fastmoq.com/api/FastMoq.Providers.MoqProvider.html)
+- [NSubstitute provider types](https://help.fastmoq.com/api/FastMoq.Providers.NSubstituteProvider.html)
 
 ## Notes
 

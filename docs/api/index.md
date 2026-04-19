@@ -1,6 +1,6 @@
 # FastMoq API Reference
 
-This API reference is generated from XML comments in the source projects.
+The published API reference is generated from XML comments in the source projects.
 
 ## Example-first entry points
 
@@ -13,18 +13,18 @@ This API reference is generated from XML comments in the source projects.
 ## Quick type lookup
 
 - [Quick reference for common types](./quick-reference.md)
-- [Mocker](../../api/FastMoq.Mocker.yml)
-- [MockerTestBase&lt;TComponent&gt;](../../api/FastMoq.MockerTestBase-1.yml)
-- [ScenarioBuilder&lt;T&gt;](../../api/FastMoq.ScenarioBuilder-1.yml)
-- [IFastMock&lt;T&gt;](../../api/FastMoq.Providers.IFastMock-1.yml)
-- [MockModel&lt;T&gt;](../../api/FastMoq.Models.MockModel-1.yml)
-- [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml)
-- [FunctionContextTestExtensions](../../api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.yml)
-- [TestWebExtensions](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml)
+- [Mocker](https://help.fastmoq.com/api/FastMoq.Mocker.html)
+- [MockerTestBase&lt;TComponent&gt;](https://help.fastmoq.com/api/FastMoq.MockerTestBase-1.html)
+- [ScenarioBuilder&lt;T&gt;](https://help.fastmoq.com/api/FastMoq.ScenarioBuilder-1.html)
+- [IFastMock&lt;T&gt;](https://help.fastmoq.com/api/FastMoq.Providers.IFastMock-1.html)
+- [MockModel&lt;T&gt;](https://help.fastmoq.com/api/FastMoq.Models.MockModel-1.html)
+- [MockingProviderRegistry](https://help.fastmoq.com/api/FastMoq.Providers.MockingProviderRegistry.html)
+- [FunctionContextTestExtensions](https://help.fastmoq.com/api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.html)
+- [TestWebExtensions](https://help.fastmoq.com/api/FastMoq.Web.Extensions.TestWebExtensions.html)
 
 If you are integrating a non-bundled mocking library, start from [Quick reference for common types](./quick-reference.md) and follow the provider path through `IMockingProvider`, `IMockingProviderCapabilities`, and `MockingProviderRegistry`.
 
-Lifecycle note: tracked creation helpers such as `GetOrCreateMock<T>()` and `CreateFastMock<T>()`, plus detached creation through `CreateStandaloneFastMock<T>()`, are methods on [Mocker](../../api/FastMoq.Mocker.yml) rather than separate API types.
+Lifecycle note: tracked creation helpers such as `GetOrCreateMock<T>()` and `CreateFastMock<T>()`, plus detached creation through `CreateStandaloneFastMock<T>()`, are methods on [Mocker](https://help.fastmoq.com/api/FastMoq.Mocker.html) rather than separate API types.
 
 ## Notes
 
