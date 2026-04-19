@@ -68,6 +68,8 @@ namespace FastMoq.Analyzers
         internal const string FastMoqProvidersNamespace = "FastMoq.Providers";
         internal const string FastMoqMoqProviderAssemblyName = "FastMoq.Provider.Moq";
         internal const string FastMoqNSubstituteProviderAssemblyName = "FastMoq.Provider.NSubstitute";
+        internal const string IFileSystemTypeName = "System.IO.Abstractions.IFileSystem";
+        internal const string MockFileSystemTypeName = "System.IO.Abstractions.TestingHelpers.MockFileSystem";
         internal const string FastMoqWebExtensionsMetadataName = "FastMoq.Web.Extensions.TestWebExtensions";
         internal const string FastMoqWebExtensionsTypeName = "FastMoq.Web.Extensions.TestWebExtensions";
         internal const string MoqProviderNamespace = "FastMoq.Providers.MoqProvider";
@@ -3234,6 +3236,40 @@ namespace FastMoq.Analyzers
             return CountRawMoqMockCreations(node, serviceType, semanticModel, cancellationToken) > 1
                 ? $"'CreateStandaloneFastMock<{serviceTypeName}>()' for additional independent handles of the same service type"
                 : $"'GetOrCreateMock<{serviceTypeName}>()' for the tracked single-instance path";
+        }
+
+        public static bool IsIFileSystemType(ITypeSymbol? type)
+        {
+            return type?.ToDisplayString() == IFileSystemTypeName;
+        }
+
+        public static bool IsMockFileSystemType(ITypeSymbol? type)
+        {
+            return type?.ToDisplayString() == MockFileSystemTypeName;
+        }
+
+        public static bool ShouldPreferSharedMockFileSystem(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            if (!TryGetContainingMockerTestBaseTargetType(expression, semanticModel, cancellationToken, out _))
+            {
+                return false;
+            }
+
+            if (expression is MemberAccessExpressionSyntax memberAccessExpression &&
+                memberAccessExpression.Name.Identifier.ValueText == "FileSystem")
+            {
+                var receiverType = semanticModel.GetTypeInfo(memberAccessExpression.Expression, cancellationToken).Type;
+                var accessType = semanticModel.GetTypeInfo(memberAccessExpression, cancellationToken);
+                return IsMockFileSystemType(receiverType) && IsIFileSystemType(accessType.ConvertedType ?? accessType.Type);
+            }
+
+            var typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
+            if (!IsMockFileSystemType(typeInfo.Type))
+            {
+                return false;
+            }
+
+            return IsIFileSystemType(typeInfo.ConvertedType);
         }
 
         private static int CountRawMoqMockCreations(SyntaxNode node, ITypeSymbol serviceType, SemanticModel semanticModel, CancellationToken cancellationToken)

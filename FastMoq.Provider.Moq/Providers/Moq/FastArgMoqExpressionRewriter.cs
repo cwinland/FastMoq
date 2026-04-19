@@ -7,7 +7,10 @@ namespace FastMoq.Providers.MoqProvider
     {
         private static readonly MethodInfo ItIsAnyMethodDefinition = typeof(It)
             .GetMethods(BindingFlags.Public | BindingFlags.Static)
-            .Single(method => method.Name == nameof(It.IsAny) && method.IsGenericMethodDefinition && method.GetParameters().Length == 0);
+            .Single(method =>
+                method.Name == nameof(It.IsAny) &&
+                method.IsGenericMethodDefinition &&
+                method.GetParameters().Length == 0);
 
         private static readonly MethodInfo ItIsMethodDefinition = typeof(It)
             .GetMethods(BindingFlags.Public | BindingFlags.Static)
@@ -16,7 +19,9 @@ namespace FastMoq.Providers.MoqProvider
                 && method.IsGenericMethodDefinition
                 && method.GetParameters().Length == 1
                 && method.GetParameters()[0].ParameterType.IsGenericType
-                && method.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>));
+                && method.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>)
+                && method.GetParameters()[0].ParameterType.GetGenericArguments()[0].IsGenericType
+                && method.GetParameters()[0].ParameterType.GetGenericArguments()[0].GetGenericTypeDefinition() == typeof(Func<,>));
 
         private static readonly MethodInfo ObjectEqualsMethod = typeof(object).GetMethod(nameof(object.Equals), [typeof(object), typeof(object)])
             ?? throw new InvalidOperationException("Unable to resolve object.Equals(object?, object?).");

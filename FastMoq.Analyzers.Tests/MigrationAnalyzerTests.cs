@@ -37,6 +37,7 @@ namespace FastMoq.Analyzers.Tests
             { new BareTrackedVerifyAnalyzer(), DiagnosticDescriptors.AvoidBareTrackedVerify },
             { new FastMockVerifyHelperAnalyzer(), DiagnosticDescriptors.AvoidFastMockVerifyHelperWrappers },
             { new FastMockVerifyHelperAnalyzer(), DiagnosticDescriptors.AvoidProviderSpecificFastMockVerifyHelperWrappers },
+            { new SharedMockFileSystemAnalyzer(), DiagnosticDescriptors.PreferSharedMockFileSystem },
             { new TrackedMockShimAnalyzer(), DiagnosticDescriptors.AvoidTrackedMockShimAlias },
             { new RawMockCreationAnalyzer(), DiagnosticDescriptors.AvoidRawMockCreationInFastMoqSuites },
             { new ProviderBootstrapAnalyzer(), DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi },
@@ -73,6 +74,7 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.AvoidBareTrackedVerify, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.AvoidFastMockVerifyHelperWrappers, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.AvoidProviderSpecificFastMockVerifyHelperWrappers, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.PreferSharedMockFileSystem, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.AvoidTrackedMockShimAlias, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.AvoidRawMockCreationInFastMoqSuites, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi, DiagnosticSeverity.Warning },
@@ -547,6 +549,92 @@ static class VerifyHelpers
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new FastMockVerifyHelperAnalyzer());
 
             Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.AvoidFastMockVerifyHelperWrappers);
+        }
+
+        [Fact]
+        public async Task SharedMockFileSystemAnalyzer_ShouldReport_WhenMockerTestBasePassesNewMockFileSystemAsIFileSystem()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
+
+class SampleService
+{
+    public SampleService(IFileSystem fileSystem)
+    {
+    }
+}
+
+class SampleTests : MockerTestBase<SampleService>
+{
+    public SampleTests() : base(mocker => new SampleService(new MockFileSystem()))
+    {
+    }
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new SharedMockFileSystemAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferSharedMockFileSystem));
+
+            Assert.Equal(DiagnosticIds.PreferSharedMockFileSystem, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task SharedMockFileSystemAnalyzer_ShouldReport_WhenMockerTestBaseUsesNewMockFileSystemFileSystemProperty()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
+
+class SampleService
+{
+    public SampleService(IFileSystem fileSystem)
+    {
+    }
+}
+
+class SampleTests : MockerTestBase<SampleService>
+{
+    private IFileSystem BuildFileSystem()
+    {
+        return new MockFileSystem().FileSystem;
+    }
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new SharedMockFileSystemAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferSharedMockFileSystem));
+
+            Assert.Equal(DiagnosticIds.PreferSharedMockFileSystem, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task SharedMockFileSystemAnalyzer_ShouldNotReport_WhenConcreteMockFileSystemTypeIsRequired()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using System.IO.Abstractions.TestingHelpers;
+
+class SampleService
+{
+    public SampleService(MockFileSystem fileSystem)
+    {
+    }
+}
+
+class SampleTests : MockerTestBase<SampleService>
+{
+    public SampleTests() : base(mocker => new SampleService(new MockFileSystem()))
+    {
+    }
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new SharedMockFileSystemAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferSharedMockFileSystem);
         }
 
         [Fact]

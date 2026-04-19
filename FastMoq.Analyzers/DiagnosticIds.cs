@@ -34,5 +34,6 @@ namespace FastMoq.Analyzers
         public const string PreferLoggerFactoryHelpers = "FMOQ0030";
         public const string AvoidFastMockVerifyHelperWrappers = "FMOQ0031";
         public const string AvoidProviderSpecificFastMockVerifyHelperWrappers = "FMOQ0032";
+        public const string PreferSharedMockFileSystem = "FMOQ0033";
     }
 }

@@ -267,6 +267,15 @@ namespace FastMoq.Analyzers
             isEnabledByDefault: true,
             description: "IFastMock.Verify wrappers that route through AsMoq().Verify(...), Moq Verify(...), or TimesSpec-to-Times conversion helpers hide tracked-versus-detached intent and pull provider-specific verification back into shared helper code. Keep those provider-specific escape hatches local to the call site instead of baking them into a new wrapper API.");
 
+        public static readonly DiagnosticDescriptor PreferSharedMockFileSystem = new(
+            DiagnosticIds.PreferSharedMockFileSystem,
+            "Prefer the shared FastMoq file system",
+            "'{0}' creates a new MockFileSystem even though this MockerTestBase-based test can reuse FastMoq's shared GetFileSystem() instance",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "MockerTestBase already exposes a shared in-memory file system through GetFileSystem(). Creating a fresh MockFileSystem for an IFileSystem slot inside that test-base flow can desynchronize constructor injection from the rest of the test setup. Prefer the shared FastMoq file system unless the test intentionally needs an independent file system instance.");
+
         public static readonly DiagnosticDescriptor AvoidTrackedMockShimAlias = new(
             DiagnosticIds.AvoidTrackedMockShimAlias,
             "Avoid tracked Mock<T> shim aliases",
