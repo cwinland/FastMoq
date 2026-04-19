@@ -16,6 +16,7 @@
       <link rel="stylesheet" href="../../styles/docfx.css">
       <link rel="stylesheet" href="../../styles/main.css">
       <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <script defer src="../../styles/fastmoq-docs.js"></script>
       <meta property="docfx:navrel" content="../../toc.html">
       <meta property="docfx:tocrel" content="../../toc.html">
     
@@ -86,7 +87,7 @@
 <hr>
 <h2 id="api-controller-testing">API Controller Testing</h2>
 <p>Testing ASP.NET Core controllers with dependency injection and various scenarios.</p>
-<p>These controller examples use the Moq compatibility path for brevity because they demonstrate familiar <code>Setup(...)</code>-style arrangements. If you want the lowest-churn v4 migration path, that is still valid. If you are building new tests and do not specifically need Moq-shaped setup, prefer the provider-first guidance in the <a href="../getting-started/testing-guide.html">Testing Guide</a> and <a href="../getting-started/provider-selection.html">Provider Selection Guide</a>.</p>
+<p>These controller examples use tracked provider-first mocks together with the Moq provider extension package for the arrange-time <code>Setup(...)</code> calls. If you want the lowest-churn v4 migration path, that is still valid. If you are building new tests and do not specifically need Moq-shaped setup, keep the controller-testing shape and translate only the arrange syntax per provider. See the <a href="../getting-started/testing-guide.html">Testing Guide</a> and <a href="../getting-started/provider-selection.html">Provider Selection Guide</a>.</p>
 <h3 id="basic-controller-test">Basic Controller Test</h3>
 <h4 id="controller-example">Controller Example</h4>
 <pre><code class="lang-csharp">[ApiController]
@@ -133,40 +134,44 @@ public class UsersController : ControllerBase
 </code></pre>
 <h4 id="test-example">Test Example</h4>
 <pre><code class="lang-csharp">using FastMoq;
-using FastMoq.Extensions;
-using Microsoft.Extensions.Options;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Moq;
+using FastMoq.Providers.MoqProvider;
 using Xunit;
 
 public class UsersControllerTests : MockerTestBase&lt;UsersController&gt;
-using Microsoft.Extensions.Options;
 {
     [Fact]
     public async Task GetUser_ShouldReturnOkResult_WhenUserExists()
     {
         // Arrange
-        mocker.AddType&lt;IOptions&lt;WeatherApiOptions&gt;&gt;(() =&gt;
-            Options.Create(new WeatherApiOptions { ApiKey = &quot;test-api-key&quot; }));
+        var userId = 1;
+        var expectedUser = new UserDto
+        {
+            Id = userId,
+            Name = &quot;Jane Doe&quot;,
+            Email = &quot;jane@example.com&quot;,
+        };
+
+        Mocks.GetOrCreateMock&lt;IUserService&gt;()
+            .Setup(x =&gt; x.GetUserAsync(userId))
             .ReturnsAsync(expectedUser);
 
-        mocker.CreateHttpClient(
+        // Act
         var result = await Component.GetUser(userId);
 
         // Assert
         var okResult = result.Result.Should().BeOfType&lt;OkObjectResult&gt;().Subject;
-        okResult.Value.Should().Be(expectedUser);
+        okResult.Value.Should().BeEquivalentTo(expectedUser);
     }
 
     [Fact]
     public async Task GetUser_ShouldReturnNotFound_WhenUserNotFound()
     {
         // Arrange
-        Mocks.GetMock&lt;IUserService&gt;()
-            .Setup(x =&gt; x.GetUserAsync(It.IsAny&lt;int&gt;()))
-            .ReturnsAsync((UserDto)null);
+        Mocks.GetOrCreateMock&lt;IUserService&gt;()
+            .Setup(x =&gt; x.GetUserAsync(999))
+            .ReturnsAsync((UserDto?)null);
 
         // Act
         var result = await Component.GetUser(999);
@@ -179,29 +184,35 @@ using Microsoft.Extensions.Options;
     public async Task GetUser_ShouldReturnInternalServerError_WhenServiceThrows()
     {
         // Arrange
-        Mocks.GetMock&lt;IUserService&gt;()
-            .Setup(x =&gt; x.GetUserAsync(It.IsAny&lt;int&gt;()))
+        Mocks.GetOrCreateMock&lt;IUserService&gt;()
+            .Setup(x =&gt; x.GetUserAsync(1))
             .ThrowsAsync(new InvalidOperationException(&quot;Database error&quot;));
 
         // Act
         var result = await Component.GetUser(1);
 
         // Assert
-        var statusResult = result.Result.Should().BeOfType&lt;ObjectResult&gt;().Subject;
+        var statusResult = result.Result.Should().BeOfType&lt;StatusCodeResult&gt;().Subject;
         statusResult.StatusCode.Should().Be(500);
-        
-        // Verify logging
-        Mocks.VerifyLogged(LogLevel.Error, &quot;Database error&quot;, 1);
     }
 
     [Fact]
     public async Task CreateUser_ShouldReturnCreatedResult_WithValidModel()
     {
         // Arrange
-        var request = new CreateUserRequest { Name = &quot;Jane Doe&quot;, Email = &quot;jane@example.com&quot; };
-        var createdUser = new UserDto { Id = 2, Name = request.Name, Email = request.Email };
-        
-        Mocks.GetMock&lt;IUserService&gt;()
+        var request = new CreateUserRequest
+        {
+            Name = &quot;Jane Doe&quot;,
+            Email = &quot;jane@example.com&quot;,
+        };
+        var createdUser = new UserDto
+        {
+            Id = 2,
+            Name = request.Name,
+            Email = request.Email,
+        };
+
+        Mocks.GetOrCreateMock&lt;IUserService&gt;()
             .Setup(x =&gt; x.CreateUserAsync(request))
             .ReturnsAsync(createdUser);
 
@@ -210,7 +221,7 @@ using Microsoft.Extensions.Options;
 
         // Assert
         var createdResult = result.Result.Should().BeOfType&lt;CreatedAtActionResult&gt;().Subject;
-        createdResult.Value.Should().Be(createdUser);
+        createdResult.Value.Should().BeEquivalentTo(createdUser);
         createdResult.ActionName.Should().Be(nameof(UsersController.GetUser));
     }
 }
@@ -1718,7 +1729,7 @@ mocker.VerifyLogged(LogLevel.Information, &quot;Processing complete&quot;);
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:30 UTC</span></div>
       
           </div>
         </div>

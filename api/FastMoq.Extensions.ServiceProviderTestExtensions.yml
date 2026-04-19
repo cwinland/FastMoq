@@ -22,7 +22,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ServiceProviderTestExtensions
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
@@ -60,7 +60,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateTypedServiceProvider
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
@@ -112,7 +112,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateTypedServiceScope
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
@@ -157,7 +157,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddServiceProvider
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
@@ -202,7 +202,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddServiceScope
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
@@ -247,7 +247,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddServiceScope
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
@@ -292,7 +292,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddServiceProvider
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
@@ -340,7 +340,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddServiceScope
     path: FastMoq.Core/Extensions/ServiceProviderTestExtensions.cs

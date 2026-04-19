@@ -33,7 +33,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: MoqMockingProvider
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -92,7 +92,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -121,7 +121,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Capabilities
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -154,7 +154,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsCallBase
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -187,7 +187,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsSetupAllProperties
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -220,7 +220,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsProtectedMembers
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -253,7 +253,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsInvocationTracking
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -286,7 +286,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SupportsLoggerCapture
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -319,7 +319,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -356,7 +356,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -396,7 +396,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateMock
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -436,7 +436,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAllProperties
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -469,7 +469,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetCallBase
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -507,7 +507,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -549,7 +549,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -582,7 +582,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureProperties
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -615,7 +615,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ConfigureLogger
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -653,7 +653,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetLegacy
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
@@ -688,7 +688,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: TryWrapLegacy
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockingProvider.cs

@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/FastMoqRegisterProviderAttribute.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: FastMoqRegisterProviderAttribute
     path: FastMoq.Abstractions/Providers/FastMoqRegisterProviderAttribute.cs
@@ -138,7 +138,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/FastMoqRegisterProviderAttribute.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Abstractions/Providers/FastMoqRegisterProviderAttribute.cs
@@ -176,7 +176,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/FastMoqRegisterProviderAttribute.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ProviderName
     path: FastMoq.Abstractions/Providers/FastMoqRegisterProviderAttribute.cs
@@ -207,7 +207,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/FastMoqRegisterProviderAttribute.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ProviderType
     path: FastMoq.Abstractions/Providers/FastMoqRegisterProviderAttribute.cs
@@ -238,7 +238,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/FastMoqRegisterProviderAttribute.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetAsDefault
     path: FastMoq.Abstractions/Providers/FastMoqRegisterProviderAttribute.cs

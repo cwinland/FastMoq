@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: FakeNavigationManager
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
@@ -81,7 +81,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
@@ -116,7 +116,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: InnerManager
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
@@ -147,7 +147,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: BaseUri
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
@@ -178,7 +178,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
@@ -209,7 +209,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: History
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
@@ -244,7 +244,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: NavigateTo
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
@@ -285,7 +285,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: NavigateTo
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
@@ -323,7 +323,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ToAbsoluteUri
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs
@@ -361,7 +361,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Compatibility/BunitCompatibility.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ToBaseRelativePath
     path: FastMoq.Web/Compatibility/BunitCompatibility.cs

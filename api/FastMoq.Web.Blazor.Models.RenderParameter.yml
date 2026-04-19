@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: RenderParameter
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
@@ -81,7 +81,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
@@ -122,7 +122,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Name
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
@@ -153,7 +153,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Value
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
@@ -184,7 +184,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: IsCascadingValue
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
@@ -215,7 +215,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Create
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
@@ -257,7 +257,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateCascading
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
@@ -299,7 +299,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: op_Implicit
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs
@@ -337,7 +337,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/RenderParameter.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: op_Implicit
     path: FastMoq.Web/Blazor/Models/RenderParameter.cs

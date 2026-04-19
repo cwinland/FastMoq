@@ -8,10 +8,14 @@
       href: docs/getting-started/README.md
     - name: Provider selection
       href: docs/getting-started/provider-selection.md
+    - name: Provider capabilities
+      href: docs/getting-started/provider-capabilities.md
     - name: Testing guide
       href: docs/getting-started/testing-guide.md
-- name: Examples
+- name: Examples and Recipes
   items:
+    - name: Cookbook
+      href: docs/cookbook/README.md
     - name: Executable testing examples
       href: docs/samples/testing-examples.md
     - name: Sample applications

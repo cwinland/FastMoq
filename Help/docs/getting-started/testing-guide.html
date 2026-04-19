@@ -16,6 +16,7 @@
       <link rel="stylesheet" href="../../styles/docfx.css">
       <link rel="stylesheet" href="../../styles/main.css">
       <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <script defer src="../../styles/fastmoq-docs.js"></script>
       <meta property="docfx:navrel" content="../../toc.html">
       <meta property="docfx:tocrel" content="../../toc.html">
     
@@ -126,6 +127,23 @@ repoMock.Setup(x =&gt; x.Load(123)).Returns(order);
 <ul>
 <li><code>FMOQ0022</code> warns when an <code>AddType(...)</code> rewrite comes from a tracked mock/object path and the same file still uses tracked-resolution APIs or property helpers for that service</li>
 </ul>
+<h2 id="tracked-vs-standalone-fast-mocks">Tracked vs Standalone Fast Mocks</h2>
+<p>Use <code>GetOrCreateMock&lt;T&gt;()</code> for the normal tracked dependency inside the current <code>Mocker</code>.</p>
+<p>Use <code>CreateFastMock&lt;T&gt;()</code> when you intentionally want to create a new tracked registration immediately.</p>
+<p>Use <code>CreateStandaloneFastMock&lt;T&gt;()</code> when the test needs a detached provider-selected mock handle that will be wired manually and must not be added to the parent tracked collection.</p>
+<p>Important behavior differences:</p>
+<ul>
+<li><code>GetOrCreateMock&lt;T&gt;()</code> reuses an existing tracked mock for the same unkeyed type or service key.</li>
+<li><code>CreateFastMock&lt;T&gt;()</code> registers the new mock in the current <code>Mocker</code>; for unkeyed mocks it throws if that type is already tracked.</li>
+<li><code>CreateStandaloneFastMock&lt;T&gt;()</code> does not register the mock, so it is the provider-first replacement for legacy detached mock creation.</li>
+<li>if you need two independently tracked collaborators of the same abstraction in one component graph, use keyed mocks or a separate <code>Mocker</code> instead of a second unkeyed <code>CreateFastMock&lt;T&gt;()</code> call.</li>
+</ul>
+<pre><code class="lang-csharp">var trackedGateway = Mocks.GetOrCreateMock&lt;IEmailGateway&gt;();
+var detachedGateway = Mocks.CreateStandaloneFastMock&lt;IEmailGateway&gt;();
+
+var manuallyWiredService = new CheckoutService(detachedGateway.Instance);
+</code></pre>
+<p>Use <code>CreateFastMock&lt;T&gt;()</code> only when you want the new registration to become the tracked mock returned later by <code>GetOrCreateMock&lt;T&gt;()</code>.</p>
 <h2 id="typed-iserviceprovider-helpers">Typed IServiceProvider Helpers</h2>
 <p>Framework-heavy tests should not fake <code>IServiceProvider</code> with a single mocked <code>GetService(Type)</code> callback that returns the same object for every request.</p>
 <p>That shape is convenient, but it hides real failures when code asks for multiple service types such as <code>ILoggerFactory</code>, <code>IOptions&lt;T&gt;</code>, or a concrete singleton.</p>
@@ -632,6 +650,22 @@ var resolvedPublicRepo = Mocks.GetKeyedObject&lt;IBlobRepository&gt;(&quot;publi
 <ul>
 <li><code>FMOQ0015</code> warns on unkeyed <code>GetOrCreateMock&lt;T&gt;()</code>, <code>GetMock&lt;T&gt;()</code>, <code>GetRequiredMock&lt;T&gt;()</code>, and <code>AddType&lt;T&gt;(...)</code> usage when the target type has multiple keyed constructor parameters of that same abstraction and the current file is not already using keyed setup.</li>
 </ul>
+<h2 id="mockmodel-equality-semantics">MockModel Equality Semantics</h2>
+<p><code>GetMockModel&lt;T&gt;()</code> is useful for inspection, but it is not an identity contract for distinct doubles.</p>
+<p>Current runtime behavior is intentionally type-oriented:</p>
+<ul>
+<li><code>MockModel.Equals(...)</code> and the <code>==</code> / <code>!=</code> operators compare the mocked type name (<code>Type.Name</code>) case-insensitively.</li>
+<li><code>GetHashCode()</code> comes from the mocked <code>Type</code>.</li>
+<li><code>CompareTo(...)</code> sorts by <code>Type.FullName</code>.</li>
+<li>tracked-versus-standalone status, service keys, and provider-native object identity are not part of that equality test.</li>
+</ul>
+<p>Practical rule:</p>
+<ul>
+<li>use <code>MockModel</code> for display or loose type-level inspection</li>
+<li>use <code>FastMock</code>, <code>Instance</code>, <code>NativeMock</code>, or the service key you supplied when the question is whether two registrations are actually distinct</li>
+</ul>
+<p>This matters most for same-type dependencies: two different doubles of the same abstraction can still compare equal at the <code>MockModel</code> level even when they represent different roles in the test.</p>
+<p>Because equality uses the simple type name, do not use <code>MockModel</code> equality as a cross-namespace uniqueness check.</p>
 <h2 id="extending-known-types">Extending Known Types</h2>
 <p>Use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddKnownType_FastMoq_KnownTypeRegistration_System_Boolean_">AddKnownType(...)</a> when a framework-style type needs special handling that does not belong in the normal type map.</p>
 <p>Custom registrations are scoped to the current <code>Mocker</code> instance. They do not mutate global process state.</p>
@@ -821,7 +855,7 @@ Mocks.UseLenientPreset();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:30 UTC</span></div>
       
           </div>
         </div>

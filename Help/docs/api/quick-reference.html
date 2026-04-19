@@ -16,6 +16,7 @@
       <link rel="stylesheet" href="../../styles/docfx.css">
       <link rel="stylesheet" href="../../styles/main.css">
       <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <script defer src="../../styles/fastmoq-docs.js"></script>
       <meta property="docfx:navrel" content="../../toc.html">
       <meta property="docfx:tocrel" content="../../toc.html">
     
@@ -95,6 +96,7 @@
 <li><a href="../../api/FastMoq.InstanceCreationFlags.html">InstanceCreationFlags</a></li>
 <li><a href="../../api/FastMoq.InvocationOptions.html">InvocationOptions</a></li>
 </ul>
+<p>Use the <a href="../../api/FastMoq.Mocker.html">Mocker</a> page for the tracked and standalone creation APIs: <code>GetOrCreateMock&lt;T&gt;()</code>, <code>CreateFastMock&lt;T&gt;()</code>, and <code>CreateStandaloneFastMock&lt;T&gt;()</code>.</p>
 <h2 id="provider-apis">Provider APIs</h2>
 <ul>
 <li><a href="../../api/FastMoq.Providers.MockingProviderRegistry.html">MockingProviderRegistry</a></li>
@@ -138,6 +140,13 @@
 <li><a href="../../api/FastMoq.Models.InstanceModel-1.html">InstanceModel&lt;TClass&gt;</a></li>
 <li><a href="../../api/FastMoq.Models.ConstructorHistory.html">ConstructorHistory</a></li>
 </ul>
+<h2 id="tracked-models-and-provider-escape-hatches">Tracked models and provider escape hatches</h2>
+<ul>
+<li><a href="../../api/FastMoq.Providers.IFastMock-1.html">IFastMock&lt;T&gt;</a></li>
+<li><a href="../../api/FastMoq.Models.MockModel-1.html">MockModel&lt;T&gt;</a></li>
+<li><a href="../../api/FastMoq.Providers.MockingProviderRegistry.html">MockingProviderRegistry</a></li>
+</ul>
+<p><code>MockModel</code> equality is type-based, not instance-based. Use it to reason about mocked service types, not to decide whether two provider-native doubles are the same object.</p>
 <h2 id="blazor-and-web">Blazor and web</h2>
 <ul>
 <li><a href="../../api/FastMoq.Web.Blazor.MockerBlazorTestBase-1.html">MockerBlazorTestBase&lt;T&gt;</a></li>
@@ -181,7 +190,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:30 UTC</span></div>
       
           </div>
         </div>

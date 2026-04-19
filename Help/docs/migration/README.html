@@ -16,6 +16,7 @@
       <link rel="stylesheet" href="../../styles/docfx.css">
       <link rel="stylesheet" href="../../styles/main.css">
       <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <script defer src="../../styles/fastmoq-docs.js"></script>
       <meta property="docfx:navrel" content="../../toc.html">
       <meta property="docfx:tocrel" content="../../toc.html">
     
@@ -271,6 +272,7 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
 <li>Treat <code>AddType(...)</code> as an explicit type-resolution override, not as a general substitute for mocks.</li>
 <li>Treat <code>Strict</code> as compatibility-only. Use <code>Behavior</code> or preset helpers when you mean broader behavior changes.</li>
 <li>Prefer the newer provider-first retrieval and verification surfaces when you do not specifically need raw Moq APIs.</li>
+<li>Use <code>CreateStandaloneFastMock&lt;T&gt;()</code> instead of a second unkeyed tracked mock when you need an extra detached double of the same abstraction.</li>
 <li>Use the executable examples in <code>FastMoq.TestingExample</code> as the best repo-backed reference for current patterns.</li>
 <li>Treat DbContext helpers as an optional database-package concern when consuming <code>FastMoq.Core</code> directly.</li>
 </ol>
@@ -312,6 +314,11 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
 <td><code>GetOrCreateMock&lt;T&gt;()</code></td>
 <td>Default setup path for tracked mocks and most interaction verification</td>
 <td>Preferred v4 migration target for touched tests</td>
+</tr>
+<tr>
+<td><code>CreateStandaloneFastMock&lt;T&gt;()</code></td>
+<td>You need a detached extra double or manual wiring outside the tracked graph</td>
+<td>Provider-first replacement for legacy detached mock creation</td>
 </tr>
 <tr>
 <td><code>GetObject&lt;T&gt;()</code></td>
@@ -468,7 +475,7 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:30 UTC</span></div>
       
           </div>
         </div>

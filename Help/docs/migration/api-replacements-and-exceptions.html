@@ -16,6 +16,7 @@
       <link rel="stylesheet" href="../../styles/docfx.css">
       <link rel="stylesheet" href="../../styles/main.css">
       <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <script defer src="../../styles/fastmoq-docs.js"></script>
       <meta property="docfx:navrel" content="../../toc.html">
       <meta property="docfx:tocrel" content="../../toc.html">
     
@@ -400,22 +401,22 @@ logger.VerifyLogger(LogLevel.Information, &quot;Processing started&quot;);
 <tr>
 <td><code>CreateMock&lt;T&gt;(...)</code></td>
 <td>tracked provider-first mock</td>
-<td><code>GetOrCreateMock&lt;T&gt;(...)</code></td>
+<td><code>GetOrCreateMock&lt;T&gt;(...)</code> or <code>CreateFastMock&lt;T&gt;()</code> when you specifically want immediate tracked registration</td>
 </tr>
 <tr>
 <td><code>CreateMockInstance&lt;T&gt;(...)</code></td>
-<td>dedicated <code>Mocker</code> plus tracked provider-first mock</td>
-<td>a fresh <code>Mocker</code> and <code>GetOrCreateMock&lt;T&gt;()</code>, then <code>Instance</code> or <code>AsMoq()</code></td>
+<td>tracked instance or detached provider-first handle</td>
+<td>a fresh <code>Mocker</code> and <code>GetOrCreateMock&lt;T&gt;()</code>, then <code>Instance</code>, or <code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;().Instance</code> when tracking is not needed</td>
 </tr>
 <tr>
 <td><code>CreateDetachedMock&lt;T&gt;(...)</code></td>
-<td>dedicated <code>Mocker</code> plus tracked provider-first mock</td>
-<td>a fresh <code>Mocker</code> per extra double instead of detached legacy <code>Mock&lt;T&gt;</code> creation</td>
+<td>standalone provider-first mock</td>
+<td><code>CreateStandaloneFastMock&lt;T&gt;()</code> or <code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;()</code></td>
 </tr>
 <tr>
 <td><code>AddMock&lt;T&gt;(...)</code></td>
 <td>tracked provider-first mock or explicit concrete override</td>
-<td><code>GetOrCreateMock&lt;T&gt;()</code> or <code>AddType&lt;T&gt;(...)</code></td>
+<td><code>CreateFastMock&lt;T&gt;()</code>, <code>GetOrCreateMock&lt;T&gt;()</code>, or <code>AddType&lt;T&gt;(...)</code> depending on whether the registration must be new, reusable, or concrete</td>
 </tr>
 <tr>
 <td><code>RemoveMock(...)</code></td>
@@ -424,15 +425,20 @@ logger.VerifyLogger(LogLevel.Information, &quot;Processing started&quot;);
 </tr>
 </tbody>
 </table>
+<p>Important distinction:</p>
+<ul>
+<li><code>CreateFastMock&lt;T&gt;()</code> registers the new mock in the current <code>Mocker</code></li>
+<li><code>CreateStandaloneFastMock&lt;T&gt;()</code> does not register it</li>
+<li><code>CreateFastMock&lt;T&gt;()</code> is therefore not a safe replacement for <code>CreateDetachedMock&lt;T&gt;()</code> when the same unkeyed type is already tracked</li>
+</ul>
 <p>Before, detached legacy mock creation:</p>
 <pre><code class="lang-csharp">var emailGateway = Mocks.CreateDetachedMock&lt;IEmailGateway&gt;();
 emailGateway.Setup(x =&gt; x.SendAsync(&quot;finance@contoso.test&quot;)).Returns(Task.CompletedTask);
 
 var service = new CheckoutService(emailGateway.Object);
 </code></pre>
-<p>After, provider-first isolated scope:</p>
-<pre><code class="lang-csharp">var isolatedMocks = new Mocker();
-var emailGateway = isolatedMocks.GetOrCreateMock&lt;IEmailGateway&gt;();
+<p>After, provider-first standalone mock:</p>
+<pre><code class="lang-csharp">var emailGateway = Mocks.CreateStandaloneFastMock&lt;IEmailGateway&gt;();
 emailGateway.Setup(x =&gt; x.SendAsync(&quot;finance@contoso.test&quot;)).Returns(Task.CompletedTask);
 
 var service = new CheckoutService(emailGateway.Instance);
@@ -442,7 +448,7 @@ var service = new CheckoutService(emailGateway.Instance);
 Mocks.AddMock(clock);
 </code></pre>
 <p>After, when the dependency should stay a tracked mock:</p>
-<pre><code class="lang-csharp">var clock = Mocks.GetOrCreateMock&lt;IClock&gt;();
+<pre><code class="lang-csharp">var clock = Mocks.CreateFastMock&lt;IClock&gt;();
 </code></pre>
 <p>After, when the dependency is really a fixed fake or stub:</p>
 <pre><code class="lang-csharp">Mocks.AddType&lt;IClock&gt;(_ =&gt; new FakeClock(DateTimeOffset.Parse(&quot;2026-04-01T12:00:00Z&quot;)));
@@ -798,7 +804,7 @@ Use <code>ExecuteThrows&lt;TException&gt;()</code> or <code>ExecuteThrowsAsync&l
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:30 UTC</span></div>
       
           </div>
         </div>

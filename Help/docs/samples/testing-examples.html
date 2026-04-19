@@ -16,6 +16,7 @@
       <link rel="stylesheet" href="../../styles/docfx.css">
       <link rel="stylesheet" href="../../styles/main.css">
       <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <script defer src="../../styles/fastmoq-docs.js"></script>
       <meta property="docfx:navrel" content="../../toc.html">
       <meta property="docfx:tocrel" content="../../toc.html">
     
@@ -170,12 +171,22 @@ modeCapture.Value.Should().Be(&quot;fast&quot;);
 <ul>
 <li><code>MockerTestBase&lt;TComponent&gt;</code> for normal component creation and dependency auto-injection</li>
 <li><code>Mocks.GetOrCreateMock&lt;T&gt;()</code> for tracked arrange flows</li>
+<li><code>Mocks.CreateStandaloneFastMock&lt;T&gt;()</code> when a test needs a detached provider-first handle outside the tracked component graph</li>
 <li>built-in <code>IFileSystem</code> behavior via the predefined <code>MockFileSystem</code></li>
 <li>typed <code>IServiceProvider</code> and Azure Functions <code>InstanceServices</code> helper patterns for framework-heavy tests</li>
 <li><code>VerifyLogged(...)</code> for provider-safe structured logging assertions</li>
 <li><code>Scenario.With(...).When(...).Then(...).Verify(...)</code> for the fluent scenario style inside <code>MockerTestBase&lt;TComponent&gt;</code></li>
 <li>provider-first verification through <code>TimesSpec.Once</code>, <code>TimesSpec.NeverCalled</code>, <code>TimesSpec.Exactly(...)</code>, <code>TimesSpec.AtLeast(...)</code>, and <code>TimesSpec.AtMost(...)</code></li>
 </ul>
+<h2 id="tracked-vs-standalone-in-these-examples">Tracked vs standalone in these examples</h2>
+<p>Most executable examples use <code>GetOrCreateMock&lt;T&gt;()</code> because the dependency is part of the tracked component graph.</p>
+<p>When a test needs an additional same-type double for manual construction or a helper object that should not be registered into the current <code>Mocker</code>, use <code>CreateStandaloneFastMock&lt;T&gt;()</code> instead:</p>
+<pre><code class="lang-csharp">var trackedGateway = Mocks.GetOrCreateMock&lt;IEmailGateway&gt;();
+var detachedGateway = Mocks.CreateStandaloneFastMock&lt;IEmailGateway&gt;();
+
+var manuallyWiredService = new CheckoutService(detachedGateway.Instance);
+</code></pre>
+<p><code>CreateFastMock&lt;T&gt;()</code> is the tracked-registration counterpart. It adds the new mock to the current <code>Mocker</code>, so it is not the right replacement for a legacy detached mock when the same unkeyed service type is already tracked.</p>
 <h2 id="example-1-order-processing-workflow">Example 1: Order Processing Workflow</h2>
 <p>The order-processing example models a typical service that coordinates several collaborators:</p>
 <ul>
@@ -299,7 +310,7 @@ modeCapture.Value.Should().Be(&quot;fast&quot;);
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:30 UTC</span></div>
       
           </div>
         </div>

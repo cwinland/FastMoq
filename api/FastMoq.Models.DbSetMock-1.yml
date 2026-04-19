@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: DbSetMock
     path: FastMoq.Database/Models/DbSetMock.cs
@@ -233,7 +233,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbSetMock.cs
@@ -265,7 +265,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Database/Models/DbSetMock.cs
@@ -298,7 +298,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupAsyncListMethods
     path: FastMoq.Database/Models/DbSetMock.cs
@@ -330,7 +330,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupListMethods
     path: FastMoq.Database/Models/DbSetMock.cs
@@ -362,7 +362,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/DbSetMock.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupMockMethods
     path: FastMoq.Database/Models/DbSetMock.cs

@@ -16,6 +16,7 @@
       <link rel="stylesheet" href="../../styles/docfx.css">
       <link rel="stylesheet" href="../../styles/main.css">
       <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <script defer src="../../styles/fastmoq-docs.js"></script>
       <meta property="docfx:navrel" content="../../toc.html">
       <meta property="docfx:tocrel" content="../../toc.html">
     
@@ -81,6 +82,7 @@
 <li>Moq transition messaging is quieter for projects that already reference <code>FastMoq.Provider.Moq</code> explicitly, while the bundled-path warning remains available for suites that still rely on the implicit v4 compatibility path</li>
 <li>provider-neutral property-state, property-setter capture, typed service-scope helpers, and logger-factory helpers round out the common migration gaps that previously forced provider-specific setup noise</li>
 <li>constructor-resolution failures now surface actionable <code>InvalidOperationException</code> guidance instead of generic <code>NotImplementedException</code> failures</li>
+<li>the documentation set now calls out tracked <code>GetOrCreateMock&lt;T&gt;()</code> versus detached <code>CreateStandaloneFastMock&lt;T&gt;()</code>, keyed same-type dependency guidance, and <code>MockModel</code>'s type-oriented equality semantics more directly</li>
 </ul>
 <p>Validation run for this change:</p>
 <ul>
@@ -286,7 +288,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:30 UTC</span></div>
       
           </div>
         </div>

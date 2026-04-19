@@ -67,6 +67,30 @@ Analyzer note:
 
 - `FMOQ0022` warns when an `AddType(...)` rewrite comes from a tracked mock/object path and the same file still uses tracked-resolution APIs or property helpers for that service
 
+## Tracked vs Standalone Fast Mocks
+
+Use `GetOrCreateMock<T>()` for the normal tracked dependency inside the current `Mocker`.
+
+Use `CreateFastMock<T>()` when you intentionally want to create a new tracked registration immediately.
+
+Use `CreateStandaloneFastMock<T>()` when the test needs a detached provider-selected mock handle that will be wired manually and must not be added to the parent tracked collection.
+
+Important behavior differences:
+
+- `GetOrCreateMock<T>()` reuses an existing tracked mock for the same unkeyed type or service key.
+- `CreateFastMock<T>()` registers the new mock in the current `Mocker`; for unkeyed mocks it throws if that type is already tracked.
+- `CreateStandaloneFastMock<T>()` does not register the mock, so it is the provider-first replacement for legacy detached mock creation.
+- if you need two independently tracked collaborators of the same abstraction in one component graph, use keyed mocks or a separate `Mocker` instead of a second unkeyed `CreateFastMock<T>()` call.
+
+```csharp
+var trackedGateway = Mocks.GetOrCreateMock<IEmailGateway>();
+var detachedGateway = Mocks.CreateStandaloneFastMock<IEmailGateway>();
+
+var manuallyWiredService = new CheckoutService(detachedGateway.Instance);
+```
+
+Use `CreateFastMock<T>()` only when you want the new registration to become the tracked mock returned later by `GetOrCreateMock<T>()`.
+
 ## Typed IServiceProvider Helpers
 
 Framework-heavy tests should not fake `IServiceProvider` with a single mocked `GetService(Type)` callback that returns the same object for every request.
@@ -708,6 +732,26 @@ Ordinary unit tests can stay ordinary. The important rule is: if swapping the ke
 Analyzer note:
 
 - `FMOQ0015` warns on unkeyed `GetOrCreateMock<T>()`, `GetMock<T>()`, `GetRequiredMock<T>()`, and `AddType<T>(...)` usage when the target type has multiple keyed constructor parameters of that same abstraction and the current file is not already using keyed setup.
+
+## MockModel Equality Semantics
+
+`GetMockModel<T>()` is useful for inspection, but it is not an identity contract for distinct doubles.
+
+Current runtime behavior is intentionally type-oriented:
+
+- `MockModel.Equals(...)` and the `==` / `!=` operators compare the mocked type name (`Type.Name`) case-insensitively.
+- `GetHashCode()` comes from the mocked `Type`.
+- `CompareTo(...)` sorts by `Type.FullName`.
+- tracked-versus-standalone status, service keys, and provider-native object identity are not part of that equality test.
+
+Practical rule:
+
+- use `MockModel` for display or loose type-level inspection
+- use `FastMock`, `Instance`, `NativeMock`, or the service key you supplied when the question is whether two registrations are actually distinct
+
+This matters most for same-type dependencies: two different doubles of the same abstraction can still compare equal at the `MockModel` level even when they represent different roles in the test.
+
+Because equality uses the simple type name, do not use `MockModel` equality as a cross-namespace uniqueness check.
 
 ## Extending Known Types
 

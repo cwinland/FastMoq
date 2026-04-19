@@ -16,6 +16,7 @@
       <link rel="stylesheet" href="../../styles/docfx.css">
       <link rel="stylesheet" href="../../styles/main.css">
       <link rel="stylesheet" href="../../styles/fastmoq-docs.css">
+      <script defer src="../../styles/fastmoq-docs.js"></script>
       <meta property="docfx:navrel" content="../../toc.html">
       <meta property="docfx:tocrel" content="../../toc.html">
     
@@ -84,6 +85,7 @@
 <ul>
 <li><code>MockerTestBase&lt;TComponent&gt;</code> in realistic service tests</li>
 <li>built-in <code>IFileSystem</code> behavior with <code>MockFileSystem</code></li>
+<li>tracked <code>GetOrCreateMock&lt;T&gt;()</code> usage versus detached <code>CreateStandaloneFastMock&lt;T&gt;()</code> when a test needs an extra same-type double or manual wiring</li>
 <li><code>VerifyLogged(...)</code> assertions</li>
 <li>fluent <code>Scenario.With(...).When(...).Then(...).Verify(...)</code> usage inside <code>MockerTestBase&lt;TComponent&gt;</code></li>
 <li>provider-first verification with <code>TimesSpec.Once</code>, <code>TimesSpec.NeverCalled</code>, <code>TimesSpec.Exactly(...)</code>, <code>TimesSpec.AtLeast(...)</code>, and <code>TimesSpec.AtMost(...)</code></li>
@@ -123,6 +125,7 @@
 <h3 id="constructor--dependency-injection">Constructor &amp; Dependency Injection</h3>
 <ul>
 <li><code>CreateInstance&lt;T&gt;()</code> / typed overloads pick the correct constructor and auto‑inject mocks.</li>
+<li><code>CreateStandaloneFastMock&lt;T&gt;()</code> gives you a detached provider-first double for manual wiring; <code>CreateFastMock&lt;T&gt;()</code> registers a tracked mock in the current <code>Mocker</code> and should be used only when that tracked registration is the intent.</li>
 <li><code>AddType&lt;TAbstraction&gt;(factory)</code> to pin specific concrete/instance values (e.g., seeded <code>Uri</code> or options).</li>
 </ul>
 <h3 id="azure-service-patterns">Azure Service Patterns</h3>
@@ -197,6 +200,11 @@ Mocks.VerifyLogged(LogLevel.Information, &quot;Processed event&quot;);
 <td>Mock EF Core context</td>
 <td><code>GetMockDbContext&lt;T&gt;()</code></td>
 <td>Auto sets up DbSets; seed data before use</td>
+</tr>
+<tr>
+<td>Extra independent same-type double</td>
+<td><code>CreateStandaloneFastMock&lt;T&gt;()</code></td>
+<td>Detached provider-first mock; does not register into the current <code>Mocker</code></td>
 </tr>
 <tr>
 <td>Replace concrete dependency</td>
@@ -281,7 +289,7 @@ dotnet test
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:30 UTC</span></div>
       
           </div>
         </div>

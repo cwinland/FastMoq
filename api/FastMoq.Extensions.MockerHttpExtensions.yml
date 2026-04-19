@@ -21,7 +21,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerHttpExtensions
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
@@ -59,7 +59,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpClient
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
@@ -110,7 +110,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenHttpRequest
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
@@ -152,7 +152,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenHttpRequest
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
@@ -197,7 +197,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: WhenHttpRequestJson
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
@@ -245,7 +245,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetContentBytesAsync
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
@@ -281,7 +281,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerHttpExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetContentStreamAsync
     path: FastMoq.Core/Extensions/MockerHttpExtensions.cs

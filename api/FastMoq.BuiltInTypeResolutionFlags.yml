@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: BuiltInTypeResolutionFlags
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
@@ -96,7 +96,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: None
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
@@ -128,7 +128,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: FileSystem
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
@@ -160,7 +160,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: HttpClient
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
@@ -192,7 +192,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
@@ -224,7 +224,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContext
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
@@ -256,7 +256,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: All
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
@@ -289,7 +289,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: StrictCompatibilityDefaults
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
@@ -321,7 +321,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/BuiltInTypeResolutionFlags.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: LenientDefaults
     path: FastMoq.Core/BuiltInTypeResolutionFlags.cs

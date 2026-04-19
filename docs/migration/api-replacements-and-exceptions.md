@@ -385,11 +385,17 @@ These APIs are still supported in v4 as compatibility surfaces, but they are no 
 
 | Legacy API | Preferred move | Typical manual rewrite |
 | --- | --- | --- |
-| `CreateMock<T>(...)` | tracked provider-first mock | `GetOrCreateMock<T>(...)` |
-| `CreateMockInstance<T>(...)` | dedicated `Mocker` plus tracked provider-first mock | a fresh `Mocker` and `GetOrCreateMock<T>()`, then `Instance` or `AsMoq()` |
-| `CreateDetachedMock<T>(...)` | dedicated `Mocker` plus tracked provider-first mock | a fresh `Mocker` per extra double instead of detached legacy `Mock<T>` creation |
-| `AddMock<T>(...)` | tracked provider-first mock or explicit concrete override | `GetOrCreateMock<T>()` or `AddType<T>(...)` |
+| `CreateMock<T>(...)` | tracked provider-first mock | `GetOrCreateMock<T>(...)` or `CreateFastMock<T>()` when you specifically want immediate tracked registration |
+| `CreateMockInstance<T>(...)` | tracked instance or detached provider-first handle | a fresh `Mocker` and `GetOrCreateMock<T>()`, then `Instance`, or `MockingProviderRegistry.Default.CreateMock<T>().Instance` when tracking is not needed |
+| `CreateDetachedMock<T>(...)` | standalone provider-first mock | `CreateStandaloneFastMock<T>()` or `MockingProviderRegistry.Default.CreateMock<T>()` |
+| `AddMock<T>(...)` | tracked provider-first mock or explicit concrete override | `CreateFastMock<T>()`, `GetOrCreateMock<T>()`, or `AddType<T>(...)` depending on whether the registration must be new, reusable, or concrete |
 | `RemoveMock(...)` | new scope instead of mutating tracked legacy mocks | create a fresh `Mocker` for the branch that needs a different setup |
+
+Important distinction:
+
+- `CreateFastMock<T>()` registers the new mock in the current `Mocker`
+- `CreateStandaloneFastMock<T>()` does not register it
+- `CreateFastMock<T>()` is therefore not a safe replacement for `CreateDetachedMock<T>()` when the same unkeyed type is already tracked
 
 Before, detached legacy mock creation:
 
@@ -400,11 +406,10 @@ emailGateway.Setup(x => x.SendAsync("finance@contoso.test")).Returns(Task.Comple
 var service = new CheckoutService(emailGateway.Object);
 ```
 
-After, provider-first isolated scope:
+After, provider-first standalone mock:
 
 ```csharp
-var isolatedMocks = new Mocker();
-var emailGateway = isolatedMocks.GetOrCreateMock<IEmailGateway>();
+var emailGateway = Mocks.CreateStandaloneFastMock<IEmailGateway>();
 emailGateway.Setup(x => x.SendAsync("finance@contoso.test")).Returns(Task.CompletedTask);
 
 var service = new CheckoutService(emailGateway.Instance);
@@ -420,7 +425,7 @@ Mocks.AddMock(clock);
 After, when the dependency should stay a tracked mock:
 
 ```csharp
-var clock = Mocks.GetOrCreateMock<IClock>();
+var clock = Mocks.CreateFastMock<IClock>();
 ```
 
 After, when the dependency is really a fixed fake or stub:
