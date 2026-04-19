@@ -19,19 +19,13 @@ function Get-RepositoryDefaultBranch
         return ($originHead -replace '^origin/', '')
     }
 
-    foreach ($candidate in @('master', 'main'))
+    foreach ($candidate in @('main', 'master'))
     {
         & git -C $repoRoot show-ref --verify --quiet "refs/heads/$candidate"
         if ($LASTEXITCODE -eq 0)
         {
             return $candidate
         }
-    }
-
-    $currentBranch = & git -C $repoRoot branch --show-current 2>$null
-    if (-not [string]::IsNullOrWhiteSpace($currentBranch))
-    {
-        return $currentBranch.Trim()
     }
 
     return 'master'

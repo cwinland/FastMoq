@@ -1361,6 +1361,7 @@ options.Value.SmtpHost.Should().Be(&quot;smtp.example.com&quot;);
 <p>Use <code>AddType(instance, replace: true)</code> for non-options real dependencies such as <code>MemoryCache</code>, file systems, or fixed runtime objects. <code>SetupOptions(...)</code> is intentionally the narrow convenience helper for <code>IOptions&lt;T&gt;</code> registration only.</p>
 <h3 id="equality-intent-in-matcher-style-configuration-tests">Equality intent in matcher-style configuration tests</h3>
 <p>When provider-native matchers appear in options or configuration tests, make the comparison intent explicit instead of relying on a bare <code>==</code> to communicate it.</p>
+<p>The following snippet is intentionally Moq-specific. It assumes the optional <code>FastMoq.Provider.Moq</code> package is installed and the file also imports <code>using Moq;</code>.</p>
 <pre><code class="lang-csharp">var expectedEnvelope = new EmailEnvelope(&quot;smtp.example.com&quot;, 587);
 Mocks.GetOrCreateMock&lt;IEmailGateway&gt;()
     .Setup(x =&gt; x.Send(It.Is&lt;EmailEnvelope&gt;(envelope =&gt; envelope == expectedEnvelope)))
@@ -1371,6 +1372,7 @@ Mocks.GetOrCreateMock&lt;IEmailGateway&gt;()
     .Setup(x =&gt; x.Attach(It.Is&lt;DeliveryAttempt&gt;(attempt =&gt; ReferenceEquals(attempt, currentAttempt))))
     .Returns(Task.CompletedTask);
 
+var expectedMessageId = Guid.NewGuid();
 Mocks.GetOrCreateMock&lt;IEmailGateway&gt;()
     .Setup(x =&gt; x.Publish(It.Is&lt;OutboundMessage&gt;(message =&gt; message.Id == expectedMessageId)))
     .Returns(Task.CompletedTask);
@@ -1751,7 +1753,7 @@ mocker.VerifyLogged(LogLevel.Information, &quot;Processing complete&quot;);
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:03 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:28 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
       
           </div>
         </div>

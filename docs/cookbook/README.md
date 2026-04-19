@@ -1328,6 +1328,8 @@ Use `AddType(instance, replace: true)` for non-options real dependencies such as
 
 When provider-native matchers appear in options or configuration tests, make the comparison intent explicit instead of relying on a bare `==` to communicate it.
 
+The following snippet is intentionally Moq-specific. It assumes the optional `FastMoq.Provider.Moq` package is installed and the file also imports `using Moq;`.
+
 ```csharp
 var expectedEnvelope = new EmailEnvelope("smtp.example.com", 587);
 Mocks.GetOrCreateMock<IEmailGateway>()
@@ -1339,6 +1341,7 @@ Mocks.GetOrCreateMock<IEmailGateway>()
     .Setup(x => x.Attach(It.Is<DeliveryAttempt>(attempt => ReferenceEquals(attempt, currentAttempt))))
     .Returns(Task.CompletedTask);
 
+var expectedMessageId = Guid.NewGuid();
 Mocks.GetOrCreateMock<IEmailGateway>()
     .Setup(x => x.Publish(It.Is<OutboundMessage>(message => message.Id == expectedMessageId)))
     .Returns(Task.CompletedTask);
