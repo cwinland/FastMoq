@@ -74,7 +74,7 @@
 <h1 id="fastmoq-cookbook">FastMoq Cookbook</h1>
 
 <p>This cookbook contains practical recipes for common testing scenarios using FastMoq. Each recipe includes complete, runnable examples that you can adapt to your specific needs.</p>
-<p>Most recipes here focus on common test shapes and readability first. Some examples still use <code>GetMock&lt;T&gt;()</code> because that remains a useful v4 compatibility path. When you are writing new tests or actively modernizing existing ones, prefer provider-neutral APIs such as <code>GetOrCreateMock(...)</code>, provider-safe <code>Verify(...)</code>, <code>Mocks.VerifyLogged(...)</code>, <code>WhenHttpRequest(...)</code>, and <code>WhenHttpRequestJson(...)</code> where they fit the test intent. When a recipe intentionally uses Moq-only helpers such as <code>SetupHttpMessage(...)</code>, it is called out explicitly.</p>
+<p>Most recipes here focus on provider-first defaults and readability first. When you are writing new tests or actively modernizing existing ones, prefer provider-neutral APIs such as <code>GetOrCreateMock(...)</code>, provider-safe <code>Verify(...)</code>, <code>Mocks.VerifyLogged(...)</code>, <code>WhenHttpRequest(...)</code>, and <code>WhenHttpRequestJson(...)</code> where they fit the test intent. Some recipes still show compatibility-only Moq pockets such as <code>SetupHttpMessage(...)</code> or <code>VerifyLogger(...)</code>, but those cases are labeled explicitly so they do not read like the normal forward path.</p>
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
 <li><a href="#api-controller-testing">API Controller Testing</a></li>
@@ -134,7 +134,7 @@ public class UsersController : ControllerBase
 </code></pre>
 <h4 id="test-example">Test Example</h4>
 <pre><code class="lang-csharp">using FastMoq;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.AspNetCore.Mvc;
 using FastMoq.Providers.MoqProvider;
 using Xunit;
@@ -1326,18 +1326,23 @@ public class EmailService
     }
 
     [Fact]
-    public async Task SendEmailAsync_ShouldUseConfiguredTimeout()
+    public void GetConnectionString_ShouldAllowConfigurationOverride()
     {
         // Arrange
-        var configMock = Mocks.GetMock&lt;IConfiguration&gt;();
-        configMock.Setup(x =&gt; x.GetValue&lt;int&gt;(&quot;Email:TimeoutSeconds&quot;, 30))
-            .Returns(60);
+        var replacementConfiguration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary&lt;string, string&gt;
+            {
+                [&quot;ConnectionStrings:DefaultConnection&quot;] = &quot;Server=override;Database=OverrideDb&quot;
+            })
+            .Build();
+
+        Mocks.AddType&lt;IConfiguration&gt;(() =&gt; replacementConfiguration, replace: true);
 
         // Act
-        await Component.SendEmailAsync(&quot;test@example.com&quot;, &quot;Subject&quot;, &quot;Body&quot;);
+        var connectionString = Component.GetConnectionString();
 
         // Assert
-        configMock.Verify(x =&gt; x.GetValue&lt;int&gt;(&quot;Email:TimeoutSeconds&quot;, 30), Times.Once);
+        connectionString.Should().Be(&quot;Server=override;Database=OverrideDb&quot;);
     }
 }
 </code></pre>
@@ -1354,6 +1359,25 @@ var options = mocker.GetObject&lt;IOptions&lt;EmailOptions&gt;&gt;();
 options.Value.SmtpHost.Should().Be(&quot;smtp.example.com&quot;);
 </code></pre>
 <p>Use <code>AddType(instance, replace: true)</code> for non-options real dependencies such as <code>MemoryCache</code>, file systems, or fixed runtime objects. <code>SetupOptions(...)</code> is intentionally the narrow convenience helper for <code>IOptions&lt;T&gt;</code> registration only.</p>
+<h3 id="equality-intent-in-matcher-style-configuration-tests">Equality intent in matcher-style configuration tests</h3>
+<p>When provider-native matchers appear in options or configuration tests, make the comparison intent explicit instead of relying on a bare <code>==</code> to communicate it.</p>
+<p>The following snippet is intentionally Moq-specific. It assumes the optional <code>FastMoq.Provider.Moq</code> package is installed and the file also imports <code>using Moq;</code>.</p>
+<pre><code class="lang-csharp">var expectedEnvelope = new EmailEnvelope(&quot;smtp.example.com&quot;, 587);
+Mocks.GetOrCreateMock&lt;IEmailGateway&gt;()
+    .Setup(x =&gt; x.Send(It.Is&lt;EmailEnvelope&gt;(envelope =&gt; envelope == expectedEnvelope)))
+    .Returns(Task.CompletedTask);
+
+var currentAttempt = new DeliveryAttempt();
+Mocks.GetOrCreateMock&lt;IEmailGateway&gt;()
+    .Setup(x =&gt; x.Attach(It.Is&lt;DeliveryAttempt&gt;(attempt =&gt; ReferenceEquals(attempt, currentAttempt))))
+    .Returns(Task.CompletedTask);
+
+var expectedMessageId = Guid.NewGuid();
+Mocks.GetOrCreateMock&lt;IEmailGateway&gt;()
+    .Setup(x =&gt; x.Publish(It.Is&lt;OutboundMessage&gt;(message =&gt; message.Id == expectedMessageId)))
+    .Returns(Task.CompletedTask);
+</code></pre>
+<p>The first matcher is explicit value equality for a value object. The second is explicit identity for a mutable class. The third makes the real requirement obvious by matching the stable property instead of depending on type-specific equality semantics.</p>
 <h3 id="testing-with-ioptionsmonitor">Testing with IOptionsMonitor</h3>
 <pre><code class="lang-csharp">public class EmailServiceWithMonitorTests : MockerTestBase&lt;EmailService&gt;
 {
@@ -1729,7 +1753,7 @@ mocker.VerifyLogged(LogLevel.Information, &quot;Processing complete&quot;);
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:55 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:28 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
       
           </div>
         </div>

@@ -24,7 +24,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: MockFeatures
     path: FastMoq.Core/MockFeatures.cs
@@ -73,7 +73,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: None
     path: FastMoq.Core/MockFeatures.cs
@@ -101,7 +101,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallBase
     path: FastMoq.Core/MockFeatures.cs
@@ -129,7 +129,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AutoSetupProperties
     path: FastMoq.Core/MockFeatures.cs
@@ -157,7 +157,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AutoInjectDependencies
     path: FastMoq.Core/MockFeatures.cs
@@ -185,7 +185,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ResolveNestedMembers
     path: FastMoq.Core/MockFeatures.cs
@@ -213,7 +213,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggerCallback
     path: FastMoq.Core/MockFeatures.cs
@@ -241,7 +241,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoUnexpected
     path: FastMoq.Core/MockFeatures.cs
@@ -269,7 +269,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: TrackInvocations
     path: FastMoq.Core/MockFeatures.cs
@@ -297,7 +297,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: FailOnUnconfigured
     path: FastMoq.Core/MockFeatures.cs

@@ -153,11 +153,26 @@
 </tbody>
 </table>
 <p>Packages control availability. Namespaces control extension discovery and which APIs light up in the editor.</p>
+<h3 id="aggregate-package-and-ef-core-alignment">Aggregate package and EF Core alignment</h3>
+<p>The aggregate <code>FastMoq</code> package intentionally includes <code>FastMoq.Database</code>, and that helper package brings EF Core test-helper dependencies such as <code>Microsoft.EntityFrameworkCore.InMemory</code>.</p>
+<p>That is a package-topology choice, not a signal that every suite should always take the umbrella package.</p>
+<p>Use this rule during migration:</p>
+<ul>
+<li>keep <code>FastMoq</code> when you want the umbrella package and the EF Core major versions across your graph already align</li>
+<li>prefer <code>FastMoq.Core</code> plus only the helper packages you actually need when you do not want the EF-specific helper dependency surface</li>
+<li>if you intentionally combine the aggregate package with separately pinned EF Core provider packages, align the EF Core major versions across the graph</li>
+</ul>
 <p>Most test projects should start with <code>FastMoq</code> or <code>FastMoq.Core</code>. <code>FastMoq.Abstractions</code> is mainly for custom-provider or advanced extension work, while <code>FastMoq.Analyzers</code> only contributes diagnostics and code fixes at build time.</p>
 <p>Installing <code>FastMoq.Core</code> plus <code>FastMoq.Provider.Moq</code> is not enough by itself. The Moq provider still needs to be selected as the default for that test assembly.</p>
 <p>FastMoq is also not limited to the bundled providers. If your suite uses another mocking library, you can implement <code>IMockingProvider</code> and register your own provider instead of adopting <code>moq</code> or <code>nsubstitute</code>.</p>
 <p>If you need a provider-by-provider answer for what is supported today, see <a href="../getting-started/provider-capabilities.html">Provider Capabilities</a>.</p>
 <p>Treat explicit assembly-default selection as mandatory whenever the migrated test project still uses any non-default provider-specific compatibility or extension surface.</p>
+<p>Current fallback rule of thumb:</p>
+<ul>
+<li><code>GetOrCreateMock&lt;T&gt;()</code> is the default tracked path inside a <code>Mocker</code></li>
+<li><code>CreateStandaloneFastMock&lt;T&gt;()</code> or <code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;()</code> is the detached path when the rewritten collaborator should not be tracked in the parent <code>Mocker</code></li>
+<li><code>AddType(...)</code> or keyed registrations are the honest fallback when interface resolution is ambiguous and the test really means one specific implementation or role</li>
+</ul>
 <p>For example, <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>VerifyLogger(...)</code>, and <code>Protected()</code> still mean <code>moq</code>, while <code>AsNSubstitute()</code> and <code>Received(...)</code> mean <code>nsubstitute</code>.</p>
 <p>For the built-in <code>moq</code> provider, and for <code>nsubstitute</code> after its package is referenced, the shortest path is <a href="../../api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html">FastMoqDefaultProviderAttribute</a>:</p>
 <pre><code class="lang-csharp">using FastMoq.Providers;
@@ -282,6 +297,7 @@ public sealed class TestAssemblyProviderBootstrap
 <li>keep compatibility APIs at the edge of the suite, usually in a temporary wrapper or base-class migration layer</li>
 <li>when a shared helper already needs editing, prefer jumping straight to the provider-first or typed-helper destination instead of preserving the compatibility shape one more time</li>
 </ul>
+<p>Do not keep a dedicated <code>Mocker</code> alive just because an older helper used detached Moq creation. Detached provider-first creation already exists today: use <code>CreateStandaloneFastMock&lt;T&gt;()</code> when you are already inside a <code>Mocker</code>, or <code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;()</code> when you need the provider-selected handle directly.</p>
 <p>Analyzer notes:</p>
 <ul>
 <li><code>FMOQ0013</code> warns on raw <code>IServiceProvider</code>, <code>IServiceScopeFactory</code>, and <code>IServiceScope</code> shims, plus manual scope-factory extraction, and pushes them toward the typed helper path</li>
@@ -378,7 +394,7 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Run(&quot;alpha&quot;), TimesSpec.On
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:55 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:28 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
       
           </div>
         </div>

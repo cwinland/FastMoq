@@ -21,7 +21,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorModel.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorModel
     path: FastMoq.Core/Models/ConstructorModel.cs
@@ -86,7 +86,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorModel.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorInfo
     path: FastMoq.Core/Models/ConstructorModel.cs
@@ -118,7 +118,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorModel.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ParameterList
     path: FastMoq.Core/Models/ConstructorModel.cs
@@ -150,7 +150,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorModel.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ToString
     path: FastMoq.Core/Models/ConstructorModel.cs
@@ -182,7 +182,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorModel.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/ConstructorModel.cs
@@ -222,7 +222,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorModel.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/ConstructorModel.cs
@@ -261,7 +261,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorModel.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetHashCode
     path: FastMoq.Core/Models/ConstructorModel.cs

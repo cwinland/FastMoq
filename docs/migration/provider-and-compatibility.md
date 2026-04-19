@@ -39,6 +39,18 @@ Use this table when package names and in-editor namespace discovery drift apart 
 
 Packages control availability. Namespaces control extension discovery and which APIs light up in the editor.
 
+### Aggregate package and EF Core alignment
+
+The aggregate `FastMoq` package intentionally includes `FastMoq.Database`, and that helper package brings EF Core test-helper dependencies such as `Microsoft.EntityFrameworkCore.InMemory`.
+
+That is a package-topology choice, not a signal that every suite should always take the umbrella package.
+
+Use this rule during migration:
+
+- keep `FastMoq` when you want the umbrella package and the EF Core major versions across your graph already align
+- prefer `FastMoq.Core` plus only the helper packages you actually need when you do not want the EF-specific helper dependency surface
+- if you intentionally combine the aggregate package with separately pinned EF Core provider packages, align the EF Core major versions across the graph
+
 Most test projects should start with `FastMoq` or `FastMoq.Core`. `FastMoq.Abstractions` is mainly for custom-provider or advanced extension work, while `FastMoq.Analyzers` only contributes diagnostics and code fixes at build time.
 
 Installing `FastMoq.Core` plus `FastMoq.Provider.Moq` is not enough by itself. The Moq provider still needs to be selected as the default for that test assembly.
@@ -48,6 +60,12 @@ FastMoq is also not limited to the bundled providers. If your suite uses another
 If you need a provider-by-provider answer for what is supported today, see [Provider Capabilities](../getting-started/provider-capabilities.md).
 
 Treat explicit assembly-default selection as mandatory whenever the migrated test project still uses any non-default provider-specific compatibility or extension surface.
+
+Current fallback rule of thumb:
+
+- `GetOrCreateMock<T>()` is the default tracked path inside a `Mocker`
+- `CreateStandaloneFastMock<T>()` or `MockingProviderRegistry.Default.CreateMock<T>()` is the detached path when the rewritten collaborator should not be tracked in the parent `Mocker`
+- `AddType(...)` or keyed registrations are the honest fallback when interface resolution is ambiguous and the test really means one specific implementation or role
 
 For example, `GetMock<T>()`, direct `Mock<T>` access, `VerifyLogger(...)`, and `Protected()` still mean `moq`, while `AsNSubstitute()` and `Received(...)` mean `nsubstitute`.
 
@@ -175,6 +193,8 @@ Two practical rules help here:
 
 - keep compatibility APIs at the edge of the suite, usually in a temporary wrapper or base-class migration layer
 - when a shared helper already needs editing, prefer jumping straight to the provider-first or typed-helper destination instead of preserving the compatibility shape one more time
+
+Do not keep a dedicated `Mocker` alive just because an older helper used detached Moq creation. Detached provider-first creation already exists today: use `CreateStandaloneFastMock<T>()` when you are already inside a `Mocker`, or `MockingProviderRegistry.Default.CreateMock<T>()` when you need the provider-selected handle directly.
 
 Analyzer notes:
 

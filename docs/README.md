@@ -14,6 +14,14 @@ If you are coming from the last public `3.0.0` package, the biggest changes in t
 - explicit policy surfaces for constructor fallback, method fallback, known-type resolution, and optional-parameter behavior
 - expanded migration guidance, executable examples, and generated API coverage
 
+## Provider-First Authoring Ladder
+
+Use this order when you are deciding which example or helper shape to copy into a new or actively edited test:
+
+1. Start with provider-neutral helpers such as `GetOrCreateMock(...)`, `Verify(...)`, `VerifyLogged(...)`, `VerifyNoOtherCalls(...)`, `WhenHttpRequest(...)`, and `AddType(...)`.
+2. Use tracked `IFastMock<T>` provider extensions such as `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, or `AsNSubstitute()` when the selected provider package exposes them and the arrange step still needs provider-specific syntax.
+3. Use explicit `AsMoq()`, raw provider-native APIs, or compatibility wrappers only for the remaining gaps such as protected members, `out` or `ref` verification, or other provider-specific pockets.
+
 ## 📚 Documentation Structure
 
 ### 🚀 [Getting Started](./getting-started/README.md)
@@ -33,6 +41,24 @@ Perfect for developers new to FastMoq. Learn the basics and write your first tes
 - Understanding the architecture
 - Common patterns and best practices
 - Troubleshooting guide
+
+### 🔄 [Migration Guide](./migration/README.md)
+
+Practical guidance for moving from the public `3.0.0` release toward the current `4.3.0` provider-first patterns.
+
+- Recommended API ladder
+- Migration decision table
+- Package and provider bootstrap guidance
+- Old-to-new API replacements and compatibility exceptions
+
+### 🔎 [API Reference](./api/index.md)
+
+Use the docs-side API overview when you want example-first entry points before dropping into the generated YAML pages.
+
+- Example-first API routes
+- Quick reference for common types
+- Provider contract entry points
+- Generated namespace and type reference
 
 ### 📊 [Feature Parity](./feature-parity/README.md)
 
@@ -112,6 +138,12 @@ Practical guidance for moving from the `3.0.0` public release toward the current
 | **Background Jobs** | [Background Services](./cookbook/README.md#background-services-testing) | [Executable Testing Examples](./samples/testing-examples.md) |
 | **Blazor Apps** | [bUnit and Blazor test migration](./migration/bunit-and-blazor-testing.md) | [Executable Testing Examples](./samples/testing-examples.md) |
 
+Direct routes:
+
+- Provider-first authoring: [Getting Started](./getting-started/README.md), [Testing Guide](./getting-started/testing-guide.md), and [API quick reference](./api/quick-reference.md)
+- Migration cleanup: [Migration Guide](./migration/README.md), [Provider and compatibility guidance](./migration/provider-and-compatibility.md), and [API replacements and migration exceptions](./migration/api-replacements-and-exceptions.md)
+- Troubleshooting provider or package mismatches: [Provider selection](./getting-started/provider-selection.md), [Provider capabilities](./getting-started/provider-capabilities.md), and [Getting Started package choices](./getting-started/README.md#package-choices)
+
 Package note: `FastMoq` is the aggregate package. Provider contracts for custom providers and advanced extensions live in `FastMoq.Abstractions`, `FastMoq.Core` keeps the provider-neutral runtime, shared Azure SDK helpers live in the `FastMoq.Azure.*` namespaces, EF-specific helpers live in `FastMoq.Database`, Azure Functions worker and HTTP-trigger helpers live in `FastMoq.AzureFunctions.Extensions`, provider-specific adapters live in `FastMoq.Provider.*`, web helpers live in `FastMoq.Web.Extensions`, and analyzer assets ship with both `FastMoq` and `FastMoq.Core` by default while the primary runtime calls stay in the `FastMoq` or `FastMoq.Extensions` namespaces.
 
 Web helper note: if your test project references the aggregate `FastMoq` package, the web helpers are already included. If your test project references `FastMoq.Core` directly, add `FastMoq.Web` before using helpers such as `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, or `AddHttpContextAccessor(...)`.
@@ -157,26 +189,26 @@ FastMoq is designed for **developer productivity** and **maintainable tests**:
 ### 1. Foundation (30 minutes)
 
 1. Read [Getting Started](./getting-started/README.md)
-2. Try the [first test example](./getting-started/README.md#your-first-test)
-3. Understand [MockerTestBase](./getting-started/README.md#mockertestbaset)
+2. Read the [Testing Guide](./getting-started/testing-guide.md#start-here)
+3. Keep the [API quick reference](./api/quick-reference.md) nearby for type lookups while you write tests
 
-### 2. Practical Application (1 hour)
+### 2. Raw Mock Cleanup (1 hour)
 
-1. Pick a relevant [cookbook recipe](./cookbook/README.md)
-2. Try it in your own project
-3. Explore [advanced setup options](./getting-started/README.md#advanced-setup-options)
+1. Read the [Recommended API ladder](./migration/README.md#recommended-api-ladder)
+2. Use [API replacements and migration exceptions](./migration/api-replacements-and-exceptions.md) for the high-churn old-to-new rewrites
+3. Keep migration-only Moq pockets explicit instead of letting them leak back into general-purpose helpers
 
-### 3. Production Readiness (2-3 hours)
+### 3. Ambiguity And Multi-Instance Cases (30 minutes)
 
-1. Study a complete [sample application](./samples/README.md)
-2. Review the current sample and migration guidance
-3. Plan your [migration strategy](./migration/README.md)
+1. Read [Keyed services and same-type dependencies](./getting-started/testing-guide.md#keyed-services-and-same-type-dependencies)
+2. Read [Provider and compatibility guidance](./migration/provider-and-compatibility.md)
+3. Use the detached and tracked decision tables before introducing a fresh `Mocker` just to get a second mock
 
-### 4. Mastery (Ongoing)
+### 4. Equality And Verification Semantics (30 minutes)
 
-1. Explore all [cookbook patterns](./cookbook/README.md)
-2. Adapt [sample applications](./samples/README.md) to your domain
-3. Contribute back to the community
+1. Read [MockModel equality semantics](./getting-started/testing-guide.md#mockmodel-equality-semantics)
+2. Read the reflection-provider caveats in [Provider capabilities](./getting-started/provider-capabilities.md#reflection-provider)
+3. Use [Executable testing examples](./samples/testing-examples.md) when you want detached and tracked verification examples backed by repository tests
 
 ## 🤝 Community and Support
 

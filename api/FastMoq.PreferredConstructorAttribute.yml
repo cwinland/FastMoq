@@ -15,7 +15,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/PreferredConstructorAttribute.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: PreferredConstructorAttribute
     path: FastMoq.Core/PreferredConstructorAttribute.cs

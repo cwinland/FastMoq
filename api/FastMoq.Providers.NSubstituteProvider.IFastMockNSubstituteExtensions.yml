@@ -22,7 +22,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMockNSubstituteExtensions
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
@@ -65,7 +65,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AsNSubstitute
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
@@ -121,7 +121,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Received
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
@@ -160,7 +160,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Received
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
@@ -201,7 +201,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ReceivedWithAnyArgs
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
@@ -240,7 +240,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: DidNotReceive
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
@@ -279,7 +279,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: DidNotReceiveWithAnyArgs
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
@@ -318,7 +318,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ClearReceivedCalls
     path: FastMoq.Provider.NSubstitute/Providers/NSubstitute/IFastMockNSubstituteExtensions.cs

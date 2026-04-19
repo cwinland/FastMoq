@@ -391,8 +391,10 @@ Mocks.Verify&lt;IOrderGateway&gt;(x =&gt; x.Publish(&quot;alpha&quot;), TimesSpe
 <p>Practical note:</p>
 <ul>
 <li>this is a baseline provider, not a drop-in replacement for full Moq semantics</li>
+<li>verification is best-effort: only direct method-call expressions are supported, direct constant arguments are compared with <code>Equals(...)</code>, and richer matcher or predicate semantics are not interpreted</li>
 <li>if your migrated tests rely on <code>GetMock&lt;T&gt;()</code>, direct <code>Mock&lt;T&gt;</code> access, <code>Protected()</code>, or <code>VerifyLogger(...)</code>, they should not stay on reflection</li>
 </ul>
+<p>If argument intent matters beyond direct constant equality, prefer a provider that exposes richer matcher behavior or assert on the observable result instead of treating reflection verification as equivalent to Moq or NSubstitute matcher semantics.</p>
 <p>Recommended style:</p>
 <pre><code class="lang-csharp">using var providerScope = MockingProviderRegistry.Push(&quot;reflection&quot;);
 var dependency = Mocks.GetOrCreateMock&lt;IOrderGateway&gt;();
@@ -452,7 +454,7 @@ Mocks.VerifyNoOtherCalls&lt;IOrderGateway&gt;();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:55 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:28 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
       
           </div>
         </div>

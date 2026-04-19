@@ -1,7 +1,7 @@
 using FastMoq.Extensions;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;

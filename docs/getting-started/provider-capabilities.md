@@ -282,7 +282,10 @@ Important implementation constraints:
 Practical note:
 
 - this is a baseline provider, not a drop-in replacement for full Moq semantics
+- verification is best-effort: only direct method-call expressions are supported, direct constant arguments are compared with `Equals(...)`, and richer matcher or predicate semantics are not interpreted
 - if your migrated tests rely on `GetMock<T>()`, direct `Mock<T>` access, `Protected()`, or `VerifyLogger(...)`, they should not stay on reflection
+
+If argument intent matters beyond direct constant equality, prefer a provider that exposes richer matcher behavior or assert on the observable result instead of treating reflection verification as equivalent to Moq or NSubstitute matcher semantics.
 
 Recommended style:
 

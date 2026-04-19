@@ -95,6 +95,14 @@
 <li>Auto-mock / auto-create: default mock creation and constructor injection when no explicit mapping exists.</li>
 </ol>
 <p>That distinction matters because the API choice communicates intent.</p>
+<h3 id="equality-intent-in-matcher-style-expressions">Equality intent in matcher-style expressions</h3>
+<p>When you do step into provider-native matcher predicates, make the equality intent obvious instead of relying on readers to infer what <code>==</code> means for a particular type.</p>
+<ul>
+<li>record or value-object arguments can legitimately use value equality, for example <code>command =&gt; command == expectedCommand</code> or <code>command =&gt; command.Equals(expectedCommand)</code> when the type is intentionally value-based</li>
+<li>mutable class arguments usually need either identity or property-based intent, for example <code>session =&gt; ReferenceEquals(session, expectedSession)</code> when the exact instance matters</li>
+<li>if neither pure value equality nor identity is the real requirement, match the stable property that explains the behavior, such as <code>message =&gt; message.Id == expectedId</code></li>
+</ul>
+<p>That same rule applies whether the arrange side uses <code>It.Is(...)</code>, <code>Arg.Is(...)</code>, or another provider-native matcher surface.</p>
 <h2 id="getorcreatemockt-vs-addtype"><a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;()</a> vs <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddType__1_System_Func_FastMoq_Mocker___0__System_Boolean_System_Object___">AddType(...)</a></h2>
 <p>These are not interchangeable.</p>
 <h3 id="use-getorcreatemockt-when">Use <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;()</a> when</h3>
@@ -127,6 +135,43 @@ repoMock.Setup(x =&gt; x.Load(123)).Returns(order);
 <ul>
 <li><code>FMOQ0022</code> warns when an <code>AddType(...)</code> rewrite comes from a tracked mock/object path and the same file still uses tracked-resolution APIs or property helpers for that service</li>
 </ul>
+<h3 id="ambiguous-interface-and-detached-fallback-decision-table">Ambiguous interface and detached fallback decision table</h3>
+<p>Current limitation:</p>
+<ul>
+<li><code>GetOrCreateMock&lt;T&gt;()</code> can throw <code>AmbiguousImplementationException</code> for interface types when multiple concrete implementations are loaded and FastMoq cannot infer which implementation the test means</li>
+</ul>
+<p>Treat that as a resolution-shape decision, not as a reason to keep retrying unkeyed tracked mocks.</p>
+<table>
+<thead>
+<tr>
+<th>If the test needs...</th>
+<th>Preferred path</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>one tracked dependency in the current <code>Mocker</code></td>
+<td><a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;()</a></td>
+<td>default tracked path reused by later <code>GetObject&lt;T&gt;()</code> and <code>Verify(...)</code> calls</td>
+</tr>
+<tr>
+<td>a second distinct role of the same abstraction in the tracked graph</td>
+<td>keyed <a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_GetOrCreateMock__1_FastMoq_MockRequestOptions_">GetOrCreateMock&lt;T&gt;()</a>, <a href="../../api/FastMoq.Mocker.html">AddKeyedType(...)</a>, or <code>CreateFastMock&lt;T&gt;()</code> when you intentionally want a new tracked registration</td>
+<td>keeps public vs private or primary vs secondary roles separate inside the parent <code>Mocker</code></td>
+</tr>
+<tr>
+<td>a detached collaborator or manual wiring outside the tracked graph</td>
+<td><code>CreateStandaloneFastMock&lt;T&gt;()</code> or <code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;()</code></td>
+<td>creates a provider-first handle that is not registered as the parent tracked dependency</td>
+</tr>
+<tr>
+<td>a specific concrete implementation behind an ambiguous interface</td>
+<td><a class="xref" href="../../api/FastMoq.Mocker.html#FastMoq_Mocker_AddType__1_System_Func_FastMoq_Mocker___0__System_Boolean_System_Object___">AddType(...)</a> or <a href="../../api/FastMoq.Mocker.html">AddKeyedType(...)</a></td>
+<td>makes the intended implementation explicit instead of asking FastMoq to guess</td>
+</tr>
+</tbody>
+</table>
 <h2 id="tracked-vs-standalone-fast-mocks">Tracked vs Standalone Fast Mocks</h2>
 <p>Use <code>GetOrCreateMock&lt;T&gt;()</code> for the normal tracked dependency inside the current <code>Mocker</code>.</p>
 <p>Use <code>CreateFastMock&lt;T&gt;()</code> when you intentionally want to create a new tracked registration immediately.</p>
@@ -143,6 +188,23 @@ var detachedGateway = Mocks.CreateStandaloneFastMock&lt;IEmailGateway&gt;();
 
 var manuallyWiredService = new CheckoutService(detachedGateway.Instance);
 </code></pre>
+<h3 id="detached-verification-and-async-returning-members">Detached verification and async-returning members</h3>
+<p>Tracked mocks use <code>Mocks.Verify&lt;T&gt;(...)</code> because the <code>Mocker</code> already owns the registration.</p>
+<p>Detached mocks use <code>MockingProviderRegistry.Default.Verify(...)</code> because the handle is not registered in the parent tracked collection.</p>
+<p>That provider-neutral detached verification shape still works for methods that return <code>Task</code> or <code>Task&lt;T&gt;</code> when the verification expression intentionally discards the return value:</p>
+<pre><code class="lang-csharp">var emailGateway = MockingProviderRegistry.Default.CreateMock&lt;IEmailGateway&gt;();
+var service = new CheckoutService(emailGateway.Instance);
+
+await service.NotifyFinanceAsync(CancellationToken.None);
+
+MockingProviderRegistry.Default.Verify(
+    emailGateway,
+    x =&gt; x.SendAsync(&quot;finance@contoso.test&quot;, CancellationToken.None),
+    TimesSpec.Once);
+
+MockingProviderRegistry.Default.VerifyNoOtherCalls(emailGateway);
+</code></pre>
+<p>Use tracked verification when the dependency lives in the current <code>Mocker</code>. Use detached verification when the test created an out-of-band <code>IFastMock&lt;T&gt;</code> handle directly.</p>
 <p>Use <code>CreateFastMock&lt;T&gt;()</code> only when you want the new registration to become the tracked mock returned later by <code>GetOrCreateMock&lt;T&gt;()</code>.</p>
 <h2 id="typed-iserviceprovider-helpers">Typed IServiceProvider Helpers</h2>
 <p>Framework-heavy tests should not fake <code>IServiceProvider</code> with a single mocked <code>GetService(Type)</code> callback that returns the same object for every request.</p>
@@ -646,6 +708,7 @@ var resolvedPublicRepo = Mocks.GetKeyedObject&lt;IBlobRepository&gt;(&quot;publi
 <li>if both concerns matter, keep most tests explicit and add one small keyed wiring-focused test</li>
 </ul>
 <p>Ordinary unit tests can stay ordinary. The important rule is: if swapping the keyed dependencies would be a bug, the test should not collapse them into one double.</p>
+<p>If the problem is not keyed DI but an <code>AmbiguousImplementationException</code> from multiple loaded implementations of the same interface, take the same explicit approach: use <code>AddType(...)</code> when the test means one concrete implementation, or step outside the parent tracked graph with <code>CreateStandaloneFastMock&lt;T&gt;()</code> or <code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;()</code> when you really need a detached double.</p>
 <p>Analyzer note:</p>
 <ul>
 <li><code>FMOQ0015</code> warns on unkeyed <code>GetOrCreateMock&lt;T&gt;()</code>, <code>GetMock&lt;T&gt;()</code>, <code>GetRequiredMock&lt;T&gt;()</code>, and <code>AddType&lt;T&gt;(...)</code> usage when the target type has multiple keyed constructor parameters of that same abstraction and the current file is not already using keyed setup.</li>
@@ -855,7 +918,7 @@ Mocks.UseLenientPreset();
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:55 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:28 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
       
           </div>
         </div>

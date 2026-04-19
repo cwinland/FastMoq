@@ -119,7 +119,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.Supplemental.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Mocker
     path: FastMoq.Core/Mocker.Supplemental.cs
@@ -283,7 +283,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: fileSystem
     path: FastMoq.Core/Mocker.cs
@@ -312,7 +312,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: creatingTypeList
     path: FastMoq.Core/Mocker.cs
@@ -341,7 +341,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: mockCollection
     path: FastMoq.Core/Mocker.cs
@@ -370,7 +370,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorHistory
     path: FastMoq.Core/Mocker.cs
@@ -401,7 +401,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggingCallback
     path: FastMoq.Core/Mocker.cs
@@ -432,7 +432,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: OptionalParameterResolution
     path: FastMoq.Core/Mocker.cs
@@ -463,7 +463,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Policy
     path: FastMoq.Core/Mocker.cs
@@ -494,7 +494,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ExceptionLog
     path: FastMoq.Core/Mocker.cs
@@ -525,7 +525,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: LogEntries
     path: FastMoq.Core/Mocker.cs
@@ -556,7 +556,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: HttpClient
     path: FastMoq.Core/Mocker.cs
@@ -587,7 +587,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Uri
     path: FastMoq.Core/Mocker.cs
@@ -618,7 +618,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Behavior
     path: FastMoq.Core/Mocker.cs
@@ -649,7 +649,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: UseStrictPreset
     path: FastMoq.Core/Mocker.cs
@@ -680,7 +680,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: UseLenientPreset
     path: FastMoq.Core/Mocker.cs
@@ -711,7 +711,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -742,7 +742,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -777,7 +777,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -812,7 +812,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -847,7 +847,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -885,7 +885,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Mocker.cs
@@ -923,7 +923,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
@@ -973,7 +973,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
@@ -1025,7 +1025,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
@@ -1066,7 +1066,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
@@ -1109,7 +1109,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddType
     path: FastMoq.Core/Mocker.cs
@@ -1151,7 +1151,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
@@ -1197,7 +1197,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
@@ -1239,7 +1239,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
@@ -1282,7 +1282,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
@@ -1327,7 +1327,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKeyedType
     path: FastMoq.Core/Mocker.cs
@@ -1371,7 +1371,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddFileSystemAbstractionMapping
     path: FastMoq.Core/Mocker.cs
@@ -1399,7 +1399,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKnownType
     path: FastMoq.Core/Mocker.cs
@@ -1440,7 +1440,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddKnownType
     path: FastMoq.Core/Mocker.cs
@@ -1488,7 +1488,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddInjections
     path: FastMoq.Core/Mocker.cs
@@ -1532,7 +1532,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
@@ -1573,7 +1573,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
@@ -1613,7 +1613,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
@@ -1648,7 +1648,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
@@ -1704,7 +1704,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
@@ -1742,7 +1742,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
@@ -1780,7 +1780,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetKeyedObject
     path: FastMoq.Core/Mocker.cs
@@ -1820,7 +1820,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObject
     path: FastMoq.Core/Mocker.cs
@@ -1858,7 +1858,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
@@ -1898,7 +1898,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddProperties
     path: FastMoq.Core/Mocker.cs
@@ -1938,7 +1938,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
@@ -1976,7 +1976,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstance
     path: FastMoq.Core/Mocker.cs
@@ -2016,7 +2016,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
@@ -2054,7 +2054,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateInstanceByType
     path: FastMoq.Core/Mocker.cs
@@ -2094,7 +2094,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: HasParameterlessConstructor
     path: FastMoq.Core/Mocker.cs
@@ -2132,7 +2132,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
@@ -2168,7 +2168,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNativeMock
     path: FastMoq.Core/Mocker.cs
@@ -2209,7 +2209,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockModel
     path: FastMoq.Core/Mocker.cs
@@ -2244,7 +2244,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
@@ -2280,7 +2280,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetFileSystem
     path: FastMoq.Core/Mocker.cs
@@ -2310,7 +2310,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
@@ -2350,7 +2350,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
@@ -2390,7 +2390,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetList
     path: FastMoq.Core/Mocker.cs
@@ -2432,7 +2432,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
@@ -2468,7 +2468,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodArgData
     path: FastMoq.Core/Mocker.cs
@@ -2506,7 +2506,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMethodDefaultData
     path: FastMoq.Core/Mocker.cs
@@ -2542,7 +2542,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
@@ -2577,7 +2577,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
@@ -2615,7 +2615,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetArgData
     path: FastMoq.Core/Mocker.cs
@@ -2653,7 +2653,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
@@ -2695,7 +2695,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
@@ -2739,7 +2739,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
@@ -2783,7 +2783,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
@@ -2829,7 +2829,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
@@ -2871,7 +2871,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: InvokeMethod
     path: FastMoq.Core/Mocker.cs
@@ -2915,7 +2915,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
@@ -2955,7 +2955,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
@@ -2997,7 +2997,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
@@ -3033,7 +3033,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
@@ -3071,7 +3071,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
@@ -3111,7 +3111,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
@@ -3153,7 +3153,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
@@ -3189,7 +3189,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethod
     path: FastMoq.Core/Mocker.cs
@@ -3227,7 +3227,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
@@ -3267,7 +3267,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallMethodAsync
     path: FastMoq.Core/Mocker.cs
@@ -3309,7 +3309,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetStringContent
     path: FastMoq.Core/Mocker.cs
@@ -3345,7 +3345,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredObject
     path: FastMoq.Core/Mocker.cs
@@ -3380,7 +3380,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.Disposal.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/Mocker.Disposal.cs
@@ -3410,7 +3410,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.Disposal.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: DisposeAsync
     path: FastMoq.Core/Mocker.Disposal.cs
@@ -3443,7 +3443,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.Disposal.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Dispose
     path: FastMoq.Core/Mocker.Disposal.cs
@@ -3481,7 +3481,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.Disposal.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: DisposeAsyncCore
     path: FastMoq.Core/Mocker.Disposal.cs
@@ -3515,7 +3515,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -3592,7 +3592,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMockWithConstructorArgs
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -3637,7 +3637,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -3678,7 +3678,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOrCreateMockWithConstructorArgs
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -3723,7 +3723,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -3767,7 +3767,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -3813,7 +3813,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -3857,7 +3857,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -3903,7 +3903,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -3938,7 +3938,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -3976,7 +3976,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -4009,7 +4009,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetRequiredTrackedMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -4047,7 +4047,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Verify
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -4085,7 +4085,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: VerifyNoOtherCalls
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -4118,7 +4118,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateStandaloneFastMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -4160,7 +4160,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateStandaloneFastMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -4199,7 +4199,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.ProviderVerify.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateFastMock
     path: FastMoq.Core/Mocker.ProviderVerify.cs
@@ -4237,7 +4237,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.Supplemental.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: BuildExpression
     path: FastMoq.Core/Mocker.Supplemental.cs
@@ -4272,7 +4272,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Mocker.Supplemental.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Scenario
     path: FastMoq.Core/Mocker.Supplemental.cs

@@ -15,7 +15,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/IHistoryModel.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: IHistoryModel
     path: FastMoq.Core/Models/IHistoryModel.cs

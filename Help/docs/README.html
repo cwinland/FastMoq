@@ -85,6 +85,13 @@
 <li>explicit policy surfaces for constructor fallback, method fallback, known-type resolution, and optional-parameter behavior</li>
 <li>expanded migration guidance, executable examples, and generated API coverage</li>
 </ul>
+<h2 id="provider-first-authoring-ladder">Provider-First Authoring Ladder</h2>
+<p>Use this order when you are deciding which example or helper shape to copy into a new or actively edited test:</p>
+<ol>
+<li>Start with provider-neutral helpers such as <code>GetOrCreateMock(...)</code>, <code>Verify(...)</code>, <code>VerifyLogged(...)</code>, <code>VerifyNoOtherCalls(...)</code>, <code>WhenHttpRequest(...)</code>, and <code>AddType(...)</code>.</li>
+<li>Use tracked <code>IFastMock&lt;T&gt;</code> provider extensions such as <code>Setup(...)</code>, <code>SetupGet(...)</code>, <code>SetupSequence(...)</code>, or <code>AsNSubstitute()</code> when the selected provider package exposes them and the arrange step still needs provider-specific syntax.</li>
+<li>Use explicit <code>AsMoq()</code>, raw provider-native APIs, or compatibility wrappers only for the remaining gaps such as protected members, <code>out</code> or <code>ref</code> verification, or other provider-specific pockets.</li>
+</ol>
 <h2 id="-documentation-structure">📚 Documentation Structure</h2>
 <h3 id="-getting-started">🚀 <a href="getting-started/README.html">Getting Started</a></h3>
 <p>Perfect for developers new to FastMoq. Learn the basics and write your first test in minutes.</p>
@@ -102,6 +109,22 @@
 <li>Understanding the architecture</li>
 <li>Common patterns and best practices</li>
 <li>Troubleshooting guide</li>
+</ul>
+<h3 id="-migration-guide">🔄 <a href="migration/README.html">Migration Guide</a></h3>
+<p>Practical guidance for moving from the public <code>3.0.0</code> release toward the current <code>4.3.0</code> provider-first patterns.</p>
+<ul>
+<li>Recommended API ladder</li>
+<li>Migration decision table</li>
+<li>Package and provider bootstrap guidance</li>
+<li>Old-to-new API replacements and compatibility exceptions</li>
+</ul>
+<h3 id="-api-reference">🔎 <a href="api/index.html">API Reference</a></h3>
+<p>Use the docs-side API overview when you want example-first entry points before dropping into the generated YAML pages.</p>
+<ul>
+<li>Example-first API routes</li>
+<li>Quick reference for common types</li>
+<li>Provider contract entry points</li>
+<li>Generated namespace and type reference</li>
 </ul>
 <h3 id="-feature-parity">📊 <a href="feature-parity/README.html">Feature Parity</a></h3>
 <p>Comprehensive comparison of FastMoq with other popular mocking frameworks.</p>
@@ -144,7 +167,7 @@
 <p>Summary of the major architecture, packaging, API, and documentation changes after the May 12, 2025 <code>3.0.0</code> baseline.</p>
 <h3 id="-breaking-changes">⚠️ <a href="breaking-changes/README.html">Breaking Changes</a></h3>
 <p>Intentional v4 breaking changes, with migration notes for changed behavior.</p>
-<h3 id="-migration-guide">🔄 <a href="migration/README.html">Migration Guide</a></h3>
+<h3 id="-migration-guide-1">🔄 <a href="migration/README.html">Migration Guide</a></h3>
 <p>Practical guidance for moving from the <code>3.0.0</code> public release toward the current v4 provider-first patterns.</p>
 <ul>
 <li>Complete analyzer catalog and package-aware migration guidance</li>
@@ -219,6 +242,12 @@
 </tr>
 </tbody>
 </table>
+<p>Direct routes:</p>
+<ul>
+<li>Provider-first authoring: <a href="getting-started/README.html">Getting Started</a>, <a href="getting-started/testing-guide.html">Testing Guide</a>, and <a href="api/quick-reference.html">API quick reference</a></li>
+<li>Migration cleanup: <a href="migration/README.html">Migration Guide</a>, <a href="migration/provider-and-compatibility.html">Provider and compatibility guidance</a>, and <a href="migration/api-replacements-and-exceptions.html">API replacements and migration exceptions</a></li>
+<li>Troubleshooting provider or package mismatches: <a href="getting-started/provider-selection.html">Provider selection</a>, <a href="getting-started/provider-capabilities.html">Provider capabilities</a>, and <a href="getting-started/README.html#package-choices">Getting Started package choices</a></li>
+</ul>
 <p>Package note: <code>FastMoq</code> is the aggregate package. Provider contracts for custom providers and advanced extensions live in <code>FastMoq.Abstractions</code>, <code>FastMoq.Core</code> keeps the provider-neutral runtime, shared Azure SDK helpers live in the <code>FastMoq.Azure.*</code> namespaces, EF-specific helpers live in <code>FastMoq.Database</code>, Azure Functions worker and HTTP-trigger helpers live in <code>FastMoq.AzureFunctions.Extensions</code>, provider-specific adapters live in <code>FastMoq.Provider.*</code>, web helpers live in <code>FastMoq.Web.Extensions</code>, and analyzer assets ship with both <code>FastMoq</code> and <code>FastMoq.Core</code> by default while the primary runtime calls stay in the <code>FastMoq</code> or <code>FastMoq.Extensions</code> namespaces.</p>
 <p>Web helper note: if your test project references the aggregate <code>FastMoq</code> package, the web helpers are already included. If your test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.Web</code> before using helpers such as <code>CreateHttpContext(...)</code>, <code>CreateControllerContext(...)</code>, <code>SetupClaimsPrincipal(...)</code>, <code>AddHttpContext(...)</code>, or <code>AddHttpContextAccessor(...)</code>.</p>
 <p>Azure SDK helper note: if your test project references the aggregate <code>FastMoq</code> package, the shared Azure SDK helpers are already included. If your test project references <code>FastMoq.Core</code> directly, add <code>FastMoq.Azure</code> before using <code>PageableBuilder</code>, the credential helpers, Azure-oriented configuration/service-provider helpers, or the client registration helpers.</p>
@@ -256,26 +285,26 @@
 <h3 id="1-foundation-30-minutes">1. Foundation (30 minutes)</h3>
 <ol>
 <li>Read <a href="getting-started/README.html">Getting Started</a></li>
-<li>Try the <a href="getting-started/README.html#your-first-test">first test example</a></li>
-<li>Understand <a href="getting-started/README.html#mockertestbaset">MockerTestBase</a></li>
+<li>Read the <a href="getting-started/testing-guide.html#start-here">Testing Guide</a></li>
+<li>Keep the <a href="api/quick-reference.html">API quick reference</a> nearby for type lookups while you write tests</li>
 </ol>
-<h3 id="2-practical-application-1-hour">2. Practical Application (1 hour)</h3>
+<h3 id="2-raw-mock-cleanup-1-hour">2. Raw Mock Cleanup (1 hour)</h3>
 <ol>
-<li>Pick a relevant <a href="cookbook/README.html">cookbook recipe</a></li>
-<li>Try it in your own project</li>
-<li>Explore <a href="getting-started/README.html#advanced-setup-options">advanced setup options</a></li>
+<li>Read the <a href="migration/README.html#recommended-api-ladder">Recommended API ladder</a></li>
+<li>Use <a href="migration/api-replacements-and-exceptions.html">API replacements and migration exceptions</a> for the high-churn old-to-new rewrites</li>
+<li>Keep migration-only Moq pockets explicit instead of letting them leak back into general-purpose helpers</li>
 </ol>
-<h3 id="3-production-readiness-2-3-hours">3. Production Readiness (2-3 hours)</h3>
+<h3 id="3-ambiguity-and-multi-instance-cases-30-minutes">3. Ambiguity And Multi-Instance Cases (30 minutes)</h3>
 <ol>
-<li>Study a complete <a href="samples/README.html">sample application</a></li>
-<li>Review the current sample and migration guidance</li>
-<li>Plan your <a href="migration/README.html">migration strategy</a></li>
+<li>Read <a href="getting-started/testing-guide.html#keyed-services-and-same-type-dependencies">Keyed services and same-type dependencies</a></li>
+<li>Read <a href="migration/provider-and-compatibility.html">Provider and compatibility guidance</a></li>
+<li>Use the detached and tracked decision tables before introducing a fresh <code>Mocker</code> just to get a second mock</li>
 </ol>
-<h3 id="4-mastery-ongoing">4. Mastery (Ongoing)</h3>
+<h3 id="4-equality-and-verification-semantics-30-minutes">4. Equality And Verification Semantics (30 minutes)</h3>
 <ol>
-<li>Explore all <a href="cookbook/README.html">cookbook patterns</a></li>
-<li>Adapt <a href="samples/README.html">sample applications</a> to your domain</li>
-<li>Contribute back to the community</li>
+<li>Read <a href="getting-started/testing-guide.html#mockmodel-equality-semantics">MockModel equality semantics</a></li>
+<li>Read the reflection-provider caveats in <a href="getting-started/provider-capabilities.html#reflection-provider">Provider capabilities</a></li>
+<li>Use <a href="samples/testing-examples.html">Executable testing examples</a> when you want detached and tracked verification examples backed by repository tests</li>
 </ol>
 <h2 id="-community-and-support">🤝 Community and Support</h2>
 <h3 id="getting-help">Getting Help</h3>
@@ -331,7 +360,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:55 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:28 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
       
           </div>
         </div>

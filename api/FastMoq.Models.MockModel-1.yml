@@ -27,7 +27,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: MockModel
     path: FastMoq.Core/Models/MockModelT.cs
@@ -104,7 +104,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: TypedFastMock
     path: FastMoq.Core/Models/MockModelT.cs
@@ -137,7 +137,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Type
     path: FastMoq.Core/Models/MockModelT.cs
@@ -171,7 +171,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Core/Models/MockModelT.cs
@@ -204,7 +204,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CompareTo
     path: FastMoq.Core/Models/MockModelT.cs
@@ -247,7 +247,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/MockModelT.cs
@@ -286,7 +286,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetHashCode
     path: FastMoq.Core/Models/MockModelT.cs
@@ -330,7 +330,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: op_Equality
     path: FastMoq.Core/Models/MockModelT.cs
@@ -381,7 +381,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: op_Inequality
     path: FastMoq.Core/Models/MockModelT.cs
@@ -432,7 +432,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CompareTo
     path: FastMoq.Core/Models/MockModelT.cs
@@ -482,7 +482,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/MockModelT.cs
@@ -535,7 +535,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetHashCode
     path: FastMoq.Core/Models/MockModelT.cs
@@ -585,7 +585,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/MockModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Equals
     path: FastMoq.Core/Models/MockModelT.cs

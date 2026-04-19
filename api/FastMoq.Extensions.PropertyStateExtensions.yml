@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/PropertyStateExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: PropertyStateExtensions
     path: FastMoq.Core/Extensions/PropertyStateExtensions.cs
@@ -55,7 +55,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/PropertyStateExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddPropertyState
     path: FastMoq.Core/Extensions/PropertyStateExtensions.cs
@@ -115,7 +115,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/PropertyStateExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddPropertyState
     path: FastMoq.Core/Extensions/PropertyStateExtensions.cs

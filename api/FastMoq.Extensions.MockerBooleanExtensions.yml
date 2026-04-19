@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerBooleanExtensions
     path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
@@ -55,7 +55,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Contains
     path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
@@ -104,7 +104,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Contains
     path: FastMoq.Core/Extensions/MockerBooleanExtensions.cs

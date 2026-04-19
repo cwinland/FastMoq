@@ -158,6 +158,26 @@ var manuallyWiredService = new CheckoutService(detachedGateway.Instance);
 
 `CreateFastMock<T>()` is the tracked-registration counterpart. It adds the new mock to the current `Mocker`, so it is not the right replacement for a legacy detached mock when the same unkeyed service type is already tracked.
 
+### Detached verification example
+
+When the example needs a detached provider-backed handle with no parent `Mocker` registration, create it directly from the selected provider and keep the verification provider neutral:
+
+```csharp
+var auditSink = MockingProviderRegistry.Default.CreateMock<IAuditSink>();
+var service = new CheckoutService(auditSink.Instance);
+
+await service.CompleteAsync("order-42", CancellationToken.None);
+
+MockingProviderRegistry.Default.Verify(
+    auditSink,
+    x => x.WriteAsync("order-42", CancellationToken.None),
+    TimesSpec.Once);
+
+MockingProviderRegistry.Default.VerifyNoOtherCalls(auditSink);
+```
+
+That `Verify(...)` shape still works for `Task`-returning members because the verification expression intentionally discards the return value. Use `Mocks.Verify<T>(...)` only when the dependency is tracked inside the current `Mocker`.
+
 ## Example 1: Order Processing Workflow
 
 The order-processing example models a typical service that coordinates several collaborators:

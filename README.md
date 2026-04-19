@@ -4,9 +4,15 @@ FastMoq is a .NET testing framework for auto-mocking, dependency injection, and 
 
 ## Start Here
 
-- If you are evaluating the project for the first time, start with `Why FastMoq`, `Packages`, and the documentation links below.
-- If you want the shortest path to writing a test, go straight to [Getting Started Guide](./docs/getting-started).
+- If you are evaluating the project for the first time, read `Why FastMoq` first, then `Packages`, then the documentation links below.
+- If you want a first test that works under the default `reflection` provider, start with [Getting Started Guide](./docs/getting-started).
+- If you want tracked `.Setup(...)` syntax, read [Provider Selection Guide](./docs/getting-started/provider-selection.md) before copying any Moq-fluent examples.
 - If you are upgrading from the `3.0.0` line, go straight to [Migration Guide](./docs/migration).
+- Front-door examples use a couple of different assertion styles. Match the assertion library your test project already uses and keep that style consistent within the project.
+- Authoring ladder for the current v4 line:
+    1. provider-neutral helper first, such as `GetOrCreateMock(...)`, `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, `WhenHttpRequest(...)`, or `AddType(...)`
+    2. tracked `IFastMock<T>` provider extensions such as `Setup(...)`, `SetupGet(...)`, or `AsNSubstitute()` when the selected provider package exposes them
+    3. explicit `AsMoq()` or provider-native escape hatches only for the remaining provider-specific gaps
 
 ## Release Highlights Since 3.0.0
 
@@ -73,7 +79,9 @@ public class OrderProcessingServiceTests
 }
 ```
 
-Using FastMoq:
+Using FastMoq with the optional Moq-fluent setup path:
+
+This path requires `FastMoq.Provider.Moq`, `Moq`, and explicit `moq` provider selection for the test assembly.
 
 ```csharp
 public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService>
@@ -106,18 +114,22 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
 
 The FastMoq version removes explicit mock declarations, subject construction, and logger-plumbing code while still allowing provider-specific setup when you need it.
 
+If you want a copy-paste example that works under the default provider without Moq-specific setup, start with [Getting Started Guide](./docs/getting-started).
+
 ## 📚 Documentation
 
 ### Quick Links
 
 - **🚀 [Getting Started Guide](./docs/getting-started)** - Your first FastMoq test in 5 minutes
 - **🧪 [Testing Guide](./docs/getting-started/testing-guide.md)** - Repo-native guidance for `GetOrCreateMock<T>()`, `AddType(...)`, `DbContext`, `IFileSystem`, and known types
+- **🔄 [Migration Guide](./docs/migration)** - Practical old-to-new guidance for the `3.0.0` to `4.3.0` transition
+- **👨‍🍳 [Cookbook](./docs/cookbook)** - Real-world patterns and recipes with compatibility-only pockets labeled explicitly
+- **🔎 [API Reference Overview](./docs/api/index.md)** - Example-first API entry points plus quick routes into the generated reference
 - **🌐 [Web Helper Guidance](./docs/getting-started/testing-guide.md#controller-testing)** - Controller, `HttpContext`, `IHttpContextAccessor`, and claims-principal test setup
 - **🔌 [Provider Selection Guide](./docs/getting-started/provider-selection.md)** - How to register, select, and bootstrap providers for a test assembly
 - **📋 [Provider Capabilities](./docs/getting-started/provider-capabilities.md)** - What `moq`, `nsubstitute`, and `reflection` support today, with recommended usage patterns
-- **👨‍🍳 [Cookbook](./docs/cookbook)** - Real-world patterns and recipes
-- **🏗️ [Sample Applications](./docs/samples)** - Complete examples with Azure integration
 - **🧪 [Executable Testing Examples](./docs/samples/testing-examples.md)** - Repo-backed service examples using the current FastMoq API direction
+- **🏗️ [Sample Applications](./docs/samples)** - Complete examples with Azure integration
 - **📊 [Feature Comparison](./docs/feature-parity)** - FastMoq vs Moq/NSubstitute
 - **📈 [Performance Benchmarks](./docs/benchmarks)** - Productivity and performance metrics
 
@@ -197,6 +209,8 @@ dotnet add package FastMoq.Web
 
 `GetMockDbContext<TContext>()` keeps the same main call shape in the `FastMoq` namespace. If you install `FastMoq`, the EF helpers are included. If you install `FastMoq.Core` directly, add `FastMoq.Database` for DbContext support.
 
+The aggregate `FastMoq` package intentionally includes `FastMoq.Database`, which in turn brings EF Core test-helper dependencies such as `Microsoft.EntityFrameworkCore.InMemory`. If your suite already pins relational or provider-specific EF Core packages on a different major version, either align the EF Core major versions across the graph or consume `FastMoq.Core` plus only the helper packages you actually need.
+
 `PageableBuilder`, `AddTokenCredential(...)`, `AddDefaultAzureCredential(...)`, `CreateAzureConfiguration(...)`, `CreateAzureServiceProvider(...)`, and the Azure client registration helpers live in the `FastMoq.Azure.*` namespaces.
 
 `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)`, `CreateHttpRequestData(...)`, `CreateHttpResponseData(...)`, `ReadBodyAsStringAsync(...)`, and `ReadBodyAsJsonAsync<T>(...)` live in `FastMoq.AzureFunctions.Extensions`, while the generic `CreateTypedServiceProvider(...)` and `AddServiceProvider(...)` helpers stay in `FastMoq.Extensions`.
@@ -225,6 +239,10 @@ For a temporary override in a specific async scope, use `MockingProviderRegistry
 - .NET 10
 
 ## Quick Example
+
+If you want a copy-paste example that works under the default provider, use [Getting Started Guide](./docs/getting-started) first.
+
+The snippet below is the optional Moq-fluent path, so it assumes `FastMoq.Provider.Moq` is installed and `moq` is selected for the test assembly.
 
 ```csharp
 public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService>

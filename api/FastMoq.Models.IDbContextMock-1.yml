@@ -16,7 +16,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMockT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: IDbContextMock
     path: FastMoq.Database/Models/IDbContextMockT.cs
@@ -76,7 +76,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMockT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSets
     path: FastMoq.Database/Models/IDbContextMockT.cs

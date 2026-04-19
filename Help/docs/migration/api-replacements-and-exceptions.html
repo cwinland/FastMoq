@@ -113,6 +113,27 @@
 </tr>
 </tbody>
 </table>
+<h3 id="equality-intent-in-migrated-matcher-expressions">Equality intent in migrated matcher expressions</h3>
+<p>Make equality intent explicit while you migrate matcher predicates.</p>
+<pre><code class="lang-csharp">var expectedCommand = new OrderCommand(&quot;cust-42&quot;, 149.90m);
+mock.Setup(x =&gt; x.Send(It.Is&lt;OrderCommand&gt;(command =&gt; command == expectedCommand)));
+
+var expectedSession = new UploadSession();
+mock.Setup(x =&gt; x.Attach(It.Is&lt;UploadSession&gt;(session =&gt; ReferenceEquals(session, expectedSession))));
+
+mock.Setup(x =&gt; x.Publish(It.Is&lt;OutboundMessage&gt;(message =&gt; message.Id == expectedId)));
+</code></pre>
+<p>Use those three patterns deliberately:</p>
+<ul>
+<li>value equality for records or value objects when <code>==</code> or <code>Equals(...)</code> is intentionally part of the type contract</li>
+<li>identity with <code>ReferenceEquals(...)</code> when the same mutable instance matters</li>
+<li>property-based intent when neither pure value equality nor identity is the real requirement</li>
+</ul>
+<p>Reflection-provider caveat:</p>
+<ul>
+<li>reflection verification only supports direct method-call expressions and only compares direct constant arguments with <code>Equals(...)</code></li>
+<li>captured variables and richer provider-native matcher semantics are not interpreted there, so do not present reflection verification as equivalent to Moq or NSubstitute matcher behavior</li>
+</ul>
 <p>If you still need raw Moq APIs after moving to <code>GetOrCreateMock&lt;T&gt;()</code>, step through <code>AsMoq()</code> explicitly. Otherwise stay on <code>Instance</code>, <code>Reset()</code>, <code>GetObject&lt;T&gt;()</code>, and the provider-neutral verification surface.</p>
 <p>Shared helper signature example:</p>
 <pre><code class="lang-csharp">// Old helper boundary
@@ -431,6 +452,39 @@ logger.VerifyLogger(LogLevel.Information, &quot;Processing started&quot;);
 <li><code>CreateStandaloneFastMock&lt;T&gt;()</code> does not register it</li>
 <li><code>CreateFastMock&lt;T&gt;()</code> is therefore not a safe replacement for <code>CreateDetachedMock&lt;T&gt;()</code> when the same unkeyed type is already tracked</li>
 </ul>
+<p>Current tracked-versus-detached decision table:</p>
+<table>
+<thead>
+<tr>
+<th>If the migrated double should...</th>
+<th>Use...</th>
+<th>Verify with...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stay as the normal tracked dependency in the current <code>Mocker</code></td>
+<td><code>GetOrCreateMock&lt;T&gt;()</code></td>
+<td><code>Mocks.Verify&lt;T&gt;(...)</code></td>
+</tr>
+<tr>
+<td>become a new tracked registration immediately</td>
+<td><code>CreateFastMock&lt;T&gt;()</code></td>
+<td><code>Mocks.Verify&lt;T&gt;(...)</code></td>
+</tr>
+<tr>
+<td>stay detached but still come from the current <code>Mocker</code></td>
+<td><code>CreateStandaloneFastMock&lt;T&gt;()</code></td>
+<td><code>MockingProviderRegistry.Default.Verify(...)</code></td>
+</tr>
+<tr>
+<td>stay detached with no parent <code>Mocker</code> registration at all</td>
+<td><code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;()</code></td>
+<td><code>MockingProviderRegistry.Default.Verify(...)</code></td>
+</tr>
+</tbody>
+</table>
+<p>If <code>GetOrCreateMock&lt;T&gt;()</code> fails with <code>AmbiguousImplementationException</code>, do not loop back to another unkeyed tracked mock. Move to <code>AddType(...)</code> when the test means one specific implementation, or move to one of the detached paths when the collaborator truly lives outside the parent tracked graph.</p>
 <p>Before, detached legacy mock creation:</p>
 <pre><code class="lang-csharp">var emailGateway = Mocks.CreateDetachedMock&lt;IEmailGateway&gt;();
 emailGateway.Setup(x =&gt; x.SendAsync(&quot;finance@contoso.test&quot;)).Returns(Task.CompletedTask);
@@ -443,6 +497,17 @@ emailGateway.Setup(x =&gt; x.SendAsync(&quot;finance@contoso.test&quot;)).Return
 
 var service = new CheckoutService(emailGateway.Instance);
 </code></pre>
+<p>Detached provider-neutral verification keeps the assert side out of <code>AsMoq().Verify(...)</code>, even when the member returns <code>Task</code> or <code>Task&lt;T&gt;</code>:</p>
+<pre><code class="lang-csharp">await service.NotifyFinanceAsync(CancellationToken.None);
+
+MockingProviderRegistry.Default.Verify(
+    emailGateway,
+    x =&gt; x.SendAsync(&quot;finance@contoso.test&quot;),
+    TimesSpec.Once);
+
+MockingProviderRegistry.Default.VerifyNoOtherCalls(emailGateway);
+</code></pre>
+<p>The verification expression still uses <code>Expression&lt;Action&lt;T&gt;&gt;</code>; the async-returning call is valid there because the return value is intentionally discarded in the assertion expression.</p>
 <p>Before, adding a legacy Moq mock into the tracked collection:</p>
 <pre><code class="lang-csharp">var clock = new Mock&lt;IClock&gt;();
 Mocks.AddMock(clock);
@@ -675,6 +740,16 @@ var component = Mocks.CreateInstance&lt;MyComponent&gt;();
 <pre><code class="lang-csharp">var fastMock = Mocks.GetOrCreateMock&lt;IOrderRepository&gt;();
 var moqMock = fastMock.AsMoq();
 </code></pre>
+<p>When the mock should stay detached instead of joining the parent tracked graph, start from a detached provider-first handle and keep verification provider neutral there too:</p>
+<pre><code class="lang-csharp">var detachedRepository = MockingProviderRegistry.Default.CreateMock&lt;IOrderRepository&gt;();
+
+detachedRepository.Setup(x =&gt; x.Load(123)).Returns(order);
+
+MockingProviderRegistry.Default.Verify(
+    detachedRepository,
+    x =&gt; x.Load(123),
+    TimesSpec.Once);
+</code></pre>
 <p>If you want the shortest Moq-specific form in v4, use the provider-package shortcut methods directly on <code>IFastMock&lt;T&gt;</code>:</p>
 <pre><code class="lang-csharp">Mocks.GetOrCreateMock&lt;IOrderRepository&gt;()
     .Setup(x =&gt; x.Load(123))
@@ -689,6 +764,7 @@ var moqMock = fastMock.AsMoq();
 </ul>
 <h2 id="expected-migration-exceptions">Expected migration exceptions</h2>
 <p>Some migrated tests should intentionally stay on raw Moq. That is normal in v4.</p>
+<p><code>.AsMoq().Verify(...)</code> is the escape hatch, not the default just because the member returns <code>Task</code>. When the assertion can be expressed as <code>Mocks.Verify&lt;T&gt;(...)</code> for tracked mocks or <code>MockingProviderRegistry.Default.Verify(...)</code> for detached mocks, prefer the provider-neutral verification surface first.</p>
 <p>For practical fallback patterns when you do not want to stay on Moq, see <a href="../getting-started/provider-capabilities.html#alternatives-when-a-moq-feature-is-unavailable">Provider Capabilities: Alternatives when a Moq feature is unavailable</a>.</p>
 <h3 id="imemorycache-and-icacheentry"><code>IMemoryCache</code> and <code>ICacheEntry</code></h3>
 <p>Property-setter and cache-entry tests are still a common Moq-only pocket because they often rely on <code>SetupSet(...)</code> or <code>SetupAllProperties()</code>. For ordinary interface collaborators, FastMoq now has first-party answers in <code>AddPropertySetterCapture&lt;TService, TValue&gt;(...)</code> and <code>AddPropertyState&lt;TService&gt;(...)</code>, but <code>ICacheEntry</code> tests often still need the broader Moq shape.</p>
@@ -804,7 +880,7 @@ Use <code>ExecuteThrows&lt;TException&gt;()</code> or <code>ExecuteThrowsAsync&l
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:55 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:28 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
       
           </div>
         </div>

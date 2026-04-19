@@ -21,7 +21,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ObservableExceptionLog
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
@@ -84,7 +84,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
@@ -115,7 +115,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Items
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
@@ -146,7 +146,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CollectionChanged
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
@@ -177,7 +177,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: PropertyChanged
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
@@ -208,7 +208,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetEnumerator
     path: FastMoq.Core/Models/ObservableExceptionLog.cs
@@ -241,7 +241,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ObservableExceptionLog.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Count
     path: FastMoq.Core/Models/ObservableExceptionLog.cs

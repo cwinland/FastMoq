@@ -289,6 +289,8 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
 <ul>
 <li>replace existing <code>GetMock&lt;T&gt;()</code> calls by default when you are already touching the test, and keep them only when the goal is minimal churn from v3 and you are intentionally accepting a legacy compatibility API that will be removed in v5</li>
 <li>use <code>GetOrCreateMock&lt;T&gt;()</code> for the provider-first tracked mock handle</li>
+<li>use <code>CreateStandaloneFastMock&lt;T&gt;()</code> when the test already has a <code>Mocker</code> but needs a detached provider-first handle outside the tracked graph</li>
+<li>use <code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;()</code> when the test needs a detached provider-first handle with no parent <code>Mocker</code> registration at all</li>
 <li>use provider-package extensions such as <code>AsMoq()</code>, direct <code>Setup(...)</code> on <code>IFastMock&lt;T&gt;</code>, or <code>AsNSubstitute()</code> when a test still needs provider-specific arrangement behavior</li>
 <li>use provider-neutral verification such as <code>Verify(...)</code>, <code>VerifyNoOtherCalls(...)</code>, <code>VerifyLogged(...)</code>, and <code>TimesSpec</code></li>
 </ul>
@@ -316,9 +318,19 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
 <td>Preferred v4 migration target for touched tests</td>
 </tr>
 <tr>
+<td><code>CreateFastMock&lt;T&gt;()</code></td>
+<td>You intentionally want a new tracked registration created immediately in the current <code>Mocker</code></td>
+<td>Do not use it as a detached replacement when the same unkeyed service is already tracked</td>
+</tr>
+<tr>
 <td><code>CreateStandaloneFastMock&lt;T&gt;()</code></td>
 <td>You need a detached extra double or manual wiring outside the tracked graph</td>
 <td>Provider-first replacement for legacy detached mock creation</td>
+</tr>
+<tr>
+<td><code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;()</code></td>
+<td>You need a detached provider-first handle that should not be registered in a parent <code>Mocker</code></td>
+<td>Pair it with <code>MockingProviderRegistry.Default.Verify(...)</code> and <code>VerifyNoOtherCalls(...)</code> for detached assertions</td>
 </tr>
 <tr>
 <td><code>GetObject&lt;T&gt;()</code></td>
@@ -342,6 +354,12 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
 </tr>
 </tbody>
 </table>
+<p>If <code>GetOrCreateMock&lt;T&gt;()</code> fails with <code>AmbiguousImplementationException</code>, choose the explicit path that matches the test intent:</p>
+<ul>
+<li>use <code>AddType(...)</code> or <code>AddKeyedType(...)</code> when the test really means one concrete implementation</li>
+<li>use keyed tracked setup or <code>CreateFastMock&lt;T&gt;()</code> when the parent <code>Mocker</code> needs distinct tracked roles of the same abstraction</li>
+<li>use <code>CreateStandaloneFastMock&lt;T&gt;()</code> or <code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;()</code> when the collaborator should stay detached from the parent tracked graph</li>
+</ul>
 <p>In this guide, &quot;previous FastMoq versions&quot; means tests and helpers written against the public <code>3.0.0</code> package or against pre-v4 assumptions, especially code that assumes:</p>
 <ul>
 <li>Moq is the implicit default surface</li>
@@ -475,7 +493,7 @@ dotnet_diagnostic.FMOQ0012.severity = suggestion
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:55 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:28 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
       
           </div>
         </div>

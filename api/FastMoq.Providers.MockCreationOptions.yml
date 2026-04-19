@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: MockCreationOptions
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
@@ -78,7 +78,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
@@ -122,7 +122,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Strict
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
@@ -153,7 +153,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CallBase
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
@@ -184,7 +184,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorArgs
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
@@ -215,7 +215,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/MockCreationOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AllowNonPublic
     path: FastMoq.Abstractions/Providers/MockCreationOptions.cs

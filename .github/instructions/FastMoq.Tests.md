@@ -34,7 +34,7 @@ public class MyComponentTests : MockerTestBase<MyComponent>
 ```
 
 ### 🔍 Verification Patterns
-- **Use FluentAssertions**: `.Should().Be()`, `.Should().NotBeNull()`, etc.
+- **Match the test project's assertion style**: `.Should().Be()`, `.Should().NotBeNull()`, and Shouldly-style assertions are all acceptable when they match the surrounding project.
 - **Verify mock interactions**: Always verify expected calls were made
 - **Test edge cases**: Null inputs, empty collections, exception scenarios
 - **Use `VerifyLogger` pattern**: For testing logging behavior
