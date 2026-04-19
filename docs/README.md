@@ -25,6 +25,7 @@ Perfect for developers new to FastMoq. Learn the basics and write your first tes
 - [Provider selection and setup](./getting-started/provider-selection.md)
 - [Provider capabilities matrix](./getting-started/provider-capabilities.md)
 - [Repo-native testing guide](./getting-started/testing-guide.md)
+- [Tracked vs standalone provider-first mocks](./getting-started/testing-guide.md#tracked-vs-standalone-fast-mocks)
 - [Typed `IServiceProvider` helpers](./getting-started/testing-guide.md#typed-iserviceprovider-helpers)
 - [Explicit constructor selection in tests](./getting-started/testing-guide.md#explicit-constructor-selection-in-tests)
 - [Web helper guidance for controller and request tests](./getting-started/testing-guide.md#controller-testing)
@@ -209,7 +210,7 @@ We welcome contributions! See our:
 
 ## 🏷️ Version Information
 
-This documentation tracks the published FastMoq `4.1.0` line and the current v4 package layout.
+This documentation tracks the FastMoq `4.3.0` line and the current v4 package layout.
 
 ---
 

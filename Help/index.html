@@ -16,6 +16,7 @@
       <link rel="stylesheet" href="styles/docfx.css">
       <link rel="stylesheet" href="styles/main.css">
       <link rel="stylesheet" href="styles/fastmoq-docs.css">
+      <script defer src="styles/fastmoq-docs.js"></script>
       <meta property="docfx:navrel" content="toc.html">
       <meta property="docfx:tocrel" content="toc.html">
     
@@ -72,7 +73,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="fastmoq-documentation">FastMoq Documentation</h1>
 
-<p>This site combines generated API reference with real-world example documentation for the published FastMoq <code>4.1.0</code> line and the current v4 codebase.</p>
+<p>This site combines generated API reference with repo-backed guidance for the FastMoq <code>4.3.0</code> line and the current v4 codebase.</p>
 <h2 id="new-to-fastmoq">New to FastMoq</h2>
 <ul>
 <li><a href="docs/api/quick-reference.html">Quick reference for common types</a></li>
@@ -83,7 +84,7 @@
 </ul>
 <h2 id="upgrading-to-v4">Upgrading to v4</h2>
 <ul>
-<li><p>The release delta from <code>3.0.0</code> is centered on provider-first architecture, the expanded package split, first-party Azure SDK and Azure Functions helpers, analyzer-by-default aggregate installs, explicit policy surfaces, provider-neutral verification, and the scenario builder.</p>
+<li><p>The release delta from <code>3.0.0</code> is centered on provider-first architecture, the expanded package split, first-party Azure SDK and Azure Functions helpers, analyzer-by-default aggregate installs, explicit policy surfaces, provider-neutral verification, tracked-versus-standalone mock creation, keyed same-type dependency guidance, and the scenario builder.</p>
 </li>
 <li><p>Start with the release summary, then use the breaking-change and migration pages to decide how much compatibility behavior your test suites still need.</p>
 </li>
@@ -109,6 +110,7 @@
 <h2 id="real-world-examples">Real-world examples</h2>
 <p>Use the example pages first when you want to understand how FastMoq is applied in tests, then drop into API reference pages when you need the exact shape of a type or member.</p>
 <ul>
+<li><a href="docs/cookbook/README.html">Cookbook recipes</a></li>
 <li><a href="docs/samples/testing-examples.html">Executable testing examples</a></li>
 <li><a href="docs/samples/README.html">Sample applications overview</a></li>
 <li><a href="FastMoq.TestingExample/README.html">TestingExample project README</a></li>
@@ -209,6 +211,7 @@
 </ul>
 <h2 id="provider-first-apis">Provider-first APIs</h2>
 <p>FastMoq v4 defaults to the built-in reflection provider. Moq remains available as a compatibility provider, and additional providers can be added explicitly.</p>
+<p>Tracked mock access stays on <code>GetOrCreateMock&lt;T&gt;()</code>. Use <code>CreateStandaloneFastMock&lt;T&gt;()</code> or <code>MockingProviderRegistry.Default.CreateMock&lt;T&gt;()</code> when you need a detached extra handle, and use <code>CreateFastMock&lt;T&gt;()</code> only when you intentionally want a new tracked registration in the current <code>Mocker</code>.</p>
 <ul>
 <li><a href="api/FastMoq.Providers.IMockingProvider.html">IMockingProvider</a></li>
 <li><a href="api/FastMoq.Providers.IMockingProviderCapabilities.html">IMockingProviderCapabilities</a></li>
@@ -245,7 +248,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-18 23:49 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:55 UTC</span></div>
       
           </div>
         </div>

@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: HttpTriggerTestExtensions
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
@@ -61,7 +61,7 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpRequestData
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
@@ -103,7 +103,7 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpRequestData
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
@@ -145,7 +145,7 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpResponseData
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
@@ -187,7 +187,7 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpResponseData
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
@@ -229,7 +229,7 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ReadBodyAsStringAsync
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
@@ -271,7 +271,7 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ReadBodyAsJsonAsync
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
@@ -319,7 +319,7 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ReadBodyAsStringAsync
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
@@ -361,7 +361,7 @@ items:
   source:
     remote:
       path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ReadBodyAsJsonAsync
     path: FastMoq.AzureFunctions/Extensions/HttpTriggerTestExtensions.cs

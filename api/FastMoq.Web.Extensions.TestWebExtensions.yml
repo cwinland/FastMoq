@@ -58,7 +58,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: TestWebExtensions
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -96,7 +96,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupClaimsPrincipal
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -135,7 +135,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupClaimsPrincipal
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -177,7 +177,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupClaimsPrincipal
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -221,7 +221,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupClaimsPrincipal
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -262,7 +262,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -301,7 +301,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -340,7 +340,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -381,7 +381,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -417,7 +417,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -458,7 +458,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -497,7 +497,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -538,7 +538,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateControllerContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -574,7 +574,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -613,7 +613,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -652,7 +652,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -693,7 +693,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -729,7 +729,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -770,7 +770,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -809,7 +809,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -850,7 +850,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -893,7 +893,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -934,7 +934,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -977,7 +977,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddHttpContext
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1018,7 +1018,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddHttpContextAccessor
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1061,7 +1061,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddHttpContextAccessor
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1102,7 +1102,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddHttpContextAccessor
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1145,7 +1145,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddHttpContextAccessor
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1186,7 +1186,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddRequestDelegate
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1227,7 +1227,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetRequestHeader
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1268,7 +1268,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetRequestHeaders
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1307,7 +1307,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetRequestBody
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1348,7 +1348,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetRequestBody
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1391,7 +1391,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetRequestJsonBody
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1434,7 +1434,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetQueryString
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1473,7 +1473,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetQueryParameters
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1512,7 +1512,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: SetQueryParameter
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1553,7 +1553,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObjectResultContent
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1595,7 +1595,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObjectResultContent
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1634,7 +1634,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1668,7 +1668,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetOkObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1702,7 +1702,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetBadRequestObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1736,7 +1736,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetConflictObjectResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs
@@ -1770,7 +1770,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Extensions/TestWebExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetNoContentResult
     path: FastMoq.Web/Extensions/TestWebExtensions.cs

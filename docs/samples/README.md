@@ -15,6 +15,7 @@ Those examples are backed by the `FastMoq.TestingExample` project and currently 
 
 - `MockerTestBase<TComponent>` in realistic service tests
 - built-in `IFileSystem` behavior with `MockFileSystem`
+- tracked `GetOrCreateMock<T>()` usage versus detached `CreateStandaloneFastMock<T>()` when a test needs an extra same-type double or manual wiring
 - `VerifyLogged(...)` assertions
 - fluent `Scenario.With(...).When(...).Then(...).Verify(...)` usage inside `MockerTestBase<TComponent>`
 - provider-first verification with `TimesSpec.Once`, `TimesSpec.NeverCalled`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, and `TimesSpec.AtMost(...)`
@@ -56,6 +57,7 @@ The sample test projects intentionally showcase FastMoq extension helpers so you
 ### Constructor & Dependency Injection
 
 - `CreateInstance<T>()` / typed overloads pick the correct constructor and auto‑inject mocks.
+- `CreateStandaloneFastMock<T>()` gives you a detached provider-first double for manual wiring; `CreateFastMock<T>()` registers a tracked mock in the current `Mocker` and should be used only when that tracked registration is the intent.
 - `AddType<TAbstraction>(factory)` to pin specific concrete/instance values (e.g., seeded `Uri` or options).
 
 ### Azure Service Patterns
@@ -118,6 +120,7 @@ The current samples are intentionally focused. Consider extending locally with:
 | Fast default HttpClient | `CreateHttpClient()` | Registers handler + factory if missing |
 | Custom per‑test HTTP behavior | `WhenHttpRequest()` / `WhenHttpRequestJson()` | Provider-neutral request matching and response setup |
 | Mock EF Core context | `GetMockDbContext<T>()` | Auto sets up DbSets; seed data before use |
+| Extra independent same-type double | `CreateStandaloneFastMock<T>()` | Detached provider-first mock; does not register into the current `Mocker` |
 | Replace concrete dependency | `AddType<T>()` | Pin deterministic instances (e.g., clock) |
 | Verify log message | `VerifyLogged(...)` | Provider-safe assertion over captured `ILogger` entries |
 | Extract HTTP content | `GetStringContent` | Use for string assertions |

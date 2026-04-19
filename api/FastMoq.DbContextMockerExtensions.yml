@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: DbContextMockerExtensions
     path: FastMoq.Database/DbContextMockerExtensions.cs
@@ -58,7 +58,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetDbContextHandle
     path: FastMoq.Database/DbContextMockerExtensions.cs
@@ -99,7 +99,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockDbContext
     path: FastMoq.Database/DbContextMockerExtensions.cs
@@ -138,7 +138,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: GetMockDbContext
     path: FastMoq.Database/DbContextMockerExtensions.cs
@@ -173,7 +173,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: TryCreateManagedDbContextInstance
     path: FastMoq.Database/DbContextMockerExtensions.cs
@@ -217,7 +217,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/DbContextMockerExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateLegacyDbContextMock
     path: FastMoq.Database/DbContextMockerExtensions.cs

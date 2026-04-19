@@ -118,6 +118,7 @@ If you are moving tests forward from the public `3.0.0` package or from pre-v4 F
 1. Treat `AddType(...)` as an explicit type-resolution override, not as a general substitute for mocks.
 1. Treat `Strict` as compatibility-only. Use `Behavior` or preset helpers when you mean broader behavior changes.
 1. Prefer the newer provider-first retrieval and verification surfaces when you do not specifically need raw Moq APIs.
+1. Use `CreateStandaloneFastMock<T>()` instead of a second unkeyed tracked mock when you need an extra detached double of the same abstraction.
 1. Use the executable examples in `FastMoq.TestingExample` as the best repo-backed reference for current patterns.
 1. Treat DbContext helpers as an optional database-package concern when consuming `FastMoq.Core` directly.
 
@@ -155,6 +156,7 @@ That means new transition surfaces should build on `IFastMock<T>` plus provider-
 | Use this | When it is the right fit | Notes |
 | --- | --- | --- |
 | `GetOrCreateMock<T>()` | Default setup path for tracked mocks and most interaction verification | Preferred v4 migration target for touched tests |
+| `CreateStandaloneFastMock<T>()` | You need a detached extra double or manual wiring outside the tracked graph | Provider-first replacement for legacy detached mock creation |
 | `GetObject<T>()` | You need the constructed dependency instance, not the tracked wrapper | Useful when the dependency is only consumed as an object during arrange or manual construction |
 | `Mocks.Verify(...)` / `VerifyLogged(...)` | The assertion can be expressed without provider-specific verification APIs | Preferred verification surface for migrated tests |
 | `GetMock<T>()` | Only when you are preserving a stable v3-shaped Moq test with minimal churn during the first stabilization pass | Obsolete compatibility surface and migration target for touched files; recommended default is to replace it with `GetOrCreateMock<T>()` plus v4 provider or package APIs once the suite is stable |

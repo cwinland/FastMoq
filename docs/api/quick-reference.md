@@ -24,6 +24,8 @@ Use this page when you already know the type name and want to jump straight to t
 - [InstanceCreationFlags](../../api/FastMoq.InstanceCreationFlags.yml)
 - [InvocationOptions](../../api/FastMoq.InvocationOptions.yml)
 
+Use the [Mocker](../../api/FastMoq.Mocker.yml) page for the tracked and standalone creation APIs: `GetOrCreateMock<T>()`, `CreateFastMock<T>()`, and `CreateStandaloneFastMock<T>()`.
+
 ## Provider APIs
 
 - [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml)
@@ -67,6 +69,14 @@ If you are writing your own provider instead of using the bundled ones, start wi
 - [MockModel&lt;T&gt;](../../api/FastMoq.Models.MockModel-1.yml)
 - [InstanceModel&lt;TClass&gt;](../../api/FastMoq.Models.InstanceModel-1.yml)
 - [ConstructorHistory](../../api/FastMoq.Models.ConstructorHistory.yml)
+
+## Tracked models and provider escape hatches
+
+- [IFastMock&lt;T&gt;](../../api/FastMoq.Providers.IFastMock-1.yml)
+- [MockModel&lt;T&gt;](../../api/FastMoq.Models.MockModel-1.yml)
+- [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml)
+
+`MockModel` equality is type-based, not instance-based. Use it to reason about mocked service types, not to decide whether two provider-native doubles are the same object.
 
 ## Blazor and web
 

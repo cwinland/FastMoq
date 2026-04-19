@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: MockBehaviorOptions
     path: FastMoq.Core/MockFeatures.cs
@@ -76,7 +76,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Enabled
     path: FastMoq.Core/MockFeatures.cs
@@ -107,7 +107,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Has
     path: FastMoq.Core/MockFeatures.cs
@@ -141,7 +141,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: StrictPreset
     path: FastMoq.Core/MockFeatures.cs
@@ -172,7 +172,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: LenientPreset
     path: FastMoq.Core/MockFeatures.cs
@@ -203,7 +203,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockFeatures.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Clone
     path: FastMoq.Core/MockFeatures.cs

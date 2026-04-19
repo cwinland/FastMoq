@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ComponentState
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
@@ -97,7 +97,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: Component
     path: FastMoq.Web/Blazor/Models/ComponentState.cs
@@ -131,7 +131,7 @@ items:
   source:
     remote:
       path: FastMoq.Web/Blazor/Models/ComponentState.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Web/Blazor/Models/ComponentState.cs

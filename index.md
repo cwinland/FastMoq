@@ -1,6 +1,6 @@
 # FastMoq Documentation
 
-This site combines generated API reference with real-world example documentation for the published FastMoq `4.1.0` line and the current v4 codebase.
+This site combines generated API reference with repo-backed guidance for the FastMoq `4.3.0` line and the current v4 codebase.
 
 ## New to FastMoq
 
@@ -12,7 +12,7 @@ This site combines generated API reference with real-world example documentation
 
 ## Upgrading to v4
 
-- The release delta from `3.0.0` is centered on provider-first architecture, the expanded package split, first-party Azure SDK and Azure Functions helpers, analyzer-by-default aggregate installs, explicit policy surfaces, provider-neutral verification, and the scenario builder.
+- The release delta from `3.0.0` is centered on provider-first architecture, the expanded package split, first-party Azure SDK and Azure Functions helpers, analyzer-by-default aggregate installs, explicit policy surfaces, provider-neutral verification, tracked-versus-standalone mock creation, keyed same-type dependency guidance, and the scenario builder.
 - Start with the release summary, then use the breaking-change and migration pages to decide how much compatibility behavior your test suites still need.
 
 - [Migration guide](docs/migration/README.md)
@@ -34,6 +34,7 @@ This site combines generated API reference with real-world example documentation
 
 Use the example pages first when you want to understand how FastMoq is applied in tests, then drop into API reference pages when you need the exact shape of a type or member.
 
+- [Cookbook recipes](docs/cookbook/README.md)
 - [Executable testing examples](docs/samples/testing-examples.md)
 - [Sample applications overview](docs/samples/README.md)
 - [TestingExample project README](FastMoq.TestingExample/README.md)
@@ -146,6 +147,8 @@ Roslyn analyzers and code fixes for provider-first guidance and migration cleanu
 ## Provider-first APIs
 
 FastMoq v4 defaults to the built-in reflection provider. Moq remains available as a compatibility provider, and additional providers can be added explicitly.
+
+Tracked mock access stays on `GetOrCreateMock<T>()`. Use `CreateStandaloneFastMock<T>()` or `MockingProviderRegistry.Default.CreateMock<T>()` when you need a detached extra handle, and use `CreateFastMock<T>()` only when you intentionally want a new tracked registration in the current `Mocker`.
 
 - [IMockingProvider](api/FastMoq.Providers.IMockingProvider.yml)
 - [IMockingProviderCapabilities](api/FastMoq.Providers.IMockingProviderCapabilities.yml)

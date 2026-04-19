@@ -1,10 +1,10 @@
 # What's New Since 3.0.0
 
-This page summarizes the release delta between the last public `3.0.0` package and the current published `4.2.0` v4 line in this repository.
+This page summarizes the release delta between the last public `3.0.0` package and the current `4.3.0` v4 line in this repository.
 
-## 4.2.0
+## 4.3.0
 
-FastMoq `4.2.0` focuses on provider-first release hardening rather than another large package-boundary shift.
+FastMoq `4.3.0` focuses on provider-first release hardening rather than another large package-boundary shift.
 
 Consumer impact:
 
@@ -12,6 +12,7 @@ Consumer impact:
 - Moq transition messaging is quieter for projects that already reference `FastMoq.Provider.Moq` explicitly, while the bundled-path warning remains available for suites that still rely on the implicit v4 compatibility path
 - provider-neutral property-state, property-setter capture, typed service-scope helpers, and logger-factory helpers round out the common migration gaps that previously forced provider-specific setup noise
 - constructor-resolution failures now surface actionable `InvalidOperationException` guidance instead of generic `NotImplementedException` failures
+- the documentation set now calls out tracked `GetOrCreateMock<T>()` versus detached `CreateStandaloneFastMock<T>()`, keyed same-type dependency guidance, and `MockModel`'s type-oriented equality semantics more directly
 
 Validation run for this change:
 

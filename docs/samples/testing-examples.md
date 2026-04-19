@@ -136,11 +136,27 @@ They demonstrate:
 
 - `MockerTestBase<TComponent>` for normal component creation and dependency auto-injection
 - `Mocks.GetOrCreateMock<T>()` for tracked arrange flows
+- `Mocks.CreateStandaloneFastMock<T>()` when a test needs a detached provider-first handle outside the tracked component graph
 - built-in `IFileSystem` behavior via the predefined `MockFileSystem`
 - typed `IServiceProvider` and Azure Functions `InstanceServices` helper patterns for framework-heavy tests
 - `VerifyLogged(...)` for provider-safe structured logging assertions
 - `Scenario.With(...).When(...).Then(...).Verify(...)` for the fluent scenario style inside `MockerTestBase<TComponent>`
 - provider-first verification through `TimesSpec.Once`, `TimesSpec.NeverCalled`, `TimesSpec.Exactly(...)`, `TimesSpec.AtLeast(...)`, and `TimesSpec.AtMost(...)`
+
+## Tracked vs standalone in these examples
+
+Most executable examples use `GetOrCreateMock<T>()` because the dependency is part of the tracked component graph.
+
+When a test needs an additional same-type double for manual construction or a helper object that should not be registered into the current `Mocker`, use `CreateStandaloneFastMock<T>()` instead:
+
+```csharp
+var trackedGateway = Mocks.GetOrCreateMock<IEmailGateway>();
+var detachedGateway = Mocks.CreateStandaloneFastMock<IEmailGateway>();
+
+var manuallyWiredService = new CheckoutService(detachedGateway.Instance);
+```
+
+`CreateFastMock<T>()` is the tracked-registration counterpart. It adds the new mock to the current `Mocker`, so it is not the right replacement for a legacy detached mock when the same unkeyed service type is already tracked.
 
 ## Example 1: Order Processing Workflow
 

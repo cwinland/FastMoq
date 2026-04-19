@@ -19,7 +19,7 @@ Most recipes here focus on common test shapes and readability first. Some exampl
 
 Testing ASP.NET Core controllers with dependency injection and various scenarios.
 
-These controller examples use the Moq compatibility path for brevity because they demonstrate familiar `Setup(...)`-style arrangements. If you want the lowest-churn v4 migration path, that is still valid. If you are building new tests and do not specifically need Moq-shaped setup, prefer the provider-first guidance in the [Testing Guide](../getting-started/testing-guide.md) and [Provider Selection Guide](../getting-started/provider-selection.md).
+These controller examples use tracked provider-first mocks together with the Moq provider extension package for the arrange-time `Setup(...)` calls. If you want the lowest-churn v4 migration path, that is still valid. If you are building new tests and do not specifically need Moq-shaped setup, keep the controller-testing shape and translate only the arrange syntax per provider. See the [Testing Guide](../getting-started/testing-guide.md) and [Provider Selection Guide](../getting-started/provider-selection.md).
 
 ### Basic Controller Test
 
@@ -73,40 +73,44 @@ public class UsersController : ControllerBase
 
 ```csharp
 using FastMoq;
-using FastMoq.Extensions;
-using Microsoft.Extensions.Options;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Moq;
+using FastMoq.Providers.MoqProvider;
 using Xunit;
 
 public class UsersControllerTests : MockerTestBase<UsersController>
-using Microsoft.Extensions.Options;
 {
     [Fact]
     public async Task GetUser_ShouldReturnOkResult_WhenUserExists()
     {
         // Arrange
-        mocker.AddType<IOptions<WeatherApiOptions>>(() =>
-            Options.Create(new WeatherApiOptions { ApiKey = "test-api-key" }));
+        var userId = 1;
+        var expectedUser = new UserDto
+        {
+            Id = userId,
+            Name = "Jane Doe",
+            Email = "jane@example.com",
+        };
+
+        Mocks.GetOrCreateMock<IUserService>()
+            .Setup(x => x.GetUserAsync(userId))
             .ReturnsAsync(expectedUser);
 
-        mocker.CreateHttpClient(
+        // Act
         var result = await Component.GetUser(userId);
 
         // Assert
         var okResult = result.Result.Should().BeOfType<OkObjectResult>().Subject;
-        okResult.Value.Should().Be(expectedUser);
+        okResult.Value.Should().BeEquivalentTo(expectedUser);
     }
 
     [Fact]
     public async Task GetUser_ShouldReturnNotFound_WhenUserNotFound()
     {
         // Arrange
-        Mocks.GetMock<IUserService>()
-            .Setup(x => x.GetUserAsync(It.IsAny<int>()))
-            .ReturnsAsync((UserDto)null);
+        Mocks.GetOrCreateMock<IUserService>()
+            .Setup(x => x.GetUserAsync(999))
+            .ReturnsAsync((UserDto?)null);
 
         // Act
         var result = await Component.GetUser(999);
@@ -119,29 +123,35 @@ using Microsoft.Extensions.Options;
     public async Task GetUser_ShouldReturnInternalServerError_WhenServiceThrows()
     {
         // Arrange
-        Mocks.GetMock<IUserService>()
-            .Setup(x => x.GetUserAsync(It.IsAny<int>()))
+        Mocks.GetOrCreateMock<IUserService>()
+            .Setup(x => x.GetUserAsync(1))
             .ThrowsAsync(new InvalidOperationException("Database error"));
 
         // Act
         var result = await Component.GetUser(1);
 
         // Assert
-        var statusResult = result.Result.Should().BeOfType<ObjectResult>().Subject;
+        var statusResult = result.Result.Should().BeOfType<StatusCodeResult>().Subject;
         statusResult.StatusCode.Should().Be(500);
-        
-        // Verify logging
-        Mocks.VerifyLogged(LogLevel.Error, "Database error", 1);
     }
 
     [Fact]
     public async Task CreateUser_ShouldReturnCreatedResult_WithValidModel()
     {
         // Arrange
-        var request = new CreateUserRequest { Name = "Jane Doe", Email = "jane@example.com" };
-        var createdUser = new UserDto { Id = 2, Name = request.Name, Email = request.Email };
-        
-        Mocks.GetMock<IUserService>()
+        var request = new CreateUserRequest
+        {
+            Name = "Jane Doe",
+            Email = "jane@example.com",
+        };
+        var createdUser = new UserDto
+        {
+            Id = 2,
+            Name = request.Name,
+            Email = request.Email,
+        };
+
+        Mocks.GetOrCreateMock<IUserService>()
             .Setup(x => x.CreateUserAsync(request))
             .ReturnsAsync(createdUser);
 
@@ -150,7 +160,7 @@ using Microsoft.Extensions.Options;
 
         // Assert
         var createdResult = result.Result.Should().BeOfType<CreatedAtActionResult>().Subject;
-        createdResult.Value.Should().Be(createdUser);
+        createdResult.Value.Should().BeEquivalentTo(createdUser);
         createdResult.ActionName.Should().Be(nameof(UsersController.GetUser));
     }
 }

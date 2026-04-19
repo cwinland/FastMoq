@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockRequestOptions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: MockRequestOptions
     path: FastMoq.Core/MockRequestOptions.cs
@@ -74,7 +74,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockRequestOptions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ServiceKey
     path: FastMoq.Core/MockRequestOptions.cs
@@ -105,7 +105,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockRequestOptions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AllowNonPublicConstructors
     path: FastMoq.Core/MockRequestOptions.cs
@@ -139,7 +139,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockRequestOptions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorArgs
     path: FastMoq.Core/MockRequestOptions.cs

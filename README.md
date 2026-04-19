@@ -259,8 +259,9 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
 
 - `MockerTestBase<TComponent>`: shortest path for service and component tests with automatic construction and dependency injection
 - `Mocker`: standalone entry point when you do not want a test base class
-- `GetMock<T>()`: lowest-churn compatibility path for older Moq-shaped tests in v4
 - `GetOrCreateMock<T>()`: tracked provider-first mock access for the forward v4 and v5 path
+- `CreateStandaloneFastMock<T>()`: detached provider-first mock handle for manual wiring or an additional same-type double outside the tracked graph
+- `CreateFastMock<T>()`: tracked provider-first registration helper when you intentionally want the new mock added immediately; it is not a second independent unkeyed handle
 - `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, and `TimesSpec`: provider-neutral verification surface
 
 ## Learn More

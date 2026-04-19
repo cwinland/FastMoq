@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: PropertySetterCaptureExtensions
     path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
@@ -55,7 +55,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddPropertySetterCapture
     path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
@@ -116,7 +116,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs
-      branch: feat/first-six-priority-issues
+      branch: docs/provider-first-docs-refresh
       repo: https://github.com/cwinland/FastMoq.git
     id: AddPropertySetterCapture
     path: FastMoq.Core/Extensions/PropertySetterCaptureExtensions.cs

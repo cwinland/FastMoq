@@ -16,11 +16,15 @@ This API reference is generated from XML comments in the source projects.
 - [Mocker](../../api/FastMoq.Mocker.yml)
 - [MockerTestBase&lt;TComponent&gt;](../../api/FastMoq.MockerTestBase-1.yml)
 - [ScenarioBuilder&lt;T&gt;](../../api/FastMoq.ScenarioBuilder-1.yml)
+- [IFastMock&lt;T&gt;](../../api/FastMoq.Providers.IFastMock-1.yml)
+- [MockModel&lt;T&gt;](../../api/FastMoq.Models.MockModel-1.yml)
 - [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml)
 - [FunctionContextTestExtensions](../../api/FastMoq.AzureFunctions.Extensions.FunctionContextTestExtensions.yml)
 - [TestWebExtensions](../../api/FastMoq.Web.Extensions.TestWebExtensions.yml)
 
 If you are integrating a non-bundled mocking library, start from [Quick reference for common types](./quick-reference.md) and follow the provider path through `IMockingProvider`, `IMockingProviderCapabilities`, and `MockingProviderRegistry`.
+
+Lifecycle note: tracked creation helpers such as `GetOrCreateMock<T>()` and `CreateFastMock<T>()`, plus detached creation through `CreateStandaloneFastMock<T>()`, are methods on [Mocker](../../api/FastMoq.Mocker.yml) rather than separate API types.
 
 ## Notes
 
