@@ -365,3 +365,7 @@ FodyWeavers.xsd
 /*.zip
 
 !.editorconfig
+
+# Generated DocFX outputs
+/api/
+/Help/
