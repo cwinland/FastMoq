@@ -249,6 +249,24 @@ namespace FastMoq.Analyzers
             isEnabledByDefault: true,
             description: "Bare Verify() on tracked FastMoq mocks usually reflects Verifiable()-style migration leftovers and should be made explicit or removed instead of staying on the provider-native surface.");
 
+        public static readonly DiagnosticDescriptor AvoidFastMockVerifyHelperWrappers = new(
+            DiagnosticIds.AvoidFastMockVerifyHelperWrappers,
+            "Avoid IFastMock.Verify helper wrappers",
+            "Avoid '{0}(...)' wrappers on IFastMock<T> that only forward to FastMoq verification helpers. Keep tracked-versus-detached verification explicit at the call site instead.",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "Custom IFastMock.Verify wrappers hide tracked-versus-detached verification intent and spread another helper surface across the suite even when they only forward to FastMoq's official verification APIs. Prefer calling Mocker.Verify<T>(...) or MockingProviderRegistry.Default.Verify(...) directly at the call site instead of wrapping them behind a new IFastMock-centric helper API.");
+
+        public static readonly DiagnosticDescriptor AvoidProviderSpecificFastMockVerifyHelperWrappers = new(
+            DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers,
+            "Avoid provider-specific IFastMock.Verify wrappers",
+            "Wrapper '{0}(...)' reintroduces provider-specific verification through IFastMock<T>. Use provider-first verification at the call site instead of routing through AsMoq().Verify(...) or provider-specific Times adapters.",
+            Category,
+            DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: "IFastMock.Verify wrappers that route through AsMoq().Verify(...), Moq Verify(...), or TimesSpec-to-Times conversion helpers hide tracked-versus-detached intent and pull provider-specific verification back into shared helper code. Keep those provider-specific escape hatches local to the call site instead of baking them into a new wrapper API.");
+
         public static readonly DiagnosticDescriptor AvoidTrackedMockShimAlias = new(
             DiagnosticIds.AvoidTrackedMockShimAlias,
             "Avoid tracked Mock<T> shim aliases",

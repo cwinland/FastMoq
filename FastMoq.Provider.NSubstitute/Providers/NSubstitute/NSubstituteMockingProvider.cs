@@ -56,7 +56,7 @@ namespace FastMoq.Providers.NSubstituteProvider
         /// </summary>
         public Expression<Func<T, bool>> BuildExpression<T>()
         {
-            return _ => true;
+            return FastArg.AnyExpression<T>();
         }
 
         /// <summary>
@@ -119,6 +119,12 @@ namespace FastMoq.Providers.NSubstituteProvider
 
             times ??= default;
             var target = mock.Instance;
+
+            if (FastArgExpressionParser.ContainsMatcher(expression))
+            {
+                VerifyUsingFastMatchers(target, expression, times.Value);
+                return;
+            }
 
             if (times.Value.Mode == TimesSpecMode.Never)
             {
@@ -241,6 +247,71 @@ namespace FastMoq.Providers.NSubstituteProvider
         {
             var wrapper = wrapperFactory();
             expression.Compile()(wrapper);
+        }
+
+        private static void VerifyUsingFastMatchers<T>(T target, Expression<Action<T>> expression, TimesSpec times) where T : class
+        {
+            var invocation = FastArgExpressionParser.ParseInvocation(expression);
+            var received = target.ReceivedCalls()
+                .Where(call => invocation.Matches(call.GetMethodInfo(), call.GetArguments()))
+                .ToList();
+
+            AssertExpectedInvocationCount(invocation.Method.Name, received.Count, times);
+            if (times.Mode != TimesSpecMode.Never && received.Count > 0)
+            {
+                MarkSpecificCallsVerified(target, received);
+            }
+        }
+
+        private static void AssertExpectedInvocationCount(string methodName, int count, TimesSpec times)
+        {
+            if (times.Mode == TimesSpecMode.Never)
+            {
+                if (count > 0)
+                {
+                    throw new InvalidOperationException($"Expected no calls to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (times.Mode == TimesSpecMode.Exactly)
+            {
+                var expected = times.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.");
+                if (count != expected)
+                {
+                    throw new InvalidOperationException($"Expected exactly {expected} call(s) to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (times.Mode == TimesSpecMode.AtLeast)
+            {
+                var minimum = times.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.");
+                if (count < minimum)
+                {
+                    throw new InvalidOperationException($"Expected at least {minimum} call(s) to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (times.Mode == TimesSpecMode.AtMost)
+            {
+                var maximum = times.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.");
+                if (count > maximum)
+                {
+                    throw new InvalidOperationException($"Expected at most {maximum} call(s) to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (count == 0)
+            {
+                throw new InvalidOperationException($"Expected at least one call to {methodName} but found none.");
+            }
         }
 
         private static (System.Reflection.MethodInfo? method, int argCount) ExtractMethodMeta<T>(Expression<Action<T>> expression)

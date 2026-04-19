@@ -7,9 +7,10 @@ namespace FastMoq
     public partial class Mocker
     {
         /// <summary>
-        /// Builds a wildcard predicate expression using the active mocking provider.
+        /// Builds a wildcard predicate expression for expression-valued arguments.
+        /// Prefer <see cref="FastArg.AnyExpression{T}()" /> in new code.
         /// </summary>
-        public static Expression<Func<T, bool>> BuildExpression<T>() => MockingProviderRegistry.Default.BuildExpression<T>();
+        public static Expression<Func<T, bool>> BuildExpression<T>() => FastArg.AnyExpression<T>();
 
         /// <summary>
         /// Creates a new fluent scenario builder for the specified component type using provider-first creation.

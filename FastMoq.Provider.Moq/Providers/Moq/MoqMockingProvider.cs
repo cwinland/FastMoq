@@ -49,12 +49,11 @@ namespace FastMoq.Providers.MoqProvider
         public bool SupportsLoggerCapture => true;
 
         /// <summary>
-        /// Builds a Moq expression scaffold for provider-specific use.
+        /// Builds a provider-neutral wildcard expression for compatibility with expression-valued arguments.
         /// </summary>
         public Expression<Func<T, bool>> BuildExpression<T>()
         {
-            MoqProviderTransitionWarning.EmitOnce();
-            return It.IsAny<Expression<Func<T, bool>>>();
+            return FastArg.AnyExpression<T>();
         }
 
         /// <summary>
@@ -129,6 +128,8 @@ namespace FastMoq.Providers.MoqProvider
         /// </summary>
         public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
         {
+            ArgumentNullException.ThrowIfNull(expression);
+
             Mock<T>? moqMock = null;
             try
             {
@@ -143,31 +144,33 @@ namespace FastMoq.Providers.MoqProvider
                 return;
             }
 
+            var rewrittenExpression = FastArgMoqExpressionRewriter.Rewrite(expression);
+
             if (times?.Mode == TimesSpecMode.Exactly)
             {
-                moqMock.Verify(expression, Times.Exactly(times.Value.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.")));
+                moqMock.Verify(rewrittenExpression, Times.Exactly(times.Value.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.")));
                 return;
             }
 
             if (times?.Mode == TimesSpecMode.AtLeast)
             {
-                moqMock.Verify(expression, Times.AtLeast(times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.")));
+                moqMock.Verify(rewrittenExpression, Times.AtLeast(times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.")));
                 return;
             }
 
             if (times?.Mode == TimesSpecMode.AtMost)
             {
-                moqMock.Verify(expression, Times.AtMost(times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.")));
+                moqMock.Verify(rewrittenExpression, Times.AtMost(times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.")));
                 return;
             }
 
             if (times?.Mode == TimesSpecMode.Never)
             {
-                moqMock.Verify(expression, Times.Never());
+                moqMock.Verify(rewrittenExpression, Times.Never());
                 return;
             }
 
-            moqMock.Verify(expression);
+            moqMock.Verify(rewrittenExpression);
         }
 
         /// <summary>

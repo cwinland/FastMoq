@@ -123,6 +123,7 @@ namespace FastMoq.Analyzers
 
         public static bool TryGetMethodSymbol(InvocationExpressionSyntax invocation, SemanticModel semanticModel, CancellationToken cancellationToken, out IMethodSymbol? method)
         {
+            semanticModel = GetSemanticModelForNode(invocation, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(invocation, cancellationToken);
             method = symbolInfo.Symbol as IMethodSymbol ?? symbolInfo.CandidateSymbols.OfType<IMethodSymbol>().FirstOrDefault();
             return method is not null;
@@ -246,6 +247,7 @@ namespace FastMoq.Analyzers
 
         public static bool TryGetPropertySymbol(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out IPropertySymbol? property)
         {
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
             property = symbolInfo.Symbol as IPropertySymbol ?? symbolInfo.CandidateSymbols.OfType<IPropertySymbol>().FirstOrDefault();
             return property is not null;
@@ -319,14 +321,15 @@ namespace FastMoq.Analyzers
         private static bool TryResolveTrackedMockOrigin(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out TrackedMockOrigin origin)
         {
             expression = Unwrap(expression);
+            var expressionSemanticModel = GetSemanticModelForNode(expression, semanticModel);
 
             if (expression is InvocationExpressionSyntax invocationExpression &&
-                TryResolveTrackedMockOrigin(invocationExpression, semanticModel, cancellationToken, visitedSymbols, out origin))
+                TryResolveTrackedMockOrigin(invocationExpression, expressionSemanticModel, cancellationToken, visitedSymbols, out origin))
             {
                 return true;
             }
 
-            if (TryResolveTrackedMockOriginFromSymbol(expression, semanticModel, cancellationToken, visitedSymbols, out origin))
+            if (TryResolveTrackedMockOriginFromSymbol(expression, expressionSemanticModel, cancellationToken, visitedSymbols, out origin))
             {
                 return true;
             }
@@ -342,6 +345,8 @@ namespace FastMoq.Analyzers
 
         private static bool TryResolveTrackedMockOrigin(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out TrackedMockOrigin origin)
         {
+            semanticModel = GetSemanticModelForNode(invocationExpression, semanticModel);
+
             if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
             {
                 origin = default;
@@ -385,6 +390,7 @@ namespace FastMoq.Analyzers
 
         private static bool TryResolveTrackedMockOriginFromSymbol(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out TrackedMockOrigin origin)
         {
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
             var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
             if (symbol is null || !visitedSymbols.Add(symbol))
@@ -511,6 +517,23 @@ namespace FastMoq.Analyzers
             }
         }
 
+        internal static SemanticModel GetSemanticModelForNode(SyntaxNode node, SemanticModel semanticModel)
+        {
+            if (node is null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            if (semanticModel is null)
+            {
+                throw new ArgumentNullException(nameof(semanticModel));
+            }
+
+            return node.SyntaxTree == semanticModel.SyntaxTree
+                ? semanticModel
+                : semanticModel.Compilation.GetSemanticModel(node.SyntaxTree);
+        }
+
         public static bool TryResolveDetachedMockOrigin(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out DetachedMockOrigin origin)
         {
             return TryResolveDetachedMockOrigin(expression, semanticModel, cancellationToken, new HashSet<ISymbol>(SymbolEqualityComparer.Default), out origin);
@@ -519,14 +542,15 @@ namespace FastMoq.Analyzers
         private static bool TryResolveDetachedMockOrigin(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out DetachedMockOrigin origin)
         {
             expression = Unwrap(expression);
+            var expressionSemanticModel = GetSemanticModelForNode(expression, semanticModel);
 
             if (expression is InvocationExpressionSyntax invocationExpression &&
-                TryResolveDetachedMockOrigin(invocationExpression, semanticModel, cancellationToken, visitedSymbols, out origin))
+                TryResolveDetachedMockOrigin(invocationExpression, expressionSemanticModel, cancellationToken, visitedSymbols, out origin))
             {
                 return true;
             }
 
-            if (TryResolveDetachedMockOriginFromSymbol(expression, semanticModel, cancellationToken, visitedSymbols, out origin))
+            if (TryResolveDetachedMockOriginFromSymbol(expression, expressionSemanticModel, cancellationToken, visitedSymbols, out origin))
             {
                 return true;
             }
@@ -537,6 +561,8 @@ namespace FastMoq.Analyzers
 
         private static bool TryResolveDetachedMockOrigin(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out DetachedMockOrigin origin)
         {
+            semanticModel = GetSemanticModelForNode(invocationExpression, semanticModel);
+
             if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
             {
                 origin = default;
@@ -574,6 +600,7 @@ namespace FastMoq.Analyzers
 
         private static bool TryResolveDetachedMockOriginFromSymbol(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out DetachedMockOrigin origin)
         {
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
             var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
             if (symbol is null || !visitedSymbols.Add(symbol))
@@ -602,6 +629,8 @@ namespace FastMoq.Analyzers
         private static bool CanReuseDetachedFastMockExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             expression = Unwrap(expression);
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
+
             if (!IsFastMoqFastMockType(semanticModel.GetTypeInfo(expression, cancellationToken).Type))
             {
                 return false;
@@ -630,6 +659,7 @@ namespace FastMoq.Analyzers
 
         private static bool IsDefaultMockingProviderAccess(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
             var property = symbolInfo.Symbol as IPropertySymbol ?? symbolInfo.CandidateSymbols.OfType<IPropertySymbol>().FirstOrDefault();
             return property is not null &&

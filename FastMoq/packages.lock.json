@@ -597,10 +597,10 @@
           "Azure.Storage.Blobs": "[12.24.0, )",
           "Azure.Storage.Queues": "[12.22.0, )",
           "FastMoq.Core": "[1.0.0, )",
-          "Microsoft.Extensions.Configuration": "[10.*, )",
-          "Microsoft.Extensions.DependencyInjection": "[10.*, )",
-          "Microsoft.Extensions.Logging": "[10.*, )",
-          "Microsoft.Extensions.Options": "[10.*, )"
+          "Microsoft.Extensions.Configuration": "[10.0.6, )",
+          "Microsoft.Extensions.DependencyInjection": "[10.0.6, )",
+          "Microsoft.Extensions.Logging": "[10.0.6, )",
+          "Microsoft.Extensions.Options": "[10.0.6, )"
         }
       },
       "fastmoq.azurefunctions": {
@@ -643,7 +643,7 @@
         "type": "Project",
         "dependencies": {
           "FastMoq.Core": "[1.0.0, )",
-          "System.Configuration.ConfigurationManager": "[10.*, )",
+          "System.Configuration.ConfigurationManager": "[10.0.6, )",
           "bunit": "[2.7.2, )"
         }
       },
@@ -738,7 +738,7 @@
       },
       "Microsoft.Extensions.Configuration": {
         "type": "CentralTransitive",
-        "requested": "[10.*, )",
+        "requested": "[10.0.6, )",
         "resolved": "10.0.6",
         "contentHash": "lYQ9S1FGXIWIU7243RimdAXQYsFDeLhSSZvbSDwbeI/kCzZ4MIYXpp3kMQ+bDJXwl9pzMRIYkd4f9zGqcYxfAQ==",
         "dependencies": {
@@ -748,7 +748,7 @@
       },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "CentralTransitive",
-        "requested": "[10.*, )",
+        "requested": "[10.0.6, )",
         "resolved": "10.0.6",
         "contentHash": "poUvwtf92bEs8uBH3aRRs/ZgiAw+Z485EU7TtVPBt//MmD0uMPERe7+v3Ur7lpD8XgIEDL9sDoTBcW1LMG97CQ==",
         "dependencies": {
@@ -757,7 +757,7 @@
       },
       "Microsoft.Extensions.Logging": {
         "type": "CentralTransitive",
-        "requested": "[10.*, )",
+        "requested": "[10.0.6, )",
         "resolved": "10.0.6",
         "contentHash": "ZjpnbMD88IcZQE2pE9lcGv3mkH2mlApPWNh88ya1wJpcxZLp7p4aN7twI2FpawGPAsXNpmMgtKaz3o796YWKWQ==",
         "dependencies": {
@@ -768,7 +768,7 @@
       },
       "Microsoft.Extensions.Options": {
         "type": "CentralTransitive",
-        "requested": "[10.*, )",
+        "requested": "[10.0.6, )",
         "resolved": "10.0.6",
         "contentHash": "v5RTWm+3Gdub21ADJeRG5bunOOxutFNBZk6qGH6Az4L5nyRZoLe3Kse7jfAyUcdEoiKp72XpNw/wGR+9wP+MtQ==",
         "dependencies": {
@@ -796,7 +796,7 @@
       },
       "System.Configuration.ConfigurationManager": {
         "type": "CentralTransitive",
-        "requested": "[10.*, )",
+        "requested": "[10.0.6, )",
         "resolved": "10.0.6",
         "contentHash": "NQyzNGPPKUf5ykuPcUl1oKiY/gS+r9iASQmc8ITcwC6jBC20C9aFMIrBznpirpkoRev6I+p9n11u5QcqTfr+vg==",
         "dependencies": {

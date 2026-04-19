@@ -8,27 +8,29 @@ For a provider-by-provider support matrix, see [Provider Capabilities](./provide
 
 If you only remember four things from this page, make them these:
 
-1. `reflection` stays the default provider unless you explicitly change it.
-2. Installing `FastMoq.Provider.Moq` or another provider package does not select that provider automatically.
-3. If the test project uses any non-default provider-specific compatibility or extension APIs, declare the matching provider as the test-assembly default before running the suite.
-4. You are not limited to the bundled providers. Any library can be used through FastMoq if you implement [IMockingProvider](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProvider.html) and register it with `MockingProviderRegistry`.
+1. `reflection` remains the neutral fallback when no non-reflection provider is discoverable, or when more than one non-reflection provider is discoverable.
+2. If exactly one non-reflection provider is discoverable and no explicit default was declared, FastMoq selects it automatically.
+3. If the test project uses any provider-specific compatibility or extension APIs, still declare the matching provider explicitly at assembly scope so the suite is predictable.
+4. You are not limited to the bundled providers. Any public concrete type that implements [IMockingProvider](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProvider.html) and exposes either a public static `Instance` or a public parameterless constructor can participate in discovery automatically. Explicit registration is still useful when you want a friendly alias, an explicit assembly default, or a guaranteed name when a fallback full-type-name collision would otherwise make auto-registration ambiguous.
 
 ## Current defaults
 
 For the current v4 release line:
 
 - `FastMoq.Core` bundles the internal `reflection` provider and the bundled `moq` provider.
-- `reflection` is the default provider if you do nothing.
+- `reflection` is the default fallback if you do nothing and provider discovery is ambiguous.
 - `moq` is still available without adding another package.
-- optional providers such as `nsubstitute` must still be added explicitly, but once the package is present you can select the canonical provider name directly or register it manually under a custom alias.
+- optional providers such as `nsubstitute` must still be added explicitly as package references, but once the package is present FastMoq can discover and register them automatically.
+- if exactly one non-reflection provider is discoverable, FastMoq promotes it as the effective default when no explicit default was declared.
+- if multiple non-reflection providers are discoverable, FastMoq keeps `reflection` as the effective default until you select one explicitly.
 
 Important boundary:
 
 - adding `FastMoq.Provider.Moq` gives you the Moq provider package and its extension methods
-- it does not change the default provider by itself
+- it becomes the effective default only when it is the only discoverable non-reflection provider and no explicit default was declared
 - if the test assembly uses provider-specific APIs, declare the matching provider explicitly as the default provider
 - selection can happen through [FastMoqDefaultProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html), [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html), `SetDefault(...)`, `Push(...)`, or `Register(..., setAsDefault: true)`
-- custom providers still need registration before they can be selected
+- custom providers can participate in discovery automatically when the provider type is public, concrete, and creatable; explicit registration is still the right tool when you want a stable friendly alias instead of the fallback full type name, or when multiple discoverable providers would otherwise collide on that fallback name
 
 Why this matters:
 
@@ -53,7 +55,7 @@ Use this quick check before reading the rest of the page:
 - stay on `reflection` if the tests use only provider-neutral APIs and do not need mocking-library-specific setup helpers
 - switch to `moq` if the tests still depend on `GetMock<T>()`, direct `Mock<T>` access, `VerifyLogger(...)`, `Protected()`, `SetupSet(...)`, or other Moq-specific semantics
 - switch to `nsubstitute` only when the test project is intentionally written against NSubstitute behavior
-- register a custom provider if your team uses a different mocking library or needs provider behavior that the bundled packages do not cover
+- add a custom provider when your team uses a different mocking library or needs provider behavior that the bundled packages do not cover; register it explicitly only when you want a custom alias or custom construction logic
 
 ## Mandatory assembly default when the test assembly must not stay on `reflection`
 
@@ -189,7 +191,7 @@ public sealed class TestAssemblyProviderBootstrap
 }
 ```
 
-Without the assembly attribute or one of those bootstrap patterns, the active default remains `reflection`.
+Without the assembly attribute or one of those bootstrap patterns, the active default is chosen by discovery: a single discoverable non-reflection provider is selected automatically, otherwise FastMoq stays on `reflection`.
 
 ## How provider selection works
 
@@ -201,14 +203,18 @@ Use these rules:
 
 - for built-in providers, use the canonical names already registered by FastMoq: `reflection` and `moq`
 - for the NSubstitute package, this documentation uses `nsubstitute` as the recommended registration name
-- for custom providers, choose a stable unique name such as `my-provider` and reuse that same name for `Register(...)`, `SetDefault(...)`, and `Push(...)`
+- for custom providers discovered by convention, the fallback registry key is the provider type's full name such as `MyCompany.Testing.MyMockingProvider`
+- when you want a shorter or friendlier key such as `my-provider`, declare it explicitly through `Register(...)` or `[assembly: FastMoqRegisterProvider(...)]` and reuse that alias for `SetDefault(...)` and `Push(...)`
+- FastMoq does not generate random fallback names for convention-discovered providers; if multiple discoverable providers would map to the same fallback full type name, FastMoq skips automatic registration for that name and expects an explicit registration instead
 - the registry is case-insensitive, but lowercase names keep examples and diagnostics consistent
-- if you are unsure what is currently registered, inspect `MockingProviderRegistry.RegisteredProviderNames` or guard with `TryGet(...)`
+- if you are unsure what is currently registered, inspect `MockingProviderRegistry.RegisteredProviders` for the name, provider type, and registration source, inspect `MockingProviderRegistry.DiscoveryWarnings` for skipped convention-discovery collisions, or guard with `TryGet(...)`
 
 Resolution order:
 
 1. Use the current async-scoped override set by `Push(...)` if one exists.
 2. Otherwise use the app-wide default provider, whether it came from [FastMoqDefaultProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html), [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html), `SetDefault(...)`, or `Register(..., setAsDefault: true)`.
+3. Otherwise, if exactly one non-reflection provider is discoverable, FastMoq uses that provider implicitly.
+4. Otherwise FastMoq falls back to `reflection`.
 
 The important entry points are:
 
@@ -231,13 +237,19 @@ What each method is for:
 In practice:
 
 - use `[assembly: FastMoqDefaultProvider("moq")]` or `[assembly: FastMoqDefaultProvider("nsubstitute")]` when the canonical provider name is already known to FastMoq
-- use `[assembly: FastMoqRegisterProvider("name", typeof(...), SetAsDefault = true)]` when the provider must be registered first, including explicit package bootstrap, a custom provider, or a stable custom alias
+- use `[assembly: FastMoqRegisterProvider("name", typeof(...), SetAsDefault = true)]` when you want a stable custom alias, explicit registration-plus-default behavior, or custom-provider onboarding that should not rely on the fallback full type name
 - use startup code when provider choice is dynamic or registration requires additional logic beyond declarative assembly metadata
+
+Inspection tip:
+
+- `MockingProviderRegistry.RegisteredProviders` shows the active registry name, concrete provider type, and whether the registration came from built-in bootstrap, assembly metadata, runtime registration, or convention discovery
+- `MockingProviderRegistry.DiscoveryWarnings` records convention-discovery cases that were skipped, including fallback-name collisions that require manual registration
 
 Example mental model:
 
 - `Register("moq", MoqMockingProvider.Instance, ...)` means `"moq"` is the lookup key you will later pass to `SetDefault("moq")` or `Push("moq")`
 - `Register("my-provider", new MyMockingProvider(), ...)` means you chose `"my-provider"` as that provider's lookup key
+- if FastMoq discovers `MyCompany.Testing.MyMockingProvider` by convention and you did not register an alias, the lookup key is `"MyCompany.Testing.MyMockingProvider"`
 
 ## Recommended pattern: app-wide default for the test assembly
 
@@ -342,9 +354,38 @@ public static class TestAssemblyProviderBootstrap
 
 You do not have to use the bundled FastMoq providers.
 
-If your team wants to integrate a different mocking library, implement [IMockingProvider](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProvider.html), expose the needed [IMockingProviderCapabilities](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProviderCapabilities.html), and register that implementation with `MockingProviderRegistry`.
+If your team wants to integrate a different mocking library, implement [IMockingProvider](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProvider.html), expose the needed [IMockingProviderCapabilities](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProviderCapabilities.html), and make the provider type public and concrete.
 
-For custom providers, [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html) is the shortest declarative path when the provider type exposes a public static `Instance` or a public parameterless constructor.
+If the provider type also exposes a public static `Instance` or a public parameterless constructor, FastMoq can discover it automatically and register it under its full type name.
+
+That fallback name is intentionally stable. FastMoq does not invent random names for convention-discovered providers because those names would be hard to target later from `FastMoqDefaultProvider(...)`, `SetDefault(...)`, or `Push(...)`. If two discoverable providers would land on the same full-type-name fallback, FastMoq leaves that name unregistered and expects you to register the intended provider explicitly under a stable alias.
+
+For custom providers, [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html) is still the shortest declarative path when you want a shorter alias, an assembly default, or a registration name that does not depend on the provider type name.
+
+Convention-based custom-provider example:
+
+```csharp
+using FastMoq.Providers;
+
+public sealed class MyMockingProvider : IMockingProvider
+{
+    public static readonly MyMockingProvider Instance = new();
+
+    private MyMockingProvider()
+    {
+    }
+
+    // IMockingProvider members omitted for brevity.
+}
+```
+
+Without any registration metadata, that provider can be selected by its fallback full type name:
+
+```csharp
+using FastMoq.Providers;
+
+[assembly: FastMoqDefaultProvider("MyCompany.Testing.MyMockingProvider")]
+```
 
 Declarative custom-provider example:
 
@@ -354,7 +395,9 @@ using FastMoq.Providers;
 [assembly: FastMoqRegisterProvider("my-provider", typeof(MyMockingProvider), SetAsDefault = true)]
 ```
 
-Use a startup hook instead when the provider must be created with runtime state, external dependencies, or other initialization that cannot be expressed as `typeof(MyMockingProvider)` alone.
+Use a startup hook instead when the provider must be created with runtime state, external dependencies, or other initialization that cannot be expressed as `typeof(MyMockingProvider)` alone, or when you want to register the provider under a friendlier alias than the fallback full type name.
+
+If you need to confirm which convention-based providers were actually registered, inspect `MockingProviderRegistry.RegisteredProviders`. If a provider did not register because its fallback name was ambiguous, `MockingProviderRegistry.DiscoveryWarnings` will include the skipped name and the candidate provider types.
 
 Typical shape:
 

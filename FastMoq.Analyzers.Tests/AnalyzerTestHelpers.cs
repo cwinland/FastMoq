@@ -21,6 +21,11 @@ namespace FastMoq.Analyzers.Tests
             return await GetDiagnosticsAsync(source, includeAzureFunctionsHelpers: false, includeMoqProviderPackage: true, includeNSubstituteProviderPackage: true, includeWebHelpers: true, analyzers).ConfigureAwait(false);
         }
 
+        public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(IReadOnlyList<(string fileName, string source)> sources, params DiagnosticAnalyzer[] analyzers)
+        {
+            return await GetDiagnosticsAsync(sources, includeAzureFunctionsHelpers: false, includeMoqProviderPackage: true, includeNSubstituteProviderPackage: true, includeWebHelpers: true, analyzers).ConfigureAwait(false);
+        }
+
         public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(string source, bool includeAzureFunctionsHelpers, params DiagnosticAnalyzer[] analyzers)
         {
             return await GetDiagnosticsAsync(source, includeAzureFunctionsHelpers, includeMoqProviderPackage: true, includeNSubstituteProviderPackage: true, includeWebHelpers: true, analyzers).ConfigureAwait(false);
@@ -34,6 +39,13 @@ namespace FastMoq.Analyzers.Tests
         public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(string source, bool includeAzureFunctionsHelpers, bool includeMoqProviderPackage, bool includeNSubstituteProviderPackage, bool includeWebHelpers = true, params DiagnosticAnalyzer[] analyzers)
         {
             var document = CreateDocument(source, includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage, includeWebHelpers);
+            return await GetDiagnosticsAsync(document, analyzers).ConfigureAwait(false);
+        }
+
+        public static async Task<ImmutableArray<Diagnostic>> GetDiagnosticsAsync(IReadOnlyList<(string fileName, string source)> sources, bool includeAzureFunctionsHelpers, bool includeMoqProviderPackage, bool includeNSubstituteProviderPackage, bool includeWebHelpers = true, params DiagnosticAnalyzer[] analyzers)
+        {
+            var project = CreateProject(sources, includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage, includeWebHelpers);
+            var document = project.Documents.First();
             return await GetDiagnosticsAsync(document, analyzers).ConfigureAwait(false);
         }
 
@@ -122,9 +134,14 @@ namespace FastMoq.Analyzers.Tests
 
         private static Document CreateDocument(string source, bool includeAzureFunctionsHelpers = false, bool includeMoqProviderPackage = true, bool includeNSubstituteProviderPackage = true, bool includeWebHelpers = true)
         {
+            var project = CreateProject([("Test.cs", source)], includeAzureFunctionsHelpers, includeMoqProviderPackage, includeNSubstituteProviderPackage, includeWebHelpers);
+            return project.Documents.Single();
+        }
+
+        private static Project CreateProject(IReadOnlyList<(string fileName, string source)> sources, bool includeAzureFunctionsHelpers = false, bool includeMoqProviderPackage = true, bool includeNSubstituteProviderPackage = true, bool includeWebHelpers = true)
+        {
             var workspace = new AdhocWorkspace();
             var projectId = ProjectId.CreateNewId();
-            var documentId = DocumentId.CreateNewId(projectId);
 
             var solution = workspace.CurrentSolution
                 .AddProject(projectId, "AnalyzerTests", "AnalyzerTests", LanguageNames.CSharp)
@@ -136,8 +153,13 @@ namespace FastMoq.Analyzers.Tests
                 solution = solution.AddMetadataReference(projectId, metadataReference);
             }
 
-            solution = solution.AddDocument(documentId, "Test.cs", SourceText.From(source));
-            return solution.GetDocument(documentId)!;
+            foreach (var (fileName, source) in sources)
+            {
+                var documentId = DocumentId.CreateNewId(projectId);
+                solution = solution.AddDocument(documentId, fileName, SourceText.From(source));
+            }
+
+            return solution.GetProject(projectId)!;
         }
 
         private static IEnumerable<MetadataReference> GetMetadataReferences(bool includeAzureFunctionsHelpers, bool includeMoqProviderPackage, bool includeNSubstituteProviderPackage, bool includeWebHelpers)
