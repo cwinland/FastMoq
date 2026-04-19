@@ -110,8 +110,8 @@ namespace FastMoq.Analyzers.CodeFixes
 
                         context.RegisterCodeFix(
                             CodeAction.Create(
-                                "Use Mocker.Verify<T>(...)",
-                                cancellationToken => ReplaceInvocationAsync(document, invocationExpression, BuildVerifyReplacementAsync, cancellationToken),
+                                "Use provider-first Verify(...)",
+                                cancellationToken => ReplaceVerifyInvocationAsync(document, invocationExpression, cancellationToken),
                                 nameof(DiagnosticIds.UseProviderFirstVerify)),
                             diagnostic);
                         break;
@@ -491,6 +491,25 @@ namespace FastMoq.Analyzers.CodeFixes
             return document.WithSyntaxRoot(updatedRoot);
         }
 
+        private static async Task<Document> ReplaceVerifyInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
+                !FastMoqAnalysisHelpers.TryBuildVerifyReplacement(memberAccess.Expression, semanticModel, invocationExpression, cancellationToken, out var replacementText, out var requiresProvidersNamespace))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
+
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
         private static async Task<Document> ReplaceTypedProviderExtensionInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -686,13 +705,12 @@ namespace FastMoq.Analyzers.CodeFixes
         private static string? BuildVerifyReplacementAsync(Document document, SemanticModel semanticModel, SyntaxNode syntaxNode, CancellationToken cancellationToken)
         {
             if (syntaxNode is not InvocationExpressionSyntax invocationExpression ||
-                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
-                !FastMoqAnalysisHelpers.TryResolveTrackedMockOrigin(memberAccess.Expression, semanticModel, cancellationToken, out var origin))
+                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess)
             {
                 return null;
             }
 
-            return FastMoqAnalysisHelpers.TryBuildVerifyReplacement(origin, semanticModel, invocationExpression, cancellationToken, out var replacement)
+            return FastMoqAnalysisHelpers.TryBuildVerifyReplacement(memberAccess.Expression, semanticModel, invocationExpression, cancellationToken, out var replacement, out _)
                 ? replacement
                 : null;
         }

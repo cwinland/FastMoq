@@ -111,12 +111,6 @@ Summary of the major architecture, packaging, API, and documentation changes aft
 
 Intentional v4 breaking changes, with migration notes for changed behavior.
 
-### 🔄 [Migration Guide](./migration/README.md)
-
-Practical guidance for moving from the `3.0.0` public release toward the current v4 provider-first patterns.
-
-- Complete analyzer catalog and package-aware migration guidance
-
 ## 🎯 Quick Navigation
 
 ### By Experience Level
@@ -125,7 +119,7 @@ Practical guidance for moving from the `3.0.0` public release toward the current
 | ---------- | ---------- | ---------- |
 | **New to Mocking** | [Getting Started](./getting-started/README.md) | [Simple Cookbook Examples](./cookbook/README.md#api-controller-testing) |
 | **Coming from Moq** | [Feature Parity](./feature-parity/README.md) | [Migration Guide](./migration/README.md) |
-| **Enterprise Teams** | [Sample Applications](./samples/README.md) | Performance notes coming in a future published docs pass |
+| **Enterprise Teams** | [Sample Applications](./samples/README.md) | [Testing Guide](./getting-started/testing-guide.md) |
 
 ### By Use Case
 

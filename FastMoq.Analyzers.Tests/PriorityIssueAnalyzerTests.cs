@@ -120,6 +120,135 @@ interface IDependency
         }
 
         [Fact]
+        public async Task TrackedMockVerificationAnalyzer_ShouldReportAndFix_AsyncReturningTrackedMockAlias()
+        {
+            const string SOURCE = @"
+using System.Threading.Tasks;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var dependency = Mocks.GetOrCreateMock<IDependency>().AsMoq();
+        dependency.Verify(x => x.RunAsync(""alpha""), Times.Once);
+    }
+}
+
+interface IDependency
+{
+    Task RunAsync(string value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new TrackedMockVerificationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.UseProviderFirstVerify));
+            Assert.Equal(DiagnosticIds.UseProviderFirstVerify, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new TrackedMockVerificationAnalyzer(), codeFixProvider, DiagnosticIds.UseProviderFirstVerify);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System.Threading.Tasks;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using FastMoq.Providers;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var dependency = Mocks.GetOrCreateMock<IDependency>().AsMoq();
+        Mocks.Verify<IDependency>(x => x.RunAsync(""alpha""), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    Task RunAsync(string value);
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task TrackedMockVerificationAnalyzer_ShouldReportAndFix_DetachedFastMockAliasWithAsyncReturn()
+        {
+            const string SOURCE = @"
+using System.Threading.Tasks;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var dependency = Mocks.CreateStandaloneFastMock<IDependency>();
+        dependency.AsMoq().Verify(x => x.LoadAsync(""alpha""), Times.Once);
+    }
+}
+
+interface IDependency
+{
+    Task<string> LoadAsync(string value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new TrackedMockVerificationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.UseProviderFirstVerify));
+            Assert.Equal(DiagnosticIds.UseProviderFirstVerify, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new TrackedMockVerificationAnalyzer(), codeFixProvider, DiagnosticIds.UseProviderFirstVerify);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System.Threading.Tasks;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+using FastMoq.Providers;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var dependency = Mocks.CreateStandaloneFastMock<IDependency>();
+        MockingProviderRegistry.Default.Verify<IDependency>(dependency, x => x.LoadAsync(""alpha""), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    Task<string> LoadAsync(string value);
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task TrackedMockVerificationAnalyzer_ShouldNotReport_WhenDetachedVerifyUsesTransientCreationExpression()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.CreateStandaloneFastMock<IDependency>().AsMoq().Verify(x => x.Run(""alpha""), Times.Once);
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new TrackedMockVerificationAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.UseProviderFirstVerify);
+        }
+
+        [Fact]
         public async Task BareTrackedVerifyAnalyzer_ShouldReport_ForTrackedVerifyWithoutExpression()
         {
             const string SOURCE = @"

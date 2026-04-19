@@ -25,8 +25,7 @@ namespace FastMoq.Analyzers.Analyzers
                 !FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) ||
                 method is null ||
                 !FastMoqAnalysisHelpers.IsMoqVerifyMethod(method) ||
-                !FastMoqAnalysisHelpers.TryResolveTrackedMockOrigin(memberAccess.Expression, context.SemanticModel, context.CancellationToken, out var origin) ||
-                !FastMoqAnalysisHelpers.TryBuildVerifyReplacement(origin, context.SemanticModel, invocationExpression, context.CancellationToken, out var replacement))
+                !FastMoqAnalysisHelpers.TryBuildVerifyReplacement(memberAccess.Expression, context.SemanticModel, invocationExpression, context.CancellationToken, out var replacement, out _))
             {
                 return;
             }

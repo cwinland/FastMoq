@@ -39,7 +39,7 @@ The sample test projects intentionally showcase FastMoq extension helpers so you
 
 ### HTTP / External API
 
-- `CreateHttpClient()` to quickly register an `HttpClient` and (if needed) an `IHttpClientFactory` with a default response.
+- `CreateHttpClient()` to quickly use FastMoq's built-in `HttpClient` path; a lightweight `IHttpClientFactory` is available for simple `CreateClient(...)` flows without per-name configuration, and later helper calls update that built-in factory path.
 - Prefer `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` for provider-neutral request matching and response setup.
 - Use `SetupHttpMessage(...)` only when you intentionally need Moq-specific protected `SendAsync` behavior from the Moq provider package. Keep `using FastMoq.Extensions;`, add `FastMoq.Provider.Moq`, and select the Moq provider for the test assembly when you use that compatibility path.
 - Content helpers: `GetStringContent`, `GetContentBytesAsync()`, `GetContentStreamAsync()` for asserting raw payloads.
@@ -117,7 +117,7 @@ The current samples are intentionally focused. Consider extending locally with:
 
 | Goal | Helper | Notes |
 | ---- | ------ | ----- |
-| Fast default HttpClient | `CreateHttpClient()` | Registers handler + factory if missing |
+| Fast default HttpClient | `CreateHttpClient()` | Uses the built-in handler; lightweight factory compatibility is available without per-name configuration |
 | Custom per‑test HTTP behavior | `WhenHttpRequest()` / `WhenHttpRequestJson()` | Provider-neutral request matching and response setup |
 | Mock EF Core context | `GetMockDbContext<T>()` | Auto sets up DbSets; seed data before use |
 | Extra independent same-type double | `CreateStandaloneFastMock<T>()` | Detached provider-first mock; does not register into the current `Mocker` |

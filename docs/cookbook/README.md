@@ -994,7 +994,17 @@ public class WeatherServiceMoqCompatibilityTests : MockerTestBase<WeatherService
 
 ### Advanced HTTP Testing Scenarios
 
-#### Combining CreateHttpClient with IHttpClientFactory
+#### Using the built-in IHttpClientFactory compatibility path
+
+FastMoq exposes a lightweight `IHttpClientFactory` so tests that only need `CreateClient(...)` can stay on the built-in HTTP helper path. The returned clients use the same provider-neutral handler as `Mocks.HttpClient` and `CreateHttpClient()`.
+
+That compatibility factory accepts the requested client name but does not apply per-name configuration.
+
+Later `CreateHttpClient(...)` calls update the built-in compatibility factory and handler to use the latest base address and default response.
+
+If you intentionally replace `IHttpClientFactory` with `GetOrCreateMock<IHttpClientFactory>()` or `AddType<IHttpClientFactory>(...)`, that replacement wins and you must set up `CreateClient(...)` yourself.
+
+If the code under test depends on named clients, typed clients, or `services.AddHttpClient(...)` configuration semantics, register your own `IHttpClientFactory` or a typed service provider instead of relying on this compatibility factory.
 
 ```csharp
 using Microsoft.Extensions.Options;
@@ -1004,35 +1014,24 @@ public class WeatherServiceFactoryTests : MockerTestBase<WeatherService>
     protected override Action<Mocker> SetupMocksAction => mocker =>
     {
         mocker.SetupOptions(new WeatherApiOptions { ApiKey = "test-api-key" });
-        
-        // ✅ CreateHttpClient automatically sets up IHttpClientFactory
-        mocker.CreateHttpClient(
-            clientName: "WeatherApiClient",
-            baseAddress: "https://api.openweathermap.org/data/2.5/",
-            statusCode: HttpStatusCode.OK,
-            stringContent: JsonSerializer.Serialize(new { temperature = 25, description = "Sunny" })
-        );
-        
-        // IHttpClientFactory is now available and configured
+
+        mocker.WhenHttpRequestJson(
+            HttpMethod.Get,
+            "/weather?q=Miami&appid=test-api-key",
+            JsonSerializer.Serialize(new { temperature = 25, description = "Sunny" }));
     };
 
     [Fact]
-    public async Task GetWeatherAsync_ShouldUseNamedHttpClient_WhenIHttpClientFactoryProvided()
+    public async Task GetWeatherAsync_ShouldResolveFactoryBackedClient_WhenIHttpClientFactoryIsNeeded()
     {
-        // Arrange
-        var city = "Miami";
-        
-        // Act - Service can use named HttpClient from factory
         var factory = Mocks.GetObject<IHttpClientFactory>();
         var httpClient = factory!.CreateClient("WeatherApiClient");
-        
-        var response = await httpClient.GetAsync($"weather?q={city}&appid=test-api-key");
+
+        var response = await httpClient.GetAsync("weather?q=Miami&appid=test-api-key");
         var content = await Mocks.GetStringContent(response.Content);
-        
-        // Assert
+
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         content.Should().Contain("temperature");
-        httpClient.BaseAddress.Should().Be("https://api.openweathermap.org/data/2.5/");
     }
 }
 ```
@@ -1130,7 +1129,7 @@ FastMoq provides several convenient methods for HTTP testing:
 
 **Key Benefits:**
 
-- **Auto-Registration**: `CreateHttpClient` automatically registers `HttpClient` and `IHttpClientFactory`
+- **Factory Compatibility**: `Mocker` exposes a lightweight `IHttpClientFactory` backed by the same provider-neutral handler as `CreateHttpClient()`
 - **Default Values**: Provides sensible defaults (localhost, OK status, JSON response)
 - **Flexible Setup**: `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` keep most HTTP customization provider-neutral
 - **Content Helpers**: Built-in methods for content extraction
