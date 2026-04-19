@@ -36,6 +36,10 @@ Use the [Mocker](../../api/FastMoq.Mocker.yml) page for the tracked and standalo
 
 If you are writing your own provider instead of using the bundled ones, start with [IMockingProvider](../../api/FastMoq.Providers.IMockingProvider.yml), then [IMockingProviderCapabilities](../../api/FastMoq.Providers.IMockingProviderCapabilities.yml), then [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml).
 
+Detached provider-first creation and verification also live on [MockingProviderRegistry](../../api/FastMoq.Providers.MockingProviderRegistry.yml): use `CreateMock<T>()`, `Verify(...)`, and `VerifyNoOtherCalls(...)` there when the `IFastMock<T>` handle is not tracked inside a `Mocker`.
+
+Reflection-provider reminder: its verification is best-effort and only compares direct constant arguments with `Equals(...)`; it is not equivalent to richer provider-native matcher semantics.
+
 ## Logging and verification
 
 - [TestClassExtensions](../../api/FastMoq.Extensions.TestClassExtensions.yml)

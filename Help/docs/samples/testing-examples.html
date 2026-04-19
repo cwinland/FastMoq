@@ -187,6 +187,21 @@ var detachedGateway = Mocks.CreateStandaloneFastMock&lt;IEmailGateway&gt;();
 var manuallyWiredService = new CheckoutService(detachedGateway.Instance);
 </code></pre>
 <p><code>CreateFastMock&lt;T&gt;()</code> is the tracked-registration counterpart. It adds the new mock to the current <code>Mocker</code>, so it is not the right replacement for a legacy detached mock when the same unkeyed service type is already tracked.</p>
+<h3 id="detached-verification-example">Detached verification example</h3>
+<p>When the example needs a detached provider-backed handle with no parent <code>Mocker</code> registration, create it directly from the selected provider and keep the verification provider neutral:</p>
+<pre><code class="lang-csharp">var auditSink = MockingProviderRegistry.Default.CreateMock&lt;IAuditSink&gt;();
+var service = new CheckoutService(auditSink.Instance);
+
+await service.CompleteAsync(&quot;order-42&quot;, CancellationToken.None);
+
+MockingProviderRegistry.Default.Verify(
+    auditSink,
+    x =&gt; x.WriteAsync(&quot;order-42&quot;, CancellationToken.None),
+    TimesSpec.Once);
+
+MockingProviderRegistry.Default.VerifyNoOtherCalls(auditSink);
+</code></pre>
+<p>That <code>Verify(...)</code> shape still works for <code>Task</code>-returning members because the verification expression intentionally discards the return value. Use <code>Mocks.Verify&lt;T&gt;(...)</code> only when the dependency is tracked inside the current <code>Mocker</code>.</p>
 <h2 id="example-1-order-processing-workflow">Example 1: Order Processing Workflow</h2>
 <p>The order-processing example models a typical service that coordinates several collaborators:</p>
 <ul>
@@ -310,7 +325,7 @@ var manuallyWiredService = new CheckoutService(detachedGateway.Instance);
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:55 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:03 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
       
           </div>
         </div>

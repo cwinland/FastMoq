@@ -22,7 +22,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: LoggingTestExtensions
     path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
@@ -60,7 +60,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateLoggerFactory
     path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
@@ -111,7 +111,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateLoggerFactory
     path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
@@ -162,7 +162,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateLoggerFactory
     path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
@@ -208,7 +208,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddLoggerFactory
     path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
@@ -263,7 +263,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddLoggerFactory
     path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
@@ -311,7 +311,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddLoggerFactory
     path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
@@ -359,7 +359,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/LoggingTestExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AddLoggerFactory
     path: FastMoq.Core/Extensions/LoggingTestExtensions.cs

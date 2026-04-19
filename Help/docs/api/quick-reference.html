@@ -106,6 +106,8 @@
 <li><a href="../../api/FastMoq.Providers.MockCreationOptions.html">MockCreationOptions</a></li>
 </ul>
 <p>If you are writing your own provider instead of using the bundled ones, start with <a href="../../api/FastMoq.Providers.IMockingProvider.html">IMockingProvider</a>, then <a href="../../api/FastMoq.Providers.IMockingProviderCapabilities.html">IMockingProviderCapabilities</a>, then <a href="../../api/FastMoq.Providers.MockingProviderRegistry.html">MockingProviderRegistry</a>.</p>
+<p>Detached provider-first creation and verification also live on <a href="../../api/FastMoq.Providers.MockingProviderRegistry.html">MockingProviderRegistry</a>: use <code>CreateMock&lt;T&gt;()</code>, <code>Verify(...)</code>, and <code>VerifyNoOtherCalls(...)</code> there when the <code>IFastMock&lt;T&gt;</code> handle is not tracked inside a <code>Mocker</code>.</p>
+<p>Reflection-provider reminder: its verification is best-effort and only compares direct constant arguments with <code>Equals(...)</code>; it is not equivalent to richer provider-native matcher semantics.</p>
 <h2 id="logging-and-verification">Logging and verification</h2>
 <ul>
 <li><a href="../../api/FastMoq.Extensions.TestClassExtensions.html">TestClassExtensions</a></li>
@@ -190,7 +192,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 00:55 UTC</span></div>
+      <div class="fastmoq-footer-meta"><span>Generated 2026-04-19 12:03 UTC</span><span class="fastmoq-footer-separator">|</span><span>Last tagged version 4.3.0</span></div>
       
           </div>
         </div>

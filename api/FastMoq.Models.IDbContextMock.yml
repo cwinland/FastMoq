@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMock.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: IDbContextMock
     path: FastMoq.Database/Models/IDbContextMock.cs
@@ -68,7 +68,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMock.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbContextSetMethods
     path: FastMoq.Database/Models/IDbContextMock.cs
@@ -100,7 +100,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMock.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetProperties
     path: FastMoq.Database/Models/IDbContextMock.cs
@@ -138,7 +138,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMock.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupDbSetPropertyGet
     path: FastMoq.Database/Models/IDbContextMock.cs
@@ -176,7 +176,7 @@ items:
   source:
     remote:
       path: FastMoq.Database/Models/IDbContextMock.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: SetupSetMethod
     path: FastMoq.Database/Models/IDbContextMock.cs

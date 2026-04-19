@@ -2,7 +2,7 @@
 
 This cookbook contains practical recipes for common testing scenarios using FastMoq. Each recipe includes complete, runnable examples that you can adapt to your specific needs.
 
-Most recipes here focus on common test shapes and readability first. Some examples still use `GetMock<T>()` because that remains a useful v4 compatibility path. When you are writing new tests or actively modernizing existing ones, prefer provider-neutral APIs such as `GetOrCreateMock(...)`, provider-safe `Verify(...)`, `Mocks.VerifyLogged(...)`, `WhenHttpRequest(...)`, and `WhenHttpRequestJson(...)` where they fit the test intent. When a recipe intentionally uses Moq-only helpers such as `SetupHttpMessage(...)`, it is called out explicitly.
+Most recipes here focus on provider-first defaults and readability first. When you are writing new tests or actively modernizing existing ones, prefer provider-neutral APIs such as `GetOrCreateMock(...)`, provider-safe `Verify(...)`, `Mocks.VerifyLogged(...)`, `WhenHttpRequest(...)`, and `WhenHttpRequestJson(...)` where they fit the test intent. Some recipes still show compatibility-only Moq pockets such as `SetupHttpMessage(...)` or `VerifyLogger(...)`, but those cases are labeled explicitly so they do not read like the normal forward path.
 
 ## Table of Contents
 
@@ -73,7 +73,7 @@ public class UsersController : ControllerBase
 
 ```csharp
 using FastMoq;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.AspNetCore.Mvc;
 using FastMoq.Providers.MoqProvider;
 using Xunit;
@@ -1285,18 +1285,23 @@ public class EmailServiceTests : MockerTestBase<EmailService>
     }
 
     [Fact]
-    public async Task SendEmailAsync_ShouldUseConfiguredTimeout()
+    public void GetConnectionString_ShouldAllowConfigurationOverride()
     {
         // Arrange
-        var configMock = Mocks.GetMock<IConfiguration>();
-        configMock.Setup(x => x.GetValue<int>("Email:TimeoutSeconds", 30))
-            .Returns(60);
+        var replacementConfiguration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string>
+            {
+                ["ConnectionStrings:DefaultConnection"] = "Server=override;Database=OverrideDb"
+            })
+            .Build();
+
+        Mocks.AddType<IConfiguration>(() => replacementConfiguration, replace: true);
 
         // Act
-        await Component.SendEmailAsync("test@example.com", "Subject", "Body");
+        var connectionString = Component.GetConnectionString();
 
         // Assert
-        configMock.Verify(x => x.GetValue<int>("Email:TimeoutSeconds", 30), Times.Once);
+        connectionString.Should().Be("Server=override;Database=OverrideDb");
     }
 }
 ```
@@ -1318,6 +1323,28 @@ options.Value.SmtpHost.Should().Be("smtp.example.com");
 ```
 
 Use `AddType(instance, replace: true)` for non-options real dependencies such as `MemoryCache`, file systems, or fixed runtime objects. `SetupOptions(...)` is intentionally the narrow convenience helper for `IOptions<T>` registration only.
+
+### Equality intent in matcher-style configuration tests
+
+When provider-native matchers appear in options or configuration tests, make the comparison intent explicit instead of relying on a bare `==` to communicate it.
+
+```csharp
+var expectedEnvelope = new EmailEnvelope("smtp.example.com", 587);
+Mocks.GetOrCreateMock<IEmailGateway>()
+    .Setup(x => x.Send(It.Is<EmailEnvelope>(envelope => envelope == expectedEnvelope)))
+    .Returns(Task.CompletedTask);
+
+var currentAttempt = new DeliveryAttempt();
+Mocks.GetOrCreateMock<IEmailGateway>()
+    .Setup(x => x.Attach(It.Is<DeliveryAttempt>(attempt => ReferenceEquals(attempt, currentAttempt))))
+    .Returns(Task.CompletedTask);
+
+Mocks.GetOrCreateMock<IEmailGateway>()
+    .Setup(x => x.Publish(It.Is<OutboundMessage>(message => message.Id == expectedMessageId)))
+    .Returns(Task.CompletedTask);
+```
+
+The first matcher is explicit value equality for a value object. The second is explicit identity for a mutable class. The third makes the real requirement obvious by matching the stable property instead of depending on type-specific equality semantics.
 
 ### Testing with IOptionsMonitor
 

@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using FastMoq.Extensions;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;

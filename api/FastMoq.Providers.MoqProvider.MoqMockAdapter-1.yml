@@ -21,7 +21,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: MoqMockAdapter
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
@@ -101,7 +101,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
@@ -135,7 +135,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Inner
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
@@ -168,7 +168,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: MockedType
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
@@ -203,7 +203,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
@@ -238,7 +238,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: NativeMock
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
@@ -273,7 +273,7 @@ items:
   source:
     remote:
       path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Reset
     path: FastMoq.Provider.Moq/Providers/Moq/MoqMockAdapter.cs

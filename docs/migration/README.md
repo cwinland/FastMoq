@@ -138,6 +138,8 @@ This is the old Moq-first shape.
 
 - replace existing `GetMock<T>()` calls by default when you are already touching the test, and keep them only when the goal is minimal churn from v3 and you are intentionally accepting a legacy compatibility API that will be removed in v5
 - use `GetOrCreateMock<T>()` for the provider-first tracked mock handle
+- use `CreateStandaloneFastMock<T>()` when the test already has a `Mocker` but needs a detached provider-first handle outside the tracked graph
+- use `MockingProviderRegistry.Default.CreateMock<T>()` when the test needs a detached provider-first handle with no parent `Mocker` registration at all
 - use provider-package extensions such as `AsMoq()`, direct `Setup(...)` on `IFastMock<T>`, or `AsNSubstitute()` when a test still needs provider-specific arrangement behavior
 - use provider-neutral verification such as `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, and `TimesSpec`
 
@@ -156,11 +158,19 @@ That means new transition surfaces should build on `IFastMock<T>` plus provider-
 | Use this | When it is the right fit | Notes |
 | --- | --- | --- |
 | `GetOrCreateMock<T>()` | Default setup path for tracked mocks and most interaction verification | Preferred v4 migration target for touched tests |
+| `CreateFastMock<T>()` | You intentionally want a new tracked registration created immediately in the current `Mocker` | Do not use it as a detached replacement when the same unkeyed service is already tracked |
 | `CreateStandaloneFastMock<T>()` | You need a detached extra double or manual wiring outside the tracked graph | Provider-first replacement for legacy detached mock creation |
+| `MockingProviderRegistry.Default.CreateMock<T>()` | You need a detached provider-first handle that should not be registered in a parent `Mocker` | Pair it with `MockingProviderRegistry.Default.Verify(...)` and `VerifyNoOtherCalls(...)` for detached assertions |
 | `GetObject<T>()` | You need the constructed dependency instance, not the tracked wrapper | Useful when the dependency is only consumed as an object during arrange or manual construction |
 | `Mocks.Verify(...)` / `VerifyLogged(...)` | The assertion can be expressed without provider-specific verification APIs | Preferred verification surface for migrated tests |
 | `GetMock<T>()` | Only when you are preserving a stable v3-shaped Moq test with minimal churn during the first stabilization pass | Obsolete compatibility surface and migration target for touched files; recommended default is to replace it with `GetOrCreateMock<T>()` plus v4 provider or package APIs once the suite is stable |
 | `AddType(...)` | A fake, stub, factory, or fixed instance reads better than a mock setup chain | Type-resolution override, not a mock-retrieval substitute |
+
+If `GetOrCreateMock<T>()` fails with `AmbiguousImplementationException`, choose the explicit path that matches the test intent:
+
+- use `AddType(...)` or `AddKeyedType(...)` when the test really means one concrete implementation
+- use keyed tracked setup or `CreateFastMock<T>()` when the parent `Mocker` needs distinct tracked roles of the same abstraction
+- use `CreateStandaloneFastMock<T>()` or `MockingProviderRegistry.Default.CreateMock<T>()` when the collaborator should stay detached from the parent tracked graph
 
 In this guide, "previous FastMoq versions" means tests and helpers written against the public `3.0.0` package or against pre-v4 assumptions, especially code that assumes:
 

@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: IdentityHelperExtensions
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
@@ -58,7 +58,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: SetUser
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
@@ -94,7 +94,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: SetUser
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
@@ -129,7 +129,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateClaim
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
@@ -175,7 +175,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreatePrincipal
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
@@ -216,7 +216,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: IsValidClaimType
     path: FastMoq.Core/Extensions/IdentityHelperExtensions.cs

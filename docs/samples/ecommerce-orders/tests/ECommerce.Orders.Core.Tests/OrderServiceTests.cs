@@ -3,7 +3,7 @@ using ECommerce.Orders.Core.Services;
 using ECommerce.Orders.Core.Interfaces;
 using FastMoq;
 using FastMoq.Extensions;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;

@@ -20,7 +20,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: MockerPolicyOptions
     path: FastMoq.Core/MockerPolicyOptions.cs
@@ -79,7 +79,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: EnabledBuiltInTypeResolutions
     path: FastMoq.Core/MockerPolicyOptions.cs
@@ -110,7 +110,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: DefaultFallbackToNonPublicConstructors
     path: FastMoq.Core/MockerPolicyOptions.cs
@@ -141,7 +141,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: DefaultConstructorAmbiguityBehavior
     path: FastMoq.Core/MockerPolicyOptions.cs
@@ -175,7 +175,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: DefaultFallbackToNonPublicMethods
     path: FastMoq.Core/MockerPolicyOptions.cs
@@ -206,7 +206,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/MockerPolicyOptions.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: DefaultStrictMockCreation
     path: FastMoq.Core/MockerPolicyOptions.cs

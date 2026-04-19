@@ -30,7 +30,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ConstructorHistory
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -98,7 +98,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: this[]
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -138,7 +138,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Values
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -170,7 +170,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -201,7 +201,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -236,7 +236,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AsEnumerable
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -267,7 +267,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AsLookup
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -298,7 +298,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: AsReadOnlyDictionary
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -329,7 +329,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetConstructor
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -364,7 +364,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: GetEnumerator
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -397,7 +397,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Contains
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -434,7 +434,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Count
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -469,7 +469,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: this[]
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -509,7 +509,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: ContainsKey
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -550,7 +550,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Keys
     path: FastMoq.Core/Models/ConstructorHistory.cs
@@ -584,7 +584,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/ConstructorHistory.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: TryGetValue
     path: FastMoq.Core/Models/ConstructorHistory.cs

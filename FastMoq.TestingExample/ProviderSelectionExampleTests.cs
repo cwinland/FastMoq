@@ -1,6 +1,6 @@
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
-using FluentAssertions;
+using AwesomeAssertions;
 using Moq;
 using Xunit;
 

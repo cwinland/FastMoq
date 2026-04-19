@@ -26,6 +26,16 @@ FastMoq has three distinct resolution paths:
 
 That distinction matters because the API choice communicates intent.
 
+### Equality intent in matcher-style expressions
+
+When you do step into provider-native matcher predicates, make the equality intent obvious instead of relying on readers to infer what `==` means for a particular type.
+
+- record or value-object arguments can legitimately use value equality, for example `command => command == expectedCommand` or `command => command.Equals(expectedCommand)` when the type is intentionally value-based
+- mutable class arguments usually need either identity or property-based intent, for example `session => ReferenceEquals(session, expectedSession)` when the exact instance matters
+- if neither pure value equality nor identity is the real requirement, match the stable property that explains the behavior, such as `message => message.Id == expectedId`
+
+That same rule applies whether the arrange side uses `It.Is(...)`, `Arg.Is(...)`, or another provider-native matcher surface.
+
 ## [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) vs [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[]))
 
 These are not interchangeable.
@@ -67,6 +77,21 @@ Analyzer note:
 
 - `FMOQ0022` warns when an `AddType(...)` rewrite comes from a tracked mock/object path and the same file still uses tracked-resolution APIs or property helpers for that service
 
+### Ambiguous interface and detached fallback decision table
+
+Current limitation:
+
+- `GetOrCreateMock<T>()` can throw `AmbiguousImplementationException` for interface types when multiple concrete implementations are loaded and FastMoq cannot infer which implementation the test means
+
+Treat that as a resolution-shape decision, not as a reason to keep retrying unkeyed tracked mocks.
+
+| If the test needs... | Preferred path | Why |
+| --- | --- | --- |
+| one tracked dependency in the current `Mocker` | [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) | default tracked path reused by later `GetObject<T>()` and `Verify(...)` calls |
+| a second distinct role of the same abstraction in the tracked graph | keyed [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)), [AddKeyedType(...)](../../api/FastMoq.Mocker.yml), or `CreateFastMock<T>()` when you intentionally want a new tracked registration | keeps public vs private or primary vs secondary roles separate inside the parent `Mocker` |
+| a detached collaborator or manual wiring outside the tracked graph | `CreateStandaloneFastMock<T>()` or `MockingProviderRegistry.Default.CreateMock<T>()` | creates a provider-first handle that is not registered as the parent tracked dependency |
+| a specific concrete implementation behind an ambiguous interface | [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) or [AddKeyedType(...)](../../api/FastMoq.Mocker.yml) | makes the intended implementation explicit instead of asking FastMoq to guess |
+
 ## Tracked vs Standalone Fast Mocks
 
 Use `GetOrCreateMock<T>()` for the normal tracked dependency inside the current `Mocker`.
@@ -88,6 +113,30 @@ var detachedGateway = Mocks.CreateStandaloneFastMock<IEmailGateway>();
 
 var manuallyWiredService = new CheckoutService(detachedGateway.Instance);
 ```
+
+### Detached verification and async-returning members
+
+Tracked mocks use `Mocks.Verify<T>(...)` because the `Mocker` already owns the registration.
+
+Detached mocks use `MockingProviderRegistry.Default.Verify(...)` because the handle is not registered in the parent tracked collection.
+
+That provider-neutral detached verification shape still works for methods that return `Task` or `Task<T>` when the verification expression intentionally discards the return value:
+
+```csharp
+var emailGateway = MockingProviderRegistry.Default.CreateMock<IEmailGateway>();
+var service = new CheckoutService(emailGateway.Instance);
+
+await service.NotifyFinanceAsync(CancellationToken.None);
+
+MockingProviderRegistry.Default.Verify(
+    emailGateway,
+    x => x.SendAsync("finance@contoso.test", CancellationToken.None),
+    TimesSpec.Once);
+
+MockingProviderRegistry.Default.VerifyNoOtherCalls(emailGateway);
+```
+
+Use tracked verification when the dependency lives in the current `Mocker`. Use detached verification when the test created an out-of-band `IFastMock<T>` handle directly.
 
 Use `CreateFastMock<T>()` only when you want the new registration to become the tracked mock returned later by `GetOrCreateMock<T>()`.
 
@@ -728,6 +777,8 @@ Practical default:
 - if both concerns matter, keep most tests explicit and add one small keyed wiring-focused test
 
 Ordinary unit tests can stay ordinary. The important rule is: if swapping the keyed dependencies would be a bug, the test should not collapse them into one double.
+
+If the problem is not keyed DI but an `AmbiguousImplementationException` from multiple loaded implementations of the same interface, take the same explicit approach: use `AddType(...)` when the test means one concrete implementation, or step outside the parent tracked graph with `CreateStandaloneFastMock<T>()` or `MockingProviderRegistry.Default.CreateMock<T>()` when you really need a detached double.
 
 Analyzer note:
 

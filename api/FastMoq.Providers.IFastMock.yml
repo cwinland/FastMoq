@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: IFastMock
     path: FastMoq.Abstractions/Providers/IMock.cs
@@ -75,7 +75,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: MockedType
     path: FastMoq.Abstractions/Providers/IMock.cs
@@ -106,7 +106,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Instance
     path: FastMoq.Abstractions/Providers/IMock.cs
@@ -140,7 +140,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: NativeMock
     path: FastMoq.Abstractions/Providers/IMock.cs
@@ -174,7 +174,7 @@ items:
   source:
     remote:
       path: FastMoq.Abstractions/Providers/IMock.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: Reset
     path: FastMoq.Abstractions/Providers/IMock.cs

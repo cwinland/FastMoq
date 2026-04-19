@@ -23,7 +23,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceModel
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -126,7 +126,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: InstanceType
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -161,7 +161,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: CreateFunc
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -195,7 +195,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -225,7 +225,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -260,7 +260,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -295,7 +295,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -328,7 +328,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
@@ -363,7 +363,7 @@ items:
   source:
     remote:
       path: FastMoq.Core/Models/InstanceModelT.cs
-      branch: docs/provider-first-docs-refresh
+      branch: master
       repo: https://github.com/cwinland/FastMoq.git
     id: .ctor
     path: FastMoq.Core/Models/InstanceModelT.cs
