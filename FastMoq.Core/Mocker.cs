@@ -2070,7 +2070,11 @@ namespace FastMoq
             options ??= new MockRequestOptions();
             var args = options.ConstructorArgs ?? Array.Empty<object?>();
             var allowNonPublicConstructors = ShouldAllowNonPublicConstructorsForMockRequest(options.AllowNonPublicConstructors);
-            PrepareBuiltInOverrideForTrackedMock(typeof(T));
+
+            if (options.ServiceKey == null)
+            {
+                PrepareBuiltInOverrideForTrackedMock(typeof(T));
+            }
 
             MockModel model = options.ServiceKey == null
                 ? GetMockModelFast(typeof(T), allowNonPublicConstructors, args)

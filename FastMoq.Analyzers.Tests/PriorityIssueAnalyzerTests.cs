@@ -152,14 +152,13 @@ using System.Threading.Tasks;
 using FastMoq;
 using FastMoq.Providers.MoqProvider;
 using Moq;
-using FastMoq.Providers;
 
 class Sample
 {
     void Execute(Mocker Mocks)
     {
         var dependency = Mocks.GetOrCreateMock<IDependency>().AsMoq();
-        Mocks.Verify<IDependency>(x => x.RunAsync(""alpha""), TimesSpec.Once);
+        Mocks.Verify<IDependency>(x => x.RunAsync(""alpha""), FastMoq.Providers.TimesSpec.Once);
     }
 }
 
@@ -211,13 +210,76 @@ class Sample
     void Execute(Mocker Mocks)
     {
         var dependency = Mocks.CreateStandaloneFastMock<IDependency>();
-        MockingProviderRegistry.Default.Verify<IDependency>(dependency, x => x.LoadAsync(""alpha""), TimesSpec.Once);
+        MockingProviderRegistry.Default.Verify<IDependency>(dependency, x => x.LoadAsync(""alpha""), FastMoq.Providers.TimesSpec.Once);
     }
 }
 
 interface IDependency
 {
     Task<string> LoadAsync(string value);
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task TrackedMockVerificationAnalyzer_ShouldReportAndFix_DetachedPropertyAlias_UsingPropertyAtCallSite()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+abstract class BaseSample
+{
+    private readonly IFastMock<IDependency> _dependency = new Mocker().CreateStandaloneFastMock<IDependency>();
+
+    protected IFastMock<IDependency> Dependency => _dependency;
+}
+
+class Sample : BaseSample
+{
+    void Execute()
+    {
+        Dependency.AsMoq().Verify(x => x.Run(""alpha""), Times.Once);
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new TrackedMockVerificationAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.UseProviderFirstVerify));
+            Assert.Equal(DiagnosticIds.UseProviderFirstVerify, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new TrackedMockVerificationAnalyzer(), codeFixProvider, DiagnosticIds.UseProviderFirstVerify);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+abstract class BaseSample
+{
+    private readonly IFastMock<IDependency> _dependency = new Mocker().CreateStandaloneFastMock<IDependency>();
+
+    protected IFastMock<IDependency> Dependency => _dependency;
+}
+
+class Sample : BaseSample
+{
+    void Execute()
+    {
+        MockingProviderRegistry.Default.Verify<IDependency>(Dependency, x => x.Run(""alpha""), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
 }");
 
             Assert.Equal(expected, fixedSource);

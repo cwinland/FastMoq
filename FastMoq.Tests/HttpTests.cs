@@ -237,6 +237,31 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public async Task GetOrCreateMock_KeyedIHttpClientFactory_ShouldNotReplaceUnkeyedBuiltInCompatibilityFactory()
+        {
+            _ = Mocks.CreateHttpClient(
+                clientName: "WeatherApiClient",
+                baseAddress: "https://keyed.fastmoq.test/",
+                statusCode: HttpStatusCode.Accepted,
+                stringContent: "{\"temperature\":31}");
+
+            var keyedFactory = Mocks.GetOrCreateMock<IHttpClientFactory>(new MockRequestOptions
+            {
+                ServiceKey = "keyed"
+            });
+
+            var resolvedFactory = Mocks.GetObject<IHttpClientFactory>();
+            using var builtInClient = resolvedFactory!.CreateClient("any-name");
+            var response = await builtInClient.GetAsync("weather");
+
+            resolvedFactory.Should().NotBeNull();
+            resolvedFactory.Should().NotBeSameAs(keyedFactory.Instance);
+            builtInClient.BaseAddress.Should().Be(new Uri("https://keyed.fastmoq.test/"));
+            response.StatusCode.Should().Be(HttpStatusCode.Accepted);
+            (await Mocks.GetStringContent(response.Content)).Should().Be("{\"temperature\":31}");
+        }
+
+        [Fact]
         public async Task WhenHttpRequestJson_ShouldReturnJsonContent_WithApplicationJsonMediaType()
         {
             Mocks.WhenHttpRequestJson(HttpMethod.Post, "/api/orders", "{\"status\":\"created\"}", HttpStatusCode.Created);

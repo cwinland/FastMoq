@@ -505,7 +505,11 @@ namespace FastMoq.Analyzers.CodeFixes
             var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
                 .WithTriviaFrom(invocationExpression);
             var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
-            updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
+
+            if (requiresProvidersNamespace)
+            {
+                updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
+            }
 
             return document.WithSyntaxRoot(updatedRoot);
         }

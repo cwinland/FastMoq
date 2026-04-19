@@ -609,7 +609,7 @@ namespace FastMoq.Analyzers
 
             var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
             var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
-            return symbol is ILocalSymbol or IFieldSymbol;
+            return symbol is ILocalSymbol or IFieldSymbol or IPropertySymbol or IParameterSymbol;
         }
 
         private static bool TryGetRegistryCreateMockServiceType(InvocationExpressionSyntax invocationExpression, IMethodSymbol method, SemanticModel semanticModel, CancellationToken cancellationToken, out ITypeSymbol serviceType)
@@ -768,7 +768,7 @@ namespace FastMoq.Analyzers
             if (TryResolveTrackedMockOrigin(verifyTargetExpression, semanticModel, cancellationToken, out var trackedOrigin) &&
                 TryBuildVerifyReplacement(trackedOrigin, semanticModel, invocationExpression, cancellationToken, out replacement))
             {
-                requiresProvidersNamespace = true;
+                requiresProvidersNamespace = false;
                 return true;
             }
 
@@ -807,7 +807,7 @@ namespace FastMoq.Analyzers
 
             if (arguments.Count == 2)
             {
-                if (!TryConvertTimesArgument(arguments[1], semanticModel, cancellationToken, "TimesSpec", out var convertedArgument, out var omitArgument))
+                if (!TryConvertTimesArgument(arguments[1], semanticModel, cancellationToken, invocationExpression.SpanStart, out var convertedArgument, out var omitArgument))
                 {
                     return false;
                 }
@@ -849,7 +849,7 @@ namespace FastMoq.Analyzers
 
             if (arguments.Count == 2)
             {
-                if (!TryConvertTimesArgument(arguments[1], semanticModel, cancellationToken, "TimesSpec", out var convertedArgument, out var omitArgument))
+                if (!TryConvertTimesArgument(arguments[1], semanticModel, cancellationToken, invocationExpression.SpanStart, out var convertedArgument, out var omitArgument))
                 {
                     return false;
                 }
