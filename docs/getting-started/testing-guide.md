@@ -556,6 +556,8 @@ FastMoq has a built-in `HttpClient` helper path. Every new `Mocker` starts with 
 
 Use that built-in path when the subject depends on `HttpClient` directly or only needs `IHttpClientFactory.CreateClient(...)` to hand back a client. Prefer `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` for provider-neutral response setup instead of manually composing handlers for every test.
 
+Use `GetObject<IHttpClientFactory>()`, `GetRequiredObject<IHttpClientFactory>()`, or normal constructor injection when you want that built-in factory. Do not call `GetOrCreateMock<IHttpClientFactory>()` unless you intentionally want to replace the built-in compatibility factory with a tracked mock.
+
 The built-in compatibility factory accepts the requested client name but does not apply per-name configuration.
 
 If you call `CreateHttpClient(...)` again later with a different base address or default response, FastMoq updates that built-in compatibility factory and handler to match the latest helper call.

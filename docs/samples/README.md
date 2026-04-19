@@ -39,7 +39,7 @@ The sample test projects intentionally showcase FastMoq extension helpers so you
 
 ### HTTP / External API
 
-- `CreateHttpClient()` to quickly use FastMoq's built-in `HttpClient` path; a lightweight `IHttpClientFactory` is available for simple `CreateClient(...)` flows without per-name configuration, and later helper calls update that built-in factory path.
+- `CreateHttpClient()` to quickly use FastMoq's built-in `HttpClient` path; a lightweight `IHttpClientFactory` is available for simple `CreateClient(...)` flows without per-name configuration, and later helper calls update that built-in factory path. Resolve or inject that built-in factory as an object instead of calling `GetOrCreateMock<IHttpClientFactory>()` unless you intentionally want to replace it.
 - Prefer `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` for provider-neutral request matching and response setup.
 - Use `SetupHttpMessage(...)` only when you intentionally need Moq-specific protected `SendAsync` behavior from the Moq provider package. Keep `using FastMoq.Extensions;`, add `FastMoq.Provider.Moq`, and select the Moq provider for the test assembly when you use that compatibility path.
 - Content helpers: `GetStringContent`, `GetContentBytesAsync()`, `GetContentStreamAsync()` for asserting raw payloads.

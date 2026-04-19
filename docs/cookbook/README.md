@@ -998,6 +998,8 @@ public class WeatherServiceMoqCompatibilityTests : MockerTestBase<WeatherService
 
 FastMoq exposes a lightweight `IHttpClientFactory` so tests that only need `CreateClient(...)` can stay on the built-in HTTP helper path. The returned clients use the same provider-neutral handler as `Mocks.HttpClient` and `CreateHttpClient()`.
 
+Resolve that built-in factory with `GetObject<IHttpClientFactory>()`, `GetRequiredObject<IHttpClientFactory>()`, or normal constructor injection. Do not call `GetOrCreateMock<IHttpClientFactory>()` unless you mean to replace the built-in compatibility factory with a tracked mock.
+
 That compatibility factory accepts the requested client name but does not apply per-name configuration.
 
 Later `CreateHttpClient(...)` calls update the built-in compatibility factory and handler to use the latest base address and default response.
