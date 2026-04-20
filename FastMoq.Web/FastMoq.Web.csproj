@@ -5,36 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Authors>Winland, $(AssemblyName)</Authors>
-    <Company>$(Authors)</Company>
-    <Copyright>Copyright(c) 2023 Christopher Winland</Copyright>
-    <PackageId>$(AssemblyName)</PackageId>
-    <Description>Easy and fast extension of the famous Moq mocking framework for mocking and auto injection of classes when testing. Now with Blazor support.</Description>
-    <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>Easy;fast;injection;inject;mock;extension;Moq;moqthis;framework;mocking;class</PackageTags>
-    <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>ASP.NET Core and Blazor testing helpers for FastMoq, including controller and HttpContext setup, claims-principal helpers, IHttpContextAccessor registration, and component-test utilities.</Description>
+    <PackageTags>$(FastMoqBasePackageTags);aspnetcore;blazor;httpcontext;controllers;web-testing</PackageTags>
     <IsPackable>true</IsPackable>
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,8 @@
 <Project>
+  <PropertyGroup>
+    <FastMoqBasePackageTags>fastmoq;testing;unit-testing;mocking;test-doubles;dependency-injection;provider-first</FastMoqBasePackageTags>
+  </PropertyGroup>
+
   <ItemGroup Condition="'$(IsPackable)' == 'false' and '$(MSBuildProjectName)' != 'FastMoq.Analyzers.Tests'">
     <ProjectReference Include="$(MSBuildThisFileDirectory)FastMoq.Analyzers\FastMoq.Analyzers.csproj"
                       OutputItemType="Analyzer"
