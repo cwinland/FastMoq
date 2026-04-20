@@ -112,10 +112,7 @@ namespace FastMoq.Providers.NSubstituteProvider
         /// </summary>
         public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
         {
-            if (expression is null)
-            {
-                return;
-            }
+            ArgumentNullException.ThrowIfNull(expression);
 
             times ??= default;
             var target = mock.Instance;
@@ -264,11 +261,15 @@ namespace FastMoq.Providers.NSubstituteProvider
                 return false;
             }
 
+            if (expression.Body is not MethodCallExpression)
+            {
+                return false;
+            }
             try
             {
                 invocation = FastArgExpressionParser.ParseInvocation(expression);
             }
-            catch (Exception) when (expression.Body is MethodCallExpression)
+            catch (Exception)
             {
                 return false;
             }

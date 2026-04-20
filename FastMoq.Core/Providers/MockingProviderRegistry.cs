@@ -17,10 +17,15 @@ namespace FastMoq.Providers
         private static IMockingProvider? _default;
         private static readonly AsyncLocal<IMockingProvider?> _current = new();
         private static DefaultProviderSource _defaultSource;
+        private static int _assemblyChangeVersion;
+        private static int _lastCompletedDiscoveryVersion = -1;
+        private static int _discoveryExecutionCount;
+        private static int _discoveryMode = (int)MockingProviderDiscoveryMode.Automatic;
         private static bool _isDiscoveringProviders;
 
         static MockingProviderRegistry()
         {
+            AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
             InitializeBuiltInProviders();
         }
 
@@ -76,10 +81,51 @@ namespace FastMoq.Providers
         public static IReadOnlyCollection<string> DiscoveryWarnings => _discoveryWarnings.Values.OrderBy(message => message, StringComparer.OrdinalIgnoreCase).ToArray();
 
         /// <summary>
+        /// Gets or sets how automatic provider discovery should behave for the current process.
+        /// Set this before resolving providers when a test process must avoid loading referenced assemblies or disable convention-based discovery.
+        /// </summary>
+        public static MockingProviderDiscoveryMode DiscoveryMode
+        {
+            get => (MockingProviderDiscoveryMode)Volatile.Read(ref _discoveryMode);
+            set
+            {
+                if (!Enum.IsDefined(value))
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                }
+
+                var prior = Interlocked.Exchange(ref _discoveryMode, (int)value);
+                if (prior == (int)value)
+                {
+                    return;
+                }
+
+                _lastCompletedDiscoveryVersion = -1;
+                _discoveryWarnings.Clear();
+            }
+        }
+
+        /// <summary>
         /// Gets the effective provider for the current async flow.
         /// A scoped provider pushed with <see cref="Push(IMockingProvider)"/> or <see cref="Push(string)"/> takes precedence over the global default.
         /// </summary>
-        public static IMockingProvider Default => _current.Value ?? _default ?? throw new InvalidOperationException("No mocking provider registered. Register one via MockingProviderRegistry.Register().");
+        public static IMockingProvider Default
+        {
+            get
+            {
+                if (_current.Value is IMockingProvider currentProvider)
+                {
+                    return currentProvider;
+                }
+
+                if (_defaultSource is DefaultProviderSource.None or DefaultProviderSource.ReflectionFallback)
+                {
+                    EnsureDiscoveredProvidersRegistered();
+                }
+
+                return _default ?? throw new InvalidOperationException("No mocking provider registered. Register one via MockingProviderRegistry.Register().");
+            }
+        }
 
         /// <summary>
         /// Wraps a legacy provider-specific mock object in the provider-agnostic <see cref="IFastMock"/> abstraction.
@@ -92,6 +138,11 @@ namespace FastMoq.Providers
         {
             ArgumentNullException.ThrowIfNull(legacyMock);
             ArgumentNullException.ThrowIfNull(mockedType);
+
+            if (_defaultSource is DefaultProviderSource.None or DefaultProviderSource.ReflectionFallback)
+            {
+                EnsureDiscoveredProvidersRegistered();
+            }
 
             var defaultProvider = _current.Value ?? _default;
             if (defaultProvider != null)
@@ -168,6 +219,7 @@ namespace FastMoq.Providers
             _discoveryWarnings.Clear();
             _default = null;
             _defaultSource = DefaultProviderSource.None;
+            _lastCompletedDiscoveryVersion = -1;
             _current.Value = null;
         }
 
@@ -185,6 +237,11 @@ namespace FastMoq.Providers
         }
 
         internal static void ApplyAssemblyProviderRegistrations(IEnumerable<Assembly> assemblies)
+        {
+            ApplyAssemblyProviderRegistrations(assemblies, includeConventionDiscovery: true);
+        }
+
+        internal static void ApplyAssemblyProviderRegistrations(IEnumerable<Assembly> assemblies, bool includeConventionDiscovery)
         {
             ArgumentNullException.ThrowIfNull(assemblies);
 
@@ -207,11 +264,28 @@ namespace FastMoq.Providers
                 }
 
                 var registration = group.First();
+                if (_providers.TryGetValue(registration.ProviderName, out var existingProvider))
+                {
+                    if (existingProvider.GetType() != registration.ProviderType)
+                    {
+                        RecordDiscoveryWarning(
+                            registration.ProviderName,
+                            $"Skipped automatic registration for provider name '{registration.ProviderName}' because it is already registered to '{GetProviderTypeDisplay(existingProvider.GetType())}', while assembly registration found '{GetProviderTypeDisplay(registration.ProviderType)}'. Register the intended provider explicitly with a stable alias.");
+                    }
+
+                    continue;
+                }
+
                 RegisterCore(
                     registration.ProviderName,
                     CreateProviderInstance(registration.ProviderName, registration.ProviderType),
                     setAsDefault: false,
                     MockingProviderRegistrationSource.AssemblyAttribute);
+            }
+
+            if (!includeConventionDiscovery)
+            {
+                return;
             }
 
             var explicitlyRegisteredProviderTypes = explicitRegistrationGroups
@@ -317,9 +391,16 @@ namespace FastMoq.Providers
                 return;
             }
 
+            var assemblyChangeVersion = Volatile.Read(ref _assemblyChangeVersion);
+            if (_lastCompletedDiscoveryVersion == assemblyChangeVersion)
+            {
+                return;
+            }
+
             lock (_discoveryLock)
             {
-                if (_isDiscoveringProviders)
+                assemblyChangeVersion = Volatile.Read(ref _assemblyChangeVersion);
+                if (_isDiscoveringProviders || _lastCompletedDiscoveryVersion == assemblyChangeVersion)
                 {
                     return;
                 }
@@ -327,13 +408,17 @@ namespace FastMoq.Providers
                 _isDiscoveringProviders = true;
                 try
                 {
-                    var assemblies = LoadAssembliesForProviderDiscovery();
-                    ApplyAssemblyProviderRegistrations(assemblies);
+                    Interlocked.Increment(ref _discoveryExecutionCount);
+                    var discoveryMode = DiscoveryMode;
+                    var assemblies = LoadAssembliesForProviderDiscovery(discoveryMode);
+                    ApplyAssemblyProviderRegistrations(assemblies, includeConventionDiscovery: discoveryMode != MockingProviderDiscoveryMode.ExplicitOnly);
                     var explicitDefaultApplied = ApplyAssemblyDefaultProviders(assemblies);
                     if (!explicitDefaultApplied)
                     {
                         ApplyImplicitDefaultProvider();
                     }
+
+                    _lastCompletedDiscoveryVersion = Volatile.Read(ref _assemblyChangeVersion);
                 }
                 finally
                 {
@@ -516,10 +601,9 @@ namespace FastMoq.Providers
             return providerType.AssemblyQualifiedName ?? providerType.FullName ?? providerType.Name;
         }
 
-        private static Assembly[] LoadAssembliesForProviderDiscovery()
+        private static Assembly[] LoadAssembliesForProviderDiscovery(MockingProviderDiscoveryMode discoveryMode)
         {
             var assemblies = new Dictionary<string, Assembly>(StringComparer.OrdinalIgnoreCase);
-            var queue = new Queue<Assembly>();
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -529,31 +613,47 @@ namespace FastMoq.Providers
                 }
 
                 AddAssembly(assemblies, assembly);
-                queue.Enqueue(assembly);
             }
 
-            while (queue.Count > 0)
+            if (discoveryMode != MockingProviderDiscoveryMode.Automatic)
             {
-                var assembly = queue.Dequeue();
-                foreach (var reference in GetReferencedAssembliesSafe(assembly))
+                return assemblies.Values.ToArray();
+            }
+
+            var referencedAssemblies = assemblies.Values
+                .SelectMany(GetReferencedAssembliesSafe)
+                .Where(reference => !ContainsAssembly(assemblies.Values, reference))
+                .GroupBy(reference => reference.FullName ?? reference.Name, StringComparer.OrdinalIgnoreCase)
+                .Select(group => group.First())
+                .ToArray();
+
+            foreach (var reference in referencedAssemblies)
+            {
+                if (!ShouldAttemptDiscoveryLoad(reference))
                 {
-                    if (ContainsAssembly(assemblies.Values, reference))
-                    {
-                        continue;
-                    }
-
-                    var loadedAssembly = TryLoadAssembly(reference);
-                    if (loadedAssembly is null || loadedAssembly.IsDynamic)
-                    {
-                        continue;
-                    }
-
-                    AddAssembly(assemblies, loadedAssembly);
-                    queue.Enqueue(loadedAssembly);
+                    continue;
                 }
+
+                var loadedAssembly = TryLoadAssembly(reference);
+                if (loadedAssembly is null || loadedAssembly.IsDynamic)
+                {
+                    continue;
+                }
+
+                AddAssembly(assemblies, loadedAssembly);
             }
 
             return assemblies.Values.ToArray();
+        }
+
+        private static void OnAssemblyLoad(object? sender, AssemblyLoadEventArgs eventArgs)
+        {
+            if (eventArgs.LoadedAssembly.IsDynamic)
+            {
+                return;
+            }
+
+            Interlocked.Increment(ref _assemblyChangeVersion);
         }
 
         private static void SetDefaultProvider(string name, DefaultProviderSource source)
@@ -606,6 +706,22 @@ namespace FastMoq.Providers
             {
                 return Array.Empty<AssemblyName>();
             }
+        }
+
+        private static bool ShouldAttemptDiscoveryLoad(AssemblyName reference)
+        {
+            ArgumentNullException.ThrowIfNull(reference);
+
+            var simpleName = reference.Name;
+            if (string.IsNullOrWhiteSpace(simpleName))
+            {
+                return false;
+            }
+
+            return !simpleName.Equals("System", StringComparison.OrdinalIgnoreCase)
+                && !simpleName.StartsWith("System.", StringComparison.OrdinalIgnoreCase)
+                && !simpleName.Equals("Microsoft", StringComparison.OrdinalIgnoreCase)
+                && !simpleName.StartsWith("Microsoft.", StringComparison.OrdinalIgnoreCase);
         }
 
         private static Assembly? TryLoadAssembly(AssemblyName reference)

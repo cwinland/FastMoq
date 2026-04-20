@@ -378,6 +378,37 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void DirectVerify_ShouldThrowArgumentNullException_ForNSubstitute()
+        {
+            var provider = NSubstituteMockingProvider.Instance;
+            var mock = provider.CreateMock<IProviderDependency>();
+
+            Action action = () => provider.Verify(mock, null!);
+
+            action.Should().Throw<ArgumentNullException>();
+        }
+
+        [Fact]
+        public void Verify_ShouldFallbackToLegacyPath_ForPropertySetter_WhenNSubstituteIsActive()
+        {
+            using var providerScope = PushProvider("nsubstitute");
+            var mocker = new Mocker();
+            var dependency = mocker.GetOrCreateMock<IPropertySetterDependency>();
+            var parameter = Expression.Parameter(typeof(IPropertySetterDependency), "dependency");
+            var propertySetter = Expression.Lambda<Action<IPropertySetterDependency>>(
+                Expression.Assign(
+                    Expression.Property(parameter, nameof(IPropertySetterDependency.Value)),
+                    Expression.Constant("alpha", typeof(string))),
+                parameter);
+
+            dependency.Instance.Value = "alpha";
+
+            Action action = () => mocker.Verify(propertySetter, TimesSpec.Once);
+
+            action.Should().NotThrow();
+        }
+
+        [Fact]
         public void DirectUnsupportedProviderCalls_ShouldThrow_ForReflection()
         {
             var provider = ReflectionMockingProvider.Instance;
@@ -444,6 +475,108 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void Default_ShouldTriggerDiscovery_WhenAccessedDirectly()
+        {
+            MockingProviderRegistry.Clear();
+            MockingProviderRegistry.Register("reflection", ReflectionMockingProvider.Instance, setAsDefault: false);
+
+            try
+            {
+                var discoveryExecutionsBefore = GetDiscoveryExecutionCount();
+
+                _ = MockingProviderRegistry.Default;
+
+                GetDiscoveryExecutionCount().Should().BeGreaterThan(discoveryExecutionsBefore);
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
+        public void TryGet_ShouldStopRescanningUnknownProviderAfterDiscoverySettles()
+        {
+            ResetRegistry(includeOptionalProviders: false);
+
+            try
+            {
+                var discoveryExecutionsBefore = GetDiscoveryExecutionCount();
+
+                MockingProviderRegistry.TryGet("missing-alpha", out _).Should().BeFalse();
+                var discoveryExecutionsAfterFirstMiss = GetDiscoveryExecutionCount();
+
+                MockingProviderRegistry.TryGet("missing-beta", out _).Should().BeFalse();
+                var discoveryExecutionsAfterSecondMiss = GetDiscoveryExecutionCount();
+
+                MockingProviderRegistry.TryGet("missing-gamma", out _).Should().BeFalse();
+                var discoveryExecutionsAfterThirdMiss = GetDiscoveryExecutionCount();
+
+                discoveryExecutionsAfterFirstMiss.Should().BeGreaterThan(discoveryExecutionsBefore);
+                discoveryExecutionsAfterThirdMiss.Should().Be(discoveryExecutionsAfterSecondMiss);
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
+        public void TryGet_ShouldDiscoverLoadedAssemblyProvider_WhenDiscoveryModeIsLoadedAssembliesOnly()
+        {
+            ResetRegistry(includeOptionalProviders: false, includeMoqProvider: false);
+
+            try
+            {
+                MockingProviderRegistry.DiscoveryMode = MockingProviderDiscoveryMode.LoadedAssembliesOnly;
+
+                MockingProviderRegistry.TryGet("nsubstitute", out var provider).Should().BeTrue();
+                provider.Should().BeSameAs(NSubstituteMockingProvider.Instance);
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
+        public void TryGet_ShouldIgnoreConventionDiscovery_WhenDiscoveryModeIsExplicitOnly()
+        {
+            ResetRegistry(includeOptionalProviders: false, includeMoqProvider: false);
+
+            try
+            {
+                MockingProviderRegistry.DiscoveryMode = MockingProviderDiscoveryMode.ExplicitOnly;
+                var providerName = typeof(AutoDiscoveredCustomMockingProvider).FullName
+                    ?? throw new InvalidOperationException("Unable to resolve the full name for AutoDiscoveredCustomMockingProvider.");
+
+                MockingProviderRegistry.TryGet(providerName, out _).Should().BeFalse();
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
+        public void TryGet_ShouldHonorExplicitAssemblyRegistration_WhenDiscoveryModeIsExplicitOnly()
+        {
+            ResetRegistry(includeOptionalProviders: false, includeMoqProvider: false);
+
+            try
+            {
+                MockingProviderRegistry.DiscoveryMode = MockingProviderDiscoveryMode.ExplicitOnly;
+
+                MockingProviderRegistry.TryGet("nsubstitute", out var provider).Should().BeTrue();
+                provider.Should().BeSameAs(NSubstituteMockingProvider.Instance);
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
         public void ApplyImplicitDefaultProvider_ShouldUseSingleNonReflectionProvider_WhenOnlyOneExists()
         {
             MockingProviderRegistry.Clear();
@@ -456,6 +589,18 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void ApplyImplicitDefaultProvider_ShouldKeepExplicitDefaultProvider_WhenOneCustomProviderExists()
+        {
+            MockingProviderRegistry.Clear();
+            MockingProviderRegistry.Register("reflection", ReflectionMockingProvider.Instance, setAsDefault: true);
+            MockingProviderRegistry.Register("nsubstitute", NSubstituteMockingProvider.Instance, setAsDefault: false);
+
+            MockingProviderRegistry.ApplyImplicitDefaultProvider();
+
+            MockingProviderRegistry.Default.Should().BeSameAs(ReflectionMockingProvider.Instance);
+        }
+
+        [Fact]
         public void ApplyImplicitDefaultProvider_ShouldKeepReflection_WhenMultipleNonReflectionProvidersExist()
         {
             MockingProviderRegistry.Clear();
@@ -465,7 +610,7 @@ namespace FastMoq.Tests
 
             MockingProviderRegistry.ApplyImplicitDefaultProvider();
 
-            MockingProviderRegistry.Default.Should().BeSameAs(ReflectionMockingProvider.Instance);
+            GetStoredDefaultProvider().Should().BeSameAs(ReflectionMockingProvider.Instance);
         }
 
         [Fact]
@@ -573,6 +718,37 @@ namespace FastMoq.Tests
                 warning.Should().Contain(providerName);
                 warning.Should().Contain(typeof(MoqMockingProvider).FullName);
                 warning.Should().Contain(typeof(AutoDiscoveredCustomMockingProvider).FullName);
+            }
+            finally
+            {
+                ResetRegistry(includeOptionalProviders: true);
+            }
+        }
+
+        [Fact]
+        public void ApplyAssemblyProviderRegistrations_ShouldNotOverwriteExistingRegisteredProviderName()
+        {
+            ResetRegistry(includeOptionalProviders: false, includeMoqProvider: false);
+
+            try
+            {
+                const string alias = "custom-provider";
+                var assembly = CreateAssemblyWithRegisterProviderAttribute(alias, typeof(MoqMockingProvider));
+
+                MockingProviderRegistry.Register(alias, NSubstituteMockingProvider.Instance, setAsDefault: false);
+
+                MockingProviderRegistry.ApplyAssemblyProviderRegistrations([assembly]);
+
+                GetProvider(alias).Should().BeSameAs(NSubstituteMockingProvider.Instance);
+                MockingProviderRegistry.RegisteredProviders.Should().ContainSingle(info =>
+                    info.Name == alias &&
+                    info.ProviderType == typeof(NSubstituteMockingProvider) &&
+                    info.Source == MockingProviderRegistrationSource.RuntimeRegistration);
+
+                var warning = MockingProviderRegistry.DiscoveryWarnings.Should().ContainSingle().Which;
+                warning.Should().Contain(alias);
+                warning.Should().Contain(typeof(NSubstituteMockingProvider).FullName);
+                warning.Should().Contain(typeof(MoqMockingProvider).FullName);
             }
             finally
             {
@@ -1057,6 +1233,7 @@ namespace FastMoq.Tests
 
         private static void ResetRegistry(bool includeOptionalProviders, bool includeMoqProvider = true)
         {
+            MockingProviderRegistry.DiscoveryMode = MockingProviderDiscoveryMode.Automatic;
             MockingProviderRegistry.Clear();
             MockingProviderRegistry.Register("reflection", ReflectionMockingProvider.Instance, setAsDefault: true);
 
@@ -1134,9 +1311,31 @@ namespace FastMoq.Tests
             return provider;
         }
 
+        private static int GetDiscoveryExecutionCount()
+        {
+            var field = typeof(MockingProviderRegistry).GetField("_discoveryExecutionCount", BindingFlags.NonPublic | BindingFlags.Static)
+                ?? throw new InvalidOperationException("Unable to find MockingProviderRegistry._discoveryExecutionCount.");
+
+            return (int)(field.GetValue(null)
+                ?? throw new InvalidOperationException("MockingProviderRegistry._discoveryExecutionCount was null."));
+        }
+
+        private static IMockingProvider? GetStoredDefaultProvider()
+        {
+            var field = typeof(MockingProviderRegistry).GetField("_default", BindingFlags.NonPublic | BindingFlags.Static)
+                ?? throw new InvalidOperationException("Unable to find MockingProviderRegistry._default.");
+
+            return (IMockingProvider?)field.GetValue(null);
+        }
+
         public interface IProviderDependency
         {
             void Run(string value);
+        }
+
+        public interface IPropertySetterDependency
+        {
+            string? Value { get; set; }
         }
 
         public interface INullableProviderDependency

@@ -32,6 +32,46 @@ Important boundary:
 - selection can happen through [FastMoqDefaultProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html), [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html), `SetDefault(...)`, `Push(...)`, or `Register(..., setAsDefault: true)`
 - custom providers can participate in discovery automatically when the provider type is public, concrete, and creatable; explicit registration is still the right tool when you want a stable friendly alias instead of the fallback full type name, or when multiple discoverable providers would otherwise collide on that fallback name
 
+## Discovery modes
+
+`MockingProviderRegistry.DiscoveryMode` controls how aggressively FastMoq searches for providers when a provider name is missing or the process is still on the reflection fallback.
+
+Where this API lives:
+
+- `MockingProviderRegistry.DiscoveryMode` is a public static property on `MockingProviderRegistry` in `FastMoq.Core`
+- `MockingProviderDiscoveryMode` is the companion enum in the same `FastMoq.Providers` namespace
+- this is process-wide runtime configuration, not an assembly attribute, so set it in the same startup path where you would otherwise call `Register(...)`, `SetDefault(...)`, or other assembly bootstrap code
+
+- `Automatic` is the default. FastMoq scans already loaded assemblies and may inspect eligible direct references to find provider registrations.
+- `LoadedAssembliesOnly` keeps automatic discovery on, but limits it to assemblies that are already loaded into the current process. FastMoq does not call `Assembly.Load(...)` in this mode.
+- `ExplicitOnly` disables convention-based `IMockingProvider` type discovery. Built-in registrations, runtime `Register(...)` calls, and explicit assembly metadata such as `[assembly: FastMoqRegisterProvider(...)]` and `[assembly: FastMoqDefaultProvider(...)]` still apply.
+
+Set the mode before the suite starts resolving providers. In practice, that usually means the same module initializer, test-framework startup hook, or one-time bootstrap path that would otherwise set the default provider:
+
+```csharp
+using System.Runtime.CompilerServices;
+using FastMoq.Providers;
+
+namespace MyTests;
+
+public static class TestAssemblyProviderBootstrap
+{
+    [ModuleInitializer]
+    public static void Initialize()
+    {
+        MockingProviderRegistry.DiscoveryMode = MockingProviderDiscoveryMode.LoadedAssembliesOnly;
+    }
+}
+```
+
+Practical guidance:
+
+- keep `Automatic` when the goal is zero-configuration provider onboarding
+- use `LoadedAssembliesOnly` when the process must avoid discovery-time `Assembly.Load(...)` calls
+- use `ExplicitOnly` when the suite should rely only on built-in providers, explicit runtime registration, or explicit assembly attributes
+
+If your suite already selects its provider explicitly through assembly attributes or startup registration, you usually do not need to change this setting. Discovery modes are mainly useful when the suite relies on automatic provider onboarding or needs to constrain how that onboarding runs.
+
 Why this matters:
 
 - provider-neutral APIs such as `GetOrCreateMock(...)`, `VerifyLogged(...)`, and the scenario builder can work with any registered provider that supports the needed capability.
