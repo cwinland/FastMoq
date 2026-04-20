@@ -8,12 +8,12 @@ namespace FastMoq.Analyzers
 
         public static readonly DiagnosticDescriptor UseProviderFirstObjectAccess = new(
             DiagnosticIds.UseProviderFirstObjectAccess,
-            "Use provider-first object access",
-            "Use '{0}' instead of '.Object' on tracked FastMoq mocks",
+            "Use provider-first dependency instance access",
+            "Use '{0}' for the dependency instance instead of using '.Object' on a tracked FastMoq mock",
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "Tracked FastMoq mocks should use provider-first instance access instead of raw Mock.Object retrieval.");
+            description: "When the code only needs the resolved dependency instance, stay on the provider-first surface instead of going through Mock<T>.Object. Use .Instance when you already have an IFastMock<T> handle, or use GetObject<T>() / GetRequiredObject<T>() when the code is retrieving the dependency from Mocker. Keep AsMoq().Object only for a deliberate local Moq-only compatibility pocket.");
 
         public static readonly DiagnosticDescriptor UseProviderFirstReset = new(
             DiagnosticIds.UseProviderFirstReset,
@@ -302,12 +302,12 @@ namespace FastMoq.Analyzers
 
         public static readonly DiagnosticDescriptor AvoidTrackedMockShimAlias = new(
             DiagnosticIds.AvoidTrackedMockShimAlias,
-            "Avoid tracked Mock<T> shim aliases",
-            "Tracked alias '{0}' is typed as 'Mock<T>' and keeps later work on the Moq surface. Prefer an IFastMock<T> handle plus Mocker.Verify<T>(...).",
+            "Avoid verification-only Mock<T> aliases for tracked mocks",
+            "Tracked alias '{0}' is only used for Moq Verify calls. Prefer an IFastMock<T> handle or verify directly with Mocker.Verify<T>(...).",
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "Properties, fields, and locals typed as Mock<T> but sourced from tracked FastMoq mocks unnecessarily keep verification and helper usage provider-specific.");
+            description: "This rule applies when a field, property, or local is typed as Mock<T>, comes from a tracked FastMoq mock, and is only used later for Moq Verify(...) calls. Replace the alias with an IFastMock<T> handle, or keep verification explicit at the call site with Mocker.Verify<T>(...). Keep a Mock<T> alias only when that symbol also needs Moq-specific setup or other raw Mock<T> behavior.");
 
         public static readonly DiagnosticDescriptor AvoidRawMockCreationInFastMoqSuites = new(
             DiagnosticIds.AvoidRawMockCreationInFastMoqSuites,

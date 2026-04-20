@@ -109,6 +109,40 @@ namespace FastMoq.Analyzers.Tests
         }
 
         [Fact]
+        public void UseProviderFirstObjectAccess_ShouldExplainInstanceVersusObjectRetrieval()
+        {
+            Assert.Equal(
+                "Use provider-first dependency instance access",
+                DiagnosticDescriptors.UseProviderFirstObjectAccess.Title.ToString());
+            Assert.Equal(
+                "Use '{0}' for the dependency instance instead of using '.Object' on a tracked FastMoq mock",
+                DiagnosticDescriptors.UseProviderFirstObjectAccess.MessageFormat.ToString());
+
+            var description = DiagnosticDescriptors.UseProviderFirstObjectAccess.Description.ToString();
+            Assert.Contains(".Instance", description);
+            Assert.Contains("GetObject<T>()", description);
+            Assert.Contains("GetRequiredObject<T>()", description);
+            Assert.Contains("AsMoq().Object", description);
+        }
+
+        [Fact]
+        public void AvoidTrackedMockShimAlias_ShouldExplainVerificationOnlyScope()
+        {
+            Assert.Equal(
+                "Avoid verification-only Mock<T> aliases for tracked mocks",
+                DiagnosticDescriptors.AvoidTrackedMockShimAlias.Title.ToString());
+            Assert.Equal(
+                "Tracked alias '{0}' is only used for Moq Verify calls. Prefer an IFastMock<T> handle or verify directly with Mocker.Verify<T>(...).",
+                DiagnosticDescriptors.AvoidTrackedMockShimAlias.MessageFormat.ToString());
+
+            var description = DiagnosticDescriptors.AvoidTrackedMockShimAlias.Description.ToString();
+            Assert.Contains("field, property, or local", description);
+            Assert.Contains("Moq Verify(...)", description);
+            Assert.Contains("IFastMock<T>", description);
+            Assert.Contains("Moq-specific setup", description);
+        }
+
+        [Fact]
         public async Task TrackedMockObjectAnalyzer_ShouldReportAndFix_GetMockObjectUsage()
         {
             const string SOURCE = @"

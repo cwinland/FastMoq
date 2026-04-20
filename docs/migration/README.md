@@ -73,7 +73,7 @@ This is the full public analyzer catalog for the current v4 line. Use it as the 
 
 | ID | Guidance |
 | --- | --- |
-| `FMOQ0001` | Use `GetObject<T>()` or `.Instance` instead of `.Object` on tracked FastMoq mocks |
+| `FMOQ0001` | Use `.Instance` when you already have `IFastMock<T>`, or `GetObject<T>()` / `GetRequiredObject<T>()` when the code only needs the resolved dependency instead of tracked `.Object` |
 | `FMOQ0002` | Use provider-first `Reset()` instead of provider-native reset on tracked FastMoq mocks |
 | `FMOQ0003` | Prefer `VerifyLogged(...)` over `VerifyLogger(...)` when the assertion can stay provider safe |
 | `FMOQ0004` | Keep provider-first retrieval consistent by converting leftover `GetMock<T>()` calls in files that already use `GetOrCreateMock<T>()` |
@@ -98,11 +98,16 @@ This is the full public analyzer catalog for the current v4 line. Use it as the 
 | `FMOQ0023` | Add explicit Moq onboarding when legacy Moq-shaped FastMoq APIs remain in core-only projects |
 | `FMOQ0024` | Prefer `Mocker.Verify<T>(...)` over provider-native `Verify(...)` on tracked FastMoq mocks |
 | `FMOQ0025` | Remove or rewrite bare tracked `Verify()` calls so assertions stay explicit |
-| `FMOQ0026` | Avoid storing tracked mocks as `Mock<T>` aliases when they are only used for verification |
+| `FMOQ0026` | Avoid `Mock<T>` aliases that only exist for `Verify(...)`; keep an `IFastMock<T>` handle or verify directly with `Mocker.Verify<T>(...)` |
 | `FMOQ0027` | Avoid raw `new Mock<T>()` creation inside FastMoq test infrastructure; use tracked or standalone provider-first mocks instead |
 | `FMOQ0028` | Add missing helper packages such as `FastMoq.Web` or `FastMoq.AzureFunctions` before applying helper-based migration guidance |
 | `FMOQ0029` | Prefer `AddFunctionContextInvocationId(...)` over raw `FunctionContext.InvocationId` setup |
 | `FMOQ0030` | Prefer `AddLoggerFactory(...)` over direct output-helper-backed `ILoggerFactory`, `ILogger`, or `ILogger<T>` registration |
+| `FMOQ0031` | Avoid `IFastMock<T>` helper wrappers that only forward to FastMoq verification APIs; keep tracked versus detached verification explicit at the call site |
+| `FMOQ0032` | Avoid `IFastMock<T>` helper wrappers that route verification back through `AsMoq().Verify(...)` or provider-specific `Times` adapters |
+| `FMOQ0033` | In `MockerTestBase`-based tests, reuse `GetFileSystem()` instead of creating a fresh `MockFileSystem` for an `IFileSystem` slot |
+| `FMOQ0034` | Inside provider-first `Verify(...)`, replace mechanical `It.*` matchers with `FastArg` equivalents so the assertion stays provider-neutral |
+| `FMOQ0035` | Flag remaining Moq-specific matchers inside provider-first `Verify(...)` when no direct `FastArg` rewrite exists |
 
 For a successful v4 migration, use this boundary:
 
