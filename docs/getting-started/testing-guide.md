@@ -16,6 +16,48 @@ Use these rules first:
 8. Use [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) when a framework-style type needs special resolution or post-processing behavior.
 9. Use [GetMockDbContext&lt;TContext&gt;()](xref:FastMoq.DbContextMockerExtensions.GetMockDbContext``1(FastMoq.Mocker)) when testing EF Core contexts. Do not hand-roll DbContext setup unless you need behavior outside FastMoq's helper.
 
+## Prefer FastMoq-Owned Setup
+
+When FastMoq already has a first-party helper for the dependency or framework primitive, prefer that helper over handwritten setup.
+
+That is true even when the handwritten setup is technically valid. The FastMoq-owned helper usually reduces repeated plumbing, keeps the dependency graph in one place, and makes the test easier for other FastMoq users to recognize.
+
+Use this decision table first:
+
+| If the test wants... | Prefer... | Usually avoid first... |
+| --- | --- | --- |
+| a tracked collaborator that you will arrange or verify | [GetOrCreateMock&lt;T&gt;()](xref:FastMoq.Mocker.GetOrCreateMock``1(FastMoq.MockRequestOptions)) | creating a mock and then re-registering `mock.Instance` with [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) |
+| a real fixed dependency instance | [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) with the concrete instance | wrapping that instance in extra local indirection before handing it back to `Mocker` |
+| FastMoq's built-in real `IFileSystem` | `GetFileSystem(...)` or `GetObject<IFileSystem>()` | creating a fresh `MockFileSystem` only to satisfy an `IFileSystem` slot when the built-in shared one would do |
+| typed DI or scope behavior for framework resolution | `CreateTypedServiceProvider(...)`, `AddServiceProvider(...)`, `CreateTypedServiceScope(...)`, or `AddServiceScope(...)` | ad hoc `new ServiceCollection().BuildServiceProvider()` setup when the typed helper can express the same shape |
+| a framework-style built-in type with special behavior | the matching built-in helper or [AddKnownType(...)](xref:FastMoq.Mocker.AddKnownType(FastMoq.KnownTypeRegistration,System.Boolean)) | treating that dependency like an ordinary manual registration first |
+
+### Keep one dependency model per service
+
+For one service in one test flow, pick one main model:
+
+- tracked mock
+- fixed concrete instance
+- built-in known type
+- typed provider registration
+
+Avoid switching the same service back and forth between those models unless the test intentionally rebuilds the graph for a separate scenario.
+
+For example, avoid this pattern:
+
+```csharp
+var dependency = Mocks.GetOrCreateMock<IMyService>();
+Mocks.AddType(dependency.Instance, replace: true);
+```
+
+That creates a tracked mock and then replaces resolution with the mock's instance as a fixed registration, which blurs the test's intent.
+
+### Reset and per-test state
+
+In [MockerTestBase&lt;TComponent&gt;](xref:FastMoq.MockerTestBase`1), each test already starts from a fresh `Mocker`. Before adding extra setup only to reset state, check whether the current harness already gives you a clean per-test instance.
+
+Use extra per-test instance creation only when the test truly needs an intentionally separate state boundary.
+
 ## Choose The Narrowest Harness
 
 Do not default every test to the heaviest FastMoq surface. Start with the smallest harness that matches the behavior under test.

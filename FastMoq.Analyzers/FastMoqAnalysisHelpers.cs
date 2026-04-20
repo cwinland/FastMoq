@@ -87,6 +87,7 @@ namespace FastMoq.Analyzers
         internal const string MoqProviderName = "moq";
         internal const string NSubstituteProviderName = "nsubstitute";
         internal const string RegisterProviderSetAsDefaultPropertyName = "SetAsDefault";
+        internal const string RegisterProviderSetAsDefaultParameterName = "setAsDefault";
         private const string FASTMOQ_DEFAULT_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqDefaultProviderAttribute";
         private const string FASTMOQ_REGISTER_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqRegisterProviderAttribute";
         private const string FASTMOQ_MOCKER_TEST_BASE_METADATA_NAME = "MockerTestBase`1";
@@ -135,7 +136,106 @@ namespace FastMoq.Analyzers
             semanticModel = GetSemanticModelForNode(invocation, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(invocation, cancellationToken);
             method = symbolInfo.Symbol as IMethodSymbol ?? symbolInfo.CandidateSymbols.OfType<IMethodSymbol>().FirstOrDefault();
+            if (method is not null)
+            {
+                return true;
+            }
+
+            symbolInfo = semanticModel.GetSymbolInfo(invocation.Expression, cancellationToken);
+            method = symbolInfo.Symbol as IMethodSymbol ?? symbolInfo.CandidateSymbols.OfType<IMethodSymbol>().FirstOrDefault();
+            if (method is not null)
+            {
+                return true;
+            }
+
+            method = semanticModel.GetMemberGroup(invocation.Expression, cancellationToken).OfType<IMethodSymbol>().FirstOrDefault();
             return method is not null;
+        }
+
+        public static bool TryGetFastMockVerifyWrapperMethodSymbol(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out IMethodSymbol? methodSymbol)
+        {
+            semanticModel = GetSemanticModelForNode(invocationExpression, semanticModel);
+
+            if (TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out methodSymbol) &&
+                methodSymbol is not null &&
+                GetFastMockVerifyWrapperKind(methodSymbol, semanticModel, cancellationToken) != FastMockVerifyWrapperKind.None)
+            {
+                return true;
+            }
+
+            methodSymbol = null;
+            if (invocationExpression.Expression is not IdentifierNameSyntax identifierName)
+            {
+                return false;
+            }
+
+            var importedStaticTypes = GetImportedStaticTypeSymbols(invocationExpression, semanticModel, cancellationToken);
+            if (importedStaticTypes.Count == 0)
+            {
+                return false;
+            }
+
+            var argumentCount = invocationExpression.ArgumentList.Arguments.Count;
+            var matchingMethods = importedStaticTypes
+                .SelectMany(typeSymbol => typeSymbol.GetMembers(identifierName.Identifier.ValueText).OfType<IMethodSymbol>())
+                .Where(candidate => candidate.IsStatic)
+                .Where(candidate => candidate.Name == "Verify")
+                .Where(candidate => candidate.Parameters.Length > 0 && IsFastMoqFastMockType(candidate.Parameters[0].Type))
+                .Where(candidate =>
+                {
+                    var requiredParameterCount = candidate.Parameters.Count(parameter => !parameter.IsOptional);
+                    return argumentCount >= requiredParameterCount && argumentCount <= candidate.Parameters.Length;
+                })
+                .Where(candidate => GetFastMockVerifyWrapperKind(candidate, semanticModel, cancellationToken) != FastMockVerifyWrapperKind.None)
+                .Distinct<IMethodSymbol>(SymbolEqualityComparer.Default)
+                .ToArray();
+
+            if (matchingMethods.Length != 1)
+            {
+                return false;
+            }
+
+            methodSymbol = matchingMethods[0];
+            return true;
+        }
+
+        private static HashSet<INamedTypeSymbol> GetImportedStaticTypeSymbols(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            var importedTypes = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
+
+            foreach (var scope in node.AncestorsAndSelf())
+            {
+                switch (scope)
+                {
+                    case CompilationUnitSyntax compilationUnit:
+                        AddImportedStaticTypes(compilationUnit.Usings, semanticModel, cancellationToken, importedTypes);
+                        break;
+                    case BaseNamespaceDeclarationSyntax namespaceDeclaration:
+                        AddImportedStaticTypes(namespaceDeclaration.Usings, semanticModel, cancellationToken, importedTypes);
+                        break;
+                }
+            }
+
+            return importedTypes;
+        }
+
+        private static void AddImportedStaticTypes(SyntaxList<UsingDirectiveSyntax> usingDirectives, SemanticModel semanticModel, CancellationToken cancellationToken, HashSet<INamedTypeSymbol> importedTypes)
+        {
+            foreach (var usingDirective in usingDirectives)
+            {
+                if (usingDirective.StaticKeyword.IsKind(Microsoft.CodeAnalysis.CSharp.SyntaxKind.None) ||
+                    usingDirective.Name is null)
+                {
+                    continue;
+                }
+
+                var symbolInfo = semanticModel.GetSymbolInfo(usingDirective.Name, cancellationToken);
+                var typeSymbol = symbolInfo.Symbol as INamedTypeSymbol ?? symbolInfo.CandidateSymbols.OfType<INamedTypeSymbol>().FirstOrDefault();
+                if (typeSymbol is not null)
+                {
+                    importedTypes.Add(typeSymbol);
+                }
+            }
         }
 
         public static bool HasMoqProviderPackage(Compilation compilation)
@@ -823,26 +923,27 @@ namespace FastMoq.Analyzers
             return false;
         }
 
-        public static bool TryBuildFastMockVerifyWrapperUsageReplacement(ExpressionSyntax verifyTargetExpression, SemanticModel semanticModel, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken, out string replacement, out bool requiresProvidersNamespace)
+        public static bool TryBuildFastMockVerifyWrapperUsageReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement, out bool requiresProvidersNamespace)
         {
             replacement = string.Empty;
             requiresProvidersNamespace = false;
 
-            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+            if (!TryGetFastMockVerifyWrapperMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
                 method is null ||
-                GetFastMockVerifyWrapperKind(method, semanticModel, cancellationToken) == FastMockVerifyWrapperKind.None)
+                GetFastMockVerifyWrapperKind(method, semanticModel, cancellationToken) == FastMockVerifyWrapperKind.None ||
+                !TryGetFastMockVerifyWrapperUsageTarget(invocationExpression, semanticModel, cancellationToken, out var verifyTargetExpression, out var firstVerificationArgumentIndex))
             {
                 return false;
             }
 
             if (TryResolveTrackedMockOrigin(verifyTargetExpression, semanticModel, cancellationToken, out var trackedOrigin) &&
-                TryBuildFastMockVerifyWrapperUsageReplacement(trackedOrigin, semanticModel, invocationExpression, cancellationToken, out replacement))
+                TryBuildFastMockVerifyWrapperUsageReplacement(trackedOrigin, semanticModel, invocationExpression, firstVerificationArgumentIndex, cancellationToken, out replacement))
             {
                 return true;
             }
 
             if (TryResolveDetachedMockOrigin(verifyTargetExpression, semanticModel, cancellationToken, out var detachedOrigin) &&
-                TryBuildFastMockVerifyWrapperUsageReplacement(detachedOrigin, semanticModel, invocationExpression, cancellationToken, out replacement))
+                TryBuildFastMockVerifyWrapperUsageReplacement(detachedOrigin, semanticModel, invocationExpression, firstVerificationArgumentIndex, cancellationToken, out replacement))
             {
                 requiresProvidersNamespace = true;
                 return true;
@@ -870,7 +971,13 @@ namespace FastMoq.Analyzers
                 }
 
                 var declarationSemanticModel = GetSemanticModelForNode(methodDeclaration, semanticModel);
-                var declarationKind = GetFastMockVerifyWrapperKind(methodDeclaration, methodSymbol.Parameters[0], declarationSemanticModel, cancellationToken);
+                if (declarationSemanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken) is not IMethodSymbol declaredMethodSymbol ||
+                    declaredMethodSymbol.Parameters.Length == 0)
+                {
+                    continue;
+                }
+
+                var declarationKind = GetFastMockVerifyWrapperKind(methodDeclaration, declaredMethodSymbol.Parameters[0], declarationSemanticModel, cancellationToken);
                 if (declarationKind == FastMockVerifyWrapperKind.ProviderSpecific)
                 {
                     return declarationKind;
@@ -1048,24 +1155,25 @@ namespace FastMoq.Analyzers
             return true;
         }
 
-        private static bool TryBuildFastMockVerifyWrapperUsageReplacement(TrackedMockOrigin origin, SemanticModel semanticModel, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken, out string replacement)
+        private static bool TryBuildFastMockVerifyWrapperUsageReplacement(TrackedMockOrigin origin, SemanticModel semanticModel, InvocationExpressionSyntax invocationExpression, int firstVerificationArgumentIndex, CancellationToken cancellationToken, out string replacement)
         {
             replacement = string.Empty;
 
             var arguments = invocationExpression.ArgumentList.Arguments;
-            if (arguments.Count == 0 || arguments.Count > 2)
+            var verificationArgumentCount = arguments.Count - firstVerificationArgumentIndex;
+            if (verificationArgumentCount == 0 || verificationArgumentCount > 2)
             {
                 return false;
             }
 
             var replacementArguments = new List<string>
             {
-                arguments[0].WithoutTrivia().ToString(),
+                arguments[firstVerificationArgumentIndex].WithoutTrivia().ToString(),
             };
 
-            if (arguments.Count == 2)
+            if (verificationArgumentCount == 2)
             {
-                if (!TryConvertTimesArgument(arguments[1], semanticModel, cancellationToken, invocationExpression.SpanStart, out var convertedArgument, out var omitArgument))
+                if (!TryConvertTimesArgument(arguments[firstVerificationArgumentIndex + 1], semanticModel, cancellationToken, invocationExpression.SpanStart, out var convertedArgument, out var omitArgument))
                 {
                     return false;
                 }
@@ -1082,7 +1190,7 @@ namespace FastMoq.Analyzers
             return true;
         }
 
-        private static bool TryBuildFastMockVerifyWrapperUsageReplacement(DetachedMockOrigin origin, SemanticModel semanticModel, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken, out string replacement)
+        private static bool TryBuildFastMockVerifyWrapperUsageReplacement(DetachedMockOrigin origin, SemanticModel semanticModel, InvocationExpressionSyntax invocationExpression, int firstVerificationArgumentIndex, CancellationToken cancellationToken, out string replacement)
         {
             replacement = string.Empty;
             if (!origin.CanReuseFastMockExpression)
@@ -1091,7 +1199,8 @@ namespace FastMoq.Analyzers
             }
 
             var arguments = invocationExpression.ArgumentList.Arguments;
-            if (arguments.Count == 0 || arguments.Count > 2)
+            var verificationArgumentCount = arguments.Count - firstVerificationArgumentIndex;
+            if (verificationArgumentCount == 0 || verificationArgumentCount > 2)
             {
                 return false;
             }
@@ -1099,12 +1208,12 @@ namespace FastMoq.Analyzers
             var replacementArguments = new List<string>
             {
                 origin.FastMockExpression.WithoutTrivia().ToString(),
-                arguments[0].WithoutTrivia().ToString(),
+                arguments[firstVerificationArgumentIndex].WithoutTrivia().ToString(),
             };
 
-            if (arguments.Count == 2)
+            if (verificationArgumentCount == 2)
             {
-                if (!TryConvertTimesArgument(arguments[1], semanticModel, cancellationToken, invocationExpression.SpanStart, out var convertedArgument, out var omitArgument))
+                if (!TryConvertTimesArgument(arguments[firstVerificationArgumentIndex + 1], semanticModel, cancellationToken, invocationExpression.SpanStart, out var convertedArgument, out var omitArgument))
                 {
                     return false;
                 }
@@ -1117,6 +1226,38 @@ namespace FastMoq.Analyzers
 
             var serviceType = GetMinimalTypeName(origin.ServiceType, semanticModel, invocationExpression.SpanStart);
             replacement = $"MockingProviderRegistry.Default.Verify<{serviceType}>({string.Join(", ", replacementArguments)})";
+            return true;
+        }
+
+        private static bool TryGetFastMockVerifyWrapperUsageTarget(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out ExpressionSyntax verifyTargetExpression, out int firstVerificationArgumentIndex)
+        {
+            verifyTargetExpression = null!;
+            firstVerificationArgumentIndex = 0;
+
+            if (!TryGetFastMockVerifyWrapperMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            if (method.ReducedFrom is not null)
+            {
+                if (invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess)
+                {
+                    return false;
+                }
+
+                verifyTargetExpression = memberAccess.Expression;
+                return true;
+            }
+
+            if (invocationExpression.ArgumentList.Arguments.Count == 0)
+            {
+                return false;
+            }
+
+            verifyTargetExpression = invocationExpression.ArgumentList.Arguments[0].Expression;
+            firstVerificationArgumentIndex = 1;
             return true;
         }
 
@@ -4000,11 +4141,9 @@ namespace FastMoq.Analyzers
             if (TryGetRegisterSetAsDefaultArgument(invocationExpression, semanticModel, cancellationToken, out var setAsDefault))
             {
                 selectsByDefault = setAsDefault;
-                return true;
             }
 
-            providerName = string.Empty;
-            return false;
+            return true;
         }
 
         private static bool TryGetAssemblyRegisteredProviderName(AttributeData attribute, bool requireDefaultSelection, out string providerName)
@@ -4038,33 +4177,32 @@ namespace FastMoq.Analyzers
         private static bool TryGetRegisterSetAsDefaultArgument(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out bool setAsDefault)
         {
             setAsDefault = false;
-            if (invocationExpression.ArgumentList.Arguments.Count < 3)
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
             {
                 return false;
             }
 
-            var method = semanticModel.GetSymbolInfo(invocationExpression, cancellationToken).Symbol as IMethodSymbol;
-            method = method?.ReducedFrom ?? method;
-            if (method is null)
+            method = method.ReducedFrom ?? method;
+            var setAsDefaultParameter = method.Parameters.FirstOrDefault(parameter =>
+                string.Equals(parameter.Name, RegisterProviderSetAsDefaultParameterName, StringComparison.Ordinal));
+            if (setAsDefaultParameter is null)
             {
                 return false;
             }
 
-            var argument = invocationExpression.ArgumentList.Arguments[2];
-            if (method.Parameters.Length > 2)
+            ArgumentSyntax? argument = invocationExpression.ArgumentList.Arguments.FirstOrDefault(candidate =>
+                candidate.NameColon is not null &&
+                string.Equals(candidate.NameColon.Name.Identifier.ValueText, setAsDefaultParameter.Name, StringComparison.Ordinal));
+
+            if (argument is null && setAsDefaultParameter.Ordinal < invocationExpression.ArgumentList.Arguments.Count)
             {
-                if (argument.NameColon is not null)
-                {
-                    var namedParameter = method.Parameters.FirstOrDefault(parameter =>
-                        string.Equals(parameter.Name, argument.NameColon.Name.Identifier.ValueText, StringComparison.Ordinal));
-                    if (namedParameter is not null && namedParameter.Ordinal < invocationExpression.ArgumentList.Arguments.Count)
-                    {
-                        argument = invocationExpression.ArgumentList.Arguments[namedParameter.Ordinal];
-                    }
-                }
+                argument = invocationExpression.ArgumentList.Arguments[setAsDefaultParameter.Ordinal];
             }
 
-            return TryGetBooleanConstant(argument.Expression, semanticModel, cancellationToken, out setAsDefault);
+            return argument is not null &&
+                TryGetBooleanConstant(argument.Expression, semanticModel, cancellationToken, out setAsDefault);
         }
 
         private static bool TryGetStringConstant(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out string value)

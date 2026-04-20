@@ -55,8 +55,7 @@ namespace FastMoq.Analyzers.Analyzers
         private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
-            if (invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
-                !FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var methodSymbol) ||
+            if (!FastMoqAnalysisHelpers.TryGetFastMockVerifyWrapperMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var methodSymbol) ||
                 methodSymbol is null)
             {
                 return;
@@ -75,9 +74,13 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
+            var diagnosticLocation = invocationExpression.Expression is MemberAccessExpressionSyntax memberAccess
+                ? memberAccess.Name.GetLocation()
+                : invocationExpression.Expression.GetLocation();
+
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor,
-                memberAccess.Name.GetLocation(),
+                diagnosticLocation,
                 methodSymbol.Name));
         }
     }

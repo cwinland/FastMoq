@@ -2842,7 +2842,12 @@ class Sample
     }
 }";
 
-            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderBootstrapAnalyzer());
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new ProviderBootstrapAnalyzer());
             Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
         }
 
@@ -2871,7 +2876,12 @@ class Sample
     }
 }";
 
-            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderBootstrapAnalyzer());
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new ProviderBootstrapAnalyzer());
             Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
         }
 
@@ -2939,7 +2949,52 @@ class Sample
     }
 }";
 
-            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new ProviderBootstrapAnalyzer());
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenProviderIsRegisteredWithoutExplicitSetAsDefaultAndIsTheOnlyVisibleProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+static class Bootstrap
+{
+    static void Initialize()
+    {
+        MockingProviderRegistry.Register(""moq"", MoqMockingProvider.Instance);
+    }
+}
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.AsMoq();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new ProviderBootstrapAnalyzer());
             Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
         }
 
@@ -3201,6 +3256,44 @@ class Sample
         {
             const string SOURCE = @"
 using FastMoq;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new LegacyMoqOnboardingAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldNotReport_WhenMoqIsRegisteredWithoutExplicitSetAsDefaultAndIsTheOnlyVisibleProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+static class Bootstrap
+{
+    static void Initialize()
+    {
+        MockingProviderRegistry.Register(""moq"", MoqMockingProvider.Instance);
+    }
+}
 
 class Sample
 {

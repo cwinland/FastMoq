@@ -138,8 +138,7 @@ namespace FastMoq.Analyzers.CodeFixes
 
                         var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
                         if (semanticModel is null ||
-                            invocationExpression.Expression is not MemberAccessExpressionSyntax wrapperAccess ||
-                            !FastMoqAnalysisHelpers.TryBuildFastMockVerifyWrapperUsageReplacement(wrapperAccess.Expression, semanticModel, invocationExpression, context.CancellationToken, out _, out _))
+                            !FastMoqAnalysisHelpers.TryBuildFastMockVerifyWrapperUsageReplacement(invocationExpression, semanticModel, context.CancellationToken, out _, out _))
                         {
                             return;
                         }
@@ -572,8 +571,7 @@ namespace FastMoq.Analyzers.CodeFixes
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             if (root is null || semanticModel is null ||
-                invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
-                !FastMoqAnalysisHelpers.TryBuildFastMockVerifyWrapperUsageReplacement(memberAccess.Expression, semanticModel, invocationExpression, cancellationToken, out var replacementText, out var requiresProvidersNamespace))
+                !FastMoqAnalysisHelpers.TryBuildFastMockVerifyWrapperUsageReplacement(invocationExpression, semanticModel, cancellationToken, out var replacementText, out var requiresProvidersNamespace))
             {
                 return document;
             }

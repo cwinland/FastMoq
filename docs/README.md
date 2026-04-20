@@ -22,6 +22,8 @@ Use this order when you are deciding which example or helper shape to copy into 
 2. Use tracked `IFastMock<T>` provider extensions such as `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, or `AsNSubstitute()` when the selected provider package exposes them and the arrange step still needs provider-specific syntax.
 3. Use explicit `AsMoq()`, raw provider-native APIs, or compatibility wrappers only for the remaining gaps such as protected members, `out` or `ref` verification, or other provider-specific pockets.
 
+When a first-party FastMoq helper already exists for the dependency or framework primitive, prefer that helper over handwritten setup even when the handwritten version would still work.
+
 ## 📚 Documentation Structure
 
 ### 🚀 [Getting Started](./getting-started/README.md)
@@ -33,6 +35,7 @@ Perfect for developers new to FastMoq. Learn the basics and write your first tes
 - [Provider selection and setup](./getting-started/provider-selection.md)
 - [Provider capabilities matrix](./getting-started/provider-capabilities.md)
 - [Repo-native testing guide](./getting-started/testing-guide.md)
+- [Prefer FastMoq-owned setup when a first-party helper exists](./getting-started/testing-guide.md#prefer-fastmoq-owned-setup)
 - [Choose the narrowest harness for the test](./getting-started/testing-guide.md#choose-the-narrowest-harness)
 - [Local wrapper boundary for shared helpers](./getting-started/testing-guide.md#local-wrapper-boundary)
 - [Tracked vs standalone provider-first mocks](./getting-started/testing-guide.md#tracked-vs-standalone-fast-mocks)
