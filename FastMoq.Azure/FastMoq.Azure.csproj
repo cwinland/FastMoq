@@ -5,37 +5,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Authors>Winland, $(AssemblyName)</Authors>
-    <Company>$(Authors)</Company>
-    <Copyright>Copyright(c) 2026 Christopher Winland</Copyright>
-    <PackageId>$(AssemblyName)</PackageId>
-    <Description>Shared Azure SDK testing helpers for FastMoq, including credentials, pageable builders, Key Vault helpers, and Azure-oriented service registration support.</Description>
-    <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>FastMoq;Azure;testing;mocking;credentials;storage;keyvault</PackageTags>
-    <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Azure SDK testing helpers for FastMoq, including credential builders, pageable builders, Key Vault helpers, Azure-oriented configuration, and service registration support.</Description>
+    <PackageTags>$(FastMoqBasePackageTags);azure;azure-sdk;credentials;pageable;keyvault;storage</PackageTags>
     <IsPackable>true</IsPackable>
-    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <RootNamespace>FastMoq.Azure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
   </ItemGroup>
 
   <ItemGroup>

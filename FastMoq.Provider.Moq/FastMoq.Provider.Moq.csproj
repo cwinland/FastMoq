@@ -5,36 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
-    <DebugType>portable</DebugType>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Authors>Winland, $(AssemblyName)</Authors>
-    <Company>$(Authors)</Company>
-    <Copyright>Copyright(c) 2026 Christopher Winland</Copyright>
-    <PackageId>$(AssemblyName)</PackageId>
-    <Description>Moq provider package for FastMoq v4 transition. This bundled dependency will be removed from FastMoq.Core in v5.</Description>
-    <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>FastMoq;Moq;provider;testing;mocking</PackageTags>
-    <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Moq provider package for FastMoq with tracked IFastMock&lt;T&gt; extension methods for setup and verification, plus v4 migration support for Moq-shaped test flows.</Description>
+    <PackageTags>$(FastMoqBasePackageTags);moq;mock-provider;migration;compatibility</PackageTags>
     <IsPackable>true</IsPackable>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
   </ItemGroup>
 
   <ItemGroup>

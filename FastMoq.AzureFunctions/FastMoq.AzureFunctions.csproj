@@ -5,36 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Authors>Winland, $(AssemblyName)</Authors>
-    <Company>$(Authors)</Company>
-    <Copyright>Copyright(c) 2026 Christopher Winland</Copyright>
-    <PackageId>$(AssemblyName)</PackageId>
-    <Description>Azure Functions worker and HTTP-trigger test helpers for FastMoq, including typed FunctionContext.InstanceServices setup, HttpRequestData/HttpResponseData builders, and body readers.</Description>
-    <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>FastMoq;AzureFunctions;FunctionContext;HttpRequestData;HttpResponseData;testing;mocking</PackageTags>
-    <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Azure Functions isolated worker testing helpers for FastMoq, including typed FunctionContext.InstanceServices setup, HttpRequestData and HttpResponseData builders, and request or response body readers.</Description>
+    <PackageTags>$(FastMoqBasePackageTags);azure-functions;functions-worker;http-trigger;function-context</PackageTags>
     <IsPackable>true</IsPackable>
-    <DebugType>portable</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,23 @@
+<Project>
+  <PropertyGroup Condition="'$(IsPackable)' == 'true'">
+    <Authors>Winland, $(AssemblyName)</Authors>
+    <Company>$(Authors)</Company>
+    <Copyright>© 2021–2026 Christopher Winland</Copyright>
+    <PackageCopyright>© 2021–2026 Christopher Winland</PackageCopyright>
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <None Include="$(MSBuildThisFileDirectory)README.md" Link="README.md" Pack="true" PackagePath="\" />
+    <Content Include="$(MSBuildThisFileDirectory)LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
+  </ItemGroup>
+</Project>

@@ -5,40 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
-    <DebugType>portable</DebugType>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Authors>Winland, $(AssemblyName)</Authors>
-    <Company>$(Authors)</Company>
-    <Copyright>Copyright(c) 2023 Christopher Winland</Copyright>
-    <PackageId>$(AssemblyName)</PackageId>
-    <Description>Core FastMoq runtime for automatic test double creation, constructor injection, provider-neutral testing helpers, and bundled migration analyzers. Uses reflection by default in v4, includes Moq compatibility, and supports additional providers when added explicitly.</Description>
-    <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>Easy;fast;injection;inject;mock;extension;Moq;framework;mocking;class;provider</PackageTags>
-    <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>Provider-first FastMoq runtime for automatic test double creation, constructor injection, provider-neutral verification, and test helper primitives. Includes the default reflection provider, bundled Moq compatibility, and Roslyn analyzers for migration guidance.</Description>
+    <PackageTags>$(FastMoqBasePackageTags);provider-neutral;mock-provider;verification;reflection;moq;migration</PackageTags>
     <IsPackable>true</IsPackable>
     <NoWarn>1701;1702;S1309;S4018;S2436</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <RootNamespace>FastMoq</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
     <None Include="..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.pdb" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" Condition="Exists('..\FastMoq.Analyzers\bin\$(Configuration)\netstandard2.0\FastMoq.Analyzers.pdb')" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\LICENSE.TXT" Link="license.txt" Pack="true" PackagePath="license.txt" />
   </ItemGroup>
 
   <ItemGroup>
