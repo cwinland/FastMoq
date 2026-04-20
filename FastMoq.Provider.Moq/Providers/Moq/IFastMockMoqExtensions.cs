@@ -70,7 +70,7 @@ namespace FastMoq.Providers.MoqProvider
         public static ISetup<T> Setup<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression) where T : class
         {
             ArgumentNullException.ThrowIfNull(expression);
-            return fastMock.AsMoq().Setup(expression);
+            return fastMock.AsMoq().Setup(FastArgMoqExpressionRewriter.Rewrite(expression));
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace FastMoq.Providers.MoqProvider
         public static ISetup<T, TResult> Setup<T, TResult>(this IFastMock<T> fastMock, Expression<Func<T, TResult>> expression) where T : class
         {
             ArgumentNullException.ThrowIfNull(expression);
-            return fastMock.AsMoq().Setup(expression);
+            return fastMock.AsMoq().Setup(FastArgMoqExpressionRewriter.Rewrite(expression));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace FastMoq.Providers.MoqProvider
         public static Moq.Language.ISetupSequentialResult<TResult> SetupSequence<T, TResult>(this IFastMock<T> fastMock, Expression<Func<T, TResult>> expression) where T : class
         {
             ArgumentNullException.ThrowIfNull(expression);
-            return fastMock.AsMoq().SetupSequence(expression);
+            return fastMock.AsMoq().SetupSequence(FastArgMoqExpressionRewriter.Rewrite(expression));
         }
 
         /// <summary>

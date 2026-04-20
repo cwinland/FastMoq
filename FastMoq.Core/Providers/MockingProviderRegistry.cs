@@ -10,19 +10,23 @@ namespace FastMoq.Providers
     /// </summary>
     public static class MockingProviderRegistry
     {
-        private const string NSubstituteProviderAssemblyName = "FastMoq.Provider.NSubstitute";
-        private const string NSubstituteProviderTypeName = "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider";
-
         private static readonly ConcurrentDictionary<string, IMockingProvider> _providers = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly ConcurrentDictionary<string, MockingProviderRegistrationInfo> _providerRegistrations = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly ConcurrentDictionary<string, string> _discoveryWarnings = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly object _discoveryLock = new();
         private static IMockingProvider? _default;
         private static readonly AsyncLocal<IMockingProvider?> _current = new();
+        private static DefaultProviderSource _defaultSource;
+        private static int _assemblyChangeVersion;
+        private static int _lastCompletedDiscoveryVersion = -1;
+        private static int _discoveryExecutionCount;
+        private static int _discoveryMode = (int)MockingProviderDiscoveryMode.Automatic;
+        private static bool _isDiscoveringProviders;
 
         static MockingProviderRegistry()
         {
-            // Auto-register reflection as the provider-neutral default.
-            Register("reflection", ReflectionMockingProvider.Instance, setAsDefault: true);
-            // Moq remains bundled in v4 for compatibility, but is no longer the default.
-            Register("moq", MoqMockingProvider.Instance, setAsDefault: false);
+            AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
+            InitializeBuiltInProviders();
         }
 
         /// <summary>
@@ -33,13 +37,7 @@ namespace FastMoq.Providers
         /// <param name="setAsDefault">When <see langword="true"/>, also makes the provider the global default provider.</param>
         public static void Register(string name, IMockingProvider provider, bool setAsDefault = false)
         {
-            ArgumentNullException.ThrowIfNull(name);
-            ArgumentNullException.ThrowIfNull(provider);
-            _providers[name] = provider;
-            if (setAsDefault || _default is null)
-            {
-                _default = provider;
-            }
+            RegisterCore(name, provider, setAsDefault, MockingProviderRegistrationSource.RuntimeRegistration);
         }
 
         /// <summary>
@@ -57,7 +55,14 @@ namespace FastMoq.Providers
                 return true;
             }
 
-            return TryEnsureOptionalProviderRegistered(name) && _providers.TryGetValue(name, out provider!);
+            if (_isDiscoveringProviders)
+            {
+                provider = null!;
+                return false;
+            }
+
+            EnsureDiscoveredProvidersRegistered();
+            return _providers.TryGetValue(name, out provider!);
         }
 
         /// <summary>
@@ -66,10 +71,61 @@ namespace FastMoq.Providers
         public static IReadOnlyCollection<string> RegisteredProviderNames => _providers.Keys.OrderBy(name => name, StringComparer.OrdinalIgnoreCase).ToArray();
 
         /// <summary>
+        /// Gets metadata for the currently registered providers ordered alphabetically by registration name.
+        /// </summary>
+        public static IReadOnlyCollection<MockingProviderRegistrationInfo> RegisteredProviders => _providerRegistrations.Values.OrderBy(info => info.Name, StringComparer.OrdinalIgnoreCase).ToArray();
+
+        /// <summary>
+        /// Gets discovery warnings collected while scanning assemblies for convention-based provider registrations.
+        /// </summary>
+        public static IReadOnlyCollection<string> DiscoveryWarnings => _discoveryWarnings.Values.OrderBy(message => message, StringComparer.OrdinalIgnoreCase).ToArray();
+
+        /// <summary>
+        /// Gets or sets how automatic provider discovery should behave for the current process.
+        /// Set this before resolving providers when a test process must avoid loading referenced assemblies or disable convention-based discovery.
+        /// </summary>
+        public static MockingProviderDiscoveryMode DiscoveryMode
+        {
+            get => (MockingProviderDiscoveryMode)Volatile.Read(ref _discoveryMode);
+            set
+            {
+                if (!Enum.IsDefined(value))
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                }
+
+                var prior = Interlocked.Exchange(ref _discoveryMode, (int)value);
+                if (prior == (int)value)
+                {
+                    return;
+                }
+
+                _lastCompletedDiscoveryVersion = -1;
+                _discoveryWarnings.Clear();
+            }
+        }
+
+        /// <summary>
         /// Gets the effective provider for the current async flow.
         /// A scoped provider pushed with <see cref="Push(IMockingProvider)"/> or <see cref="Push(string)"/> takes precedence over the global default.
         /// </summary>
-        public static IMockingProvider Default => _current.Value ?? _default ?? throw new InvalidOperationException("No mocking provider registered. Register one via MockingProviderRegistry.Register().");
+        public static IMockingProvider Default
+        {
+            get
+            {
+                if (_current.Value is IMockingProvider currentProvider)
+                {
+                    return currentProvider;
+                }
+
+                if (_defaultSource is DefaultProviderSource.None or DefaultProviderSource.ReflectionFallback)
+                {
+                    EnsureDiscoveredProvidersRegistered();
+                }
+
+                return _default ?? throw new InvalidOperationException("No mocking provider registered. Register one via MockingProviderRegistry.Register().");
+            }
+        }
 
         /// <summary>
         /// Wraps a legacy provider-specific mock object in the provider-agnostic <see cref="IFastMock"/> abstraction.
@@ -82,6 +138,11 @@ namespace FastMoq.Providers
         {
             ArgumentNullException.ThrowIfNull(legacyMock);
             ArgumentNullException.ThrowIfNull(mockedType);
+
+            if (_defaultSource is DefaultProviderSource.None or DefaultProviderSource.ReflectionFallback)
+            {
+                EnsureDiscoveredProvidersRegistered();
+            }
 
             var defaultProvider = _current.Value ?? _default;
             if (defaultProvider != null)
@@ -116,14 +177,7 @@ namespace FastMoq.Providers
         /// <param name="name">The name of the provider to make the global default.</param>
         public static void SetDefault(string name)
         {
-            ArgumentNullException.ThrowIfNull(name);
-
-            if (!TryGet(name, out var provider))
-            {
-                throw new InvalidOperationException($"Unable to find provider '{name}'. Registered providers: {string.Join(", ", RegisteredProviderNames)}.");
-            }
-
-            _default = provider;
+            SetDefaultProvider(name, DefaultProviderSource.ExplicitRuntime);
         }
 
         /// <summary>
@@ -161,20 +215,43 @@ namespace FastMoq.Providers
         public static void Clear()
         {
             _providers.Clear();
+            _providerRegistrations.Clear();
+            _discoveryWarnings.Clear();
             _default = null;
+            _defaultSource = DefaultProviderSource.None;
+            _lastCompletedDiscoveryVersion = -1;
             _current.Value = null;
+        }
+
+        internal static void InitializeBuiltInProviders(bool includeMoqProvider = true)
+        {
+            Clear();
+            RegisterCore("reflection", ReflectionMockingProvider.Instance, setAsDefault: false, MockingProviderRegistrationSource.BuiltIn);
+
+            if (includeMoqProvider)
+            {
+                RegisterCore("moq", MoqMockingProvider.Instance, setAsDefault: false, MockingProviderRegistrationSource.BuiltIn);
+            }
+
+            SetDefaultProviderCore(ReflectionMockingProvider.Instance, DefaultProviderSource.ReflectionFallback);
         }
 
         internal static void ApplyAssemblyProviderRegistrations(IEnumerable<Assembly> assemblies)
         {
+            ApplyAssemblyProviderRegistrations(assemblies, includeConventionDiscovery: true);
+        }
+
+        internal static void ApplyAssemblyProviderRegistrations(IEnumerable<Assembly> assemblies, bool includeConventionDiscovery)
+        {
             ArgumentNullException.ThrowIfNull(assemblies);
 
-            var registrations = assemblies
+            var assemblyArray = assemblies.ToArray();
+            var explicitRegistrationGroups = assemblyArray
                 .SelectMany(GetAssemblyProviderRegistrations)
                 .GroupBy(registration => registration.ProviderName, StringComparer.OrdinalIgnoreCase)
                 .ToArray();
 
-            foreach (var group in registrations)
+            foreach (var group in explicitRegistrationGroups)
             {
                 var distinctProviderTypes = group
                     .Select(registration => registration.ProviderType.AssemblyQualifiedName ?? registration.ProviderType.FullName ?? registration.ProviderType.Name)
@@ -187,11 +264,77 @@ namespace FastMoq.Providers
                 }
 
                 var registration = group.First();
-                Register(registration.ProviderName, CreateProviderInstance(registration.ProviderName, registration.ProviderType), setAsDefault: false);
+                if (_providers.TryGetValue(registration.ProviderName, out var existingProvider))
+                {
+                    if (existingProvider.GetType() != registration.ProviderType)
+                    {
+                        RecordDiscoveryWarning(
+                            registration.ProviderName,
+                            $"Skipped automatic registration for provider name '{registration.ProviderName}' because it is already registered to '{GetProviderTypeDisplay(existingProvider.GetType())}', while assembly registration found '{GetProviderTypeDisplay(registration.ProviderType)}'. Register the intended provider explicitly with a stable alias.");
+                    }
+
+                    continue;
+                }
+
+                RegisterCore(
+                    registration.ProviderName,
+                    CreateProviderInstance(registration.ProviderName, registration.ProviderType),
+                    setAsDefault: false,
+                    MockingProviderRegistrationSource.AssemblyAttribute);
+            }
+
+            if (!includeConventionDiscovery)
+            {
+                return;
+            }
+
+            var explicitlyRegisteredProviderTypes = explicitRegistrationGroups
+                .Select(static group => group.First().ProviderType)
+                .ToHashSet();
+
+            var conventionRegistrationGroups = assemblyArray
+                .SelectMany(assembly => GetConventionProviderRegistrations(assembly, explicitlyRegisteredProviderTypes))
+                .GroupBy(registration => registration.ProviderName, StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+
+            foreach (var group in conventionRegistrationGroups)
+            {
+                var distinctProviderTypes = group
+                    .Select(static registration => registration.ProviderType)
+                    .Distinct()
+                    .ToArray();
+
+                if (distinctProviderTypes.Length > 1)
+                {
+                    RecordDiscoveryWarning(
+                        group.Key,
+                        $"Skipped automatic registration for provider name '{group.Key}' because multiple discoverable IMockingProvider types matched that fallback name: {string.Join(", ", distinctProviderTypes.Select(GetProviderTypeDisplay).OrderBy(name => name, StringComparer.Ordinal))}. Register the intended provider explicitly with a stable alias.");
+                    continue;
+                }
+
+                var registration = group.First();
+
+                if (_providers.TryGetValue(registration.ProviderName, out var existingProvider))
+                {
+                    if (existingProvider.GetType() != registration.ProviderType)
+                    {
+                        RecordDiscoveryWarning(
+                            registration.ProviderName,
+                            $"Skipped automatic registration for provider name '{registration.ProviderName}' because it is already registered to '{GetProviderTypeDisplay(existingProvider.GetType())}', while convention discovery found '{GetProviderTypeDisplay(registration.ProviderType)}'. Register the intended provider explicitly with a stable alias.");
+                    }
+
+                    continue;
+                }
+
+                RegisterCore(
+                    registration.ProviderName,
+                    CreateProviderInstance(registration.ProviderName, registration.ProviderType),
+                    setAsDefault: false,
+                    MockingProviderRegistrationSource.ConventionDiscovery);
             }
         }
 
-        internal static void ApplyAssemblyDefaultProviders(IEnumerable<Assembly> assemblies)
+        internal static bool ApplyAssemblyDefaultProviders(IEnumerable<Assembly> assemblies)
         {
             ArgumentNullException.ThrowIfNull(assemblies);
 
@@ -202,7 +345,7 @@ namespace FastMoq.Providers
 
             if (declaredProviders.Length == 0)
             {
-                return;
+                return false;
             }
 
             if (declaredProviders.Length > 1)
@@ -210,7 +353,78 @@ namespace FastMoq.Providers
                 throw new InvalidOperationException($"Multiple FastMoq default providers were declared across loaded assemblies: {string.Join(", ", declaredProviders.OrderBy(name => name, StringComparer.OrdinalIgnoreCase))}. Declare only one assembly default provider per process.");
             }
 
-            SetDefault(declaredProviders[0]);
+            SetDefaultProvider(declaredProviders[0], DefaultProviderSource.AssemblyDefault);
+            return true;
+        }
+
+        internal static void ApplyImplicitDefaultProvider()
+        {
+            if (_defaultSource is DefaultProviderSource.ExplicitRegistration or DefaultProviderSource.ExplicitRuntime or DefaultProviderSource.AssemblyDefault)
+            {
+                return;
+            }
+
+            var candidates = _providers
+                .Select(entry => entry.Value)
+                .Where(static provider => provider is not ReflectionMockingProvider)
+                .GroupBy(static provider => provider.GetType())
+                .Select(static group => group.First())
+                .ToArray();
+
+            if (candidates.Length == 1)
+            {
+                SetDefaultProviderCore(candidates[0], DefaultProviderSource.ImplicitSelection);
+                return;
+            }
+
+            var reflectionProvider = _providers.Values.FirstOrDefault(static provider => provider is ReflectionMockingProvider);
+            if (reflectionProvider is not null)
+            {
+                SetDefaultProviderCore(reflectionProvider, DefaultProviderSource.ReflectionFallback);
+            }
+        }
+
+        internal static void EnsureDiscoveredProvidersRegistered()
+        {
+            if (_isDiscoveringProviders)
+            {
+                return;
+            }
+
+            var assemblyChangeVersion = Volatile.Read(ref _assemblyChangeVersion);
+            if (_lastCompletedDiscoveryVersion == assemblyChangeVersion)
+            {
+                return;
+            }
+
+            lock (_discoveryLock)
+            {
+                assemblyChangeVersion = Volatile.Read(ref _assemblyChangeVersion);
+                if (_isDiscoveringProviders || _lastCompletedDiscoveryVersion == assemblyChangeVersion)
+                {
+                    return;
+                }
+
+                _isDiscoveringProviders = true;
+                try
+                {
+                    Interlocked.Increment(ref _discoveryExecutionCount);
+                    var discoveryMode = DiscoveryMode;
+                    var assemblies = LoadAssembliesForProviderDiscovery(discoveryMode);
+                    ApplyAssemblyProviderRegistrations(assemblies, includeConventionDiscovery: discoveryMode != MockingProviderDiscoveryMode.ExplicitOnly);
+                    var explicitDefaultApplied = ApplyAssemblyDefaultProviders(assemblies);
+                    if (!explicitDefaultApplied)
+                    {
+                        ApplyImplicitDefaultProvider();
+                    }
+
+                    _lastCompletedDiscoveryVersion = Volatile.Read(ref _assemblyChangeVersion);
+                }
+                finally
+                {
+                    _isDiscoveringProviders = false;
+                }
+            }
         }
 
         internal static bool TryGetAssemblyDefaultProviderName(Assembly assembly, out string providerName)
@@ -255,6 +469,58 @@ namespace FastMoq.Providers
             }
         }
 
+        private static IEnumerable<AssemblyProviderRegistration> GetConventionProviderRegistrations(
+            Assembly assembly,
+            ISet<Type> explicitlyRegisteredProviderTypes)
+        {
+            ArgumentNullException.ThrowIfNull(assembly);
+            ArgumentNullException.ThrowIfNull(explicitlyRegisteredProviderTypes);
+
+            foreach (var providerType in GetLoadableTypes(assembly))
+            {
+                if (!IsConventionDiscoverableProviderType(providerType) ||
+                    explicitlyRegisteredProviderTypes.Contains(providerType) ||
+                    _providers.Values.Any(provider => provider.GetType() == providerType))
+                {
+                    continue;
+                }
+
+                var providerName = providerType.FullName;
+                if (string.IsNullOrWhiteSpace(providerName))
+                {
+                    continue;
+                }
+
+                yield return new AssemblyProviderRegistration(providerName, providerType, SetAsDefault: false);
+            }
+        }
+
+        private static bool IsConventionDiscoverableProviderType(Type providerType)
+        {
+            ArgumentNullException.ThrowIfNull(providerType);
+
+            if (!typeof(IMockingProvider).IsAssignableFrom(providerType) ||
+                providerType.IsAbstract ||
+                providerType.IsInterface ||
+                providerType.ContainsGenericParameters ||
+                !providerType.IsVisible)
+            {
+                return false;
+            }
+
+            return HasProviderFactory(providerType);
+        }
+
+        private static bool HasProviderFactory(Type providerType)
+        {
+            ArgumentNullException.ThrowIfNull(providerType);
+
+            const BindingFlags STATIC_FLAGS = BindingFlags.Public | BindingFlags.Static;
+            return providerType.GetField("Instance", STATIC_FLAGS)?.FieldType is Type fieldType && typeof(IMockingProvider).IsAssignableFrom(fieldType) ||
+                providerType.GetProperty("Instance", STATIC_FLAGS)?.PropertyType is Type propertyType && typeof(IMockingProvider).IsAssignableFrom(propertyType) ||
+                providerType.GetConstructor(Type.EmptyTypes) is not null;
+        }
+
         private static IMockingProvider CreateProviderInstance(string providerName, Type providerType)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(providerName);
@@ -285,48 +551,201 @@ namespace FastMoq.Providers
             throw new InvalidOperationException($"FastMoq provider registration '{providerName}' could not create '{providerType.FullName}'. Expose a public static Instance or a public parameterless constructor.");
         }
 
-        private static bool TryEnsureOptionalProviderRegistered(string providerName)
+        private static void RegisterCore(string name, IMockingProvider provider, bool setAsDefault, MockingProviderRegistrationSource source)
         {
-            if (!string.Equals(providerName, "nsubstitute", StringComparison.OrdinalIgnoreCase))
+            ArgumentNullException.ThrowIfNull(name);
+            ArgumentNullException.ThrowIfNull(provider);
+
+            _providers[name] = provider;
+            _providerRegistrations[name] = new MockingProviderRegistrationInfo(name, provider.GetType(), source);
+            _discoveryWarnings.TryRemove(name, out _);
+
+            if (setAsDefault)
+            {
+                SetDefaultProviderCore(provider, DefaultProviderSource.ExplicitRegistration);
+                return;
+            }
+
+            if (_default is null)
+            {
+                _default = provider;
+            }
+        }
+
+        private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
+        {
+            ArgumentNullException.ThrowIfNull(assembly);
+
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException exception)
+            {
+                return exception.Types.Where(static type => type is not null)!;
+            }
+        }
+
+        private static void RecordDiscoveryWarning(string providerName, string message)
+        {
+            ArgumentNullException.ThrowIfNull(providerName);
+            ArgumentNullException.ThrowIfNull(message);
+
+            _discoveryWarnings[providerName] = message;
+        }
+
+        private static string GetProviderTypeDisplay(Type providerType)
+        {
+            ArgumentNullException.ThrowIfNull(providerType);
+
+            return providerType.AssemblyQualifiedName ?? providerType.FullName ?? providerType.Name;
+        }
+
+        private static Assembly[] LoadAssembliesForProviderDiscovery(MockingProviderDiscoveryMode discoveryMode)
+        {
+            var assemblies = new Dictionary<string, Assembly>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (assembly.IsDynamic)
+                {
+                    continue;
+                }
+
+                AddAssembly(assemblies, assembly);
+            }
+
+            if (discoveryMode != MockingProviderDiscoveryMode.Automatic)
+            {
+                return assemblies.Values.ToArray();
+            }
+
+            var referencedAssemblies = assemblies.Values
+                .SelectMany(GetReferencedAssembliesSafe)
+                .Where(reference => !ContainsAssembly(assemblies.Values, reference))
+                .GroupBy(reference => reference.FullName ?? reference.Name, StringComparer.OrdinalIgnoreCase)
+                .Select(group => group.First())
+                .ToArray();
+
+            foreach (var reference in referencedAssemblies)
+            {
+                if (!ShouldAttemptDiscoveryLoad(reference))
+                {
+                    continue;
+                }
+
+                var loadedAssembly = TryLoadAssembly(reference);
+                if (loadedAssembly is null || loadedAssembly.IsDynamic)
+                {
+                    continue;
+                }
+
+                AddAssembly(assemblies, loadedAssembly);
+            }
+
+            return assemblies.Values.ToArray();
+        }
+
+        private static void OnAssemblyLoad(object? sender, AssemblyLoadEventArgs eventArgs)
+        {
+            if (eventArgs.LoadedAssembly.IsDynamic)
+            {
+                return;
+            }
+
+            Interlocked.Increment(ref _assemblyChangeVersion);
+        }
+
+        private static void SetDefaultProvider(string name, DefaultProviderSource source)
+        {
+            ArgumentNullException.ThrowIfNull(name);
+
+            if (!_providers.TryGetValue(name, out var provider) && !TryGet(name, out provider!))
+            {
+                throw new InvalidOperationException($"Unable to find provider '{name}'. Registered providers: {string.Join(", ", RegisteredProviderNames)}.");
+            }
+
+            SetDefaultProviderCore(provider, source);
+        }
+
+        private static void SetDefaultProviderCore(IMockingProvider provider, DefaultProviderSource source)
+        {
+            ArgumentNullException.ThrowIfNull(provider);
+
+            _default = provider;
+            _defaultSource = source;
+        }
+
+        private static void AddAssembly(IDictionary<string, Assembly> assemblies, Assembly assembly)
+        {
+            ArgumentNullException.ThrowIfNull(assemblies);
+            ArgumentNullException.ThrowIfNull(assembly);
+
+            var key = assembly.FullName ?? assembly.GetName().Name;
+            if (!string.IsNullOrWhiteSpace(key))
+            {
+                assemblies[key] = assembly;
+            }
+        }
+
+        private static bool ContainsAssembly(IEnumerable<Assembly> assemblies, AssemblyName reference)
+        {
+            ArgumentNullException.ThrowIfNull(assemblies);
+            ArgumentNullException.ThrowIfNull(reference);
+
+            return assemblies.Any(assembly => AssemblyName.ReferenceMatchesDefinition(assembly.GetName(), reference));
+        }
+
+        private static IEnumerable<AssemblyName> GetReferencedAssembliesSafe(Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetReferencedAssemblies();
+            }
+            catch
+            {
+                return Array.Empty<AssemblyName>();
+            }
+        }
+
+        private static bool ShouldAttemptDiscoveryLoad(AssemblyName reference)
+        {
+            ArgumentNullException.ThrowIfNull(reference);
+
+            var simpleName = reference.Name;
+            if (string.IsNullOrWhiteSpace(simpleName))
             {
                 return false;
             }
 
-            Assembly? providerAssembly;
+            return !simpleName.Equals("System", StringComparison.OrdinalIgnoreCase)
+                && !simpleName.StartsWith("System.", StringComparison.OrdinalIgnoreCase)
+                && !simpleName.Equals("Microsoft", StringComparison.OrdinalIgnoreCase)
+                && !simpleName.StartsWith("Microsoft.", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static Assembly? TryLoadAssembly(AssemblyName reference)
+        {
+            ArgumentNullException.ThrowIfNull(reference);
+
             try
             {
-                providerAssembly = AppDomain.CurrentDomain.GetAssemblies()
-                    .FirstOrDefault(assembly => string.Equals(assembly.GetName().Name, NSubstituteProviderAssemblyName, StringComparison.OrdinalIgnoreCase))
-                    ?? Assembly.Load(new AssemblyName(NSubstituteProviderAssemblyName));
+                return AppDomain.CurrentDomain.GetAssemblies()
+                    .FirstOrDefault(assembly => !assembly.IsDynamic && AssemblyName.ReferenceMatchesDefinition(assembly.GetName(), reference))
+                    ?? Assembly.Load(reference);
             }
             catch (FileNotFoundException)
             {
-                return false;
+                return null;
             }
             catch (FileLoadException)
             {
-                return false;
+                return null;
             }
             catch (BadImageFormatException)
             {
-                return false;
+                return null;
             }
-
-            var providerType = providerAssembly.GetType(NSubstituteProviderTypeName, throwOnError: false, ignoreCase: false);
-            if (providerType is null || !typeof(IMockingProvider).IsAssignableFrom(providerType))
-            {
-                return false;
-            }
-
-            const BindingFlags FLAGS = BindingFlags.Public | BindingFlags.Static;
-            if (providerType.GetField("Instance", FLAGS)?.GetValue(null) is not IMockingProvider provider)
-            {
-                provider = providerType.GetProperty("Instance", FLAGS)?.GetValue(null) as IMockingProvider
-                    ?? throw new InvalidOperationException($"Optional provider '{providerName}' does not expose a public static Instance of type IMockingProvider.");
-            }
-
-            Register(providerName, provider, setAsDefault: false);
-            return true;
         }
 
         private sealed class PopDisposable : IDisposable
@@ -336,12 +755,26 @@ namespace FastMoq.Providers
             public PopDisposable(IMockingProvider? prior) => _prior = prior;
             public void Dispose()
             {
-                if (_disposed) return;
+                if (_disposed)
+                {
+                    return;
+                }
+
                 _current.Value = _prior;
                 _disposed = true;
             }
         }
 
         private sealed record AssemblyProviderRegistration(string ProviderName, Type ProviderType, bool SetAsDefault);
+
+        private enum DefaultProviderSource
+        {
+            None,
+            ReflectionFallback,
+            ImplicitSelection,
+            ExplicitRegistration,
+            AssemblyDefault,
+            ExplicitRuntime,
+        }
     }
 }

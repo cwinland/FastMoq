@@ -68,6 +68,8 @@ namespace FastMoq.Analyzers
         internal const string FastMoqProvidersNamespace = "FastMoq.Providers";
         internal const string FastMoqMoqProviderAssemblyName = "FastMoq.Provider.Moq";
         internal const string FastMoqNSubstituteProviderAssemblyName = "FastMoq.Provider.NSubstitute";
+        internal const string IFileSystemTypeName = "System.IO.Abstractions.IFileSystem";
+        internal const string MockFileSystemTypeName = "System.IO.Abstractions.TestingHelpers.MockFileSystem";
         internal const string FastMoqWebExtensionsMetadataName = "FastMoq.Web.Extensions.TestWebExtensions";
         internal const string FastMoqWebExtensionsTypeName = "FastMoq.Web.Extensions.TestWebExtensions";
         internal const string MoqProviderNamespace = "FastMoq.Providers.MoqProvider";
@@ -123,6 +125,7 @@ namespace FastMoq.Analyzers
 
         public static bool TryGetMethodSymbol(InvocationExpressionSyntax invocation, SemanticModel semanticModel, CancellationToken cancellationToken, out IMethodSymbol? method)
         {
+            semanticModel = GetSemanticModelForNode(invocation, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(invocation, cancellationToken);
             method = symbolInfo.Symbol as IMethodSymbol ?? symbolInfo.CandidateSymbols.OfType<IMethodSymbol>().FirstOrDefault();
             return method is not null;
@@ -246,6 +249,7 @@ namespace FastMoq.Analyzers
 
         public static bool TryGetPropertySymbol(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out IPropertySymbol? property)
         {
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
             property = symbolInfo.Symbol as IPropertySymbol ?? symbolInfo.CandidateSymbols.OfType<IPropertySymbol>().FirstOrDefault();
             return property is not null;
@@ -319,14 +323,15 @@ namespace FastMoq.Analyzers
         private static bool TryResolveTrackedMockOrigin(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out TrackedMockOrigin origin)
         {
             expression = Unwrap(expression);
+            var expressionSemanticModel = GetSemanticModelForNode(expression, semanticModel);
 
             if (expression is InvocationExpressionSyntax invocationExpression &&
-                TryResolveTrackedMockOrigin(invocationExpression, semanticModel, cancellationToken, visitedSymbols, out origin))
+                TryResolveTrackedMockOrigin(invocationExpression, expressionSemanticModel, cancellationToken, visitedSymbols, out origin))
             {
                 return true;
             }
 
-            if (TryResolveTrackedMockOriginFromSymbol(expression, semanticModel, cancellationToken, visitedSymbols, out origin))
+            if (TryResolveTrackedMockOriginFromSymbol(expression, expressionSemanticModel, cancellationToken, visitedSymbols, out origin))
             {
                 return true;
             }
@@ -342,6 +347,8 @@ namespace FastMoq.Analyzers
 
         private static bool TryResolveTrackedMockOrigin(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out TrackedMockOrigin origin)
         {
+            semanticModel = GetSemanticModelForNode(invocationExpression, semanticModel);
+
             if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
             {
                 origin = default;
@@ -385,6 +392,7 @@ namespace FastMoq.Analyzers
 
         private static bool TryResolveTrackedMockOriginFromSymbol(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out TrackedMockOrigin origin)
         {
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
             var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
             if (symbol is null || !visitedSymbols.Add(symbol))
@@ -511,6 +519,23 @@ namespace FastMoq.Analyzers
             }
         }
 
+        internal static SemanticModel GetSemanticModelForNode(SyntaxNode node, SemanticModel semanticModel)
+        {
+            if (node is null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            if (semanticModel is null)
+            {
+                throw new ArgumentNullException(nameof(semanticModel));
+            }
+
+            return node.SyntaxTree == semanticModel.SyntaxTree
+                ? semanticModel
+                : semanticModel.Compilation.GetSemanticModel(node.SyntaxTree);
+        }
+
         public static bool TryResolveDetachedMockOrigin(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out DetachedMockOrigin origin)
         {
             return TryResolveDetachedMockOrigin(expression, semanticModel, cancellationToken, new HashSet<ISymbol>(SymbolEqualityComparer.Default), out origin);
@@ -519,14 +544,15 @@ namespace FastMoq.Analyzers
         private static bool TryResolveDetachedMockOrigin(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out DetachedMockOrigin origin)
         {
             expression = Unwrap(expression);
+            var expressionSemanticModel = GetSemanticModelForNode(expression, semanticModel);
 
             if (expression is InvocationExpressionSyntax invocationExpression &&
-                TryResolveDetachedMockOrigin(invocationExpression, semanticModel, cancellationToken, visitedSymbols, out origin))
+                TryResolveDetachedMockOrigin(invocationExpression, expressionSemanticModel, cancellationToken, visitedSymbols, out origin))
             {
                 return true;
             }
 
-            if (TryResolveDetachedMockOriginFromSymbol(expression, semanticModel, cancellationToken, visitedSymbols, out origin))
+            if (TryResolveDetachedMockOriginFromSymbol(expression, expressionSemanticModel, cancellationToken, visitedSymbols, out origin))
             {
                 return true;
             }
@@ -537,6 +563,8 @@ namespace FastMoq.Analyzers
 
         private static bool TryResolveDetachedMockOrigin(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out DetachedMockOrigin origin)
         {
+            semanticModel = GetSemanticModelForNode(invocationExpression, semanticModel);
+
             if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) || method is null)
             {
                 origin = default;
@@ -574,6 +602,7 @@ namespace FastMoq.Analyzers
 
         private static bool TryResolveDetachedMockOriginFromSymbol(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, ISet<ISymbol> visitedSymbols, out DetachedMockOrigin origin)
         {
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
             var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
             if (symbol is null || !visitedSymbols.Add(symbol))
@@ -602,6 +631,8 @@ namespace FastMoq.Analyzers
         private static bool CanReuseDetachedFastMockExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             expression = Unwrap(expression);
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
+
             if (!IsFastMoqFastMockType(semanticModel.GetTypeInfo(expression, cancellationToken).Type))
             {
                 return false;
@@ -630,6 +661,7 @@ namespace FastMoq.Analyzers
 
         private static bool IsDefaultMockingProviderAccess(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
             var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
             var property = symbolInfo.Symbol as IPropertySymbol ?? symbolInfo.CandidateSymbols.OfType<IPropertySymbol>().FirstOrDefault();
             return property is not null &&
@@ -781,6 +813,88 @@ namespace FastMoq.Analyzers
 
             replacement = string.Empty;
             requiresProvidersNamespace = false;
+            return false;
+        }
+
+        public static bool TryGetProviderFirstVerifyExpressionArgument(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out ExpressionSyntax expressionArgument)
+        {
+            expressionArgument = null!;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "Verify")
+            {
+                return false;
+            }
+
+            if (method.ContainingType.ToDisplayString() == FastMoqMockerTypeName)
+            {
+                if (invocationExpression.ArgumentList.Arguments.Count == 0)
+                {
+                    return false;
+                }
+
+                expressionArgument = invocationExpression.ArgumentList.Arguments[0].Expression;
+                return true;
+            }
+
+            if (method.ContainingType.ToDisplayString() == MockingProviderRegistryTypeName ||
+                method.ContainingType.ToDisplayString() == "FastMoq.Providers.IMockingProvider")
+            {
+                if (invocationExpression.ArgumentList.Arguments.Count < 2)
+                {
+                    return false;
+                }
+
+                expressionArgument = invocationExpression.ArgumentList.Arguments[1].Expression;
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool TryBuildFastArgMatcherReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null ||
+                !IsMoqItMethod(method))
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name == "IsAny" &&
+                method.TypeArguments.Length == 1 &&
+                invocationExpression.ArgumentList.Arguments.Count == 0)
+            {
+                var typeArgument = method.TypeArguments[0];
+                if (TryGetFastArgAnyExpressionTargetType(typeArgument, out var predicateTargetType))
+                {
+                    replacement = $"FastArg.AnyExpression<{GetMinimalTypeName(predicateTargetType, semanticModel, invocationExpression.SpanStart)}>()";
+                    return true;
+                }
+
+                replacement = $"FastArg.Any<{GetMinimalTypeName(typeArgument, semanticModel, invocationExpression.SpanStart)}>()";
+                return true;
+            }
+
+            if (method.Name == "Is" &&
+                method.TypeArguments.Length == 1 &&
+                method.Parameters.Length == 1 &&
+                invocationExpression.ArgumentList.Arguments.Count == 1 &&
+                IsFastArgPredicateMatcherParameter(method.Parameters[0].Type, method.TypeArguments[0]))
+            {
+                replacement = $"FastArg.Is<{GetMinimalTypeName(method.TypeArguments[0], semanticModel, invocationExpression.SpanStart)}>({invocationExpression.ArgumentList.Arguments[0].WithoutTrivia()})";
+                return true;
+            }
+
             return false;
         }
 
@@ -3134,6 +3248,12 @@ namespace FastMoq.Analyzers
                    method.ContainingType.ContainingNamespace.ToDisplayString() == "Moq";
         }
 
+        public static bool IsMoqItMethod(IMethodSymbol method)
+        {
+            method = method.ReducedFrom ?? method;
+            return method.ContainingType.ToDisplayString() == "Moq.It";
+        }
+
         public static bool TryGetMoqMockedType(ITypeSymbol? type, out ITypeSymbol mockedType)
         {
             if (type is INamedTypeSymbol namedType &&
@@ -3204,6 +3324,40 @@ namespace FastMoq.Analyzers
             return CountRawMoqMockCreations(node, serviceType, semanticModel, cancellationToken) > 1
                 ? $"'CreateStandaloneFastMock<{serviceTypeName}>()' for additional independent handles of the same service type"
                 : $"'GetOrCreateMock<{serviceTypeName}>()' for the tracked single-instance path";
+        }
+
+        public static bool IsIFileSystemType(ITypeSymbol? type)
+        {
+            return type?.ToDisplayString() == IFileSystemTypeName;
+        }
+
+        public static bool IsMockFileSystemType(ITypeSymbol? type)
+        {
+            return type?.ToDisplayString() == MockFileSystemTypeName;
+        }
+
+        public static bool ShouldPreferSharedMockFileSystem(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            if (!TryGetContainingMockerTestBaseTargetType(expression, semanticModel, cancellationToken, out _))
+            {
+                return false;
+            }
+
+            if (expression is MemberAccessExpressionSyntax memberAccessExpression &&
+                memberAccessExpression.Name.Identifier.ValueText == "FileSystem")
+            {
+                var receiverType = semanticModel.GetTypeInfo(memberAccessExpression.Expression, cancellationToken).Type;
+                var accessType = semanticModel.GetTypeInfo(memberAccessExpression, cancellationToken);
+                return IsMockFileSystemType(receiverType) && IsIFileSystemType(accessType.ConvertedType ?? accessType.Type);
+            }
+
+            var typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
+            if (!IsMockFileSystemType(typeInfo.Type))
+            {
+                return false;
+            }
+
+            return IsIFileSystemType(typeInfo.ConvertedType);
         }
 
         private static int CountRawMoqMockCreations(SyntaxNode node, ITypeSymbol serviceType, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -3515,6 +3669,40 @@ namespace FastMoq.Analyzers
             return constantValue.HasValue &&
                 constantValue.Value is string providerLiteral &&
                 string.Equals(providerLiteral, providerName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool TryGetFastArgAnyExpressionTargetType(ITypeSymbol type, out ITypeSymbol targetType)
+        {
+            if (type is INamedTypeSymbol expressionType &&
+                expressionType.ContainingNamespace.ToDisplayString() == "System.Linq.Expressions" &&
+                expressionType.Name == "Expression" &&
+                expressionType.TypeArguments.Length == 1 &&
+                expressionType.TypeArguments[0] is INamedTypeSymbol delegateType &&
+                delegateType.ContainingNamespace.ToDisplayString() == "System" &&
+                delegateType.Name == "Func" &&
+                delegateType.TypeArguments.Length == 2 &&
+                delegateType.TypeArguments[1].SpecialType == SpecialType.System_Boolean)
+            {
+                targetType = delegateType.TypeArguments[0];
+                return true;
+            }
+
+            targetType = null!;
+            return false;
+        }
+
+        private static bool IsFastArgPredicateMatcherParameter(ITypeSymbol parameterType, ITypeSymbol matcherType)
+        {
+            return parameterType is INamedTypeSymbol expressionType &&
+                expressionType.ContainingNamespace.ToDisplayString() == "System.Linq.Expressions" &&
+                expressionType.Name == "Expression" &&
+                expressionType.TypeArguments.Length == 1 &&
+                expressionType.TypeArguments[0] is INamedTypeSymbol delegateType &&
+                delegateType.ContainingNamespace.ToDisplayString() == "System" &&
+                delegateType.Name == "Func" &&
+                delegateType.TypeArguments.Length == 2 &&
+                SymbolEqualityComparer.Default.Equals(delegateType.TypeArguments[0], matcherType) &&
+                delegateType.TypeArguments[1].SpecialType == SpecialType.System_Boolean;
         }
 
         public static bool TryConvertTimesArgument(ArgumentSyntax argument, SemanticModel semanticModel, CancellationToken cancellationToken, int position, out string replacement, out bool omitArgument)

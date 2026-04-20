@@ -14,10 +14,10 @@ namespace FastMoq.Providers
         IMockingProviderCapabilities Capabilities { get; }
 
         /// <summary>
-        /// Builds a provider-specific boolean expression scaffold for the mocked type.
+        /// Builds a wildcard predicate expression for the mocked type.
         /// </summary>
         /// <typeparam name="T">The mocked type.</typeparam>
-        /// <returns>An expression that can be used by provider-specific setup or verification flows.</returns>
+        /// <returns>A wildcard expression that can be used as a compatibility helper for expression-valued arguments.</returns>
         Expression<Func<T, bool>> BuildExpression<T>();
 
         /// <summary>

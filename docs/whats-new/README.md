@@ -20,6 +20,10 @@ Validation run for this change:
 - `dotnet test .\FastMoq.Analyzers.Tests\FastMoq.Analyzers.Tests.csproj -c Release`
 - `dotnet build .\FastMoq-Release.sln -c Release`
 
+Known downstream 4.3.0 issue to track:
+
+- `FastMoq.Analyzers.ServiceProviderShimAnalyzer` could emit `AD0001` during compilation in downstream multi-file test projects, repeatedly throwing `System.ArgumentException` with the message `Syntax node is not within syntax tree.` The reported downstream builds still ran tests successfully, and no-build reruns were clean, which points to analyzer instability rather than a runtime regression. The current branch guards the cross-syntax-tree tracked-mock resolution path that triggered this failure.
+
 ## 4.1.0
 
 FastMoq `4.1.0` updates the published v4 line to match the broader package split and helper surface that had been taking shape in the repository.

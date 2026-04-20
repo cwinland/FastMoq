@@ -106,6 +106,21 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void SetupShortcut_ShouldTranslateFastArgAnyExpression_WithoutCallingAsMoq()
+        {
+            using var providerScope = MockingProviderRegistry.Push("moq");
+            var mocker = new Mocker();
+
+            var dependency = mocker.GetOrCreateMock<ProviderTests.IExpressionConsumer>();
+
+            dependency.Setup(x => x.Match(FastArg.AnyExpression<string>())).Returns(true);
+
+            var matched = dependency.Instance.Match(value => value == "alpha");
+
+            matched.Should().BeTrue();
+        }
+
+        [Fact]
         public void SetupGetShortcut_ShouldConfigureTrackedMockProperty_WithoutCallingAsMoq()
         {
             using var providerScope = MockingProviderRegistry.Push("moq");

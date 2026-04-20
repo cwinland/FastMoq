@@ -4,6 +4,7 @@ using FastMoq.Analyzers.CodeFixes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -34,6 +35,11 @@ namespace FastMoq.Analyzers.Tests
             { new SetupAllPropertiesAnalyzer(), DiagnosticDescriptors.PreferPropertyStateHelper },
             { new TrackedMockVerificationAnalyzer(), DiagnosticDescriptors.UseProviderFirstVerify },
             { new BareTrackedVerifyAnalyzer(), DiagnosticDescriptors.AvoidBareTrackedVerify },
+            { new FastMockVerifyHelperAnalyzer(), DiagnosticDescriptors.AvoidFastMockVerifyHelperWrappers },
+            { new FastMockVerifyHelperAnalyzer(), DiagnosticDescriptors.AvoidProviderSpecificFastMockVerifyHelperWrappers },
+            { new SharedMockFileSystemAnalyzer(), DiagnosticDescriptors.PreferSharedMockFileSystem },
+            { new ProviderFirstVerifyMatcherAnalyzer(), DiagnosticDescriptors.UseFastArgMatcherInProviderFirstVerify },
+            { new ProviderFirstVerifyMatcherAnalyzer(), DiagnosticDescriptors.AvoidUnsupportedMoqMatcherInProviderFirstVerify },
             { new TrackedMockShimAnalyzer(), DiagnosticDescriptors.AvoidTrackedMockShimAlias },
             { new RawMockCreationAnalyzer(), DiagnosticDescriptors.AvoidRawMockCreationInFastMoqSuites },
             { new ProviderBootstrapAnalyzer(), DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi },
@@ -68,6 +74,11 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.PreferPropertyStateHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.UseProviderFirstVerify, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.AvoidBareTrackedVerify, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.AvoidFastMockVerifyHelperWrappers, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.AvoidProviderSpecificFastMockVerifyHelperWrappers, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.PreferSharedMockFileSystem, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.UseFastArgMatcherInProviderFirstVerify, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.AvoidUnsupportedMoqMatcherInProviderFirstVerify, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.AvoidTrackedMockShimAlias, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.AvoidRawMockCreationInFastMoqSuites, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi, DiagnosticSeverity.Warning },
@@ -411,6 +422,223 @@ class SampleOptions
 }");
 
             Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task OptionsSetupAnalyzer_ShouldNotThrowAd0001_WhenTrackedMockHelperPropertyLivesInAnotherSyntaxTree()
+        {
+            var sources = new (string fileName, string source)[]
+            {
+                (
+                    "OptionsHelper.cs",
+                    @"
+using FastMoq;
+using FastMoq.Providers;
+using Microsoft.Extensions.Options;
+
+class OptionsHelper
+{
+    public Mocker M => Mocks;
+
+    public Mocker Mocks { get; } = new();
+
+    public IFastMock<IOptions<SampleOptions>> Options => M.GetOrCreateMock<IOptions<SampleOptions>>();
+}
+
+class SampleOptions
+{
+    public int RetryCount { get; set; }
+}"
+                ),
+                (
+                    "Sample.cs",
+                    @"
+using FastMoq.Providers.MoqProvider;
+
+class Sample
+{
+    private OptionsHelper Helper { get; } = new();
+
+    void Execute()
+    {
+        Helper.Options
+            .Setup(x => x.Value)
+            .Returns(new SampleOptions { RetryCount = 5 });
+    }
+}"
+                ),
+            };
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(sources, new OptionsSetupAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, diagnostic => diagnostic.Id == "AD0001");
+            Assert.Contains(diagnostics, diagnostic => diagnostic.Id == DiagnosticIds.PreferSetupOptionsHelper);
+        }
+
+        [Fact]
+        public async Task FastMockVerifyHelperAnalyzer_ShouldReport_WhenIfastMockVerifyWrapsDetachedProviderVerify()
+        {
+            const string SOURCE = @"
+using System;
+using System.Linq.Expressions;
+using FastMoq.Providers;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression, TimesSpec? times = null)
+        where T : class
+        => MockingProviderRegistry.Default.Verify(fastMock, expression, times);
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new FastMockVerifyHelperAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidFastMockVerifyHelperWrappers));
+
+            Assert.Equal(DiagnosticIds.AvoidFastMockVerifyHelperWrappers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task FastMockVerifyHelperAnalyzer_ShouldReport_WhenIfastMockVerifyWrapsAsMoqVerifyWithTimesConversion()
+        {
+            const string SOURCE = @"
+using System;
+using System.Linq.Expressions;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T, TResult>(this IFastMock<T> fastMock, Expression<Func<T, TResult>> expression, TimesSpec times)
+        where T : class
+        => fastMock.AsMoq().Verify(expression, times.ToMoq());
+
+    private static Times ToMoq(this TimesSpec times)
+        => times.Mode switch
+        {
+            TimesSpecMode.AtLeastOnce => Times.AtLeastOnce(),
+            TimesSpecMode.Exactly => Times.Exactly(times.Count ?? 0),
+            TimesSpecMode.AtLeast => Times.AtLeast(times.Count ?? 0),
+            TimesSpecMode.AtMost => Times.AtMost(times.Count ?? 0),
+            TimesSpecMode.Never => Times.Never(),
+            _ => throw new ArgumentOutOfRangeException(nameof(times), times.Mode, null),
+        };
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new FastMockVerifyHelperAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers));
+
+            Assert.Equal(DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers, diagnostic.Id);
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.AvoidFastMockVerifyHelperWrappers);
+        }
+
+        [Fact]
+        public async Task FastMockVerifyHelperAnalyzer_ShouldNotReport_WhenHelperAlreadyUsesTrackedMockerVerify()
+        {
+            const string SOURCE = @"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+
+static class VerifyHelpers
+{
+    internal static void VerifyTracked<T>(this Mocker mocks, Expression<Action<T>> expression, TimesSpec? times = null)
+        where T : class
+        => mocks.Verify(expression, times);
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new FastMockVerifyHelperAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.AvoidFastMockVerifyHelperWrappers);
+        }
+
+        [Fact]
+        public async Task SharedMockFileSystemAnalyzer_ShouldReport_WhenMockerTestBasePassesNewMockFileSystemAsIFileSystem()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
+
+class SampleService
+{
+    public SampleService(IFileSystem fileSystem)
+    {
+    }
+}
+
+class SampleTests : MockerTestBase<SampleService>
+{
+    public SampleTests() : base(mocker => new SampleService(new MockFileSystem()))
+    {
+    }
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new SharedMockFileSystemAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferSharedMockFileSystem));
+
+            Assert.Equal(DiagnosticIds.PreferSharedMockFileSystem, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task SharedMockFileSystemAnalyzer_ShouldReport_WhenMockerTestBaseUsesNewMockFileSystemFileSystemProperty()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
+
+class SampleService
+{
+    public SampleService(IFileSystem fileSystem)
+    {
+    }
+}
+
+class SampleTests : MockerTestBase<SampleService>
+{
+    private IFileSystem BuildFileSystem()
+    {
+        return new MockFileSystem().FileSystem;
+    }
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new SharedMockFileSystemAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferSharedMockFileSystem));
+
+            Assert.Equal(DiagnosticIds.PreferSharedMockFileSystem, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task SharedMockFileSystemAnalyzer_ShouldNotReport_WhenConcreteMockFileSystemTypeIsRequired()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using System.IO.Abstractions.TestingHelpers;
+
+class SampleService
+{
+    public SampleService(MockFileSystem fileSystem)
+    {
+    }
+}
+
+class SampleTests : MockerTestBase<SampleService>
+{
+    public SampleTests() : base(mocker => new SampleService(new MockFileSystem()))
+    {
+    }
+}
+";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new SharedMockFileSystemAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferSharedMockFileSystem);
         }
 
         [Fact]
@@ -953,6 +1181,100 @@ class Sample
 }");
 
             Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldNotThrowAd0001_WhenTrackedMockFieldInitializerLivesInAnotherSyntaxTree()
+        {
+            var sources = new (string fileName, string source)[]
+            {
+                (
+                    "Sample.Part1.cs",
+                    @"
+using FastMoq;
+using FastMoq.Providers;
+using Microsoft.Extensions.DependencyInjection;
+
+partial class Sample
+{
+    private readonly IFastMock<IServiceScope> _scope = new Mocker().GetOrCreateMock<IServiceScope>();
+}"
+                ),
+                (
+                    "Sample.Part2.cs",
+                    @"
+using System;
+using FastMoq.Providers.MoqProvider;
+
+partial class Sample
+{
+    void Execute(IServiceProvider provider)
+    {
+        _scope.SetupGet(x => x.ServiceProvider).Returns(provider);
+    }
+}"
+                ),
+            };
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(sources, new ServiceProviderShimAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, diagnostic => diagnostic.Id == "AD0001");
+
+            var diagnostic = Assert.Single(diagnostics.Where(item =>
+                item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers &&
+                item.GetMessage().Contains("SetupGet(x => x.ServiceProvider)", StringComparison.Ordinal)));
+
+            Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
+        }
+
+        [Fact]
+        public async Task ServiceProviderShimAnalyzer_ShouldNotThrowAd0001_WhenTrackedMockHelperPropertyLivesInAnotherSyntaxTree()
+        {
+            var sources = new (string fileName, string source)[]
+            {
+                (
+                    "ScopeHelper.cs",
+                    @"
+using FastMoq;
+using FastMoq.Providers;
+using Microsoft.Extensions.DependencyInjection;
+
+class ScopeHelper
+{
+    public Mocker M => Mocks;
+
+    public Mocker Mocks { get; } = new();
+
+    public IFastMock<IServiceScope> Scope => M.GetOrCreateMock<IServiceScope>();
+}"
+                ),
+                (
+                    "Sample.cs",
+                    @"
+using System;
+using FastMoq.Providers.MoqProvider;
+
+class Sample
+{
+    private ScopeHelper Helper { get; } = new();
+
+    void Execute(IServiceProvider provider)
+    {
+        Helper.Scope.SetupGet(x => x.ServiceProvider).Returns(provider);
+    }
+}"
+                ),
+            };
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(sources, new ServiceProviderShimAnalyzer());
+
+            Assert.DoesNotContain(diagnostics, diagnostic => diagnostic.Id == "AD0001");
+
+            var diagnostic = Assert.Single(diagnostics.Where(item =>
+                item.Id == DiagnosticIds.PreferTypedServiceProviderHelpers &&
+                item.GetMessage().Contains("SetupGet(x => x.ServiceProvider)", StringComparison.Ordinal)));
+
+            Assert.Equal(DiagnosticIds.PreferTypedServiceProviderHelpers, diagnostic.Id);
         }
 
         [Fact]

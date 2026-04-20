@@ -56,7 +56,7 @@ namespace FastMoq.Providers.NSubstituteProvider
         /// </summary>
         public Expression<Func<T, bool>> BuildExpression<T>()
         {
-            return _ => true;
+            return FastArg.AnyExpression<T>();
         }
 
         /// <summary>
@@ -112,13 +112,21 @@ namespace FastMoq.Providers.NSubstituteProvider
         /// </summary>
         public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
         {
-            if (expression is null)
-            {
-                return;
-            }
+            ArgumentNullException.ThrowIfNull(expression);
 
             times ??= default;
             var target = mock.Instance;
+
+            if (TryGetMatchingReceivedCalls(target, expression, out var invocation, out var received))
+            {
+                AssertExpectedInvocationCount(invocation.Method.Name, received.Count, times.Value);
+                if (times.Value.Mode != TimesSpecMode.Never && received.Count > 0)
+                {
+                    MarkSpecificCallsVerified(target, received);
+                }
+
+                return;
+            }
 
             if (times.Value.Mode == TimesSpecMode.Never)
             {
@@ -142,44 +150,44 @@ namespace FastMoq.Providers.NSubstituteProvider
                 return;
             }
 
-            var received = target.ReceivedCalls().Where(call => call.GetMethodInfo() == method && call.GetArguments().Length == argCount).ToList();
+            var methodCalls = target.ReceivedCalls().Where(call => call.GetMethodInfo() == method && call.GetArguments().Length == argCount).ToList();
             if (times.Value.Mode == TimesSpecMode.AtLeast)
             {
                 var atLeast = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.");
-                if (received.Count < atLeast)
+                if (methodCalls.Count < atLeast)
                 {
-                    throw new InvalidOperationException($"Expected at least {atLeast} call(s) to {method.Name} but found {received.Count}.");
+                    throw new InvalidOperationException($"Expected at least {atLeast} call(s) to {method.Name} but found {methodCalls.Count}.");
                 }
 
                 ExecuteWithWrapper(target.Received, expression);
-                MarkSpecificCallsVerified(target, received);
+                MarkSpecificCallsVerified(target, methodCalls);
                 return;
             }
 
             if (times.Value.Mode == TimesSpecMode.AtMost)
             {
                 var atMost = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.");
-                if (received.Count > atMost)
+                if (methodCalls.Count > atMost)
                 {
-                    throw new InvalidOperationException($"Expected at most {atMost} call(s) to {method.Name} but found {received.Count}.");
+                    throw new InvalidOperationException($"Expected at most {atMost} call(s) to {method.Name} but found {methodCalls.Count}.");
                 }
 
-                if (received.Count > 0)
+                if (methodCalls.Count > 0)
                 {
                     ExecuteWithWrapper(target.Received, expression);
-                    MarkSpecificCallsVerified(target, received);
+                    MarkSpecificCallsVerified(target, methodCalls);
                 }
 
                 return;
             }
 
-            if (!received.Any())
+            if (!methodCalls.Any())
             {
                 throw new InvalidOperationException($"Expected at least one call to {method.Name} but found none.");
             }
 
             ExecuteWithWrapper(target.Received, expression);
-            MarkSpecificCallsVerified(target, received);
+            MarkSpecificCallsVerified(target, methodCalls);
         }
 
         /// <summary>
@@ -243,6 +251,87 @@ namespace FastMoq.Providers.NSubstituteProvider
             expression.Compile()(wrapper);
         }
 
+        private static bool TryGetMatchingReceivedCalls<T>(T target, Expression<Action<T>> expression, out FastInvocationMatcher invocation, out List<ICall> received) where T : class
+        {
+            invocation = null!;
+            received = new List<ICall>();
+
+            if (ContainsProviderSpecificMatcher(expression.Body))
+            {
+                return false;
+            }
+
+            if (expression.Body is not MethodCallExpression)
+            {
+                return false;
+            }
+            try
+            {
+                invocation = FastArgExpressionParser.ParseInvocation(expression);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            var parsedInvocation = invocation;
+            received = target.ReceivedCalls()
+                .Where(call => parsedInvocation.Matches(call.GetMethodInfo(), call.GetArguments()))
+                .ToList();
+            return true;
+        }
+
+        private static void AssertExpectedInvocationCount(string methodName, int count, TimesSpec times)
+        {
+            if (times.Mode == TimesSpecMode.Never)
+            {
+                if (count > 0)
+                {
+                    throw new InvalidOperationException($"Expected no calls to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (times.Mode == TimesSpecMode.Exactly)
+            {
+                var expected = times.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.");
+                if (count != expected)
+                {
+                    throw new InvalidOperationException($"Expected exactly {expected} call(s) to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (times.Mode == TimesSpecMode.AtLeast)
+            {
+                var minimum = times.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.");
+                if (count < minimum)
+                {
+                    throw new InvalidOperationException($"Expected at least {minimum} call(s) to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (times.Mode == TimesSpecMode.AtMost)
+            {
+                var maximum = times.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.");
+                if (count > maximum)
+                {
+                    throw new InvalidOperationException($"Expected at most {maximum} call(s) to {methodName} but found {count}.");
+                }
+
+                return;
+            }
+
+            if (count == 0)
+            {
+                throw new InvalidOperationException($"Expected at least one call to {methodName} but found none.");
+            }
+        }
+
         private static (System.Reflection.MethodInfo? method, int argCount) ExtractMethodMeta<T>(Expression<Action<T>> expression)
         {
             if (expression.Body is System.Linq.Expressions.MethodCallExpression methodCallExpression)
@@ -255,6 +344,12 @@ namespace FastMoq.Providers.NSubstituteProvider
 
         private static void MarkCallsVerified<T>(T target, Expression<Action<T>> expression, int expected) where T : class
         {
+            if (TryGetMatchingReceivedCalls(target, expression, out _, out var matchedCalls))
+            {
+                MarkSpecificCallsVerified(target, matchedCalls.Take(expected));
+                return;
+            }
+
             var (method, argCount) = ExtractMethodMeta(expression);
             if (method == null)
             {
@@ -289,6 +384,11 @@ namespace FastMoq.Providers.NSubstituteProvider
             }
         }
 
+        private static bool ContainsProviderSpecificMatcher(Expression expression)
+        {
+            return new ProviderSpecificMatcherDetector().ContainsMatcher(expression);
+        }
+
         private static void SetupLoggerCallback(object instance, Action<LogLevel, EventId, string, Exception?> callback)
         {
             if (instance is not ILogger logger)
@@ -312,6 +412,32 @@ namespace FastMoq.Providers.NSubstituteProvider
 
         private static NotSupportedException CreateUnsupportedFeatureException(string capabilityName) =>
             new($"Provider '{nameof(NSubstituteMockingProvider)}' does not support '{capabilityName}'. Guard with '{nameof(IMockingProviderCapabilities)}' before calling provider-specific capability methods.");
+
+        private sealed class ProviderSpecificMatcherDetector : ExpressionVisitor
+        {
+            private const string MoqItTypeName = "Moq.It";
+            private const string NSubstituteArgTypeName = "NSubstitute.Arg";
+
+            private bool _containsMatcher;
+
+            public bool ContainsMatcher(Expression expression)
+            {
+                Visit(expression);
+                return _containsMatcher;
+            }
+
+            protected override Expression VisitMethodCall(MethodCallExpression node)
+            {
+                var declaringTypeName = node.Method.DeclaringType?.FullName;
+                if (declaringTypeName is MoqItTypeName or NSubstituteArgTypeName)
+                {
+                    _containsMatcher = true;
+                    return node;
+                }
+
+                return base.VisitMethodCall(node);
+            }
+        }
 
         private sealed class NSubFastMock<T> : IFastMock<T> where T : class
         {

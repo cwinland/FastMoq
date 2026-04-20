@@ -918,8 +918,14 @@ Mocks.GetMock<IOrderRepository>()
 After:
 
 ```csharp
-Mocks.Verify<IOrderRepository>(x => x.Save(It.IsAny<Order>()), TimesSpec.Once);
+Mocks.Verify<IOrderRepository>(x => x.Save(FastArg.Any<Order>()), TimesSpec.Once);
 ```
+
+Inside provider-first verification expressions, translate matcher helpers this way when the rewrite is mechanical:
+
+- `It.IsAny<T>()` becomes `FastArg.Any<T>()`
+- `It.Is<T>(predicate)` becomes `FastArg.Is<T>(predicate)`
+- `It.IsAny<Expression<Func<T, bool>>>()` becomes `FastArg.AnyExpression<T>()`
 
 ### Cache and property-setter edge case
 

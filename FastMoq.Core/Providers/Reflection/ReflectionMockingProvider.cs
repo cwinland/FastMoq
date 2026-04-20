@@ -25,7 +25,7 @@ namespace FastMoq.Providers.ReflectionProvider
 
         public Expression<Func<T, bool>> BuildExpression<T>()
         {
-            return _ => true;
+            return FastArg.AnyExpression<T>();
         }
 
         // Target instance -> invocation records
@@ -65,41 +65,41 @@ namespace FastMoq.Providers.ReflectionProvider
         #region Verification
         public void Verify<T>(IFastMock<T> mock, Expression<Action<T>> expression, TimesSpec? times = null) where T : class
         {
-            if (expression.Body is not MethodCallExpression mce)
-                throw new NotSupportedException("Only direct method call expressions are supported by the reflection provider.");
+            ArgumentNullException.ThrowIfNull(expression);
 
+            var invocation = FastArgExpressionParser.ParseInvocation(expression);
             var records = GetInvocations(mock.Instance)
-                .Where(r => r.Method == mce.Method && ArgumentsMatch(r.Arguments, mce.Arguments))
+                .Where(r => invocation.Matches(r.Method, r.Arguments))
                 .ToList();
 
             times ??= default;
             if (times.Value.Mode == TimesSpecMode.Never)
             {
-                if (records.Count > 0) throw new InvalidOperationException($"Expected no calls to {mce.Method.Name} but found {records.Count}.");
+                if (records.Count > 0) throw new InvalidOperationException($"Expected no calls to {invocation.Method.Name} but found {records.Count}.");
                 return;
             }
             if (times.Value.Mode == TimesSpecMode.Exactly)
             {
                 var e = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.Exactly requires a count.");
-                if (records.Count != e) throw new InvalidOperationException($"Expected exactly {e} call(s) to {mce.Method.Name} but found {records.Count}.");
+                if (records.Count != e) throw new InvalidOperationException($"Expected exactly {e} call(s) to {invocation.Method.Name} but found {records.Count}.");
                 MarkVerified(records);
                 return;
             }
             if (times.Value.Mode == TimesSpecMode.AtLeast)
             {
                 var al = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtLeast requires a count.");
-                if (records.Count < al) throw new InvalidOperationException($"Expected at least {al} call(s) to {mce.Method.Name} but found {records.Count}.");
+                if (records.Count < al) throw new InvalidOperationException($"Expected at least {al} call(s) to {invocation.Method.Name} but found {records.Count}.");
                 MarkVerified(records);
                 return;
             }
             if (times.Value.Mode == TimesSpecMode.AtMost)
             {
                 var am = times.Value.Count ?? throw new InvalidOperationException("TimesSpec.AtMost requires a count.");
-                if (records.Count > am) throw new InvalidOperationException($"Expected at most {am} call(s) to {mce.Method.Name} but found {records.Count}.");
+                if (records.Count > am) throw new InvalidOperationException($"Expected at most {am} call(s) to {invocation.Method.Name} but found {records.Count}.");
                 MarkVerified(records);
                 return;
             }
-            if (records.Count == 0) throw new InvalidOperationException($"Expected at least one call to {mce.Method.Name} but none were recorded.");
+            if (records.Count == 0) throw new InvalidOperationException($"Expected at least one call to {invocation.Method.Name} but none were recorded.");
             MarkVerified(records);
         }
 
@@ -131,15 +131,6 @@ namespace FastMoq.Providers.ReflectionProvider
         private static void MarkVerified(IEnumerable<InvocationRecord> list)
         {
             foreach (var r in list) r.Verified = true;
-        }
-        private static bool ArgumentsMatch(IReadOnlyList<object?> recorded, IReadOnlyList<Expression> expected)
-        {
-            if (recorded.Count != expected.Count) return false;
-            for (int i = 0; i < recorded.Count; i++)
-            {
-                if (expected[i] is ConstantExpression ce && !Equals(ce.Value, recorded[i])) return false;
-            }
-            return true; // best-effort (no advanced matchers)
         }
         private sealed record InvocationRecord(MethodInfo Method, object?[] Arguments)
         {
