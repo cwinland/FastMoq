@@ -10,7 +10,7 @@ If you only remember four things from this page, make them these:
 
 1. `reflection` remains the neutral fallback when no non-reflection provider is discoverable, or when more than one non-reflection provider is discoverable.
 2. If exactly one non-reflection provider is discoverable and no explicit default was declared, FastMoq selects it automatically.
-3. If the test project uses any provider-specific compatibility or extension APIs, still declare the matching provider explicitly at assembly scope so the suite is predictable.
+3. If the test project uses provider-specific compatibility or extension APIs, FastMoq can still run with a single discoverable non-reflection provider, but declare the matching provider explicitly at assembly scope when you want the suite to stay deterministic as more providers become visible.
 4. You are not limited to the bundled providers. Any public concrete type that implements [IMockingProvider](https://help.fastmoq.com/api/FastMoq.Providers.IMockingProvider.html) and exposes either a public static `Instance` or a public parameterless constructor can participate in discovery automatically. Explicit registration is still useful when you want a friendly alias, an explicit assembly default, or a guaranteed name when a fallback full-type-name collision would otherwise make auto-registration ambiguous.
 
 ## Current defaults
@@ -28,7 +28,7 @@ Important boundary:
 
 - adding `FastMoq.Provider.Moq` gives you the Moq provider package and its extension methods
 - it becomes the effective default only when it is the only discoverable non-reflection provider and no explicit default was declared
-- if the test assembly uses provider-specific APIs, declare the matching provider explicitly as the default provider
+- if the test assembly uses provider-specific APIs, a single visible non-reflection provider can be enough, but declare the matching provider explicitly when the suite should not depend on discovery remaining unambiguous
 - selection can happen through [FastMoqDefaultProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html), [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html), `SetDefault(...)`, `Push(...)`, or `Register(..., setAsDefault: true)`
 - custom providers can participate in discovery automatically when the provider type is public, concrete, and creatable; explicit registration is still the right tool when you want a stable friendly alias instead of the fallback full type name, or when multiple discoverable providers would otherwise collide on that fallback name
 
@@ -97,11 +97,13 @@ Use this quick check before reading the rest of the page:
 - switch to `nsubstitute` only when the test project is intentionally written against NSubstitute behavior
 - add a custom provider when your team uses a different mocking library or needs provider behavior that the bundled packages do not cover; register it explicitly only when you want a custom alias or custom construction logic
 
-## Mandatory assembly default when the test assembly must not stay on `reflection`
+## Explicit assembly default when the suite must not depend on discovery
 
-If a migrated test project still uses any non-default provider-specific compatibility or extension surface, treat assembly-wide provider selection as required setup, not as an optional cleanup step.
+If a migrated test project still uses any non-default provider-specific compatibility or extension surface, treat assembly-wide provider selection as the clearest stabilization step whenever the suite should not depend on a single-provider discovery path remaining unambiguous.
 
 For example, `GetMock<T>()`, direct `Mock<T>` access, `VerifyLogger(...)`, and `Protected()` still mean `moq`, while `AsNSubstitute()` and `Received(...)` mean `nsubstitute`.
+
+If a single non-reflection provider is already the only visible provider, FastMoq can resolve it automatically. Use an explicit assembly default when you want deterministic bootstrap, shared repo-level policy, or stable behavior once more providers become visible.
 
 For the built-in `moq` provider, and for `nsubstitute` after its package is referenced, the shortest path is [FastMoqDefaultProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html):
 
@@ -148,7 +150,8 @@ Use startup code instead when you need more than declarative assembly metadata. 
 
 Analyzer note:
 
-- `FMOQ0023` warns when legacy Moq-shaped FastMoq APIs remain in a project without explicit Moq onboarding. For core-only package graphs, that means adding `FastMoq.Provider.Moq` and selecting `moq` explicitly.
+- `FMOQ0009` warns when provider-specific FastMoq APIs remain in code that does not resolve the matching provider as the effective provider.
+- `FMOQ0023` warns when legacy Moq-shaped FastMoq APIs remain in a project that does not resolve `moq` as the effective provider. A single compile-time-visible Moq registration can satisfy that automatically, but add `FastMoq.Provider.Moq` if needed and select `moq` explicitly when multiple providers are visible.
 
 ### Assembly startup alternatives
 

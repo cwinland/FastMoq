@@ -143,12 +143,12 @@ namespace FastMoq.Analyzers
 
         public static readonly DiagnosticDescriptor SelectProviderBeforeProviderSpecificApi = new(
             DiagnosticIds.SelectProviderBeforeProviderSpecificApi,
-            "Select a provider before using provider-specific FastMoq APIs",
-            "API '{0}' requires FastMoq provider '{1}', but this project does not select it. Reflection remains the default. Use [assembly: FastMoqDefaultProvider(\"{1}\")], [assembly: FastMoqRegisterProvider(\"{1}\", typeof(...), SetAsDefault = true)], Push(\"{1}\"), SetDefault(\"{1}\"), or Register(\"{1}\", ..., setAsDefault: true).",
+            "Resolve the matching provider before using provider-specific FastMoq APIs",
+            "API '{0}' requires FastMoq provider '{1}', but this project does not resolve '{1}' as the effective provider. Use [assembly: FastMoqDefaultProvider(\"{1}\")], [assembly: FastMoqRegisterProvider(\"{1}\", typeof(...), SetAsDefault = true)], Push(\"{1}\"), SetDefault(\"{1}\"), or Register(\"{1}\", ..., setAsDefault: true).",
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "Provider-specific FastMoq APIs require an explicit provider selection because reflection remains the default in v4. Assembly-level defaults can use FastMoqDefaultProviderAttribute when the provider name is already resolvable, or FastMoqRegisterProviderAttribute when registration and selection need to happen together.");
+            description: "Provider-specific FastMoq APIs require the matching effective provider. FastMoq can infer a single registered non-reflection provider when that provider is visible through compile-time registration metadata, but once multiple providers are visible or the intended provider is not registered, select it explicitly at assembly scope or inside the local execution scope.");
 
         public static readonly DiagnosticDescriptor PreferTypedProviderExtensions = new(
             DiagnosticIds.PreferTypedProviderExtensions,
@@ -224,12 +224,12 @@ namespace FastMoq.Analyzers
 
         public static readonly DiagnosticDescriptor RequireExplicitMoqOnboarding = new(
             DiagnosticIds.RequireExplicitMoqOnboarding,
-            "Add explicit Moq onboarding for legacy compatibility usage",
-            "Legacy Moq-shaped FastMoq API '{0}' is in use without explicit Moq onboarding. If this project stays on FastMoq.Core, add 'FastMoq.Provider.Moq' and select 'moq' with [assembly: FastMoqDefaultProvider(\"moq\")] or [assembly: FastMoqRegisterProvider(\"moq\", typeof(MoqMockingProvider), SetAsDefault = true)].",
+            "Resolve Moq provider selection for legacy compatibility usage",
+            "Legacy Moq-shaped FastMoq API '{0}' is in use, but this project does not resolve 'moq' as the effective provider. If the Moq provider is not already referenced, add 'FastMoq.Provider.Moq', then select 'moq' with [assembly: FastMoqDefaultProvider(\"moq\")] or [assembly: FastMoqRegisterProvider(\"moq\", typeof(MoqMockingProvider), SetAsDefault = true)] when provider selection is otherwise ambiguous.",
             Category,
             DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
-            description: "Core-only projects can keep legacy Moq-shaped FastMoq usage during migration, but that path should be explicit. Add the FastMoq.Provider.Moq package when staying on FastMoq.Core, and declare moq as the selected provider so future cleanup and analyzer guidance stay deterministic.");
+            description: "Legacy Moq-shaped FastMoq usage requires the Moq provider to be available and selected as the effective provider. A single compile-time-visible provider registration can satisfy that automatically, but when the Moq provider is missing or multiple providers are visible, add the Moq provider package if needed and select moq explicitly so the compatibility path stays deterministic.");
 
         public static readonly DiagnosticDescriptor UseProviderFirstVerify = new(
             DiagnosticIds.UseProviderFirstVerify,
@@ -263,7 +263,7 @@ namespace FastMoq.Analyzers
             "Avoid provider-specific IFastMock.Verify wrappers",
             "Wrapper '{0}(...)' reintroduces provider-specific verification through IFastMock<T>. Use provider-first verification at the call site instead of routing through AsMoq().Verify(...) or provider-specific Times adapters.",
             Category,
-            DiagnosticSeverity.Warning,
+            DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             description: "IFastMock.Verify wrappers that route through AsMoq().Verify(...), Moq Verify(...), or TimesSpec-to-Times conversion helpers hide tracked-versus-detached intent and pull provider-specific verification back into shared helper code. Keep those provider-specific escape hatches local to the call site instead of baking them into a new wrapper API.");
 

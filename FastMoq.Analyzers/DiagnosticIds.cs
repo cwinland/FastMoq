@@ -46,7 +46,7 @@ namespace FastMoq.Analyzers
         public const string UseTimesSpecAtHelperBoundary = "FMOQ0008";
 
         /// <summary>
-        /// Select a provider explicitly before using provider-specific APIs.
+        /// Resolve the matching provider before using provider-specific APIs.
         /// </summary>
         public const string SelectProviderBeforeProviderSpecificApi = "FMOQ0009";
 
@@ -116,7 +116,7 @@ namespace FastMoq.Analyzers
         public const string PreserveTrackedResolutionDuringAddTypeMigration = "FMOQ0022";
 
         /// <summary>
-        /// Require explicit Moq onboarding when legacy Moq-shaped APIs remain in use.
+        /// Resolve Moq provider selection when legacy Moq-shaped APIs remain in use.
         /// </summary>
         public const string RequireExplicitMoqOnboarding = "FMOQ0023";
 

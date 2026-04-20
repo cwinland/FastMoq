@@ -19,6 +19,7 @@ namespace FastMoq.Analyzers.Analyzers
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
             context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, Microsoft.CodeAnalysis.CSharp.SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeInvocation, Microsoft.CodeAnalysis.CSharp.SyntaxKind.InvocationExpression);
         }
 
         private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
@@ -32,7 +33,7 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
-            var wrapperKind = GetWrappedVerifyKind(methodDeclaration, methodSymbol.Parameters[0], context.SemanticModel, context.CancellationToken);
+            var wrapperKind = FastMoqAnalysisHelpers.GetFastMockVerifyWrapperKind(methodSymbol, context.SemanticModel, context.CancellationToken);
             var descriptor = wrapperKind switch
             {
                 FastMockVerifyWrapperKind.FastMoqBoundary => DiagnosticDescriptors.AvoidFastMockVerifyHelperWrappers,
@@ -51,108 +52,33 @@ namespace FastMoq.Analyzers.Analyzers
                 methodSymbol.Name));
         }
 
-        private static FastMockVerifyWrapperKind GetWrappedVerifyKind(MethodDeclarationSyntax methodDeclaration, IParameterSymbol fastMockParameter, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context)
         {
-            var analysisRoot = methodDeclaration.ExpressionBody?.Expression ?? (SyntaxNode?) methodDeclaration.Body;
-            if (analysisRoot is null)
-            {
-                return FastMockVerifyWrapperKind.None;
-            }
-
-            var hasMoqVerify = false;
-            var hasAsMoqOnFastMock = false;
-            var hasDefaultVerifyOnFastMock = false;
-
-            foreach (var invocationExpression in analysisRoot.DescendantNodesAndSelf().OfType<InvocationExpressionSyntax>())
-            {
-                if (IsDefaultVerifyOnFastMock(invocationExpression, fastMockParameter, semanticModel, cancellationToken))
-                {
-                    hasDefaultVerifyOnFastMock = true;
-                    continue;
-                }
-
-                if (IsAsMoqOnFastMock(invocationExpression, fastMockParameter, semanticModel, cancellationToken))
-                {
-                    hasAsMoqOnFastMock = true;
-                    continue;
-                }
-
-                if (FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) &&
-                    method is not null &&
-                    FastMoqAnalysisHelpers.IsMoqVerifyMethod(method))
-                {
-                    hasMoqVerify = true;
-                }
-            }
-
-            if (hasAsMoqOnFastMock && hasMoqVerify)
-            {
-                return FastMockVerifyWrapperKind.ProviderSpecific;
-            }
-
-            if (hasDefaultVerifyOnFastMock)
-            {
-                return FastMockVerifyWrapperKind.FastMoqBoundary;
-            }
-
-            return FastMockVerifyWrapperKind.None;
-        }
-
-        private static bool IsAsMoqOnFastMock(InvocationExpressionSyntax invocationExpression, IParameterSymbol fastMockParameter, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
+            var invocationExpression = (InvocationExpressionSyntax) context.Node;
             if (invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
-                !FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
-                method is null)
+                !FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var methodSymbol) ||
+                methodSymbol is null)
             {
-                return false;
+                return;
             }
 
-            method = method.ReducedFrom ?? method;
-            return method.Name == "AsMoq" &&
-                method.ContainingNamespace.ToDisplayString() == FastMoqAnalysisHelpers.MoqProviderNamespace &&
-                ReferencesParameter(memberAccess.Expression, fastMockParameter, semanticModel, cancellationToken);
-        }
-
-        private static bool IsDefaultVerifyOnFastMock(InvocationExpressionSyntax invocationExpression, IParameterSymbol fastMockParameter, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            if (invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
-                !FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
-                method is null)
+            var wrapperKind = FastMoqAnalysisHelpers.GetFastMockVerifyWrapperKind(methodSymbol, context.SemanticModel, context.CancellationToken);
+            var descriptor = wrapperKind switch
             {
-                return false;
+                FastMockVerifyWrapperKind.FastMoqBoundary => DiagnosticDescriptors.AvoidFastMockVerifyHelperWrappers,
+                FastMockVerifyWrapperKind.ProviderSpecific => DiagnosticDescriptors.AvoidProviderSpecificFastMockVerifyHelperWrappers,
+                _ => null,
+            };
+
+            if (descriptor is null)
+            {
+                return;
             }
 
-            method = method.ReducedFrom ?? method;
-            return method.Name == "Verify" &&
-                IsDefaultMockingProviderAccess(memberAccess.Expression, semanticModel, cancellationToken) &&
-                invocationExpression.ArgumentList.Arguments.Count > 0 &&
-                ReferencesParameter(invocationExpression.ArgumentList.Arguments[0].Expression, fastMockParameter, semanticModel, cancellationToken);
-        }
-
-        private static bool IsDefaultMockingProviderAccess(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            semanticModel = FastMoqAnalysisHelpers.GetSemanticModelForNode(expression, semanticModel);
-            var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
-            var property = symbolInfo.Symbol as IPropertySymbol ?? symbolInfo.CandidateSymbols.OfType<IPropertySymbol>().FirstOrDefault();
-
-            return property is not null &&
-                property.Name == "Default" &&
-                property.IsStatic &&
-                property.ContainingType.ToDisplayString() == FastMoqAnalysisHelpers.MockingProviderRegistryTypeName;
-        }
-
-        private static bool ReferencesParameter(ExpressionSyntax expression, IParameterSymbol parameterSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            var symbolInfo = semanticModel.GetSymbolInfo(FastMoqAnalysisHelpers.Unwrap(expression), cancellationToken);
-            var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
-            return SymbolEqualityComparer.Default.Equals(symbol, parameterSymbol);
-        }
-
-        private enum FastMockVerifyWrapperKind
-        {
-            None,
-            FastMoqBoundary,
-            ProviderSpecific,
+            context.ReportDiagnostic(Diagnostic.Create(
+                descriptor,
+                memberAccess.Name.GetLocation(),
+                methodSymbol.Name));
         }
     }
 }

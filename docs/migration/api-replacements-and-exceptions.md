@@ -919,11 +919,12 @@ Current guidance:
 - call `Mocks.Verify<T>(...)` directly when the mock is tracked by the current `Mocker`
 - call `MockingProviderRegistry.Default.Verify(...)` directly when the handle is detached
 - do not add a new `IFastMock<T>.Verify(...)` helper layer just to hide that distinction
+- when a repo-local `IFastMock<T>.Verify(...)` wrapper still exists temporarily, prefer rewriting the call site directly to `Mocks.Verify<T>(...)` or `MockingProviderRegistry.Default.Verify(...)` when that translation is mechanical
 
 Why:
 
-- `FMOQ0031` covers wrappers that only forward to FastMoq's own verification APIs
-- `FMOQ0032` covers wrappers that route verification back through `AsMoq().Verify(...)`, Moq `Verify(...)`, or `TimesSpec` to `Times` adapters
+- `FMOQ0031` covers wrappers that only forward to FastMoq's own verification APIs, and their direct wrapper call sites when the rewrite is mechanical
+- `FMOQ0032` covers wrappers that route verification back through `AsMoq().Verify(...)`, Moq `Verify(...)`, or `TimesSpec` to `Times` adapters, and their direct wrapper call sites when the rewrite is mechanical
 - those wrappers hide tracked-versus-detached intent and spread another verification surface through the suite without adding new behavior
 
 ### Shared file system in `MockerTestBase`

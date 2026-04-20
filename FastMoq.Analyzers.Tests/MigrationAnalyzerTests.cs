@@ -75,7 +75,7 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.UseProviderFirstVerify, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.AvoidBareTrackedVerify, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.AvoidFastMockVerifyHelperWrappers, DiagnosticSeverity.Info },
-            { DiagnosticDescriptors.AvoidProviderSpecificFastMockVerifyHelperWrappers, DiagnosticSeverity.Warning },
+            { DiagnosticDescriptors.AvoidProviderSpecificFastMockVerifyHelperWrappers, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferSharedMockFileSystem, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.UseFastArgMatcherInProviderFirstVerify, DiagnosticSeverity.Warning },
             { DiagnosticDescriptors.AvoidUnsupportedMoqMatcherInProviderFirstVerify, DiagnosticSeverity.Info },
@@ -140,6 +140,38 @@ namespace FastMoq.Analyzers.Tests
             Assert.Contains("Moq Verify(...)", description);
             Assert.Contains("IFastMock<T>", description);
             Assert.Contains("Moq-specific setup", description);
+        }
+
+        [Fact]
+        public void SelectProviderBeforeProviderSpecificApi_ShouldExplainEffectiveProviderResolution()
+        {
+            Assert.Equal(
+                "Resolve the matching provider before using provider-specific FastMoq APIs",
+                DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi.Title.ToString());
+            Assert.Equal(
+                "API '{0}' requires FastMoq provider '{1}', but this project does not resolve '{1}' as the effective provider. Use [assembly: FastMoqDefaultProvider(\"{1}\")], [assembly: FastMoqRegisterProvider(\"{1}\", typeof(...), SetAsDefault = true)], Push(\"{1}\"), SetDefault(\"{1}\"), or Register(\"{1}\", ..., setAsDefault: true).",
+                DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi.MessageFormat.ToString());
+
+            var description = DiagnosticDescriptors.SelectProviderBeforeProviderSpecificApi.Description.ToString();
+            Assert.Contains("single registered non-reflection provider", description);
+            Assert.Contains("multiple providers are visible", description);
+            Assert.Contains("select it explicitly", description);
+        }
+
+        [Fact]
+        public void RequireExplicitMoqOnboarding_ShouldExplainEffectiveMoqResolution()
+        {
+            Assert.Equal(
+                "Resolve Moq provider selection for legacy compatibility usage",
+                DiagnosticDescriptors.RequireExplicitMoqOnboarding.Title.ToString());
+            Assert.Equal(
+                "Legacy Moq-shaped FastMoq API '{0}' is in use, but this project does not resolve 'moq' as the effective provider. If the Moq provider is not already referenced, add 'FastMoq.Provider.Moq', then select 'moq' with [assembly: FastMoqDefaultProvider(\"moq\")] or [assembly: FastMoqRegisterProvider(\"moq\", typeof(MoqMockingProvider), SetAsDefault = true)] when provider selection is otherwise ambiguous.",
+                DiagnosticDescriptors.RequireExplicitMoqOnboarding.MessageFormat.ToString());
+
+            var description = DiagnosticDescriptors.RequireExplicitMoqOnboarding.Description.ToString();
+            Assert.Contains("compile-time-visible provider registration", description);
+            Assert.Contains("Moq provider is missing", description);
+            Assert.Contains("multiple providers are visible", description);
         }
 
         [Fact]
@@ -2674,6 +2706,68 @@ class Sample
         }
 
         [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenMoqIsTheOnlyVisibleRegisteredProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.AsMoq();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenNSubstituteIsTheOnlyVisibleRegisteredProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.NSubstituteProvider;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.Received();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: false,
+                includeNSubstituteProviderPackage: true,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
         public async Task ProviderBootstrapAnalyzer_ShouldReport_WhenLegacyGetMockIsUsedWithoutProviderSelection()
         {
             const string SOURCE = @"
@@ -3078,7 +3172,7 @@ class Sample
         }
 
         [Fact]
-        public async Task LegacyMoqOnboardingAnalyzer_ShouldReport_WhenLegacyGetMockIsUsedWithoutExplicitOnboarding()
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldReport_WhenLegacyGetMockIsUsedWithoutResolvableMoqProvider()
         {
             const string SOURCE = @"
 using FastMoq;
@@ -3100,6 +3194,34 @@ class Sample
             var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding));
             Assert.Equal(DiagnosticIds.RequireExplicitMoqOnboarding, diagnostic.Id);
             Assert.Contains("GetMock<T>()", diagnostic.GetMessage());
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldNotReport_WhenMoqIsTheOnlyVisibleRegisteredProvider()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new LegacyMoqOnboardingAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
         }
 
         [Fact]

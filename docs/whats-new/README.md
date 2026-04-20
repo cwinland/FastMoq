@@ -30,7 +30,7 @@ FastMoq `4.1.0` updates the published v4 line to match the broader package split
 
 Consumer impact:
 
-- the aggregate `FastMoq` package now pulls together the core runtime, shared Azure SDK helpers, Azure Functions HTTP-trigger helpers, database helpers, web support, provider integrations, and analyzer assets by default
+- the aggregate `FastMoq` package now pulls together the core runtime, shared Azure SDK helpers, Azure Functions HTTP-trigger helpers, database helpers, web support, provider integrations, and analyzer assets by default, while `FastMoq.Core` also carries the analyzer assets in the split-package path
 - `FastMoq.Azure` is the first-party package for `PageableBuilder`, token and default credential helpers, Azure-oriented configuration or service-provider helpers, and common Azure client registration
 - `FastMoq.AzureFunctions` is the first-party package for typed `FunctionContext.InstanceServices` setup, concrete `HttpRequestData` and `HttpResponseData` builders, and body readers for request or response assertions
 - the docs now steer consumers more directly between the aggregate package path and split-package installs based on which helpers a test project actually needs
@@ -70,7 +70,7 @@ At a high level, the current line adds:
 - a provider-first architecture with explicit provider registration and selection
 - a new package split for abstractions, Azure SDK helpers, Azure Functions helpers, database helpers, web helpers, and provider-specific adapters
 - first-party Azure testing helpers for storage-client registration and Azure Functions worker or HTTP-trigger setup
-- analyzer guidance that can be consumed as a standalone package or through the aggregate `FastMoq` package by default
+- analyzer guidance that can be consumed as a standalone package or through `FastMoq` or `FastMoq.Core` by default
 - provider-neutral verification and scenario-building APIs for newer tests
 - explicit policy surfaces for constructor fallback, method fallback, built-in known types, and optional-parameter resolution
 - expanded repo-native documentation, migration guidance, and executable examples
@@ -227,7 +227,7 @@ Compared to `3.0.0`, the current line also updates the supported target framewor
 
 - libraries now target `net8.0`, `net9.0`, and `net10.0`
 - older packaging based on per-project `.nuspec` files was removed in favor of SDK-style package metadata in the project files
-- the aggregate `FastMoq` package now ships analyzer assets by default while the split-package path keeps analyzers opt-in
+- both `FastMoq` and `FastMoq.Core` now ship analyzer assets by default, while `FastMoq.Analyzers` remains available as the standalone diagnostics-only option
 - solution and test coverage expanded to include provider-specific packages and verification matrices
 
 ## Recommended reading order

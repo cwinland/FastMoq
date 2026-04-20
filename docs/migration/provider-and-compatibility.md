@@ -12,13 +12,13 @@ The current v4 repository behavior differs from `3.0.0` in one important way:
 
 - `FastMoq.Core` now bundles both `reflection` and `moq`
 - `reflection` is the default provider if you do nothing
-- tests carried forward from previous FastMoq versions that rely on `GetMock<T>()`, direct `Mock<T>` access, `Protected()`, or `VerifyLogger(...)` should select `moq` explicitly for the test assembly
+- tests carried forward from previous FastMoq versions that rely on `GetMock<T>()`, direct `Mock<T>` access, `Protected()`, or `VerifyLogger(...)` usually should select `moq` explicitly for the test assembly when the suite should not depend on single-provider discovery remaining unambiguous
 
 This is easy to miss during migration because package installation, extension-method availability, and active-provider selection are three separate things:
 
 - installing a provider package gives you its implementation and extension methods
 - importing its namespace makes those extension methods visible
-- declaring or setting the default provider is what actually makes FastMoq use it for new mocks
+- declaring or setting the default provider is what makes FastMoq use it for new mocks when discovery does not already resolve the intended effective provider
 
 ### Package-to-namespace quick map
 
@@ -53,13 +53,17 @@ Use this rule during migration:
 
 Most test projects should start with `FastMoq` or `FastMoq.Core`. `FastMoq.Abstractions` is mainly for custom-provider or advanced extension work, while `FastMoq.Analyzers` only contributes diagnostics and code fixes at build time.
 
-Installing `FastMoq.Core` plus `FastMoq.Provider.Moq` is not enough by itself. The Moq provider still needs to be selected as the default for that test assembly.
+Installing `FastMoq.Core` plus `FastMoq.Provider.Moq` is not enough by itself when the suite still needs deterministic Moq selection. The provider package adds extension methods and registration metadata, but the effective provider still has to resolve to `moq`. A single visible non-reflection provider can satisfy that automatically; explicit selection is the safer path when the suite should not depend on discovery.
 
 FastMoq is also not limited to the bundled providers. If your suite uses another mocking library, you can implement `IMockingProvider` and register your own provider instead of adopting `moq` or `nsubstitute`.
 
 If you need a provider-by-provider answer for what is supported today, see [Provider Capabilities](../getting-started/provider-capabilities.md).
 
-Treat explicit assembly-default selection as mandatory whenever the migrated test project still uses any non-default provider-specific compatibility or extension surface.
+Treat explicit assembly-default selection as the safest stabilization step whenever the migrated test project still uses any non-default provider-specific compatibility or extension surface and the suite should not depend on discovery.
+
+Analyzer note:
+
+- `FMOQ0009` and `FMOQ0023` use effective-provider semantics rather than explicit-only semantics, so a single visible provider can satisfy them automatically even when the repo still chooses to declare an assembly default for determinism.
 
 Current fallback rule of thumb:
 

@@ -6,9 +6,9 @@ Welcome to the comprehensive FastMoq documentation! This documentation is design
 
 If you are coming from the last public `3.0.0` package, the biggest changes in the current line are:
 
-- provider-first architecture with explicit provider registration and selection
+- provider-first architecture with automatic effective-provider discovery plus explicit provider registration and selection when needed
 - new package split across the aggregate runtime, Azure SDK helpers, Azure Functions helpers, database helpers, web helpers, and provider-specific adapters
-- first-party Azure SDK and Azure Functions HTTP-trigger helpers, with analyzer assets included by default in the aggregate `FastMoq` package
+- first-party Azure SDK and Azure Functions HTTP-trigger helpers, with analyzer assets included by default in both `FastMoq` and `FastMoq.Core`
 - provider-neutral verification with `TimesSpec`, `Verify(...)`, and `VerifyLogged(...)`
 - fluent `Scenario.With(...).When(...).Then(...).Verify(...)` support for workflow-style tests
 - explicit policy surfaces for constructor fallback, method fallback, known-type resolution, and optional-parameter behavior
@@ -33,6 +33,8 @@ Perfect for developers new to FastMoq. Learn the basics and write your first tes
 - [Provider selection and setup](./getting-started/provider-selection.md)
 - [Provider capabilities matrix](./getting-started/provider-capabilities.md)
 - [Repo-native testing guide](./getting-started/testing-guide.md)
+- [Choose the narrowest harness for the test](./getting-started/testing-guide.md#choose-the-narrowest-harness)
+- [Local wrapper boundary for shared helpers](./getting-started/testing-guide.md#local-wrapper-boundary)
 - [Tracked vs standalone provider-first mocks](./getting-started/testing-guide.md#tracked-vs-standalone-fast-mocks)
 - [Typed `IServiceProvider` helpers](./getting-started/testing-guide.md#typed-iserviceprovider-helpers)
 - [Explicit constructor selection in tests](./getting-started/testing-guide.md#explicit-constructor-selection-in-tests)
@@ -135,6 +137,7 @@ Intentional v4 breaking changes, with migration notes for changed behavior.
 Direct routes:
 
 - Provider-first authoring: [Getting Started](./getting-started/README.md), [Testing Guide](./getting-started/testing-guide.md), and [API quick reference](./api/quick-reference.md)
+- Harness and wrapper decisions: [Choose The Narrowest Harness](./getting-started/testing-guide.md#choose-the-narrowest-harness) and [Local Wrapper Boundary](./getting-started/testing-guide.md#local-wrapper-boundary)
 - Migration cleanup: [Migration Guide](./migration/README.md), [Provider and compatibility guidance](./migration/provider-and-compatibility.md), and [API replacements and migration exceptions](./migration/api-replacements-and-exceptions.md)
 - Troubleshooting provider or package mismatches: [Provider selection](./getting-started/provider-selection.md), [Provider capabilities](./getting-started/provider-capabilities.md), and [Getting Started package choices](./getting-started/README.md#package-choices)
 

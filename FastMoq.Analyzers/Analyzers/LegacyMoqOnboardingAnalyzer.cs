@@ -20,18 +20,18 @@ namespace FastMoq.Analyzers.Analyzers
 
         private static void RegisterCompilationAnalysis(CompilationStartAnalysisContext context)
         {
-            var moqSelectedByDefault = FastMoqAnalysisHelpers.IsProviderSelectedByDefault(context.Compilation, FastMoqAnalysisHelpers.MoqProviderName, CancellationToken.None);
-            var hasExplicitMoqProviderPackage = FastMoqAnalysisHelpers.HasMoqProviderPackage(context.Compilation);
+            var moqResolvedAsDefaultProvider = FastMoqAnalysisHelpers.IsProviderSelectedByDefault(context.Compilation, FastMoqAnalysisHelpers.MoqProviderName, CancellationToken.None);
+            var hasMoqProviderPackage = FastMoqAnalysisHelpers.HasMoqProviderPackage(context.Compilation);
 
-            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeInvocation(nodeContext, moqSelectedByDefault, hasExplicitMoqProviderPackage), Microsoft.CodeAnalysis.CSharp.SyntaxKind.InvocationExpression);
-            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeMemberAccess(nodeContext, moqSelectedByDefault, hasExplicitMoqProviderPackage), Microsoft.CodeAnalysis.CSharp.SyntaxKind.SimpleMemberAccessExpression);
+            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeInvocation(nodeContext, moqResolvedAsDefaultProvider, hasMoqProviderPackage), Microsoft.CodeAnalysis.CSharp.SyntaxKind.InvocationExpression);
+            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeMemberAccess(nodeContext, moqResolvedAsDefaultProvider, hasMoqProviderPackage), Microsoft.CodeAnalysis.CSharp.SyntaxKind.SimpleMemberAccessExpression);
         }
 
-        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context, bool moqSelectedByDefault, bool hasExplicitMoqProviderPackage)
+        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context, bool moqResolvedAsDefaultProvider, bool hasMoqProviderPackage)
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
             if (!TryGetLegacyMoqApi(invocationExpression, context.SemanticModel, context.CancellationToken, out var apiName) ||
-                IsExplicitlyOnboarded(invocationExpression, context.SemanticModel, context.CancellationToken, moqSelectedByDefault, hasExplicitMoqProviderPackage))
+                IsMoqCompatibilityAvailable(invocationExpression, context.SemanticModel, context.CancellationToken, moqResolvedAsDefaultProvider, hasMoqProviderPackage))
             {
                 return;
             }
@@ -42,11 +42,11 @@ namespace FastMoq.Analyzers.Analyzers
                 apiName));
         }
 
-        private static void AnalyzeMemberAccess(SyntaxNodeAnalysisContext context, bool moqSelectedByDefault, bool hasExplicitMoqProviderPackage)
+        private static void AnalyzeMemberAccess(SyntaxNodeAnalysisContext context, bool moqResolvedAsDefaultProvider, bool hasMoqProviderPackage)
         {
             var memberAccessExpression = (MemberAccessExpressionSyntax) context.Node;
             if (!TryGetLegacyMoqApi(memberAccessExpression, context.SemanticModel, context.CancellationToken, out var apiName) ||
-                IsExplicitlyOnboarded(memberAccessExpression, context.SemanticModel, context.CancellationToken, moqSelectedByDefault, hasExplicitMoqProviderPackage))
+                IsMoqCompatibilityAvailable(memberAccessExpression, context.SemanticModel, context.CancellationToken, moqResolvedAsDefaultProvider, hasMoqProviderPackage))
             {
                 return;
             }
@@ -57,10 +57,10 @@ namespace FastMoq.Analyzers.Analyzers
                 apiName));
         }
 
-        private static bool IsExplicitlyOnboarded(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken, bool moqSelectedByDefault, bool hasExplicitMoqProviderPackage)
+        private static bool IsMoqCompatibilityAvailable(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken, bool moqResolvedAsDefaultProvider, bool hasMoqProviderPackage)
         {
-            return hasExplicitMoqProviderPackage &&
-                (moqSelectedByDefault || FastMoqAnalysisHelpers.HasProviderSelectionInScope(node, semanticModel, FastMoqAnalysisHelpers.MoqProviderName, cancellationToken));
+            return hasMoqProviderPackage &&
+                (moqResolvedAsDefaultProvider || FastMoqAnalysisHelpers.HasProviderSelectionInScope(node, semanticModel, FastMoqAnalysisHelpers.MoqProviderName, cancellationToken));
         }
 
         private static bool TryGetLegacyMoqApi(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string apiName)
