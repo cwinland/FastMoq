@@ -14,8 +14,9 @@ namespace FastMoq.Analyzers.Tests
         public void MigrationGuideAnalyzerCatalog_ShouldListEveryPublicDiagnosticId()
         {
             var catalogSection = ReadAnalyzerCatalogSection();
-            var documentedIds = Regex.Matches(catalogSection, @"FMOQ\d{4}")
-                .Select(match => match.Value)
+            const string AnalyzerCatalogTableRowPattern = @"^\|\s*`(FMOQ\d{4})`\s*\|";
+            var documentedIds = Regex.Matches(catalogSection, AnalyzerCatalogTableRowPattern, RegexOptions.Multiline)
+                .Select(match => match.Groups[1].Value)
                 .Distinct(StringComparer.Ordinal)
                 .OrderBy(item => item, StringComparer.Ordinal)
                 .ToArray();
@@ -32,7 +33,7 @@ namespace FastMoq.Analyzers.Tests
 
         private static string ReadAnalyzerCatalogSection()
         {
-            var readmePath = FindRepositoryFile(Path.Combine("docs", "migration", "README.md"));
+            var readmePath = Path.Combine(AppContext.BaseDirectory, "docs", "migration", "README.md");
             var readme = File.ReadAllText(readmePath);
             const string startMarker = "## Analyzer catalog";
             const string endMarker = "## Migration summary";
@@ -44,20 +45,6 @@ namespace FastMoq.Analyzers.Tests
             Assert.True(endIndex > startIndex, $"Could not find '{endMarker}' after '{startMarker}' in '{readmePath}'.");
 
             return readme.Substring(startIndex, endIndex - startIndex);
-        }
-
-        private static string FindRepositoryFile(string relativePath)
-        {
-            for (var directory = new DirectoryInfo(AppContext.BaseDirectory); directory is not null; directory = directory.Parent)
-            {
-                var candidate = Path.Combine(directory.FullName, relativePath);
-                if (File.Exists(candidate))
-                {
-                    return candidate;
-                }
-            }
-
-            throw new FileNotFoundException($"Could not locate repository file '{relativePath}' starting from '{AppContext.BaseDirectory}'.");
         }
     }
 }

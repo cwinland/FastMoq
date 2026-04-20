@@ -67,7 +67,7 @@ namespace FastMoq.Analyzers.CodeFixes
 
                         context.RegisterCodeFix(
                             CodeAction.Create(
-                                "Use provider-first object access",
+                                DiagnosticDescriptors.UseProviderFirstObjectAccess.Title.ToString(),
                                 cancellationToken => ReplaceMemberAccessAsync(document, memberAccess, BuildObjectReplacementAsync, cancellationToken),
                                 nameof(DiagnosticIds.UseProviderFirstObjectAccess)),
                             diagnostic);

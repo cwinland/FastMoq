@@ -178,6 +178,31 @@ class Sample
         }
 
         [Fact]
+        public async Task TrackedMockObjectAnalyzer_CodeFix_ShouldUseUpdatedDescriptorTitle()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using Microsoft.Extensions.Logging;
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        var logger = Mocks.GetMock<ILogger<Sample>>().Object;
+    }
+}";
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(
+                SOURCE,
+                new TrackedMockObjectAnalyzer(),
+                codeFixProvider,
+                DiagnosticIds.UseProviderFirstObjectAccess);
+
+            Assert.Single(codeFixTitles);
+            Assert.Equal("Use provider-first dependency instance access", codeFixTitles[0]);
+        }
+
+        [Fact]
         public async Task TrackedMockResetAnalyzer_ShouldReportAndFix_ResetUsage()
         {
             const string SOURCE = @"
