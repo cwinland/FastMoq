@@ -320,3 +320,37 @@ If a suite already has local `SetupClaimsPrincipal(...)`, `CreateControllerConte
 1. Simplify or remove the wrapper later only if the direct FastMoq call sites are actually clearer.
 
 That approach keeps the migration low-risk. After v4 migration, those local helpers often become thin wrappers rather than remaining hand-rolled infrastructure.
+
+If the suite already exposes a local `CreateHttpRequest(...)` helper, use the same rule. Prefer building the underlying request with `CreateHttpContext(...)`, `SetRequestHeader(...)`, `SetRequestBody(...)`, and `SetRequestJsonBody(...)`, then return `httpContext.Request` from the local wrapper if that is still the clearest call-site shape.
+
+Keep only the repo-specific parts local. For example, if the app stamps custom encoded principal headers, tenant headers, or other product-specific request metadata, keep that serialization in the local helper but stop hand-rolling the `DefaultHttpContext`, header collection, and request body wiring.
+
+```csharp
+using FastMoq.Web.Extensions;
+
+private static HttpRequest CreateHttpRequest(
+    Mocker mocks,
+    IServiceProvider? services = null,
+    string? requestBody = null,
+    ClaimsPrincipal? principal = null)
+{
+    var httpContext = principal is null
+        ? mocks.CreateHttpContext(static _ => { })
+        : mocks.CreateHttpContext(principal, static _ => { });
+
+    if (services is not null)
+    {
+        httpContext.RequestServices = services;
+    }
+
+    if (requestBody is not null)
+    {
+        httpContext.SetRequestBody(requestBody, contentType: "application/json");
+    }
+
+    // Keep app-specific request headers local to the suite.
+    return httpContext.Request;
+}
+```
+
+That keeps the common ASP.NET Core request mechanics on the FastMoq side while still leaving room for suite-specific headers or claim serialization that FastMoq should not hard-code.

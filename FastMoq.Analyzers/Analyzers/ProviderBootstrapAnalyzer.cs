@@ -20,14 +20,14 @@ namespace FastMoq.Analyzers.Analyzers
 
         private static void RegisterCompilationAnalysis(CompilationStartAnalysisContext context)
         {
-            var moqSelectedByDefault = FastMoqAnalysisHelpers.IsProviderSelectedByDefault(context.Compilation, FastMoqAnalysisHelpers.MoqProviderName, CancellationToken.None);
-            var nsubstituteSelectedByDefault = FastMoqAnalysisHelpers.IsProviderSelectedByDefault(context.Compilation, FastMoqAnalysisHelpers.NSubstituteProviderName, CancellationToken.None);
+            var moqResolvedAsDefaultProvider = FastMoqAnalysisHelpers.IsProviderSelectedByDefault(context.Compilation, FastMoqAnalysisHelpers.MoqProviderName, CancellationToken.None);
+            var nsubstituteResolvedAsDefaultProvider = FastMoqAnalysisHelpers.IsProviderSelectedByDefault(context.Compilation, FastMoqAnalysisHelpers.NSubstituteProviderName, CancellationToken.None);
 
-            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeInvocation(nodeContext, moqSelectedByDefault, nsubstituteSelectedByDefault), Microsoft.CodeAnalysis.CSharp.SyntaxKind.InvocationExpression);
-            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeMemberAccess(nodeContext, moqSelectedByDefault, nsubstituteSelectedByDefault), Microsoft.CodeAnalysis.CSharp.SyntaxKind.SimpleMemberAccessExpression);
+            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeInvocation(nodeContext, moqResolvedAsDefaultProvider, nsubstituteResolvedAsDefaultProvider), Microsoft.CodeAnalysis.CSharp.SyntaxKind.InvocationExpression);
+            context.RegisterSyntaxNodeAction(nodeContext => AnalyzeMemberAccess(nodeContext, moqResolvedAsDefaultProvider, nsubstituteResolvedAsDefaultProvider), Microsoft.CodeAnalysis.CSharp.SyntaxKind.SimpleMemberAccessExpression);
         }
 
-        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context, bool moqSelectedByDefault, bool nsubstituteSelectedByDefault)
+        private static void AnalyzeInvocation(SyntaxNodeAnalysisContext context, bool moqResolvedAsDefaultProvider, bool nsubstituteResolvedAsDefaultProvider)
         {
             var invocationExpression = (InvocationExpressionSyntax) context.Node;
             if (!FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) ||
@@ -37,8 +37,8 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
-            if ((providerName == FastMoqAnalysisHelpers.MoqProviderName && moqSelectedByDefault) ||
-                (providerName == FastMoqAnalysisHelpers.NSubstituteProviderName && nsubstituteSelectedByDefault) ||
+            if ((providerName == FastMoqAnalysisHelpers.MoqProviderName && moqResolvedAsDefaultProvider) ||
+                (providerName == FastMoqAnalysisHelpers.NSubstituteProviderName && nsubstituteResolvedAsDefaultProvider) ||
                 FastMoqAnalysisHelpers.HasProviderSelectionInScope(invocationExpression, context.SemanticModel, providerName, context.CancellationToken))
             {
                 return;
@@ -51,7 +51,7 @@ namespace FastMoq.Analyzers.Analyzers
                 providerName));
         }
 
-        private static void AnalyzeMemberAccess(SyntaxNodeAnalysisContext context, bool moqSelectedByDefault, bool nsubstituteSelectedByDefault)
+        private static void AnalyzeMemberAccess(SyntaxNodeAnalysisContext context, bool moqResolvedAsDefaultProvider, bool nsubstituteResolvedAsDefaultProvider)
         {
             var memberAccessExpression = (MemberAccessExpressionSyntax) context.Node;
             if (!FastMoqAnalysisHelpers.TryGetPropertySymbol(memberAccessExpression, context.SemanticModel, context.CancellationToken, out var property) ||
@@ -61,8 +61,8 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
-            if ((providerName == FastMoqAnalysisHelpers.MoqProviderName && moqSelectedByDefault) ||
-                (providerName == FastMoqAnalysisHelpers.NSubstituteProviderName && nsubstituteSelectedByDefault) ||
+            if ((providerName == FastMoqAnalysisHelpers.MoqProviderName && moqResolvedAsDefaultProvider) ||
+                (providerName == FastMoqAnalysisHelpers.NSubstituteProviderName && nsubstituteResolvedAsDefaultProvider) ||
                 FastMoqAnalysisHelpers.HasProviderSelectionInScope(memberAccessExpression, context.SemanticModel, providerName, context.CancellationToken))
             {
                 return;

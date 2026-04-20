@@ -26,6 +26,8 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.UseProviderFirstReset,
             DiagnosticIds.UseVerifyLogged,
             DiagnosticIds.UseProviderFirstVerify,
+            DiagnosticIds.AvoidFastMockVerifyHelperWrappers,
+            DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers,
             DiagnosticIds.UseFastArgMatcherInProviderFirstVerify,
             DiagnosticIds.UseConsistentMockRetrieval,
             DiagnosticIds.UseProviderFirstMockRetrieval,
@@ -67,7 +69,7 @@ namespace FastMoq.Analyzers.CodeFixes
 
                         context.RegisterCodeFix(
                             CodeAction.Create(
-                                "Use provider-first object access",
+                                DiagnosticDescriptors.UseProviderFirstObjectAccess.Title.ToString(),
                                 cancellationToken => ReplaceMemberAccessAsync(document, memberAccess, BuildObjectReplacementAsync, cancellationToken),
                                 nameof(DiagnosticIds.UseProviderFirstObjectAccess)),
                             diagnostic);
@@ -121,6 +123,31 @@ namespace FastMoq.Analyzers.CodeFixes
                                 "Use provider-first Verify(...)",
                                 cancellationToken => ReplaceVerifyInvocationAsync(document, invocationExpression, cancellationToken),
                                 nameof(DiagnosticIds.UseProviderFirstVerify)),
+                            diagnostic);
+                        break;
+                    }
+
+                case DiagnosticIds.AvoidFastMockVerifyHelperWrappers:
+                case DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        var semanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (semanticModel is null ||
+                            !FastMoqAnalysisHelpers.TryBuildFastMockVerifyWrapperUsageReplacement(invocationExpression, semanticModel, context.CancellationToken, out _, out _))
+                        {
+                            return;
+                        }
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                "Use explicit FastMoq verification",
+                                cancellationToken => ReplaceFastMockVerifyWrapperInvocationAsync(document, invocationExpression, cancellationToken),
+                                diagnostic.Id),
                             diagnostic);
                         break;
                     }
@@ -523,6 +550,28 @@ namespace FastMoq.Analyzers.CodeFixes
             if (root is null || semanticModel is null ||
                 invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccess ||
                 !FastMoqAnalysisHelpers.TryBuildVerifyReplacement(memberAccess.Expression, semanticModel, invocationExpression, cancellationToken, out var replacementText, out var requiresProvidersNamespace))
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+
+            if (requiresProvidersNamespace)
+            {
+                updatedRoot = AddUsingDirectiveIfMissing(updatedRoot, FastMoqAnalysisHelpers.FastMoqProvidersNamespace);
+            }
+
+            return document.WithSyntaxRoot(updatedRoot);
+        }
+
+        private static async Task<Document> ReplaceFastMockVerifyWrapperInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null ||
+                !FastMoqAnalysisHelpers.TryBuildFastMockVerifyWrapperUsageReplacement(invocationExpression, semanticModel, cancellationToken, out var replacementText, out var requiresProvidersNamespace))
             {
                 return document;
             }

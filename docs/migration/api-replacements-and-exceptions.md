@@ -10,7 +10,7 @@ These are small migration edges that cause disproportionate churn in provider-fi
 
 | Legacy habit | Preferred v4 move | Why it trips people up |
 | --- | --- | --- |
-| `mock.Object` or `GetMock<T>().Object` | `fastMock.Instance` or `Mocks.GetObject<T>()` | `GetOrCreateMock<T>()` returns `IFastMock<T>`, not a raw `Mock<T>` |
+| `mock.Object` or `GetMock<T>().Object` | `fastMock.Instance`, `Mocks.GetObject<T>()`, or `Mocks.GetRequiredObject<T>()` | `GetOrCreateMock<T>()` returns `IFastMock<T>`, not a raw `Mock<T>` |
 | `mock.Reset()` | `fastMock.Reset()` | The provider-first handle already has a reset surface; `AsMoq()` is only needed when you truly need raw Moq APIs |
 | `TimesSpec.Never` during bulk conversion | `TimesSpec.Never()` or preferably `TimesSpec.NeverCalled` | The method call is easy to miss, and `NeverCalled` avoids the missing-parentheses mistake entirely |
 | one unkeyed mock for two keyed constructor dependencies | keyed `MockRequestOptions.ServiceKey`, `AddKeyedType(...)`, or explicit constructor injection | a single type-based double cannot catch public or private or primary or secondary swaps |
@@ -52,6 +52,73 @@ void AssertLogged(Mock<ILogger> logger, Func<Times> times)
 // Deliberate migration boundary
 void AssertLogged(Mocker mocker, TimesSpec times)
 ```
+
+### `.Object` on tracked FastMoq mocks
+
+Old pattern:
+
+```csharp
+var logger = Mocks.GetMock<ILogger<OrderService>>().Object;
+```
+
+Current guidance when the code only needs the dependency instance:
+
+```csharp
+var logger = Mocks.GetObject<ILogger<OrderService>>();
+```
+
+Or, when the code already has a tracked handle:
+
+```csharp
+var loggerMock = Mocks.GetOrCreateMock<ILogger<OrderService>>();
+var logger = loggerMock.Instance;
+```
+
+If the old call site used `GetRequiredTrackedMock<T>()` and only needs the instance, use `GetRequiredObject<T>()` instead.
+
+Why:
+
+- use `.Instance` when you already have an `IFastMock<T>` handle
+- use `GetObject<T>()` or `GetRequiredObject<T>()` when the code is retrieving the dependency from `Mocker` only to get the instance
+- keep `AsMoq().Object` only for a deliberate local raw-Moq compatibility pocket
+
+### Verification-only `Mock<T>` aliases
+
+Old pattern:
+
+```csharp
+private Mocker Mocks { get; } = new();
+private Mock<IOrderGateway> GatewayMock => Mocks.GetOrCreateMock<IOrderGateway>().AsMoq();
+
+void AssertSent()
+{
+    GatewayMock.Verify(x => x.Send("alpha"));
+}
+```
+
+Current guidance:
+
+```csharp
+private Mocker Mocks { get; } = new();
+
+void AssertSent()
+{
+    Mocks.Verify<IOrderGateway>(x => x.Send("alpha"), TimesSpec.Once);
+}
+```
+
+Or, when you still want a reusable tracked handle for arrangement:
+
+```csharp
+private Mocker Mocks { get; } = new();
+private IFastMock<IOrderGateway> Gateway => Mocks.GetOrCreateMock<IOrderGateway>();
+```
+
+Why:
+
+- a `Mock<T>` alias that only exists for later `Verify(...)` calls keeps the test on the Moq surface without adding behavior
+- keep verification explicit with `Mocker.Verify<T>(...)`
+- keep a `Mock<T>` alias only when the symbol also needs Moq-specific setup or other raw `Mock<T>` behavior such as `Protected()` or `SetupSet(...)`
 
 ## Old to new guidance
 
@@ -829,6 +896,67 @@ Why:
 - provider-specific convenience now belongs in provider packages instead of core
 - raw `NativeMock` access is still available, but it is no longer the best primary guidance when a typed provider extension exists
 
+### `IFastMock<T>` verify wrappers
+
+Old helper patterns:
+
+```csharp
+internal static void Verify<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression, TimesSpec? times = null)
+    where T : class
+    => MockingProviderRegistry.Default.Verify(fastMock, expression, times);
+```
+
+Or a provider-specific wrapper:
+
+```csharp
+internal static void Verify<T, TResult>(this IFastMock<T> fastMock, Expression<Func<T, TResult>> expression, TimesSpec times)
+    where T : class
+    => fastMock.AsMoq().Verify(expression, times.ToMoq());
+```
+
+Current guidance:
+
+- call `Mocks.Verify<T>(...)` directly when the mock is tracked by the current `Mocker`
+- call `MockingProviderRegistry.Default.Verify(...)` directly when the handle is detached
+- do not add a new `IFastMock<T>.Verify(...)` helper layer just to hide that distinction
+- when a repo-local `IFastMock<T>.Verify(...)` wrapper still exists temporarily, prefer rewriting the call site directly to `Mocks.Verify<T>(...)` or `MockingProviderRegistry.Default.Verify(...)` when that translation is mechanical
+
+Why:
+
+- `FMOQ0031` covers wrappers that only forward to FastMoq's own verification APIs, and their direct wrapper call sites when the rewrite is mechanical
+- `FMOQ0032` covers wrappers that route verification back through `AsMoq().Verify(...)`, Moq `Verify(...)`, or `TimesSpec` to `Times` adapters, and their direct wrapper call sites when the rewrite is mechanical
+- those wrappers hide tracked-versus-detached intent and spread another verification surface through the suite without adding new behavior
+
+### Shared file system in `MockerTestBase`
+
+Old pattern:
+
+```csharp
+class SampleTests : MockerTestBase<SampleService>
+{
+    public SampleTests() : base(mocker => new SampleService(new MockFileSystem().FileSystem))
+    {
+    }
+}
+```
+
+Current guidance:
+
+```csharp
+class SampleTests : MockerTestBase<SampleService>
+{
+    public SampleTests() : base(mocker => new SampleService(mocker.GetFileSystem()))
+    {
+    }
+}
+```
+
+Why:
+
+- `FMOQ0033` warns when a `MockerTestBase`-based flow creates a fresh `MockFileSystem` only to satisfy an `IFileSystem` slot
+- `GetFileSystem()` keeps constructor injection and later `IFileSystem` resolution on the same shared in-memory file system
+- keep a separate `MockFileSystem` only when the collaborator really needs the concrete `MockFileSystem` type or the test intentionally needs an independent file system instance
+
 ## Expected migration exceptions
 
 Some migrated tests should intentionally stay on raw Moq. That is normal in v4.
@@ -926,6 +1054,12 @@ Inside provider-first verification expressions, translate matcher helpers this w
 - `It.IsAny<T>()` becomes `FastArg.Any<T>()`
 - `It.Is<T>(predicate)` becomes `FastArg.Is<T>(predicate)`
 - `It.IsAny<Expression<Func<T, bool>>>()` becomes `FastArg.AnyExpression<T>()`
+
+Analyzer notes:
+
+- `FMOQ0024` moves tracked verification off provider-native `Verify(...)` and onto provider-first `Verify(...)`
+- `FMOQ0034` rewrites the mechanical matcher cases above so the assertion stays provider-neutral
+- `FMOQ0035` flags unsupported Moq matcher helpers that stay inside provider-first `Verify(...)` without offering a code fix; in those cases, rewrite the assertion shape or keep the matcher on a deliberate local Moq-only verification path
 
 ### Cache and property-setter edge case
 

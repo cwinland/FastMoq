@@ -561,6 +561,307 @@ interface IDependency
         }
 
         [Fact]
+        public async Task FastMockVerifyHelperAnalyzer_ShouldReportAndFix_WhenTrackedCallSiteUsesProviderSpecificVerifyWrapper()
+        {
+            const string SOURCE = @"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression, Times times)
+        where T : class
+        => fastMock.AsMoq().Verify(expression, times);
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.GetOrCreateMock<IDependency>().Verify(x => x.Run(""alpha""), Times.Never());
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new FastMockVerifyHelperAnalyzer());
+            var matchingDiagnostics = diagnostics.Where(item => item.Id == DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers).OrderBy(item => item.Location.SourceSpan.Start).ToArray();
+            Assert.Equal(2, matchingDiagnostics.Length);
+            Assert.Equal(DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers, matchingDiagnostics[1].Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new FastMockVerifyHelperAnalyzer(), codeFixProvider, DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers, diagnosticOccurrence: 1);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression, Times times)
+        where T : class
+        => fastMock.AsMoq().Verify(expression, times);
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.Verify<IDependency>(x => x.Run(""alpha""), TimesSpec.NeverCalled);
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task FastMockVerifyHelperAnalyzer_ShouldReportAndFix_WhenTrackedQualifiedStaticCallUsesProviderSpecificVerifyWrapper()
+        {
+            const string SOURCE = @"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression, Times times)
+        where T : class
+        => fastMock.AsMoq().Verify(expression, times);
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        VerifyHelpers.Verify(Mocks.GetOrCreateMock<IDependency>(), x => x.Run(""alpha""), Times.Never());
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new FastMockVerifyHelperAnalyzer());
+            var matchingDiagnostics = diagnostics.Where(item => item.Id == DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers).OrderBy(item => item.Location.SourceSpan.Start).ToArray();
+            Assert.Equal(2, matchingDiagnostics.Length);
+            Assert.Equal(DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers, matchingDiagnostics[1].Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new FastMockVerifyHelperAnalyzer(), codeFixProvider, DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers, diagnosticOccurrence: 1);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Moq;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression, Times times)
+        where T : class
+        => fastMock.AsMoq().Verify(expression, times);
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.Verify<IDependency>(x => x.Run(""alpha""), TimesSpec.NeverCalled);
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task FastMockVerifyHelperAnalyzer_ShouldReportAndFix_WhenTrackedCallSiteUsesFastMoqVerifyWrapper()
+        {
+            const string SOURCE = @"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression, TimesSpec? times = null)
+        where T : class
+        => MockingProviderRegistry.Default.Verify(fastMock, expression, times);
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.GetOrCreateMock<IDependency>().Verify(x => x.Run(""alpha""), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new FastMockVerifyHelperAnalyzer());
+            var matchingDiagnostics = diagnostics.Where(item => item.Id == DiagnosticIds.AvoidFastMockVerifyHelperWrappers).OrderBy(item => item.Location.SourceSpan.Start).ToArray();
+            Assert.Equal(2, matchingDiagnostics.Length);
+            Assert.Equal(DiagnosticIds.AvoidFastMockVerifyHelperWrappers, matchingDiagnostics[1].Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new FastMockVerifyHelperAnalyzer(), codeFixProvider, DiagnosticIds.AvoidFastMockVerifyHelperWrappers, diagnosticOccurrence: 1);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using System.Linq.Expressions;
+using FastMoq;
+using FastMoq.Providers;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression, TimesSpec? times = null)
+        where T : class
+        => MockingProviderRegistry.Default.Verify(fastMock, expression, times);
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.Verify<IDependency>(x => x.Run(""alpha""), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task FastMockVerifyHelperAnalyzer_ShouldReportAndFix_WhenTrackedUsingStaticCallUsesFastMoqVerifyWrapper()
+        {
+            const string SOURCE = @"
+using System;
+using System.Linq.Expressions;
+using static VerifyHelpers;
+using FastMoq;
+using FastMoq.Providers;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression, TimesSpec? times = null)
+        where T : class
+        => MockingProviderRegistry.Default.Verify(fastMock, expression, times);
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Verify(Mocks.GetOrCreateMock<IDependency>(), x => x.Run(""alpha""), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new FastMockVerifyHelperAnalyzer());
+            var matchingDiagnostics = diagnostics.Where(item => item.Id == DiagnosticIds.AvoidFastMockVerifyHelperWrappers).OrderBy(item => item.Location.SourceSpan.Start).ToArray();
+            Assert.Equal(2, matchingDiagnostics.Length);
+            Assert.Equal(DiagnosticIds.AvoidFastMockVerifyHelperWrappers, matchingDiagnostics[1].Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new FastMockVerifyHelperAnalyzer(), codeFixProvider, DiagnosticIds.AvoidFastMockVerifyHelperWrappers, diagnosticOccurrence: 1);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using System.Linq.Expressions;
+using static VerifyHelpers;
+using FastMoq;
+using FastMoq.Providers;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T>(this IFastMock<T> fastMock, Expression<Action<T>> expression, TimesSpec? times = null)
+        where T : class
+        => MockingProviderRegistry.Default.Verify(fastMock, expression, times);
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.Verify<IDependency>(x => x.Run(""alpha""), TimesSpec.Once);
+    }
+}
+
+interface IDependency
+{
+    void Run(string value);
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task FastMockVerifyHelperAnalyzer_ShouldReportWithoutCodeFix_WhenTrackedCallSiteUsesBareVerifyWrapper()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+
+static class VerifyHelpers
+{
+    internal static void Verify<T>(this IFastMock<T> fastMock)
+        where T : class
+        => MockingProviderRegistry.Default.Verify(fastMock, _ => _.ToString(), TimesSpec.Once);
+}
+
+class Sample
+{
+    void Execute(Mocker Mocks)
+    {
+        Mocks.GetOrCreateMock<IDependency>().Verify();
+    }
+}
+
+interface IDependency
+{
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new FastMockVerifyHelperAnalyzer());
+            var matchingDiagnostics = diagnostics.Where(item => item.Id == DiagnosticIds.AvoidFastMockVerifyHelperWrappers).OrderBy(item => item.Location.SourceSpan.Start).ToArray();
+            Assert.Equal(2, matchingDiagnostics.Length);
+            Assert.Equal(DiagnosticIds.AvoidFastMockVerifyHelperWrappers, matchingDiagnostics[1].Id);
+
+            var codeFixTitles = await AnalyzerTestHelpers.GetCodeFixTitlesAsync(SOURCE, new FastMockVerifyHelperAnalyzer(), codeFixProvider, DiagnosticIds.AvoidFastMockVerifyHelperWrappers, diagnosticOccurrence: 1);
+            Assert.Empty(codeFixTitles);
+        }
+
+        [Fact]
         public async Task TrackedMockShimAnalyzer_ShouldReport_ForVerificationOnlyPropertyAlias()
         {
             const string SOURCE = @"

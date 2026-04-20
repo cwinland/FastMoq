@@ -58,6 +58,8 @@ Read the repo README first if you are still deciding whether FastMoq is the righ
 
 For the repo-native testing conventions and framework-specific guidance used by this codebase, see the [FastMoq Testing Guide](./testing-guide.md).
 
+When you are deciding whether a test should stay plain, use direct `Mocker` usage, or move into a shared harness or wrapper layer, start with [Choose The Narrowest Harness](./testing-guide.md#choose-the-narrowest-harness) and [Local Wrapper Boundary](./testing-guide.md#local-wrapper-boundary).
+
 If you want examples that run directly in this repository instead of static snippets only, see [Executable Testing Examples](../samples/testing-examples.md).
 
 If you are updating older FastMoq usage from the last public `3.0.0` release, see [Migration Guide: 3.0.0 To The Current v4 Line](../migration/README.md).
@@ -126,7 +128,7 @@ Important package boundaries in the current v4 line:
 - `FastMoq` and `FastMoq.Core` both include the FastMoq analyzer assets by default so most test projects get migration guidance without extra setup
 - `FastMoq.Core` keeps the provider-neutral runtime separate from the shared Azure SDK, EF, Azure Functions, and web helper packages when you consume core directly
 - `FastMoq.Analyzers` remains useful when you want the diagnostics without taking either the aggregate or core runtime package
-- if a core-only test project stays on the legacy Moq-shaped path with `GetMock<T>()`, `VerifyLogger(...)`, `MockModel.Mock`, `SetupSet(...)`, `SetupAllProperties()`, or other Moq-specific compatibility flows, add `FastMoq.Provider.Moq` explicitly, then select `moq` at assembly scope instead of relying on the default `reflection` provider
+- if a core-only test project stays on the legacy Moq-shaped path with `GetMock<T>()`, `VerifyLogger(...)`, `MockModel.Mock`, `SetupSet(...)`, `SetupAllProperties()`, or other Moq-specific compatibility flows, add `FastMoq.Provider.Moq` explicitly for the extension methods and namespaces; a single visible Moq provider can be enough, but select `moq` at assembly scope when the suite should not depend on discovery remaining unambiguous
 - `FastMoq.Core` includes the built-in `reflection` provider and the bundled Moq compatibility runtime, but the Moq tracked-mock extension methods such as `Setup(...)` and `Protected()` still belong to the `FastMoq.Provider.Moq` package
 - provider-package extension methods still follow the provider-package docs and selection rules described in [Provider Selection and Setup](./provider-selection.md)
 - if you are wiring Azure SDK clients, pageable sequences, or token credentials through tests while consuming `FastMoq.Core` directly, add `FastMoq.Azure`
@@ -231,7 +233,7 @@ using Xunit; // Or the test framework of your choice
 
 `FastMoq.Extensions` is the shared core helper namespace. It is optional and includes helpers such as `VerifyLogged(...)`, `AddServiceProvider(...)`, `AddPropertyState(...)`, `AddPropertySetterCapture(...)`, and `CreateHttpClient(...)`.
 
-If you intentionally want Moq-specific tracked `.Setup(...)`, `SetupSequence(...)`, or `Protected()` syntax, add the provider package and register the provider explicitly before copying those examples:
+If you intentionally want Moq-specific tracked `.Setup(...)`, `SetupSequence(...)`, or `Protected()` syntax, add the provider package first. A single visible Moq provider can be enough, but select or register `moq` explicitly before copying those examples when the suite should not depend on discovery remaining unambiguous:
 
 ```bash
 dotnet add package FastMoq.Provider.Moq
