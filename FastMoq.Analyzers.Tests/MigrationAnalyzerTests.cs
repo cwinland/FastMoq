@@ -2999,6 +2999,47 @@ class Sample
         }
 
         [Fact]
+        public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenMultipleAliasesResolveToSameSingleProviderType()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+static class Bootstrap
+{
+    static void Initialize()
+    {
+        MockingProviderRegistry.Register(""legacy-moq"", MoqMockingProvider.Instance);
+        MockingProviderRegistry.Register(""archived-moq"", MoqMockingProvider.Instance);
+    }
+}
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute()
+    {
+        var mocks = new Mocker();
+        var dependency = mocks.GetOrCreateMock<IService>();
+        dependency.AsMoq();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new ProviderBootstrapAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.SelectProviderBeforeProviderSpecificApi);
+        }
+
+        [Fact]
         public async Task ProviderBootstrapAnalyzer_ShouldNotReport_WhenAssemblyDeclaresMoqDefaultProvider()
         {
             const string SOURCE = @"
@@ -3294,6 +3335,39 @@ static class Bootstrap
         MockingProviderRegistry.Register(""moq"", MoqMockingProvider.Instance);
     }
 }
+
+class Sample
+{
+    interface IService
+    {
+        void Run();
+    }
+
+    void Execute(Mocker mocks)
+    {
+        var dependency = mocks.GetMock<IService>();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(
+                SOURCE,
+                includeAzureFunctionsHelpers: false,
+                includeMoqProviderPackage: true,
+                includeNSubstituteProviderPackage: false,
+                new LegacyMoqOnboardingAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.RequireExplicitMoqOnboarding);
+        }
+
+        [Fact]
+        public async Task LegacyMoqOnboardingAnalyzer_ShouldNotReport_WhenMultipleAssemblyAliasesResolveToSameSingleProviderType()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+
+[assembly: FastMoqRegisterProvider(""legacy-moq"", typeof(MoqMockingProvider))]
+[assembly: FastMoqRegisterProvider(""archived-moq"", typeof(MoqMockingProvider))]
 
 class Sample
 {

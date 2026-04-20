@@ -67,6 +67,19 @@ namespace FastMoq.Analyzers
         ProviderSpecific,
     }
 
+    internal readonly struct ProviderRegistrationCandidate
+    {
+        public ProviderRegistrationCandidate(string providerName, ITypeSymbol? providerType)
+        {
+            ProviderName = providerName;
+            ProviderType = providerType;
+        }
+
+        public string ProviderName { get; }
+
+        public ITypeSymbol? ProviderType { get; }
+    }
+
     internal static class FastMoqAnalysisHelpers
     {
         internal const string FastMoqMockerTypeName = "FastMoq.Mocker";
@@ -85,7 +98,9 @@ namespace FastMoq.Analyzers
         internal const string MoqProviderMetadataName = "FastMoq.Providers.MoqProvider.MoqMockingProvider";
         internal const string MoqProviderTypeName = "MoqMockingProvider";
         internal const string MoqProviderName = "moq";
+        internal const string NSubstituteProviderMetadataName = "FastMoq.Providers.NSubstituteProvider.NSubstituteMockingProvider";
         internal const string NSubstituteProviderName = "nsubstitute";
+        internal const string ReflectionProviderMetadataName = "FastMoq.Providers.ReflectionProvider.ReflectionMockingProvider";
         internal const string RegisterProviderSetAsDefaultPropertyName = "SetAsDefault";
         internal const string RegisterProviderSetAsDefaultParameterName = "setAsDefault";
         private const string FASTMOQ_DEFAULT_PROVIDER_ATTRIBUTE = "FastMoq.Providers.FastMoqDefaultProviderAttribute";
@@ -3784,12 +3799,16 @@ namespace FastMoq.Analyzers
 
         public static bool IsProviderSelectedByDefault(Compilation compilation, string providerName, CancellationToken cancellationToken)
         {
-            if (TryGetEffectiveDefaultProviderName(compilation, cancellationToken, out var selectedProviderName))
+            if (TryGetExplicitDefaultProviderName(compilation, cancellationToken, out var selectedProviderName))
             {
-                return string.Equals(selectedProviderName, providerName, StringComparison.OrdinalIgnoreCase);
+                return string.Equals(selectedProviderName, providerName, StringComparison.OrdinalIgnoreCase) ||
+                    (TryResolveRegisteredProviderType(compilation, selectedProviderName, cancellationToken, out var selectedProviderType) &&
+                    IsProviderNameForType(providerName, selectedProviderType));
             }
 
-            return false;
+            return TryGetImplicitDefaultProvider(compilation, cancellationToken, out var implicitProvider) &&
+                (string.Equals(GetCanonicalProviderName(implicitProvider), providerName, StringComparison.OrdinalIgnoreCase) ||
+                IsProviderNameForType(providerName, implicitProvider.ProviderType));
         }
 
         public static bool TryGetEffectiveDefaultProviderName(Compilation compilation, CancellationToken cancellationToken, out string providerName)
@@ -3833,32 +3852,127 @@ namespace FastMoq.Analyzers
 
         public static bool TryGetImplicitDefaultProviderName(Compilation compilation, CancellationToken cancellationToken, out string providerName)
         {
-            var registeredProviders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            foreach (var assemblySymbol in EnumerateVisibleAssemblySymbols(compilation))
+            if (TryGetImplicitDefaultProvider(compilation, cancellationToken, out var implicitProvider))
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                foreach (var registeredProviderName in GetAssemblyRegisteredProviderNames(assemblySymbol))
-                {
-                    registeredProviders.Add(registeredProviderName);
-                }
-            }
-
-            foreach (var sourceRegisteredProviderName in GetSourceRegisteredProviderNames(compilation, requireDefaultSelection: false, cancellationToken))
-            {
-                registeredProviders.Add(sourceRegisteredProviderName);
-            }
-
-            registeredProviders.Remove("reflection");
-            if (registeredProviders.Count == 1)
-            {
-                providerName = registeredProviders.Single();
+                providerName = GetCanonicalProviderName(implicitProvider);
                 return true;
             }
 
             providerName = string.Empty;
             return false;
+        }
+
+        private static bool TryGetImplicitDefaultProvider(Compilation compilation, CancellationToken cancellationToken, out ProviderRegistrationCandidate provider)
+        {
+            var registeredProviders = new List<ProviderRegistrationCandidate>();
+
+            foreach (var registration in GetAllVisibleProviderRegistrations(compilation, cancellationToken))
+            {
+                if (IsReflectionProviderRegistration(registration) ||
+                    registeredProviders.Any(existing => AreEquivalentProviderRegistrations(existing, registration)))
+                {
+                    continue;
+                }
+
+                registeredProviders.Add(registration);
+            }
+
+            if (registeredProviders.Count == 1)
+            {
+                provider = registeredProviders[0];
+                return true;
+            }
+
+            provider = new ProviderRegistrationCandidate(string.Empty, null);
+            return false;
+        }
+
+        private static bool TryResolveRegisteredProviderType(Compilation compilation, string providerName, CancellationToken cancellationToken, out ITypeSymbol? providerType)
+        {
+            providerType = null;
+
+            foreach (var registration in GetAllVisibleProviderRegistrations(compilation, cancellationToken))
+            {
+                if (!string.Equals(registration.ProviderName, providerName, StringComparison.OrdinalIgnoreCase) ||
+                    registration.ProviderType is null)
+                {
+                    continue;
+                }
+
+                if (providerType is null)
+                {
+                    providerType = registration.ProviderType;
+                    continue;
+                }
+
+                if (!SymbolEqualityComparer.Default.Equals(providerType, registration.ProviderType))
+                {
+                    providerType = null;
+                    return false;
+                }
+            }
+
+            return providerType is not null;
+        }
+
+        private static IEnumerable<ProviderRegistrationCandidate> GetAllVisibleProviderRegistrations(Compilation compilation, CancellationToken cancellationToken)
+        {
+            foreach (var assemblySymbol in EnumerateVisibleAssemblySymbols(compilation))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                foreach (var registration in GetAssemblyRegisteredProviders(assemblySymbol))
+                {
+                    yield return registration;
+                }
+            }
+
+            foreach (var registration in GetSourceProviderRegistrations(compilation, cancellationToken))
+            {
+                yield return registration;
+            }
+        }
+
+        private static bool IsReflectionProviderRegistration(ProviderRegistrationCandidate registration)
+        {
+            return IsProviderType(registration.ProviderType, ReflectionProviderMetadataName) ||
+                string.Equals(registration.ProviderName, "reflection", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool AreEquivalentProviderRegistrations(ProviderRegistrationCandidate left, ProviderRegistrationCandidate right)
+        {
+            return string.Equals(left.ProviderName, right.ProviderName, StringComparison.OrdinalIgnoreCase) ||
+                (left.ProviderType is not null &&
+                right.ProviderType is not null &&
+                SymbolEqualityComparer.Default.Equals(left.ProviderType, right.ProviderType));
+        }
+
+        private static string GetCanonicalProviderName(ProviderRegistrationCandidate registration)
+        {
+            if (IsProviderType(registration.ProviderType, MoqProviderMetadataName))
+            {
+                return MoqProviderName;
+            }
+
+            if (IsProviderType(registration.ProviderType, NSubstituteProviderMetadataName))
+            {
+                return NSubstituteProviderName;
+            }
+
+            return registration.ProviderName;
+        }
+
+        private static bool IsProviderNameForType(string providerName, ITypeSymbol? providerType)
+        {
+            return (string.Equals(providerName, MoqProviderName, StringComparison.OrdinalIgnoreCase) &&
+                IsProviderType(providerType, MoqProviderMetadataName)) ||
+                (string.Equals(providerName, NSubstituteProviderName, StringComparison.OrdinalIgnoreCase) &&
+                IsProviderType(providerType, NSubstituteProviderMetadataName));
+        }
+
+        private static bool IsProviderType(ITypeSymbol? providerType, string metadataName)
+        {
+            return string.Equals(providerType?.ToDisplayString(), metadataName, StringComparison.Ordinal);
         }
 
         public static bool HasAssemblyDefaultProvider(IAssemblySymbol assemblySymbol, string providerName)
@@ -3911,11 +4025,19 @@ namespace FastMoq.Analyzers
 
         public static IEnumerable<string> GetAssemblyRegisteredProviderNames(IAssemblySymbol assemblySymbol, bool requireDefaultSelection = false)
         {
+            foreach (var registration in GetAssemblyRegisteredProviders(assemblySymbol, requireDefaultSelection))
+            {
+                yield return registration.ProviderName;
+            }
+        }
+
+        private static IEnumerable<ProviderRegistrationCandidate> GetAssemblyRegisteredProviders(IAssemblySymbol assemblySymbol, bool requireDefaultSelection = false)
+        {
             foreach (var attribute in assemblySymbol.GetAttributes())
             {
-                if (TryGetAssemblyRegisteredProviderName(attribute, requireDefaultSelection, out var declaredProvider))
+                if (TryGetAssemblyRegisteredProvider(attribute, requireDefaultSelection, out var registration))
                 {
-                    yield return declaredProvider;
+                    yield return registration;
                 }
             }
         }
@@ -4053,7 +4175,7 @@ namespace FastMoq.Analyzers
 
         private static bool IsProviderSelectionInvocation(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, string providerName, bool requireDefaultSelection, CancellationToken cancellationToken)
         {
-            if (!TryGetProviderRegistrationInvocation(invocationExpression, semanticModel, cancellationToken, out var registeredProviderName, out var selectsByDefault, out var isScopedSelection))
+            if (!TryGetProviderRegistrationInvocation(invocationExpression, semanticModel, cancellationToken, out var registeredProviderName, out _, out var selectsByDefault, out var isScopedSelection, out _))
             {
                 return false;
             }
@@ -4071,6 +4193,28 @@ namespace FastMoq.Analyzers
             return !requireDefaultSelection || selectsByDefault;
         }
 
+        private static IEnumerable<ProviderRegistrationCandidate> GetSourceProviderRegistrations(Compilation compilation, CancellationToken cancellationToken)
+        {
+            foreach (var syntaxTree in compilation.SyntaxTrees)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var semanticModel = compilation.GetSemanticModel(syntaxTree);
+                var root = syntaxTree.GetRoot(cancellationToken);
+
+                foreach (var invocationExpression in root.DescendantNodes().OfType<InvocationExpressionSyntax>())
+                {
+                    if (!TryGetProviderRegistrationInvocation(invocationExpression, semanticModel, cancellationToken, out var providerName, out var providerType, out _, out var isScopedSelection, out var isRegistration) ||
+                        isScopedSelection ||
+                        !isRegistration)
+                    {
+                        continue;
+                    }
+
+                    yield return new ProviderRegistrationCandidate(providerName, providerType);
+                }
+            }
+        }
+
         private static IEnumerable<string> GetSourceRegisteredProviderNames(Compilation compilation, bool requireDefaultSelection, CancellationToken cancellationToken)
         {
             foreach (var syntaxTree in compilation.SyntaxTrees)
@@ -4081,7 +4225,7 @@ namespace FastMoq.Analyzers
 
                 foreach (var invocationExpression in root.DescendantNodes().OfType<InvocationExpressionSyntax>())
                 {
-                    if (!TryGetProviderRegistrationInvocation(invocationExpression, semanticModel, cancellationToken, out var providerName, out var selectsByDefault, out var isScopedSelection))
+                    if (!TryGetProviderRegistrationInvocation(invocationExpression, semanticModel, cancellationToken, out var providerName, out _, out var selectsByDefault, out var isScopedSelection, out _))
                     {
                         continue;
                     }
@@ -4099,11 +4243,13 @@ namespace FastMoq.Analyzers
             }
         }
 
-        private static bool TryGetProviderRegistrationInvocation(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string providerName, out bool selectsByDefault, out bool isScopedSelection)
+        private static bool TryGetProviderRegistrationInvocation(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string providerName, out ITypeSymbol? providerType, out bool selectsByDefault, out bool isScopedSelection, out bool isRegistration)
         {
             providerName = string.Empty;
+            providerType = null;
             selectsByDefault = false;
             isScopedSelection = false;
+            isRegistration = false;
 
             if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
                 method is null ||
@@ -4138,6 +4284,12 @@ namespace FastMoq.Analyzers
                 return false;
             }
 
+            isRegistration = true;
+            if (invocationExpression.ArgumentList.Arguments.Count > 1)
+            {
+                providerType = semanticModel.GetTypeInfo(invocationExpression.ArgumentList.Arguments[1].Expression, cancellationToken).Type;
+            }
+
             if (TryGetRegisterSetAsDefaultArgument(invocationExpression, semanticModel, cancellationToken, out var setAsDefault))
             {
                 selectsByDefault = setAsDefault;
@@ -4146,9 +4298,9 @@ namespace FastMoq.Analyzers
             return true;
         }
 
-        private static bool TryGetAssemblyRegisteredProviderName(AttributeData attribute, bool requireDefaultSelection, out string providerName)
+        private static bool TryGetAssemblyRegisteredProvider(AttributeData attribute, bool requireDefaultSelection, out ProviderRegistrationCandidate registration)
         {
-            providerName = string.Empty;
+            registration = new ProviderRegistrationCandidate(string.Empty, null);
             if (attribute.AttributeClass?.ToDisplayString() != FASTMOQ_REGISTER_PROVIDER_ATTRIBUTE ||
                 attribute.ConstructorArguments.Length < 2 ||
                 attribute.ConstructorArguments[0].Value is not string declaredProvider ||
@@ -4170,7 +4322,19 @@ namespace FastMoq.Analyzers
                 }
             }
 
-            providerName = declaredProvider;
+            registration = new ProviderRegistrationCandidate(declaredProvider, attribute.ConstructorArguments[1].Value as ITypeSymbol);
+            return true;
+        }
+
+        private static bool TryGetAssemblyRegisteredProviderName(AttributeData attribute, bool requireDefaultSelection, out string providerName)
+        {
+            providerName = string.Empty;
+            if (!TryGetAssemblyRegisteredProvider(attribute, requireDefaultSelection, out var registration))
+            {
+                return false;
+            }
+
+            providerName = registration.ProviderName;
             return true;
         }
 
