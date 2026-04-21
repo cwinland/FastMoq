@@ -356,7 +356,7 @@ namespace FastMoq.Tests
                 capturedException = loggedException;
             });
 
-            var logger = mocker.GetObject<ILogger<NullLogger>>();
+            var logger = mocker.GetRequiredObject<ILogger<NullLogger>>();
             logger.LogError(12, exception, "provider callback");
 
             capturedLevel.Should().Be(LogLevel.Error);
@@ -386,7 +386,7 @@ namespace FastMoq.Tests
                 capturedMessage = message;
             });
 
-            var logger = mocker.GetObject<ILogger<NullLogger>>();
+            var logger = mocker.GetRequiredObject<ILogger<NullLogger>>();
             logger.LogInformation("provider callback info");
 
             capturedLevel.Should().Be(LogLevel.Information);
