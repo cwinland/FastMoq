@@ -63,6 +63,7 @@ Current examples include:
 - `FMOQ0011` for preferring `FastMoq.Web` helpers over hand-rolled `HttpContext`, `ControllerContext`, or `IHttpContextAccessor` registration via `AddType(...)`
 - `FMOQ0012` for preferring `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` over Moq-specific HTTP compatibility helpers when the test only needs request and response behavior, including a code fix for common tracked `HttpMessageHandler` `Protected().Setup("SendAsync", ...)` setups
 - `FMOQ0030` for preferring `AddLoggerFactory(...)` over direct output-helper-backed `AddType<ILoggerFactory>(...)`, `AddType<ILogger>(...)`, and `AddType<ILogger<T>>(...)` registrations when the existing logger wiring only exists to mirror logs into xUnit-style output
+- `FMOQ0036` for preferring `SetupLoggerCallback(...)` over tracked `ILogger.Log<TState>` setup chains when the callback only mirrors normalized log output
 
 Tune guidance severity in `.editorconfig` if a suite wants quieter or stricter defaults:
 
@@ -113,6 +114,7 @@ This is the full public analyzer catalog for the current v4 line. Use it as the 
 | `FMOQ0033` | In `MockerTestBase`-based tests, reuse `GetFileSystem()` instead of creating a fresh `MockFileSystem` for an `IFileSystem` slot |
 | `FMOQ0034` | Inside provider-first `Verify(...)`, replace mechanical `It.*` matchers with `FastArg` equivalents so the assertion stays provider-neutral |
 | `FMOQ0035` | Flag remaining Moq-specific matchers inside provider-first `Verify(...)` when no direct `FastArg` rewrite exists |
+| `FMOQ0036` | Prefer `SetupLoggerCallback(...)` over tracked `ILogger.Log<TState>` setup when the callback only needs normalized message or exception output |
 
 For a successful v4 migration, use this boundary:
 

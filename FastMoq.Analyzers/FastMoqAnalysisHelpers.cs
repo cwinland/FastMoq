@@ -291,6 +291,22 @@ namespace FastMoq.Analyzers
                    namedType.OriginalDefinition.ToDisplayString() == "FastMoq.Providers.IFastMock<T>";
         }
 
+        public static bool IsFastMoqResetMethod(IMethodSymbol method)
+        {
+            method = method.ReducedFrom ?? method;
+            if (method.Name != "Reset" || method.Parameters.Length != 0)
+            {
+                return false;
+            }
+
+            if (method.ContainingType.ToDisplayString() == "FastMoq.Providers.IFastMock")
+            {
+                return true;
+            }
+
+            return method.ContainingType.AllInterfaces.Any(item => item.ToDisplayString() == "FastMoq.Providers.IFastMock");
+        }
+
         public static bool IsFastMoqMockerMethod(IMethodSymbol method, string methodName)
         {
             method = method.ReducedFrom ?? method;
@@ -764,6 +780,22 @@ namespace FastMoq.Analyzers
             var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
             var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
             return symbol is ILocalSymbol or IFieldSymbol or IPropertySymbol or IParameterSymbol;
+
+        }
+
+        private static bool CanReuseTrackedFastMockExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = Unwrap(expression);
+            semanticModel = GetSemanticModelForNode(expression, semanticModel);
+
+            if (!IsFastMoqFastMockType(semanticModel.GetTypeInfo(expression, cancellationToken).Type))
+            {
+                return false;
+            }
+
+            var symbolInfo = semanticModel.GetSymbolInfo(expression, cancellationToken);
+            var symbol = symbolInfo.Symbol ?? symbolInfo.CandidateSymbols.FirstOrDefault();
+            return symbol is ILocalSymbol or IFieldSymbol or IPropertySymbol or IParameterSymbol;
         }
 
         private static bool TryGetRegistryCreateMockServiceType(InvocationExpressionSyntax invocationExpression, IMethodSymbol method, SemanticModel semanticModel, CancellationToken cancellationToken, out ITypeSymbol serviceType)
@@ -858,8 +890,13 @@ namespace FastMoq.Analyzers
             };
         }
 
-        public static string BuildResetReplacement(TrackedMockOrigin origin, SemanticModel semanticModel, int position)
+        public static string BuildResetReplacement(TrackedMockOrigin origin, SemanticModel semanticModel, int position, CancellationToken cancellationToken)
         {
+            if (CanReuseTrackedFastMockExpression(origin.TrackedMockExpression, semanticModel, cancellationToken))
+            {
+                return $"{origin.TrackedMockExpression.WithoutTrivia()}.Reset()";
+            }
+
             var mockerExpression = origin.MockerExpression.WithoutTrivia().ToString();
             var serviceType = GetMinimalTypeName(origin.ServiceType, semanticModel, position);
             return origin.Kind == TrackedMockOriginKind.GetRequiredTrackedMock
@@ -1694,6 +1731,712 @@ namespace FastMoq.Analyzers
 
             replacement = $"{memberAccessExpression.Expression.WithoutTrivia()}.AddLoggerFactory({lineWriterExpression}{replaceArgument})";
             return true;
+        }
+
+        public static bool TryBuildSetupLoggerCallbackReplacement(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out string replacement)
+        {
+            replacement = string.Empty;
+
+            if (!TryGetTrackedLoggerSetupCallbackInvocation(invocationExpression, semanticModel, cancellationToken, out var origin, out var callbackLambda) ||
+                !TryBuildSetupLoggerCallbackLambda(callbackLambda, out var lambdaText))
+            {
+                return false;
+            }
+
+            replacement = $"{origin.MockerExpression.WithoutTrivia()}.SetupLoggerCallback({lambdaText})";
+            return true;
+        }
+
+        private static bool TryGetTrackedLoggerSetupCallbackInvocation(
+            InvocationExpressionSyntax invocationExpression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken,
+            out TrackedMockOrigin origin,
+            out LambdaExpressionSyntax callbackLambda)
+        {
+            origin = default;
+            callbackLambda = null!;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var callbackMethod) ||
+                callbackMethod is null)
+            {
+                return false;
+            }
+
+            callbackMethod = callbackMethod.ReducedFrom ?? callbackMethod;
+            if (callbackMethod.Name != "Callback" ||
+                invocationExpression.Parent is MemberAccessExpressionSyntax ||
+                invocationExpression.Parent is not ExpressionStatementSyntax ||
+                invocationExpression.Expression is not MemberAccessExpressionSyntax callbackAccess ||
+                callbackAccess.Expression is not InvocationExpressionSyntax setupInvocation ||
+                setupInvocation.Expression is not MemberAccessExpressionSyntax setupAccess ||
+                invocationExpression.ArgumentList.Arguments.Count != 1 ||
+                !TryResolveTrackedMockOrigin(setupAccess.Expression, semanticModel, cancellationToken, out origin) ||
+                !IsLoggerRegistrationType(origin.ServiceType) ||
+                !TryGetTrackedLoggerLogSetupInvocation(setupInvocation, semanticModel, cancellationToken, out var logInvocation) ||
+                !IsMatchAllTrackedLoggerSetup(logInvocation, semanticModel, cancellationToken) ||
+                !TryGetSupportedLoggerCallbackLambda(invocationExpression.ArgumentList.Arguments[0].Expression, semanticModel, cancellationToken, out callbackLambda))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryGetTrackedLoggerLogSetupInvocation(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken, out InvocationExpressionSyntax logInvocation)
+        {
+            logInvocation = null!;
+
+            if (!TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.Name is not "Setup" and not "SetupGet" ||
+                invocationExpression.ArgumentList.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            var candidateExpression = Unwrap(invocationExpression.ArgumentList.Arguments[0].Expression);
+            if (candidateExpression is not LambdaExpressionSyntax lambdaExpression ||
+                UnwrapLambdaBody(lambdaExpression) is not InvocationExpressionSyntax candidateLogInvocation ||
+                !TryGetMethodSymbol(candidateLogInvocation, semanticModel, cancellationToken, out var logMethod) ||
+                logMethod is null)
+            {
+                return false;
+            }
+
+            logMethod = logMethod.ReducedFrom ?? logMethod;
+            if (logMethod.Name != "Log" ||
+                candidateLogInvocation.ArgumentList.Arguments.Count != 5 ||
+                !IsMatchingOrImplementingType(logMethod.ContainingType, ILOGGER_TYPE))
+            {
+                return false;
+            }
+
+            logInvocation = candidateLogInvocation;
+            return true;
+        }
+
+        private static SyntaxNode UnwrapLambdaBody(LambdaExpressionSyntax lambdaExpression)
+        {
+            return lambdaExpression.Body is ExpressionSyntax expression
+                ? Unwrap(expression)
+                : lambdaExpression.Body;
+        }
+
+        private static bool IsMatchAllTrackedLoggerSetup(InvocationExpressionSyntax logInvocation, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            var arguments = logInvocation.ArgumentList.Arguments;
+            return arguments.Count == 5 &&
+                IsAnyLogLevelMatcher(arguments[0].Expression, semanticModel, cancellationToken) &&
+                IsAnyEventIdMatcher(arguments[1].Expression, semanticModel, cancellationToken) &&
+                IsAnyLoggerStateMatcher(arguments[2].Expression, semanticModel, cancellationToken) &&
+                IsAnyExceptionMatcher(arguments[3].Expression, semanticModel, cancellationToken) &&
+                IsAnyLoggerFormatterMatcher(arguments[4].Expression, semanticModel, cancellationToken);
+        }
+
+        private static bool IsAnyLogLevelMatcher(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken) =>
+            IsTypedAnyMatcher(expression, "Microsoft.Extensions.Logging.LogLevel", semanticModel, cancellationToken);
+
+        private static bool IsAnyEventIdMatcher(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken) =>
+            IsTypedAnyMatcher(expression, "Microsoft.Extensions.Logging.EventId", semanticModel, cancellationToken);
+
+        private static bool IsAnyExceptionMatcher(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken) =>
+            IsTypedAnyMatcher(expression, "System.Exception", semanticModel, cancellationToken);
+
+        private static bool IsAnyLoggerFormatterMatcher(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = StripCasts(expression);
+
+            return expression is InvocationExpressionSyntax invocationExpression &&
+                TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) &&
+                method is not null &&
+                ((IsMoqItMethod(method) && method.Name == "IsAny" && invocationExpression.ArgumentList.Arguments.Count == 0) ||
+                 (IsFastArgAnyMethod(method) && invocationExpression.ArgumentList.Arguments.Count == 0));
+        }
+
+        private static bool IsAnyLoggerStateMatcher(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = StripCasts(expression);
+            if (expression is not InvocationExpressionSyntax invocationExpression ||
+                !TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (!IsMoqItMethod(method) || method.TypeArguments.Length != 1 || method.TypeArguments[0].Name != "IsAnyType")
+            {
+                return false;
+            }
+
+            if (method.Name == "IsAny")
+            {
+                return invocationExpression.ArgumentList.Arguments.Count == 0;
+            }
+
+            if (method.Name != "Is" || invocationExpression.ArgumentList.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            return invocationExpression.ArgumentList.Arguments[0].Expression is LambdaExpressionSyntax lambdaExpression &&
+                IsTrivialTrueLambda(lambdaExpression);
+        }
+
+        private static bool IsTypedAnyMatcher(ExpressionSyntax expression, string expectedTypeName, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            expression = StripCasts(expression);
+            if (expression is not InvocationExpressionSyntax invocationExpression ||
+                !TryGetMethodSymbol(invocationExpression, semanticModel, cancellationToken, out var method) ||
+                method is null)
+            {
+                return false;
+            }
+
+            method = method.ReducedFrom ?? method;
+            if (method.TypeArguments.Length != 1 ||
+                !IsTypeNameMatch(method.TypeArguments[0], expectedTypeName) ||
+                invocationExpression.ArgumentList.Arguments.Count != 0)
+            {
+                return false;
+            }
+
+            return (IsMoqItMethod(method) && method.Name == "IsAny") || IsFastArgAnyMethod(method);
+        }
+
+        private static bool IsTypeNameMatch(ITypeSymbol typeSymbol, string expectedTypeName)
+        {
+            var actualTypeName = typeSymbol.ToDisplayString();
+            return actualTypeName == expectedTypeName || actualTypeName == expectedTypeName + "?";
+        }
+
+        private static ExpressionSyntax StripCasts(ExpressionSyntax expression)
+        {
+            expression = Unwrap(expression);
+            while (expression is CastExpressionSyntax castExpression)
+            {
+                expression = Unwrap(castExpression.Expression);
+            }
+
+            return expression;
+        }
+
+        private static bool IsFastArgAnyMethod(IMethodSymbol method)
+        {
+            method = method.ReducedFrom ?? method;
+            return method.Name == "Any" && method.ContainingType.ToDisplayString() == "FastMoq.Providers.FastArg";
+        }
+
+        private static bool IsTrivialTrueLambda(LambdaExpressionSyntax lambdaExpression)
+        {
+            var bodyExpression = lambdaExpression.Body as ExpressionSyntax;
+            if (bodyExpression is null)
+            {
+                return false;
+            }
+
+            return Unwrap(bodyExpression).IsKind(SyntaxKind.TrueLiteralExpression);
+        }
+
+        private static bool TryGetSupportedLoggerCallbackLambda(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out LambdaExpressionSyntax lambdaExpression)
+        {
+            lambdaExpression = null!;
+            expression = Unwrap(expression);
+
+            if (TryGetDirectLoggerCallbackLambda(expression, out lambdaExpression))
+            {
+                return true;
+            }
+
+            if (expression is not ObjectCreationExpressionSyntax objectCreationExpression ||
+                objectCreationExpression.ArgumentList?.Arguments.Count != 1)
+            {
+                return false;
+            }
+
+            var createdType = semanticModel.GetTypeInfo(objectCreationExpression, cancellationToken).Type;
+            if (createdType is not null &&
+                (createdType.Name != "InvocationAction" ||
+                 createdType.ContainingNamespace.ToDisplayString() != "Moq"))
+            {
+                return false;
+            }
+
+            var candidateLambda = Unwrap(objectCreationExpression.ArgumentList.Arguments[0].Expression);
+            if (!TryGetDirectLoggerCallbackLambda(candidateLambda, out lambdaExpression))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool TryGetDirectLoggerCallbackLambda(ExpressionSyntax expression, out LambdaExpressionSyntax lambdaExpression)
+        {
+            if (expression is LambdaExpressionSyntax directLambda)
+            {
+                var parameterCount = GetLambdaParameterCount(directLambda);
+                if (parameterCount is 1 or 4 or 5)
+                {
+                    lambdaExpression = directLambda;
+                    return true;
+                }
+            }
+
+            lambdaExpression = null!;
+            return false;
+        }
+
+        private static int GetLambdaParameterCount(LambdaExpressionSyntax lambdaExpression)
+        {
+            return lambdaExpression switch
+            {
+                SimpleLambdaExpressionSyntax => 1,
+                ParenthesizedLambdaExpressionSyntax parenthesizedLambda => parenthesizedLambda.ParameterList.Parameters.Count,
+                _ => 0,
+            };
+        }
+
+        private static bool TryBuildSetupLoggerCallbackLambda(LambdaExpressionSyntax callbackLambda, out string lambdaText)
+        {
+            lambdaText = string.Empty;
+
+            var parameterCount = GetLambdaParameterCount(callbackLambda);
+            if (parameterCount == 1)
+            {
+                return TryBuildInvocationActionLoggerCallbackLambda(callbackLambda, out lambdaText);
+            }
+
+            if (parameterCount is 4 or 5)
+            {
+                return TryBuildTypedLoggerCallbackLambda(callbackLambda, parameterCount, out lambdaText);
+            }
+
+            return false;
+        }
+
+        private static bool TryBuildInvocationActionLoggerCallbackLambda(LambdaExpressionSyntax callbackLambda, out string lambdaText)
+        {
+            lambdaText = string.Empty;
+
+            var callbackParameterName = callbackLambda switch
+            {
+                SimpleLambdaExpressionSyntax simpleLambda => simpleLambda.Parameter.Identifier.ValueText,
+                ParenthesizedLambdaExpressionSyntax parenthesizedLambda when parenthesizedLambda.ParameterList.Parameters.Count == 1 => parenthesizedLambda.ParameterList.Parameters[0].Identifier.ValueText,
+                _ => string.Empty,
+            };
+
+            if (string.IsNullOrEmpty(callbackParameterName))
+            {
+                return false;
+            }
+
+            var usedIdentifiers = new HashSet<string>(callbackLambda.Body.DescendantTokens().Where(token => token.IsKind(SyntaxKind.IdentifierToken)).Select(token => token.ValueText), StringComparer.Ordinal);
+            var logLevelName = CreateUniqueIdentifier("capturedLogLevel", usedIdentifiers);
+            var eventIdName = CreateUniqueIdentifier("capturedEventId", usedIdentifiers);
+            var messageName = CreateUniqueIdentifier("capturedMessage", usedIdentifiers);
+            var exceptionName = CreateUniqueIdentifier("capturedException", usedIdentifiers);
+
+            var rewriter = new InvocationActionLoggerCallbackRewriter(callbackParameterName, logLevelName, eventIdName, messageName, exceptionName);
+            var rewrittenBody = rewriter.Visit(callbackLambda.Body);
+            if (rewrittenBody is null || rewriter.HasUnsupportedReferences)
+            {
+                return false;
+            }
+
+            lambdaText = $"({logLevelName}, {eventIdName}, {messageName}, {exceptionName}) => {rewrittenBody}";
+            return true;
+        }
+
+        private static bool TryBuildTypedLoggerCallbackLambda(LambdaExpressionSyntax callbackLambda, int parameterCount, out string lambdaText)
+        {
+            lambdaText = string.Empty;
+            if (!TryGetLambdaParameterNames(callbackLambda, out var parameterNames) || parameterNames.Count != parameterCount)
+            {
+                return false;
+            }
+
+            var usedIdentifiers = new HashSet<string>(callbackLambda.Body.DescendantTokens().Where(token => token.IsKind(SyntaxKind.IdentifierToken)).Select(token => token.ValueText), StringComparer.Ordinal);
+            var logLevelName = CreateUniqueIdentifier("capturedLogLevel", usedIdentifiers);
+            var eventIdName = CreateUniqueIdentifier("capturedEventId", usedIdentifiers);
+            var messageName = CreateUniqueIdentifier("capturedMessage", usedIdentifiers);
+            var exceptionName = CreateUniqueIdentifier("capturedException", usedIdentifiers);
+
+            var rewriter = new TypedLoggerCallbackRewriter(
+                parameterNames[0],
+                parameterNames[1],
+                parameterNames[2],
+                parameterNames[3],
+                parameterCount == 5 ? parameterNames[4] : string.Empty,
+                logLevelName,
+                eventIdName,
+                messageName,
+                exceptionName);
+            var rewrittenBody = rewriter.Visit(callbackLambda.Body);
+            if (rewrittenBody is null || rewriter.HasUnsupportedReferences)
+            {
+                return false;
+            }
+
+            lambdaText = $"({logLevelName}, {eventIdName}, {messageName}, {exceptionName}) => {rewrittenBody}";
+            return true;
+        }
+
+        private static bool TryGetLambdaParameterNames(LambdaExpressionSyntax lambdaExpression, out IReadOnlyList<string> parameterNames)
+        {
+            switch (lambdaExpression)
+            {
+                case SimpleLambdaExpressionSyntax simpleLambda:
+                    parameterNames = [simpleLambda.Parameter.Identifier.ValueText];
+                    return !string.IsNullOrEmpty(parameterNames[0]);
+
+                case ParenthesizedLambdaExpressionSyntax parenthesizedLambda:
+                    var names = parenthesizedLambda.ParameterList.Parameters.Select(parameter => parameter.Identifier.ValueText).ToArray();
+                    if (names.Any(string.IsNullOrEmpty))
+                    {
+                        parameterNames = Array.Empty<string>();
+                        return false;
+                    }
+
+                    parameterNames = names;
+                    return true;
+
+                default:
+                    parameterNames = Array.Empty<string>();
+                    return false;
+            }
+        }
+
+        private static string CreateUniqueIdentifier(string baseName, ISet<string> usedIdentifiers)
+        {
+            var candidate = baseName;
+            var suffix = 1;
+            while (usedIdentifiers.Contains(candidate))
+            {
+                candidate = baseName + suffix.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                suffix++;
+            }
+
+            usedIdentifiers.Add(candidate);
+            return candidate;
+        }
+
+        private sealed class InvocationActionLoggerCallbackRewriter : CSharpSyntaxRewriter
+        {
+            private readonly string callbackParameterName;
+            private readonly string logLevelName;
+            private readonly string eventIdName;
+            private readonly string messageName;
+            private readonly string exceptionName;
+
+            public InvocationActionLoggerCallbackRewriter(string callbackParameterName, string logLevelName, string eventIdName, string messageName, string exceptionName)
+            {
+                this.callbackParameterName = callbackParameterName;
+                this.logLevelName = logLevelName;
+                this.eventIdName = eventIdName;
+                this.messageName = messageName;
+                this.exceptionName = exceptionName;
+            }
+
+            public bool HasUnsupportedReferences { get; private set; }
+
+            public override SyntaxNode? VisitCastExpression(CastExpressionSyntax node)
+            {
+                if (TryGetInvocationArgumentIndex(node.Expression, out var argumentIndex))
+                {
+                    switch (argumentIndex)
+                    {
+                        case 0:
+                            return Identifier(logLevelName, node);
+                        case 1:
+                            return Identifier(eventIdName, node);
+                        case 3:
+                            return Identifier(exceptionName, node);
+                    }
+                }
+
+                return base.VisitCastExpression(node);
+            }
+
+            public override SyntaxNode? VisitBinaryExpression(BinaryExpressionSyntax node)
+            {
+                if (node.IsKind(SyntaxKind.AsExpression) &&
+                    TryGetInvocationArgumentIndex(node.Left, out var argumentIndex) &&
+                    argumentIndex == 3)
+                {
+                    return Identifier(exceptionName, node);
+                }
+
+                return base.VisitBinaryExpression(node);
+            }
+
+            public override SyntaxNode? VisitInvocationExpression(InvocationExpressionSyntax node)
+            {
+                if (node.Expression is MemberAccessExpressionSyntax memberAccess &&
+                    memberAccess.Name.Identifier.ValueText == nameof(ToString) &&
+                    TryGetInvocationArgumentIndex(memberAccess.Expression, out var argumentIndex) &&
+                    argumentIndex == 2 &&
+                    node.ArgumentList.Arguments.Count == 0)
+                {
+                    return Identifier(messageName, node);
+                }
+
+                return base.VisitInvocationExpression(node);
+            }
+
+            public override SyntaxNode? VisitConditionalAccessExpression(ConditionalAccessExpressionSyntax node)
+            {
+                if (TryGetInvocationArgumentIndex(node.Expression, out var argumentIndex) &&
+                    argumentIndex == 2 &&
+                    node.WhenNotNull is InvocationExpressionSyntax invocationExpression &&
+                    invocationExpression.Expression is MemberBindingExpressionSyntax memberBinding &&
+                    memberBinding.Name.Identifier.ValueText == nameof(ToString) &&
+                    invocationExpression.ArgumentList.Arguments.Count == 0)
+                {
+                    return Identifier(messageName, node);
+                }
+
+                return base.VisitConditionalAccessExpression(node);
+            }
+
+            public override SyntaxNode? VisitElementAccessExpression(ElementAccessExpressionSyntax node)
+            {
+                if (TryGetInvocationArgumentIndex(node, out var argumentIndex))
+                {
+                    switch (argumentIndex)
+                    {
+                        case 0:
+                            return Identifier(logLevelName, node);
+                        case 1:
+                            return Identifier(eventIdName, node);
+                        case 3:
+                            return Identifier(exceptionName, node);
+                        case 2:
+                            HasUnsupportedReferences = true;
+                            return node;
+                    }
+                }
+
+                return base.VisitElementAccessExpression(node);
+            }
+
+            public override SyntaxNode? VisitIdentifierName(IdentifierNameSyntax node)
+            {
+                if (node.Identifier.ValueText == callbackParameterName)
+                {
+                    HasUnsupportedReferences = true;
+                }
+
+                return base.VisitIdentifierName(node);
+            }
+
+            private bool TryGetInvocationArgumentIndex(ExpressionSyntax expression, out int argumentIndex)
+            {
+                expression = StripCasts(expression);
+                if (expression is not ElementAccessExpressionSyntax elementAccessExpression ||
+                    elementAccessExpression.ArgumentList.Arguments.Count != 1 ||
+                    elementAccessExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression ||
+                    memberAccessExpression.Name.Identifier.ValueText != "Arguments" ||
+                    Unwrap(memberAccessExpression.Expression) is not IdentifierNameSyntax identifierName ||
+                    identifierName.Identifier.ValueText != callbackParameterName ||
+                    !TryGetIntegerLiteral(elementAccessExpression.ArgumentList.Arguments[0].Expression, out argumentIndex))
+                {
+                    argumentIndex = -1;
+                    return false;
+                }
+
+                return true;
+            }
+
+            private static bool TryGetIntegerLiteral(ExpressionSyntax expression, out int value)
+            {
+                expression = Unwrap(expression);
+                if (expression is LiteralExpressionSyntax literalExpression &&
+                    literalExpression.IsKind(SyntaxKind.NumericLiteralExpression) &&
+                    literalExpression.Token.Value is int intValue)
+                {
+                    value = intValue;
+                    return true;
+                }
+
+                value = 0;
+                return false;
+            }
+
+            private static IdentifierNameSyntax Identifier(string identifierName, SyntaxNode source)
+            {
+                return SyntaxFactory.IdentifierName(identifierName).WithTriviaFrom(source);
+            }
+        }
+
+        private sealed class TypedLoggerCallbackRewriter : CSharpSyntaxRewriter
+        {
+            private readonly string logLevelParameterName;
+            private readonly string eventIdParameterName;
+            private readonly string stateParameterName;
+            private readonly string exceptionParameterName;
+            private readonly string formatterParameterName;
+            private readonly string logLevelName;
+            private readonly string eventIdName;
+            private readonly string messageName;
+            private readonly string exceptionName;
+
+            public TypedLoggerCallbackRewriter(
+                string logLevelParameterName,
+                string eventIdParameterName,
+                string stateParameterName,
+                string exceptionParameterName,
+                string formatterParameterName,
+                string logLevelName,
+                string eventIdName,
+                string messageName,
+                string exceptionName)
+            {
+                this.logLevelParameterName = logLevelParameterName;
+                this.eventIdParameterName = eventIdParameterName;
+                this.stateParameterName = stateParameterName;
+                this.exceptionParameterName = exceptionParameterName;
+                this.formatterParameterName = formatterParameterName;
+                this.logLevelName = logLevelName;
+                this.eventIdName = eventIdName;
+                this.messageName = messageName;
+                this.exceptionName = exceptionName;
+            }
+
+            public bool HasUnsupportedReferences { get; private set; }
+
+            public override SyntaxNode? VisitInvocationExpression(InvocationExpressionSyntax node)
+            {
+                if (IsStateToStringInvocation(node) || IsFormatterMessageInvocation(node))
+                {
+                    return Identifier(messageName, node);
+                }
+
+                if (node.Expression is MemberAccessExpressionSyntax memberAccess &&
+                    memberAccess.Name.Identifier.ValueText == nameof(ToString) &&
+                    (IsStateParameterReference(memberAccess.Expression) || IsFormatterMessageInvocation(memberAccess.Expression)) &&
+                    node.ArgumentList.Arguments.Count == 0)
+                {
+                    return Identifier(messageName, node);
+                }
+
+                return base.VisitInvocationExpression(node);
+            }
+
+            public override SyntaxNode? VisitConditionalAccessExpression(ConditionalAccessExpressionSyntax node)
+            {
+                if (IsStateToStringConditionalAccess(node) || IsFormatterMessageConditionalAccess(node))
+                {
+                    return Identifier(messageName, node);
+                }
+
+                return base.VisitConditionalAccessExpression(node);
+            }
+
+            public override SyntaxNode? VisitIdentifierName(IdentifierNameSyntax node)
+            {
+                var identifierName = node.Identifier.ValueText;
+                if (identifierName == logLevelParameterName)
+                {
+                    return Identifier(logLevelName, node);
+                }
+
+                if (identifierName == eventIdParameterName)
+                {
+                    return Identifier(eventIdName, node);
+                }
+
+                if (identifierName == exceptionParameterName)
+                {
+                    return Identifier(exceptionName, node);
+                }
+
+                if (identifierName == stateParameterName || (!string.IsNullOrEmpty(formatterParameterName) && identifierName == formatterParameterName))
+                {
+                    HasUnsupportedReferences = true;
+                }
+
+                return base.VisitIdentifierName(node);
+            }
+
+            private bool IsStateToStringInvocation(InvocationExpressionSyntax node)
+            {
+                return node.Expression is MemberAccessExpressionSyntax memberAccess &&
+                    memberAccess.Name.Identifier.ValueText == nameof(ToString) &&
+                    IsStateParameterReference(memberAccess.Expression) &&
+                    node.ArgumentList.Arguments.Count == 0;
+            }
+
+            private bool IsStateToStringConditionalAccess(ConditionalAccessExpressionSyntax node)
+            {
+                return IsStateParameterReference(node.Expression) &&
+                    node.WhenNotNull is InvocationExpressionSyntax invocationExpression &&
+                    invocationExpression.Expression is MemberBindingExpressionSyntax memberBinding &&
+                    memberBinding.Name.Identifier.ValueText == nameof(ToString) &&
+                    invocationExpression.ArgumentList.Arguments.Count == 0;
+            }
+
+            private bool IsFormatterMessageInvocation(ExpressionSyntax expression)
+            {
+                if (string.IsNullOrEmpty(formatterParameterName))
+                {
+                    return false;
+                }
+
+                expression = StripCasts(expression);
+                if (expression is not InvocationExpressionSyntax invocationExpression || invocationExpression.ArgumentList.Arguments.Count != 2)
+                {
+                    return false;
+                }
+
+                if (!IsStateParameterReference(invocationExpression.ArgumentList.Arguments[0].Expression) ||
+                    !IsExceptionParameterReference(invocationExpression.ArgumentList.Arguments[1].Expression))
+                {
+                    return false;
+                }
+
+                if (invocationExpression.Expression is IdentifierNameSyntax identifierName)
+                {
+                    return identifierName.Identifier.ValueText == formatterParameterName;
+                }
+
+                return invocationExpression.Expression is MemberAccessExpressionSyntax memberAccess &&
+                    memberAccess.Name.Identifier.ValueText == nameof(Delegate.DynamicInvoke) &&
+                    memberAccess.Expression is IdentifierNameSyntax formatterIdentifier &&
+                    formatterIdentifier.Identifier.ValueText == formatterParameterName;
+            }
+
+            private bool IsFormatterMessageConditionalAccess(ConditionalAccessExpressionSyntax node)
+            {
+                return IsFormatterMessageInvocation(node.Expression) &&
+                    node.WhenNotNull is InvocationExpressionSyntax invocationExpression &&
+                    invocationExpression.Expression is MemberBindingExpressionSyntax memberBinding &&
+                    memberBinding.Name.Identifier.ValueText == nameof(ToString) &&
+                    invocationExpression.ArgumentList.Arguments.Count == 0;
+            }
+
+            private bool IsStateParameterReference(ExpressionSyntax expression)
+            {
+                expression = StripCasts(expression);
+                return expression is IdentifierNameSyntax identifierName && identifierName.Identifier.ValueText == stateParameterName;
+            }
+
+            private bool IsExceptionParameterReference(ExpressionSyntax expression)
+            {
+                expression = StripCasts(expression);
+                return expression is IdentifierNameSyntax identifierName && identifierName.Identifier.ValueText == exceptionParameterName;
+            }
+
+            private IdentifierNameSyntax Identifier(string identifierName, SyntaxNode source)
+            {
+                return SyntaxFactory.IdentifierName(identifierName).WithTriviaFrom(source);
+            }
         }
 
         private static bool TryGetLoggerFactoryHelperInvocation(

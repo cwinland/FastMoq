@@ -25,12 +25,19 @@ namespace FastMoq.Analyzers.Analyzers
                 return;
             }
 
+            if (FastMoqAnalysisHelpers.TryGetMethodSymbol(invocationExpression, context.SemanticModel, context.CancellationToken, out var method) &&
+                method is not null &&
+                FastMoqAnalysisHelpers.IsFastMoqResetMethod(method))
+            {
+                return;
+            }
+
             if (!FastMoqAnalysisHelpers.TryResolveTrackedMockOrigin(memberAccess.Expression, context.SemanticModel, context.CancellationToken, out var origin))
             {
                 return;
             }
 
-            var replacement = FastMoqAnalysisHelpers.BuildResetReplacement(origin, context.SemanticModel, invocationExpression.SpanStart);
+            var replacement = FastMoqAnalysisHelpers.BuildResetReplacement(origin, context.SemanticModel, invocationExpression.SpanStart, context.CancellationToken);
             context.ReportDiagnostic(Diagnostic.Create(
                 DiagnosticDescriptors.UseProviderFirstReset,
                 memberAccess.Name.GetLocation(),

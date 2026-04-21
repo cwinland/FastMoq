@@ -123,6 +123,15 @@ namespace FastMoq.Analyzers
             isEnabledByDefault: true,
             description: "Prefer AddLoggerFactory(...) over direct AddType<ILoggerFactory>(new ...output-helper...), AddType<ILogger>(new ...output-helper...), or AddType<ILogger<T>>(new ...output-helper...) registrations when the logger registration only mirrors logs into xUnit-style output helpers.");
 
+        public static readonly DiagnosticDescriptor PreferSetupLoggerCallbackHelper = new(
+            DiagnosticIds.PreferSetupLoggerCallbackHelper,
+            "Prefer SetupLoggerCallback for normalized logger mirroring",
+            "Use '{0}' instead of provider-specific ILogger.Log<TState> setup when the callback only needs normalized log output",
+            Category,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description: "Prefer Mocker.SetupLoggerCallback(...) over tracked ILogger.Log<TState> Setup(...).Callback(...) chains when the callback only consumes log level, event id, formatted message text, or exception data. Keep the Moq compatibility path when the test needs raw structured logger state.");
+
         public static readonly DiagnosticDescriptor PreferPropertySetterCaptureHelper = new(
             DiagnosticIds.PreferPropertySetterCaptureHelper,
             "Prefer provider-neutral property setter capture",
