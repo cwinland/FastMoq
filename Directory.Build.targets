@@ -1,9 +1,9 @@
 <Project>
   <PropertyGroup Condition="'$(IsPackable)' == 'true'">
-    <Authors>Microsoft</Authors>
-    <Company>Microsoft</Company>
-    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
-    <PackageCopyright>© Microsoft Corporation. All rights reserved.</PackageCopyright>
+    <Authors>Christopher Winland</Authors>
+    <Company>FastMoq</Company>
+    <Copyright>© Christopher Winland. All rights reserved.</Copyright>
+    <PackageCopyright>© Christopher Winland. All rights reserved.</PackageCopyright>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageProjectUrl>https://github.com/cwinland/FastMoq</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cwinland/FastMoq</RepositoryUrl>
