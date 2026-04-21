@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup Condition="'$(IsPackable)' == 'true'">
-    <Authors>Winland, $(AssemblyName)</Authors>
+    <Authors>cwinland, chrislw</Authors>
     <Company>$(Authors)</Company>
     <Copyright>© 2021–2026 Christopher Winland</Copyright>
     <PackageCopyright>© 2021–2026 Christopher Winland</PackageCopyright>
