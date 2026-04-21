@@ -1766,6 +1766,7 @@ namespace FastMoq.Analyzers
             callbackMethod = callbackMethod.ReducedFrom ?? callbackMethod;
             if (callbackMethod.Name != "Callback" ||
                 invocationExpression.Parent is MemberAccessExpressionSyntax ||
+                invocationExpression.Parent is not ExpressionStatementSyntax ||
                 invocationExpression.Expression is not MemberAccessExpressionSyntax callbackAccess ||
                 callbackAccess.Expression is not InvocationExpressionSyntax setupInvocation ||
                 setupInvocation.Expression is not MemberAccessExpressionSyntax setupAccess ||

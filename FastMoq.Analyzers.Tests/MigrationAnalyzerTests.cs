@@ -2691,6 +2691,72 @@ class Sample
         }
 
         [Fact]
+        public async Task LoggerSetupCallbackAnalyzer_ShouldNotReport_WhenCallbackResultIsAssigned()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Microsoft.Extensions.Logging;
+using Moq;
+
+class Sample
+{
+    object Execute(Mocker mocks, Xunit.ITestOutputHelper output)
+    {
+        var setup = mocks.GetOrCreateMock<ILogger>()
+            .Setup(x => x.Log(
+                It.IsAny<LogLevel>(),
+                It.IsAny<EventId>(),
+                It.IsAny<It.IsAnyType>(),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()))
+            .Callback(new InvocationAction(invocation =>
+            {
+                output.WriteLine(invocation.Arguments[2]?.ToString() ?? string.Empty);
+            }));
+
+        return setup;
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerSetupCallbackAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferSetupLoggerCallbackHelper);
+        }
+
+        [Fact]
+        public async Task LoggerSetupCallbackAnalyzer_ShouldNotReport_WhenCallbackResultIsReturned()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Microsoft.Extensions.Logging;
+using Moq;
+
+class Sample
+{
+    object Execute(Mocker mocks, Xunit.ITestOutputHelper output)
+    {
+        return mocks.GetOrCreateMock<ILogger>()
+            .Setup(x => x.Log(
+                It.IsAny<LogLevel>(),
+                It.IsAny<EventId>(),
+                It.IsAny<It.IsAnyType>(),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()))
+            .Callback(new InvocationAction(invocation =>
+            {
+                output.WriteLine(invocation.Arguments[2]?.ToString() ?? string.Empty);
+            }));
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerSetupCallbackAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferSetupLoggerCallbackHelper);
+        }
+
+        [Fact]
         public async Task LoggerSetupCallbackAnalyzer_ShouldReportAndFix_NullableExceptionMatcher()
         {
             const string SOURCE = @"
