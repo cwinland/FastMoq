@@ -1646,9 +1646,9 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         // Setup logging callback to capture scope information
         var logEntries = new List<(LogLevel Level, string Message, object[] Args)>();
         
-        Mocks.SetupLoggerCallback((level, eventId, message) =>
+        Mocks.SetupLoggerCallback((level, _, message) =>
         {
-            logEntries.Add((level, message, new object[0]));
+            logEntries.Add((level, message, Array.Empty<object>()));
         });
 
         // Act

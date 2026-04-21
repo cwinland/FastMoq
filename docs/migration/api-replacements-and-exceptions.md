@@ -263,7 +263,7 @@ Mocks.GetOrCreateMock<ILogger>()
 Current guidance:
 
 ```csharp
-Mocks.SetupLoggerCallback((logLevel, eventId, message, exception) =>
+Mocks.SetupLoggerCallback((_, _, message, _) =>
 {
     output.WriteLine(message);
 });

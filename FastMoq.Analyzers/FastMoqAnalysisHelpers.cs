@@ -1773,7 +1773,7 @@ namespace FastMoq.Analyzers
                 !IsLoggerRegistrationType(origin.ServiceType) ||
                 !TryGetTrackedLoggerLogSetupInvocation(setupInvocation, semanticModel, cancellationToken, out var logInvocation) ||
                 !IsMatchAllTrackedLoggerSetup(logInvocation, semanticModel, cancellationToken) ||
-                !TryGetInvocationActionLambda(invocationExpression.ArgumentList.Arguments[0].Expression, semanticModel, cancellationToken, out callbackLambda))
+                !TryGetSupportedLoggerCallbackLambda(invocationExpression.ArgumentList.Arguments[0].Expression, semanticModel, cancellationToken, out callbackLambda))
             {
                 return false;
             }
@@ -1899,13 +1899,19 @@ namespace FastMoq.Analyzers
 
             method = method.ReducedFrom ?? method;
             if (method.TypeArguments.Length != 1 ||
-                method.TypeArguments[0].ToDisplayString() != expectedTypeName ||
+                !IsTypeNameMatch(method.TypeArguments[0], expectedTypeName) ||
                 invocationExpression.ArgumentList.Arguments.Count != 0)
             {
                 return false;
             }
 
             return (IsMoqItMethod(method) && method.Name == "IsAny") || IsFastArgAnyMethod(method);
+        }
+
+        private static bool IsTypeNameMatch(ITypeSymbol typeSymbol, string expectedTypeName)
+        {
+            var actualTypeName = typeSymbol.ToDisplayString();
+            return actualTypeName == expectedTypeName || actualTypeName == expectedTypeName + "?";
         }
 
         private static ExpressionSyntax StripCasts(ExpressionSyntax expression)
@@ -1936,15 +1942,13 @@ namespace FastMoq.Analyzers
             return Unwrap(bodyExpression).IsKind(SyntaxKind.TrueLiteralExpression);
         }
 
-        private static bool TryGetInvocationActionLambda(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out LambdaExpressionSyntax lambdaExpression)
+        private static bool TryGetSupportedLoggerCallbackLambda(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken, out LambdaExpressionSyntax lambdaExpression)
         {
             lambdaExpression = null!;
             expression = Unwrap(expression);
 
-            if (expression is LambdaExpressionSyntax directLambda &&
-                GetLambdaParameterCount(directLambda) == 1)
+            if (TryGetDirectLoggerCallbackLambda(expression, out lambdaExpression))
             {
-                lambdaExpression = directLambda;
                 return true;
             }
 
@@ -1963,14 +1967,28 @@ namespace FastMoq.Analyzers
             }
 
             var candidateLambda = Unwrap(objectCreationExpression.ArgumentList.Arguments[0].Expression);
-            if (candidateLambda is not LambdaExpressionSyntax resolvedLambda ||
-                GetLambdaParameterCount(resolvedLambda) != 1)
+            if (!TryGetDirectLoggerCallbackLambda(candidateLambda, out lambdaExpression))
             {
                 return false;
             }
 
-            lambdaExpression = resolvedLambda;
             return true;
+        }
+
+        private static bool TryGetDirectLoggerCallbackLambda(ExpressionSyntax expression, out LambdaExpressionSyntax lambdaExpression)
+        {
+            if (expression is LambdaExpressionSyntax directLambda)
+            {
+                var parameterCount = GetLambdaParameterCount(directLambda);
+                if (parameterCount is 1 or 4 or 5)
+                {
+                    lambdaExpression = directLambda;
+                    return true;
+                }
+            }
+
+            lambdaExpression = null!;
+            return false;
         }
 
         private static int GetLambdaParameterCount(LambdaExpressionSyntax lambdaExpression)
@@ -1984,6 +2002,24 @@ namespace FastMoq.Analyzers
         }
 
         private static bool TryBuildSetupLoggerCallbackLambda(LambdaExpressionSyntax callbackLambda, out string lambdaText)
+        {
+            lambdaText = string.Empty;
+
+            var parameterCount = GetLambdaParameterCount(callbackLambda);
+            if (parameterCount == 1)
+            {
+                return TryBuildInvocationActionLoggerCallbackLambda(callbackLambda, out lambdaText);
+            }
+
+            if (parameterCount is 4 or 5)
+            {
+                return TryBuildTypedLoggerCallbackLambda(callbackLambda, parameterCount, out lambdaText);
+            }
+
+            return false;
+        }
+
+        private static bool TryBuildInvocationActionLoggerCallbackLambda(LambdaExpressionSyntax callbackLambda, out string lambdaText)
         {
             lambdaText = string.Empty;
 
@@ -2014,6 +2050,65 @@ namespace FastMoq.Analyzers
 
             lambdaText = $"({logLevelName}, {eventIdName}, {messageName}, {exceptionName}) => {rewrittenBody}";
             return true;
+        }
+
+        private static bool TryBuildTypedLoggerCallbackLambda(LambdaExpressionSyntax callbackLambda, int parameterCount, out string lambdaText)
+        {
+            lambdaText = string.Empty;
+            if (!TryGetLambdaParameterNames(callbackLambda, out var parameterNames) || parameterNames.Count != parameterCount)
+            {
+                return false;
+            }
+
+            var usedIdentifiers = new HashSet<string>(callbackLambda.Body.DescendantTokens().Where(token => token.IsKind(SyntaxKind.IdentifierToken)).Select(token => token.ValueText), StringComparer.Ordinal);
+            var logLevelName = CreateUniqueIdentifier("capturedLogLevel", usedIdentifiers);
+            var eventIdName = CreateUniqueIdentifier("capturedEventId", usedIdentifiers);
+            var messageName = CreateUniqueIdentifier("capturedMessage", usedIdentifiers);
+            var exceptionName = CreateUniqueIdentifier("capturedException", usedIdentifiers);
+
+            var rewriter = new TypedLoggerCallbackRewriter(
+                parameterNames[0],
+                parameterNames[1],
+                parameterNames[2],
+                parameterNames[3],
+                parameterCount == 5 ? parameterNames[4] : string.Empty,
+                logLevelName,
+                eventIdName,
+                messageName,
+                exceptionName);
+            var rewrittenBody = rewriter.Visit(callbackLambda.Body);
+            if (rewrittenBody is null || rewriter.HasUnsupportedReferences)
+            {
+                return false;
+            }
+
+            lambdaText = $"({logLevelName}, {eventIdName}, {messageName}, {exceptionName}) => {rewrittenBody}";
+            return true;
+        }
+
+        private static bool TryGetLambdaParameterNames(LambdaExpressionSyntax lambdaExpression, out IReadOnlyList<string> parameterNames)
+        {
+            switch (lambdaExpression)
+            {
+                case SimpleLambdaExpressionSyntax simpleLambda:
+                    parameterNames = [simpleLambda.Parameter.Identifier.ValueText];
+                    return !string.IsNullOrEmpty(parameterNames[0]);
+
+                case ParenthesizedLambdaExpressionSyntax parenthesizedLambda:
+                    var names = parenthesizedLambda.ParameterList.Parameters.Select(parameter => parameter.Identifier.ValueText).ToArray();
+                    if (names.Any(string.IsNullOrEmpty))
+                    {
+                        parameterNames = Array.Empty<string>();
+                        return false;
+                    }
+
+                    parameterNames = names;
+                    return true;
+
+                default:
+                    parameterNames = Array.Empty<string>();
+                    return false;
+            }
         }
 
         private static string CreateUniqueIdentifier(string baseName, ISet<string> usedIdentifiers)
@@ -2173,6 +2268,170 @@ namespace FastMoq.Analyzers
             }
 
             private static IdentifierNameSyntax Identifier(string identifierName, SyntaxNode source)
+            {
+                return SyntaxFactory.IdentifierName(identifierName).WithTriviaFrom(source);
+            }
+        }
+
+        private sealed class TypedLoggerCallbackRewriter : CSharpSyntaxRewriter
+        {
+            private readonly string logLevelParameterName;
+            private readonly string eventIdParameterName;
+            private readonly string stateParameterName;
+            private readonly string exceptionParameterName;
+            private readonly string formatterParameterName;
+            private readonly string logLevelName;
+            private readonly string eventIdName;
+            private readonly string messageName;
+            private readonly string exceptionName;
+
+            public TypedLoggerCallbackRewriter(
+                string logLevelParameterName,
+                string eventIdParameterName,
+                string stateParameterName,
+                string exceptionParameterName,
+                string formatterParameterName,
+                string logLevelName,
+                string eventIdName,
+                string messageName,
+                string exceptionName)
+            {
+                this.logLevelParameterName = logLevelParameterName;
+                this.eventIdParameterName = eventIdParameterName;
+                this.stateParameterName = stateParameterName;
+                this.exceptionParameterName = exceptionParameterName;
+                this.formatterParameterName = formatterParameterName;
+                this.logLevelName = logLevelName;
+                this.eventIdName = eventIdName;
+                this.messageName = messageName;
+                this.exceptionName = exceptionName;
+            }
+
+            public bool HasUnsupportedReferences { get; private set; }
+
+            public override SyntaxNode? VisitInvocationExpression(InvocationExpressionSyntax node)
+            {
+                if (IsStateToStringInvocation(node) || IsFormatterMessageInvocation(node))
+                {
+                    return Identifier(messageName, node);
+                }
+
+                if (node.Expression is MemberAccessExpressionSyntax memberAccess &&
+                    memberAccess.Name.Identifier.ValueText == nameof(ToString) &&
+                    (IsStateParameterReference(memberAccess.Expression) || IsFormatterMessageInvocation(memberAccess.Expression)) &&
+                    node.ArgumentList.Arguments.Count == 0)
+                {
+                    return Identifier(messageName, node);
+                }
+
+                return base.VisitInvocationExpression(node);
+            }
+
+            public override SyntaxNode? VisitConditionalAccessExpression(ConditionalAccessExpressionSyntax node)
+            {
+                if (IsStateToStringConditionalAccess(node) || IsFormatterMessageConditionalAccess(node))
+                {
+                    return Identifier(messageName, node);
+                }
+
+                return base.VisitConditionalAccessExpression(node);
+            }
+
+            public override SyntaxNode? VisitIdentifierName(IdentifierNameSyntax node)
+            {
+                var identifierName = node.Identifier.ValueText;
+                if (identifierName == logLevelParameterName)
+                {
+                    return Identifier(logLevelName, node);
+                }
+
+                if (identifierName == eventIdParameterName)
+                {
+                    return Identifier(eventIdName, node);
+                }
+
+                if (identifierName == exceptionParameterName)
+                {
+                    return Identifier(exceptionName, node);
+                }
+
+                if (identifierName == stateParameterName || (!string.IsNullOrEmpty(formatterParameterName) && identifierName == formatterParameterName))
+                {
+                    HasUnsupportedReferences = true;
+                }
+
+                return base.VisitIdentifierName(node);
+            }
+
+            private bool IsStateToStringInvocation(InvocationExpressionSyntax node)
+            {
+                return node.Expression is MemberAccessExpressionSyntax memberAccess &&
+                    memberAccess.Name.Identifier.ValueText == nameof(ToString) &&
+                    IsStateParameterReference(memberAccess.Expression) &&
+                    node.ArgumentList.Arguments.Count == 0;
+            }
+
+            private bool IsStateToStringConditionalAccess(ConditionalAccessExpressionSyntax node)
+            {
+                return IsStateParameterReference(node.Expression) &&
+                    node.WhenNotNull is InvocationExpressionSyntax invocationExpression &&
+                    invocationExpression.Expression is MemberBindingExpressionSyntax memberBinding &&
+                    memberBinding.Name.Identifier.ValueText == nameof(ToString) &&
+                    invocationExpression.ArgumentList.Arguments.Count == 0;
+            }
+
+            private bool IsFormatterMessageInvocation(ExpressionSyntax expression)
+            {
+                if (string.IsNullOrEmpty(formatterParameterName))
+                {
+                    return false;
+                }
+
+                expression = StripCasts(expression);
+                if (expression is not InvocationExpressionSyntax invocationExpression || invocationExpression.ArgumentList.Arguments.Count != 2)
+                {
+                    return false;
+                }
+
+                if (!IsStateParameterReference(invocationExpression.ArgumentList.Arguments[0].Expression) ||
+                    !IsExceptionParameterReference(invocationExpression.ArgumentList.Arguments[1].Expression))
+                {
+                    return false;
+                }
+
+                if (invocationExpression.Expression is IdentifierNameSyntax identifierName)
+                {
+                    return identifierName.Identifier.ValueText == formatterParameterName;
+                }
+
+                return invocationExpression.Expression is MemberAccessExpressionSyntax memberAccess &&
+                    memberAccess.Name.Identifier.ValueText == nameof(Delegate.DynamicInvoke) &&
+                    memberAccess.Expression is IdentifierNameSyntax formatterIdentifier &&
+                    formatterIdentifier.Identifier.ValueText == formatterParameterName;
+            }
+
+            private bool IsFormatterMessageConditionalAccess(ConditionalAccessExpressionSyntax node)
+            {
+                return IsFormatterMessageInvocation(node.Expression) &&
+                    node.WhenNotNull is InvocationExpressionSyntax invocationExpression &&
+                    invocationExpression.Expression is MemberBindingExpressionSyntax memberBinding &&
+                    memberBinding.Name.Identifier.ValueText == nameof(ToString) &&
+                    invocationExpression.ArgumentList.Arguments.Count == 0;
+            }
+
+            private bool IsStateParameterReference(ExpressionSyntax expression)
+            {
+                expression = StripCasts(expression);
+                return expression is IdentifierNameSyntax identifierName && identifierName.Identifier.ValueText == stateParameterName;
+            }
+
+            private bool IsExceptionParameterReference(ExpressionSyntax expression)
+            {
+                expression = StripCasts(expression);
+                return expression is IdentifierNameSyntax identifierName && identifierName.Identifier.ValueText == exceptionParameterName;
+            }
+
+            private IdentifierNameSyntax Identifier(string identifierName, SyntaxNode source)
             {
                 return SyntaxFactory.IdentifierName(identifierName).WithTriviaFrom(source);
             }
