@@ -31,6 +31,7 @@ namespace FastMoq.Analyzers.Tests
             { new TimesSpecHelperBoundaryAnalyzer(), DiagnosticDescriptors.UseTimesSpecAtHelperBoundary },
             { new OptionsSetupAnalyzer(), DiagnosticDescriptors.PreferSetupOptionsHelper },
             { new LoggerFactoryRegistrationAnalyzer(), DiagnosticDescriptors.PreferLoggerFactoryHelpers },
+            { new LoggerSetupCallbackAnalyzer(), DiagnosticDescriptors.PreferSetupLoggerCallbackHelper },
             { new SetupSetAnalyzer(), DiagnosticDescriptors.PreferPropertySetterCaptureHelper },
             { new SetupAllPropertiesAnalyzer(), DiagnosticDescriptors.PreferPropertyStateHelper },
             { new TrackedMockVerificationAnalyzer(), DiagnosticDescriptors.UseProviderFirstVerify },
@@ -70,6 +71,7 @@ namespace FastMoq.Analyzers.Tests
             { DiagnosticDescriptors.UseTimesSpecAtHelperBoundary, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferSetupOptionsHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferLoggerFactoryHelpers, DiagnosticSeverity.Info },
+            { DiagnosticDescriptors.PreferSetupLoggerCallbackHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferPropertySetterCaptureHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.PreferPropertyStateHelper, DiagnosticSeverity.Info },
             { DiagnosticDescriptors.UseProviderFirstVerify, DiagnosticSeverity.Warning },
@@ -271,6 +273,74 @@ class Sample
     {
         var mock = Mocks.GetMock<IService>();
         Mocks.GetOrCreateMock<IService>().Reset();
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task TrackedMockResetAnalyzer_ShouldNotReport_WhenResetAlreadyUsesProviderFirstFastMock()
+        {
+            const string SOURCE = @"
+using FastMoq;
+
+class Sample
+{
+    private interface IService
+    {
+    }
+
+    void Execute(Mocker Mocks)
+    {
+        var mock = Mocks.GetOrCreateMock<IService>();
+        mock.Reset();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new TrackedMockResetAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.UseProviderFirstReset);
+        }
+
+        [Fact]
+        public async Task TrackedMockResetAnalyzer_ShouldPreserveReusableFastMockReceiver_WhenRewritingProviderNativeReset()
+        {
+            const string SOURCE = @"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+class Sample
+{
+    private interface IService
+    {
+    }
+
+    void Execute(Mocker Mocks)
+    {
+        var mock = Mocks.GetOrCreateMock<IService>();
+        mock.AsMoq().Reset();
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new TrackedMockResetAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.UseProviderFirstReset));
+            Assert.Equal(DiagnosticIds.UseProviderFirstReset, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new TrackedMockResetAnalyzer(), codeFixProvider, DiagnosticIds.UseProviderFirstReset);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+
+class Sample
+{
+    private interface IService
+    {
+    }
+
+    void Execute(Mocker Mocks)
+    {
+        var mock = Mocks.GetOrCreateMock<IService>();
+        mock.Reset();
     }
 }");
 
@@ -2399,6 +2469,192 @@ sealed class OutputAwareService : IOutputAwareService
 
             var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerFactoryRegistrationAnalyzer());
             Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferLoggerFactoryHelpers);
+        }
+
+        [Fact]
+        public async Task LoggerSetupCallbackAnalyzer_ShouldReportAndFix_AllItLoggerCallbackSetup()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Microsoft.Extensions.Logging;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker mocks, Xunit.ITestOutputHelper output)
+    {
+        mocks.GetOrCreateMock<ILogger>()
+            .Setup(x => x.Log(
+                It.IsAny<LogLevel>(),
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((_, _) => true),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()))
+            .Callback(new InvocationAction(invocation =>
+            {
+                var level = (LogLevel)invocation.Arguments[0];
+                var state = invocation.Arguments[2]?.ToString() ?? string.Empty;
+                var exception = invocation.Arguments[3] as Exception;
+
+                output.WriteLine($""[{level}] {state}"");
+
+                if (exception != null)
+                {
+                    output.WriteLine($""[Exception] {exception.GetType().Name}: {exception.Message}"");
+                }
+            }));
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerSetupCallbackAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferSetupLoggerCallbackHelper));
+            Assert.Equal(DiagnosticIds.PreferSetupLoggerCallbackHelper, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new LoggerSetupCallbackAnalyzer(), codeFixProvider, DiagnosticIds.PreferSetupLoggerCallbackHelper);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Microsoft.Extensions.Logging;
+using Moq;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker mocks, Xunit.ITestOutputHelper output)
+    {
+        mocks.SetupLoggerCallback((capturedLogLevel, capturedEventId, capturedMessage, capturedException) =>
+        {
+            var level = capturedLogLevel;
+            var state = capturedMessage ?? string.Empty;
+            var exception = capturedException;
+
+            output.WriteLine($""[{level}] {state}"");
+
+            if (exception != null)
+            {
+                output.WriteLine($""[Exception] {exception.GetType().Name}: {exception.Message}"");
+            }
+        });
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task LoggerSetupCallbackAnalyzer_ShouldReportAndFix_MixedFastArgAndItLoggerCallbackSetup()
+        {
+            const string SOURCE = @"
+using System;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Microsoft.Extensions.Logging;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker mocks, Xunit.ITestOutputHelper output)
+    {
+        mocks.GetOrCreateMock<ILogger>()
+            .Setup(x => x.Log(
+                FastArg.Any<LogLevel>(),
+                FastArg.Any<EventId>(),
+                It.Is<It.IsAnyType>((_, _) => true),
+                FastArg.Any<Exception>(),
+                FastArg.Any<Func<It.IsAnyType, Exception?, string>>()))
+            .Callback(new InvocationAction(invocation =>
+            {
+                var level = (LogLevel)invocation.Arguments[0];
+                var state = invocation.Arguments[2]?.ToString() ?? string.Empty;
+                var exception = invocation.Arguments[3] as Exception;
+
+                output.WriteLine($""[{level}] {state}"");
+
+                if (exception != null)
+                {
+                    output.WriteLine($""[Exception] {exception.GetType().Name}: {exception.Message}"");
+                }
+            }));
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerSetupCallbackAnalyzer());
+            var diagnostic = Assert.Single(diagnostics.Where(item => item.Id == DiagnosticIds.PreferSetupLoggerCallbackHelper));
+            Assert.Equal(DiagnosticIds.PreferSetupLoggerCallbackHelper, diagnostic.Id);
+
+            var fixedSource = await AnalyzerTestHelpers.ApplyCodeFixAsync(SOURCE, new LoggerSetupCallbackAnalyzer(), codeFixProvider, DiagnosticIds.PreferSetupLoggerCallbackHelper);
+            var expected = AnalyzerTestHelpers.NormalizeCode(@"
+using System;
+using FastMoq;
+using FastMoq.Providers;
+using FastMoq.Providers.MoqProvider;
+using Microsoft.Extensions.Logging;
+using Moq;
+using FastMoq.Extensions;
+
+class Sample
+{
+    void Execute(Mocker mocks, Xunit.ITestOutputHelper output)
+    {
+        mocks.SetupLoggerCallback((capturedLogLevel, capturedEventId, capturedMessage, capturedException) =>
+        {
+            var level = capturedLogLevel;
+            var state = capturedMessage ?? string.Empty;
+            var exception = capturedException;
+
+            output.WriteLine($""[{level}] {state}"");
+
+            if (exception != null)
+            {
+                output.WriteLine($""[Exception] {exception.GetType().Name}: {exception.Message}"");
+            }
+        });
+    }
+}");
+
+            Assert.Equal(expected, fixedSource);
+        }
+
+        [Fact]
+        public async Task LoggerSetupCallbackAnalyzer_ShouldNotReport_WhenCallbackUsesRawStructuredLoggerState()
+        {
+            const string SOURCE = @"
+using System;
+using System.Collections.Generic;
+using FastMoq;
+using FastMoq.Providers.MoqProvider;
+using Microsoft.Extensions.Logging;
+using Moq;
+
+class Sample
+{
+    void Execute(Mocker mocks)
+    {
+        mocks.GetOrCreateMock<ILogger>()
+            .Setup(x => x.Log(
+                It.IsAny<LogLevel>(),
+                It.IsAny<EventId>(),
+                It.IsAny<It.IsAnyType>(),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()))
+            .Callback(new InvocationAction(invocation =>
+            {
+                if (invocation.Arguments[2] is IEnumerable<KeyValuePair<string, object>> properties)
+                {
+                    foreach (var property in properties)
+                    {
+                    }
+                }
+            }));
+    }
+}";
+
+            var diagnostics = await AnalyzerTestHelpers.GetDiagnosticsAsync(SOURCE, new LoggerSetupCallbackAnalyzer());
+            Assert.DoesNotContain(diagnostics, item => item.Id == DiagnosticIds.PreferSetupLoggerCallbackHelper);
         }
 
         [Fact]

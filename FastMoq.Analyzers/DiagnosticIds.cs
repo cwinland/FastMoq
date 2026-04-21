@@ -179,5 +179,10 @@ namespace FastMoq.Analyzers
         /// Avoid Moq-specific matcher helpers inside provider-first Verify expressions when no direct FastArg rewrite exists.
         /// </summary>
         public const string AvoidUnsupportedMoqMatcherInProviderFirstVerify = "FMOQ0035";
+
+        /// <summary>
+        /// Prefer provider-neutral logger callback capture over provider-specific ILogger.Log setup when the callback only needs normalized output.
+        /// </summary>
+        public const string PreferSetupLoggerCallbackHelper = "FMOQ0036";
     }
 }

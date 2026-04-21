@@ -25,6 +25,7 @@ namespace FastMoq.Analyzers.CodeFixes
             DiagnosticIds.UseProviderFirstObjectAccess,
             DiagnosticIds.UseProviderFirstReset,
             DiagnosticIds.UseVerifyLogged,
+            DiagnosticIds.PreferSetupLoggerCallbackHelper,
             DiagnosticIds.UseProviderFirstVerify,
             DiagnosticIds.AvoidFastMockVerifyHelperWrappers,
             DiagnosticIds.AvoidProviderSpecificFastMockVerifyHelperWrappers,
@@ -106,6 +107,23 @@ namespace FastMoq.Analyzers.CodeFixes
                                 "Use VerifyLogged(...)",
                                 cancellationToken => ReplaceInvocationAsync(document, invocationExpression, BuildVerifyLoggedReplacementAsync, cancellationToken),
                                 nameof(DiagnosticIds.UseVerifyLogged)),
+                            diagnostic);
+                        break;
+                    }
+
+                case DiagnosticIds.PreferSetupLoggerCallbackHelper:
+                    {
+                        var invocationExpression = root.FindNode(diagnostic.Location.SourceSpan).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                        if (invocationExpression is null)
+                        {
+                            return;
+                        }
+
+                        context.RegisterCodeFix(
+                            CodeAction.Create(
+                                "Use SetupLoggerCallback(...)",
+                                cancellationToken => ReplaceSetupLoggerCallbackInvocationAsync(document, invocationExpression, cancellationToken),
+                                nameof(DiagnosticIds.PreferSetupLoggerCallbackHelper)),
                             diagnostic);
                         break;
                     }
@@ -780,7 +798,7 @@ namespace FastMoq.Analyzers.CodeFixes
                 return null;
             }
 
-            return FastMoqAnalysisHelpers.BuildResetReplacement(origin, semanticModel, invocationExpression.SpanStart);
+            return FastMoqAnalysisHelpers.BuildResetReplacement(origin, semanticModel, invocationExpression.SpanStart, cancellationToken);
         }
 
         private static string? BuildVerifyLoggedReplacementAsync(Document document, SemanticModel semanticModel, SyntaxNode syntaxNode, CancellationToken cancellationToken)
@@ -842,6 +860,14 @@ namespace FastMoq.Analyzers.CodeFixes
                 : null;
         }
 
+        private static string? BuildSetupLoggerCallbackReplacementAsync(Document document, SemanticModel semanticModel, SyntaxNode syntaxNode, CancellationToken cancellationToken)
+        {
+            return syntaxNode is InvocationExpressionSyntax invocationExpression &&
+                FastMoqAnalysisHelpers.TryBuildSetupLoggerCallbackReplacement(invocationExpression, semanticModel, cancellationToken, out var replacement)
+                ? replacement
+                : null;
+        }
+
         private static async Task<Document> ReplaceSetupOptionsInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -873,6 +899,28 @@ namespace FastMoq.Analyzers.CodeFixes
             }
 
             var replacementText = BuildLoggerFactoryHelperReplacementAsync(document, semanticModel, invocationExpression, cancellationToken);
+            if (replacementText is null)
+            {
+                return document;
+            }
+
+            var replacementExpression = SyntaxFactory.ParseExpression(replacementText)
+                .WithTriviaFrom(invocationExpression);
+            var updatedRoot = root.ReplaceNode(invocationExpression, replacementExpression);
+
+            return document.WithSyntaxRoot(AddUsingDirectiveIfMissing(updatedRoot, "FastMoq.Extensions"));
+        }
+
+        private static async Task<Document> ReplaceSetupLoggerCallbackInvocationAsync(Document document, InvocationExpressionSyntax invocationExpression, CancellationToken cancellationToken)
+        {
+            var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            if (root is null || semanticModel is null)
+            {
+                return document;
+            }
+
+            var replacementText = BuildSetupLoggerCallbackReplacementAsync(document, semanticModel, invocationExpression, cancellationToken);
             if (replacementText is null)
             {
                 return document;

@@ -161,6 +161,47 @@ namespace FastMoq.Extensions
             return mocker;
         }
 
+        /// <summary>
+        /// Registers an additional callback that receives log entries captured through the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="callback">A callback that receives each captured log entry after FastMoq records it.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        /// <remarks>
+        /// Use this when the test already relies on FastMoq-managed logger capture and also needs to mirror normalized log output to a local sink.
+        /// The callback observes formatted message text and exception data; it does not expose raw provider-specific logger state.
+        /// </remarks>
+        /// <example>
+        /// <code language="csharp"><![CDATA[
+        /// Mocks.SetupLoggerCallback((logLevel, eventId, message, exception) =>
+        /// {
+        ///     output.WriteLine($"[{logLevel}] {message}");
+        /// });
+        /// ]]></code>
+        /// </example>
+        public static Mocker SetupLoggerCallback(this Mocker mocker, Action<LogLevel, EventId, string, Exception?> callback)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(callback);
+
+            mocker.AppendLoggingCallback(callback);
+            return mocker;
+        }
+
+        /// <summary>
+        /// Registers an additional callback that receives formatted log entries captured through the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="callback">A callback that receives each captured log entry after FastMoq records it.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        public static Mocker SetupLoggerCallback(this Mocker mocker, Action<LogLevel, EventId, string> callback)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(callback);
+
+            return mocker.SetupLoggerCallback((logLevel, eventId, message, _) => callback(logLevel, eventId, message));
+        }
+
         private static ILoggerFactory CreateLoggerFactoryCore(Mocker mocker, Action<LogLevel, EventId, string, Exception?> callback, Action<ILoggingBuilder>? configureLogging)
         {
             ArgumentNullException.ThrowIfNull(mocker);

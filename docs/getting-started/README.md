@@ -591,6 +591,8 @@ Prefer `Mocks.VerifyLogged(...)` for new code. It is provider-safe because FastM
 
 If the test suite needs a first-party registration story for `ILoggerFactory`, `ILogger`, or `ILogger<T>`, use `Mocks.AddLoggerFactory()` for direct FastMoq resolution, or `Mocks.CreateLoggerFactory()` when you want to plug the same callback-backed factory into a typed `IServiceProvider` recipe. When the test also needs to mirror log output to a local sink after `Mocker` already exists, use the sink-aware overloads such as `Mocks.AddLoggerFactory(output.WriteLine, replace: true)` or `Mocks.CreateLoggerFactory((logLevel, eventId, message, exception) => ...)` instead of maintaining a private logger wrapper.
 
+When the test already relies on FastMoq-managed logger mocks and only needs to mirror the normalized captured entries to a local sink, use `Mocks.SetupLoggerCallback((logLevel, eventId, message, exception) => ...)` instead of rebuilding the logger mock with provider-specific `ILogger.Log<TState>` setup code.
+
 Use `GetOrCreateMock<ILogger<T>>().AsMoq().VerifyLogger(...)` only when you intentionally want the legacy Moq-specific behavior. That API is a compatibility shim and is planned to leave core in v5.
 
 ## Troubleshooting

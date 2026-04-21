@@ -241,6 +241,44 @@ Analyzer note:
 - `FMOQ0003` points shared helper cleanup and leaf test rewrites toward `VerifyLogged(...)`.
 - if the same helper also registered loggers manually, prefer `AddLoggerFactory()` or `CreateLoggerFactory()` from the finalized helper surface instead of preserving a private logger wrapper.
 
+### `ILogger.Log<TState>` callback setup vs `SetupLoggerCallback(...)`
+
+Old Moq-oriented pattern:
+
+```csharp
+Mocks.GetOrCreateMock<ILogger>()
+    .Setup(x => x.Log(
+        It.IsAny<LogLevel>(),
+        It.IsAny<EventId>(),
+        It.Is<It.IsAnyType>((_, _) => true),
+        It.IsAny<Exception>(),
+        It.IsAny<Func<It.IsAnyType, Exception?, string>>()))
+    .Callback(new InvocationAction(invocation =>
+    {
+        var message = invocation.Arguments[2]?.ToString() ?? string.Empty;
+        output.WriteLine(message);
+    }));
+```
+
+Current guidance:
+
+```csharp
+Mocks.SetupLoggerCallback((logLevel, eventId, message, exception) =>
+{
+    output.WriteLine(message);
+});
+```
+
+Why:
+
+- `SetupLoggerCallback(...)` keeps the test on FastMoq's provider-neutral logger capture path.
+- `FastArg` does not replace the `It.IsAnyType` portion here because that placeholder stands in for the generic `TState` closed by `ILogger.Log<TState>`, not just a normal argument matcher.
+- keep the Moq compatibility path only when the callback intentionally inspects raw structured logger state rather than normalized message and exception output.
+
+Analyzer note:
+
+- `FMOQ0036` points safe tracked `ILogger.Log<TState>` setup callbacks toward `SetupLoggerCallback(...)`.
+
 ### `IOptions<T>` setup and real instances
 
 Old patterns often looked like this:

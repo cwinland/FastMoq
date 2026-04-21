@@ -106,7 +106,7 @@ namespace FastMoq
         internal Dictionary<Type, IInstanceModel> typeMap = new();
         private readonly ObservableExceptionLog exceptionLog = new();
         private readonly ObservableLogEntries logEntries = new();
-        private readonly Action<LogLevel, EventId, string, Exception?> externalLoggingCallback;
+        private Action<LogLevel, EventId, string, Exception?> externalLoggingCallback;
         /// <summary>
         /// Tracks constructor-selection history for created instances.
         /// </summary>
@@ -330,6 +330,13 @@ namespace FastMoq
         {
             logEntries.Add(new LogEntry(logLevel, eventId, message, exception));
             externalLoggingCallback(logLevel, eventId, message, exception);
+        }
+
+        internal void AppendLoggingCallback(Action<LogLevel, EventId, string, Exception?> loggingCallback)
+        {
+            ArgumentNullException.ThrowIfNull(loggingCallback);
+
+            externalLoggingCallback += loggingCallback;
         }
 
         internal void EnableExplicitLoggerCapture()

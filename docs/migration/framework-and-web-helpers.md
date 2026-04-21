@@ -200,6 +200,7 @@ Analyzer note:
 - `FMOQ0003` prefers `VerifyLogged(...)` over legacy `VerifyLogger(...)` when the assertion can stay provider-safe.
 - `FMOQ0019` prefers `SetupOptions(...)` over repeated manual `IOptions<T>` setup.
 - `FMOQ0030` prefers `AddLoggerFactory(...)` over direct `AddType<ILoggerFactory>(new ...output-helper...)`, `AddType<ILogger>(new ...output-helper...)`, and `AddType<ILogger<T>>(new ...output-helper...)` registrations when the logger registration is just mirroring logs into an xUnit-style output helper. The diagnostic is advisory only because repo-local logger wrappers can carry extra formatting, filtering, or scope behavior that FastMoq cannot prove is safe to rewrite automatically.
+- `FMOQ0036` prefers `SetupLoggerCallback(...)` over tracked `GetOrCreateMock<ILogger...>().Setup(x => x.Log(...)).Callback(...)` chains when the callback only reads normalized level, event id, message text, or exception output. It intentionally does not rewrite callbacks that inspect raw structured logger state.
 
 ## Web test helpers
 

@@ -1646,7 +1646,7 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
         // Setup logging callback to capture scope information
         var logEntries = new List<(LogLevel Level, string Message, object[] Args)>();
         
-        Mocks.SetupLoggerCallback<ILogger<OrderProcessingService>>((level, eventId, message) =>
+        Mocks.SetupLoggerCallback((level, eventId, message) =>
         {
             logEntries.Add((level, message, new object[0]));
         });
@@ -1661,7 +1661,9 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
 }
 ```
 
-### Advanced Logging Scenarios
+### Advanced Logging Scenarios (Moq Compatibility)
+
+When the test needs raw structured logger state instead of the normalized message and exception that FastMoq captures provider-neutrally, keep this on the Moq compatibility path. `FastArg` does not replace the `It.IsAnyType` portion because that placeholder stands in for the generic `TState` closed by `ILogger.Log<TState>`, not just a normal argument matcher.
 
 ```csharp
 public class LoggingAdvancedTests : MockerTestBase<OrderProcessingService>

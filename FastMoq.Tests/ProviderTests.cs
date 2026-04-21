@@ -335,6 +335,64 @@ namespace FastMoq.Tests
             mocker.VerifyLogged(LogLevel.Error, "provider error", new InvalidOperationException("provider boom"), 12, TimesSpec.Once);
         }
 
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        public void SetupLoggerCallback_ShouldMirrorCapturedEntries_WithoutBreakingStoredLogs(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            var exception = new InvalidOperationException("provider callback boom");
+            LogLevel? capturedLevel = null;
+            EventId? capturedEventId = null;
+            string? capturedMessage = null;
+            Exception? capturedException = null;
+
+            mocker.SetupLoggerCallback((logLevel, eventId, message, loggedException) =>
+            {
+                capturedLevel = logLevel;
+                capturedEventId = eventId;
+                capturedMessage = message;
+                capturedException = loggedException;
+            });
+
+            var logger = mocker.GetObject<ILogger<NullLogger>>();
+            logger.LogError(12, exception, "provider callback");
+
+            capturedLevel.Should().Be(LogLevel.Error);
+            capturedEventId.Should().Be(new EventId(12));
+            capturedMessage.Should().Contain("provider callback");
+            capturedException.Should().BeSameAs(exception);
+            mocker.LogEntries.Should().Contain(entry =>
+                entry.LogLevel == LogLevel.Error &&
+                entry.EventId.Id == 12 &&
+                entry.Message.Contains("provider callback", StringComparison.Ordinal) &&
+                entry.Exception == exception);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        public void SetupLoggerCallbackThreeParameterOverload_ShouldCaptureFormattedMessages(string providerName)
+        {
+            using var providerScope = PushProvider(providerName);
+            var mocker = new Mocker();
+            LogLevel? capturedLevel = null;
+            string? capturedMessage = null;
+
+            mocker.SetupLoggerCallback((logLevel, _, message) =>
+            {
+                capturedLevel = logLevel;
+                capturedMessage = message;
+            });
+
+            var logger = mocker.GetObject<ILogger<NullLogger>>();
+            logger.LogInformation("provider callback info");
+
+            capturedLevel.Should().Be(LogLevel.Information);
+            capturedMessage.Should().Contain("provider callback info");
+        }
+
         [Fact]
         public void VerifyLogged_ShouldFailFast_ForProviderWithoutLoggerCapture()
         {
