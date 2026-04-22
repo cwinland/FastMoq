@@ -154,63 +154,29 @@ The component under test is created before the test-class constructor body finis
 ### Option 1: Base Class Constructor
 
 This example shows setup in the base constructor callback. The code cannot depend on instance state from the test class.
+These examples assume the Moq provider extensions are available for the arrange-time `Setup(...)` calls.
 
 ```c#
-    public class TestMyService : MockerTestBase<MyService> {
-        public TestMyService() : base(setupMocksAction: m => { 
-            m.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
-            
-            m.GetMock<IProfileRepo>().Setup(x => x.GetProfileAsync(It.IsAny<string>()))
-                .ReturnsAsync(() => [new ProfileEntity { ProfileType = "test" }]);
-
-            m.Initialize<IConfigRepo>(configMock =>
-            {
-                configMock.Setup(x => x.GetTypeByIdAsync(id)).ReturnsAsync(() =>
-                    new TypeEntity 
-                    {
-                        // Type code here
-                    }
-                );
-                configMock.Setup(x => x.GetTypesAsync()).ReturnsAsync(
-                    () =>
-                    [
-                        new TypeEntity
-                        {
-                            // Type code here
-                        },
-                        new TypeEntity
-                        {
-                            // Type code here
-                        },
-                    ]
-                );
-            });
-        })
-    }
-```
-
-### Option 2: Override SetupMocksAction
-
-This example shows setup in the `SetupMocksAction` property. The code can use instance state from the test class.
-
-```c#
-protected override Action<Mocker> SetupMocksAction => m =>
+public class TestMyService : MockerTestBase<MyService>
 {
-    m.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
-    
-    m.GetMock<IProfileRepo>().Setup(x => x.GetProfileAsync(It.IsAny<string>()))
-        .ReturnsAsync(() => [new ProfileEntity { ProfileType = "test" }]);
+    public TestMyService()
+        : base(setupMocksAction: mocker =>
+        {
+            const int typeId = 42;
 
-    m.Initialize<IConfigRepo>(configMock =>
-    {
-        configMock.Setup(x => x.GetTypeByIdAsync(id)).ReturnsAsync(() =>
-            new TypeEntity 
-            {
-                // Type code here
-            }
-        );
-        configMock.Setup(x => x.GetTypesAsync()).ReturnsAsync(
-            () =>
+            mocker.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+            mocker.GetOrCreateMock<IProfileRepo>()
+                .Setup(x => x.GetProfileAsync(It.IsAny<string>()))
+                .ReturnsAsync([new ProfileEntity { ProfileType = "test" }]);
+
+            var configRepo = mocker.GetOrCreateMock<IConfigRepo>();
+            configRepo.Setup(x => x.GetTypeByIdAsync(typeId)).ReturnsAsync(
+                new TypeEntity
+                {
+                    // Type code here
+                });
+            configRepo.Setup(x => x.GetTypesAsync()).ReturnsAsync(
             [
                 new TypeEntity
                 {
@@ -220,9 +186,45 @@ protected override Action<Mocker> SetupMocksAction => m =>
                 {
                     // Type code here
                 },
-            ]
-        );
-    });
+            ]);
+        })
+    {
+    }
+}
+```
+
+### Option 2: Override SetupMocksAction
+
+This example shows setup in the `SetupMocksAction` property. The code can use instance state from the test class.
+
+```c#
+protected override Action<Mocker> SetupMocksAction => mocker =>
+{
+    const int typeId = 42;
+
+    mocker.OptionalParameterResolution = OptionalParameterResolutionMode.ResolveViaMocker;
+
+    mocker.GetOrCreateMock<IProfileRepo>()
+        .Setup(x => x.GetProfileAsync(It.IsAny<string>()))
+        .ReturnsAsync([new ProfileEntity { ProfileType = "test" }]);
+
+    var configRepo = mocker.GetOrCreateMock<IConfigRepo>();
+    configRepo.Setup(x => x.GetTypeByIdAsync(typeId)).ReturnsAsync(
+        new TypeEntity
+        {
+            // Type code here
+        });
+    configRepo.Setup(x => x.GetTypesAsync()).ReturnsAsync(
+    [
+        new TypeEntity
+        {
+            // Type code here
+        },
+        new TypeEntity
+        {
+            // Type code here
+        },
+    ]);
 };
 ```
 
