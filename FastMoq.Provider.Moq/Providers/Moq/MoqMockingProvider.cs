@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -9,6 +10,11 @@ namespace FastMoq.Providers.MoqProvider
     /// </summary>
     public sealed class MoqMockingProvider : IMockingProvider, IMockingProviderCapabilities
     {
+        private static readonly MethodInfo SetupLoggerCallbackGenericMethod = typeof(MoqMockingProvider)
+            .GetMethod(nameof(SetupLoggerCallbackGeneric), BindingFlags.NonPublic | BindingFlags.Static)
+            ?? throw new InvalidOperationException($"Could not resolve {nameof(SetupLoggerCallbackGeneric)} for logger setup dispatch.");
+        private static readonly ConcurrentDictionary<Type, Action<Mock, Action<LogLevel, EventId, string, Exception?>>> LoggerSetupDispatchCache = new();
+
         /// <summary>
         /// Gets the shared singleton instance of the Moq provider.
         /// </summary>
@@ -285,11 +291,12 @@ namespace FastMoq.Providers.MoqProvider
 
         private static void SetupLoggerCallback(Mock logger, Type mockedType, Action<LogLevel, EventId, string, Exception?> callback)
         {
-            var typedMethod = typeof(MoqMockingProvider)
-                .GetMethod(nameof(SetupLoggerCallbackGeneric), BindingFlags.NonPublic | BindingFlags.Static)?
-                .MakeGenericMethod(mockedType);
+            var dispatcher = LoggerSetupDispatchCache.GetOrAdd(mockedType, static type =>
+                (Action<Mock, Action<LogLevel, EventId, string, Exception?>>) SetupLoggerCallbackGenericMethod
+                    .MakeGenericMethod(type)
+                    .CreateDelegate(typeof(Action<Mock, Action<LogLevel, EventId, string, Exception?>>)));
 
-            typedMethod?.Invoke(null, new object[] { logger, callback });
+            dispatcher(logger, callback);
         }
 
         private static void SetupLoggerCallbackGeneric<TLogger>(Mock logger, Action<LogLevel, EventId, string, Exception?> callback)
@@ -305,6 +312,11 @@ namespace FastMoq.Providers.MoqProvider
 
         private static Mock? TryGetUnderlyingMock(IFastMock wrapper)
         {
+            if (wrapper.NativeMock is Mock nativeMock)
+            {
+                return nativeMock;
+            }
+
             const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
             var type = wrapper.GetType();
             string[] propertyNames = ["InnerMock", "Inner"];

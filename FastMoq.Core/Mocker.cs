@@ -2080,7 +2080,7 @@ namespace FastMoq
 
             KnownTypeRegistry.ConfigureMock(this, type, fastMock);
 
-            if (Behavior.Has(MockFeatures.AutoInjectDependencies))
+            if (Behavior.Has(MockFeatures.AutoInjectDependencies) && !type.IsInterface)
             {
                 AddInjections(fastMock.Instance, GetTypeModel(type).InstanceType);
             }

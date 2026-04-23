@@ -6,26 +6,27 @@ This plan is based on the current benchmark suite and the code paths exercised b
 
 Measured on the current branch after the latest optimization pass:
 
-- Full tracked service flow with the Moq provider: `942.7 us` versus `330.2 us` for direct Moq in the simple scenario.
-- Larger tracked dependency graph with the Moq provider: `1.884 ms` versus `865.0 us` for direct Moq.
-- Simple invocation-only flow after one-time setup: `1.278 us` versus `1.251 us` for direct Moq at `InvocationCount=1`, with identical allocation.
-- Complex invocation-only flow after one-time setup: `3.631 us` versus `3.667 us` for direct Moq at `InvocationCount=1`, with identical allocation.
-- Detached same-type doubles: `154.7 us` versus `102.2 us` for direct Moq.
-- Lightweight provider-matrix interaction flow: `52.96 us` to `65.82 us` across `reflection`, `moq`, and `nsubstitute`.
+- Full tracked service flow with the Moq provider: `917.0 us` versus `313.6 us` for direct Moq in the simple scenario.
+- Larger tracked dependency graph with the Moq provider: `1.949 ms` versus `872.6 us` for direct Moq.
+- Simple invocation-only flow after one-time setup: `1.372 us` versus `1.386 us` for direct Moq at `InvocationCount=1`, with identical allocation. The `InvocationCount=100` short-run result widened to `154.710 us` versus `130.189 us`, which is why these numbers still need to be interpreted conservatively.
+- Complex invocation-only flow after one-time setup: `3.763 us` versus `3.709 us` for direct Moq at `InvocationCount=1`, with effectively identical allocation.
+- Detached same-type doubles: `167.5 us` versus `115.5 us` for direct Moq.
+- Lightweight provider-matrix interaction flow: `39.19 us` to `65.49 us` across `reflection`, `moq`, and `nsubstitute`.
 - Tracked lookup microbench: `GetOrCreateLastTrackedMock` improved from about `194 ns` to about `23 ns`.
-- Tracked creation microbench: `CreateServiceWithTrackedDependencies` improved from about `477 us` / `534 KB` to about `439 us` / `355 KB`.
+- Tracked creation microbench: `CreateTrackedLoggerMock` improved from about `198 us` to about `128 us`, and `CreateServiceWithTrackedDependencies` remains down from about `477 us` / `534 KB` to about `434 us` / `360 KB`.
+- `SetupFastMock(...)` microbench: plain interface create+setup is `30.10 us` versus `25.35 us` for create-only, while logger create+setup is still `97.00 us` versus `25.51 us` for create-only.
 
-The detached-handle, provider-matrix, and new invocation-only numbers are all much closer to the direct-provider baselines than the full tracked-service numbers are.
+The detached-handle, provider-matrix, invocation-only, and new setup-only numbers are all much closer to the direct-provider baselines than the full tracked-service numbers are.
 
 ## Working hypothesis
 
 The main remaining overhead is now more clearly in the tracked mock lifecycle and tracked object-creation path, not in post-setup invocation or provider-neutral verification alone.
 
-The new invocation-only benchmarks show that once a service graph is already built, FastMoq and direct Moq are effectively tied in both runtime and allocation for the measured scenarios.
+The invocation-only benchmarks show that once a service graph is already built, FastMoq and direct Moq stay in the same runtime and allocation band for the measured scenarios, even though short-run noise can still move the simple `InvocationCount=100` slice around.
 
 The current likely hotspots are:
 
-1. `SetupFastMock(...)` still eagerly materializes and configures tracked mocks.
+1. `SetupFastMock(...)` still eagerly materializes and configures tracked mocks, and the new microbench shows that logger-specific compatibility work is the dominant setup outlier.
 2. Full tracked-service creation still repeats dependency resolution work inside the same construction wave.
 3. `AddProperties(...)` and object construction still re-enter `GetObject(...)` repeatedly when building larger graphs.
 4. Provider-specific arrange costs inside the initial setup path may still dominate parts of the Moq-backed end-to-end flows.
@@ -37,6 +38,9 @@ The current likely hotspots are:
 3. Cached injection field and property discovery.
 4. Added a no-data fast path for `AddProperties(...)` and cached writable property lists for the common auto-population path.
 5. Added invocation-only benchmarks that build services once and measure repeated business calls separately from setup.
+6. Added `SetupFastMockBenchmarks` to isolate tracked setup from raw provider mock creation.
+7. Reduced Moq logger setup reflection by caching the generic setup dispatcher and using a fast path for wrapper-to-native `Mock` access.
+8. Skipped interface injection-member scanning inside `SetupFastMock(...)`, which keeps plain interface setup close to raw provider creation.
 
 These changes were validated against the main `FastMoq.Tests` project across `net8.0`, `net9.0`, and `net10.0` and then re-measured with the benchmark suite. A constructor metadata cache was tried and then removed because its microbenchmark win did not hold in the full tracked-service benchmarks.
 
@@ -63,12 +67,12 @@ Expected effect:
 Evidence:
 
 - The provider-matrix benchmark is still relatively cheap, but the simple and complex Moq-backed service flows spend far more time in tracked setup and activation.
-- Logger-specific and known-type post-processing still impose non-trivial cost in the service benchmarks.
+- The new `SetupFastMock(...)` benchmark shows plain interface setup near raw provider creation while logger setup remains the dominant outlier.
 
 Planned change:
 
 - Separate the unavoidable parts of tracked mock setup from the optional post-processing layers.
-- Add narrower benchmarks for `SetupFastMock(...)` itself so later changes can prove whether logger setup, nested property setup, or known-type post-processing is dominating.
+- Use the existing `SetupFastMock(...)` benchmark to test narrower reductions in logger compatibility, nested property setup, and known-type post-processing.
 
 Expected effect:
 
@@ -78,22 +82,22 @@ Expected effect:
 
 Remaining benchmark additions after this optimization pass:
 
-- `SetupFastMock(...)` only
 - `CreateInstance<T>()` with pre-registered dependencies
 - `Verify<T>(...)` only
 
 Reason:
 
-- The new invocation-only benchmarks already separate post-setup business-call cost from construction cost. These remaining additions will isolate the setup path further so each later performance change can prove where the win came from.
+- The new invocation-only and setup-only benchmarks already separate post-setup business-call cost from construction cost. These remaining additions will isolate activation and verification further so each later performance change can prove where the win came from.
 
 ## Recommended order of implementation
 
 1. Dictionary-backed unkeyed tracked mock index.
 2. Injectable-member and type-model caches.
 3. `AddProperties(...)` no-data fast path.
-4. Per-construction resolution cache.
-5. Narrow `SetupFastMock(...)` diagnostics and targeted reductions.
-6. Re-run the benchmark suite after each step and keep the checked-in results current, including the invocation-only guardrails.
+4. `SetupFastMock(...)` diagnostics and targeted reductions.
+5. Per-construction resolution cache.
+6. Activation-only and verification-only microbenchmarks.
+7. Re-run the benchmark suite after each step and keep the checked-in results current, including the invocation-only and setup-only guardrails.
 
 ## Success criteria
 
