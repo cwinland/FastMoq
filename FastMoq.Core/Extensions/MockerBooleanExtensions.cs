@@ -29,7 +29,7 @@
 
             return !type.IsClass && !type.IsInterface
                 ? throw new ArgumentException("type must be a class.", nameof(type))
-                : mocker.mockCollection.Exists(x => x.Type == type);
+                : mocker.Contains(type);
         }
     }
 }

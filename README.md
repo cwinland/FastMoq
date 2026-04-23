@@ -79,9 +79,9 @@ public class OrderProcessingServiceTests
 }
 ```
 
-Using FastMoq with the optional Moq-fluent setup path:
+Using FastMoq tracked provider-first mocks with Moq-specific arrange syntax:
 
-This path requires `FastMoq.Provider.Moq`, `Moq`, and explicit `moq` provider selection for the test assembly.
+`GetOrCreateMock<T>()` is still the provider-first tracked path here. This example uses the Moq provider package only for the arrange-time `Setup(...)` calls, so it requires `FastMoq.Provider.Moq`, `Moq`, and explicit `moq` provider selection for the test assembly.
 
 ```csharp
 public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService>
@@ -131,7 +131,7 @@ If you want a copy-paste example that works under the default provider without M
 - **🧪 [Executable Testing Examples](./docs/samples/testing-examples.md)** - Repo-backed service examples using the current FastMoq API direction
 - **🏗️ [Sample Applications](./docs/samples)** - Complete examples with Azure integration
 - **📊 [Feature Comparison](./docs/feature-parity)** - FastMoq vs Moq/NSubstitute
-- **📈 [Performance Benchmarks](./docs/benchmarks)** - Productivity and performance metrics
+- **📈 [Benchmarks](./docs/benchmarks)** - Runnable BenchmarkDotNet suite and latest checked-in results
 
 ### Additional Resources
 

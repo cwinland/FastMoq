@@ -361,7 +361,7 @@ namespace FastMoq.Extensions
             {
                 try
                 {
-                    constructor = mocker.GetConstructors(type, nonPublic).MinBy(x => x.ConstructorInfo?.GetParameters().Length ?? 0) ?? constructor;
+                    constructor = mocker.GetConstructors(type, nonPublic).MinBy(x => x.ParameterList.Length) ?? constructor;
                 }
                 catch (Exception ex)
                 {

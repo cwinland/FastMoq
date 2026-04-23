@@ -3,6 +3,7 @@ using FastMoq.Extensions;
 using FastMoq.Models;
 using FastMoq.Providers;
 using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
@@ -78,6 +79,7 @@ namespace FastMoq
         private static readonly NullabilityInfoContext NullabilityContext = new();
         private static readonly EventId ConstructorSelectionEventId = new(21021, nameof(ConstructorSelectionEventId));
         private static readonly EventId ConstructorAmbiguityEventId = new(21071, nameof(ConstructorAmbiguityEventId));
+        private static readonly ConcurrentDictionary<Type, PropertyInfo[]> AutoPopulatedPropertyCache = new();
 
         private readonly record struct InstanceConstructionRequest(
             bool? PublicOnly,
@@ -99,6 +101,8 @@ namespace FastMoq
         /// Stores the tracked mock models for this <see cref="Mocker"/> instance.
         /// </summary>
         protected internal readonly List<MockModel> mockCollection = new();
+        private readonly Dictionary<Type, MockModel> unkeyedMockCollection = new();
+        private readonly Dictionary<Type, IInstanceModel> resolvedTypeModelCache = new();
 
         private readonly List<KnownTypeRegistration> knownTypeRegistrations = new();
         private readonly Dictionary<ServiceRegistrationKey, MockModel> keyedMockCollection = new();
@@ -663,7 +667,22 @@ namespace FastMoq
             return TestClassExtensions.GetTypeFromInterface(this, type);
         }
 
-        internal IInstanceModel GetTypeModel(Type type) => typeMap.TryGetValue(type, out var model) && model is not null ? model : new InstanceModel(type, GetTypeFromInterface(type));
+        internal IInstanceModel GetTypeModel(Type type)
+        {
+            if (typeMap.TryGetValue(type, out var model) && model is not null)
+            {
+                return model;
+            }
+
+            if (resolvedTypeModelCache.TryGetValue(type, out model) && model is not null)
+            {
+                return model;
+            }
+
+            model = new InstanceModel(type, GetTypeFromInterface(type));
+            resolvedTypeModelCache[type] = model;
+            return model;
+        }
         internal IInstanceModel GetKeyedTypeModel(Type type, object serviceKey)
         {
             var registrationKey = CreateServiceRegistrationKey(type, serviceKey);
@@ -1030,6 +1049,34 @@ namespace FastMoq
             try
             {
                 creatingTypeList.Add(type);
+                if (data.Length == 0)
+                {
+                    foreach (var prop in AutoPopulatedPropertyCache.GetOrAdd(type, static candidateType =>
+                        candidateType.GetProperties()
+                            .Where(p => p.CanRead && p.CanWrite)
+                            .ToArray()))
+                    {
+                        try
+                        {
+                            if (creatingTypeList.Contains(prop.PropertyType))
+                            {
+                                continue;
+                            }
+
+                            var currentValue = prop.GetValue(obj);
+                            if (currentValue != null)
+                            {
+                                continue;
+                            }
+
+                            prop.SetValue(obj, GetObject(prop.PropertyType));
+                        }
+                        catch (Exception ex) { ExceptionLog.Add(ex.Message); }
+                    }
+
+                    return obj;
+                }
+
                 var props = type.GetProperties().Where(p => p.CanRead && (p.CanWrite || data.Any(d => d.Key.Equals(p.Name, StringComparison.OrdinalIgnoreCase)))).ToList();
                 foreach (var prop in props)
                 {
@@ -1810,10 +1857,13 @@ namespace FastMoq
                 {
                     existing.SetLegacyMock(legacyExisting);
                 }
+                unkeyedMockCollection[type] = existing;
                 return existing;
             }
+
             var model = new MockModel(fastMock, nonPublic, ExceptionLog);
             mockCollection.Add(model);
+            unkeyedMockCollection[model.Type] = model;
             return model;
         }
 
@@ -1829,11 +1879,15 @@ namespace FastMoq
                 }
                 // Assign (setter refreshes adapter)
                 mm.SetLegacyMock(mock);
+                unkeyedMockCollection[type] = mm;
                 return mm;
             }
+
             // No existing model – create using adapter wrapper.
-            mockCollection.Add(new MockModel(type, mock, nonPublic, ExceptionLog));
-            return GetMockModel(type);
+            var model = new MockModel(type, mock, nonPublic, ExceptionLog);
+            mockCollection.Add(model);
+            unkeyedMockCollection[model.Type] = model;
+            return model;
         }
         /// <summary>
         /// Adds an existing legacy Moq mock to the tracked mock collection.
@@ -1995,6 +2049,7 @@ namespace FastMoq
             }
 
             mockCollection.Remove(model);
+            unkeyedMockCollection.Remove(model.Type);
             return true;
         }
 
@@ -2144,7 +2199,7 @@ namespace FastMoq
             return keyedMockCollection[CreateServiceRegistrationKey(type, serviceKey)];
         }
 
-        internal bool Contains(Type type) => mockCollection.Any(m => m.Type == type);
+        internal bool Contains(Type type) => unkeyedMockCollection.ContainsKey(type);
         internal bool Contains(Type type, object serviceKey)
         {
             ArgumentNullException.ThrowIfNull(serviceKey);
@@ -2156,8 +2211,7 @@ namespace FastMoq
         internal bool TryGetMockModel(Type type, [NotNullWhen(true)] out MockModel? model)
         {
             type = CleanType(type);
-            model = mockCollection.FirstOrDefault(m => m.Type == type);
-            return model != null;
+            return unkeyedMockCollection.TryGetValue(type, out model);
         }
 
         internal bool TryGetMockModel(Type type, object serviceKey, [NotNullWhen(true)] out MockModel? model)
