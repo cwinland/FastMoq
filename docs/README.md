@@ -1,6 +1,23 @@
 # FastMoq Documentation
 
-Welcome to the comprehensive FastMoq documentation! This documentation is designed to help you get the most out of FastMoq, from your first test to advanced enterprise scenarios.
+Welcome to the FastMoq documentation home page. Use this site when you already know you want FastMoq and need the right guide, package, or capability area for a specific test surface.
+
+If you are evaluating the project itself and want the high-level value proposition first, start with the [GitHub repository home page](https://github.com/cwinland/FastMoq).
+
+## Package Overview
+
+FastMoq ships as an aggregate package plus focused helper packages so a test suite can stay broad or stay lightweight depending on what it needs.
+
+- `FastMoq` bundles the provider-first runtime, web helpers, database helpers, Azure SDK helpers, Azure Functions helpers, provider integrations, and analyzer assets in one package.
+- `FastMoq.Core` and `FastMoq.Abstractions` provide the provider-neutral runtime and provider contracts for lighter installs, selective package composition, and custom-provider scenarios.
+- `FastMoq.Web` covers controller, `HttpContext`, `IHttpContextAccessor`, claims-principal, and Blazor or bUnit-oriented test helpers.
+- `FastMoq.Database` adds `DbContext`-focused helpers, including mocked-set flows and explicit real in-memory test modes.
+- `FastMoq.Azure` adds Azure SDK test helpers for pageable builders, token credentials, Azure configuration and service-provider setup, and common client registration.
+- `FastMoq.AzureFunctions` adds Azure Functions worker and HTTP-trigger helpers for `FunctionContext.InstanceServices`, `HttpRequestData`, `HttpResponseData`, and request or response body readers.
+- `FastMoq.Provider.Moq` and `FastMoq.Provider.NSubstitute` add provider adapters when a suite wants provider-native arrange syntax while keeping the rest of the harness provider-first.
+- `FastMoq.Analyzers` keeps the provider-first diagnostics and code fixes available even when you want guidance without the full runtime package.
+
+For the full install matrix and package-choice decision tree, start with [Getting Started package choices](./getting-started/README.md#package-choices).
 
 ## 🆕 Release Highlights Since 3.0.0
 

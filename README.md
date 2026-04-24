@@ -1,40 +1,44 @@
 # [FastMoq](http://help.fastmoq.com/)
 
-FastMoq is a .NET testing framework for auto-mocking, dependency injection, and test-focused object creation. In v4, it supports a provider-first architecture with a bundled reflection default and optional Moq compatibility when you need it.
+FastMoq is a provider-first .NET testing framework for auto-mocking, dependency-aware construction, and test-focused object creation. In v4, it ships with a bundled `reflection` default and optional Moq or NSubstitute integrations when you need provider-specific arrange syntax.
 
 ## Start Here
 
 - If you are evaluating the project for the first time, read `Why FastMoq` first, then `Packages`, then the documentation links below.
-- If you want a first test that works under the default `reflection` provider, start with [Getting Started Guide](./docs/getting-started).
-- If you want tracked `.Setup(...)` syntax, read [Provider Selection Guide](./docs/getting-started/provider-selection.md) before copying any Moq-fluent examples.
-- If you are upgrading from the `3.0.0` line, go straight to [Migration Guide](./docs/migration).
+- If you want the documentation portal home page with package-specific guidance, start with [FastMoq Documentation Home](https://help.fastmoq.com/).
+- If you want a first test that works under the default `reflection` provider, start with [Getting Started Guide](https://help.fastmoq.com/docs/getting-started/README.html).
+- If you want tracked `.Setup(...)` syntax, read [Provider Selection Guide](https://help.fastmoq.com/docs/getting-started/provider-selection.html) before copying any Moq-fluent examples.
+- If you are upgrading from the `3.0.0` line, start with [Migration Guide](https://help.fastmoq.com/docs/migration/README.html) and [What's New Since 3.0.0](https://help.fastmoq.com/docs/whats-new/README.html).
 - Front-door examples use a couple of different assertion styles. Match the assertion library your test project already uses and keep that style consistent within the project.
 - Authoring ladder for the current v4 line:
     1. provider-neutral helper first, such as `GetOrCreateMock(...)`, `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, `WhenHttpRequest(...)`, or `AddType(...)`
     2. tracked `IFastMock<T>` provider extensions such as `Setup(...)`, `SetupGet(...)`, or `AsNSubstitute()` when the selected provider package exposes them
     3. explicit `AsMoq()` or provider-native escape hatches only for the remaining provider-specific gaps
 
-## Release Highlights Since 3.0.0
-
-- provider-first architecture built around `IMockingProvider`, `IFastMock<T>`, and `MockingProviderRegistry`, with the bundled `reflection` default and optional provider-specific integrations
-- current package split across `FastMoq`, `FastMoq.Abstractions`, `FastMoq.Azure`, `FastMoq.AzureFunctions`, `FastMoq.Database`, `FastMoq.Web`, `FastMoq.Provider.Moq`, and `FastMoq.Provider.NSubstitute`
-- first-party Azure SDK helpers for pageable builders, credential setup, Azure-oriented configuration and service-provider flows, and common client registration
-- first-party Azure Functions helpers for typed `FunctionContext.InstanceServices`, concrete `HttpRequestData` and `HttpResponseData` builders, and request or response body readers
-- `FastMoq` and `FastMoq.Core` now include the FastMoq analyzer pack by default, while `FastMoq.Analyzers` remains available when you want diagnostics without either runtime package
-- provider-neutral verification with `Verify(...)`, `VerifyLogged(...)`, and `TimesSpec`, plus fluent `Scenario.With(...).When(...).Then(...).Verify(...)` flows
-- explicit construction, invocation, and known-type policies instead of older coupled option bags, with expanded migration docs, executable examples, and generated API coverage
-
 ## Why FastMoq
 
-FastMoq is still intended to remove boilerplate compared with using a mock provider directly.
+Direct mock-provider tests often spend more effort on declaring mocks, wiring constructors, and repeating framework plumbing than on the behavior under test. FastMoq moves that harness work into a provider-first layer so tests stay focused on the behavior, not the object graph.
 
-The value is not only shorter setup calls. The bigger value is that FastMoq keeps the repetitive test harness work out of the test body:
+### Less harness code, less constructor churn
 
-- no separate mock field for every constructor dependency
-- no manual `new Mock<T>()` declarations just to build the subject under test
-- no long constructor call that must be updated every time the component gains a new dependency
-- built-in support for common framework-heavy test types such as `ILogger`, `IFileSystem`, `HttpClient`, and `DbContext`
-- tracked mocks plus provider-neutral verification and logging helpers
+- **Tracked dependencies instead of mock fields** — `MockerTestBase<TComponent>` maintains a mock registry, so you retrieve what you need with `GetOrCreateMock<T>()` instead of declaring a field for every constructor dependency
+- **Automatic component construction** — the subject under test is created and injected for you; no repeated `new MyService(dep1.Object, dep2.Object, ...)` wiring in each test
+- **Refactoring-friendly tests** — when a component gains a new constructor dependency, existing tests usually keep working because the extra mock is auto-registered
+- **One-call constructor guard coverage** — `TestAllConstructorParameters(...)` replaces a test-per-parameter pattern with one helper-driven null-guard assertion
+
+### Provider-first without provider lock-in
+
+FastMoq ships with a bundled `reflection` provider, so you can start without taking a dependency on a mock library. When you want provider-native arrange syntax, add `FastMoq.Provider.Moq` or `FastMoq.Provider.NSubstitute` and keep the rest of the harness the same. The verification surface stays provider-neutral through `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, and `TimesSpec`, which keeps tests portable if you switch providers later.
+
+### Built for the parts of tests that usually get noisy
+
+- **Framework-heavy collaborators are pre-wired** — common test types such as `ILogger<T>`, `ILoggerFactory`, `IFileSystem`, and `HttpClient` do not need bespoke setup before you can use them
+- **Database and HTTP helpers stay in the same model** — `GetMockDbContext<TContext>()`, `WhenHttpRequest(...)`, and `WhenHttpRequestJson(...)` cover common high-friction setup without dropping out of the FastMoq flow
+- **Web, Blazor, Azure, and scenario helpers are available when the test surface expands** — the package set includes support for bUnit-style Blazor tests, MVC and `HttpContext` helpers, Azure SDK and Functions helpers, and fluent scenario coverage through `ScenarioBuilder<T>`
+
+### Works well when a suite needs to stay maintainable
+
+FastMoq pays off most when tests have multiple constructor dependencies, recurring framework abstractions, or a need to keep provider choices flexible over time. It targets .NET 8, 9, and 10, is designed around xUnit, and includes the analyzer pack by default in `FastMoq` and `FastMoq.Core` so provider-first guidance shows up directly in the IDE.
 
 ### FastMoq vs Direct Mock Provider Usage
 
@@ -114,32 +118,32 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
 
 The FastMoq version removes explicit mock declarations, subject construction, and logger-plumbing code while still allowing provider-specific setup when you need it.
 
-If you want a copy-paste example that works under the default provider without Moq-specific setup, start with [Getting Started Guide](./docs/getting-started).
+If you want a copy-paste example that works under the default provider without Moq-specific setup, start with [Getting Started Guide](https://help.fastmoq.com/docs/getting-started/README.html).
 
 ## 📚 Documentation
 
 ### Quick Links
 
-- **🚀 [Getting Started Guide](./docs/getting-started)** - Your first FastMoq test in 5 minutes
-- **🧪 [Testing Guide](./docs/getting-started/testing-guide.md)** - Repo-native guidance for `GetOrCreateMock<T>()`, `AddType(...)`, `DbContext`, `IFileSystem`, and known types
-- **🔄 [Migration Guide](./docs/migration)** - Practical old-to-new guidance for the `3.0.0` to `4.3.0` transition
-- **👨‍🍳 [Cookbook](./docs/cookbook)** - Real-world patterns and recipes with compatibility-only pockets labeled explicitly
+- **🚀 [Getting Started Guide](https://help.fastmoq.com/docs/getting-started/README.html)** - Your first FastMoq test in 5 minutes
+- **🧪 [Testing Guide](https://help.fastmoq.com/docs/getting-started/testing-guide.html)** - Repo-native guidance for `GetOrCreateMock<T>()`, `AddType(...)`, `DbContext`, `IFileSystem`, and known types
+- **🔄 [Migration Guide](https://help.fastmoq.com/docs/migration/README.html)** - Practical old-to-new guidance for the `3.0.0` to `4.3.0` transition
+- **👨‍🍳 [Cookbook](https://help.fastmoq.com/docs/cookbook/README.html)** - Real-world patterns and recipes with compatibility-only pockets labeled explicitly
 - **🔎 [API Reference](https://help.fastmoq.com/)** - Published HTML API reference for namespaces, types, and members
-- **🌐 [Web Helper Guidance](./docs/getting-started/testing-guide.md#controller-testing)** - Controller, `HttpContext`, `IHttpContextAccessor`, and claims-principal test setup
-- **🔌 [Provider Selection Guide](./docs/getting-started/provider-selection.md)** - How to register, select, and bootstrap providers for a test assembly
-- **📋 [Provider Capabilities](./docs/getting-started/provider-capabilities.md)** - What `moq`, `nsubstitute`, and `reflection` support today, with recommended usage patterns
-- **🧪 [Executable Testing Examples](./docs/samples/testing-examples.md)** - Repo-backed service examples using the current FastMoq API direction
-- **🏗️ [Sample Applications](./docs/samples)** - Complete examples with Azure integration
-- **📊 [Feature Comparison](./docs/feature-parity)** - FastMoq vs Moq/NSubstitute
-- **📈 [Benchmarks](./docs/benchmarks)** - Runnable BenchmarkDotNet suite and latest checked-in results
+- **🌐 [Web Helper Guidance](https://help.fastmoq.com/docs/getting-started/testing-guide.html#controller-testing)** - Controller, `HttpContext`, `IHttpContextAccessor`, and claims-principal test setup
+- **🔌 [Provider Selection Guide](https://help.fastmoq.com/docs/getting-started/provider-selection.html)** - How to register, select, and bootstrap providers for a test assembly
+- **📋 [Provider Capabilities](https://help.fastmoq.com/docs/getting-started/provider-capabilities.html)** - What `moq`, `nsubstitute`, and `reflection` support today, with recommended usage patterns
+- **🧪 [Executable Testing Examples](https://help.fastmoq.com/docs/samples/testing-examples.html)** - Repo-backed service examples using the current FastMoq API direction
+- **🏗️ [Sample Applications](https://help.fastmoq.com/docs/samples/README.html)** - Complete examples with Azure integration
+- **📊 [Feature Comparison](https://help.fastmoq.com/docs/feature-parity/README.html)** - FastMoq vs Moq/NSubstitute
+- **📈 [Benchmarks](https://help.fastmoq.com/docs/benchmarks/README.html)** - Runnable BenchmarkDotNet suite and latest checked-in results
 
 ### Additional Resources
 
-- **📖 [Complete Documentation](./docs)** - All guides and references in one place
-- **🗺️ [Roadmap Notes](./docs/roadmap)** - Current provider-first direction and deferred backlog items
-- **🆕 [What's New Since 3.0.0](./docs/whats-new)** - Summary of the major post-`3.0.0` architecture, packaging, and API changes
-- **⚠️ [Breaking Changes](./docs/breaking-changes)** - Intentional v4 behavior changes relative to the `3.0.0` public release
-- **🔄 [Migration Guide](./docs/migration)** - Practical old-to-new guidance from `3.0.0` to the current repo direction
+- **📖 [Complete Documentation](https://help.fastmoq.com/)** - All guides and references in one place
+- **🗺️ [Roadmap Notes](https://help.fastmoq.com/docs/roadmap/README.html)** - Current provider-first direction and deferred backlog items
+- **🆕 [What's New Since 3.0.0](https://help.fastmoq.com/docs/whats-new/README.html)** - Summary of the major post-`3.0.0` architecture, packaging, and API changes
+- **⚠️ [Breaking Changes](https://help.fastmoq.com/docs/breaking-changes/README.html)** - Intentional v4 behavior changes relative to the `3.0.0` public release
+- **🔄 [Migration Guide](https://help.fastmoq.com/docs/migration/README.html)** - Practical old-to-new guidance from `3.0.0` to the current repo direction
 - **❓ [FAQs](./FAQs.md)** - Frequently asked questions and troubleshooting
 - **🔗 [API Documentation](https://help.fastmoq.com/)** - Generated HTML API reference
 
@@ -182,8 +186,8 @@ Web-helper note:
 
 - if you install the aggregate `FastMoq` package, the web helpers are included
 - if you install `FastMoq.Core` directly, add `FastMoq.Web` before using `CreateHttpContext(...)`, `CreateControllerContext(...)`, `SetupClaimsPrincipal(...)`, `AddHttpContext(...)`, or `AddHttpContextAccessor(...)`
-- for migration-specific guidance, start with [Migration Guide](./docs/migration/README.md#web-test-helpers) and then use [Testing Guide](./docs/getting-started/testing-guide.md#controller-testing) for the day-to-day helper rules
-- for the full package-choice overview, use [Getting Started](./docs/getting-started/README.md#package-choices)
+- for migration-specific guidance, start with [Migration Guide](https://help.fastmoq.com/docs/migration/README.html#web-test-helpers) and then use [Testing Guide](https://help.fastmoq.com/docs/getting-started/testing-guide.html#controller-testing) for the day-to-day helper rules
+- for the full package-choice overview, use [Getting Started](https://help.fastmoq.com/docs/getting-started/README.html#package-choices)
 
 Azure Functions helper note:
 
@@ -230,7 +234,7 @@ MockingProviderRegistry.Register("moq", MoqMockingProvider.Instance, setAsDefaul
 var mocker = new Mocker();
 ```
 
-For a temporary override in a specific async scope, use `MockingProviderRegistry.Push("providerName")`. For detailed setup guidance, see [Provider Selection Guide](./docs/getting-started/provider-selection.md).
+For a temporary override in a specific async scope, use `MockingProviderRegistry.Push("providerName")`. For detailed setup guidance, see [Provider Selection Guide](https://help.fastmoq.com/docs/getting-started/provider-selection.html).
 
 ## Targets
 
@@ -240,7 +244,7 @@ For a temporary override in a specific async scope, use `MockingProviderRegistry
 
 ## Quick Example
 
-If you want a copy-paste example that works under the default provider, use [Getting Started Guide](./docs/getting-started) first.
+If you want a copy-paste example that works under the default provider, use [Getting Started Guide](https://help.fastmoq.com/docs/getting-started/README.html) first.
 
 The snippet below is the optional Moq-fluent path, so it assumes `FastMoq.Provider.Moq` is installed and `moq` is selected for the test assembly.
 
@@ -284,13 +288,13 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
 
 ## Learn More
 
-- [Getting Started Guide](./docs/getting-started) for step-by-step first tests
-- [Testing Guide](./docs/getting-started/testing-guide.md) for common patterns such as `IFileSystem`, `DbContext`, `CallMethod(...)`, and constructor-guard testing
-- [Executable Testing Examples](./docs/samples/testing-examples.md) for realistic sample flows backed by repository tests
-- [Provider Selection Guide](./docs/getting-started/provider-selection.md) for provider bootstrap and selection
-- [Provider Capabilities](./docs/getting-started/provider-capabilities.md) for supported-vs-unsupported behavior by provider
-- [Migration Guide](./docs/migration) for the v3 to v4 to v5 path
-- [Breaking Changes](./docs/breaking-changes/README.md) for behavior changes relative to `3.0.0`
+- [Getting Started Guide](https://help.fastmoq.com/docs/getting-started/README.html) for step-by-step first tests
+- [Testing Guide](https://help.fastmoq.com/docs/getting-started/testing-guide.html) for common patterns such as `IFileSystem`, `DbContext`, `CallMethod(...)`, and constructor-guard testing
+- [Executable Testing Examples](https://help.fastmoq.com/docs/samples/testing-examples.html) for realistic sample flows backed by repository tests
+- [Provider Selection Guide](https://help.fastmoq.com/docs/getting-started/provider-selection.html) for provider bootstrap and selection
+- [Provider Capabilities](https://help.fastmoq.com/docs/getting-started/provider-capabilities.html) for supported-vs-unsupported behavior by provider
+- [Migration Guide](https://help.fastmoq.com/docs/migration/README.html) for the v3 to v4 to v5 path
+- [Breaking Changes](https://help.fastmoq.com/docs/breaking-changes/README.html) for behavior changes relative to `3.0.0`
 - [API Documentation](https://help.fastmoq.com/) for generated reference docs
 
 ## License
