@@ -19,6 +19,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace FastMoq.Tests
 {
@@ -346,6 +347,35 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void AddLoggerFactory_WithProvider_ShouldRegisterCustomProviderAndPreserveVerification()
+        {
+            using var providerScope = PushProviderScope("reflection");
+            var providerEntries = new List<string>();
+            using var provider = new CallbackLoggerProvider((logLevel, eventId, message, exception) =>
+            {
+                providerEntries.Add($"{logLevel}:{eventId.Id}:{message}:{exception?.Message}");
+            });
+            var mocker = new Mocker();
+
+            mocker.AddLoggerFactory(provider, replace: true);
+
+            var loggerFactory = mocker.GetObject<ILoggerFactory>();
+            var logger = mocker.GetObject<ILogger<ServiceProviderHelperTests>>();
+
+            loggerFactory.Should().NotBeNull();
+            logger.Should().NotBeNull();
+
+            loggerFactory!.CreateLogger("fastmoq.provider").LogInformation("provider logger");
+            logger!.LogError(12, new InvalidOperationException("provider boom"), "provider typed logger");
+
+            providerEntries.Should().HaveCount(2);
+            providerEntries[0].Should().Contain("Information:0:provider logger");
+            providerEntries[1].Should().Contain("Error:12:provider typed logger:provider boom");
+            mocker.VerifyLogged(LogLevel.Information, "provider logger");
+            mocker.VerifyLogged(LogLevel.Error, "provider typed logger", new InvalidOperationException("provider boom"), 12, TimesSpec.Once);
+        }
+
+        [Fact]
         public void CreateLoggerFactory_ShouldSupportTypedServiceProviderComposition()
         {
             using var providerScope = PushProviderScope("reflection");
@@ -408,6 +438,44 @@ namespace FastMoq.Tests
 
             mocker.VerifyLogged(LogLevel.Information, "line sink factory");
             mocker.VerifyLogged(LogLevel.Error, "line sink typed", new InvalidOperationException("line sink boom"), 12, TimesSpec.Once);
+        }
+
+        [Fact]
+        public void CreateLoggerFactory_WithProvider_ShouldComposeCustomProviderAndLoggingConfiguration()
+        {
+            using var providerScope = PushProviderScope("reflection");
+            var providerEntries = new List<string>();
+            using var provider = new CallbackLoggerProvider((logLevel, eventId, message, exception) =>
+            {
+                providerEntries.Add($"{logLevel}:{eventId.Id}:{message}:{exception?.Message}");
+            });
+            var mocker = new Mocker();
+            var loggerFactory = mocker.CreateLoggerFactory(provider, builder => builder.SetMinimumLevel(LogLevel.Error));
+            var logger = loggerFactory.CreateLogger("provider-filtered");
+
+            logger.LogInformation("filtered out");
+            logger.LogError(42, new InvalidOperationException("filtered boom"), "captured error");
+
+            providerEntries.Should().HaveCount(1);
+            providerEntries[0].Should().Contain("Error:42:captured error:filtered boom");
+            mocker.LogEntries.Should().ContainSingle(entry => entry.Message == "captured error");
+            mocker.VerifyLogged(LogLevel.Error, "captured error", new InvalidOperationException("filtered boom"), 42, TimesSpec.Once);
+        }
+
+        [Fact]
+        public async Task CreateLoggerFactory_ShouldCaptureConcurrentWrites()
+        {
+            using var providerScope = PushProviderScope("reflection");
+            var mocker = new Mocker();
+            var logger = mocker.CreateLoggerFactory().CreateLogger("concurrency");
+            const int writeCount = 256;
+
+            await Task.WhenAll(Enumerable.Range(0, writeCount).Select(index =>
+                Task.Run(() => logger.LogInformation("parallel log {Index}", index))));
+
+            mocker.LogEntries.Should().HaveCount(writeCount);
+            mocker.VerifyLogged(LogLevel.Information, "parallel log 0", TimesSpec.Once);
+            mocker.VerifyLogged(LogLevel.Information, $"parallel log {writeCount - 1}", TimesSpec.Once);
         }
 
         [Fact]
@@ -907,6 +975,56 @@ namespace FastMoq.Tests
             public void Dispose()
             {
                 IsDisposed = true;
+            }
+        }
+
+        private sealed class CallbackLoggerProvider(Action<LogLevel, EventId, string, Exception?> callback) : ILoggerProvider
+        {
+            private readonly Action<LogLevel, EventId, string, Exception?> _callback = callback;
+
+            public ILogger CreateLogger(string categoryName)
+            {
+                return new CallbackLogger(_callback);
+            }
+
+            public void Dispose()
+            {
+            }
+
+            private sealed class CallbackLogger(Action<LogLevel, EventId, string, Exception?> callback) : ILogger
+            {
+                private readonly Action<LogLevel, EventId, string, Exception?> _callback = callback;
+
+                public IDisposable BeginScope<TState>(TState state) where TState : notnull
+                {
+                    return NoOpDisposable.Instance;
+                }
+
+                public bool IsEnabled(LogLevel logLevel)
+                {
+                    return logLevel != LogLevel.None;
+                }
+
+                public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+                {
+                    ArgumentNullException.ThrowIfNull(formatter);
+
+                    if (!IsEnabled(logLevel))
+                    {
+                        return;
+                    }
+
+                    _callback(logLevel, eventId, formatter(state, exception) ?? state?.ToString() ?? string.Empty, exception);
+                }
+            }
+
+            private sealed class NoOpDisposable : IDisposable
+            {
+                public static NoOpDisposable Instance { get; } = new();
+
+                public void Dispose()
+                {
+                }
             }
         }
 

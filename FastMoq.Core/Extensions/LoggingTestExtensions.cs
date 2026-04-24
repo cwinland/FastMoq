@@ -77,6 +77,28 @@ namespace FastMoq.Extensions
         }
 
         /// <summary>
+        /// Creates a logger factory that adds a custom <see cref="ILoggerProvider" /> while still forwarding captured log entries into the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="provider">A custom logger provider that processes all logged entries alongside FastMoq capture.</param>
+        /// <param name="configureLogging">Optional logging builder customization applied before the FastMoq capture provider is added.</param>
+        /// <returns>A logger factory that routes log entries to <paramref name="provider" /> and <see cref="Mocker.LogEntries" />.</returns>
+        /// <remarks>
+        /// Use this when test composition needs a first-class logging provider, such as xUnit output forwarding or custom filtering, without giving up FastMoq verification.
+        /// </remarks>
+        public static ILoggerFactory CreateLoggerFactory(this Mocker mocker, ILoggerProvider provider, Action<ILoggingBuilder>? configureLogging = null)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(provider);
+
+            return CreateLoggerFactoryCore(mocker, mocker.LoggingCallback, builder =>
+            {
+                configureLogging?.Invoke(builder);
+                builder.AddProvider(provider);
+            });
+        }
+
+        /// <summary>
         /// Creates and registers a logger factory along with direct <see cref="ILogger" /> and <see cref="ILogger{TCategoryName}" /> resolution support.
         /// </summary>
         /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
@@ -133,6 +155,26 @@ namespace FastMoq.Extensions
             ArgumentNullException.ThrowIfNull(lineWriter);
 
             var loggerFactory = mocker.CreateLoggerFactory(lineWriter, configureLogging);
+            return mocker.AddLoggerFactory(loggerFactory, replace);
+        }
+
+        /// <summary>
+        /// Creates and registers a logger factory that adds a custom <see cref="ILoggerProvider" /> while still forwarding captured entries into the current <see cref="Mocker" /> instance.
+        /// </summary>
+        /// <param name="mocker">The current <see cref="Mocker" /> instance.</param>
+        /// <param name="provider">A custom logger provider that processes all logged entries alongside FastMoq capture.</param>
+        /// <param name="configureLogging">Optional logging builder customization applied before the FastMoq capture provider is added.</param>
+        /// <param name="replace">True to replace existing logger registrations.</param>
+        /// <returns>The current <see cref="Mocker" /> instance.</returns>
+        /// <remarks>
+        /// Use this when you want direct <see cref="ILogger" /> and <see cref="ILogger{TCategoryName}" /> resolution backed by a custom provider and FastMoq verification together.
+        /// </remarks>
+        public static Mocker AddLoggerFactory(this Mocker mocker, ILoggerProvider provider, Action<ILoggingBuilder>? configureLogging = null, bool replace = false)
+        {
+            ArgumentNullException.ThrowIfNull(mocker);
+            ArgumentNullException.ThrowIfNull(provider);
+
+            var loggerFactory = mocker.CreateLoggerFactory(provider, configureLogging);
             return mocker.AddLoggerFactory(loggerFactory, replace);
         }
 
