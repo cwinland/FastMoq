@@ -1960,6 +1960,17 @@ namespace FastMoq.Tests
         }
 
         [Fact]
+        public void AddProperties_NoData_ShouldIgnoreIndexerProperties()
+        {
+            var obj = new AddPropertiesIndexerTarget();
+
+            Component.AddProperties(obj);
+
+            obj.FileSystem.Should().NotBeNull();
+            Component.ExceptionLog.Should().BeEmpty();
+        }
+
+        [Fact]
         public void AddType_ShouldHaveValues3_WhenOptionalResolutionResolvesViaMocker()
         {
 #pragma warning disable CS0618 // Intentional compatibility coverage for deprecated context-based AddType overload.
@@ -2094,6 +2105,19 @@ namespace FastMoq.Tests
         internal ILogger? Logger { get; }
 
         internal IFileSystem? FileSystem { get; }
+    }
+
+    internal sealed class AddPropertiesIndexerTarget
+    {
+        private readonly Dictionary<int, string> _values = new();
+
+        public IFileSystem? FileSystem { get; set; }
+
+        public string this[int index]
+        {
+            get => _values.TryGetValue(index, out var value) ? value : string.Empty;
+            set => _values[index] = value;
+        }
     }
 
     internal interface IThrowingLegacyHydrationDependency

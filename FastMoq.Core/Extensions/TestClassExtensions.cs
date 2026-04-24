@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq.Expressions;
@@ -47,6 +48,9 @@ namespace FastMoq.Extensions
             (typeof(IReadOnlyDictionary<,>), typeof(Dictionary<,>)),
             (typeof(IOptions<>), typeof(OptionsWrapper<>)),
         ];
+        private static readonly ConcurrentDictionary<Type, Type> InterfaceResolutionCache = new();
+        private static readonly ConcurrentDictionary<Type, FieldInfo[]> InjectionFieldCache = new();
+        private static readonly ConcurrentDictionary<Type, PropertyInfo[]> InjectionPropertyCache = new();
 
         /// <summary>
         ///     Calls the generic method.
@@ -320,8 +324,19 @@ namespace FastMoq.Extensions
             }
 
             // Continue with existing logic if no match is found
+            if (typeList == null && InterfaceResolutionCache.TryGetValue(tType, out var cachedType))
+            {
+                return cachedType;
+            }
+
             var types = typeList ?? tType.Assembly.GetTypes().ToList();
-            return GetTypeFromInterfaceList(mocker, tType, types);
+            var resolvedType = GetTypeFromInterfaceList(mocker, tType, types);
+            if (typeList == null)
+            {
+                InterfaceResolutionCache[tType] = resolvedType;
+            }
+
+            return resolvedType;
         }
 
         private static bool TryMapGenericType(Type tType, Type interfaceType, Type defaultType, Mocker mocker, out Type type)
@@ -832,14 +847,25 @@ namespace FastMoq.Extensions
         /// <param name="type">The type.</param>
         /// <param name="attributeType">Override attribute type.</param>
         /// <returns><see cref="IEnumerable{T}" />.</returns>
-        internal static IEnumerable<FieldInfo> GetInjectionFields(this Type type, Type? attributeType = null) =>
-            type
+        internal static IEnumerable<FieldInfo> GetInjectionFields(this Type type, Type? attributeType = null)
+        {
+            if (attributeType == null)
+            {
+                return InjectionFieldCache.GetOrAdd(type, static t =>
+                    t.GetRuntimeFields()
+                        .Where(x => x.CustomAttributes.Any(y =>
+                            y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)))
+                        .ToArray());
+            }
+
+            return type
                 .GetRuntimeFields()
                 .Where(x => x.CustomAttributes.Any(y =>
                         y.AttributeType == attributeType ||
                         y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)
                     )
                 );
+        }
 
         /// <summary>
         ///     Gets the injection properties.
@@ -847,14 +873,25 @@ namespace FastMoq.Extensions
         /// <param name="type">The type.</param>
         /// <param name="attributeType">Override attribute type.</param>
         /// <returns><see cref="IEnumerable{T}" />.</returns>
-        internal static IEnumerable<PropertyInfo> GetInjectionProperties(this Type type, Type? attributeType = null) =>
-            type
+        internal static IEnumerable<PropertyInfo> GetInjectionProperties(this Type type, Type? attributeType = null)
+        {
+            if (attributeType == null)
+            {
+                return InjectionPropertyCache.GetOrAdd(type, static t =>
+                    t.GetRuntimeProperties()
+                        .Where(x => x.CustomAttributes.Any(y =>
+                            y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)))
+                        .ToArray());
+            }
+
+            return type
                 .GetRuntimeProperties()
                 .Where(x => x.CustomAttributes.Any(y =>
                         y.AttributeType == attributeType ||
                         y.AttributeType.Name.Equals("InjectAttribute", StringComparison.OrdinalIgnoreCase)
                     )
                 );
+        }
 
         /// <summary>
         ///     Gets the member expression internal.

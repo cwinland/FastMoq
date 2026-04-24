@@ -71,7 +71,7 @@ Comprehensive comparison of FastMoq with other popular mocking frameworks.
 
 - Side-by-side feature comparison
 - Migration guides from Moq and NSubstitute
-- Performance and memory usage analysis
+- Links to runnable benchmarks when raw overhead comparisons matter
 - When to choose FastMoq vs alternatives
 
 ### 👨‍🍳 [Cookbook](./cookbook/README.md)
@@ -94,15 +94,13 @@ Complete, runnable examples demonstrating FastMoq in production-like scenarios.
 - **E-Commerce Order Processing** - Complete sample documentation under `docs/samples/ecommerce-orders`
 - **Executable Testing Examples** - Smaller repo-local service tests that track current FastMoq guidance
 
-### 📈 Benchmarks
+### 📈 [Benchmarks](./benchmarks/README.md)
 
-Performance analysis and productivity improvements.
+Runnable BenchmarkDotNet coverage for current provider-first FastMoq flows.
 
-- Execution speed comparisons
-- Memory usage analysis
-- Developer productivity metrics
-- Real-world impact studies
-- ROI calculations
+- `FastMoq.Benchmarks` compares direct Moq against current FastMoq usage
+- Includes the exact run command and benchmark scope for this branch
+- Links to the latest checked-in short-run results summary
 
 ### 🗺️ [Roadmap Notes](./roadmap/README.md)
 
