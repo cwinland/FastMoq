@@ -980,11 +980,11 @@ namespace FastMoq.Tests
 
         private sealed class CallbackLoggerProvider(Action<LogLevel, EventId, string, Exception?> callback) : ILoggerProvider
         {
-            private readonly Action<LogLevel, EventId, string, Exception?> callback = callback;
+            private readonly Action<LogLevel, EventId, string, Exception?> _callback = callback;
 
             public ILogger CreateLogger(string categoryName)
             {
-                return new CallbackLogger(callback);
+                return new CallbackLogger(_callback);
             }
 
             public void Dispose()
@@ -993,7 +993,7 @@ namespace FastMoq.Tests
 
             private sealed class CallbackLogger(Action<LogLevel, EventId, string, Exception?> callback) : ILogger
             {
-                private readonly Action<LogLevel, EventId, string, Exception?> callback = callback;
+                private readonly Action<LogLevel, EventId, string, Exception?> _callback = callback;
 
                 public IDisposable BeginScope<TState>(TState state) where TState : notnull
                 {
@@ -1014,7 +1014,7 @@ namespace FastMoq.Tests
                         return;
                     }
 
-                    callback(logLevel, eventId, formatter(state, exception) ?? state?.ToString() ?? string.Empty, exception);
+                    _callback(logLevel, eventId, formatter(state, exception) ?? state?.ToString() ?? string.Empty, exception);
                 }
             }
 
