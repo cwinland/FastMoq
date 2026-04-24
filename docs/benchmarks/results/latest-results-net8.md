@@ -19,9 +19,7 @@ These numbers are local branch measurements, not a guarantee of the same timings
 
 ## Why this is the published comparison
 
-This document is intentionally limited to invocation-only workflow benchmarks. Those benchmarks answer the public question directly: how close is FastMoq to direct Moq once setup is already complete?
-
-Setup-focused benchmarks such as `SetupFastMock` and tracked-creation microbenchmarks are still useful, but they are better treated as internal engineering diagnostics than as public comparison headlines.
+This document publishes the invocation-only workflow comparison: how close is FastMoq to direct Moq once setup is already complete?
 
 ## Simple invocation-only workflow
 
@@ -53,4 +51,3 @@ This scenario builds the larger workflow once in global setup and then measures 
 
 - In these workflow comparisons, FastMoq and direct Moq are effectively tied across the measured invocation counts.
 - Allocations are identical across the published simple and complex workflow slices.
-- `SetupFastMock` and tracked-creation diagnostics are useful for internal optimization work, but they are not especially useful as public comparisons because they measure one-time framework setup and activation cost rather than steady-state workload execution.
