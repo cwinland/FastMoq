@@ -1,5 +1,4 @@
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Order;
 using FastMoq.Providers;
 using FastMoq.Providers.MoqProvider;
@@ -13,7 +12,6 @@ namespace FastMoq.Benchmarks;
 [MemoryDiagnoser]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
 [RankColumn]
-[ShortRunJob(RuntimeMoniker.Net80)]
 public class StandaloneHandleBenchmarks : MoqProviderBenchmarkBase
 {
     /// <summary>

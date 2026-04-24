@@ -2,7 +2,12 @@
 
 This repository includes a runnable BenchmarkDotNet suite in `FastMoq.Benchmarks`.
 
-The current suite measures raw direct-provider versus FastMoq provider-first overhead for a few representative flows. It does not try to quantify readability, migration cost, or the value of higher-level helpers outside the measured execution path.
+The suite is used for two different purposes:
+
+- fast local diagnostics while tuning changes
+- publishable slices that separate steady-state runtime from setup and creation cost
+
+The benchmark classes no longer embed a fixed BenchmarkDotNet job. Choose the job explicitly from the command line so `short`, `medium`, and any custom settings do not stack together.
 
 ## What the suite measures
 
@@ -18,42 +23,49 @@ The current suite measures raw direct-provider versus FastMoq provider-first ove
 
 ## Run the benchmarks
 
+Fast local full-suite pass:
+
 ```powershell
-dotnet run -c Release --project .\FastMoq.Benchmarks\FastMoq.Benchmarks.csproj -- --filter "*"
+dotnet run -c Release --project .\FastMoq.Benchmarks\FastMoq.Benchmarks.csproj -- -j short --filter "*"
+```
+
+Publishable runtime slice:
+
+```powershell
+dotnet run -c Release --project .\FastMoq.Benchmarks\FastMoq.Benchmarks.csproj -- -j medium --filter "*SimpleInvocationOnlyBenchmarks*" "*ComplexInvocationOnlyBenchmarks*"
+```
+
+Publishable setup and creation slice:
+
+```powershell
+dotnet run -c Release --project .\FastMoq.Benchmarks\FastMoq.Benchmarks.csproj -- -j medium --filter "*SetupFastMockBenchmarks*" "*TrackedCreationBenchmarks*"
 ```
 
 BenchmarkDotNet writes local artifacts to `BenchmarkDotNet.Artifacts/results/`.
 
 ## Latest checked-in results
 
-The latest checked-in short-run summary is in [results/latest-short-run-net8.md](./results/latest-short-run-net8.md).
+The latest checked-in publish set is in [results/latest-medium-run-selected-net8.md](./results/latest-medium-run-selected-net8.md).
 
-Headline results from the latest local full-suite run on this branch:
+Headline results from the latest checked-in medium runs on this branch:
 
-| Scenario | Fastest result | Slowest result | Key takeaway |
+| Scenario | Direct Moq | FastMoq | Key takeaway |
 | --- | --- | --- | --- |
-| Simple tracked service flow | Direct Moq: 313.6 us, 115.54 KB | FastMoq provider-first: 917.0 us, 467.46 KB | The simple full-service path improved again, but it is still materially slower than direct Moq |
-| Complex tracked dependency graph | Direct Moq: 872.6 us, 285.98 KB | FastMoq provider-first: 1.949 ms, 912.42 KB | The larger tracked graph remains the main end-to-end gap |
-| Invocation-only steady-state flow | Direct Moq: 1.386 us to 367.539 us | FastMoq provider-first: 1.372 us to 372.993 us | Once setup is removed, the simple and complex runtime paths stay in the same allocation band and usually within short-run noise of each other |
-| SetupFastMock microbench | Plain interface create+setup: 30.10 us, 50.53 KB | Logger create+setup: 97.00 us, 75.46 KB | Logger compatibility and setup still dominate the tracked setup outlier, while plain interface setup is now close to raw provider creation |
-| Detached same-type doubles | Direct Moq: 115.5 us, 44.76 KB | FastMoq standalone handles: 167.5 us, 121.11 KB | Detached-handle overhead remains smaller than the tracked service-creation gap |
-| FastMoq provider matrix | Reflection: 39.19 us, 34.43 KB | NSubstitute: 65.49 us, 48.41 KB | The lightweight interaction-only path is much cheaper than full tracked service creation, though short-run variance is still visible |
-| Tracked lookup microbench | Contains: 4.989 ns | GetOrCreate tracked mock: 22.859 ns | Indexed unkeyed lookup keeps tracked retrieval overhead low |
-| Tracked creation microbench | Tracked interface mock: 48.67 us, 82.04 KB | Tracked service with dependencies: 433.76 us, 359.58 KB | Tracked logger creation improved sharply, but full service activation still dominates the remaining cost |
+| Simple invocation-only runtime | `1.261 us` to `133.876 us`, `1.16 KB` to `115.7 KB` | `1.272 us` to `128.809 us`, same allocations | Once setup is removed, the simple runtime path is effectively tied and slightly favors FastMoq at `InvocationCount=100` |
+| Complex invocation-only runtime | `3.901 us` to `370.498 us`, `2.68 KB` to `268.07 KB` | `3.659 us` to `365.893 us`, same allocations | The larger steady-state workflow is also effectively tied once construction is out of the measurement |
+| SetupFastMock diagnostics | raw creation `24.49 us` to `25.29 us` | create plus setup `28.04 us` to `96.34 us` | Plain interface setup is close to raw creation, while logger setup remains the main tracked-setup outlier |
+| Tracked creation diagnostics | interface `47.25 us` | logger `121.97 us`, service `432.74 us` | Runtime parity is no longer the main issue in these measured slices; setup and activation are the remaining optimization targets |
 
 ## What the current numbers suggest
 
-- FastMoq is still slower than direct Moq in the measured full-service benchmarks.
-- The invocation-only benchmarks still show that once the service graph is already built, FastMoq and direct Moq stay in the same runtime and allocation band for the measured simple and complex flows.
-- The new `SetupFastMockBenchmarks` make the next hotspot clearer: logger setup remains the dominant tracked-setup outlier, while plain interface setup is now only a small increment above raw provider creation.
-- The provider-matrix interaction benchmark is much cheaper than the full tracked-service benchmarks, which keeps pointing to tracked setup and object construction rather than provider-neutral verification alone.
-- The detached-handle benchmark is still much closer to direct Moq than the full tracked-service flows are.
-- This branch already improved tracked lookup and tracked creation overhead with an indexed unkeyed mock store, type-model and injection-member caches, cached property metadata, cheaper Moq logger setup dispatch, and a setup fast path that skips injection-member scans for interface mocks.
-- A constructor metadata cache was tested and then removed because the tracked creation microbench improved while the full tracked-service benchmarks did not show a reliable end-to-end benefit.
-- The remaining optimization work is now more clearly centered on tracked setup and construction behavior rather than on post-setup invocation, detached-handle creation, or provider-neutral verification alone.
+- The publishable story should focus on invocation-only results, because they answer the runtime question directly without mixing in one-time setup cost.
+- In the current medium runs, FastMoq and direct Moq are effectively tied in both simple and complex steady-state flows, with identical allocations across the measured invocation counts.
+- Setup is still slower than raw provider creation, especially for loggers, but that is now a diagnostic result rather than the headline runtime claim.
+- `SetupFastMockBenchmarks` and `TrackedCreationBenchmarks` are the right slices to keep using for optimization work because they isolate the remaining overhead without hiding it.
+- Full service-construction benchmarks are still useful during development, but they are not the clearest published summary because they combine construction, setup, and business execution into one number.
 
 ## Improvement plan
 
 The current optimization plan is tracked in [improvement-plan.md](./improvement-plan.md).
 
-That plan records which performance changes were completed in this round and what the next safe behavior-preserving passes should target.
+That plan records which performance changes were completed in this round and which setup and activation slices are still the best next targets.

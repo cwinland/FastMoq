@@ -1,5 +1,4 @@
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Order;
 using FastMoq.Extensions;
 using FastMoq.Providers;
@@ -12,7 +11,6 @@ namespace FastMoq.Benchmarks;
 [MemoryDiagnoser]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
 [RankColumn]
-[ShortRunJob(RuntimeMoniker.Net80)]
 public class TrackedLookupBenchmarks
 {
     private IDisposable? _providerScope;
