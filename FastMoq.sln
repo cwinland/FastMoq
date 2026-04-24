@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Tests.Blazor", "Fas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Tests.Web", "FastMoq.Tests.Web\FastMoq.Tests.Web.csproj", "{F06DE053-0DEA-4128-9DD0-1991E735271F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastMoq.Benchmarks", "FastMoq.Benchmarks\FastMoq.Benchmarks.csproj", "{9A7C6B0A-F5C7-4C39-BF6C-85171C2D0D57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastMoq.Benchmarks", "FastMoq.Benchmarks\FastMoq.Benchmarks.csproj", "{9A7C6B0A-F5C7-4C39-BF6C-85171C2D0D57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

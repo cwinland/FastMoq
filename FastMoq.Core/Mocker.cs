@@ -1053,7 +1053,12 @@ namespace FastMoq
                 {
                     foreach (var prop in AutoPopulatedPropertyCache.GetOrAdd(type, static candidateType =>
                         candidateType.GetProperties()
-                            .Where(p => p.CanRead && p.CanWrite)
+                            .Where(p =>
+                                p.CanRead &&
+                                p.CanWrite &&
+                                p.GetIndexParameters().Length == 0 &&
+                                !(p.GetMethod?.IsStatic ?? false) &&
+                                !(p.SetMethod?.IsStatic ?? false))
                             .ToArray()))
                     {
                         try
