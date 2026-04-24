@@ -35,6 +35,7 @@
           "FAQs.md",
           "docs/README.md",
           "docs/api/**.md",
+          "docs/benchmarks/**.md",
           "docs/breaking-changes/**.md",
           "docs/cookbook/**.md",
           "docs/feature-parity/**.md",

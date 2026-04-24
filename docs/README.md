@@ -58,7 +58,7 @@ Practical guidance for moving from the public `3.0.0` release toward the current
 
 ### 🔎 [API Reference](./api/index.md)
 
-Use the docs-side API overview when you want example-first entry points and curated type routes. Use [Complete API Documentation](https://help.fastmoq.com/) when you want the full published namespace, type, and member reference.
+Use the docs-side API overview when you want example-first entry points and curated type routes. Use the generated API namespace and type pages under the site-wide `API Reference` navigation group when you want the full published namespace, type, and member reference.
 
 - Example-first API routes
 - Quick reference for common types
@@ -89,7 +89,7 @@ Practical recipes for real-world testing scenarios.
 
 ### 🏗️ [Sample Applications](./samples/README.md)
 
-Complete, runnable examples demonstrating FastMoq in production-like scenarios.
+Sample documentation plus repo-local executable examples that demonstrate FastMoq in production-like scenarios.
 
 - **E-Commerce Order Processing** - Complete sample documentation under `docs/samples/ecommerce-orders`
 - **Executable Testing Examples** - Smaller repo-local service tests that track current FastMoq guidance
@@ -130,8 +130,8 @@ Intentional v4 breaking changes, with migration notes for changed behavior.
 | -------- | ------------- | ----------- |
 | **Web APIs** | [API Controller Testing](./cookbook/README.md#api-controller-testing) | [E-Commerce Sample](./samples/ecommerce-orders/README.md) |
 | **Web helper migration** | [Framework and web helper migration](./migration/framework-and-web-helpers.md#web-test-helpers) | [Repo-native testing guide](./getting-started/testing-guide.md#controller-testing) |
-| **Database Testing** | [EF Core Testing](./cookbook/README.md#entity-framework-core-testing) | [Repository Patterns](./samples/ecommerce-orders/README.md) |
-| **Azure Integration** | [Sample Applications](./samples/README.md) | [Complete Azure App](./samples/ecommerce-orders/README.md) |
+| **Database Testing** | [EF Core Testing](./cookbook/README.md#entity-framework-core-testing) | [E-Commerce Sample](./samples/ecommerce-orders/README.md) |
+| **Azure Integration** | [Sample Applications](./samples/README.md) | [E-Commerce sample walkthrough](./samples/ecommerce-orders/README.md) |
 | **Background Jobs** | [Background Services](./cookbook/README.md#background-services-testing) | [Executable Testing Examples](./samples/testing-examples.md) |
 | **Blazor Apps** | [bUnit and Blazor test migration](./migration/bunit-and-blazor-testing.md) | [Executable Testing Examples](./samples/testing-examples.md) |
 
@@ -152,35 +152,33 @@ Azure Functions helper note: if your test project references the aggregate `Fast
 
 See [Getting Started package choices](./getting-started/README.md#package-choices) when you need the full install matrix instead of a quick reminder.
 
-## 🏆 Key Advantages
+## 🏆 What This Site Covers
 
-FastMoq is designed for **developer productivity** and **maintainable tests**:
+This documentation is intended to help you move quickly without guessing which FastMoq surface to reach for.
 
-### 📝 Less Code, More Testing
+### 📝 Less Test Harness Boilerplate
 
-- **70% reduction** in test setup code
-- **Automatic dependency injection** eliminates boilerplate
-- **Fluent API** for readable test scenarios
+- tracked mocks through `GetOrCreateMock<T>()` instead of separate mock fields for each constructor dependency
+- automatic component construction so tests stay focused on behavior instead of constructor wiring
+- first-party helpers for framework-heavy types such as logging, `HttpClient`, `IFileSystem`, `DbContext`, and HTTP context flows
 
-### ⚡ Better Performance
+### 🎛️ Provider-First Authoring
 
-- **50% faster** test execution
-- **60% less** memory usage
-- **Better scalability** for large test suites
+- provider-neutral helpers first, including `Verify(...)`, `VerifyLogged(...)`, `VerifyNoOtherCalls(...)`, and `TimesSpec`
+- provider-package extensions such as `Setup(...)`, `SetupGet(...)`, `SetupSequence(...)`, and `AsNSubstitute()` only when the arrange step actually needs provider-native syntax
+- explicit compatibility guidance for Moq-heavy migration pockets that still need raw provider APIs
 
-### 🎛️ Modern .NET Patterns
+### 🌐 Framework And Package Coverage
 
-- **Built-in support** for EF Core, HttpClient, IFileSystem
-- **Azure services** integration
-- **Configuration and Options** patterns
-- **Blazor and Web** testing
+- aggregate and split-package guidance for `FastMoq`, `FastMoq.Core`, `FastMoq.Web`, `FastMoq.Azure`, `FastMoq.AzureFunctions`, `FastMoq.Database`, and provider packages
+- repo-backed examples for controller, web, logging, background-service, and DbContext-style tests
+- API overview plus generated namespace and type pages for the current public surface
 
-### 🔧 Enterprise Ready
+### 🔄 Migration And Release Guidance
 
-- **Comprehensive logging** verification
-- **Advanced scenarios** support
-- **Team productivity** improvements
-- **Migration tools** from other frameworks
+- focused guidance for teams moving from the public `3.0.0` release to the current v4 line
+- breaking-change notes, provider-selection guidance, and compatibility exceptions
+- executable examples and sample walkthroughs that reflect the provider-first direction of the current branch
 
 ## 📖 Learning Path
 
@@ -215,7 +213,7 @@ FastMoq is designed for **developer productivity** and **maintainable tests**:
 - **Documentation**: You're here! Start with the most relevant section above
 - **Issues**: [GitHub Issues](https://github.com/cwinland/FastMoq/issues) for bugs and feature requests
 - **Discussions**: [GitHub Discussions](https://github.com/cwinland/FastMoq/discussions) for questions and community help
-- **API Reference**: [Complete API Documentation](https://help.fastmoq.com/)
+- **API Reference**: [API overview](./api/index.md) plus the generated `API Reference` navigation tree on the published site
 
 ### Contributing
 
@@ -235,7 +233,7 @@ We welcome contributions! See our:
 
 - **NuGet Package**: [FastMoq on NuGet](https://www.nuget.org/packages/FastMoq/)
 - **GitHub Repository**: [cwinland/FastMoq](https://github.com/cwinland/FastMoq)
-- **API Documentation**: [Complete API Reference](https://help.fastmoq.com/)
+- **Documentation Home**: [help.fastmoq.com](https://help.fastmoq.com/)
 - **Release Notes**: [GitHub Releases](https://github.com/cwinland/FastMoq/releases)
 
 ## 🏷️ Version Information
