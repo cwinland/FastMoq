@@ -1,21 +1,21 @@
 # FastMoq Benchmark Improvement Plan
 
-This plan is based on the current benchmark suite and the latest medium-run slices chosen for publication.
+This plan is based on the current benchmark suite and the latest diagnostics used for internal performance work.
 
 ## Current evidence
 
-Measured on the current branch with the publishable medium-run slices:
+Measured on the current branch after the latest benchmark refresh:
 
-- Simple invocation-only flow: FastMoq is within steady-state noise of direct Moq at `InvocationCount=1` and `InvocationCount=10`, and slightly ahead at `InvocationCount=100`, with identical allocations throughout.
-- Complex invocation-only flow: FastMoq and direct Moq are effectively tied across `InvocationCount=1`, `10`, and `100`, again with identical allocations.
+- Simple invocation-only workflow: FastMoq and direct Moq are effectively tied across `InvocationCount=10`, `50`, and `100`, with identical allocations.
+- Complex invocation-only workflow: FastMoq and direct Moq are effectively tied across `InvocationCount=10`, `50`, and `100`, with identical allocations.
 - `SetupFastMock(...)` diagnostics: plain interface create plus setup is `28.04 us` versus `25.29 us` for raw create-only, file system create plus setup is `34.28 us` versus `24.49 us`, and logger create plus setup is still `96.34 us` versus `25.04 us`.
 - Tracked creation diagnostics: tracked interface mock creation is `47.25 us`, tracked logger mock creation is `121.97 us`, and tracked service creation with dependencies is `432.74 us`.
 
 ## Working hypothesis
 
-The runtime question is largely answered for the measured simple and complex flows: once setup is out of the measurement, FastMoq and direct Moq are effectively tied.
+The public runtime question is largely answered for the measured workflows: once setup is out of the measurement, FastMoq and direct Moq are effectively tied.
 
-The main remaining overhead is in tracked setup and activation, not in steady-state invocation.
+The main remaining overhead is in tracked setup and activation, not in repeated business execution.
 
 The current likely hotspots are:
 
@@ -34,9 +34,10 @@ The current likely hotspots are:
 6. Added `SetupFastMockBenchmarks` to isolate tracked setup from raw provider mock creation.
 7. Reduced Moq logger setup reflection by caching the generic setup dispatcher and using a fast path for wrapper-to-native `Mock` access.
 8. Skipped interface injection-member scanning inside `SetupFastMock(...)`, which keeps plain interface setup close to raw provider creation.
-9. Removed embedded benchmark jobs from the benchmark classes so command-line job selection is authoritative and medium or long runs do not stack with a baked-in short run.
+9. Removed embedded benchmark jobs from the benchmark classes so command-line job selection is authoritative and longer runs do not stack with a baked-in short run.
+10. Updated the invocation-only benchmark parameters to `10`, `50`, and `100` so the published workflow slice emphasizes more representative repeated-execution counts.
 
-These changes were validated against the main `FastMoq.Tests` project across `net8.0`, `net9.0`, and `net10.0` and then re-measured with the medium-run publish slices.
+These changes were validated against the main `FastMoq.Tests` project across `net8.0`, `net9.0`, and `net10.0` and then re-measured with the current benchmark slices.
 
 ## Priority order
 
@@ -61,7 +62,7 @@ Expected effect:
 Evidence:
 
 - Plain interface setup is now close to raw provider creation.
-- Logger setup remains the dominant tracked-setup outlier in the medium-run diagnostics.
+- Logger setup remains the dominant tracked-setup outlier in the diagnostics.
 
 Planned change:
 
@@ -85,11 +86,12 @@ Reason:
 
 ## Recommended order of implementation
 
-1. Setup and creation diagnostics stay on explicit `-j medium` publish runs.
-2. `SetupFastMock(...)` targeted reductions.
-3. Per-construction resolution cache.
-4. Activation-only and verification-only microbenchmarks.
-5. Re-run the selected medium publish slices after each step and keep the checked-in results current.
+1. Keep public comparisons on the invocation-only workflow slice.
+2. Keep setup and tracked-creation diagnostics as internal guardrails.
+3. `SetupFastMock(...)` targeted reductions.
+4. Per-construction resolution cache.
+5. Activation-only and verification-only microbenchmarks.
+6. Re-run the selected benchmark slices after each step and keep the checked-in results current.
 
 ## Success criteria
 

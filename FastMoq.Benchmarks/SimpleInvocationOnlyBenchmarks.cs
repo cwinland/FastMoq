@@ -25,7 +25,7 @@ public class SimpleInvocationOnlyBenchmarks
     /// <summary>
     /// Number of business invocations performed per benchmark operation.
     /// </summary>
-    [Params(1, 10, 100)]
+    [Params(10, 50, 100)]
     public int InvocationCount { get; set; }
 
     /// <summary>
