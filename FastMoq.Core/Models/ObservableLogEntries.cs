@@ -10,6 +10,7 @@ namespace FastMoq.Models
     /// </summary>
     public class ObservableLogEntries : IReadOnlyCollection<LogEntry>, INotifyCollectionChanged, INotifyPropertyChanged
     {
+        private readonly object syncRoot = new();
         private readonly ObservableCollection<LogEntry> internalCollection = [];
         private readonly ReadOnlyObservableCollection<LogEntry> readOnlyCollection;
 
@@ -23,7 +24,10 @@ namespace FastMoq.Models
 
         internal void Add(LogEntry item)
         {
-            internalCollection.Add(item);
+            lock (syncRoot)
+            {
+                internalCollection.Add(item);
+            }
         }
 
         /// <summary>
