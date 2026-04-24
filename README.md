@@ -26,15 +26,41 @@ FastMoq is a .NET testing framework for auto-mocking, dependency injection, and 
 
 ## Why FastMoq
 
-FastMoq is still intended to remove boilerplate compared with using a mock provider directly.
+FastMoq sits on top of your mock provider and handles the repetitive harness work — dependency tracking, automatic construction, logger plumbing, and common framework-type registration — so each test body stays focused on the behavior under test rather than the object graph.
 
-The value is not only shorter setup calls. The bigger value is that FastMoq keeps the repetitive test harness work out of the test body:
+### Ergonomics and boilerplate reduction
 
-- no separate mock field for every constructor dependency
-- no manual `new Mock<T>()` declarations just to build the subject under test
-- no long constructor call that must be updated every time the component gains a new dependency
-- built-in support for common framework-heavy test types such as `ILogger`, `IFileSystem`, `HttpClient`, and `DbContext`
-- tracked mocks plus provider-neutral verification and logging helpers
+- **No mock field declarations** — `MockerTestBase<TComponent>` maintains a mock registry; retrieve any tracked mock on demand with `GetOrCreateMock<T>()`, the current provider-neutral path (preferred over the legacy `GetMock<T>()`)
+- **No manual subject construction** — the component under test is created and injected automatically; no `new MyService(dep1.Object, dep2.Object, ...)` per test class
+- **Resilient to refactoring** — adding a new constructor dependency to a component does not require updating existing tests; the extra mock is auto-registered
+- **Built-in framework types** — `ILogger<T>`, `ILoggerFactory`, `IFileSystem`, and `HttpClient` are pre-wired without any extra setup code
+- **Constructor guard testing in one call** — `TestAllConstructorParameters(...)` generates and asserts null-argument guard tests for every constructor parameter, replacing one test per parameter with a single helper-driven assertion
+
+### Provider-neutral verification
+
+FastMoq ships a bundled `reflection` provider that requires no mock-library dependency. Optional `moq` and `nsubstitute` provider packages are available when you want provider-specific arrangement syntax. The verification APIs — `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, and `TimesSpec` — are provider-neutral and work the same regardless of which provider is active. Tests written against this surface stay portable if you switch providers later.
+
+### Extended test coverage areas
+
+- **DbContext** — `GetMockDbContext<TContext>()` covers the `IQueryable<T>` and `DbSet<T>` wiring that a raw provider mock otherwise requires by hand
+- **HTTP** — `WhenHttpRequest(...)` and `WhenHttpRequestJson(...)` handle `HttpClient` behavior without `Protected()` handler interception
+- **Web and Blazor** — `MockerBlazorTestBase<T>` layers mock registry support on top of bUnit; MVC helpers cover `HttpContext`, `IHttpContextAccessor`, and claims principals
+- **Azure** — `PageableBuilder`, token credentials, typed `FunctionContext`, and `HttpRequestData`/`HttpResponseData` builders are included in the aggregate package
+- **Fluent scenarios** — `ScenarioBuilder<T>` provides a `.With(...).When(...).Then(...).Verify(...)` chain for multi-step, scenario-style tests
+
+### Framework compatibility
+
+- Targets **.NET 8, 9, and 10**
+- Designed for **xUnit** (primary runner); works alongside any assertion library
+- Optional provider packages add **Moq** (`FastMoq.Provider.Moq`) or **NSubstitute** (`FastMoq.Provider.NSubstitute`) fluency while the rest of the harness stays provider-neutral
+- Bundled **Roslyn analyzers** (`FastMoq.Analyzers`) surface provider-first guidance and migration hints directly in the IDE
+
+### Where FastMoq pays off most
+
+- Components with three or more constructor dependencies
+- Services, controllers, or Blazor components that rely on `ILogger`, `DbContext`, `HttpClient`, or other framework abstractions
+- Suites that must stay low-maintenance as the codebase grows — no test update required when a component gains a new dependency
+- Teams that want to isolate or migrate provider-specific behavior without rewriting the full test harness
 
 ### FastMoq vs Direct Mock Provider Usage
 
