@@ -116,7 +116,7 @@ public class OrderProcessingServiceTests : MockerTestBase<OrderProcessingService
 }
 ```
 
-The FastMoq version removes explicit mock declarations, subject construction, and logger-plumbing code while still allowing provider-specific setup when you need it.
+FastMoq removes the need for most explicit mock declarations, subject construction, and logger-plumbing code while still allowing provider-specific setup when you need it.
 
 If you want a copy-paste example that works under the default provider without Moq-specific setup, start with [Getting Started Guide](https://help.fastmoq.com/docs/getting-started/README.html).
 
@@ -149,7 +149,7 @@ If you want a copy-paste example that works under the default provider without M
 
 ## Features
 
-- NOW BLAZOR SUPPORT in FastMoq and FastMoq.Web.
+- Blazor support in FastMoq and FastMoq.Web.
 - Test without declaring Mocks (unless needed).
 - Creates objects with chain of automatic injections in objects and their dependencies.
 - Creates Mocks and Objects with properties populated.
