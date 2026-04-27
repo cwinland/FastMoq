@@ -1,25 +1,32 @@
 # FastMoq Roadmap
 
-This page summarizes the planned FastMoq priorities for upcoming releases. It focuses on future work rather than repeating completed migration steps.
+This page summarizes the current public FastMoq direction for upcoming releases. It stays focused on future work, known major-version cleanup, and areas still under evaluation.
 
-## Planned for v4
+Only a small part of the release split is fixed right now. The main decided v5 items are the planned core packaging cleanup, obsolete-surface removal, and code-generation work. Other work may land in additional v4 releases or in a later major version depending on stability, package boundaries, and documentation readiness.
+
+For current package behavior, provider availability, and already shipped features, use the getting-started, provider-selection, and what's-new docs instead of this page.
+
+This page tracks public FastMoq product direction only. Internal maintainer work such as local test-stack migration, internal runner experiments, or other repository-only operational tasks is intentionally excluded even when that work still matters inside this repo.
+
+## Near-term direction
 
 ### Provider-neutral release hardening
 
-v4 work will continue to sharpen the provider boundary so shared FastMoq behavior stays portable and provider-specific behavior stays explicit.
+Near-term work will continue to sharpen the provider boundary so shared FastMoq behavior stays portable and provider-specific behavior stays explicit.
 
-Planned focus areas:
+Active focus areas include:
 
 - Further reduce reliance on Moq-shaped compatibility paths in shared core flows.
 - Keep provider-native access available without requiring every provider to emulate Moq.
-- Harden packaging and provider-selection guidance for the built-in Moq, NSubstitute, and reflection providers.
+- Expand provider-first setup and verification methods where a shared FastMoq surface can stay clear and useful without hiding real provider differences.
+- Improve packaging and provider-selection guidance for the current provider lineup, aggregate-package behavior, and optional provider packages.
 - Tighten migration guidance for compatibility surfaces that remain in v4 but are not intended to define the long-term API shape.
 
 ### Analyzer expansion
 
-The remaining non-web analyzer work is planned for v4 where the guidance is stable enough to stay low-noise and useful in everyday test authoring.
+The remaining non-web analyzer work stays on the near-term roadmap where the guidance is stable enough to stay low-noise and useful in everyday test authoring.
 
-Planned analyzer work includes:
+Likely analyzer work includes:
 
 - Distinguishing between tests that should use `GetOrCreateMock<T>()` and tests that should intentionally replace resolution with `AddType(...)` or `AddKnownType(...)`.
 - Guiding suites away from one-object-for-all-types service-provider shims once the typed `IServiceProvider` helper is available.
@@ -27,40 +34,33 @@ Planned analyzer work includes:
 
 ### Test helpers and migration support
 
-v4 also includes helper and migration work where common testing scenarios still need a first-party answer rather than documentation alone.
+Helper and migration work remains active where common testing scenarios still need a first-party answer rather than documentation alone.
 
-Planned work includes:
+Current follow-up areas include:
 
+- Additional provider-first setup and verification helpers where current suites still drop into provider-native syntax too early.
 - Additional provider-neutral guidance for framework-heavy suites that combine typed `IServiceProvider` helpers with keyed services or framework-owned service graphs beyond the current scope-aware helper path.
 - Azure Functions follow-up helpers beyond the shipped `FunctionContext.InstanceServices`, `CreateHttpRequestData(...)`, and `CreateHttpResponseData(...)` support.
 - Focused migration guidance and examples for compatibility-only APIs that remain temporary rather than long-term patterns.
 
-Recently added in the current v4 line:
+Current public issue anchors in this bucket include [#41](https://github.com/cwinland/FastMoq/issues/41) for structured diagnostics and [#107](https://github.com/cwinland/FastMoq/issues/107) for remaining Azure Functions execution-context follow-up.
 
-- `AddPropertyState<TService>(...)` for common interface-based `SetupAllProperties()` migration cases where the real need is lightweight stateful property backing.
-- `CreateTypedServiceScope(...)` and `AddServiceScope(...)` for typed scope setup, plus optional `includeMockerFallback: true` bridging when framework-owned resolution should fall back to normal `Mocker` behavior.
-- `FMOQ0013` coverage for manual `IServiceScopeFactory` and `IServiceScope` shims, alongside the existing typed `IServiceProvider` guidance.
-- `FMOQ0021` guidance for Moq `SetupAllProperties()` cases that should move toward `AddPropertyState<TService>(...)` or a concrete fake.
-
-Other gaps worth adding next, in priority order:
-
-1. Azure Functions follow-up helpers beyond `InstanceServices`, request, and response.
-2. More examples and sample-backed docs for property-capture and property-state migration.
-3. Additional keyed-service guidance for framework-owned DI graphs.
+Examples, migration docs, and analyzer guidance are more likely to move first than broad new helper surfaces when the release split is still being evaluated.
 
 ### Documentation and examples
 
-v4 documentation work will focus on the features and migration paths that still need stronger release-facing guidance.
+Documentation work remains part of the near-term plan because several provider-dependent and helper-heavy scenarios still need stronger release-facing guidance.
 
-Planned documentation updates include:
+Likely documentation work includes:
 
 - More provider-native examples beyond the current capability matrix.
+- Expanded feature-parity guidance for provider-dependent sequence, call-order, event, and advanced setup scenarios where the current shared FastMoq surface intentionally stops short of a single abstraction.
 - Focused migration notes for older Moq-heavy suites.
 - Keyed-service guidance tied to new diagnostics and helper APIs.
 - Examples for typed service-provider flows and broader Azure testing helpers, including HTTP-trigger request or response setup.
 - Additional DbContext examples as those surfaces continue to harden.
 
-## Later or decision pending
+## Later v5 work or timing still open
 
 ### Web and UI expansion
 
@@ -85,15 +85,65 @@ Planned follow-up includes:
 
 ## Planned v5 Cleanup
 
+### Core packaging and provider defaults
+
+The current v5 direction is to keep `FastMoq.Core` provider-neutral and move bundled provider availability to the aggregate package instead of core.
+
+Current public issue anchor in this bucket is [#140](https://github.com/cwinland/FastMoq/issues/140).
+
+Planned follow-up includes:
+
+- Removing the current built-in Moq provider path from `FastMoq.Core`.
+- Keeping provider implementations such as Moq and NSubstitute available through the aggregate `FastMoq` package.
+- Keeping selective-install workflows available through explicit provider packages.
+- Tightening provider-selection guidance so package composition stays predictable as the core or aggregate boundaries change.
+
+### Provider expansion
+
+Provider expansion remains part of the current v5 direction once the provider boundary and package model are stable enough to support another first-party provider cleanly.
+
+Planned follow-up includes:
+
+- evaluating a first-party FakeItEasy provider as a distinct provider-expansion track rather than folding it into the generator backlog
+- keeping parity docs explicit that FakeItEasy is currently a direct-framework comparison baseline, not a shipped FastMoq provider
+- tracking the FakeItEasy provider work through [#128](https://github.com/cwinland/FastMoq/issues/128) instead of leaving it only in roadmap prose
+
 ### Obsolete and compatibility surface cleanup
 
 A future major-version cleanup will continue reducing Moq-oriented compatibility members that remain only to ease migration.
 
 The goal is a smaller, clearer public surface where provider-first APIs are the default path and compatibility shims are no longer carrying day-to-day guidance.
 
+Current public issue anchor in this bucket is [#141](https://github.com/cwinland/FastMoq/issues/141).
+
+### Code generation and scaffolding
+
+First-party code generators do not exist today, but code-generation work is part of the current v5 direction.
+
+The main value is not "generated mocks" in isolation. The stronger FastMoq-specific opportunity is compile-time provider-first test generation: generated test graphs, harness scaffolding, and framework-helper builders that reduce reflection, reduce boilerplate, and stay aligned with FastMoq-owned APIs.
+
+Current public issue crosswalk:
+
+- foundation and package-shape work: [#120](https://github.com/cwinland/FastMoq/issues/120), [#121](https://github.com/cwinland/FastMoq/issues/121), [#125](https://github.com/cwinland/FastMoq/issues/125), [#126](https://github.com/cwinland/FastMoq/issues/126), [#127](https://github.com/cwinland/FastMoq/issues/127), and [#134](https://github.com/cwinland/FastMoq/issues/134)
+- near-term helper preparation that can improve v4 authoring before generators ship: [#132](https://github.com/cwinland/FastMoq/issues/132), [#133](https://github.com/cwinland/FastMoq/issues/133), and [#135](https://github.com/cwinland/FastMoq/issues/135)
+- first implementation-facing outcomes: [#122](https://github.com/cwinland/FastMoq/issues/122), [#136](https://github.com/cwinland/FastMoq/issues/136), [#137](https://github.com/cwinland/FastMoq/issues/137), [#123](https://github.com/cwinland/FastMoq/issues/123), and [#124](https://github.com/cwinland/FastMoq/issues/124)
+- later evaluation tracks after the provider-first generator story is stable: [#138](https://github.com/cwinland/FastMoq/issues/138) and [#139](https://github.com/cwinland/FastMoq/issues/139)
+
+Planned direction stays phased:
+
+1. Compile-time test graph and harness generation.
+2. Scenario and suite scaffolding.
+3. Framework-helper builders and fuller generated tests from existing supported classes.
+4. Analyzer-guided generation flow and package suggestions.
+5. Provider-optimized or narrower generated-fake evaluation only after the shared contract is stable.
+
+For the current detailed direction, design constraints, and fuller generator issue mapping, see [Generator roadmap and design](./generator-roadmap.md).
+
 ### `MockOptional` retirement
 
 FastMoq will continue moving optional-parameter guidance toward explicit controls such as `Mocker.OptionalParameterResolution`, `InvocationOptions`, and focused `MockerTestBase<TComponent>` construction overrides.
+
+Current public issue anchor in this bucket is [#142](https://github.com/cwinland/FastMoq/issues/142).
 
 Planned follow-up includes:
 

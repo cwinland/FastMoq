@@ -60,6 +60,8 @@ For the repo-native testing conventions and framework-specific guidance used by 
 
 When you are deciding whether a test should stay plain, use direct `Mocker` usage, or move into a shared harness or wrapper layer, start with [Choose The Narrowest Harness](./testing-guide.md#choose-the-narrowest-harness) and [Local Wrapper Boundary](./testing-guide.md#local-wrapper-boundary).
 
+If you want reusable AI workflows for new tests, modernization, or migration work instead of writing prompts from scratch, see [AI Prompt Templates](../ai/README.md).
+
 If you want examples that run directly in this repository instead of static snippets only, see [Executable Testing Examples](../samples/testing-examples.md).
 
 If you are updating older FastMoq usage from the last public `3.0.0` release, see [Migration Guide: 3.0.0 To The Current v4 Line](../migration/README.md).
@@ -226,7 +228,7 @@ using FastMoq.Extensions; // Core helper extensions such as VerifyLogged(...), A
 using Microsoft.Extensions.Logging; // ILogger<T> or LogLevel in your test or component
 using AwesomeAssertions; // If you use AwesomeAssertions in your assertions
 using Shouldly; // If your project uses Shouldly instead
-using Xunit; // Or the test framework of your choice
+using Xunit; // Example only; replace with the test framework namespace your project uses
 ```
 
 `Mocker` and `MockerTestBase<T>` live in `FastMoq`.
@@ -269,6 +271,8 @@ Azure Functions also exposes non-extension builder helpers in `FastMoq.AzureFunc
 ## Your First Test
 
 Let's create a simple service and write a test for it using FastMoq.
+
+The snippets below use xUnit attributes only as one example of test-framework syntax. The FastMoq APIs shown here are not tied to xUnit, so keep the FastMoq calls and use the test framework your project already standardizes on.
 
 ### 1. Create a Service to Test
 

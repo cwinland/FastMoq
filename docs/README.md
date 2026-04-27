@@ -4,6 +4,8 @@ Welcome to the FastMoq documentation home page. Use this site when you already k
 
 If you are evaluating the project itself and want the high-level value proposition first, start with the [GitHub repository home page](https://github.com/cwinland/FastMoq).
 
+If you are coming from that repository overview and now want the usage-side guide set, use this page for package choices, testing guidance, migration detail, and capability-specific docs.
+
 ## Package Overview
 
 FastMoq ships as an aggregate package plus focused helper packages so a test suite can stay broad or stay lightweight depending on what it needs.
@@ -60,9 +62,18 @@ Perfect for developers new to FastMoq. Learn the basics and write your first tes
 - [Explicit constructor selection in tests](./getting-started/testing-guide.md#explicit-constructor-selection-in-tests)
 - [Web helper guidance for controller and request tests](./getting-started/testing-guide.md#controller-testing)
 - [Executable testing examples](./samples/testing-examples.md)
+- [AI prompt templates for new tests, modernization, and migration](./ai/README.md)
 - Understanding the architecture
 - Common patterns and best practices
 - Troubleshooting guide
+
+### 🤖 [AI-Assisted Workflows](./ai/README.md)
+
+Reusable prompt templates and guardrails for AI-assisted migration, new test authoring, and modernization work.
+
+- Task-specific prompts for migration, new tests, and modernization
+- Shared anti-hallucination rules for validating packages, providers, namespaces, and locally available APIs
+- Repo-first doc guidance for current-branch work with hosted-doc fallback guidance
 
 ### 🔄 [Migration Guide](./migration/README.md)
 
@@ -86,10 +97,10 @@ Use the docs-side API overview when you want example-first entry points and cura
 
 Comprehensive comparison of FastMoq with other popular mocking frameworks.
 
-- Side-by-side feature comparison
-- Migration guides from Moq and NSubstitute
-- Links to runnable benchmarks when raw overhead comparisons matter
-- When to choose FastMoq vs alternatives
+- Grouped parity matrix across provider model, verification, setup, and framework-integration dimensions
+- Complete side-by-side examples only where the comparison materially helps the reader
+- Provider-dependent notes for scenarios that do not flatten cleanly into one portable abstraction
+- When to choose FastMoq versus a direct provider workflow
 
 ### 👨‍🍳 [Cookbook](./cookbook/README.md)
 
@@ -119,9 +130,13 @@ Runnable BenchmarkDotNet coverage for current provider-first FastMoq flows.
 - Includes the exact run command and benchmark scope for this branch
 - Links to the latest checked-in short-run results summary
 
-### 🗺️ [Roadmap Notes](./roadmap/README.md)
+### 🛣️ [Roadmap Notes](./roadmap/README.md)
 
-Current provider-first direction, active architectural work, and intentionally deferred items.
+Forward-looking product direction for upcoming releases, including current v5 cleanup and generator planning.
+
+- Near-term provider-first and helper-surface direction
+- v5 packaging and obsolete-surface cleanup
+- Formal [generator roadmap and design](./roadmap/generator-roadmap.md) for planned code-generation work
 
 ### 🆕 [What's New Since 3.0.0](./whats-new/README.md)
 
@@ -155,6 +170,7 @@ Intentional v4 breaking changes, with migration notes for changed behavior.
 Direct routes:
 
 - Provider-first authoring: [Getting Started](./getting-started/README.md), [Testing Guide](./getting-started/testing-guide.md), and [API quick reference](./api/quick-reference.md)
+- AI-assisted workflows: [AI Prompt Templates](./ai/README.md), [Testing Guide](./getting-started/testing-guide.md), and [Migration Guide](./migration/README.md)
 - Harness and wrapper decisions: [Choose The Narrowest Harness](./getting-started/testing-guide.md#choose-the-narrowest-harness) and [Local Wrapper Boundary](./getting-started/testing-guide.md#local-wrapper-boundary)
 - Migration cleanup: [Migration Guide](./migration/README.md), [Provider and compatibility guidance](./migration/provider-and-compatibility.md), and [API replacements and migration exceptions](./migration/api-replacements-and-exceptions.md)
 - Troubleshooting provider or package mismatches: [Provider selection](./getting-started/provider-selection.md), [Provider capabilities](./getting-started/provider-capabilities.md), and [Getting Started package choices](./getting-started/README.md#package-choices)

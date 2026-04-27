@@ -73,6 +73,8 @@ Current fallback rule of thumb:
 
 For example, `GetMock<T>()`, direct `Mock<T>` access, `VerifyLogger(...)`, and `Protected()` still mean `moq`, while `AsNSubstitute()` and `Received(...)` mean `nsubstitute`.
 
+When a migrated suite still depends on one of those provider-specific surfaces, the safest stabilization step is an explicit assembly default.
+
 For the built-in `moq` provider, and for `nsubstitute` after its package is referenced, the shortest path is [FastMoqDefaultProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqDefaultProviderAttribute.html):
 
 ```csharp
@@ -81,93 +83,13 @@ using FastMoq.Providers;
 [assembly: FastMoqDefaultProvider("moq")]
 ```
 
-That attribute works with xUnit too; it is not tied to a particular test framework. It selects the default provider by canonical name during FastMoq bootstrap.
+That selects the default provider by canonical name during FastMoq bootstrap. The same attribute form works regardless of the test framework because FastMoq reads it during its own provider bootstrap.
 
-When the provider must be registered and selected together at assembly scope, use [FastMoqRegisterProviderAttribute](https://help.fastmoq.com/api/FastMoq.Providers.FastMoqRegisterProviderAttribute.html):
+When registration and selection need to happen together, or when startup must be dynamic, use the canonical forms in [Provider Selection and Setup](../getting-started/provider-selection.md#explicit-assembly-default-when-the-suite-must-not-depend-on-discovery). That page owns the full mechanics for:
 
-```csharp
-using FastMoq.Providers;
-using FastMoq.Providers.MoqProvider;
-
-[assembly: FastMoqRegisterProvider("moq", typeof(MoqMockingProvider), SetAsDefault = true)]
-```
-
-That form registers the provider type and makes it the assembly default during FastMoq bootstrap, without depending on a framework-specific startup hook.
-
-Use the startup-code examples below only when you need more than declarative assembly metadata. Common cases are:
-
-- choosing the provider dynamically at runtime from configuration, environment, or target-specific logic
-- combining provider selection with other one-time test bootstrap work in the same startup path
-- running custom registration logic that cannot be expressed as a provider type plus `SetAsDefault`
-
-### Copy-paste startup-hook examples
-
-#### xUnit
-
-If you need startup code in xUnit, a module initializer is a portable option that works well for provider registration and default-provider selection. Consumers on xUnit v3 may also choose assembly fixtures or test pipeline startup when those fit their broader test-bootstrap model:
-
-```csharp
-using System.Runtime.CompilerServices;
-using FastMoq.Providers;
-using FastMoq.Providers.MoqProvider;
-
-namespace MyTests;
-
-public static class TestAssemblyProviderBootstrap
-{
-    [ModuleInitializer]
-    public static void Initialize()
-    {
-        MockingProviderRegistry.Register("moq", MoqMockingProvider.Instance, setAsDefault: true);
-    }
-}
-```
-
-Module-initializer note:
-
-- some analyzers warn on `[ModuleInitializer]` usage in test projects, commonly `CA2255`
-- for a dedicated test bootstrap type, a targeted suppression is an expected choice when you intentionally use the module-initializer pattern
-- if your framework already offers a one-time assembly startup hook, use that hook instead of forcing the xUnit pattern into every test project
-
-#### NUnit
-
-```csharp
-using FastMoq.Providers;
-using FastMoq.Providers.MoqProvider;
-using NUnit.Framework;
-
-namespace MyTests;
-
-[SetUpFixture]
-public sealed class TestAssemblyProviderBootstrap
-{
-    [OneTimeSetUp]
-    public void Initialize()
-    {
-        MockingProviderRegistry.Register("moq", MoqMockingProvider.Instance, setAsDefault: true);
-    }
-}
-```
-
-#### MSTest
-
-```csharp
-using FastMoq.Providers;
-using FastMoq.Providers.MoqProvider;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace MyTests;
-
-[TestClass]
-public sealed class TestAssemblyProviderBootstrap
-{
-    [AssemblyInitialize]
-    public static void Initialize(TestContext _)
-    {
-        MockingProviderRegistry.Register("moq", MoqMockingProvider.Instance, setAsDefault: true);
-    }
-}
-```
+- `[assembly: FastMoqRegisterProvider(...)]` when the provider must be registered and selected together at assembly scope
+- startup hooks for xUnit, NUnit, MSTest, or other frameworks when provider choice is dynamic or must be combined with other one-time bootstrap work
+- the broader resolution rules around discovery, explicit defaults, and scoped overrides
 
 Migration guidance for v4:
 

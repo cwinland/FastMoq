@@ -34,6 +34,7 @@
           "api/**.yml",
           "FAQs.md",
           "docs/README.md",
+          "docs/ai/**.md",
           "docs/api/**.md",
           "docs/benchmarks/**.md",
           "docs/breaking-changes/**.md",

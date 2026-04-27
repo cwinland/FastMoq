@@ -71,6 +71,8 @@ public class UsersController : ControllerBase
 
 #### Test Example
 
+The cookbook snippets often use xUnit attributes as one example of test-framework syntax, but the FastMoq APIs in these examples are not tied to xUnit. Keep the FastMoq calls and swap in the test framework syntax your project already uses.
+
 ```csharp
 using FastMoq;
 using AwesomeAssertions;
