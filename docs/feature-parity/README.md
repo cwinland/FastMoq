@@ -80,6 +80,8 @@ This is the most common FastMoq value proposition: the component is created for 
 
 #### FastMoq Example
 
+This example uses the FastMoq harness with Moq-provider setup syntax, so it assumes the Moq provider extensions are available.
+
 ```csharp
 public class OrderServiceTests : MockerTestBase<OrderService>
 {
@@ -139,7 +141,6 @@ The test goal is the same in both versions. The difference is where the ceremony
 
 Provider note:
 
-- The FastMoq arrange step above assumes the Moq provider extensions are available.
 - When the selected provider is NSubstitute, keep the same component creation and provider-neutral verify calls, then translate the arrange step into native substitute syntax:
 
 ```csharp
