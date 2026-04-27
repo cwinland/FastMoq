@@ -2,6 +2,8 @@
 
 This guide documents the testing patterns that match FastMoq's current behavior in this repository. It is intentionally practical: use it when you need to decide which FastMoq API to reach for in a real test.
 
+If you want reusable AI workflows for new tests, modernization, or migration work instead of writing prompts from scratch, see [AI Prompt Templates](../ai/README.md).
+
 ## Start Here
 
 Use these rules first:

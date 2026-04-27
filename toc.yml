@@ -12,6 +12,12 @@
       href: docs/getting-started/provider-capabilities.md
     - name: Testing guide
       href: docs/getting-started/testing-guide.md
+- name: Feature Parity
+  href: docs/feature-parity/README.md
+- name: AI-Assisted Workflows
+  items:
+    - name: AI prompt templates
+      href: docs/ai/README.md
 - name: Examples and Recipes
   items:
     - name: Cookbook
@@ -36,12 +42,12 @@
       href: docs/migration/framework-and-web-helpers.md
     - name: API replacements and migration exceptions
       href: docs/migration/api-replacements-and-exceptions.md
-    - name: Copilot migration prompts
-      href: docs/migration/copilot-prompts.md
     - name: Breaking changes
       href: docs/breaking-changes/README.md
     - name: Roadmap notes
       href: docs/roadmap/README.md
+    - name: Generator roadmap and design
+      href: docs/roadmap/generator-roadmap.md
 - name: API Reference
   items:
     - name: Quick reference

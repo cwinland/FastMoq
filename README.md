@@ -2,13 +2,24 @@
 
 FastMoq is a provider-first .NET testing framework for auto-mocking, dependency-aware construction, and test-focused object creation. In v4, it ships with a bundled `reflection` default and optional Moq or NSubstitute integrations when you need provider-specific arrange syntax.
 
-## Start Here
+FastMoq is test-framework agnostic and can be used from xUnit, NUnit, MSTest, or other .NET test frameworks.
 
-- If you are evaluating the project for the first time, read `Why FastMoq` first, then `Packages`, then the documentation links below.
-- If you want the documentation portal home page with package-specific guidance, start with [FastMoq Documentation Home](https://help.fastmoq.com/).
+## Evaluate FastMoq
+
+If you are comparing FastMoq with direct mock-provider usage or deciding whether it fits your test stack, use this order:
+
+1. Read `Why FastMoq` below for the high-level value proposition.
+2. Use [Feature Comparison](https://help.fastmoq.com/docs/feature-parity/README.html) for the detailed FastMoq vs direct-provider story.
+3. Use [Provider Capabilities](https://help.fastmoq.com/docs/getting-started/provider-capabilities.html) when you need the exact provider boundary.
+4. Use [Benchmarks](https://help.fastmoq.com/docs/benchmarks/README.html) when you want the current measured runtime-overhead comparison.
+5. Use [Migration Guide](https://help.fastmoq.com/docs/migration/README.html) and [What's New Since 3.0.0](https://help.fastmoq.com/docs/whats-new/README.html) if you are coming from the `3.0.0` public line.
+6. Use [Roadmap Notes](https://help.fastmoq.com/docs/roadmap/README.html) only for future public product direction, not current support claims.
+
+## Choose Your Starting Point
+
+- If you already know you want package-specific guidance, start with [FastMoq Documentation Home](https://help.fastmoq.com/).
 - If you want a first test that works under the default `reflection` provider, start with [Getting Started Guide](https://help.fastmoq.com/docs/getting-started/README.html).
-- If you want tracked `.Setup(...)` syntax, read [Provider Selection Guide](https://help.fastmoq.com/docs/getting-started/provider-selection.html) before copying any Moq-fluent examples.
-- If you are upgrading from the `3.0.0` line, start with [Migration Guide](https://help.fastmoq.com/docs/migration/README.html) and [What's New Since 3.0.0](https://help.fastmoq.com/docs/whats-new/README.html).
+- If you want tracked provider-specific `.Setup(...)` syntax, read [Provider Selection Guide](https://help.fastmoq.com/docs/getting-started/provider-selection.html) before copying any Moq-fluent examples.
 - Front-door examples use a couple of different assertion styles. Match the assertion library your test project already uses and keep that style consistent within the project.
 - Authoring ladder for the current v4 line:
     1. provider-neutral helper first, such as `GetOrCreateMock(...)`, `Verify(...)`, `VerifyNoOtherCalls(...)`, `VerifyLogged(...)`, `WhenHttpRequest(...)`, or `AddType(...)`
@@ -38,9 +49,11 @@ FastMoq ships with a bundled `reflection` provider, so you can start without tak
 
 ### Works well when a suite needs to stay maintainable
 
-FastMoq pays off most when tests have multiple constructor dependencies, recurring framework abstractions, or a need to keep provider choices flexible over time. It targets .NET 8, 9, and 10, is designed around xUnit, and includes the analyzer pack by default in `FastMoq` and `FastMoq.Core` so provider-first guidance shows up directly in the IDE.
+FastMoq pays off most when tests have multiple constructor dependencies, recurring framework abstractions, or a need to keep provider choices flexible over time. It targets .NET 8, 9, and 10, works with the .NET test framework your suite already uses, and includes the analyzer pack by default in `FastMoq` and `FastMoq.Core` so provider-first guidance shows up directly in the IDE.
 
 ### FastMoq vs Direct Mock Provider Usage
+
+The example below uses xUnit-style attributes and Moq arrange syntax for illustration. The point of comparison is the FastMoq harness shape, not a requirement to use xUnit or Moq for every test suite.
 
 Using a mock provider directly:
 

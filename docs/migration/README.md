@@ -6,7 +6,7 @@ It stays focused on migration boundaries, reading order, package and provider de
 
 ## Start here for migration
 
-If you are using Copilot or another AI assistant for migration work, start with [Copilot migration prompts](./copilot-prompts.md).
+If you are using Copilot or another AI assistant for migration work, start with [AI prompt templates](../ai/README.md).
 
 Use the prompt page as the operational entry point. Use this guide and the linked detail pages as the canonical migration rules.
 
@@ -29,7 +29,7 @@ Quick routing:
 - If the churn is in controller helpers, principals, `HttpContext`, `IHttpContextAccessor`, keyed DI, or framework service-provider shims, go to [Framework and web helper migration](./framework-and-web-helpers.md).
 - If the churn is in constructor-check output plumbing or other test-framework-specific helper output paths, go to [API replacements and migration exceptions](./api-replacements-and-exceptions.md) and [Framework and web helper migration](./framework-and-web-helpers.md).
 - If you are replacing a specific API such as `Initialize<T>(...)`, `VerifyLogger(...)`, `Strict`, `MockOptional`, `GetMock<T>()`, `GetRequiredMock<T>()`, or `CreateDetachedMock<T>()`, go to [API replacements and migration exceptions](./api-replacements-and-exceptions.md).
-- If you want a reusable AI workflow instead of writing prompts from scratch, go to [Copilot migration prompts](./copilot-prompts.md).
+- If you want a reusable AI workflow instead of writing prompts from scratch, go to [AI prompt templates](../ai/README.md).
 
 ## Scope
 
@@ -277,7 +277,7 @@ Open these only when you hit the relevant problem. That keeps this page short wi
 - [bUnit and Blazor test migration](./bunit-and-blazor-testing.md): package-level and helper-level migration guidance for `FastMoq.Web`, `MockerBlazorTestBase<T>`, `RenderParameter`, nested rendered-component helpers, authorization wrappers, and navigation assertions.
 - [Framework and web helper migration](./framework-and-web-helpers.md): shared-helper rewrites, keyed DI, Azure Functions `InstanceServices`, `FastMoq.Web` helper usage, principals, and controller-context migration.
 - [API replacements and migration exceptions](./api-replacements-and-exceptions.md): old-to-new API guidance for `Initialize<T>(...)`, HTTP helpers, `VerifyLogger(...)`, `TimesSpec`, `Strict`, `GetMock<T>()`, `GetRequiredMock<T>()`, legacy mock-creation helpers, `AddType(...)`, `DbContext`, `MockOptional`, provider-first access, and expected raw-Moq pockets.
-- [Copilot migration prompts](./copilot-prompts.md): reusable prompt entry points for staged migration and stricter obsolete-surface cleanup.
+- [AI prompt templates](../ai/README.md): reusable prompt entry points for migration, new-test authoring, and modernization workflows.
 
 ## Recommended migration order
 

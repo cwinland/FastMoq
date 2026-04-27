@@ -157,9 +157,11 @@ Analyzer note:
 
 The examples below are alternatives to the assembly attributes. Use them when registration and selection need to happen together before the suite creates `Mocker` instances, but the decision cannot be expressed with `FastMoqDefaultProvider(...)` or `FastMoqRegisterProvider(...)`.
 
+Choose the startup hook that matches your test framework. These are parallel framework-specific examples, not different FastMoq product modes.
+
 ### xUnit
 
-If you need startup code in xUnit, a module initializer is a portable option that works well for provider registration and default-provider selection. Consumers on xUnit v3 may also choose assembly fixtures or test pipeline startup when those fit their broader test-bootstrap model.
+For xUnit suites, a module initializer is one portable option for provider registration and default-provider selection. Consumers on xUnit v3 may also choose assembly fixtures or test pipeline startup when those fit their broader test-bootstrap model.
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -484,7 +486,7 @@ The repo now includes an executable provider-selection example in:
 - `FastMoq.TestingExample/ProviderSelectionBootstrap.cs`
 - `FastMoq.TestingExample/ProviderSelectionExampleTests.cs`
 
-That example declares Moq as the app-wide default for the example test assembly and then uses the Moq compatibility surface in a real xUnit test.
+That example declares Moq as the app-wide default for the example test assembly and then uses the Moq compatibility surface in a test that happens to use xUnit syntax.
 
 ## When to choose which provider in v4
 
