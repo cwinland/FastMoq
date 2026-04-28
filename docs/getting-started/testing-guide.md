@@ -128,7 +128,7 @@ These are not interchangeable.
 - You only need to arrange or verify behavior.
 - You want the dependency tracked as the mock FastMoq would have created anyway.
 
-The example below assumes the Moq provider extensions are in use for the arrange step. The tracked-mock concept is provider-first, but the `.Setup(...)` syntax itself is provider-specific. See [Provider Capabilities](./provider-capabilities.md) when you need the equivalent arrangement style for another provider.
+The example below assumes the Moq provider extensions are in use for the arrange step. The tracked-mock concept is provider-first, but the `.Setup(...)` syntax itself is provider-specific. For exact-call fixed results that can stay on a shared FastMoq surface, prefer `AddMethodResult(...)` or `AddMethodResultAsync(...)` before dropping into provider-native setup syntax. See [Provider Capabilities](./provider-capabilities.md) when you need the equivalent arrangement style for another provider.
 
 ```csharp
 var repoMock = Mocks.GetOrCreateMock<IOrderRepository>();
@@ -154,6 +154,24 @@ Migration guardrail:
 
 - do not rewrite a tracked helper to [AddType(...)](xref:FastMoq.Mocker.AddType``1(System.Func{FastMoq.Mocker,``0},System.Boolean,System.Object[])) when the same service still flows through `GetObject<T>()`, `GetRequiredTrackedMock<T>()`, `GetMockModel<T>()`, `AddPropertyState<TService>(...)`, or `AddPropertySetterCapture<TService, TValue>(...)`
 - that is still a tracked FastMoq dependency, not a concrete type-map override
+
+### Exact-call fixed results
+
+When a test only needs a fixed return value, exact-call completion, exact-call callback, or exact-call exception for one collaborator call, prefer `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, or `AddMethodExceptionAsync(...)` over provider-native `Setup(...).Returns(...)`, `ReturnsAsync(...)`, `Callback(...)`, or `Throws(...)` chains:
+
+```csharp
+var gateway = Mocks.AddMethodResult<IOrderGateway, Order?>(
+    x => x.Load("order-42"),
+    expectedOrder);
+
+gateway.Load("order-42").Should().BeSameAs(expectedOrder);
+```
+
+Those helpers intentionally stay narrow:
+
+- they support direct method-call expressions only
+- they are aimed at exact-call fixed results, exact-call `Task` completions, exact-call callbacks, and exact-call exceptions, including simple async `Task<T>` results through `AddMethodResultAsync(...)`, completed `Task` responses through `AddMethodCompletionAsync(...)`, side-effect callbacks through `AddMethodCallback(...)` / `AddMethodCallbackAsync(...)`, and faulted `Task` / `Task<T>` responses through `AddMethodExceptionAsync(...)`
+- they do not try to replace broader provider-native setup chains, exception orchestration, or advanced callback behavior
 
 Analyzer note:
 

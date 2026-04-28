@@ -68,7 +68,7 @@ When that happens, use this rule:
 
 | Moq-oriented feature | Alternative outside Moq | When Moq is still the right tool |
 | --- | --- | --- |
-| `Setup(...)` expression-based arrangement | Use the selected provider's native arrangement style when it exists. For NSubstitute, translate `Setup(...)` into direct substitute calls such as `substitute.Method(...).Returns(...)`, `substitute.When(...).Do(...)`, `Arg.Any<T>()`, and `Arg.Is<T>(...)`, or replace the collaborator with a fake/stub through `AddType(...)` when you want a provider-neutral path. For FastMoq-owned setup shortcuts on the Moq provider, prefer `FastArg` matchers such as `FastArg.AnyExpression<T>()` over adding new `BuildExpression()` usage. Keep FastMoq's verification APIs for the assert side when possible. | When you are intentionally preserving existing Moq-shaped setup chains with minimal churn, or when the test depends on Moq-only expression setup behavior. |
+| `Setup(...)` expression-based arrangement | For exact-call fixed results, exact-call `Task` completions, exact-call callbacks, or exact-call exceptions, prefer `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, or `AddMethodExceptionAsync(...)`. Otherwise use the selected provider's native arrangement style when it exists. For NSubstitute, translate `Setup(...)` into direct substitute calls such as `substitute.Method(...).Returns(...)`, `substitute.When(...).Do(...)`, `Arg.Any<T>()`, and `Arg.Is<T>(...)`, or replace the collaborator with a fake/stub through `AddType(...)` when you want a provider-neutral path. For FastMoq-owned setup shortcuts on the Moq provider, prefer `FastArg` matchers such as `FastArg.AnyExpression<T>()` over adding new `BuildExpression()` usage. Keep FastMoq's verification APIs for the assert side when possible. | When you are intentionally preserving existing Moq-shaped setup chains with minimal churn, or when the test depends on Moq-only expression setup behavior. |
 | `VerifyLogger(...)` | Prefer `VerifyLogged(...)`. For a first-party registration story, use `AddCapturedLoggerFactory()` to register callback-backed `ILoggerFactory`, `ILogger`, and `ILogger<T>` services directly on `Mocker`, or use `CreateLoggerFactory()` when you want to plug the same capture-backed factory into a typed `IServiceProvider` recipe. Use `AddLoggerFactory(existingFactory)` when the factory instance already exists outside FastMoq. | When you are intentionally preserving older Moq-shaped logger assertions with minimal churn. |
 | `Protected()` for `HttpMessageHandler` | Prefer `WhenHttpRequest(...)` or `WhenHttpRequestJson(...)` for HTTP behavior. | When the test really depends on direct protected-member interception rather than request/response behavior. |
 | `Protected()` for arbitrary protected members | Prefer testing through a public seam, extracted collaborator, or concrete fake. | When the implementation cannot reasonably be reshaped and protected-member interception is the behavior under test. |
@@ -133,6 +133,19 @@ dependency.Instance.Publish("alpha");
 
 Mocks.Verify<IOrderGateway>(x => x.Publish("alpha"), TimesSpec.Once);
 ```
+
+For exact-call fixed results that do not need a broader provider-native setup chain, prefer the shared helper surface first:
+
+```csharp
+var gateway = Mocks.AddMethodResult<IOrderGateway, Order?>(
+    x => x.Load("order-42"),
+    expectedOrder);
+
+gateway.Load("order-42").Should().BeSameAs(expectedOrder);
+Mocks.Verify<IOrderGateway>(x => x.Load("order-42"), TimesSpec.Once);
+```
+
+Use `AddMethodResultAsync(...)` for the same shape when the collaborator returns `Task<T>`, `AddMethodCompletionAsync(...)` when it returns `Task`, `AddMethodCallback(...)` / `AddMethodCallbackAsync(...)` when the exact-call behavior is a simple side effect, and `AddMethodException(...)` / `AddMethodExceptionAsync(...)` when the exact-call behavior is a fixed exception rather than a value.
 
 When you need Moq-native behavior that is not exposed as a tracked shortcut, step through `AsMoq()`:
 

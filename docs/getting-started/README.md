@@ -233,7 +233,7 @@ using Xunit; // Example only; replace with the test framework namespace your pro
 
 `Mocker` and `MockerTestBase<T>` live in `FastMoq`.
 
-`FastMoq.Extensions` is the shared core helper namespace. It is optional and includes helpers such as `VerifyLogged(...)`, `AddServiceProvider(...)`, `AddPropertyState(...)`, `AddPropertySetterCapture(...)`, and `CreateHttpClient(...)`.
+`FastMoq.Extensions` is the shared core helper namespace. It is optional and includes helpers such as `VerifyLogged(...)`, `AddServiceProvider(...)`, `AddMethodResult(...)`, `AddMethodResultAsync(...)`, `AddMethodCompletionAsync(...)`, `AddMethodCallback(...)`, `AddMethodCallbackAsync(...)`, `AddMethodException(...)`, `AddMethodExceptionAsync(...)`, `AddPropertyState(...)`, `AddPropertySetterCapture(...)`, and `CreateHttpClient(...)`.
 
 If you intentionally want Moq-specific tracked `.Setup(...)`, `SetupSequence(...)`, or `Protected()` syntax, add the provider package first. A single visible Moq provider can be enough, but select or register `moq` explicitly before copying those examples when the suite should not depend on discovery remaining unambiguous:
 
