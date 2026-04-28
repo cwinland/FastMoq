@@ -427,6 +427,23 @@ var context = Mocks.GetObject<FunctionContext>();
 var clock = context.InstanceServices.GetRequiredService<WidgetClock>();
 ```
 
+For Durable orchestration tests, keep replay-safe logging on the normal FastMoq logger capture path instead of building a second assertion layer:
+
+```csharp
+using FastMoq.AzureFunctions.Extensions;
+
+Mocks.AddTaskOrchestrationReplaySafeLogging(replace: true);
+
+var orchestrationContext = Mocks.GetObject<TaskOrchestrationContext>();
+var logger = orchestrationContext.CreateReplaySafeLogger<ShipOrderOrchestrator>();
+
+logger.LogInformation("starting orchestration");
+
+Mocks.VerifyLogged(LogLevel.Information, "starting orchestration", TimesSpec.Once);
+```
+
+When you want replay-safe log suppression behavior, pass `isReplaying: true` and assert against the existing `Mocks.LogEntries` surface.
+
 For HTTP-trigger tests, use `CreateHttpRequestData(...)` and `CreateHttpResponseData(...)` to build concrete worker request or response objects instead of hand-rolling `HttpRequestData` and `HttpResponseData` doubles:
 
 ```csharp
@@ -452,6 +469,8 @@ Package note:
 - `CreateTypedServiceProvider(...)`, `AddTypedServiceProvider(...)`, and `AddServiceProvider(...)` remain part of `FastMoq.Core`
 - `CreateTypedServiceScope(...)`, `AddTypedServiceScope(...)`, and `AddServiceScope(...)` remain part of `FastMoq.Core`
 - direct `FastMoq.Core` consumers should add `FastMoq.AzureFunctions` and import `FastMoq.AzureFunctions.Extensions` before using `CreateFunctionContextInstanceServices(...)`, `AddFunctionContextInstanceServices(...)`, `CreateHttpRequestData(...)`, or `CreateHttpResponseData(...)`
+- `AddTaskOrchestrationReplaySafeLogging(...)` also lives in `FastMoq.AzureFunctions`; it depends only on `Microsoft.DurableTask.Abstractions`, so tests that only need replay-safe logger creation do not need the heavier Durable Functions worker extension package just to verify orchestration logs
+- the replay-safe orchestration helper currently targets mock-backed `TaskOrchestrationContext` flows on Moq and NSubstitute; reflection-only provider paths cannot synthesize the required abstract orchestration members safely
 - the aggregate `FastMoq` package includes the Azure Functions helper package already
 
 Analyzer note:

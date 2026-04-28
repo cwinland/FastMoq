@@ -11,6 +11,7 @@ using FastMoq.Providers.NSubstituteProvider;
 using FastMoq.Providers.ReflectionProvider;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.DurableTask;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -735,6 +736,60 @@ namespace FastMoq.Tests
         [Theory]
         [InlineData("moq")]
         [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void AddTaskOrchestrationReplaySafeLogging_ShouldCaptureLogs_WhenNotReplaying(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            mocker.AddTaskOrchestrationReplaySafeLogging(replace: true);
+
+            var context = mocker.GetObject<TaskOrchestrationContext>();
+            var logger = context!.CreateReplaySafeLogger<ServiceProviderHelperTests>();
+
+            logger.LogInformation("orchestrator info");
+
+            mocker.VerifyLogged(LogLevel.Information, "orchestrator info", TimesSpec.Once);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
+        [InlineData("reflection")]
+        public void AddTaskOrchestrationReplaySafeLogging_ShouldSuppressLogs_WhenReplaying(string providerName)
+        {
+            using var providerScope = PushProviderScope(providerName);
+            var mocker = new Mocker();
+
+            mocker.AddTaskOrchestrationReplaySafeLogging(isReplaying: true, replace: true);
+
+            var context = mocker.GetObject<TaskOrchestrationContext>();
+            var logger = context!.CreateReplaySafeLogger("orchestrator");
+
+            logger.LogWarning("replayed log");
+
+            mocker.LogEntries.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void AddTaskOrchestrationReplaySafeLogging_OnTrackedMock_ShouldUseSuppliedLoggerFactory()
+        {
+            using var providerScope = PushProviderScope("moq");
+            var mocker = new Mocker();
+            var loggerFactory = mocker.CreateLoggerFactory();
+            var context = mocker.GetOrCreateMock<TaskOrchestrationContext>();
+
+            context.AddTaskOrchestrationReplaySafeLogging(loggerFactory);
+
+            var logger = context.Instance.CreateReplaySafeLogger("tracked orchestrator");
+            logger.LogError("tracked replay-safe");
+
+            mocker.VerifyLogged(LogLevel.Error, "tracked replay-safe", TimesSpec.Once);
+        }
+
+        [Theory]
+        [InlineData("moq")]
+        [InlineData("nsubstitute")]
         public async Task CreateHttpRequestData_ShouldCreateConfiguredRequestAndDefaultResponse(string providerName)
         {
             using var providerScope = PushProviderScope(providerName);
@@ -962,7 +1017,7 @@ namespace FastMoq.Tests
 
             public override BindingContext BindingContext { get; } = new TestBindingContext();
 
-            public override RetryContext RetryContext { get; } = new TestRetryContext();
+            public override Microsoft.Azure.Functions.Worker.RetryContext RetryContext { get; } = new TestRetryContext();
 
             public override IServiceProvider InstanceServices
             {
@@ -991,7 +1046,7 @@ namespace FastMoq.Tests
             public override IReadOnlyDictionary<string, object?> BindingData { get; } = new Dictionary<string, object?>();
         }
 
-        private sealed class TestRetryContext : RetryContext
+        private sealed class TestRetryContext : Microsoft.Azure.Functions.Worker.RetryContext
         {
             public override int RetryCount { get; } = 0;
 
